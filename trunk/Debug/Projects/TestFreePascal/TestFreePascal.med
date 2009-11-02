@@ -1,0 +1,26 @@
+[Project]
+Name=TestFreePascal
+Type=EMPTY
+TypeExt=WINEXE
+TypeRename=
+TypeName=Empty project (Windows)
+Image=Windows.ico
+Major=0
+Minor=0
+Revision=0
+Release=0
+IncludeVersion=1
+IncludeManifest=0
+OS=4
+FileType=1
+Title=
+Comments=
+CompanyName=hitchhikr SoftWorks
+FileDescription=
+LegalCopyright=(c) Copyright 2001-2004 Franck Charlet.
+LegalTradeMarks=
+ProductName=
+[LIBS]
+LIBRARY000=[LIBDIR]\windows.ppw
+[MODULES]
+MODULE000=[PROJECTSDIR]\TestFreePascal\winhello.pp
