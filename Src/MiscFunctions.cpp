@@ -5006,7 +5006,7 @@ BYTE *MLoadFile(char *FileName, long *Bytes)
         MemBlock = (BYTE *) calloc(Size + 4, 1);
         if(MemBlock)
         {
-            *Bytes = fread(MemBlock, Size, sizeof(char), FHandle);
+            *Bytes = fread(MemBlock, sizeof(char), Size, FHandle);
         }
         fclose(FHandle);
     }
