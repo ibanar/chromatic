@@ -6,7 +6,7 @@
 ; Notes: Simple AddIn
 ;
 ; Version: 1.1
-; Lastest revision: 19/07/2004
+; Lastest revision: 31/05/2010
 ; ------------------------------------------
 
 ; --------------- Procedures prototypes
@@ -45,19 +45,19 @@ AddInAuthor             proc
 AddInAuthor             endp
 
 ; --- AddInLoad()
-; In: Pointer to WALIB structure
+; In: Pointer to CHROMATICLIB structure
 ; Out: Must return ADDIN_FINISHED or ADDIN_PERSISTANT in eax
-AddInLoad               proc    WALIBStruct:dword
+AddInLoad               proc    CLStruct:dword
                         pushad
-                        mov     eax,WALIBStruct
-                        mov     WAStructPtr,eax
-                        WALIBINVOKE WAMMGetContext,addr AddInContext
+                        mov     eax,CLStruct
+                        mov     ChromaticLib,eax
+                        LIBINVOKE GetContext,addr AddInContext
                         mov     eax,AddInContext.ColdStart
                         test    eax,eax
                         jz      DisplayOnDemand
                         ; It's a coldstart so check if the window was displayed
                         ; in the previous session.
-                        WALIBINVOKE WADockingBoxWasVisible,addr MsgTitle
+                        LIBINVOKE DockingBoxWasVisible,addr MsgTitle
                         test    eax,eax
                         jz      EndLoadSequence
 DisplayOnDemand:        invoke  DisplayWindow
@@ -77,19 +77,19 @@ AddInLoad               endp
 AddInUnLoad             proc
                         pushad
                         .if FlagActive != FALSE
-                                WALIBINVOKE WADockingBoxRemove,hWndDateSel
+                                LIBINVOKE DockingBoxRemove,hWndDateSel
                         .endif
                         popad
                         ret
 AddInUnLoad             endp
 
 ; --- AddInMenu()
-; In: Pointer to WALIB structure
+; In: Pointer to CHROMATICLIB structure
 ; Out: Must return ADDIN_DIE or ADDIN_ZOMBIE in eax
-AddInMenu               proc    WALIBStruct:dword
+AddInMenu               proc    CLStruct:dword
                         pushad
-                        mov     eax,WALIBStruct
-                        mov     WAStructPtr,eax
+                        mov     eax,CLStruct
+                        mov     ChromaticLib,eax
                         invoke  DisplayWindow
                         jz      EndMenuSequence
                         popad
@@ -104,15 +104,15 @@ AddInMenu               endp
 ; In: N/A
 ; Out: return -1 on success
 DisplayWindow           proc
-                        WALIBINVOKE WAMMGetContext,addr AddInContext
+                        LIBINVOKE GetContext,addr AddInContext
                         .if FlagActive == FALSE
-                                WALIBINVOKE WACreateDockingBox,addr MsgTitle,addr DateWinHook
+                                LIBINVOKE CreateDockingBox,addr MsgTitle,addr DateWinHook
                                 mov     hWndDateSel,eax
                                 test    eax,eax
                                 jz      ErrorWindow
                                 invoke  DateInitProc,eax
                         .endif
-                        WALIBINVOKE WADockingBoxShow,hWndDateSel,216,230,WADOCKINGBOX_RIGHT
+                        LIBINVOKE DockingBoxShow,hWndDateSel,216,230,DOCKINGBOX_RIGHT
                         mov     FlagActive,TRUE
                         or      eax,-1
 ErrorWindow:            ret
@@ -122,11 +122,11 @@ DisplayWindow           endp
 ; Return -1 on success
 DateInitProc            proc    hWnd:dword
                         pushad
-                        WALIBINVOKE WAGDIGetSerif
+                        LIBINVOKE GDIGetSerif
                         mov SerifFont,eax
-                        WALIBINVOKE WACreateListBox,0,1,217,178,hWnd,0,0,0,WS_TABSTOP Or WS_HSCROLL,WS_EX_STATICEDGE
+                        LIBINVOKE CreateListBox,0,1,217,178,hWnd,0,0,0,WS_TABSTOP Or WS_HSCROLL,WS_EX_STATICEDGE
                         mov     hPropertiesLbFileExt,eax
-                        WALIBINVOKE WAMMGetIniFilePathName,INIFILE_DATES
+                        LIBINVOKE GetIniFilePathName,INIFILE_DATES
                         mov     DatesIniFile,eax
                         xor     ecx,ecx
 RetrieveFormats:        push    ecx
@@ -141,30 +141,30 @@ RetrieveFormats:        push    ecx
                         jnz     ContinueFormatReading
                         pop     ecx
                         jmp     StopFormatReading
-ContinueFormatReading:  WALIBINVOKE WAStringReplace,UserTimeFormat,addr MsgFormatSep,addr MsgSpace,1,-1,CASE_SENSITIVE
+ContinueFormatReading:  LIBINVOKE StringReplace,UserTimeFormat,addr MsgFormatSep,addr MsgSpace,1,-1,CASE_SENSITIVE
                         push    eax
-                        WALIBINVOKE WAStringReplace,UserDateFormat,addr MsgFormatSep,addr MsgSpace,1,-1,CASE_SENSITIVE
-                        WALIBINVOKE WADateGetFormat,eax
+                        LIBINVOKE StringReplace,UserDateFormat,addr MsgFormatSep,addr MsgSpace,1,-1,CASE_SENSITIVE
+                        LIBINVOKE DateGetFormat,eax
                         pop     ecx
                         push    eax
-                        WALIBINVOKE WADateGetTimeFormat,ecx
+                        LIBINVOKE DateGetTimeFormat,ecx
                         pop     ecx
-                        WALIBINVOKE WAStringCat,ecx,eax
+                        LIBINVOKE StringCat,ecx,eax
                         push    eax
-                        WALIBINVOKE WAGDIGetTextWidth,hPropertiesLbFileExt,SerifFont,eax
+                        LIBINVOKE GDIGetTextWidth,hPropertiesLbFileExt,SerifFont,eax
                         .if     MaxText < eax
                                 mov     MaxText,eax
                         .endif
                         pop     eax
-                        WALIBINVOKE WAListBoxAddItem,hPropertiesLbFileExt,eax,-1
+                        LIBINVOKE ListBoxAddItem,hPropertiesLbFileExt,eax,-1
                         pop     ecx
                         inc     ecx
                         cmp     ecx,1000
                         jne     RetrieveFormats
-StopFormatReading:      WALIBINVOKE WAListBoxCount,hPropertiesLbFileExt
+StopFormatReading:      LIBINVOKE ListBoxCount,hPropertiesLbFileExt
                         test    eax,eax
                         jz      ListIsEmpty
-                        WALIBINVOKE WAListBoxSetIndex,hPropertiesLbFileExt,0
+                        LIBINVOKE ListBoxSetIndex,hPropertiesLbFileExt,0
 ListIsEmpty:            popad
                         ret
 DateInitProc            endp
@@ -176,7 +176,7 @@ DateWinHook             proc    hWnd:dword,uMsg:dword,wParam:dword,lParam:dword
                         .if uMsg == WM_COMMAND
                                 mov     eax,lParam
                                 .if eax == hPropertiesLbFileExt
-                                        WALIBINVOKE WAControlGetNotifiedCommand,wParam
+                                        LIBINVOKE ControlGetNotifiedCommand,wParam
                                         .if eax == LBN_DBLCLK
                                                 invoke  PasteDate
                                         .endif
@@ -186,35 +186,35 @@ DateWinHook             proc    hWnd:dword,uMsg:dword,wParam:dword,lParam:dword
                                 .endif
                         .elseif uMsg == WM_PAINT
                                 invoke BeginPaint,hWnd,addr PaintS
-                                WALIBINVOKE WAControlWidth,hWnd
+                                LIBINVOKE ControlWidth,hWnd
                                 mov ebx,eax
-                                WALIBINVOKE WAControlHeight,hWnd
+                                LIBINVOKE ControlHeight,hWnd
                                 invoke MoveWindow,hPropertiesLbFileExt,0,0,ebx,eax,1
-                                WALIBINVOKE WAListBoxSetHorzScrollWidth,hPropertiesLbFileExt,MaxText
+                                LIBINVOKE ListBoxSetHorzScrollWidth,hPropertiesLbFileExt,MaxText
                                 invoke EndPaint,hWnd,addr PaintS
                         ; Handle dockwindow messages
-                        .elseif uMsg == WADOCKINGBOX_MSG_QUERY_STATE
+                        .elseif uMsg == DOCKINGBOX_MSG_QUERY_STATE
                                 popad
                                 mov     eax,FlagActive
                                 ret
-                        .elseif uMsg == WM_DESTROY || uMsg == WADOCKINGBOX_MSG_CLOSE
+                        .elseif uMsg == WM_DESTROY || uMsg == DOCKINGBOX_MSG_CLOSE
                                 mov     FlagActive,FALSE
-                                WALIBINVOKE WAMMAddInKillZombie,addr AddInUnLoad
+                                LIBINVOKE AddInKillZombie,addr AddInUnLoad
                                 popad
                                 xor     eax,eax
                                 ret
                         .endif
                         popad
-                        WALIBINVOKE WAControlNextHook,hWnd,uMsg,wParam,lParam
+                        LIBINVOKE ControlNextHook,hWnd,uMsg,wParam,lParam
                         ret
 DateWinHook             endp
 
 ; --- Paste the date in current text window
 PasteDate               proc
                         local   CurrentLstIndex:dword
-                        WALIBINVOKE WAMMGetContext,addr AddInContext
+                        LIBINVOKE GetContext,addr AddInContext
                         .if AddInContext.NbrChilds != 0 
-                                WALIBINVOKE WAListBoxGetSelItemIndex,hPropertiesLbFileExt
+                                LIBINVOKE ListBoxGetSelItemIndex,hPropertiesLbFileExt
                                 mov     CurrentLstIndex,eax
                                 invoke  GetDateFrm,CurrentLstIndex
                                 invoke  GetTimeFrm,CurrentLstIndex
@@ -224,37 +224,37 @@ PasteDate               proc
                                 pop     ebx
                                 add     ebx,eax
                                 jz      StopFormatPasting
-StopFormatPasting:              WALIBINVOKE WAStringReplace,UserTimeFormat,addr MsgFormatSep,addr MsgSpace,1,-1,CASE_SENSITIVE
+StopFormatPasting:              LIBINVOKE StringReplace,UserTimeFormat,addr MsgFormatSep,addr MsgSpace,1,-1,CASE_SENSITIVE
                                 push    eax
-                                WALIBINVOKE WAStringReplace,UserDateFormat,addr MsgFormatSep,addr MsgSpace,1,-1,CASE_SENSITIVE
-                                WALIBINVOKE WADateGetFormat,eax
+                                LIBINVOKE StringReplace,UserDateFormat,addr MsgFormatSep,addr MsgSpace,1,-1,CASE_SENSITIVE
+                                LIBINVOKE DateGetFormat,eax
                                 pop     ecx
                                 push    eax
-                                WALIBINVOKE WADateGetTimeFormat,ecx
+                                LIBINVOKE DateGetTimeFormat,ecx
                                 pop     ecx
-                                WALIBINVOKE WAStringCat,ecx,eax
-                                WALIBINVOKE WAMMInsertText,AddInContext.hCurrentChild,eax
-                                WALIBINVOKE WAMMSetFocusInsideWindow,AddInContext.hCurrentChild
+                                LIBINVOKE StringCat,ecx,eax
+                                LIBINVOKE InsertText,AddInContext.hCurrentChild,eax
+                                LIBINVOKE SetFocusInsideWindow,AddInContext.hCurrentChild
                         .else
-                                WALIBINVOKE WAMiscMsgBox,AddInContext.hMDI,addr MsgChildError,MB_ERROR
+                                LIBINVOKE MiscMsgBox,AddInContext.hMDI,addr MsgChildError,MB_ERROR
                         .endif
                         ret
 PasteDate               endp
 
 ; --- Retrieve date format from dates.ini file
 GetDateFrm              proc    FormatNumber:dword
-                        WALIBINVOKE WAStringNumberComplement,FormatNumber,3
-                        WALIBINVOKE WAStringCat,addr MsgDateFormat,eax
-                        WALIBINVOKE WAIniReadKey,addr MsgFormats,eax,DatesIniFile
+                        LIBINVOKE StringNumberComplement,FormatNumber,3
+                        LIBINVOKE StringCat,addr MsgDateFormat,eax
+                        LIBINVOKE IniReadKey,addr MsgFormats,eax,DatesIniFile
                         mov     UserDateFormat,eax
                         ret
 GetDateFrm              endp
 
 ; --- Retrieve time format from dates.ini file
 GetTimeFrm              proc    FormatNumber:dword
-                        WALIBINVOKE WAStringNumberComplement,FormatNumber,3
-                        WALIBINVOKE WAStringCat,addr MsgTimeFormat,eax
-                        WALIBINVOKE WAIniReadKey,addr MsgFormats,eax,DatesIniFile
+                        LIBINVOKE StringNumberComplement,FormatNumber,3
+                        LIBINVOKE StringCat,addr MsgTimeFormat,eax
+                        LIBINVOKE IniReadKey,addr MsgFormats,eax,DatesIniFile
                         mov     UserTimeFormat,eax
                         ret
 GetTimeFrm              endp

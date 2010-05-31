@@ -1,25 +1,25 @@
 ; --------------- Code section
-			.code
+                        .code
 
 ; --------------- DLL's entry point
-LibMain			proc	hInstance:HINSTANCE,reason:dword,reserved1:dword
-			.if	reason == DLL_PROCESS_ATTACH
-			.elseif reason == DLL_PROCESS_DETACH
-			.elseif reason == DLL_THREAD_ATTACH
-			.elseif reason == DLL_THREAD_DETACH
-			.endif
-			mov	eax,TRUE
-			ret
-LibMain			endp
+LibMain                 proc    hInstance:HINSTANCE,reason:dword,reserved1:dword
+                        .if     reason == DLL_PROCESS_ATTACH
+                        .elseif reason == DLL_PROCESS_DETACH
+                        .elseif reason == DLL_THREAD_ATTACH
+                        .elseif reason == DLL_THREAD_DETACH
+                        .endif
+                        mov     eax,TRUE
+                        ret
+LibMain                 endp
 
 ; --------------- DLL's Functions
 
 ; --- LoadDll()
 ; You can set mKeep member to FALSE to make mIRC unload the DLL after the call.
 
-LoadDll 		proc	LoadInfos:MIRCLOADINFO
-			ret
-LoadDll 		endp
+LoadDll                 proc    LoadInfos:MIRCLOADINFO
+                        ret
+LoadDll                 endp
 
 ; --- UnloadDll()
 ; mTimeout
@@ -31,11 +31,10 @@ LoadDll 		endp
 ;  The UnloadDll() routine can return 0 to keep the DLL loaded,
 ;  or 1 to allow it to be unloaded.
 
-UnloadDll 		proc	mTimeout:dword
-
-			mov	eax,1
-			ret
-UnloadDll 		endp
+UnloadDll               proc    mTimeout:dword
+                        mov     eax,1
+                        ret
+UnloadDll               endp
 
 ; --- mIRCPlugIn()
 ; This is just an example of mIrc typical function (Name of function should be changed)
@@ -74,7 +73,7 @@ UnloadDll 		endp
 ; 3 means that the DLL has filled the data variable with the result
 ;   that $dll() as an identifier should return.
 
-mIRCPlugIn 		proc	mHwnd:dword,aWnd:dword,data:dword,parms:dword,show:dword,nopause:dword
-			xor	eax,eax
-			ret
-mIRCPlugIn		endp
+mIRCPlugIn              proc	mHwnd:dword,aWnd:dword,data:dword,parms:dword,show:dword,nopause:dword
+                        xor     eax,eax
+                        ret
+mIRCPlugIn              endp

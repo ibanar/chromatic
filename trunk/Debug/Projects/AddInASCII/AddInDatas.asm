@@ -1,7 +1,7 @@
 ; --------------- Data Section
                         .data
 
-WAStructPtr             dd      0
+ChromaticLib            dd      0
 AddInContext            ADDINCONTEXT <>
 AddInLogFont            LOGFONT <>
 AddInChooseFont         CHOOSEFONT <>
@@ -23,6 +23,7 @@ MsgColBin               db      "Bin",0
 MsgColCtrl              db      "Ctrl",0
 MsgColName              db      "Name",0
 MsgColHex               db      "Hex",0
+MsgColOct               db      "Oct",0
 MsgColDec               db      "Dec",0
 MsgColChar              db      "Char",0
 MsgNUL                  db      "NUL",0

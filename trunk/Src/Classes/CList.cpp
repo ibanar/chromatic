@@ -2,7 +2,7 @@
 // Chrome
 // Integrated Development Environment
 //
-// Copyright (C) 2001-2009 Franck Charlet.
+// Copyright (C) 2001-2010 Franck Charlet.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without

@@ -6,7 +6,7 @@
 ; Notes: Simple AddIn
 ;
 ; Version: 1.0
-; Lastest revision: 05/05/2003
+; Lastest revision: 31/05/2010
 ; ------------------------------------------
 
 ; --------------- Procedures prototypes
@@ -42,12 +42,12 @@ AddInAuthor             proc
 AddInAuthor             endp
 
 ; --- AddInLoad()
-; In: Pointer to WALIB structure
+; In: Pointer to CHROMATICLIB structure
 ; Out: Must return ADDIN_FINISHED or ADDIN_PERSISTANT in eax
-AddInLoad               proc    WALIBStruct:dword
+AddInLoad               proc    CLStruct:dword
                         pushad
-                        mov     eax,WALIBStruct
-                        mov     WAStructPtr,eax
+                        mov     eax,CLStruct
+                        mov     ChromaticLib,eax
                         popad
                         mov     eax,ADDIN_FINISHED
                         ret
@@ -63,22 +63,22 @@ AddInUnLoad             proc
 AddInUnLoad             endp
 
 ; --- AddInMenu()
-; In: Pointer to WALIB structure
+; In: Pointer to CHROMATICLIB structure
 ; Out: Must return ADDIN_DIE or ADDIN_ZOMBIE in eax
-AddInMenu               proc    WALIBStruct:dword
+AddInMenu               proc    CLStruct:dword
                         pushad
-                        mov     eax,WALIBStruct
-                        mov     WAStructPtr,eax
-                        WALIBINVOKE WAMMGetContext,addr AddInContext
+                        mov     eax,CLStruct
+                        mov     ChromaticLib,eax
+                        LIBINVOKE GetContext,addr AddInContext
                         .if AddInContext.NbrChilds != 0
-                                WALIBINVOKE WAMMGetWindowLangGUID,AddInContext.hCurrentChild
+                                LIBINVOKE GetWindowLangGUID,AddInContext.hCurrentChild
                                 mov     GUIDSkew,eax
-                                WALIBINVOKE WAStringLen,GUIDSkew
+                                LIBINVOKE StringLen,GUIDSkew
                                 .if eax == 0
-                                        WALIBINVOKE WAMiscMsgBox,AddInContext.hMDI,addr MsgGUIDError,MB_ERROR
+                                        LIBINVOKE MiscMsgBox,AddInContext.hMDI,addr MsgGUIDError,MB_ERROR
                                         jmp     NoForms
                                 .endif
-EmptyGUIDDef:                   WALIBINVOKE WAMiscObtainGUID,addr GUIDToInsert
+EmptyGUIDDef:                   LIBINVOKE MiscObtainGUID,addr GUIDToInsert
                                 INVOKE  ReplaceGUIDElement32,GUIDToInsert.Data1,addr MsgGUIDPart1
                                 movzx   eax,GUIDToInsert.Data2
                                 INVOKE  ReplaceGUIDElement16,eax,addr MsgGUIDPart2
@@ -100,9 +100,9 @@ EmptyGUIDDef:                   WALIBINVOKE WAMiscObtainGUID,addr GUIDToInsert
                                 INVOKE  ReplaceGUIDElement8,eax,addr MsgGUIDPart10
                                 movzx   eax,GUIDToInsert.Data4[7]
                                 INVOKE  ReplaceGUIDElement8,eax,addr MsgGUIDPart11
-                                WALIBINVOKE WAMMInsertText,AddInContext.hCurrentChild,GUIDSkew
+                                LIBINVOKE InsertText,AddInContext.hCurrentChild,GUIDSkew
                         .else
-                                WALIBINVOKE WAMiscMsgBox,AddInContext.hMDI,addr MsgChildError,MB_ERROR
+                                LIBINVOKE MiscMsgBox,AddInContext.hMDI,addr MsgChildError,MB_ERROR
                         .endif
 NoForms:                popad
                         mov     eax,ADDIN_DIE
@@ -112,8 +112,8 @@ AddInMenu               endp
 ; --- ReplaceGUIDElement32()
 ; Replace a 32 bits GUID element in the GUID skeleton
 ReplaceGUIDElement32    proc    GUIDDat:dword,MatchingPattern:dword
-                        WALIBINVOKE WAStringHex32,GUIDDat
-                        WALIBINVOKE WAStringReplace,GUIDSkew,MatchingPattern,eax,1,-1,CASE_SENSITIVE
+                        LIBINVOKE StringHex32,GUIDDat
+                        LIBINVOKE StringReplace,GUIDSkew,MatchingPattern,eax,1,-1,CASE_SENSITIVE
                         mov     GUIDSkew,eax
                         ret
 ReplaceGUIDElement32    endp
@@ -122,8 +122,8 @@ ReplaceGUIDElement32    endp
 ; --- ReplaceGUIDElement16()
 ; Replace a 16 bits GUID element in the GUID skeleton
 ReplaceGUIDElement16    proc    GUIDDat:dword,MatchingPattern:dword
-                        WALIBINVOKE WAStringHex16,GUIDDat
-                        WALIBINVOKE WAStringReplace,GUIDSkew,MatchingPattern,eax,1,-1,CASE_SENSITIVE
+                        LIBINVOKE StringHex16,GUIDDat
+                        LIBINVOKE StringReplace,GUIDSkew,MatchingPattern,eax,1,-1,CASE_SENSITIVE
                         mov     GUIDSkew,eax
                         ret
 ReplaceGUIDElement16    endp
@@ -132,8 +132,8 @@ ReplaceGUIDElement16    endp
 ; Replace a 8 bits GUID element in the GUID skeleton
 ReplaceGUIDElement8     proc    GUIDDat:dword,MatchingPattern:dword
                         local   GUIDAsciiDat:dword
-                        WALIBINVOKE WAStringHex8,GUIDDat
-                        WALIBINVOKE WAStringReplace,GUIDSkew,MatchingPattern,eax,1,-1,CASE_SENSITIVE
+                        LIBINVOKE StringHex8,GUIDDat
+                        LIBINVOKE StringReplace,GUIDSkew,MatchingPattern,eax,1,-1,CASE_SENSITIVE
                         mov     GUIDSkew,eax
                         ret
 ReplaceGUIDElement8     endp

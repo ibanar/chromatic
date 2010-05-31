@@ -2,7 +2,7 @@
 // Chromatic
 // Integrated Development Environment
 //
-// Copyright (C) 2001-2009 Franck Charlet.
+// Copyright (C) 2001-2010 Franck Charlet.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -819,6 +819,7 @@ luaL_reg Chromatic_Methods[] =
 	FillPILLConstant(CodeContext, "StringIsEOL", i, PILL_STORE_ENFORCE, 1);
 	FillPILLConstant(CodeContext, "StringNumberComplement", i, PILL_STORE_ENFORCE, 1);
 	FillPILLConstant(CodeContext, "StringHexNumberComplement", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "StringOctNumberComplement", i, PILL_STORE_ENFORCE, 1);
 	FillPILLConstant(CodeContext, "StringBinNumberComplement", i, PILL_STORE_ENFORCE, 1);
 	FillPILLConstant(CodeContext, "StringCount", i, PILL_STORE_ENFORCE, 1);
 	FillPILLConstant(CodeContext, "StringReplace", i, PILL_STORE_ENFORCE, 1);

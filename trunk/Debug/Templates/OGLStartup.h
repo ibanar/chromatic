@@ -8,12 +8,14 @@
 // ------------------------------------------------------
 // structures
 
-typedef struct {
+typedef struct
+{
 	HINSTANCE hInstance;
 	const char *className;
 } Application;
 
-typedef struct {
+typedef struct
+{
 	Application *application;
 	char *title;
 	int width;
@@ -22,7 +24,8 @@ typedef struct {
 	BOOL isFullScreen;
 } GL_WindowInit;
 
-typedef struct {
+typedef struct
+{
 	HWND hWnd;
 	HDC hDC;
 	HGLRC hRC;
@@ -31,7 +34,6 @@ typedef struct {
 	LONGLONG LastTickCount;
 	LONGLONG FirstTickCount;
 } GL_Window;
-
 
 // ------------------------------------------------------
 // Global variables

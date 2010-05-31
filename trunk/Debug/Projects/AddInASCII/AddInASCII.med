@@ -17,7 +17,7 @@ Title=AddInASCII
 Comments=Chromatic AddIn
 CompanyName=hitchhikr SoftWorks
 FileDescription=
-LegalCopyright=(c) Copyright 2001-2009 Franck Charlet.
+LegalCopyright=(C) Copyright 2001-2010 Franck Charlet.
 LegalTradeMarks=
 ProductName=
 [INCLUDES]
@@ -35,3 +35,9 @@ MODULE000=[PROJECTSDIR]\AddInASCII\AddInDatas.asm
 MODULE001=[PROJECTSDIR]\AddInASCII\AddIn.asm
 [DEFS]
 DEF=[PROJECTSDIR]\AddInASCII\AddIn.mdf
+[Windows]
+Window000=[PROJECTSDIR]\AddInASCII\AddIn.asm
+Focus=[PROJECTSDIR]\AddInASCII\AddIn.asm
+FocusLine=218
+Window001=[PROJECTSDIR]\AddInASCII\AddInDatas.asm
+Window002=[TEMPLATESDIR]\AddInConst.inc

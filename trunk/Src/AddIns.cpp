@@ -2,7 +2,7 @@
 // Chromatic
 // Integrated Development Environment
 //
-// Copyright (C) 2001-2009 Franck Charlet.
+// Copyright (C) 2001-2010 Franck Charlet.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -1031,6 +1031,7 @@ void FillWaLib(void)
     AddInLib.StringJoin = (long) &Wrapper_StringJoin;
     AddInLib.StringNumberComplement = (long) &Wrapper_StringNumberComplement;
     AddInLib.StringHexNumberComplement = (long) &Wrapper_StringHexNumberComplement;
+    AddInLib.StringOctNumberComplement = (long) &Wrapper_StringOctNumberComplement;
     AddInLib.StringBinNumberComplement = (long) &Wrapper_StringBinNumberComplement;
     AddInLib.StringReleaseSplit = (long) &StringReleaseSplit;
     AddInLib.StringSplit = (long) &Wrapper_StringSplit;
@@ -3742,6 +3743,11 @@ char * CALLBACK Wrapper_StringNumberComplement(long WANbr, long WAComplement)
 char * CALLBACK Wrapper_StringHexNumberComplement(long WANbr, long WAComplement)
 {
     return(StringCStrConvertToString(StringHexNumberComplement(WANbr, WAComplement)));
+}
+
+char * CALLBACK Wrapper_StringOctNumberComplement(long WANbr, long WAComplement)
+{
+    return(StringCStrConvertToString(StringOctNumberComplement(WANbr, WAComplement)));
 }
 
 char * CALLBACK Wrapper_StringBinNumberComplement(long WANbr, long WAComplement)

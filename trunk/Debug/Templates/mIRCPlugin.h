@@ -6,8 +6,9 @@
 #define MIRC_MAXLEN 900
 
 /* --------------- Dll loading structure */
-typedef struct _MIRCLOADINFO {
-	DWORD mVersion;
-	HWND mHwnd;
-	BOOL mKeep;
+typedef struct _MIRCLOADINFO
+{
+    DWORD mVersion;
+    HWND mHwnd;
+    BOOL mKeep;
 } MIRCLOADINFO, *LPMIRCLOADINFO;

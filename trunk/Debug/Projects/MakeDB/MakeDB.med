@@ -1,7 +1,8 @@
-[MasmEdProject]
+[Project]
 Name=MakeDB
 Type=MSDOSEXE
 TypeExt=DOSEXE
+TypeRename=
 TypeName=Ms-Dos EXE application
 Image=Driver.ico
 Major=1

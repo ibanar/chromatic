@@ -17,7 +17,7 @@ Title=AddInGUID
 Comments=Chromatic AddIn
 CompanyName=hitchhikr SoftWorks
 FileDescription=
-LegalCopyright=(c) Copyright 2001-2009 Franck Charlet.
+LegalCopyright=(C) Copyright 2001-2010 Franck Charlet.
 LegalTradeMarks=
 ProductName=
 [INCLUDES]
@@ -28,3 +28,7 @@ MODULE000=[PROJECTSDIR]\AddInGUID\AddInDatas.asm
 MODULE001=[PROJECTSDIR]\AddInGUID\AddIn.asm
 [DEFS]
 DEF=[PROJECTSDIR]\AddInGUID\AddIn.mdf
+[Windows]
+Window000=[PROJECTSDIR]\AddInGUID\AddIn.asm
+Focus=[PROJECTSDIR]\AddInGUID\AddIn.asm
+FocusLine=7
