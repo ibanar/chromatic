@@ -1,5 +1,5 @@
 Chromatic history file
-(C) 2001-2009 Franck Charlet.
+Copyright (C) 2001-2010 Franck Charlet.
 
 --------------------------------------------------------------------------------
 Version 1.30

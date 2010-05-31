@@ -17,7 +17,7 @@ Title=AddInDATETIME
 Comments=Chromatic AddIn
 CompanyName=hitchhikr SoftWorks
 FileDescription=
-LegalCopyright=(c) Copyright 2001-2009 Franck Charlet.
+LegalCopyright=(C) Copyright 2001-2010 Franck Charlet.
 LegalTradeMarks=
 ProductName=
 [INCLUDES]
@@ -33,3 +33,8 @@ MODULE000=[PROJECTSDIR]\AddInDATETIME\AddInDatas.asm
 MODULE001=[PROJECTSDIR]\AddInDATETIME\AddIn.asm
 [DEFS]
 DEF=[PROJECTSDIR]\AddInDATETIME\AddIn.mdf
+[Windows]
+Window000=[PROJECTSDIR]\AddInDATETIME\AddIn.asm
+Focus=[PROJECTSDIR]\AddInDATETIME\AddIn.asm
+FocusLine=199
+Window001=[PROJECTSDIR]\AddInDATETIME\AddInDatas.asm

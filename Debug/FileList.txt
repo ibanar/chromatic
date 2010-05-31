@@ -1,5 +1,5 @@
 Chromatic File list.
-(C) 2001-2009 Franck Charlet.
+Copyright (C) 2001-2010 Franck Charlet.
 
 -----------------------------------------------------------------------------
 Files included with Chromatic distribution:

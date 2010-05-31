@@ -8,7 +8,7 @@ ChromaticSupp.dll can be asembled within Chromatic itself (via MASM32).
 
 You may need some extra system headers but i don't remember which ones (maybe dbghelp.h & dbghelp.lib).
 
-Innosetup is to be used with the provided InstallScript.iss file.
+Innosetup is used with the provided InstallScript.iss file.
 
 The release directory contains stock clean .ini files used during the creation of the installation package.
 

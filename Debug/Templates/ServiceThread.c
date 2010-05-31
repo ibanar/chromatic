@@ -7,8 +7,9 @@ Out: 0 = Stop install process
 ---------------
 ServicesDatabase variable is initialized
 --------------- */
-long ServiceStart(void) {
-	return(1);
+long ServiceStart(void)
+{
+    return(1);
 }
 
 /* --------------- Perform tasks right before service effective removal
@@ -18,14 +19,17 @@ Out: 0 = Stop removal process
 ServicesDatabase variable is initialized
 ServiceHandle variable is initialized
 --------------- */
-long ServiceRemove(void) {
-	return(1);
+long ServiceRemove(void)
+{
+    return(1);
 }
 
 /* --------------- Background Thread (infinite) of the service */
-DWORD __stdcall ServiceThread(LPVOID Param) {
-	for(;;) {
-		Sleep(1);
-	}
-	return(0);
+DWORD __stdcall ServiceThread(LPVOID Param)
+{
+    for(;;)
+    {
+        Sleep(1);
+    }
+    return(0);
 }

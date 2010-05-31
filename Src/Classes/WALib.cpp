@@ -2,7 +2,7 @@
 // Chromatic
 // Integrated Development Environment
 //
-// Copyright (C) 2001-2009 Franck Charlet.
+// Copyright (C) 2001-2010 Franck Charlet.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -5789,6 +5789,26 @@ CStr CALLBACK StringHexNumberComplement(long Nbr, long Complement)
 		BufStringSource = BufStringSource + Complement;
 		BufStringSource = BufStringSource + "lX";
 		wsprintf(BufString.Get_String(), BufStringSource.Get_String(), Nbr);
+    }
+	ReturnValue = BufString;
+	return(ReturnValue);
+}
+
+// -----------------------------------------------------------------------
+// Complement an octal number
+CStr CALLBACK StringOctNumberComplement(long Nbr, long Complement)
+{
+    CStr ReturnValue;
+    CStr BufString;
+    CStr BufStringSource;
+    
+	if(Complement > 0)
+	{
+        BufString = BufString.String(Complement, 1);
+		BufStringSource = "%0";
+		BufStringSource = BufStringSource + Complement;
+		BufStringSource = BufStringSource + "lo";
+		sprintf(BufString.Get_String(), BufStringSource.Get_String(), Nbr);
     }
 	ReturnValue = BufString;
 	return(ReturnValue);

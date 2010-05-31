@@ -1,17 +1,21 @@
 /* --------------- DLL's entry point */
 
-BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
-	switch (ul_reason_for_call) {
-		case DLL_PROCESS_ATTACH:
-			break;
-		case DLL_THREAD_ATTACH:
-			break;
-		case DLL_THREAD_DETACH:
-			break;
-		case DLL_PROCESS_DETACH:
-			break;
-	}
-	return TRUE;
+BOOL APIENTRY DllMain(HANDLE hModule,
+                      DWORD ul_reason_for_call,
+                      LPVOID lpReserved)
+{
+    switch (ul_reason_for_call)
+    {
+        case DLL_PROCESS_ATTACH:
+            break;
+        case DLL_THREAD_ATTACH:
+            break;
+        case DLL_THREAD_DETACH:
+            break;
+        case DLL_PROCESS_DETACH:
+            break;
+    }
+    return TRUE;
 }
 
 /* --------------- DLL's Functions */
@@ -19,7 +23,8 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserve
 /* --- LoadDll()
 You can set mKeep member to FALSE to make mIRC unload the DLL after the call. */
 
-void __stdcall LoadDll(LPMIRCLOADINFO LoadInfos) {
+void __stdcall LoadDll(LPMIRCLOADINFO LoadInfos)
+{
 
 }
 
@@ -33,8 +38,9 @@ or unloaded with /dll -u.
 The UnloadDll() routine can return 0 to keep the DLL loaded,
 or 1 to allow it to be unloaded. */
 
-int __stdcall UnloadDll(int mTimeout) {
-	return(1);
+int __stdcall UnloadDll(int mTimeout)
+{
+    return(1);
 }
 
 /* --- mIRCPlugIn()
@@ -74,6 +80,12 @@ The mIRCPlugIn() routine can return:
 3 means that the DLL has filled the data variable with the result
   that $dll() as an identifier should return. */
 
-int __stdcall mIRCPlugIn(HWND mHwnd, HWND aWnd, char *data, char *parms, BOOL show, BOOL nopause) {
-	return(0);
+int __stdcall mIRCPlugIn(HWND mHwnd,
+                         HWND aWnd,
+                         char *data,
+                         char *parms,
+                         BOOL show,
+                         BOOL nopause)
+{
+    return(0);
 }

@@ -1,7 +1,8 @@
-[MasmEdProject]
-Name=MakeDBConst
+[Project]
+Name=MakeDB2
 Type=MSDOSEXE
 TypeExt=DOSEXE
+TypeRename=
 TypeName=Ms-Dos EXE application
 Image=Driver.ico
 Major=1
@@ -31,3 +32,8 @@ LIBRARY002=[LIBDIR]\Masm32.lib
 [MODULES]
 MODULE000=[PROJECTSDIR]\MakeDBConst\DosExeDatas.asm
 MODULE001=[PROJECTSDIR]\MakeDBConst\DosExe.asm
+[Windows]
+Window000=[PROJECTSDIR]\MakeDBConst\DosExe.asm
+Focus=[PROJECTSDIR]\MakeDBConst\DosExe.asm
+FocusLine=288
+Window001=[PROJECTSDIR]\MakeDBConst\DosExeDatas.asm

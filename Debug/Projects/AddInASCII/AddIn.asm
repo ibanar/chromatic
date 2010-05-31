@@ -5,8 +5,8 @@
 ;
 ; Notes: Simple AddIn
 ;
-; Version: 1.1
-; Lastest revision: 20/07/2004
+; Version: 1.2
+; Lastest revision: 31/05/2010
 ; ------------------------------------------
 
 ; --------------- Procedures prototypes
@@ -46,19 +46,19 @@ AddInAuthor             proc
 AddInAuthor             endp
 
 ; --- AddInLoad()
-; In: Pointer to WALIB structure
+; In: Pointer to CHROMATICLIB structure
 ; Out: Must return ADDIN_FINISHED or ADDIN_PERSISTANT in eax
-AddInLoad               proc    WALIBStruct:dword
+AddInLoad               proc    CLStruct:dword
                         pushad
-                        mov     eax,WALIBStruct
-                        mov     WAStructPtr,eax
-                        WALIBINVOKE WAMMGetContext,addr AddInContext
+                        mov     eax,CLStruct
+                        mov     ChromaticLib,eax
+                        LIBINVOKE GetContext,addr AddInContext
                         mov     eax,AddInContext.ColdStart
                         test    eax,eax
                         jz      DisplayOnDemand
                         ; It's a coldstart so check if the window was displayed
                         ; in the previous session.
-                        WALIBINVOKE WADockingBoxWasVisible,addr MsgTitle
+                        LIBINVOKE DockingBoxWasVisible,addr MsgTitle
                         test    eax,eax
                         jz      EndLoadSequence
 DisplayOnDemand:        invoke  DisplayWindow
@@ -78,19 +78,19 @@ AddInLoad               endp
 AddInUnLoad             proc
                         pushad
                         .if FlagActive != 0
-                                WALIBINVOKE WADockingBoxRemove,hWndASCIISel
+                                LIBINVOKE DockingBoxRemove,hWndASCIISel
                         .endif
                         popad
                         ret
 AddInUnLoad             endp
 
 ; --- AddInMenu()
-; In: Pointer to WALIB structure
+; In: Pointer to CHROMATICLIB structure
 ; Out: Must return ADDIN_DIE or ADDIN_ZOMBIE in eax
-AddInMenu               proc    WALIBStruct:dword
+AddInMenu               proc    CLStruct:dword
                         pushad
-                        mov     eax,WALIBStruct
-                        mov     WAStructPtr,eax
+                        mov     eax,CLStruct
+                        mov     ChromaticLib,eax
                         invoke  DisplayWindow
                         jz      EndMenuSequence
                         popad
@@ -105,15 +105,15 @@ AddInMenu               endp
 ; In: N/A
 ; Out: return -1 on success
 DisplayWindow           proc
-                        WALIBINVOKE WAMMGetContext,addr AddInContext
+                        LIBINVOKE GetContext,addr AddInContext
                         .if FlagActive == FALSE
-                                WALIBINVOKE WACreateDockingBox,addr MsgTitle,addr ASCIIWinHook
+                                LIBINVOKE CreateDockingBox,addr MsgTitle,addr ASCIIWinHook
                                 mov     hWndASCIISel,eax
                                 test    eax,eax
                                 jz      ErrorWindow
                                 invoke  ASCIIInitProc,eax
                         .endif
-                        WALIBINVOKE WADockingBoxShow,hWndASCIISel,300,230,WADOCKINGBOX_RIGHT
+                        LIBINVOKE DockingBoxShow,hWndASCIISel,300,230,DOCKINGBOX_RIGHT
                         mov     FlagActive,TRUE
                         or      eax,-1
 ErrorWindow:            ret
@@ -122,25 +122,26 @@ DisplayWindow           endp
 ; --- Initialize window
 ASCIIInitProc           proc    hWnd:dword
                         pushad
-                        WALIBINVOKE WACreateListView,1,2,325,240,hWnd,0,0,0,LVS_EX_FULLROWSELECT Or LVS_EX_LABELTIP,LVS_REPORT Or LVS_SINGLESEL Or WS_TABSTOP Or LVS_NOSORTHEADER,WS_EX_STATICEDGE
+                        LIBINVOKE CreateListView,1,2,325,240,hWnd,0,0,0,LVS_EX_FULLROWSELECT Or LVS_EX_LABELTIP,LVS_REPORT Or LVS_SINGLESEL Or WS_TABSTOP Or LVS_NOSORTHEADER,WS_EX_STATICEDGE
                         mov     hASCIIList,eax
-                        WALIBINVOKE WACreateButton,327,2,77,23,hWnd,addr MsgPaste,0,0,0,0,BS_DEFPUSHBUTTON Or WS_GROUP Or WS_TABSTOP,0
+                        LIBINVOKE CreateButton,327,2,77,23,hWnd,addr MsgPaste,0,0,0,0,BS_DEFPUSHBUTTON Or WS_GROUP Or WS_TABSTOP,0
                         mov     hASCIICmdPaste,eax
-                        WALIBINVOKE WACreateButton,327,26,77,23,hWnd,addr MsgFont,2,0,0,0,WS_TABSTOP,0
+                        LIBINVOKE CreateButton,327,26,77,23,hWnd,addr MsgFont,2,0,0,0,WS_TABSTOP,0
                         mov     hASCIICmdFont,eax
-                        WALIBINVOKE WACreateLabel,2,244,324,16,hWnd,addr MsgEmpty,0,0,0,0
+                        LIBINVOKE CreateLabel,2,244,324,16,hWnd,addr MsgEmpty,0,0,0,0
                         mov     hASCIIFontLabel,eax
-                        WALIBINVOKE WACreateLabel,328,52,77,16,hWnd,addr MsgPasteDatas,0,0,0,0
+                        LIBINVOKE CreateLabel,328,52,77,16,hWnd,addr MsgPasteDatas,0,0,0,0
                         mov     hASCIIColumnLabel,eax
-                        WALIBINVOKE WACreateComboBox,328,66,77,150,hWnd,addr MsgEmpty,4,0,WS_TABSTOP Or CBS_DROPDOWNLIST
+                        LIBINVOKE CreateComboBox,328,66,77,150,hWnd,addr MsgEmpty,4,0,WS_TABSTOP Or CBS_DROPDOWNLIST
                         mov     hASCIICbPasteDatas,eax
-                        WALIBINVOKE WAComboBoxAddItem,hASCIICbPasteDatas,addr MsgColChar,-1
-                        WALIBINVOKE WAComboBoxAddItem,hASCIICbPasteDatas,addr MsgColDec,-1
-                        WALIBINVOKE WAComboBoxAddItem,hASCIICbPasteDatas,addr MsgColHex,-1
-                        WALIBINVOKE WAComboBoxAddItem,hASCIICbPasteDatas,addr MsgColName,-1
-                        WALIBINVOKE WAComboBoxAddItem,hASCIICbPasteDatas,addr MsgColCtrl,-1
-                        WALIBINVOKE WAComboBoxAddItem,hASCIICbPasteDatas,addr MsgColBin,-1
-                        WALIBINVOKE WAComboBoxSetIndex,hASCIICbPasteDatas,ASCIIType
+                        LIBINVOKE ComboBoxAddItem,hASCIICbPasteDatas,addr MsgColChar,-1
+                        LIBINVOKE ComboBoxAddItem,hASCIICbPasteDatas,addr MsgColDec,-1
+                        LIBINVOKE ComboBoxAddItem,hASCIICbPasteDatas,addr MsgColHex,-1
+                        LIBINVOKE ComboBoxAddItem,hASCIICbPasteDatas,addr MsgColBin,-1
+                        LIBINVOKE ComboBoxAddItem,hASCIICbPasteDatas,addr MsgColOct,-1
+                        LIBINVOKE ComboBoxAddItem,hASCIICbPasteDatas,addr MsgColName,-1
+                        LIBINVOKE ComboBoxAddItem,hASCIICbPasteDatas,addr MsgColCtrl,-1
+                        LIBINVOKE ComboBoxSetIndex,hASCIICbPasteDatas,ASCIIType
                         .if ASCIIFontName == 0
                                 mov     eax,offset MsgCourierNew
                                 mov     ASCIIFontName,eax
@@ -148,18 +149,19 @@ ASCIIInitProc           proc    hWnd:dword
                         .if ASCIIFontSize == 0
                                 mov     ASCIIFontSize,9
                         .endif
-                        WALIBINVOKE WAGDIObtainFont,ASCIIFontName,ASCIIFontSize,hWnd,0,0
+                        LIBINVOKE GDIObtainFont,ASCIIFontName,ASCIIFontSize,hWnd,0,0
                         mov     hASCIIFont,eax
                         invoke  SetFontText
-                        WALIBINVOKE WAListViewAddCol,hASCIIList,addr MsgColBin,74,5
-                        WALIBINVOKE WAListViewAddCol,hASCIIList,addr MsgColCtrl,46,4
-                        WALIBINVOKE WAListViewAddCol,hASCIIList,addr MsgColName,46,3
-                        WALIBINVOKE WAListViewAddCol,hASCIIList,addr MsgColHex,46,2
-                        WALIBINVOKE WAListViewAddCol,hASCIIList,addr MsgColDec,46,1
-                        WALIBINVOKE WAListViewAddCol,hASCIIList,addr MsgColChar,46,0
-                        WALIBINVOKE WAControlSetFont,hASCIIList,hASCIIFont
+                        LIBINVOKE ListViewAddCol,hASCIIList,addr MsgColCtrl,46,6
+                        LIBINVOKE ListViewAddCol,hASCIIList,addr MsgColName,46,5
+                        LIBINVOKE ListViewAddCol,hASCIIList,addr MsgColOct,46,4
+                        LIBINVOKE ListViewAddCol,hASCIIList,addr MsgColBin,74,3
+                        LIBINVOKE ListViewAddCol,hASCIIList,addr MsgColHex,46,2
+                        LIBINVOKE ListViewAddCol,hASCIIList,addr MsgColDec,46,1
+                        LIBINVOKE ListViewAddCol,hASCIIList,addr MsgColChar,46,0
+                        LIBINVOKE ControlSetFont,hASCIIList,hASCIIFont
                         invoke  ConstructASCIIList
-                        WALIBINVOKE WAListViewSetItemSel,hASCIIList,0
+                        LIBINVOKE ListViewSetItemSel,hASCIIList,0
                         mov     FlagActive,1
                         popad
                         ret
@@ -213,26 +215,36 @@ ConstructASCIIList      endp
 ; --- Add an ASCII entry into listview
 AddAsciiEntry           proc    StrNam:dword,StrControl:dword
                         local   ListCount:dword
-                        WALIBINVOKE WAStringNumberComplement,ASCIICount,3
+
+                        LIBINVOKE StringNumberComplement,ASCIICount,3
                         push    eax
-                        WALIBINVOKE WAStringHexNumberComplement,ASCIICount,2
+                        LIBINVOKE StringHexNumberComplement,ASCIICount,2
                         push    eax
-                        WALIBINVOKE WAStringBinNumberComplement,ASCIICount,8
+                        LIBINVOKE StringBinNumberComplement,ASCIICount,8
                         push    eax
-                        WALIBINVOKE WAListViewItemCount,hASCIIList
+                        LIBINVOKE StringOctNumberComplement,ASCIICount,3
+                        push    eax
+
+                        LIBINVOKE ListViewItemCount,hASCIIList
                         mov     ListCount,eax
                         lea     ebx,MsgSpace
                         mov     eax,ASCIICount
                         mov     [ebx],al
-                        WALIBINVOKE WAListViewAddItem,hASCIIList,ebx,ListCount,-1
+                        LIBINVOKE ListViewAddItem,hASCIIList,ebx,ListCount, -1
+                        ; oct
                         pop     eax
-                        WALIBINVOKE WAListViewSetSubItem,hASCIIList,eax,ListCount,5
+                        LIBINVOKE ListViewSetSubItem,hASCIIList,eax,ListCount,4
+                        ; bin
                         pop     eax
-                        WALIBINVOKE WAListViewSetSubItem,hASCIIList,eax,ListCount,2
+                        LIBINVOKE ListViewSetSubItem,hASCIIList,eax,ListCount,3
+                        ; hex
                         pop     eax
-                        WALIBINVOKE WAListViewSetSubItem,hASCIIList,eax,ListCount,1
-                        WALIBINVOKE WAListViewSetSubItem,hASCIIList,StrNam,ListCount,3
-                        WALIBINVOKE WAListViewSetSubItem,hASCIIList,StrControl,ListCount,4
+                        LIBINVOKE ListViewSetSubItem,hASCIIList,eax,ListCount,2
+                        ; dec
+                        pop     eax
+                        LIBINVOKE ListViewSetSubItem,hASCIIList,eax,ListCount,1
+                        LIBINVOKE ListViewSetSubItem,hASCIIList,StrNam,ListCount,5
+                        LIBINVOKE ListViewSetSubItem,hASCIIList,StrControl,ListCount,6
                         inc     ASCIICount
                         ret
 AddAsciiEntry           endp
@@ -245,7 +257,7 @@ ASCIIWinHook            proc    hWnd:dword,uMsg:dword,wParam:dword,lParam:dword
                         pushad
                         .if uMsg == WM_SYSCOLORCHANGE
                                 invoke  GetSysColor,COLOR_WINDOW
-                                WALIBINVOKE WAListViewSetBackColor,hASCIIList,eax
+                                LIBINVOKE ListViewSetBackColor,hASCIIList,eax
                         .elseif uMsg == WM_COMMAND
                                 mov     eax,lParam
                                 .if eax == hASCIICmdPaste
@@ -254,16 +266,16 @@ ASCIIWinHook            proc    hWnd:dword,uMsg:dword,wParam:dword,lParam:dword
                                         xor     eax,eax
                                         ret
                                 .elseif eax == hASCIICbPasteDatas
-                                        WALIBINVOKE WAControlGetNotifiedCommand,wParam
+                                        LIBINVOKE ControlGetNotifiedCommand,wParam
                                         .if eax == CBN_SELCHANGE
-                                                WALIBINVOKE WAComboBoxGetIndex,hASCIICbPasteDatas
+                                                LIBINVOKE ComboBoxGetIndex,hASCIICbPasteDatas
                                                 mov     ASCIIType,eax
                                         .endif
                                         popad
                                         xor     eax,eax
                                         ret
                                 .elseif eax == hASCIICmdFont
-                                        WALIBINVOKE WAComDlgChooseFont,hWnd,ASCIIFontName,ASCIIFontSize,1,addr AddInLogFont,addr AddInChooseFont
+                                        LIBINVOKE ComDlgChooseFont,hWnd,ASCIIFontName,ASCIIFontSize,1,addr AddInLogFont,addr AddInChooseFont
                                         .if eax != 0
                                                 invoke  lstrlen,offset AddInLogFont.lfFaceName
                                                 .if eax != 0
@@ -277,12 +289,12 @@ ASCIIWinHook            proc    hWnd:dword,uMsg:dword,wParam:dword,lParam:dword
                                                         .if hASCIIFont != 0
                                                                 invoke  DeleteObject,hASCIIFont
                                                         .endif
-                                                        WALIBINVOKE WAGDIObtainFont,ASCIIFontName,ASCIIFontSize,hWnd,0,0
+                                                        LIBINVOKE GDIObtainFont,ASCIIFontName,ASCIIFontSize,hWnd,0,0
                                                         mov     hASCIIFont,eax
                                                         invoke  SetFontText
-                                                        WALIBINVOKE WAListViewSetItemSel,hASCIIList,0
-                                                        WALIBINVOKE WAListViewSetScroll,hASCIIList,0,-10000
-                                                        WALIBINVOKE WAControlSetFont,hASCIIList,hASCIIFont
+                                                        LIBINVOKE ListViewSetItemSel,hASCIIList,0
+                                                        LIBINVOKE ListViewSetScroll,hASCIIList,0,-10000
+                                                        LIBINVOKE ControlSetFont,hASCIIList,hASCIIFont
                                                         invoke  SetFocus,hASCIIList
                                                 .endif
                                         .endif
@@ -290,7 +302,7 @@ ASCIIWinHook            proc    hWnd:dword,uMsg:dword,wParam:dword,lParam:dword
                                         xor     eax,eax
                                         ret
                                 .elseif eax == hASCIIList
-                                        WALIBINVOKE WAControlGetNotifiedCommand,wParam
+                                        LIBINVOKE ControlGetNotifiedCommand,wParam
                                         .if eax == LBN_DBLCLK
                                                 invoke  PasteASCII
                                         .endif
@@ -299,9 +311,9 @@ ASCIIWinHook            proc    hWnd:dword,uMsg:dword,wParam:dword,lParam:dword
                                         ret
                                 .endif
                         .elseif uMsg == WM_NOTIFY
-                                WALIBINVOKE WAControlGetNotifiedhWnd,lParam
+                                LIBINVOKE ControlGetNotifiedhWnd,lParam
                                 .if eax == hASCIIList
-                                        WALIBINVOKE WAControlGetNotifiedMsg,lParam
+                                        LIBINVOKE ControlGetNotifiedMsg,lParam
                                         .if eax == NM_DBLCLK
                                                 invoke  PasteASCII
                                                 popad
@@ -312,9 +324,9 @@ ASCIIWinHook            proc    hWnd:dword,uMsg:dword,wParam:dword,lParam:dword
                                 .endif
                         .elseif uMsg == WM_PAINT
                                 invoke  BeginPaint,hWnd,addr PaintS
-                                WALIBINVOKE WAControlWidth,hWnd
+                                LIBINVOKE ControlWidth,hWnd
                                 mov     WinWidth,eax
-                                WALIBINVOKE WAControlHeight,hWnd
+                                LIBINVOKE ControlHeight,hWnd
                                 mov     WinHeight,eax
                                 mov     eax,WinWidth
                                 sub     eax,80
@@ -343,48 +355,48 @@ ASCIIWinHook            proc    hWnd:dword,uMsg:dword,wParam:dword,lParam:dword
 
                                 invoke EndPaint,hWnd,addr PaintS
                         ; Handle dockwindow messages
-                        .elseif uMsg == WADOCKINGBOX_MSG_QUERY_STATE
+                        .elseif uMsg == DOCKINGBOX_MSG_QUERY_STATE
                                 popad
                                 mov     eax,FlagActive
                                 ret
-                        .elseif uMsg == WM_DESTROY || uMsg == WADOCKINGBOX_MSG_CLOSE
+                        .elseif uMsg == WM_DESTROY || uMsg == DOCKINGBOX_MSG_CLOSE
                                 .if hASCIIFont != 0
                                         invoke  DeleteObject,hASCIIFont
                                         mov hASCIIFont,0
                                 .endif
                                 mov     FlagActive,FALSE
-                                WALIBINVOKE WAMMAddInKillZombie,addr AddInUnLoad
+                                LIBINVOKE AddInKillZombie,addr AddInUnLoad
                                 popad
                                 xor     eax,eax
                                 ret
                         .endif
                         popad
-                        WALIBINVOKE WAControlNextHook,hWnd,uMsg,wParam,lParam
+                        LIBINVOKE ControlNextHook,hWnd,uMsg,wParam,lParam
                         ret
 ASCIIWinHook            endp
 
 ; --- Paste selected entry into current Chromatic child window at current position
 PasteASCII              proc
                         ; (Get up to date context)
-                        WALIBINVOKE WAMMGetContext,addr AddInContext
+                        LIBINVOKE GetContext,addr AddInContext
                         .if AddInContext.NbrChilds != 0 
-                                WALIBINVOKE WAListViewGetFirstFocusItem,hASCIIList
-                                WALIBINVOKE WAListViewGetItemText,hASCIIList,eax,ASCIIType
-                                WALIBINVOKE WAMMInsertText,AddInContext.hCurrentChild,eax
-                                WALIBINVOKE WAMMSetFocusInsideWindow,AddInContext.hCurrentChild
+                                LIBINVOKE ListViewGetFirstFocusItem,hASCIIList
+                                LIBINVOKE ListViewGetItemText,hASCIIList,eax,ASCIIType
+                                LIBINVOKE InsertText,AddInContext.hCurrentChild,eax
+                                LIBINVOKE SetFocusInsideWindow,AddInContext.hCurrentChild
                         .else
-                                WALIBINVOKE WAMiscMsgBox,hWndASCIISel,addr MsgChildError,MB_ERROR
+                                LIBINVOKE MiscMsgBox,hWndASCIISel,addr MsgChildError,MB_ERROR
                         .endif
                         ret
 PasteASCII              endp
 
 ; --- Prïnt the selected font name/size
 SetFontText             proc
-                        WALIBINVOKE WAStringDecToString,ASCIIFontSize
-                        WALIBINVOKE WAStringCat,addr MsgOpBracket,eax
-                        WALIBINVOKE WAStringCat,eax,addr MsgClBracket
-                        WALIBINVOKE WAStringCat,ASCIIFontName,eax
-                        WALIBINVOKE WAControlSetText,hASCIIFontLabel,eax
+                        LIBINVOKE StringDecToString,ASCIIFontSize
+                        LIBINVOKE StringCat,addr MsgOpBracket,eax
+                        LIBINVOKE StringCat,eax,addr MsgClBracket
+                        LIBINVOKE StringCat,ASCIIFontName,eax
+                        LIBINVOKE ControlSetText,hASCIIFontLabel,eax
                         ret
 SetFontText             endp
 

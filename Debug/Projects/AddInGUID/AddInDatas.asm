@@ -1,7 +1,7 @@
 ; --------------- Data Section
                         .data
 
-WAStructPtr             dd      0
+ChromaticLib            dd      0
 AddInContext            ADDINCONTEXT <>
 
 MsgDescription          db      "Create and paste a GUID",0

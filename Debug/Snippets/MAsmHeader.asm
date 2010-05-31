@@ -1,4 +1,4 @@
-; --- Standard MAsm header
-			.386
-			.model	flat,stdcall
-			option	casemap:none
+; --- Standard MASM header
+                        .386
+                        .model  flat,stdcall
+                        option  casemap:none

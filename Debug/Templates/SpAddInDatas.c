@@ -1,6 +1,6 @@
 /* --------------- Data Section */
 
-WALIB *WAStructPtr;
+CHROMATICLIB *ChromaticLib;
 ADDINCONTEXT SpAddInContext;
 
 char *MsgDescription = "SpAddIn description";

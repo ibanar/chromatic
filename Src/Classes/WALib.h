@@ -2,7 +2,7 @@
 // Chromatic
 // Integrated Development Environment
 //
-// Copyright (C) 2001-2009 Franck Charlet.
+// Copyright (C) 2001-2010 Franck Charlet.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -237,8 +237,8 @@ typedef struct _NM_TREEVIEWEXPAND
 
 typedef struct _WAFILTERFILE
 {
-	long FileLength;
-	HGLOBAL FileMem;
+    long FileLength;
+    HGLOBAL FileMem;
 } WAFILTERFILE, *LPWAFILTERFILE;
 
 // -----------------------------------------------------------------------
@@ -677,6 +677,7 @@ long CALLBACK StringIsArobasChar(CStr Letter);
 long CALLBACK StringIsEOL(CStr Letter);
 CStr CALLBACK StringNumberComplement(long Nbr, long Complement);
 CStr CALLBACK StringHexNumberComplement(long Nbr, long Complement);
+CStr CALLBACK StringOctNumberComplement(long Nbr, long Complement);
 CStr CALLBACK StringBinNumberComplement(long Nbr, long Complement);
 void CALLBACK StringFree(long StringToFree);
 long CALLBACK StringLen(long StringToCalc);

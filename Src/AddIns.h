@@ -2,7 +2,7 @@
 // Chromatic
 // Integrated Development Environment
 //
-// Copyright (C) 2001-2009 Franck Charlet.
+// Copyright (C) 2001-2010 Franck Charlet.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -494,6 +494,7 @@ typedef struct _WALIB
     long StringIsEOL;
     long StringNumberComplement;
     long StringHexNumberComplement;
+    long StringOctNumberComplement;
     long StringBinNumberComplement;
     long StringCount;
     long StringReplace;
@@ -1059,6 +1060,7 @@ long CALLBACK Wrapper_StringIsUnderLineChar(char *WAULetter);
 char * CALLBACK Wrapper_StringJoin(char *WAStrFromSplit, long *WASplitMem, char *WAJoIn_String, long WAFirstElement, long WAElementLimit);
 char * CALLBACK Wrapper_StringNumberComplement(long WANbr, long WAComplement);
 char * CALLBACK Wrapper_StringHexNumberComplement(long WANbr, long WAComplement);
+char * CALLBACK Wrapper_StringOctNumberComplement(long WANbr, long WAComplement);
 char * CALLBACK Wrapper_StringBinNumberComplement(long WANbr, long WAComplement);
 long * CALLBACK Wrapper_StringSplit(char *WAStrToSplit, char *WAStrSplitter);
 char * CALLBACK Wrapper_StringCat(char *String1, char *String2);

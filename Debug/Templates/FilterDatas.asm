@@ -1,5 +1,5 @@
 ; --------------- Datas Section
-			.data
+                        .data
 
-MsgDescription		db	"Filter description",0
-MsgAuthor		db	"Filter author",0
+MsgDescription          db  "Filter description",0
+MsgAuthor               db  "Filter author",0
