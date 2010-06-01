@@ -2,6 +2,16 @@ Chromatic history file
 Copyright (C) 2001-2010 Franck Charlet.
 
 --------------------------------------------------------------------------------
+Version 1.3.1
+
+        [NEW]   - Changed the behaviour of the filters menus, now each filters
+                  profile is automatically available for both windows and files output.
+
+                - Added a filter to convert binaries to dc.b statements.
+
+        [FIX]   - Fixed several compilation issues with the examples.
+
+--------------------------------------------------------------------------------
 Version 1.30
 
         [NEW]   - Started the process of replacing PILL with LUA.

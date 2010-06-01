@@ -4501,7 +4501,7 @@ void SaveState(CStr WorkSpaceName)
     {
         // Delete the file first
         DeleteFile(WorkSpaceName.Get_String());
-        IniWriteKey(AppTitle.Upper_Case().Get_String() + (CStr) "WORKSPC", "Version", AppVersion + (CStr) AppRevision, WorkSpaceName);
+        IniWriteKey(AppTitle.Upper_Case().Get_String() + (CStr) "WORKSPC", "Version", AppVersion + (CStr) AppRevMaj + (CStr) AppRevMin, WorkSpaceName);
         WorkSpaceFileName = WorkSpaceName;
         SaveAllChildsInWorkSpace(hMDIform.hClient);
         // Include project file into the list

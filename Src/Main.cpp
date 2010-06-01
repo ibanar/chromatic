@@ -59,7 +59,8 @@
 // -----------------------------------------------------------------------
 // Constants
 #define CHROMATIC_VERSION 1
-#define CHROMATIC_REVISION 31
+#define CHROMATIC_REV_MAJ 3
+#define CHROMATIC_REV_MIN 1
 
 // -----------------------------------------------------------------------
 // Variables
@@ -231,18 +232,23 @@ void InitAppVars(void)
 	// Fake structure
 	memset(&ChildStructBack, 0, sizeof(ChildStructBack));
 	AppVersion = CHROMATIC_VERSION;
-    AppRevision = CHROMATIC_REVISION;
+    AppRevMaj = CHROMATIC_REV_MAJ;
+    AppRevMin = CHROMATIC_REV_MIN;
     AppTitle = "Chromatic";
     AppCredits = "Written by Franck Charlet";
     Requesters = AppTitle;
     Requesters = Requesters + " v";
     Requesters = Requesters + AppVersion;
     Requesters = Requesters + ".";
-    Requesters = Requesters + AppRevision;
+    Requesters = Requesters + AppRevMaj;
+    Requesters = Requesters + ".";
+    Requesters = Requesters + AppRevMin;
     VersionString = "Version ";
 	VersionString = VersionString + AppVersion;
 	VersionString = VersionString + ".";
-	VersionString = VersionString + AppRevision;
+	VersionString = VersionString + AppRevMaj;
+	VersionString = VersionString + ".";
+	VersionString = VersionString + AppRevMin;
     ApphInstance = GetModuleHandle(0);
     AppPath = AppPath.String(260, 1);
 	LocAppPath = AppPath.Get_String();
