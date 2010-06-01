@@ -94,158 +94,158 @@ int CALLBACK FRMToolbarsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
     switch(uMsg)
     {
         case WM_SYSCOLORCHANGE:
-            WAListViewSetBackColor(FRMToolbarsListview, GetSysColor(COLOR_WINDOW));
-            WAListViewSetBackColor(FRMToolbarsListDrag, GetSysColor(COLOR_WINDOW));
-            WAListViewSetBackColor(FRMToolbarsListDrop, GetSysColor(COLOR_WINDOW));
+            ListViewSetBackColor(FRMToolbarsListview, GetSysColor(COLOR_WINDOW));
+            ListViewSetBackColor(FRMToolbarsListDrag, GetSysColor(COLOR_WINDOW));
+            ListViewSetBackColor(FRMToolbarsListDrop, GetSysColor(COLOR_WINDOW));
 			break;
 		case WM_INITDIALOG:
             FRMToolbarshwnd = hwndDlg;
             DeleteFile(ToolbarsTMPIniFile.Get_String());
-            WAControlSetText(hwndDlg, "Toolbars manager");
-            FRMToolbarsCmdClose = WACreateButton(279, 275, 77, 23, hwndDlg, "Close", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_TABSTOP, Buttons_StaticEdge);
-            FRMToolbarsListview = WACreateListView(6 - 3, 26, 272, 236, hwndDlg, 2, 0, 0, LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | LVS_NOCOLUMNHEADER | WS_TABSTOP, WS_EX_STATICEDGE);
-            WAListViewAddCol(FRMToolbarsListview, "", 250, 0);
+            ControlSetText(hwndDlg, "Toolbars manager");
+            FRMToolbarsCmdClose = CreateButton(279, 275, 77, 23, hwndDlg, "Close", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_TABSTOP, Buttons_StaticEdge);
+            FRMToolbarsListview = CreateListView(6 - 3, 26, 272, 236, hwndDlg, 2, 0, 0, LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | LVS_NOCOLUMNHEADER | WS_TABSTOP, WS_EX_STATICEDGE);
+            ListViewAddCol(FRMToolbarsListview, "", 250, 0);
             FillToolbarsNames();
-            FRMToolbarsCmdNew = WACreateButton(279, 26, 77, 23, hwndDlg, "New", 3, 0, 0, 0, WS_TABSTOP | WS_GROUP, Buttons_StaticEdge);
-            FRMToolbarsCmdRename = WACreateButton(279, 52, 77, 23, hwndDlg, "Rename", 4, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-            FRMToolbarsCmdDelete = WACreateButton(279, 76, 77, 23, hwndDlg, "Delete", 5, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-            FRMToolbarsCombo = WACreateComboBox(6 - 3, 26, 188, 150, hwndDlg, "", 6, 0, WS_TABSTOP | CBS_DROPDOWNLIST);
-            FRMToolbarsCheckB = WACreateCheckBox(195, 29, 130, 15, hwndDlg, "Toolbar on new line", 7, 0, WS_TABSTOP, 0);
+            FRMToolbarsCmdNew = CreateButton(279, 26, 77, 23, hwndDlg, "New", 3, 0, 0, 0, WS_TABSTOP | WS_GROUP, Buttons_StaticEdge);
+            FRMToolbarsCmdRename = CreateButton(279, 52, 77, 23, hwndDlg, "Rename", 4, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+            FRMToolbarsCmdDelete = CreateButton(279, 76, 77, 23, hwndDlg, "Delete", 5, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+            FRMToolbarsCombo = CreateComboBox(6 - 3, 26, 188, 150, hwndDlg, "", 6, 0, WS_TABSTOP | CBS_DROPDOWNLIST);
+            FRMToolbarsCheckB = CreateCheckBox(195, 29, 130, 15, hwndDlg, "Toolbar on new line", 7, 0, WS_TABSTOP, 0);
             FRMToolbarsFillCombo();
-            FRMToolbarsLabel1 = WACreateLabel(6 - 3, 50, 188, 15, hwndDlg, "Available commands :", 0, 0, 0, 0);
-            FRMToolbarsListDrag = WACreateListView(6 - 3, 64, 188, 198, hwndDlg, 8, GlobalImageList1, 0, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | LVS_NOCOLUMNHEADER | WS_TABSTOP, WS_EX_STATICEDGE);
-            FRMToolbarsListDrop = WACreateListView(196 - 3 + 1, 51, 146 + 15, 211, hwndDlg, 9, GlobalImageList1, 0, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | LVS_NOCOLUMNHEADER | WS_TABSTOP, WS_EX_STATICEDGE);
-            WAListViewAddCol(FRMToolbarsListDrag, "", 250, 3);
-            WAListViewAddCol(FRMToolbarsListDrop, "", 250, 3);
-            WAControlVisible(FRMToolbarsCombo, 0);
-            WAControlVisible(FRMToolbarsLabel1, 0);
-            WAControlVisible(FRMToolbarsListDrag, 0);
-            WAControlVisible(FRMToolbarsListDrop, 0);
-            WAControlVisible(FRMToolbarsCheckB, 0);
-            FRMToolbarsSysTab = WACreateSysTab(1, 1, 345, 266, hwndDlg, 10, 0, GlobalImageList1, WS_TABSTOP | TCS_BUTTONS | TCS_FLATBUTTONS | TCS_HOTTRACK);
-            WASysTabSetSeparators(FRMToolbarsSysTab, 0);
-            WASysTabAddItem(FRMToolbarsSysTab, "Toolbars", 0, ICON_TOOLBARS);
-            WASysTabAddItem(FRMToolbarsSysTab, "Customize", 1, ICON_CUSTTOOLBARS);
+            FRMToolbarsLabel1 = CreateLabel(6 - 3, 50, 188, 15, hwndDlg, "Available commands :", 0, 0, 0, 0);
+            FRMToolbarsListDrag = CreateListView(6 - 3, 64, 188, 198, hwndDlg, 8, GlobalImageList1, 0, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | LVS_NOCOLUMNHEADER | WS_TABSTOP, WS_EX_STATICEDGE);
+            FRMToolbarsListDrop = CreateListView(196 - 3 + 1, 51, 146 + 15, 211, hwndDlg, 9, GlobalImageList1, 0, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | LVS_NOCOLUMNHEADER | WS_TABSTOP, WS_EX_STATICEDGE);
+            ListViewAddCol(FRMToolbarsListDrag, "", 250, 3);
+            ListViewAddCol(FRMToolbarsListDrop, "", 250, 3);
+            ControlVisible(FRMToolbarsCombo, 0);
+            ControlVisible(FRMToolbarsLabel1, 0);
+            ControlVisible(FRMToolbarsListDrag, 0);
+            ControlVisible(FRMToolbarsListDrop, 0);
+            ControlVisible(FRMToolbarsCheckB, 0);
+            FRMToolbarsSysTab = CreateSysTab(1, 1, 345, 266, hwndDlg, 10, 0, GlobalImageList1, WS_TABSTOP | TCS_BUTTONS | TCS_FLATBUTTONS | TCS_HOTTRACK);
+            SysTabSetSeparators(FRMToolbarsSysTab, 0);
+            SysTabAddItem(FRMToolbarsSysTab, "Toolbars", 0, ICON_TOOLBARS);
+            SysTabAddItem(FRMToolbarsSysTab, "Customize", 1, ICON_CUSTTOOLBARS);
             FillToolbarCommands();
             FreezeTimer = 1;
             return(1);
         case WM_NOTIFY:
-            if(WAControlGetNotifiedhWnd(lParam) == FRMToolbarsListview)
+            if(ControlGetNotifiedhWnd(lParam) == FRMToolbarsListview)
             {
-                switch(WAControlGetNotifiedMsg(lParam))
+                switch(ControlGetNotifiedMsg(lParam))
                 {
                     case NM_DBLCLK:
-                        CurrentLvItem = WAListViewGetItemUnderCursor(FRMToolbarsListview);
+                        CurrentLvItem = ListViewGetItemUnderCursor(FRMToolbarsListview);
                         if(CurrentLvItem != -1)
                         {
-                            WAListViewSetItemSel(FRMToolbarsListview, CurrentLvItem);
-                            switch(WAListViewGetItemCheckbox(FRMToolbarsListview, CurrentLvItem))
+                            ListViewSetItemSel(FRMToolbarsListview, CurrentLvItem);
+                            switch(ListViewGetItemCheckbox(FRMToolbarsListview, CurrentLvItem))
                             {
                                 case 0:
-                                    WAListViewSetItemCheckbox(FRMToolbarsListview, CurrentLvItem, 1);
-                                    ChangeToolbarVisible(WAListViewGetSelItemText(FRMToolbarsListview, 0), 1);
+                                    ListViewSetItemCheckbox(FRMToolbarsListview, CurrentLvItem, 1);
+                                    ChangeToolbarVisible(ListViewGetSelItemText(FRMToolbarsListview, 0), 1);
 									break;
 								case 1:
-                                    WAListViewSetItemCheckbox(FRMToolbarsListview, CurrentLvItem, 0);
-                                    ChangeToolbarVisible(WAListViewGetSelItemText(FRMToolbarsListview, 0), 0);
+                                    ListViewSetItemCheckbox(FRMToolbarsListview, CurrentLvItem, 0);
+                                    ChangeToolbarVisible(ListViewGetSelItemText(FRMToolbarsListview, 0), 0);
 									break;
 							}
                         }
                         return(0);
                 }
             }
-            switch(WAControlGetNotifiedMsg(lParam))
+            switch(ControlGetNotifiedMsg(lParam))
             {
                 case TCN_SELCHANGE:
-                    if(WAControlGetNotifiedhWnd(lParam) == FRMToolbarsSysTab)
+                    if(ControlGetNotifiedhWnd(lParam) == FRMToolbarsSysTab)
                     {
-                        switch(WASysTabGetCurrentItem(FRMToolbarsSysTab))
+                        switch(SysTabGetCurrentItem(FRMToolbarsSysTab))
                         {
                             case 0:
-                                OldComboIndex = WAComboBoxGetIndex(FRMToolbarsCombo);
-                                OldComboItem = WAComboBoxGetItem(FRMToolbarsCombo, OldComboIndex);
-                                WAControlVisible(FRMToolbarsCombo, 0);
-                                WAControlVisible(FRMToolbarsLabel1, 0);
-                                WAControlVisible(FRMToolbarsListDrag, 0);
-                                WAControlVisible(FRMToolbarsListDrop, 0);
-                                WAControlVisible(FRMToolbarsCheckB, 0);
-                                WAControlVisible(FRMToolbarsListview, 1);
-                                WAControlVisible(FRMToolbarsCmdNew, 1);
-                                WAControlVisible(FRMToolbarsCmdRename, 1);
-                                WAControlVisible(FRMToolbarsCmdDelete, 1);
+                                OldComboIndex = ComboBoxGetIndex(FRMToolbarsCombo);
+                                OldComboItem = ComboBoxGetItem(FRMToolbarsCombo, OldComboIndex);
+                                ControlVisible(FRMToolbarsCombo, 0);
+                                ControlVisible(FRMToolbarsLabel1, 0);
+                                ControlVisible(FRMToolbarsListDrag, 0);
+                                ControlVisible(FRMToolbarsListDrop, 0);
+                                ControlVisible(FRMToolbarsCheckB, 0);
+                                ControlVisible(FRMToolbarsListview, 1);
+                                ControlVisible(FRMToolbarsCmdNew, 1);
+                                ControlVisible(FRMToolbarsCmdRename, 1);
+                                ControlVisible(FRMToolbarsCmdDelete, 1);
 								break;
 							case 1:
                                 FRMToolbarsFillCombo();
                                 // Check if selected toolbar still exists
                                 // If not try to display first toolbar in list
-                                if(WAComboBoxItemExist(FRMToolbarsCombo, OldComboItem) == CB_ERR)
+                                if(ComboBoxItemExist(FRMToolbarsCombo, OldComboItem) == CB_ERR)
                                 {
                                     OldComboIndex = 0;
                                 }
-                                WAComboBoxSetIndex(FRMToolbarsCombo, OldComboIndex);
+                                ComboBoxSetIndex(FRMToolbarsCombo, OldComboIndex);
                                 FillToolbarDatas();
-                                WAControlVisible(FRMToolbarsListview, 0);
-                                WAControlVisible(FRMToolbarsCmdNew, 0);
-                                WAControlVisible(FRMToolbarsCmdRename, 0);
-                                WAControlVisible(FRMToolbarsCmdDelete, 0);
-                                WAControlVisible(FRMToolbarsCombo, 1);
-                                WAControlVisible(FRMToolbarsLabel1, 1);
-                                WAControlVisible(FRMToolbarsListDrag, 1);
-                                WAControlVisible(FRMToolbarsListDrop, 1);
-                                WAControlVisible(FRMToolbarsCheckB, 1);
+                                ControlVisible(FRMToolbarsListview, 0);
+                                ControlVisible(FRMToolbarsCmdNew, 0);
+                                ControlVisible(FRMToolbarsCmdRename, 0);
+                                ControlVisible(FRMToolbarsCmdDelete, 0);
+                                ControlVisible(FRMToolbarsCombo, 1);
+                                ControlVisible(FRMToolbarsLabel1, 1);
+                                ControlVisible(FRMToolbarsListDrag, 1);
+                                ControlVisible(FRMToolbarsListDrop, 1);
+                                ControlVisible(FRMToolbarsCheckB, 1);
                         }
                     }
                     return(0);
                 case LVN_BEGINDRAG:
-                    if(WAControlGetNotifiedhWnd(lParam) == FRMToolbarsListDrag)
+                    if(ControlGetNotifiedhWnd(lParam) == FRMToolbarsListDrag)
                     {
-                        LVDrag1 = WAListViewBeginDrag(lParam, hwndDlg, &LVDragPoint);
-                        DragIndex = WAListViewGetSelItem(FRMToolbarsListDrag, -1);
+                        LVDrag1 = ListViewBeginDrag(lParam, hwndDlg, &LVDragPoint);
+                        DragIndex = ListViewGetSelItem(FRMToolbarsListDrag, -1);
                         BegDrag = DragIndex;
-                        DragIcon = WAListViewGetItemIcon(FRMToolbarsListDrag, DragIndex, 0);
-                        DragText = WAListViewGetItemText(FRMToolbarsListDrag, DragIndex, 0);
+                        DragIcon = ListViewGetItemIcon(FRMToolbarsListDrag, DragIndex, 0);
+                        DragText = ListViewGetItemText(FRMToolbarsListDrag, DragIndex, 0);
                     }
-                    if(WAControlGetNotifiedhWnd(lParam) == FRMToolbarsListDrop)
+                    if(ControlGetNotifiedhWnd(lParam) == FRMToolbarsListDrop)
                     {
-                        LVDrag2 = WAListViewBeginDrag(lParam, hwndDlg, &LVDragPoint);
-                        DragIndex = WAListViewGetSelItem(FRMToolbarsListDrop, -1);
+                        LVDrag2 = ListViewBeginDrag(lParam, hwndDlg, &LVDragPoint);
+                        DragIndex = ListViewGetSelItem(FRMToolbarsListDrop, -1);
                         BegDrag = DragIndex;
-                        DragIcon = WAListViewGetItemIcon(FRMToolbarsListDrop, DragIndex, 0);
-                        DragText = WAListViewGetItemText(FRMToolbarsListDrop, DragIndex, 0);
+                        DragIcon = ListViewGetItemIcon(FRMToolbarsListDrop, DragIndex, 0);
+                        DragText = ListViewGetItemText(FRMToolbarsListDrop, DragIndex, 0);
                     }
                     return(0);
                 case NM_DBLCLK:
-                    if(WAControlGetNotifiedhWnd(lParam) == FRMToolbarsListDrag)
+                    if(ControlGetNotifiedhWnd(lParam) == FRMToolbarsListDrag)
                     {
-                        DragIndex = WAListViewGetSelItem(FRMToolbarsListDrag, -1);
-                        ItemToAddDbl = WAListViewItemCount(FRMToolbarsListDrop);
-                        WAListViewAddItem(FRMToolbarsListDrop, WAListViewGetSelItemText(FRMToolbarsListDrag, 0), ItemToAddDbl, (long) WAListViewGetItemIcon(FRMToolbarsListDrag, DragIndex, 0));
-                        TmpKey = WAComboBoxGetItem(FRMToolbarsCombo, WAComboBoxGetIndex(FRMToolbarsCombo));
+                        DragIndex = ListViewGetSelItem(FRMToolbarsListDrag, -1);
+                        ItemToAddDbl = ListViewItemCount(FRMToolbarsListDrop);
+                        ListViewAddItem(FRMToolbarsListDrop, ListViewGetSelItemText(FRMToolbarsListDrag, 0), ItemToAddDbl, (long) ListViewGetItemIcon(FRMToolbarsListDrag, DragIndex, 0));
+                        TmpKey = ComboBoxGetItem(FRMToolbarsCombo, ComboBoxGetIndex(FRMToolbarsCombo));
                         // Add an entry into the temp file
-                        TMPToolbar = WAIniReadKey(TmpKey, "Number", ToolbarsTMPIniFile).Get_Long();
+                        TMPToolbar = IniReadKey(TmpKey, "Number", ToolbarsTMPIniFile).Get_Long();
                         TMPToolbar++;
-                        WAIniWriteKey(TmpKey, "Number", TMPToolbar, ToolbarsTMPIniFile);
-                        WAIniWriteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(ItemToAddDbl, 3).Get_String(), MenuRealCommandsID.Get(DragIndex)->Content, ToolbarsTMPIniFile);
+                        IniWriteKey(TmpKey, "Number", TMPToolbar, ToolbarsTMPIniFile);
+                        IniWriteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(ItemToAddDbl, 3).Get_String(), MenuRealCommandsID.Get(DragIndex)->Content, ToolbarsTMPIniFile);
                         return(0);
                     }
-                    else if(WAControlGetNotifiedhWnd(lParam) == FRMToolbarsListDrop)
+                    else if(ControlGetNotifiedhWnd(lParam) == FRMToolbarsListDrop)
                     {
-                        DragIndex = WAListViewGetSelItem(FRMToolbarsListDrop, -1);
+                        DragIndex = ListViewGetSelItem(FRMToolbarsListDrop, -1);
                         if(DragIndex != -1)
                         {
-                            WAListViewDeleteItem(FRMToolbarsListDrop, DragIndex);
-                            TmpKey = WAComboBoxGetItem(FRMToolbarsCombo, WAComboBoxGetIndex(FRMToolbarsCombo));
+                            ListViewDeleteItem(FRMToolbarsListDrop, DragIndex);
+                            TmpKey = ComboBoxGetItem(FRMToolbarsCombo, ComboBoxGetIndex(FRMToolbarsCombo));
                             // Remove an entry from the temp file
-                            WAIniDeleteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(DragIndex, 3).Get_String(), ToolbarsTMPIniFile);
-                            TMPToolbar = WAIniReadKey(TmpKey, "Number", ToolbarsTMPIniFile).Get_Long();
+                            IniDeleteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(DragIndex, 3).Get_String(), ToolbarsTMPIniFile);
+                            TMPToolbar = IniReadKey(TmpKey, "Number", ToolbarsTMPIniFile).Get_Long();
                             TMPToolbar--;
-                            WAIniWriteKey(TmpKey, "Number", TMPToolbar, ToolbarsTMPIniFile);
+                            IniWriteKey(TmpKey, "Number", TMPToolbar, ToolbarsTMPIniFile);
                             for(j = DragIndex + 1; j <= TMPToolbar; j++)
                             {
-                                TMPToolbarStr = WAIniReadKey(TmpKey, "Tool" + (CStr) StringNumberComplement(j, 3).Get_String(), ToolbarsTMPIniFile);
+                                TMPToolbarStr = IniReadKey(TmpKey, "Tool" + (CStr) StringNumberComplement(j, 3).Get_String(), ToolbarsTMPIniFile);
                                 if(TMPToolbarStr.Len() == 0) break;
-                                WAIniWriteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(j - 1, 3).Get_String(), TMPToolbarStr, ToolbarsTMPIniFile);
-                                WAIniDeleteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(j, 3).Get_String(), ToolbarsTMPIniFile);
+                                IniWriteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(j - 1, 3).Get_String(), TMPToolbarStr, ToolbarsTMPIniFile);
+                                IniDeleteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(j, 3).Get_String(), ToolbarsTMPIniFile);
                             }
                         }
                         return(0);
@@ -255,58 +255,58 @@ int CALLBACK FRMToolbarsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
         case WM_MOUSEMOVE:
             if(LVDrag1 == 1)
             {
-                WAListViewMoveDrag(&LVDragPoint);
-                if(WAControlGetHwndFromPoint() != FRMToolbarsListDrop) WACursorSetNo();
-				else WACursorSetNormal();
+                ListViewMoveDrag(&LVDragPoint);
+                if(ControlGetHwndFromPoint() != FRMToolbarsListDrop) CursorSetNo();
+				else CursorSetNormal();
             }
             if(LVDrag2 == 1)
             {
-                WAListViewMoveDrag(&LVDragPoint);
-                if(WAControlGetHwndFromPoint() != FRMToolbarsListDrag) WACursorSetNo();
-                else WACursorSetNormal();
+                ListViewMoveDrag(&LVDragPoint);
+                if(ControlGetHwndFromPoint() != FRMToolbarsListDrag) CursorSetNo();
+                else CursorSetNormal();
             }
 			break;
         case WM_LBUTTONUP:
             if(LVDrag1 == 1)
             {
-                WAListViewEndDrag(hwndDlg);
-                WACursorSetNormal();
-                if(WAControlGetHwndFromPoint() == FRMToolbarsListDrop)
+                ListViewEndDrag(hwndDlg);
+                CursorSetNormal();
+                if(ControlGetHwndFromPoint() == FRMToolbarsListDrop)
                 {
                     GetCursorPos(&MyTest.pt);
-                    MyTest.pt.x = MyTest.pt.x - WAControlLeft(FRMToolbarsListDrop);
-                    MyTest.pt.y = MyTest.pt.y - WAControlTop(FRMToolbarsListDrop);
+                    MyTest.pt.x = MyTest.pt.x - ControlLeft(FRMToolbarsListDrop);
+                    MyTest.pt.y = MyTest.pt.y - ControlTop(FRMToolbarsListDrop);
                     SendMessage(FRMToolbarsListDrop, LVM_HITTEST, 0, (long) &MyTest);
                     if(MyTest.iItem != -1)
                     {
-                        WAListViewAddItem(FRMToolbarsListDrop, DragText, MyTest.iItem, (long) DragIcon);
-                        TmpKey = WAComboBoxGetItem(FRMToolbarsCombo, WAComboBoxGetIndex(FRMToolbarsCombo));
+                        ListViewAddItem(FRMToolbarsListDrop, DragText, MyTest.iItem, (long) DragIcon);
+                        TmpKey = ComboBoxGetItem(FRMToolbarsCombo, ComboBoxGetIndex(FRMToolbarsCombo));
                         // Add an entry into the temp file
-                        TMPToolbar = WAIniReadKey(TmpKey, "Number", ToolbarsTMPIniFile).Get_Long();
+                        TMPToolbar = IniReadKey(TmpKey, "Number", ToolbarsTMPIniFile).Get_Long();
                         TMPToolbar++;
-                        WAIniWriteKey(TmpKey, "Number", TMPToolbar, ToolbarsTMPIniFile);
+                        IniWriteKey(TmpKey, "Number", TMPToolbar, ToolbarsTMPIniFile);
                         for(j = TMPToolbar - 1; j >= MyTest.iItem; j--)
                         {
                             // Get the entry
-                            TMPToolbarStr = WAIniReadKey(TmpKey, "Tool" + (CStr) StringNumberComplement(j - 1, 3).Get_String(), ToolbarsTMPIniFile);
+                            TMPToolbarStr = IniReadKey(TmpKey, "Tool" + (CStr) StringNumberComplement(j - 1, 3).Get_String(), ToolbarsTMPIniFile);
                             if(TMPToolbarStr.Len() == 0) break;
                             // Re-create it at higher position
-                            WAIniWriteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(j, 3).Get_String(), TMPToolbarStr, ToolbarsTMPIniFile);
+                            IniWriteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(j, 3).Get_String(), TMPToolbarStr, ToolbarsTMPIniFile);
                         }
-                        WAIniWriteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(MyTest.iItem, 3).Get_String(), MenuRealCommandsID.Get(BegDrag)->Content, ToolbarsTMPIniFile);
+                        IniWriteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(MyTest.iItem, 3).Get_String(), MenuRealCommandsID.Get(BegDrag)->Content, ToolbarsTMPIniFile);
                     }
                     else
                     {
                         if((MyTest.flags & LVHT_NOWHERE) != 0)
                         {
-                            ItemToAddDbl = WAListViewItemCount(FRMToolbarsListDrop);
-                            WAListViewAddItem(FRMToolbarsListDrop, DragText, ItemToAddDbl, (long) DragIcon);
-                            TmpKey = WAComboBoxGetItem(FRMToolbarsCombo, WAComboBoxGetIndex(FRMToolbarsCombo));
+                            ItemToAddDbl = ListViewItemCount(FRMToolbarsListDrop);
+                            ListViewAddItem(FRMToolbarsListDrop, DragText, ItemToAddDbl, (long) DragIcon);
+                            TmpKey = ComboBoxGetItem(FRMToolbarsCombo, ComboBoxGetIndex(FRMToolbarsCombo));
                             // Add an entry into the temp file
-                            TMPToolbar = WAIniReadKey(TmpKey, "Number", ToolbarsTMPIniFile).Get_Long();
+                            TMPToolbar = IniReadKey(TmpKey, "Number", ToolbarsTMPIniFile).Get_Long();
                             TMPToolbar++;
-                            WAIniWriteKey(TmpKey, "Number", TMPToolbar, ToolbarsTMPIniFile);
-                            WAIniWriteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(ItemToAddDbl, 3).Get_String(), MenuRealCommandsID.Get(BegDrag)->Content, ToolbarsTMPIniFile);
+                            IniWriteKey(TmpKey, "Number", TMPToolbar, ToolbarsTMPIniFile);
+                            IniWriteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(ItemToAddDbl, 3).Get_String(), MenuRealCommandsID.Get(BegDrag)->Content, ToolbarsTMPIniFile);
                         }
                     }
                 }
@@ -314,23 +314,23 @@ int CALLBACK FRMToolbarsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             }
             if(LVDrag2 == 1)
             {
-                WAListViewEndDrag(hwndDlg);
-                WACursorSetNormal();
-                if(WAControlGetHwndFromPoint() == FRMToolbarsListDrag)
+                ListViewEndDrag(hwndDlg);
+                CursorSetNormal();
+                if(ControlGetHwndFromPoint() == FRMToolbarsListDrag)
                 {
-                    WAListViewDeleteItem(FRMToolbarsListDrop, DragIndex);
-                    TmpKey = WAComboBoxGetItem(FRMToolbarsCombo, WAComboBoxGetIndex(FRMToolbarsCombo));
+                    ListViewDeleteItem(FRMToolbarsListDrop, DragIndex);
+                    TmpKey = ComboBoxGetItem(FRMToolbarsCombo, ComboBoxGetIndex(FRMToolbarsCombo));
                     // Remove an entry from the temp file
-                    WAIniDeleteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(DragIndex, 3).Get_String(), ToolbarsTMPIniFile);
-                    TMPToolbar = WAIniReadKey(TmpKey, "Number", ToolbarsTMPIniFile).Get_Long();
+                    IniDeleteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(DragIndex, 3).Get_String(), ToolbarsTMPIniFile);
+                    TMPToolbar = IniReadKey(TmpKey, "Number", ToolbarsTMPIniFile).Get_Long();
                     TMPToolbar--;
-                    WAIniWriteKey(TmpKey, "Number", TMPToolbar, ToolbarsTMPIniFile);
+                    IniWriteKey(TmpKey, "Number", TMPToolbar, ToolbarsTMPIniFile);
                     for(j = DragIndex + 1; j <= (long) TMPToolbar; j++)
                     {
-                        TMPToolbarStr = WAIniReadKey(TmpKey, "Tool" + (CStr) StringNumberComplement(j, 3).Get_String(), ToolbarsTMPIniFile);
+                        TMPToolbarStr = IniReadKey(TmpKey, "Tool" + (CStr) StringNumberComplement(j, 3).Get_String(), ToolbarsTMPIniFile);
                         if(TMPToolbarStr.Len() == 0) break;
-                        WAIniWriteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(j - 1, 3).Get_String(), TMPToolbarStr, ToolbarsTMPIniFile);
-                        WAIniDeleteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(j, 3).Get_String(), ToolbarsTMPIniFile);
+                        IniWriteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(j - 1, 3).Get_String(), TMPToolbarStr, ToolbarsTMPIniFile);
+                        IniDeleteKey(TmpKey, "Tool" + (CStr) StringNumberComplement(j, 3).Get_String(), ToolbarsTMPIniFile);
                     }
                 }
                 LVDrag2 = 0;
@@ -347,82 +347,82 @@ int CALLBACK FRMToolbarsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                 ToolbarNName = MiscInputBox(hwndDlg, "Enter new toolbar name", ICON_TOOLBARS, "", 0, INPUTBOX_SIMPLETEXT, "");
                 if(ToolbarNName.Len() != 0)
                 {
-                    if(WAListViewFindItem(FRMToolbarsListview, ToolbarNName) != -1)
+                    if(ListViewFindItem(FRMToolbarsListview, ToolbarNName) != -1)
                     {
-                        WAMiscMsgBox(FRMToolbarshwnd, "Toolbar already exists.", MB_ERROR, Requesters);
+                        MiscMsgBox(FRMToolbarshwnd, "Toolbar already exists.", MB_ERROR, Requesters);
                         return(0);
                     }
-                    CurrentLvItem = WAListViewItemCount(FRMToolbarsListview);
-                    WAListViewAddItem(FRMToolbarsListview, ToolbarNName, CurrentLvItem, 0);
-                    WAListViewSetItemCheckbox(FRMToolbarsListview, CurrentLvItem, 1);
+                    CurrentLvItem = ListViewItemCount(FRMToolbarsListview);
+                    ListViewAddItem(FRMToolbarsListview, ToolbarNName, CurrentLvItem, 0);
+                    ListViewSetItemCheckbox(FRMToolbarsListview, CurrentLvItem, 1);
                     AddToolbarEntry(ToolbarNName);
                 }
                 return(0);
             }
             else if((HWND) lParam == FRMToolbarsCmdRename)
             {
-                if(WAListViewGetSelItemText(FRMToolbarsListview, 0).Len() == 0)
+                if(ListViewGetSelItemText(FRMToolbarsListview, 0).Len() == 0)
                 {
-                    WAMiscMsgBox(FRMToolbarshwnd, "Select a toolbar name.", MB_ERROR, Requesters);
+                    MiscMsgBox(FRMToolbarshwnd, "Select a toolbar name.", MB_ERROR, Requesters);
                     return(0);
                 }
-                OldToolbarName = WAListViewGetSelItemText(FRMToolbarsListview, 0);
+                OldToolbarName = ListViewGetSelItemText(FRMToolbarsListview, 0);
                 ToolbarNName = MiscInputBox(hwndDlg, "Enter new toolbar name", ICON_TOOLBARS, OldToolbarName, 0, INPUTBOX_SIMPLETEXT, "");
                 if(ToolbarNName.Len() != 0)
                 {
-                    if(WAListViewFindItem(FRMToolbarsListview, ToolbarNName) != -1)
+                    if(ListViewFindItem(FRMToolbarsListview, ToolbarNName) != -1)
                     {
-                        WAMiscMsgBox(FRMToolbarshwnd, "Toolbar already exists.", MB_ERROR, Requesters);
+                        MiscMsgBox(FRMToolbarshwnd, "Toolbar already exists.", MB_ERROR, Requesters);
                         return(0);
                     }
                     RenameToolbarEntry(OldToolbarName, ToolbarNName);
-                    WAListViewSetSelItemText(FRMToolbarsListview, ToolbarNName, 0);
+                    ListViewSetSelItemText(FRMToolbarsListview, ToolbarNName, 0);
                     // Re-create entries for renamed toolbar
-                    NTBNumber = WAIniReadKey(OldToolbarName, "Number", ToolbarsTMPIniFile);
-                    WAIniWriteKey(ToolbarNName, "Number", NTBNumber, ToolbarsTMPIniFile);
+                    NTBNumber = IniReadKey(OldToolbarName, "Number", ToolbarsTMPIniFile);
+                    IniWriteKey(ToolbarNName, "Number", NTBNumber, ToolbarsTMPIniFile);
                     for(j = 0; j <= 999; j++)
                     {
-                        TMPToolbarStr = WAIniReadKey(OldToolbarName, "Tool" + (CStr) StringNumberComplement(j, 3).Get_String(), ToolbarsTMPIniFile);
+                        TMPToolbarStr = IniReadKey(OldToolbarName, "Tool" + (CStr) StringNumberComplement(j, 3).Get_String(), ToolbarsTMPIniFile);
                         if(TMPToolbarStr.Len() == 0) break;
-                        WAIniWriteKey(ToolbarNName, "Tool" + (CStr) StringNumberComplement(j, 3).Get_String(), TMPToolbarStr, ToolbarsTMPIniFile);
+                        IniWriteKey(ToolbarNName, "Tool" + (CStr) StringNumberComplement(j, 3).Get_String(), TMPToolbarStr, ToolbarsTMPIniFile);
                     }
                     // Delete old toolbar infos
-                    WAIniWriteSection(OldToolbarName, "", ToolbarsTMPIniFile);
+                    IniWriteSection(OldToolbarName, "", ToolbarsTMPIniFile);
                 }
                 return(0);
             }
             else if((HWND) lParam == FRMToolbarsCmdDelete)
             {
-                OldToolbarName = WAListViewGetSelItemText(FRMToolbarsListview, 0);
+                OldToolbarName = ListViewGetSelItemText(FRMToolbarsListview, 0);
                 if(OldToolbarName.Len() == 0)
                 {
-                    WAMiscMsgBox(FRMToolbarshwnd, "Select a toolbar name.", MB_ERROR, Requesters);
+                    MiscMsgBox(FRMToolbarshwnd, "Select a toolbar name.", MB_ERROR, Requesters);
                     return(0);
                 }
-                if(WAMiscMsgBox(hwndDlg, "Really want to remove toolbar '" + (CStr) OldToolbarName + (CStr) "' ?",
+                if(MiscMsgBox(hwndDlg, "Really want to remove toolbar '" + (CStr) OldToolbarName + (CStr) "' ?",
                                 MB_QUESTION, Requesters) == IDYES)
                 {
-                    WAListViewDeleteItem(FRMToolbarsListview, WAListViewGetSelItem(FRMToolbarsListview, -1));
+                    ListViewDeleteItem(FRMToolbarsListview, ListViewGetSelItem(FRMToolbarsListview, -1));
                     RemoveToolbarEntry(OldToolbarName);
-                    WAIniDeleteKey(OldToolbarName, "", ToolbarsTMPIniFile);
+                    IniDeleteKey(OldToolbarName, "", ToolbarsTMPIniFile);
                 }
                 return(0);
             }
             else if((HWND) lParam == FRMToolbarsCmdClose)
             {
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
             }
             else if((HWND) lParam == FRMToolbarsCheckB)
             {
-                OldToolbarName = WAComboBoxGetItem(FRMToolbarsCombo, WAComboBoxGetIndex(FRMToolbarsCombo));
+                OldToolbarName = ComboBoxGetItem(FRMToolbarsCombo, ComboBoxGetIndex(FRMToolbarsCombo));
                 if(OldToolbarName.Len() != 0) ChangeToolbarBreak(OldToolbarName, CheckBoxGetState(FRMToolbarsCheckB));
                 return(0);
             }
 			break;
 		case WM_PAINT:
             BeginPaint(hwndDlg, &HexPs);
-            WAGDIDrawHorzSep(hwndDlg, 0, 268, 359);
+            GDIDrawHorzSep(hwndDlg, 0, 268, 359);
             EndPaint(hwndDlg, &HexPs);
 			break;
 		case WM_CLOSE:
@@ -453,8 +453,8 @@ void FillToolbarsNames(void)
     TBArrayBreak.Erase();
     for(i = 0; i < ToolBarsName.Amount(); i++)
     {
-        WAListViewAddItem(FRMToolbarsListview, ToolBarsName.Get(i)->Content, i, 0);
-        WAListViewSetItemCheckbox(FRMToolbarsListview, i, ToolBarsShow.Get(i)->Content);
+        ListViewAddItem(FRMToolbarsListview, ToolBarsName.Get(i)->Content, i, 0);
+        ListViewSetItemCheckbox(FRMToolbarsListview, i, ToolBarsShow.Get(i)->Content);
         TBArray.Add(0L);
         TBArrayBreak.Add(0L);
     }
@@ -474,28 +474,28 @@ void FillToolbarsHeader(void)
     CStr TBBtnComment;
     int j = 0;
 
-    for(i = 0; i <= WAListViewItemCount(FRMToolbarsListview) - 1; i++)
+    for(i = 0; i <= ListViewItemCount(FRMToolbarsListview) - 1; i++)
     {
-        switch(WAListViewGetItemCheckbox(FRMToolbarsListview, i))
+        switch(ListViewGetItemCheckbox(FRMToolbarsListview, i))
         {
             case 1:
-                ChangeToolbarVisible(WAListViewGetItemText(FRMToolbarsListview, i, 0), 1);
+                ChangeToolbarVisible(ListViewGetItemText(FRMToolbarsListview, i, 0), 1);
 				break;
 			case 0:
-                ChangeToolbarVisible(WAListViewGetItemText(FRMToolbarsListview, i, 0), 0);
+                ChangeToolbarVisible(ListViewGetItemText(FRMToolbarsListview, i, 0), 0);
 				break;
         }
-        TBK = WAListViewGetItemText(FRMToolbarsListview, i, 0);
+        TBK = ListViewGetItemText(FRMToolbarsListview, i, 0);
         // Check if toolbar have been modified
-        TbValue = WAIniReadKey(TBK, "Tool000", ToolbarsTMPIniFile);
+        TbValue = IniReadKey(TBK, "Tool000", ToolbarsTMPIniFile);
         if(TbValue.Len() != 0)
         {
             // Delete all entries in main toolbars file
-            WAIniWriteSection(WAListViewGetItemText(FRMToolbarsListview, i, 0), "", ToolbarsIniFile);
+            IniWriteSection(ListViewGetItemText(FRMToolbarsListview, i, 0), "", ToolbarsIniFile);
             for(j = 0; j <= 999; j++)
             {
                 // Get entry index
-                TbValue = WAIniReadKey(TBK, "Tool" + (CStr) StringNumberComplement(j, 3).Get_String(), ToolbarsTMPIniFile);
+                TbValue = IniReadKey(TBK, "Tool" + (CStr) StringNumberComplement(j, 3).Get_String(), ToolbarsTMPIniFile);
                 if(TbValue.Len() == 0) break;
                 TbValueLng = TbValue.Get_Long();
                 switch(TbValueLng)
@@ -600,11 +600,11 @@ void FillToolbarsHeader(void)
 						break;
                 }
                 // Save new entries datas
-                WAIniWriteKey(TBK, "BtnIcon" + (CStr) StringNumberComplement(j, 3).Get_String(), TBBtnIcon, ToolbarsIniFile);
-                WAIniWriteKey(TBK, "BtnMenu" + (CStr) StringNumberComplement(j, 3).Get_String(), TbValueLng, ToolbarsIniFile);
-                WAIniWriteKey(TBK, "BtnTool" + (CStr) StringNumberComplement(j, 3).Get_String(), TBBtnTT, ToolbarsIniFile);
-                WAIniWriteKey(TBK, "BtnHelp" + (CStr) StringNumberComplement(j, 3).Get_String(), TBBtnComment, ToolbarsIniFile);
-                WAIniWriteKey(TBK, "BtnComd" + (CStr) StringNumberComplement(j, 3).Get_String(), TBBtnMenu, ToolbarsIniFile);
+                IniWriteKey(TBK, "BtnIcon" + (CStr) StringNumberComplement(j, 3).Get_String(), TBBtnIcon, ToolbarsIniFile);
+                IniWriteKey(TBK, "BtnMenu" + (CStr) StringNumberComplement(j, 3).Get_String(), TbValueLng, ToolbarsIniFile);
+                IniWriteKey(TBK, "BtnTool" + (CStr) StringNumberComplement(j, 3).Get_String(), TBBtnTT, ToolbarsIniFile);
+                IniWriteKey(TBK, "BtnHelp" + (CStr) StringNumberComplement(j, 3).Get_String(), TBBtnComment, ToolbarsIniFile);
+                IniWriteKey(TBK, "BtnComd" + (CStr) StringNumberComplement(j, 3).Get_String(), TBBtnMenu, ToolbarsIniFile);
             }
         }
     }
@@ -621,7 +621,7 @@ void AddToolbarEntry(CStr ToolBarName)
     // Check if entry already exists in file
     for(i = 0; i <= 999; i++)
     {
-        CurEntry = WAIniReadKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
+        CurEntry = IniReadKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
         if(CurEntry.Len() == 0) break;
         if(strcmpi(CurEntry.Get_String(), ToolBarName.Get_String()) == 0)
         {
@@ -634,12 +634,12 @@ void AddToolbarEntry(CStr ToolBarName)
     {
         for(i = 0; i <= 999; i++)
         {
-            if(WAIniReadKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile).Len() == 0) break;
+            if(IniReadKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile).Len() == 0) break;
         }
     }
-    WAIniWriteKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolBarName, ToolbarsIniFile);
-    WAIniWriteKey("Toolbars", "TbType" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ToolbarsIniFile);
-    WAIniWriteKey("Toolbars", "TbShow" + (CStr) StringNumberComplement(i, 3).Get_String(), "1", ToolbarsIniFile);
+    IniWriteKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolBarName, ToolbarsIniFile);
+    IniWriteKey("Toolbars", "TbType" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ToolbarsIniFile);
+    IniWriteKey("Toolbars", "TbShow" + (CStr) StringNumberComplement(i, 3).Get_String(), "1", ToolbarsIniFile);
 }
 
 // -----------------------------------------------------------------------
@@ -652,7 +652,7 @@ void RenameToolbarEntry(CStr OldToolbarName, CStr ToolBarName)
 
     for(i = 0; i <= 999; i++)
     {
-        CurEntry = WAIniReadKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
+        CurEntry = IniReadKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
         if(CurEntry.Len() == 0) break;
         if(strcmpi(CurEntry.Get_String(), OldToolbarName.Get_String()) == 0)
         {
@@ -660,7 +660,7 @@ void RenameToolbarEntry(CStr OldToolbarName, CStr ToolBarName)
             break;
         }
     }
-    if(FoundEntry == 1) WAIniWriteKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolBarName, ToolbarsIniFile);
+    if(FoundEntry == 1) IniWriteKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolBarName, ToolbarsIniFile);
 }
 
 // -----------------------------------------------------------------------
@@ -673,7 +673,7 @@ void ChangeToolbarBreak(CStr ToolBarName, long TBBreak)
 
     for(i = 0; i <= 999; i++)
     {
-        CurEntry = WAIniReadKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
+        CurEntry = IniReadKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
         if(CurEntry.Len() == 0) break;
         if(strcmpi(CurEntry.Get_String(), ToolBarName.Get_String()) == 0)
         {
@@ -681,7 +681,7 @@ void ChangeToolbarBreak(CStr ToolBarName, long TBBreak)
             break;
         }
     }
-    if(FoundEntry == 1) WAIniWriteKey("Toolbars", "TbType" + (CStr) StringNumberComplement(i, 3).Get_String(), TBBreak, ToolbarsIniFile);
+    if(FoundEntry == 1) IniWriteKey("Toolbars", "TbType" + (CStr) StringNumberComplement(i, 3).Get_String(), TBBreak, ToolbarsIniFile);
 }
 
 // -----------------------------------------------------------------------
@@ -694,7 +694,7 @@ void ChangeToolbarVisible(CStr ToolBarName, long TBVisible)
 
     for(i = 0; i <= 999; i++)
     {
-        CurEntry = WAIniReadKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
+        CurEntry = IniReadKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
         if(CurEntry.Len() == 0) break;
         if(strcmpi(CurEntry.Get_String(), ToolBarName.Get_String()) == 0)
         {
@@ -702,7 +702,7 @@ void ChangeToolbarVisible(CStr ToolBarName, long TBVisible)
             break;
         }
     }
-    if(FoundEntry == 1) WAIniWriteKey("Toolbars", "TbShow" + (CStr) StringNumberComplement(i, 3).Get_String(), TBVisible, ToolbarsIniFile);
+    if(FoundEntry == 1) IniWriteKey("Toolbars", "TbShow" + (CStr) StringNumberComplement(i, 3).Get_String(), TBVisible, ToolbarsIniFile);
 }
 
 // -----------------------------------------------------------------------
@@ -715,7 +715,7 @@ void RemoveToolbarEntry(CStr ToolBarName)
  
 	for(i = 0; i <= 999; i++)
 	{
-        CurEntry = WAIniReadKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
+        CurEntry = IniReadKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
         if(CurEntry.Len() == 0) break;
         if(strcmpi(CurEntry.Get_String(), ToolBarName.Get_String()) == 0)
         {
@@ -725,11 +725,11 @@ void RemoveToolbarEntry(CStr ToolBarName)
     }
     if(FoundEntry == 1)
     {
-        WAIniDeleteKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
-        WAIniDeleteKey("Toolbars", "TbType" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
-        WAIniDeleteKey("Toolbars", "TbShow" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
+        IniDeleteKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
+        IniDeleteKey("Toolbars", "TbType" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
+        IniDeleteKey("Toolbars", "TbShow" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
     }
-    WAIniDeleteKey(ToolBarName, "", ToolbarsIniFile);
+    IniDeleteKey(ToolBarName, "", ToolbarsIniFile);
 }
 
 // -----------------------------------------------------------------------
@@ -738,12 +738,12 @@ void FRMToolbarsFillCombo(void)
 {
     int i = 0;
 
-    WAComboBoxReset(FRMToolbarsCombo);
-    for(i = 0; i <= WAListViewItemCount(FRMToolbarsListview) - 1; i++)
+    ComboBoxReset(FRMToolbarsCombo);
+    for(i = 0; i <= ListViewItemCount(FRMToolbarsListview) - 1; i++)
     {
-        WAComboBoxAddItem(FRMToolbarsCombo, WAListViewGetItemText(FRMToolbarsListview, i, 0), -1);
+        ComboBoxAddItem(FRMToolbarsCombo, ListViewGetItemText(FRMToolbarsListview, i, 0), -1);
     }
-    if(WAComboBoxCount(FRMToolbarsCombo) != 0) WAComboBoxSetIndex(FRMToolbarsCombo, 0);
+    if(ComboBoxCount(FRMToolbarsCombo) != 0) ComboBoxSetIndex(FRMToolbarsCombo, 0);
 }
 
 // -----------------------------------------------------------------------
@@ -765,15 +765,15 @@ void FillToolbarDatas(void)
     int i = 0;
     CStr BufString;
     
-	TBToolBarKey = WAComboBoxGetItem(FRMToolbarsCombo, WAComboBoxGetIndex(FRMToolbarsCombo));
+	TBToolBarKey = ComboBoxGetItem(FRMToolbarsCombo, ComboBoxGetIndex(FRMToolbarsCombo));
     if(TBToolBarKey.Len() != 0)
     {
-        TBBreak = WAIniReadKey("Toolbars", "TbType" + (CStr) StringNumberComplement(WAComboBoxGetIndex(FRMToolbarsCombo), 3).Get_String(),
+        TBBreak = IniReadKey("Toolbars", "TbType" + (CStr) StringNumberComplement(ComboBoxGetIndex(FRMToolbarsCombo), 3).Get_String(),
                                ToolbarsIniFile);
         if(TBBreak.Len() == 0) TBBreak = "0";
         CheckBoxSetState(FRMToolbarsCheckB, TBBreak.Get_Long());
-        WAListViewClear(FRMToolbarsListDrop);
-        TBToolBarModified = WAIniReadKey(TBToolBarKey, "Tool000", ToolbarsTMPIniFile);
+        ListViewClear(FRMToolbarsListDrop);
+        TBToolBarModified = IniReadKey(TBToolBarKey, "Tool000", ToolbarsTMPIniFile);
         if(TBToolBarModified.Len() != 0)
         {
             TBReload = 1;
@@ -782,13 +782,13 @@ void FillToolbarDatas(void)
         {
             // Toolbar initialized but
             // all items have been removed from toolbar ?
-            TBToolBarPrime = WAIniReadKey(TBToolBarKey, "Number", ToolbarsTMPIniFile);
+            TBToolBarPrime = IniReadKey(TBToolBarKey, "Number", ToolbarsTMPIniFile);
             if(TBToolBarPrime.Len() != 0) TBReload = 1;
         }
         // Check if temp file is already filled
         for(i = 0; i <= 999; i++)
         {
-            TBToolBarModified = WAIniReadKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsTMPIniFile);
+            TBToolBarModified = IniReadKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsTMPIniFile);
             // Check if entry have already been created
             if(TBToolBarModified.Len() != 0)
             {
@@ -816,25 +816,25 @@ void FillToolbarDatas(void)
                 goto AddModifiedCommandToList;
             }
             if(TBReload == 1) break;
-            TBBtnIcon = WAIniReadKey(TBToolBarKey, "BtnIcon" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
-            TBBtnMenu = WAIniReadKey(TBToolBarKey, "BtnMenu" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
-            TBBtnComment = WAIniReadKey(TBToolBarKey, "BtnHelp" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
-            TBBtnCommand = WAIniReadKey(TBToolBarKey, "BtnComd" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
+            TBBtnIcon = IniReadKey(TBToolBarKey, "BtnIcon" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
+            TBBtnMenu = IniReadKey(TBToolBarKey, "BtnMenu" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
+            TBBtnComment = IniReadKey(TBToolBarKey, "BtnHelp" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
+            TBBtnCommand = IniReadKey(TBToolBarKey, "BtnComd" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
             if(TBBtnIcon.Len() == 0) break;
             if(TBBtnMenu.Len() == 0) break;
             switch(TBBtnMenu.Get_Long())
             {
                 case -2:
                     // Separators
-                    WAIniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ToolbarsTMPIniFile);
+                    IniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ToolbarsTMPIniFile);
 					break;
                 case 9:
                     // Recent files list
-                    WAIniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), "-3", ToolbarsTMPIniFile);
+                    IniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), "-3", ToolbarsTMPIniFile);
 					break;
                 case 10:
                     // Recent projects list
-                    WAIniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), "-4", ToolbarsTMPIniFile);
+                    IniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), "-4", ToolbarsTMPIniFile);
 					break;
 				default:
                     // Single commands
@@ -844,46 +844,46 @@ void FillToolbarDatas(void)
                     if(TBBtnCommandLng < MENU_EDIT_IDBASE)
                     {
                         TBBtnCommandLng = (TBBtnCommandLng - MENU_FILE_IDBASE) + 3;
-                        WAIniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), TBBtnCommandLng, ToolbarsTMPIniFile);
+                        IniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), TBBtnCommandLng, ToolbarsTMPIniFile);
                         goto AddModifiedCommandToList;
                     }
                     // Edit
                     if(TBBtnCommandLng < MENU_VIEW_IDBASE)
                     {
 						TBBtnCommandLng = (TBBtnCommandLng - MENU_EDIT_IDBASE) + 3 + (sizeof(MenuFileComments) / 4);
-                        WAIniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), TBBtnCommandLng, ToolbarsTMPIniFile);
+                        IniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), TBBtnCommandLng, ToolbarsTMPIniFile);
                         goto AddModifiedCommandToList;
                     }
                     // View
                     if(TBBtnCommandLng < MENU_PROJECT_IDBASE)
                     {
                         TBBtnCommandLng = (TBBtnCommandLng - MENU_VIEW_IDBASE) + 3 + (sizeof(MenuFileComments) / 4) + (sizeof(MenuEditComments) / 4);
-                        WAIniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), TBBtnCommandLng, ToolbarsTMPIniFile);
+                        IniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), TBBtnCommandLng, ToolbarsTMPIniFile);
                         goto AddModifiedCommandToList;
                     }
                     // Project
                     if(TBBtnCommandLng < MENU_WINDOW_IDBASE)
                     {
                         TBBtnCommandLng = (TBBtnCommandLng - MENU_PROJECT_IDBASE) + 3 + (sizeof(MenuFileComments) / 4) + (sizeof(MenuEditComments) / 4) + (sizeof(MenuViewComments) / 4);
-                        WAIniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), TBBtnCommandLng, ToolbarsTMPIniFile);
+                        IniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), TBBtnCommandLng, ToolbarsTMPIniFile);
                         goto AddModifiedCommandToList;
                     }
                     // Window
                     if(TBBtnCommandLng < MENU_USER_IDBASE)
                     {
                         TBBtnCommandLng = (TBBtnCommandLng - MENU_WINDOW_IDBASE) + 3 + (sizeof(MenuFileComments) / 4) + (sizeof(MenuEditComments) / 4) + (sizeof(MenuViewComments) / 4) + (sizeof(MenuProjectComments) / 4);
-                        WAIniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), TBBtnCommandLng, ToolbarsTMPIniFile);
+                        IniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), TBBtnCommandLng, ToolbarsTMPIniFile);
                         goto AddModifiedCommandToList;
                     }
                     TBBtnCommandLng = (TBBtnCommandLng - MENU_USER_IDBASE) + 3 + (sizeof(MenuFileComments) / 4) + (sizeof(MenuEditComments) / 4) + (sizeof(MenuViewComments) / 4) + (sizeof(MenuProjectComments) / 4) + (sizeof(MenuWindowComments) / 4);
-                    WAIniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), TBBtnCommandLng, ToolbarsTMPIniFile);
+                    IniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), TBBtnCommandLng, ToolbarsTMPIniFile);
             }
 AddModifiedCommandToList:
             switch(TBBtnMenu.Get_Long())
             {
                 // Separator
                 case -2:
-                    WAListViewAddItem(FRMToolbarsListDrop, "<Separator>", i, -1);
+                    ListViewAddItem(FRMToolbarsListDrop, "<Separator>", i, -1);
 					break;
 				// Simple button
                 default:
@@ -891,20 +891,20 @@ AddModifiedCommandToList:
                     {
                         if(TBBtnIcon.Get_Long() != 0)
                         {
-                            WAListViewAddItem(FRMToolbarsListDrop, TBBtnComment, i, TBBtnIcon.Get_Long());
+                            ListViewAddItem(FRMToolbarsListDrop, TBBtnComment, i, TBBtnIcon.Get_Long());
                         }
                         else
                         {
-                            WAListViewAddItem(FRMToolbarsListDrop, TBBtnComment, i, -1);
+                            ListViewAddItem(FRMToolbarsListDrop, TBBtnComment, i, -1);
                         }
                     }
                     else
                     {
-                        WAListViewAddItem(FRMToolbarsListDrop, TBBtnIcon, i, -1);
+                        ListViewAddItem(FRMToolbarsListDrop, TBBtnIcon, i, -1);
                     }
             }
         }
-        WAIniWriteKey(TBToolBarKey, "Number", i, ToolbarsTMPIniFile);
+        IniWriteKey(TBToolBarKey, "Number", i, ToolbarsTMPIniFile);
     }
 }
 
@@ -919,7 +919,7 @@ void FillToolbarCommands(void)
     long RealPos = 0;
     CStr BufString;
 
-    WAListViewClear(FRMToolbarsListDrag);
+    ListViewClear(FRMToolbarsListDrag);
     PosInLV = 0;
     TBIconsArray.Erase();
     TBToolsArray.Erase();
@@ -951,7 +951,7 @@ void FillToolbarCommands(void)
     RealPos++;
     for(i = 0; i < ((sizeof(MenuFileComments) / 4) ) ; i++)
     {
-        WAListViewAddItem(FRMToolbarsListDrag, MenuFileComments[i], PosInLV, ToolbarFileIcons[i]);
+        ListViewAddItem(FRMToolbarsListDrag, MenuFileComments[i], PosInLV, ToolbarFileIcons[i]);
 		TBIconsArray.Add(ToolbarFileIcons[i]);
         TBToolsArray.Add(MenuFileToolTips[i]);
         MenuCommandsID.Add((i + MENU_FILE_IDBASE));
@@ -962,7 +962,7 @@ void FillToolbarCommands(void)
     }
     for(i = 0; i < ((sizeof(MenuEditComments) / 4) ); i++)
     {
-        WAListViewAddItem(FRMToolbarsListDrag, MenuEditComments[i], PosInLV, ToolbarEditIcons[i]);
+        ListViewAddItem(FRMToolbarsListDrag, MenuEditComments[i], PosInLV, ToolbarEditIcons[i]);
 		TBIconsArray.Add(ToolbarEditIcons[i]);
         TBToolsArray.Add(MenuEditToolTips[i]);
         MenuCommandsID.Add((i + MENU_EDIT_IDBASE));
@@ -973,7 +973,7 @@ void FillToolbarCommands(void)
     }
     for(i = 0; i < ((sizeof(MenuViewComments) / 4) ); i++)
     {
-        WAListViewAddItem(FRMToolbarsListDrag, MenuViewComments[i], PosInLV, ToolbarViewIcons[i]);
+        ListViewAddItem(FRMToolbarsListDrag, MenuViewComments[i], PosInLV, ToolbarViewIcons[i]);
         TBIconsArray.Add(ToolbarViewIcons[i]);
         TBToolsArray.Add(MenuViewToolTips[i]);
         MenuCommandsID.Add((i + MENU_VIEW_IDBASE));
@@ -984,7 +984,7 @@ void FillToolbarCommands(void)
     }
     for(i = 0; i < ((sizeof(MenuProjectComments) / 4) ); i++)
     {
-        WAListViewAddItem(FRMToolbarsListDrag, MenuProjectComments[i], PosInLV, ToolbarProjectIcons[i]);
+        ListViewAddItem(FRMToolbarsListDrag, MenuProjectComments[i], PosInLV, ToolbarProjectIcons[i]);
         TBIconsArray.Add(ToolbarProjectIcons[i]);
         TBToolsArray.Add(MenuProjectToolTips[i]);
         MenuCommandsID.Add((i + MENU_PROJECT_IDBASE));
@@ -995,7 +995,7 @@ void FillToolbarCommands(void)
     }
     for(i = 0; i < ((sizeof(MenuWindowComments) / 4) ); i++)
     {
-        WAListViewAddItem(FRMToolbarsListDrag, MenuWindowComments[i], PosInLV, ToolbarWindowIcons[i]);
+        ListViewAddItem(FRMToolbarsListDrag, MenuWindowComments[i], PosInLV, ToolbarWindowIcons[i]);
         TBIconsArray.Add(ToolbarWindowIcons[i]);
         TBToolsArray.Add(MenuWindowToolTips[i]);
         MenuCommandsID.Add((i + MENU_WINDOW_IDBASE));
@@ -1007,13 +1007,13 @@ void FillToolbarCommands(void)
     // User commands
     for(i = 0; i < MenusCmds.Amount(); i++)
     {
-        MenuStr = WAMenuGetString(hMainMenu, MENU_USER_IDBASE + i + 1);
+        MenuStr = MenuGetString(hMainMenu, MENU_USER_IDBASE + i + 1);
         if(MenuStr.Len() != 0)
         {
             if(MenusCmdsHelp.Get(i)->Content == 1)
             {
                 UserIcon = ICON_HELPFILES;
-                WAListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
+                ListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
             }
             else
             {
@@ -1022,37 +1022,37 @@ void FillToolbarCommands(void)
 				if(BufString == "CAPT ")
 				{
                     UserIcon = ICON_CONSOLE;
-                    WAListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
+                    ListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
 				}
 				else if(BufString == "HTML ")
 				{
                     UserIcon = ICON_INTERNET;
-                    WAListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
+                    ListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
 				}
 				else if(BufString == "PLUG ")
 				{
                     UserIcon = ICON_PLUG;
-                    WAListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
+                    ListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
 				}
 				else if(BufString == "SNAP ")
 				{
                     UserIcon = ICON_SNAP;
-                    WAListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
+                    ListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
 				}
 				else if(BufString == "DOCU ")
 				{
                     UserIcon = ICON_FILEASSOC;
-                    WAListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
+                    ListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
 				}
 				else if(BufString == "PREP ")
 				{
                     UserIcon = ICON_LAB;
-                    WAListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
+                    ListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
 				}
 				else
 				{
                     UserIcon = ICON_WINDOWS;
-                    WAListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
+                    ListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
                 }
             }
             TBIconsArray.Add(UserIcon);
@@ -1072,7 +1072,7 @@ void FillToolbarCommands(void)
             TBBtnCommentArray.Add("<Separator>");
         }
     }
-    WAListViewAddItem(FRMToolbarsListDrag, "<Separator>", 0, -1);
-    WAListViewAddItem(FRMToolbarsListDrag, "Display the recent files list", 1, ICON_FILES);
-    WAListViewAddItem(FRMToolbarsListDrag, "Display the recent projects list", 2, ICON_FILES);
+    ListViewAddItem(FRMToolbarsListDrag, "<Separator>", 0, -1);
+    ListViewAddItem(FRMToolbarsListDrag, "Display the recent files list", 1, ICON_FILES);
+    ListViewAddItem(FRMToolbarsListDrag, "Display the recent projects list", 2, ICON_FILES);
 }

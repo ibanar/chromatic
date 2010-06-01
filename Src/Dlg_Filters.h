@@ -44,7 +44,6 @@
 extern int Filter_Cancel;
 extern int Filter_Output_Type;
 extern CList <char *> Chosen_Filters;
-extern int Filter_Allow_Window;
 
 // -----------------------------------------------------------------------
 // Functions declarations

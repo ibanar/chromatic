@@ -28,7 +28,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 // -----------------------------------------------------------------------
-// WALib_WinSock.cpp: implementation the Winsock part of the WA Library
+// ChromaticLib_WinSock.cpp: implementation the Winsock part of the Chromatic Library
 // -----------------------------------------------------------------------
 
 // -----------------------------------------------------------------------
@@ -232,7 +232,7 @@ long CALLBACK SocketReceiveUnknownDatas(SOCKET hSock, long *RecvBuffer, long Len
 
 // -----------------------------------------------------------------------
 // Create a new FTP port
-SOCKET CALLBACK WAFTPInitiatePort(SOCKET hSock, LPSOCKADDR_IN SockStruct, HWND hWnd, long Message)
+SOCKET CALLBACK FTPInitiatePort(SOCKET hSock, LPSOCKADDR_IN SockStruct, HWND hWnd, long Message)
 {
     SOCKET ReturnValue;
     sockaddr_in WASockDir;
@@ -306,7 +306,7 @@ SOCKET CALLBACK WAFTPInitiatePort(SOCKET hSock, LPSOCKADDR_IN SockStruct, HWND h
 
 // -----------------------------------------------------------------------
 // Retrieve FTP entry date
-CStr  CALLBACK WAFTPGetEntryDate(CStr DirEntry)
+CStr  CALLBACK FTPGetEntryDate(CStr DirEntry)
 {
     CStr ReturnValue;
 	CStr StrLine;
@@ -319,7 +319,7 @@ CStr  CALLBACK WAFTPGetEntryDate(CStr DirEntry)
 
 	memset(&SysFutDateA, 0, sizeof(SysFutDateA));
 	memset(&SysFutDateB, 0, sizeof(SysFutDateA));
-    StrLine = WAFTPCutEntry(DirEntry);
+    StrLine = FTPCutEntry(DirEntry);
     StrLine = StrLine.Mid(43);
     if(StrLine.Len() == 0) return(ReturnValue);
 	StrLine = StrLine.Trim();
@@ -399,7 +399,7 @@ CStr  CALLBACK WAFTPGetEntryDate(CStr DirEntry)
     else
     {
         SysFutDateA.wDay = StrLine.Mid(5, 2).Get_Int();
-        SysFutDateA.wYear = WADateGetYear().Get_Int();
+        SysFutDateA.wYear = DateGetYear().Get_Int();
         SysFutDateA.wHour = StrLine.Mid(8, 2).Get_Int();
         SysFutDateA.wMinute = StrLine.Mid(11, 2).Get_Int();
         SystemTimeToFileTime(&SysFutDateA, &FileFutDateA);
@@ -407,14 +407,14 @@ CStr  CALLBACK WAFTPGetEntryDate(CStr DirEntry)
         SystemTimeToFileTime(&SysFutDateB, &FileFutDateB);
         if(CompareFileTime(&FileFutDateA, &FileFutDateB) > 0)
         {
-			BufString2 = (WADateGetYear().Get_Long() - 1);
+			BufString2 = (DateGetYear().Get_Long() - 1);
 			BufString = BufString + BufString2;
 			BufString = BufString + " ";
 			BufString = BufString + StrLine.Mid(8, 5);
         }
         else
         {
-			BufString = BufString + WADateGetYear();
+			BufString = BufString + DateGetYear();
 			BufString = BufString + " ";
 			BufString = BufString + StrLine.Mid(8, 5);
         }
@@ -425,37 +425,37 @@ CStr  CALLBACK WAFTPGetEntryDate(CStr DirEntry)
 
 // -----------------------------------------------------------------------
 // Retrieve FTP entry filename
-CStr  CALLBACK WAFTPGetEntryFileName(CStr DirEntry)
+CStr  CALLBACK FTPGetEntryFileName(CStr DirEntry)
 {
 	CStr ReturnValue;
     CStr StrLine;
 
-    StrLine = WAFTPCutEntry(DirEntry);
+    StrLine = FTPCutEntry(DirEntry);
     ReturnValue = StrLine.Mid(56).Trim();
 	return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve FTP entry attributes
-CStr  CALLBACK WAFTPGetEntryFileAttributes(CStr DirEntry)
+CStr  CALLBACK FTPGetEntryFileAttributes(CStr DirEntry)
 {
 	CStr ReturnValue;
     CStr StrLine;
 
-    StrLine = WAFTPCutEntry(DirEntry);
+    StrLine = FTPCutEntry(DirEntry);
     ReturnValue = StrLine.Mid(2, 9);
 	return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve FTP entry filesize
-CStr  CALLBACK WAFTPGetEntryFileSize(CStr DirEntry)
+CStr  CALLBACK FTPGetEntryFileSize(CStr DirEntry)
 {
 	CStr ReturnValue;
     long i;
     CStr StrLine;
 
-    StrLine = WAFTPCutEntry(DirEntry);
+    StrLine = FTPCutEntry(DirEntry);
     if(strcmpi(StrLine.Left(1).Get_String(), "D") == 0) return(ReturnValue);
     for (i = 41; i >= 1 ; i--)
     {
@@ -471,7 +471,7 @@ CStr  CALLBACK WAFTPGetEntryFileSize(CStr DirEntry)
 
 // -----------------------------------------------------------------------
 // Check if a FTP entry is a directory
-long CALLBACK WAFTPIsEntryDir(CStr DirEntry)
+long CALLBACK FTPIsEntryDir(CStr DirEntry)
 {
     long ReturnValue = 0;
 
@@ -481,7 +481,7 @@ long CALLBACK WAFTPIsEntryDir(CStr DirEntry)
 
 // -----------------------------------------------------------------------
 // Arrange a FTP dir entry (private)
-CStr  CALLBACK WAFTPCutEntry(CStr FTPEntry)
+CStr  CALLBACK FTPCutEntry(CStr FTPEntry)
 {
 	CStr ReturnValue;
     CStr BufString;

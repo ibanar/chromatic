@@ -62,7 +62,7 @@
 
 // -----------------------------------------------------------------------
 // Variables
-WAMDIDAT hMDIform;
+MDIDAT hMDIform;
 CStr MDIRetVal;
 long TimerHandle;
 long FreezeTimer;
@@ -81,65 +81,65 @@ void CreateMDIForm(void)
 	int Nbr_Params = 0;
     
     // Set main window on top or not
-    TopMostProp = WAIniReadKey("Layout", "AlwaysOnTop", MainIniFile);
+    TopMostProp = IniReadKey("Layout", "AlwaysOnTop", MainIniFile);
 
 	memset(&Mdi_Datas, 0, sizeof(WINDOWPLACEMENT));
 	Mdi_Datas.length = sizeof(WINDOWPLACEMENT);
-	strMDI_Datas = WAIniReadKey("Layout", "MDI_Flags", MainIniFile);
+	strMDI_Datas = IniReadKey("Layout", "MDI_Flags", MainIniFile);
 	if(strMDI_Datas.Len())
 	{
 		Mdi_Datas.flags = strMDI_Datas.Get_Long();
 		Nbr_Params++;
 	}
-	strMDI_Datas = WAIniReadKey("Layout", "MDI_MinPosX", MainIniFile);
+	strMDI_Datas = IniReadKey("Layout", "MDI_MinPosX", MainIniFile);
 	if(strMDI_Datas.Len())
 	{
 		Mdi_Datas.ptMinPosition.x = strMDI_Datas.Get_Long();
 		Nbr_Params++;
 	}
-	strMDI_Datas = WAIniReadKey("Layout", "MDI_MinPosY", MainIniFile);
+	strMDI_Datas = IniReadKey("Layout", "MDI_MinPosY", MainIniFile);
 	if(strMDI_Datas.Len())
 	{
 		Mdi_Datas.ptMinPosition.y = strMDI_Datas.Get_Long();
 		Nbr_Params++;
 	}
-	strMDI_Datas = WAIniReadKey("Layout", "MDI_MaxPosX", MainIniFile);
+	strMDI_Datas = IniReadKey("Layout", "MDI_MaxPosX", MainIniFile);
 	if(strMDI_Datas.Len())
 	{
 		Mdi_Datas.ptMaxPosition.x = strMDI_Datas.Get_Long();
 		Nbr_Params++;
 	}
-	strMDI_Datas = WAIniReadKey("Layout", "MDI_MaxPosY", MainIniFile);
+	strMDI_Datas = IniReadKey("Layout", "MDI_MaxPosY", MainIniFile);
 	if(strMDI_Datas.Len())
 	{
 		Mdi_Datas.ptMaxPosition.y = strMDI_Datas.Get_Long();
 		Nbr_Params++;
 	}
-	strMDI_Datas = WAIniReadKey("Layout", "MDI_PosL", MainIniFile);
+	strMDI_Datas = IniReadKey("Layout", "MDI_PosL", MainIniFile);
 	if(strMDI_Datas.Len())
 	{
 		Mdi_Datas.rcNormalPosition.left = strMDI_Datas.Get_Long();
 		Nbr_Params++;
 	}
-	strMDI_Datas = WAIniReadKey("Layout", "MDI_PosT", MainIniFile);
+	strMDI_Datas = IniReadKey("Layout", "MDI_PosT", MainIniFile);
 	if(strMDI_Datas.Len())
 	{
 		Mdi_Datas.rcNormalPosition.top = strMDI_Datas.Get_Long();
 		Nbr_Params++;
 	}
-	strMDI_Datas = WAIniReadKey("Layout", "MDI_PosR", MainIniFile);
+	strMDI_Datas = IniReadKey("Layout", "MDI_PosR", MainIniFile);
 	if(strMDI_Datas.Len())
 	{
 		Mdi_Datas.rcNormalPosition.right = strMDI_Datas.Get_Long();
 		Nbr_Params++;
 	}
-	strMDI_Datas = WAIniReadKey("Layout", "MDI_PosB", MainIniFile);
+	strMDI_Datas = IniReadKey("Layout", "MDI_PosB", MainIniFile);
 	if(strMDI_Datas.Len())
 	{
 		Mdi_Datas.rcNormalPosition.bottom = strMDI_Datas.Get_Long();
 		Nbr_Params++;
 	}
-	strMDI_Datas = WAIniReadKey("Layout", "MDI_Show", MainIniFile);
+	strMDI_Datas = IniReadKey("Layout", "MDI_Show", MainIniFile);
 	if(strMDI_Datas.Len())
 	{
 		Mdi_Datas.showCmd = strMDI_Datas.Get_Long();
@@ -155,10 +155,10 @@ void CreateMDIForm(void)
 		Mdi_Datas.rcNormalPosition.right = 800;
 		Mdi_Datas.rcNormalPosition.bottom = 600;
 	}
-	hMDIform.hWnd = WACreateMDIDialog(Mdi_Datas.rcNormalPosition.left, Mdi_Datas.rcNormalPosition.top, Mdi_Datas.rcNormalPosition.right - Mdi_Datas.rcNormalPosition.left, Mdi_Datas.rcNormalPosition.bottom - Mdi_Datas.rcNormalPosition.top, 0, 0, LoadIcon(ApphInstance, MAKEINTRESOURCE(APP_ICON)), Requesters, &MDIInitProc, CurrentMDIProc, 0, Mdi_Datas.showCmd);
+	hMDIform.hWnd = CreateMDIDialog(Mdi_Datas.rcNormalPosition.left, Mdi_Datas.rcNormalPosition.top, Mdi_Datas.rcNormalPosition.right - Mdi_Datas.rcNormalPosition.left, Mdi_Datas.rcNormalPosition.bottom - Mdi_Datas.rcNormalPosition.top, 0, 0, LoadIcon(ApphInstance, MAKEINTRESOURCE(APP_ICON)), Requesters, &MDIInitProc, CurrentMDIProc, 0, Mdi_Datas.showCmd);
 	if(Nbr_Params == 10) SetWindowPlacement(hMDIform.hWnd, &Mdi_Datas);
     DragAcceptFiles(hMDIform.hClient, AcceptFiles);
-    if(TopMostProp.Len() != 0) if(strcmpi(TopMostProp.Get_String(), "1") == 0) WAControlSetTopMost(hMDIform.hWnd);
+    if(TopMostProp.Len() != 0) if(strcmpi(TopMostProp.Get_String(), "1") == 0) ControlSetTopMost(hMDIform.hWnd);
     if(FullScreenMode == 1) SetFullScreenMode();
 }
 
@@ -170,13 +170,13 @@ void CALLBACK MDIInitProc(HWND hWnd)
 	void (CALLBACK * LocInitMDIHook)(HWND hWnd);
 	RECT rcDefault;
 
-	hRebar = WACreateRebar(0, 0, 0, 18, hWnd, 0, 0, CCS_TOP | RBS_BANDBORDERS | WS_BORDER);
+	hRebar = CreateRebar(0, 0, 0, 18, hWnd, 0, 0, CCS_TOP | RBS_BANDBORDERS | WS_BORDER);
     InitReBarContent(hWnd);
 
-    hStatusBar = WACreateStatusBar("", STATUSBAR_PARTNORMAL, hWnd, 6, &StatusHook, WS_BORDER);
+    hStatusBar = CreateStatusBar("", STATUSBAR_PARTNORMAL, hWnd, 6, &StatusHook, WS_BORDER);
     CreateMenuBar(hWnd);
-    hMDIform.hClient = WACreateClient(hWnd, hWindowMenu, LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_NEW)));
-    WAControlHookWin(hMDIform.hClient, &ClientProc);
+    hMDIform.hClient = CreateClient(hWnd, hWindowMenu, LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_NEW)));
+    ControlHookWin(hMDIform.hClient, &ClientProc);
 
 	// We need to update it here bcoz some addins might need it
 	hMDIform.hWnd = hWnd;
@@ -184,8 +184,8 @@ void CALLBACK MDIInitProc(HWND hWnd)
 	// Create docking context
 	rcDefault.left = 0;
 	rcDefault.top = 0;
-	rcDefault.right = WAControlWidth(hMDIform.hWnd);
-	rcDefault.bottom = WAControlHeight(hMDIform.hWnd);
+	rcDefault.right = ControlWidth(hMDIform.hWnd);
+	rcDefault.bottom = ControlHeight(hMDIform.hWnd);
 	hMDIform.hDock = cDock->Create(hWnd, rcDefault);
     cDock->SetClient(hMDIform.hClient);
 
@@ -205,7 +205,7 @@ void CALLBACK MDIInitProc(HWND hWnd)
 
 	ShowHideStatusBar(ShowStatusbar);
     CreateTimer(hWnd);
-    CurFontHandle = WAGDIObtainFont(CurFontName, CurFontSize, hMDIform.hWnd, 0, 0);
+    CurFontHandle = GDIObtainFont(CurFontName, CurFontSize, hMDIform.hWnd, 0, 0);
 
     // All context is set
 	// We can run AddIns system now
@@ -285,15 +285,15 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		// Free the sending thread
 		ReplyMessage(0);
 		// Retrieve the file
-		PassedFileLen = WAFileGetSize(Dirs[DIR_WIN] + (CStr) "\\TempOp.CF");
+		PassedFileLen = FileGetSize(Dirs[DIR_WIN] + (CStr) "\\TempOp.CF");
 		if(PassedFileLen != 0)
 		{
 			PassedCmd = PassedCmd.String(PassedFileLen, 1);
-			PassedFileHandle = WAFileOpenR(Dirs[DIR_WIN] + (CStr) "\\TempOp.CF");
+			PassedFileHandle = FileOpenR(Dirs[DIR_WIN] + (CStr) "\\TempOp.CF");
 			if(PassedFileHandle != INVALID_HANDLE_VALUE)
 			{
 				ReadFile(PassedFileHandle, PassedCmd.Get_String(), PassedFileLen, &PassedFileRead, NULL);
-				WAFileClose(PassedFileHandle);
+				FileClose(PassedFileHandle);
 			}
 			if(PassedCmd.Len() != 0) OpenUnknownFile(PassedCmd, TRUE);
 		}
@@ -305,38 +305,38 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     switch(uMsg)
     {
         case WM_SYSCOLORCHANGE:
-            WATreeViewSetBackColor(hTreeView, GetSysColor(COLOR_WINDOW));
-            WARebarSetBackColor(hRebar, GetSysColor(COLOR_BTNFACE));
+            TreeViewSetBackColor(hTreeView, GetSysColor(COLOR_WINDOW));
+            RebarSetBackColor(hRebar, GetSysColor(COLOR_BTNFACE));
             for(i = 0; i < PagersHwnd.Amount(); i++)
             {
                 if(PagersHwnd.Get(i)->Content != 0)
                 {
-                    WAPagerSetBackColor(PagersHwnd.Get(i)->Content,
+                    PagerSetBackColor(PagersHwnd.Get(i)->Content,
                                         GetSysColor(COLOR_BTNFACE));
                 }
             }
-            WAPagerSetBackColor(hProjectPager, GetSysColor(COLOR_BTNFACE));
-            WAPagerSetBackColor(hStatusPager, GetSysColor(COLOR_BTNFACE));
-            WAListViewSetBackColor(hWindowsListView, GetSysColor(COLOR_WINDOW));
+            PagerSetBackColor(hProjectPager, GetSysColor(COLOR_BTNFACE));
+            PagerSetBackColor(hStatusPager, GetSysColor(COLOR_BTNFACE));
+            ListViewSetBackColor(hWindowsListView, GetSysColor(COLOR_WINDOW));
 //			ResizeMDIform();
 			DockingBoxRepaint(hProjectContainer);
 			DockingBoxRepaint(hWindowsContainer);
 			DockingBoxRepaint(hOutputContainer);
 			DockingBoxRepaint(hDebugContainer);
 			DockingBoxRepaint(hRegistersContainer);
-//			WAControlRepaint(hMDIform.hDock);
-//			if(WAControlIsVisible(hProjectContainer)) WAControlRepaint(hProjectContainer);
-//			if(WAControlIsVisible(hWindowsContainer)) WAControlRepaint(hWindowsContainer);
-//			if(WAControlIsVisible(hOutputContainer)) WAControlRepaint(hOutputContainer);
-//			if(WAControlIsVisible(hDebugContainer)) WAControlRepaint(hDebugContainer);
-//			if(WAControlIsVisible(hRegistersContainer)) WAControlRepaint(hRegistersContainer);
+//			ControlRepaint(hMDIform.hDock);
+//			if(ControlIsVisible(hProjectContainer)) ControlRepaint(hProjectContainer);
+//			if(ControlIsVisible(hWindowsContainer)) ControlRepaint(hWindowsContainer);
+//			if(ControlIsVisible(hOutputContainer)) ControlRepaint(hOutputContainer);
+//			if(ControlIsVisible(hDebugContainer)) ControlRepaint(hDebugContainer);
+//			if(ControlIsVisible(hRegistersContainer)) ControlRepaint(hRegistersContainer);
 
 			break;
 
         case WM_ACTIVATEAPP:
             if(QuitNotif == 0) if(wParam != 0) if(DetectChange == 1) SearchModified(hMDIform.hClient);           
             Check_Update_Language();
-            if(APIListMode == 1) WAControlClose(FRMAPIListhWnd);
+            if(APIListMode == 1) ControlClose(FRMAPIListhWnd);
 			return(0);
 
 		// Handle search wrapping
@@ -530,7 +530,7 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 case MENU_SYSTRAY_EXIT:
                     SysTrayMode = 0;
                     RestoreMDI(hWnd);
-                    WAControlClose(hWnd);
+                    ControlClose(hWnd);
 					return(0);
 
 // -------------------------------------------------------------------------------
@@ -1165,7 +1165,7 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                                 if(OpenedLanguage.Len() == 0)
                                 {
                                     // Can't guess: get default language
-                                    OpenedLanguage = WAIniReadKey("RefLanguages", "DefLang", LanguagesIniFile);
+                                    OpenedLanguage = IniReadKey("RefLanguages", "DefLang", LanguagesIniFile);
                                     if(OpenedLanguage.Len() == 0) OpenedLanguage = "Assembler";
                                 }
                                 StoreLanguageToOpen(OpenedLanguage);
@@ -1202,7 +1202,7 @@ ForcePersistantMenu:                        // Just trigger the menu routine if 
                                                     }
 													// Store running state
                                                     RunningAddIns.Set(AddInRun, 0);
-                                                    WAIniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(AddInRun, 3).Get_String(), RunningAddIns.Get(AddInRun)->Content, MainIniFile);
+                                                    IniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(AddInRun, 3).Get_String(), RunningAddIns.Get(AddInRun)->Content, MainIniFile);
                                                 }
                                             }
                                         }
@@ -1224,9 +1224,9 @@ ForcePersistantMenu:                        // Just trigger the menu routine if 
                     // Recent files
                     if(SysTrayMode == 1) RestoreMDI(hWnd);
                     TmpRecentFile = Recents.Get((wParam & 0xFFFF) - MENU_RECENTFILES_IDBASE)->Content;
-                    if(WAFileExist(TmpRecentFile) == 0)
+                    if(FileExist(TmpRecentFile) == 0)
                     {
-                        WAMiscMsgBox(hMDIform.hWnd, "File '" + (CStr) TmpRecentFile + (CStr) "' not found.", MB_ERROR, Requesters);
+                        MiscMsgBox(hMDIform.hWnd, "File '" + (CStr) TmpRecentFile + (CStr) "' not found.", MB_ERROR, Requesters);
                         AddRecentFile(TmpRecentFile, 0, 0);
 						return(0);
                     }
@@ -1235,7 +1235,7 @@ ForcePersistantMenu:                        // Just trigger the menu routine if 
                         // Open it as normal file
                         OpenFileNorm(TmpRecentFile, 0, 0, 0, 0);
                         // Store this path as last used
-                        LastLoadDir = WAFileGetDirectory(TmpRecentFile);
+                        LastLoadDir = FileGetDirectory(TmpRecentFile);
                     }
                     else
                     {
@@ -1252,16 +1252,16 @@ ForcePersistantMenu:                        // Just trigger the menu routine if 
                         {
                             // Recent projects
                             TmpRecentFile = RecentsPrj.Get((wParam & 0xFFFF) - MENU_RECENTPROJECTS_IDBASE)->Content;
-                            if(WAFileExist(TmpRecentFile) == 0)
+                            if(FileExist(TmpRecentFile) == 0)
                             {
-                                WAMiscMsgBox(hMDIform.hWnd, "Project file not found.", MB_ERROR, Requesters);
+                                MiscMsgBox(hMDIform.hWnd, "Project file not found.", MB_ERROR, Requesters);
                                 AddRecentPrj(TmpRecentFile, 0, 0);
                                 return(0);
                             }
                             if(CheckProjectFile(TmpRecentFile) == 0)
                             {
                                 BufString = "Not a " + (CStr) AppTitle + (CStr) " project file.";
-                                WAMiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
+                                MiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
                                 AddRecentPrj(TmpRecentFile, 0, 0);
                                 return(0);
                             }
@@ -1320,7 +1320,7 @@ ForcePersistantMenu:                        // Just trigger the menu routine if 
                             {
                                 if((long) (wParam & 0xFFFF) > (long) ToolBarCommands.Amount()) break;
                                 ToolBarCommand = ToolBarCommands.Get((wParam & 0xFFFF))->Content;
-                                if(ToolBarCommand != -1) WAControlSendMessage(hWnd, ToolBarCommand, 0);
+                                if(ToolBarCommand != -1) ControlSendMessage(hWnd, ToolBarCommand, 0);
 								break;
                             }
                         }
@@ -1334,33 +1334,33 @@ ForcePersistantMenu:                        // Just trigger the menu routine if 
 // Notifications
 // -------------------------------------------------------------------------------
         case WM_NOTIFY:
-            switch(WAControlGetNotifiedMsg(lParam))
+            switch(ControlGetNotifiedMsg(lParam))
             {
                 case RBN_HEIGHTCHANGE:
                     ResizeMDIform();
                     return(0);
                 // Resize Pagers
                 case PGN_CALCSIZE:
-                    WAToolBarGetXYSize(WAPagerGetNotifiedChild(lParam), &MySize);
-                    PagerID = WAControlGetNotifiedID(lParam);
+                    ToolBarGetXYSize(PagerGetNotifiedChild(lParam), &MySize);
+                    PagerID = ControlGetNotifiedID(lParam);
                     if(PagersSize.Amount() > PagerID) MySize.cx = PagersSize.Get(PagerID)->Content;
-                    WAPagerDisplaySetSize((LPNMPGCALCSIZE) lParam, &MySize);
+                    PagerDisplaySetSize((LPNMPGCALCSIZE) lParam, &MySize);
                     return(0);
                 case TTN_NEEDTEXT:
-                    TbTooltipId = WAControlGetNotifiedID(lParam);
-                    WAToolBarDisplayToolTip(ToolBarToolTips.Get(TbTooltipId)->Content, lParam);
+                    TbTooltipId = ControlGetNotifiedID(lParam);
+                    ToolBarDisplayToolTip(ToolBarToolTips.Get(TbTooltipId)->Content, lParam);
                     return(0);
                 case TBN_DROPDOWN:
-                    TbDroppedId = WAToolBarGetNotifiedDropDownItem(lParam);
+                    TbDroppedId = ToolBarGetNotifiedDropDownItem(lParam);
                     if(ToolBarArray.Get(TbDroppedId)->Content != 0)
                     {
                         if(ToolBarMenus.Get(TbDroppedId)->Content == -1) goto NoDropDown;
 						else if(ToolBarMenus.Get(TbDroppedId)->Content > MAXSUBMENUS) goto NoDropDown;
-						else WAToolBarDisplayPopupMenu(ToolBarArray.Get(TbDroppedId)->Content, TbDroppedId, SubMenusArray[ToolBarMenus.Get(TbDroppedId)->Content], hWnd);
+						else ToolBarDisplayPopupMenu(ToolBarArray.Get(TbDroppedId)->Content, TbDroppedId, SubMenusArray[ToolBarMenus.Get(TbDroppedId)->Content], hWnd);
                     }
 NoDropDown:			return(0);
                 case TBN_HOTITEMCHANGE:
-                    TbHotId = WAToolBarGetNotifiedHotItem(lParam);
+                    TbHotId = ToolBarGetNotifiedHotItem(lParam);
                     if(TbHotId == -1) WriteComment("");
 					else WriteComment(ToolBarComments.Get(TbHotId)->Content);
                     return(0);
@@ -1371,15 +1371,15 @@ NoDropDown:			return(0);
 // Resize
 // -------------------------------------------------------------------------------
 		case WM_MOVE:
-            if(APITTip == 1) if(APIMode == 1) WAControlClose(FRMAPIhwnd);
-            if(APIListMode == 1) WAControlClose(FRMAPIListhWnd);
+            if(APITTip == 1) if(APIMode == 1) ControlClose(FRMAPIhwnd);
+            if(APIListMode == 1) ControlClose(FRMAPIListhWnd);
 			break;
         case WM_SIZE:
             if(wParam != SIZE_MINIMIZED)
             {
                 SendMessage(hStatusBar, uMsg, wParam, lParam);
                 SetStatusBarParts();
-                WARebarResize(hRebar);
+                RebarResize(hRebar);
                 ResizeMDIform();
                 if(NbForms != 0) RefreshStatusBar(CurrentForm);
                 else ClearStatusBarParts();
@@ -1387,7 +1387,7 @@ NoDropDown:			return(0);
             else
             {
                 // Minimize to SysTray
-                SysTrayPref = WAIniReadKey("Layout", "UseSysTray", MainIniFile);
+                SysTrayPref = IniReadKey("Layout", "UseSysTray", MainIniFile);
                 if(SysTrayPref.Len() != 0) if(strcmpi(SysTrayPref.Get_String(), "1") == 0) ControlSetSysToTray(ApphInstance, hWnd, SYSTRAY_MSG, APP_ICON, Requesters);
             }
             return(DefWindowProc(hWnd, uMsg, wParam, lParam));
@@ -1422,13 +1422,13 @@ NoDropDown:			return(0);
                         SetForegroundWindow(hWnd);
                         GetCursorPos(&TrayPoint);
                         hTrayMenu = CreatePopupMenu();
-                        AppendMenu(hTrayMenu, MF_STRING, MENU_SYSTRAY_RESTORE, "Restore");
-                        AppendMenu(hTrayMenu, MF_SEPARATOR, (UINT) -1, "-");
-                        WAMenuSetDefaultItem(hTrayMenu, 0);
+                        MenuAddString(hTrayMenu, "Restore", MENU_SYSTRAY_RESTORE, TRUE);
+                        MenuAddSeparator(hTrayMenu);
+                        MenuSetDefaultItem(hTrayMenu, 0);
                         if(hMenuRecent != 0) AppendMenu(hTrayMenu, MF_POPUP, (UINT) hMenuRecent, "Recent files");
                         if(hMenuRecentPrj != 0) AppendMenu(hTrayMenu, MF_POPUP, (UINT) hMenuRecentPrj, "Recent projects");
-                        if((hMenuRecent != 0) || (hMenuRecentPrj != 0)) AppendMenu(hTrayMenu, MF_SEPARATOR, (UINT) -1, "-");
-                        AppendMenu(hTrayMenu, MF_STRING, MENU_SYSTRAY_EXIT, "Exit");
+                        if((hMenuRecent != 0) || (hMenuRecentPrj != 0)) MenuAddSeparator(hTrayMenu);
+                        MenuAddString(hTrayMenu, "Exit", MENU_SYSTRAY_EXIT, TRUE);
                         TrackPopupMenu(hTrayMenu, TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON, TrayPoint.x, TrayPoint.y, 0, hWnd, NULL);
                 }
             }
@@ -1465,17 +1465,17 @@ NoDropDown:			return(0);
 void ResizeMDIform(void)
 {
     long StatusHeight = 0;
-	long MinY = WARebarGetYSize(hRebar);
-	if(WAControlIsVisible(hStatusBar)) StatusHeight = WAControlHeight(hStatusBar);
-    MoveWindow(hMDIform.hDock, 0, MinY, WAControlClientWidth(hMDIform.hWnd),
-               WAControlClientHeight(hMDIform.hWnd) - (MinY + StatusHeight), 1);
+	long MinY = RebarGetYSize(hRebar);
+	if(ControlIsVisible(hStatusBar)) StatusHeight = ControlHeight(hStatusBar);
+    MoveWindow(hMDIform.hDock, 0, MinY, ControlClientWidth(hMDIform.hWnd),
+               ControlClientHeight(hMDIform.hWnd) - (MinY + StatusHeight), 1);
 }
 
 // -----------------------------------------------------------------------
 // Write a comment in status bar
 void WriteComment(CStr Comment)
 {
-    if(WAControlIsVisible(hStatusBar) != 0)
+    if(ControlIsVisible(hStatusBar) != 0)
     {
 		StatusBarSetText(hStatusBar, 0, STATUSBAR_PARTNORMAL, Comment, 0);
 	}
@@ -1502,14 +1502,14 @@ int CALLBACK EnumCloseChildProc(HWND hWnd, long lParam)
     }
     else
     {
-        if(WAControlIsWindowChild(hWnd) == 1)
+        if(ControlIsWindowChild(hWnd) == 1)
         {
 			if(GetWindowLong(hWnd, GWL_USERDATA) != 0)
 			{
                 // Mark them as unmodified
 				ChildStruct = LoadStructure(hWnd);
                 ChildStruct->ModifFlag = 0;
-				WAControlClose(hWnd);
+				ControlClose(hWnd);
 			}
 		}
 		return(TRUE);
@@ -1531,7 +1531,7 @@ int CALLBACK EnumChFontChildProc(HWND hWnd, long lParam)
     }
     else
     {
-        if(WAControlIsWindowChild(hWnd) == 1)
+        if(ControlIsWindowChild(hWnd) == 1)
         {
             if(GetWindowLong(hWnd, GWL_USERDATA) != 0)
             {
@@ -1563,7 +1563,7 @@ int CALLBACK EnumSearchFileProc(HWND hWnd, long lParam)
     }
     else
     {
-        if(WAControlIsWindowChild(hWnd) == 0) goto NoSearchFileProc;
+        if(ControlIsWindowChild(hWnd) == 0) goto NoSearchFileProc;
         if(GetWindowLong(hWnd, GWL_USERDATA) == 0) goto NoSearchFileProc;
         ChildStruct = LoadStructure(hWnd);
         ChildFile = ChildStruct->RFile;
@@ -1596,7 +1596,7 @@ int CALLBACK EnumSaveChildProc(HWND hWnd, long lParam)
     }
     else
     {
-        if(WAControlIsWindowChild(hWnd) == 1)
+        if(ControlIsWindowChild(hWnd) == 1)
         {
             if(GetWindowLong(hWnd, GWL_USERDATA) != 0)
             {
@@ -1630,30 +1630,30 @@ HWND OpenFileNorm(CStr FileName, long ReadO, long CheckOp, long ForceCreate, lon
     OpenFile(FileName.Get_String(), &File_Dat, OF_EXIST);
     FileName = File_Dat.szPathName;
 
-    if(WAFileExist(FileName) == 0) FoundF = 0;
+    if(FileExist(FileName) == 0) FoundF = 0;
     if(CheckOp == 0)
     {
         // Check for already opened file
         SearchOpenedFile(hMDIform.hWnd, FileName);
         if(FoundOpened == 1)
         {
-            DirectZoom = WAIniReadKey("Layout", "AutoZoomFiles", MainIniFile);
+            DirectZoom = IniReadKey("Layout", "AutoZoomFiles", MainIniFile);
             if(DirectZoom.Len() != 0)
             {
                 if(strcmpi(DirectZoom.Get_String(), "1") == 0)
                 {
-                    WAControlVisible(FoundOpenedhWnd, 1);
+                    ControlVisible(FoundOpenedhWnd, 1);
                     SetFocus(FoundOpenedhWnd);
 					return(ReturnValue);
                 }
             }
 			BufString = "File '" + (CStr) FileName.Get_String() + (CStr) "' is already opened. Reload it ?";
-            switch(WAMiscMsgBox(hMDIform.hWnd, BufString, MB_QUESTION, Requesters))
+            switch(MiscMsgBox(hMDIform.hWnd, BufString, MB_QUESTION, Requesters))
             {
                 case IDYES:
 					break;
 				case IDNO:
-                    WAControlVisible(FoundOpenedhWnd, 1);
+                    ControlVisible(FoundOpenedhWnd, 1);
                     SetFocus(FoundOpenedhWnd);
 					return(ReturnValue);
             }
@@ -1716,7 +1716,7 @@ HWND OpenFileNorm(CStr FileName, long ReadO, long CheckOp, long ForceCreate, lon
             }
         }
         // Just to avoid some unnecessary tests
-        TestBook = WAIniReadKey("Layout", "SaveBookmarks", MainIniFile);
+        TestBook = IniReadKey("Layout", "SaveBookmarks", MainIniFile);
         if(TestBook.Len() != 0)
         {
             if(strcmp(TestBook.Get_String(), "1") == 0)
@@ -1745,16 +1745,16 @@ HWND CreateNewFile(CStr FileN)
     HWND ReturnValue = 0;
 
 	FileToOpen = StringCopyAppendZero(FileToOpen, FileN);
-    if(NbForms != 0) if(WAControlGetWindowState(CurrentForm) == SW_SHOWMAXIMIZED) goto ForceMaximize;
+    if(NbForms != 0) if(ControlGetWindowState(CurrentForm) == SW_SHOWMAXIMIZED) goto ForceMaximize;
     switch(AutoMaximizeChilds)
     {
         case 0:
-            ReturnValue = WACreateMDIChildDialog(hMDIform.hClient, "", LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_NEW)),
+            ReturnValue = CreateMDIChildDialog(hMDIform.hClient, "", LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_NEW)),
                                                  CurrentMDIChildInitProc, CurrentMDIChildProc, 0, 1, "");
 			break;
 		case 1:
 ForceMaximize:
-            ReturnValue = WACreateMDIChildDialog(hMDIform.hClient, "", LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_NEW)),
+            ReturnValue = CreateMDIChildDialog(hMDIform.hClient, "", LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_NEW)),
                                                  CurrentMDIChildInitProc, CurrentMDIChildProc, WS_MAXIMIZE, 1, "");
 			break;
     }
@@ -1776,7 +1776,7 @@ void OpenFileAsRC(HWND hWnd, CStr FileLabel, CStr FileName, long ResIndex)
     CStr Label;
     CStr TmpRawStr;
 
-    FLen = WAFileGetSize(FileName);
+    FLen = FileGetSize(FileName);
     if(FLen == 0)
     {
         WriteToStatus("File '" + (CStr) FileName + (CStr) "' is empty.");
@@ -1800,7 +1800,7 @@ void OpenFileAsRC(HWND hWnd, CStr FileLabel, CStr FileName, long ResIndex)
     OpHeader = "// Created from file: " + (CStr) FileName.Get_String() + (CStr) "\r\n// Original length: " + (CStr) FLen + (CStr) " byte";
     if(FLen > 1) OpHeader = OpHeader + "s";
     OpHeader = OpHeader + "\r\n";
-    Label = StringReplace(WAFileReplaceExtension(WAFileGetFileName(FileName), ""), ".", "", 1, -1, Binary_Compare);
+    Label = StringReplace(FileReplaceExtension(FileGetFileName(FileName), ""), ".", "", 1, -1, Binary_Compare);
     OpHeader = OpHeader + FileLabel.Get_String() + (CStr) " RCDATA ";
     // Put header
     OpHeader = OpHeader + (CStr) CalcResourceHeader(GetRawdataProps(ResIndex)).Trim().Get_String() + (CStr) "\r\n";
@@ -1826,10 +1826,10 @@ void OpenFileAsRC(HWND hWnd, CStr FileLabel, CStr FileName, long ResIndex)
         // Set modified state on
         ChildStruct->ModifFlag = 1;
         // Set window referenced file
-        ChildStruct->RFile->Set_String(StringCopyAppendZero(ChildStruct->RFile, WAFileRemoveExtension(FileName).Get_String() + (CStr) ".rc").Get_String());
+        ChildStruct->RFile->Set_String(StringCopyAppendZero(ChildStruct->RFile, FileRemoveExtension(FileName).Get_String() + (CStr) ".rc").Get_String());
         // Set window title
-        WAControlSetText(NewDbhwnd, WAFileRemoveExtension(FileName).Get_String() + (CStr) ".rc *");
-        LastLoadAsDBDir = WAFileGetDirectory(FileName);
+        ControlSetText(NewDbhwnd, FileRemoveExtension(FileName).Get_String() + (CStr) ".rc *");
+        LastLoadAsDBDir = FileGetDirectory(FileName);
         LoadCurrentSel(ChildStruct->hChildCodeMax);
         RefreshSBStat = 1;
         WritePositionInStatus(ChildStruct->hChildCodeMax);
@@ -1854,14 +1854,14 @@ void OpenWorkSpc(CStr FileName)
     if(CheckWorkSpaceFile(FileName) == 0)
     {
         BufString = "Not a " + (CStr) AppTitle + (CStr) " workspace file.";
-        WAMiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
         return;
     }
     // Add the workspace name into recents file list
     // Proceed with files
     for(i = 0; i <= 999; i++)
     {
-        MDIRetVal = WAIniReadKey("Files", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), FileName);
+        MDIRetVal = IniReadKey("Files", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), FileName);
         if(MDIRetVal.Len() == 0) break;
         // Open the file without adding it in recent list
         OpenUnknownFile(MDIRetVal, FALSE);
@@ -1869,7 +1869,7 @@ void OpenWorkSpc(CStr FileName)
     // Now add the workspace file into recents files
     AddRecentFile(FileName, 1, 0);
     // Store last used workspace dir
-    LastWorkSpaceDir = WAFileGetDirectory(FileName);
+    LastWorkSpaceDir = FileGetDirectory(FileName);
 }
 
 // -----------------------------------------------------------------------
@@ -1888,7 +1888,7 @@ int CALLBACK EnumSaveAllChildsInWorkSpace(HWND hWnd, long lParam)
     }
     else
     {
-        if(WAControlIsWindowChild(hWnd) == 1)
+        if(ControlIsWindowChild(hWnd) == 1)
         {
             if(GetWindowLong(hWnd, GWL_USERDATA) != 0)
             {
@@ -1897,7 +1897,7 @@ int CALLBACK EnumSaveAllChildsInWorkSpace(HWND hWnd, long lParam)
                 {
                     if(ChildStruct->RFile->Len() != 0)
                     {
-                        WAIniWriteKey("Files", "File" + (CStr) StringNumberComplement(WorkSpaceNumber, 3).Get_String(), ChildStruct->RFile->Left(ChildStruct->RFile->Len()), WorkSpaceFileName);
+                        IniWriteKey("Files", "File" + (CStr) StringNumberComplement(WorkSpaceNumber, 3).Get_String(), ChildStruct->RFile->Left(ChildStruct->RFile->Len()), WorkSpaceFileName);
                         WorkSpaceNumber++;
                     }
                 }
@@ -1968,11 +1968,11 @@ CStr SaveItAs(HWND hWnd, long RefreshTree, CStr TreeKey, CStr OldTreeFile)
     if(GetUseFileDir() == 1)
     {
         ChildStruct = LoadStructure(hWnd);
-		FName = WAComDlgGetSaveFileName(hMDIform.hWnd, Filters, WAFileGetDirectory(ChildStruct->RFile), CurrentDir);
+		FName = ComDlgGetSaveFileName(hMDIform.hWnd, Filters, FileGetDirectory(ChildStruct->RFile), CurrentDir);
     }
     else
     {
-        FName = WAComDlgGetSaveFileName(hMDIform.hWnd, Filters, LastSaveDir, CurrentDir);
+        FName = ComDlgGetSaveFileName(hMDIform.hWnd, Filters, LastSaveDir, CurrentDir);
     }
     if(FName.Len() != 0)
     {
@@ -1987,7 +1987,7 @@ CStr SaveItAs(HWND hWnd, long RefreshTree, CStr TreeKey, CStr OldTreeFile)
 //                TreePrj.Nodes(SelKey).Text = StringReplace(TreePrj.Nodes(SelKey).Text, OldTreeFile, FName)
 //            End If
 //        End If
-        LastSaveDir = WAFileGetDirectory(FName);
+        LastSaveDir = FileGetDirectory(FName);
     }
     // Check if it's a language that must be updated.
     Update_Language(FName);
@@ -2030,8 +2030,8 @@ LRESULT CALLBACK ClientProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         case CHILD_MSG_CREATED:
             if(lParam != 0)
             {
-                PosInListView = WAListViewItemCount(hWindowsListView);
-                WAListViewAddItem(hWindowsListView, WAControlGetText((HWND) lParam), PosInListView, wParam);
+                PosInListView = ListViewItemCount(hWindowsListView);
+                ListViewAddItem(hWindowsListView, ControlGetText((HWND) lParam), PosInListView, wParam);
                 FoundEmptyHwnd = 0;
                 // Search an empty position in childs handles array
                 for(i = 0; i < ChildshWnd.Amount(); i++)
@@ -2066,7 +2066,7 @@ LRESULT CALLBACK ClientProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     if(lParam == (long) ChildshWnd.Get(i)->Content)
                     {
                         // Remove it from the list
-                        WAListViewDeleteItem(hWindowsListView, ChildsLVPos.Get(i)->Content);
+                        ListViewDeleteItem(hWindowsListView, ChildsLVPos.Get(i)->Content);
                         // And make it an empty entry
                         ChildshWnd.Set(i, 0);
                         ChildsLVPos.Set(i, -1);
@@ -2089,8 +2089,8 @@ LRESULT CALLBACK ClientProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     if(lParam == (long) ChildshWnd.Get(i)->Content)
                     {
                         // Modify datas
-                        if(wParam != 0) WAListViewSetSubItemImage(hWindowsListView, wParam, ChildsLVPos.Get(i)->Content, 0);
-                        WAListViewSetSubItem(hWindowsListView, WAControlGetText((HWND) lParam), ChildsLVPos.Get(i)->Content, 0);
+                        if(wParam != 0) ListViewSetSubItemImage(hWindowsListView, wParam, ChildsLVPos.Get(i)->Content, 0);
+                        ListViewSetSubItem(hWindowsListView, ControlGetText((HWND) lParam), ChildsLVPos.Get(i)->Content, 0);
                         break;
                     }
                 }
@@ -2139,7 +2139,7 @@ void FocusOnActiveChild(void)
 
     if(NbForms != 0)
     {
-        Forehwnd = WAClientGetActiveChild(hMDIform.hClient);
+        Forehwnd = ClientGetActiveChild(hMDIform.hClient);
         CurrentForm = Forehwnd;
         ChildStruct = LoadStructure(Forehwnd);
 		
@@ -2151,7 +2151,7 @@ void FocusOnActiveChild(void)
             if(Forehwnd == ChildshWnd.Get(i)->Content)
             {
                 // Modify datas
-                WAListViewSetItemSel(hWindowsListView, ChildsLVPos.Get(i)->Content);
+                ListViewSetItemSel(hWindowsListView, ChildsLVPos.Get(i)->Content);
                 break;
             }
         }
@@ -2172,7 +2172,7 @@ void SearchModified(HWND hWnd)
 	// Compare project file
     if(ProjectOn)
     {
-		if(WAFileGetWriteTime(ProjectFName, &TmpProjectFDate) != 0)
+		if(FileGetWriteTime(ProjectFName, &TmpProjectFDate) != 0)
 		{
 			if(CompareFileTime(&TmpProjectFDate, &ProjectFDate) > 0)
 			{
@@ -2194,7 +2194,7 @@ void SearchModified(HWND hWnd)
             FRMFilesScheme = FILESSCHEME_EXTERNMODIFIED;
             FRMFilesSelArray.Erase();
 			FRMFilesSelArray.MAdd(ExternModified, 0L);
-            WACreateModalDialog(-1, -1, 402, 244, hMDIform.hWnd, &FRMFilesProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+            CreateModalDialog(-1, -1, 402, 244, hMDIform.hWnd, &FRMFilesProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
             switch(FRMFilesChoice)
             {
                 case IDYES:
@@ -2220,11 +2220,11 @@ void SearchModified(HWND hWnd)
                             if(ModifiedArrayhWnd.Get(i)->Content)
                             {
 								ChildStruct = LoadStructure(ModifiedArrayhWnd.Get(i)->Content);
-								WAFileGetWriteTime(CMGetRealFile(ChildStruct->RFile), ChildStruct->FileDateOpen);
+								FileGetWriteTime(CMGetRealFile(ChildStruct->RFile), ChildStruct->FileDateOpen);
                             }
                             else
                             {
-								WAFileGetWriteTime(ProjectFName, &ProjectFDate);
+								FileGetWriteTime(ProjectFName, &ProjectFDate);
 							}
 						}
                     }
@@ -2236,11 +2236,11 @@ void SearchModified(HWND hWnd)
                         if(ModifiedArrayhWnd.Get(i)->Content)
                         {
 						    ChildStruct = LoadStructure(ModifiedArrayhWnd.Get(i)->Content);
-							WAFileGetWriteTime(CMGetRealFile(ChildStruct->RFile), ChildStruct->FileDateOpen);
+							FileGetWriteTime(CMGetRealFile(ChildStruct->RFile), ChildStruct->FileDateOpen);
                         }
                         else
                         {
-						    WAFileGetWriteTime(ProjectFName, &ProjectFDate);
+						    FileGetWriteTime(ProjectFName, &ProjectFDate);
                         }
 					}
 					break;
@@ -2258,7 +2258,7 @@ int CALLBACK EnumSearchDateModified(HWND hWnd, long lParam)
 	}
 	else
 	{
-        if(WAControlIsWindowChild(hWnd) == 1)
+        if(ControlIsWindowChild(hWnd) == 1)
         {
             if(GetWindowLong(hWnd, GWL_USERDATA) != 0)
             {
@@ -2267,10 +2267,10 @@ int CALLBACK EnumSearchDateModified(HWND hWnd, long lParam)
                 if(ChildStruct->FileLoaded == 1)
                 {
                     // Only check for existing files
-                    if(WAFileExist(CMGetRealFile(ChildStruct->RFile)) != 0)
+                    if(FileExist(CMGetRealFile(ChildStruct->RFile)) != 0)
                     {
                         // Take the new date
-                        if(WAFileGetWriteTime(CMGetRealFile(ChildStruct->RFile), &FileDT) != 0)
+                        if(FileGetWriteTime(CMGetRealFile(ChildStruct->RFile), &FileDT) != 0)
                         {
                             if(CompareFileTime(&FileDT, ChildStruct->FileDateOpen) > 0)
                              {
@@ -2329,7 +2329,7 @@ long CheckLastModified(HWND hWnd, int CheckProject)
             FRMFilesSelArray.Erase();
 			// Add the number of entries corresponding to the number of modified files found.
 			FRMFilesSelArray.MAdd(ExternModified, 0L);
-            WACreateModalDialog(-1, -1, 402, 244, hMDIform.hWnd, &FRMFilesProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+            CreateModalDialog(-1, -1, 402, 244, hMDIform.hWnd, &FRMFilesProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
             switch(FRMFilesChoice)
             {
                 case IDYES:
@@ -2370,7 +2370,7 @@ int CALLBACK EnumSearchModified(HWND hWnd, long lParam)
     }
     else
     {
-        if(WAControlIsWindowChild(hWnd) == 1)
+        if(ControlIsWindowChild(hWnd) == 1)
         {
             if(GetWindowLong(hWnd, GWL_USERDATA) != 0)
             {
@@ -2489,7 +2489,7 @@ void CheckAutoSave(HWND hWnd)
 		FRMFilesSelArray.MAdd(ExternModified, 0L);
         if(VerboseSave == 1)
         {
-            WACreateModalDialog(-1, -1, 402, 244, hMDIform.hWnd, &FRMFilesProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+            CreateModalDialog(-1, -1, 402, 244, hMDIform.hWnd, &FRMFilesProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
         }
         else
         {

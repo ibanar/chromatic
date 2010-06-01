@@ -73,160 +73,160 @@ int *CreateNewControl(HWND hWnd)
     switch(DiagControlNumber)
     {
         case CONTROL_PICTURE:
-			hNewObject = WACreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
-            hNewObjectChild = WACreatePictureBox(0, 0, ObjectWidth, ObjectHeight, hNewObject, ImageListGetIcon(GlobalImageList4, ICON_RES_PICTURE), IMAGE_BITMAP, 0, &ObjectProcChild, WS_TABSTOP | SS_CENTERIMAGE);
+			hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            hNewObjectChild = CreatePictureBox(0, 0, ObjectWidth, ObjectHeight, hNewObject, ImageListGetIcon(GlobalImageList4, ICON_RES_PICTURE), IMAGE_BITMAP, 0, &ObjectProcChild, WS_TABSTOP | SS_CENTERIMAGE);
             NbrProps = 10;
 			break;
 	    case CONTROL_LABEL:
-			hNewObject = WACreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
-            hNewObjectChild = WACreateLabel(0, 0, ObjectWidth, ObjectHeight, hNewObject, "Static text", 0, &ObjectProc, WS_TABSTOP, 0);
+			hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            hNewObjectChild = CreateLabel(0, 0, ObjectWidth, ObjectHeight, hNewObject, "Static text", 0, &ObjectProc, WS_TABSTOP, 0);
             NbrProps = 10;
 			break;
         case CONTROL_TEXTBOX:
-            hNewObject = WACreateTextBox(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "EditBox", 0, &ObjectProc, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_CLIENTEDGE);
+            hNewObject = CreateTextBox(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "EditBox", 0, &ObjectProc, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_CLIENTEDGE);
             NbrProps = 10;
 			break;
         case CONTROL_FRAME:
-			hNewObject = WACreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
-            hNewObjectChild = WACreateLabel(0, 0, ObjectWidth, ObjectHeight, hNewObject, "", 0, &ObjectProcChildChild, WS_TABSTOP, 0);
-            hNewObjectChildChild = WACreateFrame(0, 0, ObjectWidth, ObjectHeight, hNewObjectChild, "GroupBox", 0, &ObjectProcChild, WS_TABSTOP);
+			hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            hNewObjectChild = CreateLabel(0, 0, ObjectWidth, ObjectHeight, hNewObject, "", 0, &ObjectProcChildChild, WS_TABSTOP, 0);
+            hNewObjectChildChild = CreateFrame(0, 0, ObjectWidth, ObjectHeight, hNewObjectChild, "GroupBox", 0, &ObjectProcChild, WS_TABSTOP);
             NbrProps = 10;
 			break;
         case CONTROL_BUTTON:
-            hNewObject = WACreateButton(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "Button", 0, 0, 0, &ObjectProc, WS_TABSTOP, 0);
+            hNewObject = CreateButton(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "Button", 0, 0, 0, &ObjectProc, WS_TABSTOP, 0);
             NbrProps = 10;
 			break;
         case CONTROL_CHECKBOX:
-            hNewObject = WACreateCheckBox(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "CheckBox", 0, &ObjectProc, WS_TABSTOP, 0);
+            hNewObject = CreateCheckBox(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "CheckBox", 0, &ObjectProc, WS_TABSTOP, 0);
             NbrProps = 10;
 			break;
         case CONTROL_RADIOBUTTON:
-            hNewObject = WACreateRadioButton(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "Radio Button", 0, &ObjectProc, WS_TABSTOP);
+            hNewObject = CreateRadioButton(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "Radio Button", 0, &ObjectProc, WS_TABSTOP);
             NbrProps = 10;
 			break;
         case CONTROL_COMBOBOX:
-            hNewObject = WACreateComboBox(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "ComboBox", 0, &ObjectProc, CBS_DROPDOWNLIST | WS_TABSTOP);
-            WAComboBoxAddItem(hNewObject, "ComboBox", -1);
-            WAComboBoxSetIndex(hNewObject, 0);
+            hNewObject = CreateComboBox(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "ComboBox", 0, &ObjectProc, CBS_DROPDOWNLIST | WS_TABSTOP);
+            ComboBoxAddItem(hNewObject, "ComboBox", -1);
+            ComboBoxSetIndex(hNewObject, 0);
             // Correct height
-            ObjectHeight = WAControlHeight(hNewObject);
+            ObjectHeight = ControlHeight(hNewObject);
             NbrProps = 10;
 			break;
         case CONTROL_LISTBOX:
-            hNewObject = WACreateListBox(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, 0, WS_TABSTOP | WS_VSCROLL, WS_EX_CLIENTEDGE);
-            WAListBoxAddItem(hNewObject, "ListBox", -1);
+            hNewObject = CreateListBox(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, 0, WS_TABSTOP | WS_VSCROLL, WS_EX_CLIENTEDGE);
+            ListBoxAddItem(hNewObject, "ListBox", -1);
             NbrProps = 10;
 			break;
         case CONTROL_HSCROLLBAR:
-            hNewObject = WACreateScrollBar(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, WS_TABSTOP);
+            hNewObject = CreateScrollBar(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, WS_TABSTOP);
             NbrProps = 10;
 			break;
         case CONTROL_TREEVIEW:
-            hNewObject = WACreateTreeView(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, 0, &ObjectProc, WS_TABSTOP | TVS_DISABLEDRAGDROP, WS_EX_CLIENTEDGE);
-            WATreeViewSetIndent(hNewObject, 1);
-            WATreeViewAddItem(hNewObject, "Tree Control", TVI_ROOT, 0, 0, 0, 0, 0);
+            hNewObject = CreateTreeView(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, 0, &ObjectProc, WS_TABSTOP | TVS_DISABLEDRAGDROP, WS_EX_CLIENTEDGE);
+            TreeViewSetIndent(hNewObject, 1);
+            TreeViewAddItem(hNewObject, "Tree Control", TVI_ROOT, 0, 0, 0, 0, 0);
             NbrProps = 10;
 			break;
         case CONTROL_LISTVIEW:
-			hNewObject = WACreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
-            hNewObjectChild = WACreateListView(0, 0, ObjectWidth, ObjectHeight, hNewObject, 0, 0, &ObjectProcChild, 0, LVS_REPORT | WS_TABSTOP | LVS_SINGLESEL, WS_EX_CLIENTEDGE);
-            WAListViewAddCol(hNewObjectChild, "List Control", ObjectWidth - 5, 0);
-			WAControlHookWin(WAListViewGetSysHeader(hNewObjectChild), &ObjectProcChildChild);
+			hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            hNewObjectChild = CreateListView(0, 0, ObjectWidth, ObjectHeight, hNewObject, 0, 0, &ObjectProcChild, 0, LVS_REPORT | WS_TABSTOP | LVS_SINGLESEL, WS_EX_CLIENTEDGE);
+            ListViewAddCol(hNewObjectChild, "List Control", ObjectWidth - 5, 0);
+			ControlHookWin(ListViewGetSysHeader(hNewObjectChild), &ObjectProcChildChild);
 			NbrProps = 10;
 			break;
         case CONTROL_SYSTAB:
-			hNewObject = WACreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
-            hNewObjectChild = WACreateSysTab(0, 0, ObjectWidth, ObjectHeight, hNewObject, 0, &ObjectProcChild, 0, WS_TABSTOP);
-            WASysTabAddItem(hNewObjectChild, "Tab Control", 0, 0);
+			hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            hNewObjectChild = CreateSysTab(0, 0, ObjectWidth, ObjectHeight, hNewObject, 0, &ObjectProcChild, 0, WS_TABSTOP);
+            SysTabAddItem(hNewObjectChild, "Tab Control", 0, 0);
             NbrProps = 10;
 			break;
         case CONTROL_PROGRESSBAR:
-            hNewObject = WACreateProgressBar(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, 0, 100, WS_TABSTOP);
+            hNewObject = CreateProgressBar(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, 0, 100, WS_TABSTOP);
             ProgressBarSetRelPos(hNewObject, 100);
             NbrProps = 10;
 			break;
         case CONTROL_TRACKBAR:
-            hNewObject = WACreateTrackBar(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, 0, 10, WS_TABSTOP);
-            WATrackBarSetTicks(hNewObject, 1);
+            hNewObject = CreateTrackBar(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, 0, 10, WS_TABSTOP);
+            TrackBarSetTicks(hNewObject, 1);
             NbrProps = 10;
 			break;
         case CONTROL_UPDOWN:
-            hNewObject = WACreateUpDown(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, WS_TABSTOP);
-            ObjectWidth = WAControlWidth(hNewObject);
-            ObjectHeight = WAControlHeight(hNewObject);
+            hNewObject = CreateUpDown(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, WS_TABSTOP);
+            ObjectWidth = ControlWidth(hNewObject);
+            ObjectHeight = ControlHeight(hNewObject);
             NbrProps = 10;
 			break;
         case CONTROL_XCOMBOBOX:
-			hNewObject = WACreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
-            hNewObjectChild = WACreateExComboBox(0, 0, ObjectWidth, ObjectHeight, hNewObject, "Extended ComboBox", 0, &ObjectProcChild, 0, CBS_DROPDOWN | WS_TABSTOP | WS_DISABLED);
-            ObjectHeight = WAControlHeight(hNewObjectChild);
+			hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            hNewObjectChild = CreateExComboBox(0, 0, ObjectWidth, ObjectHeight, hNewObject, "Extended ComboBox", 0, &ObjectProcChild, 0, CBS_DROPDOWN | WS_TABSTOP | WS_DISABLED);
+            ObjectHeight = ControlHeight(hNewObjectChild);
             MoveWindow(hNewObject, ObjectX, ObjectY, ObjectWidth, ObjectHeight, 1);
 			NbrProps = 10;
 			break;
         case CONTROL_TEXTIP:
-            hNewObject = WACreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
-            hNewObjectChild = WACreateIPBox(0, 0, ObjectWidth, ObjectHeight, hNewObject, 0, 0, &ObjectProc, WS_TABSTOP | WS_DISABLED, 1, IPSerif);
+            hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            hNewObjectChild = CreateIPBox(0, 0, ObjectWidth, ObjectHeight, hNewObject, 0, 0, &ObjectProc, WS_TABSTOP | WS_DISABLED, 1, IPSerif);
             MoveWindow(hNewObjectChild, 0, 0, ObjectWidth, ObjectHeight, 1);
             NbrProps = 10;
 			break;
         case CONTROL_HOTKEY:
-            hNewObject = WACreateFictive(ObjectX, ObjectY, 27, 27, hWnd, 0, &ObjectProc, ImageListGetIcon(GlobalImageList4, ICON_RES_HOTKEY));
+            hNewObject = CreateFictive(ObjectX, ObjectY, 27, 27, hWnd, 0, &ObjectProc, ImageListGetIcon(GlobalImageList4, ICON_RES_HOTKEY));
             ObjectWidth = 27;
             ObjectHeight = 27;
             NbrProps = 10;
 			break;
         case CONTROL_CALENDAR:
-            hNewObject = WACreateMonthCalendar(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, WS_TABSTOP | MCS_DAYSTATE);
+            hNewObject = CreateMonthCalendar(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, WS_TABSTOP | MCS_DAYSTATE);
             NbrProps = 10;
 			break;
         case CONTROL_DATEPICKER:
-            hNewObject = WACreateDateTimePicker(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, WS_TABSTOP);
+            hNewObject = CreateDateTimePicker(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, WS_TABSTOP);
             NbrProps = 10;
 			break;
         case CONTROL_ANIMATION:
-            hNewObject = WACreatePictureBox(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, ImageListGetIcon(GlobalImageList4, ICON_RES_ANIMATION), IMAGE_ICON, 0, &ObjectProc, WS_TABSTOP | SS_CENTERIMAGE);
+            hNewObject = CreatePictureBox(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, ImageListGetIcon(GlobalImageList4, ICON_RES_ANIMATION), IMAGE_ICON, 0, &ObjectProc, WS_TABSTOP | SS_CENTERIMAGE);
             NbrProps = 10;
 			break;
         case CONTROL_TOOLBAR:
-			hNewObject = WACreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
-            hNewObjectChild = WACreateToolBar(0, 0, ObjectWidth, ObjectHeight, hNewObject, 0, 0, -1, &ObjectProcChild, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBS_FIXEDLENGTH | WS_TABSTOP, WS_BORDER);
-            WAToolBarAddButton(hNewObjectChild, "", 0, 0, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+			hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            hNewObjectChild = CreateToolBar(0, 0, ObjectWidth, ObjectHeight, hNewObject, 0, 0, -1, &ObjectProcChild, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBS_FIXEDLENGTH | WS_TABSTOP, WS_BORDER);
+            ToolBarAddButton(hNewObjectChild, "", 0, 0, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
             NbrProps = 10;
 			break;
         case CONTROL_STATUSBAR:
-            hNewObject = WACreateStatusBar("StatusBar", STATUSBAR_PARTSUNKEN, hWnd, 0, &ObjectProc, WS_BORDER);
-            ObjectX = WAControlLeft(hNewObject);
-            ObjectY = WAControlTop(hNewObject);
-            ObjectWidth = WAControlWidth(hNewObject);
-            ObjectHeight = WAControlHeight(hNewObject);
+            hNewObject = CreateStatusBar("StatusBar", STATUSBAR_PARTSUNKEN, hWnd, 0, &ObjectProc, WS_BORDER);
+            ObjectX = ControlLeft(hNewObject);
+            ObjectY = ControlTop(hNewObject);
+            ObjectWidth = ControlWidth(hNewObject);
+            ObjectHeight = ControlHeight(hNewObject);
             NbrProps = 10;
 			break;
         case CONTROL_RICHTEXT:
-            hNewObject = WACreateRichTextBox(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "Rich EditBox", 0, &ObjectProc, WS_TABSTOP | ES_AUTOHSCROLL, 1);
+            hNewObject = CreateRichTextBox(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "Rich EditBox", 0, &ObjectProc, WS_TABSTOP | ES_AUTOHSCROLL, 1);
             NbrProps = 10;
 			break;
         case CONTROL_PAGER:
-			hNewObject = WACreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
-            hNewObjectChild = WACreatePager(0, 0, ObjectWidth, ObjectHeight, hNewObject, 0, 0, PGS_HORZ);
+			hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            hNewObjectChild = CreatePager(0, 0, ObjectWidth, ObjectHeight, hNewObject, 0, 0, PGS_HORZ);
             NbrProps = 10;
 			break;
         case CONTROL_HEADER:
-            hNewObject = WACreateHeader(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "Header", 0, &ObjectProc, WS_TABSTOP | HDS_BUTTONS);
+            hNewObject = CreateHeader(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "Header", 0, &ObjectProc, WS_TABSTOP | HDS_BUTTONS);
             WAHeaderAddItem(hNewObject, "Header", ObjectWidth / 2, 0, 0);
             NbrProps = 10;
 			break;
         case CONTROL_REBAR:
-			hNewObject = WACreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
-            hNewObjectChild = WACreateRebar(0, 0, ObjectWidth, ObjectHeight, hNewObject, &ObjectProcChild, 0, WS_TABSTOP | RBS_BANDBORDERS);
-			//hNewObjectChildChild = WACreateContainer(0, 0, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProcChildChild);
-            WARebarAddBand(hNewObjectChild, 0, "Rebar", ObjectHeight, RBBS_GRIPPERALWAYS, ObjectWidth);
-            WARebarBandVisible(hNewObjectChild, 0, 1);
-		//	WARebarResize(hNewObjectChild);
+			hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            hNewObjectChild = CreateRebar(0, 0, ObjectWidth, ObjectHeight, hNewObject, &ObjectProcChild, 0, WS_TABSTOP | RBS_BANDBORDERS);
+			//hNewObjectChildChild = CreateContainer(0, 0, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProcChildChild);
+            RebarAddBand(hNewObjectChild, 0, "Rebar", ObjectHeight, RBBS_GRIPPERALWAYS, ObjectWidth);
+            RebarBandVisible(hNewObjectChild, 0, 1);
+		//	RebarResize(hNewObjectChild);
 			Flags = OBJECT_FLAG_REBAR;
 	        NbrProps = 10;
 			break;
         case CONTROL_TOOLTIP:
-            hNewObject = WACreateFictive(ObjectX, ObjectY, 27, 27, hWnd, 0, &ObjectProc, ImageListGetIcon(GlobalImageList4, ICON_RES_TOOLTIP));
+            hNewObject = CreateFictive(ObjectX, ObjectY, 27, 27, hWnd, 0, &ObjectProc, ImageListGetIcon(GlobalImageList4, ICON_RES_TOOLTIP));
             ObjectWidth = 27;
             ObjectHeight = 27;
             NbrProps = 10;
@@ -263,7 +263,7 @@ void CaptureCtrl(HWND hWnd, int Shift)
 	Stored_Move_Rect = GetRectSelectionFromControl(hWnd);
 	*GetCaptureStatusFromControl(hWnd) = TRUE;
 
-	WAControlRepaint(hWnd);
+	ControlRepaint(hWnd);
 	HDC Move_HDC = GetDC(Obj_Parent);
 	DrawFocusRect(Move_HDC, &Move_Rect);
 	ReleaseDC(Obj_Parent, Move_HDC);
@@ -441,14 +441,14 @@ void ReleaseCtrl(HWND hWnd, int Cancel)
 				BringWindowToTop(GripDat->TopBox);
 				BringWindowToTop(GripDat->TopLeftBox);
 				BringWindowToTop(GripDat->TopRightBox);
-				WAControlRepaint(GripDat->BottomBox);
-				WAControlRepaint(GripDat->BottomLeftBox);
-				WAControlRepaint(GripDat->BottomRightBox);
-				WAControlRepaint(GripDat->LeftBox);
-				WAControlRepaint(GripDat->RightBox);
-				WAControlRepaint(GripDat->TopBox);
-				WAControlRepaint(GripDat->TopLeftBox);
-				WAControlRepaint(GripDat->TopRightBox);
+				ControlRepaint(GripDat->BottomBox);
+				ControlRepaint(GripDat->BottomLeftBox);
+				ControlRepaint(GripDat->BottomRightBox);
+				ControlRepaint(GripDat->LeftBox);
+				ControlRepaint(GripDat->RightBox);
+				ControlRepaint(GripDat->TopBox);
+				ControlRepaint(GripDat->TopLeftBox);
+				ControlRepaint(GripDat->TopRightBox);
 			}
 			ReleaseCapture();
 		}
@@ -462,7 +462,7 @@ LRESULT CALLBACK ObjectProcChildChild(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 	switch(uMsg)
 	{
 		case WM_SETCURSOR:
-            WACursorSetNormal();
+            CursorSetNormal();
             return(TRUE);
         case WM_SETFOCUS:
         case WM_KILLFOCUS:
@@ -520,7 +520,7 @@ LRESULT CALLBACK ObjectProcChild(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 	switch(uMsg)
 	{
         case WM_SETCURSOR:
-            WACursorSetNormal();
+            CursorSetNormal();
             return(TRUE);
         case WM_SETFOCUS:
         case WM_KILLFOCUS:
@@ -582,7 +582,7 @@ LRESULT CALLBACK ObjectProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	switch(uMsg)
 	{
         case WM_SETCURSOR:
-            WACursorSetNormal();
+            CursorSetNormal();
             return(TRUE);
         case WM_SETFOCUS:
         case WM_KILLFOCUS:
@@ -629,14 +629,14 @@ LRESULT CALLBACK ObjectProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			ReleaseCtrl(hWnd, TRUE);
             return(0);
         case WM_NOTIFY:
-            switch(WAControlGetNotifiedMsg(lParam))
+            switch(ControlGetNotifiedMsg(lParam))
             {
                 // Resize Pagers
                 case PGN_CALCSIZE:
-                    hPager = WAControlGetNotifiedhWnd(lParam);
-                    MySize.cx = WAControlWidth(hPager);
-                    MySize.cy = WAControlHeight(hPager);
-                    WAPagerDisplaySetSize((LPNMPGCALCSIZE) lParam, &MySize);
+                    hPager = ControlGetNotifiedhWnd(lParam);
+                    MySize.cx = ControlWidth(hPager);
+                    MySize.cy = ControlHeight(hPager);
+                    PagerDisplaySetSize((LPNMPGCALCSIZE) lParam, &MySize);
                     return(0);
 				case LVN_COLUMNCLICK:
 					return(0);
@@ -658,12 +658,12 @@ CStr GetMenusIDs(void)
     BufString = "(None)";
 
     // Save menus
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewMenus);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewMenus);
     i = 0;
     while(TreeViewChildEntry != 0)
     {
         BufString = BufString + (CStr) "|" + (CStr) GetFileNameFromTreeView(TreeViewChildEntry).Get_String();
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         i++;
     }
     ReturnValue = BufString;
@@ -899,7 +899,7 @@ void SelectControl(HWND hWnd, long Left, long Top, long Width, long Height)
 	LPCTRLSELECTION NewSelection;
 
 	// Create the corresponding gripbox
-	hGrip = WACreateGripBox(Left - 8, Top - 8, Width + 16, Height + 16, GetParent(hWnd), 0, 0x6E5920, 0);
+	hGrip = CreateGripBox(Left - 8, Top - 8, Width + 16, Height + 16, GetParent(hWnd), 0, 0x6E5920, 0);
 	// Create a selection for the newly created control
 	NewSelection = (LPCTRLSELECTION) calloc(sizeof(CTRLSELECTION), 1);
 	NewSelection->hGrip = hGrip;
@@ -938,7 +938,7 @@ void ResizeControlFromGripBox(LPGRIPBOXDAT GripDats, LPRECT NewSizeRect)
 		    MoveWindow(Resize_hWndChildChild, 0, 0,
 		              (NewSizeRect->right - NewSizeRect->left), (NewSizeRect->bottom - NewSizeRect->top), 1);
         }
-		//if(GetControlDatas(Resize_hWnd, OBJECT_FLAGS) & OBJECT_FLAG_REBAR) WARebarResize(Resize_hWndChild);
+		//if(GetControlDatas(Resize_hWnd, OBJECT_FLAGS) & OBJECT_FLAG_REBAR) RebarResize(Resize_hWndChild);
 	}
 }
 

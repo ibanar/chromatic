@@ -2,12 +2,12 @@
 // Standard starter file for windows applications
 // ------------------------------------------
 // buildblock RELEASE
-//	CAPT "[BINDIR]\gcc.exe" -c -s -mno-cygwin -I"[INCLUDEDIR]" -L"[LIBDIR]" "%2"
-//	CAPT "[BINDIR]\gcc.exe" -o "%1.exe" -s -mwindows -mno-cygwin -fnative-struct -I"[INCLUDEDIR]" -L"[LIBDIR]" "%1.o"
+//  CAPT "[BINDIR]\gcc.exe" -c -s -mno-cygwin -I"[INCLUDEDIR]" -L"[LIBDIR]" "%2"
+//  CAPT "[BINDIR]\gcc.exe" -o "%1.exe" -s -mwindows -mno-cygwin -fnative-struct -I"[INCLUDEDIR]" -L"[LIBDIR]" "%1.o"
 // buildblockend
 // buildblock DEBUG
-//	CAPT "[BINDIR]\gcc.exe" -c -gcoff -mno-cygwin -I"[INCLUDEDIR]" -L"[LIBDIR]" "%2"
-//	CAPT "[BINDIR]\gcc.exe" -o "%1.exe" -mwindows -mno-cygwin -fnative-struct -I"[INCLUDEDIR]" -L"[LIBDIR]" "%1.o"
+//  CAPT "[BINDIR]\gcc.exe" -c -gcoff -mno-cygwin -I"[INCLUDEDIR]" -L"[LIBDIR]" "%2"
+//  CAPT "[BINDIR]\gcc.exe" -o "%1.exe" -mwindows -mno-cygwin -fnative-struct -I"[INCLUDEDIR]" -L"[LIBDIR]" "%1.o"
 // buildblockend
 
 // --------------- Includes

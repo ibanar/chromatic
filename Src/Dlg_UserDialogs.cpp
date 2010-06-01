@@ -193,8 +193,8 @@ void CreateUserDialog(void)
 {
     long EntryAccCount = 0;
 
-    EntryAccCount = WATreeViewGetChildItemsCount(hTreeView, hTreeViewDialogs);
-    while(WATreeViewSearchChildPartialText(hTreeView, hTreeViewDialogs, "DIALOG_" + (CStr) EntryAccCount) != -1)
+    EntryAccCount = TreeViewGetChildItemsCount(hTreeView, hTreeViewDialogs);
+    while(TreeViewSearchChildPartialText(hTreeView, hTreeViewDialogs, "DIALOG_" + (CStr) EntryAccCount) != -1)
     {
         EntryAccCount++;
     }
@@ -205,7 +205,7 @@ void CreateUserDialog(void)
     CurrentWidth = ((ScreenWidth() * 98) / 100) - CurrentLeft;
     CurrentHeight = ((ScreenHeight() * 70) / 100) - GetSystemMetrics(SM_CYCAPTION) - GetSystemMetrics(SM_CYBORDER);
 	CurrentTop = (ScreenHeight() - ((ScreenHeight() * 70) / 100)) / 2;
-    WACreateModalDialog(CurrentLeft, CurrentTop, CurrentWidth, CurrentHeight, hMDIform.hWnd, &FRMUserDiagProc, WS_BORDER | WS_CAPTION | WS_SYSMENU | WS_MAXIMIZEBOX | WS_SIZEBOX | DS_ABSALIGN, 0);
+    CreateModalDialog(CurrentLeft, CurrentTop, CurrentWidth, CurrentHeight, hMDIform.hWnd, &FRMUserDiagProc, WS_BORDER | WS_CAPTION | WS_SYSMENU | WS_MAXIMIZEBOX | WS_SIZEBOX | DS_ABSALIGN, 0);
 }
 
 // -----------------------------------------------------------------------
@@ -232,45 +232,45 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             if(hSubEditBrush != 0) DeleteObject(hSubEditBrush);
             CreateSubEditBrush(GetSysColor(COLOR_WINDOW));
             CreateGrid(hwndDlg);
-			ResizeFromToolbar(FRMDiagTBhwnd, hDiagToolBar, WAControlLeft(FRMDiagTBhwnd), WAControlTop(FRMDiagTBhwnd), 15, 2, Tab_DiagTools);
-			ResizeFromToolbar(FRMDiagToolhwnd, hDiagTools, WAControlLeft(FRMDiagToolhwnd), WAControlTop(FRMDiagToolhwnd), 18, 1, Tab_Tools);
-			WAControlRefresh(FRMDiagTBhwnd);
-			WAControlRefresh(FRMDiagToolhwnd);
+			ResizeFromToolbar(FRMDiagTBhwnd, hDiagToolBar, ControlLeft(FRMDiagTBhwnd), ControlTop(FRMDiagTBhwnd), 15, 2, Tab_DiagTools);
+			ResizeFromToolbar(FRMDiagToolhwnd, hDiagTools, ControlLeft(FRMDiagToolhwnd), ControlTop(FRMDiagToolhwnd), 18, 1, Tab_Tools);
+			ControlRefresh(FRMDiagTBhwnd);
+			ControlRefresh(FRMDiagToolhwnd);
 			break;
         case WM_INITDIALOG:
             CurrentWidth = 390 + 8;
             CurrentHeight = 260 + 27;
             FRMDiaghwnd = hwndDlg;
-            WAControlSetText(hwndDlg, DialogTitle);
+            ControlSetText(hwndDlg, DialogTitle);
             CreateSubEditBrush(GetSysColor(COLOR_WINDOW));
             FillPropertiesStrings();
 
             hGridMenu = CreatePopupMenu();
-            AppendMenu(hGridMenu, MF_STRING, GRID_IDBASE + GRID_TOGGLE_ID, "Show grid");
-            WAMenuSetDefaultItem(hGridMenu, 0);
-            AppendMenu(hGridMenu, MF_SEPARATOR, (UINT) -1, "-");
-            AppendMenu(hGridMenu, MF_STRING, GRID_IDBASE + GRID_SETTINGS_ID, "Grid settings...");
+            MenuAddString(hGridMenu, "Show grid", GRID_IDBASE + GRID_TOGGLE_ID, TRUE);
+            MenuSetDefaultItem(hGridMenu, 0);
+            MenuAddSeparator(hGridMenu);
+            MenuAddString(hGridMenu, "Grid settings...", GRID_IDBASE + GRID_SETTINGS_ID, TRUE);
             ToolbarMode = 0;
             // Read toolbar settings
-            PrimToolbarMode = WAIniReadKey("Layout", "DialogToolbar", MainIniFile);
+            PrimToolbarMode = IniReadKey("Layout", "DialogToolbar", MainIniFile);
             if(PrimToolbarMode.Len() != 0) if(strcmp(PrimToolbarMode.Get_String(), "1") == 0) ToolbarMode = 1;
             PropertiesMode = 0;
             // Read properties settings
-            PrimPropertiesMode = WAIniReadKey("Layout", "DialogProperties", MainIniFile);
+            PrimPropertiesMode = IniReadKey("Layout", "DialogProperties", MainIniFile);
             if(PrimPropertiesMode.Len() != 0) if(strcmp(PrimPropertiesMode.Get_String(), "1") == 0) PropertiesMode = 1;
             GridMode = 0;
             GridAlign = FALSE;
             GridXLarg = 16;
             GridYLong = 16;
             // Read grid settings
-            PrimGridMode = WAIniReadKey("Layout", "DialogGrid", MainIniFile);
+            PrimGridMode = IniReadKey("Layout", "DialogGrid", MainIniFile);
             if(PrimGridMode.Len() != 0) if(strcmp(PrimGridMode.Get_String(), "1") == 0) GridMode = 1;
-            PrimGridAlign = WAIniReadKey("Layout", "AlignGrid", MainIniFile);
+            PrimGridAlign = IniReadKey("Layout", "AlignGrid", MainIniFile);
             if(PrimGridAlign.Len() != 0) if(strcmp(PrimGridAlign.Get_String(), "1") == 0) GridAlign = TRUE;
-            PrimGridWidth = WAIniReadKey("Layout", "GridWidth", MainIniFile);
+            PrimGridWidth = IniReadKey("Layout", "GridWidth", MainIniFile);
 			if(PrimGridWidth.Get_String() != 0) GridXLarg = PrimGridWidth.Get_Long();
             if(GridXLarg == 0) GridXLarg = 16;
-            PrimGridHeight = WAIniReadKey("Layout", "GridHeight", MainIniFile);
+            PrimGridHeight = IniReadKey("Layout", "GridHeight", MainIniFile);
             if(PrimGridHeight.Len() != 0) GridYLong = PrimGridHeight.Get_Long();
             if(GridYLong == 0) GridYLong = 16;
             PropertiesXPos = 10;
@@ -279,16 +279,16 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             PropertiesYLong = (ScreenHeight() * 70) / 100;
             ToolbarXPos = 10;
             ToolbarYPos = PropertiesYPos - 82;
-            if(ToolbarMode == 1) FRMDiagTBhwnd = WACreateDialog(ToolbarXPos, ToolbarYPos, 398 + 60, 82, hwndDlg, 0, 0, "Controls", &FrmUserDiagToolBarInitProc, &FrmUserDiagToolBarProc, WS_EX_TOOLWINDOW, WS_SYSMENU, SW_SHOW);
-            FRMDiagToolhwnd = WACreateDialog(10, PropertiesYLong + PropertiesYPos, 437, 47, hwndDlg, 0, 0, "Tools", &FrmUserDiagToolsInitProc, &FrmUserDiagToolsProc, WS_EX_TOOLWINDOW, 0, SW_SHOW);
+            if(ToolbarMode == 1) FRMDiagTBhwnd = CreateNonModalDialog(ToolbarXPos, ToolbarYPos, 398 + 60, 82, hwndDlg, 0, 0, "Controls", &FrmUserDiagToolBarInitProc, &FrmUserDiagToolBarProc, WS_EX_TOOLWINDOW, WS_SYSMENU, SW_SHOW);
+            FRMDiagToolhwnd = CreateNonModalDialog(10, PropertiesYLong + PropertiesYPos, 437, 47, hwndDlg, 0, 0, "Tools", &FrmUserDiagToolsInitProc, &FrmUserDiagToolsProc, WS_EX_TOOLWINDOW, 0, SW_SHOW);
 			
 			ResizeFromToolbar(FRMDiagTBhwnd, hDiagToolBar, ToolbarXPos, ToolbarYPos, 15, 2, Tab_DiagTools);
 			ResizeFromToolbar(FRMDiagToolhwnd, hDiagTools, 10, PropertiesYLong + PropertiesYPos, 18, 1, Tab_Tools);
 
-            if(PropertiesMode == 1) FRMDiagPropshwnd = WACreateDialog(PropertiesXPos, PropertiesYPos, PropertiesXLarg, PropertiesYLong, hwndDlg, 0, 0, "Properties", &FrmUserDiagPropsInitProc, &FrmUserDiagPropsProc, WS_EX_TOOLWINDOW, WS_SYSMENU | WS_SIZEBOX, SW_SHOW);
+            if(PropertiesMode == 1) FRMDiagPropshwnd = CreateNonModalDialog(PropertiesXPos, PropertiesYPos, PropertiesXLarg, PropertiesYLong, hwndDlg, 0, 0, "Properties", &FrmUserDiagPropsInitProc, &FrmUserDiagPropsProc, WS_EX_TOOLWINDOW, WS_SYSMENU | WS_SIZEBOX, SW_SHOW);
             CreateGrid(hwndDlg);
             // Obtain a font for IPBox
-            IPSerif = WAGDIObtainFont("MS Sans Serif", 8, hwndDlg, 0, 0);
+            IPSerif = GDIObtainFont("MS Sans Serif", 8, hwndDlg, 0, 0);
             FreezeTimer = 1;
             return(1);
 //        case WM_PAINT:
@@ -314,8 +314,8 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 				// Remove all selections if a control is about to be
 				// created.
                 UnSelectControlsList();
-				DiagX1 = WAControlGetXMousePos(lParam);
-                DiagY1 = WAControlGetYMousePos(lParam);
+				DiagX1 = ControlGetXMousePos(lParam);
+                DiagY1 = ControlGetYMousePos(lParam);
                 GetClientRect(hwndDlg, &CRect);
                 if(DiagX1 > CRect.right) DiagX1 = CRect.right;
                 if(DiagY1 > CRect.bottom) DiagY1 = CRect.bottom;
@@ -339,8 +339,8 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             {
                 if(DiagInDrag == 1)
                 {
-                    DiagX2 = WAControlGetXMousePos(lParam);
-                    DiagY2 = WAControlGetYMousePos(lParam);
+                    DiagX2 = ControlGetXMousePos(lParam);
+                    DiagY2 = ControlGetYMousePos(lParam);
 					GetClientRect(hwndDlg, &CRect);
                     if(DiagX2 > CRect.right) DiagX2 = CRect.right;
                     if(DiagY2 > CRect.bottom) DiagY2 = CRect.bottom;
@@ -370,8 +370,8 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             if(DiagInDrag == 1)
             {
                 DiagInDrag = 0;
-                DiagX2 = WAControlGetXMousePos(lParam);
-                DiagY2 = WAControlGetYMousePos(lParam);
+                DiagX2 = ControlGetXMousePos(lParam);
+                DiagY2 = ControlGetYMousePos(lParam);
                 GetClientRect(hwndDlg, &CRect);
                 if(DiagX2 > CRect.right) DiagX2 = CRect.right;
                 if(DiagY2 > CRect.bottom) DiagY2 = CRect.bottom;
@@ -391,8 +391,8 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             if(DiagInDrag == 1)
             {
                 DiagInDrag = 0;
-                DiagX2 = WAControlGetXMousePos(lParam);
-                DiagY2 = WAControlGetYMousePos(lParam);
+                DiagX2 = ControlGetXMousePos(lParam);
+                DiagY2 = ControlGetYMousePos(lParam);
                 GetClientRect(hwndDlg, &CRect);
                 if(DiagX2 > CRect.right) DiagX2 = CRect.right;
                 if(DiagY2 > CRect.bottom) DiagY2 = CRect.bottom;
@@ -509,9 +509,9 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             UnSelectControlsList();
 			SaveDialog();
 			EraseControlsList();
-			WACursorSetNormal();
-            WAControlClose(FRMDiagToolhwnd);
-            WAControlClose(FRMDiagTBhwnd);
+			CursorSetNormal();
+            ControlClose(FRMDiagToolhwnd);
+            ControlClose(FRMDiagTBhwnd);
             FreezeTimer = 0;
             EndDialog(hwndDlg, 0);
 			break;
@@ -523,39 +523,39 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 // Toolbar form init
 void CALLBACK FrmUserDiagToolBarInitProc(HWND hWnd)
 {
-    hDiagToolBar = WACreateToolBar(1, 1, 460, 66, hWnd, GlobalImageList4, 0, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | TBSTYLE_WRAPABLE | WS_TABSTOP, 0);
-	WAToolBarAddButton(hDiagToolBar, "", DIALOGCURSOR, ICON_RES_CURSOR, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGPICTURE, ICON_RES_PICTURE, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGLABEL, ICON_RES_LABEL, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGTEXTBOX, ICON_RES_TEXT, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGFRAME, ICON_RES_FRAME, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGBUTTON, ICON_RES_BUTTON, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGCHECKBOX, ICON_RES_CHECKBOX, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGRADIOBUTTON, ICON_RES_RADIOBUTTON, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGCOMBOBOX, ICON_RES_COMBOBOX, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGLISTBOX, ICON_RES_LISTBOX, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGHSCROLLBAR, ICON_RES_HSCROLLBAR, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGTREEVIEW, ICON_RES_TREEVIEW, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGLISTVIEW, ICON_RES_LISTVIEW, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGSYSTAB, ICON_RES_SYSTAB, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGPROGRESSBAR, ICON_RES_PROGRESSBAR, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGTRACKBAR, ICON_RES_SLIDER, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGSPIN, ICON_RES_SPIN, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGXCOMBOBOX, ICON_RES_XCOMBOBOX, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGTEXTIP, ICON_RES_TEXTIP, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGHOTKEY, ICON_RES_HOTKEY, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGCALENDAR, ICON_RES_CALENDAR, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGDATEPICKER, ICON_RES_DATEPICKER, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGANIMATION, ICON_RES_ANIMATION, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGTOOLBAR, ICON_RES_TOOLBAR, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGSTATUSBAR, ICON_RES_STATUSBAR, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGRICHTEXT, ICON_RES_RICHTEXT, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGPAGER, ICON_RES_PAGER, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGHEADER, ICON_RES_HEADER, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGREBAR, ICON_RES_REBAR, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagToolBar, "", DIALOGTOOLTIP, ICON_RES_TOOLTIP, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    hDiagToolBar = CreateToolBar(1, 1, 460, 66, hWnd, GlobalImageList4, 0, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | TBSTYLE_WRAPABLE | WS_TABSTOP, 0);
+	ToolBarAddButton(hDiagToolBar, "", DIALOGCURSOR, ICON_RES_CURSOR, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGPICTURE, ICON_RES_PICTURE, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGLABEL, ICON_RES_LABEL, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGTEXTBOX, ICON_RES_TEXT, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGFRAME, ICON_RES_FRAME, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGBUTTON, ICON_RES_BUTTON, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGCHECKBOX, ICON_RES_CHECKBOX, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGRADIOBUTTON, ICON_RES_RADIOBUTTON, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGCOMBOBOX, ICON_RES_COMBOBOX, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGLISTBOX, ICON_RES_LISTBOX, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGHSCROLLBAR, ICON_RES_HSCROLLBAR, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGTREEVIEW, ICON_RES_TREEVIEW, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGLISTVIEW, ICON_RES_LISTVIEW, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGSYSTAB, ICON_RES_SYSTAB, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGPROGRESSBAR, ICON_RES_PROGRESSBAR, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGTRACKBAR, ICON_RES_SLIDER, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGSPIN, ICON_RES_SPIN, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGXCOMBOBOX, ICON_RES_XCOMBOBOX, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGTEXTIP, ICON_RES_TEXTIP, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGHOTKEY, ICON_RES_HOTKEY, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGCALENDAR, ICON_RES_CALENDAR, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGDATEPICKER, ICON_RES_DATEPICKER, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGANIMATION, ICON_RES_ANIMATION, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGTOOLBAR, ICON_RES_TOOLBAR, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGSTATUSBAR, ICON_RES_STATUSBAR, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGRICHTEXT, ICON_RES_RICHTEXT, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGPAGER, ICON_RES_PAGER, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGHEADER, ICON_RES_HEADER, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGREBAR, ICON_RES_REBAR, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGTOOLTIP, ICON_RES_TOOLTIP, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
     // Edit mode off
-    WAToolBarSetButtonChecked(hDiagToolBar, DIALOGCURSOR, 1);
+    ToolBarSetButtonChecked(hDiagToolBar, DIALOGCURSOR, 1);
     SetDialogEditModeOff();
 }
 
@@ -694,110 +694,110 @@ LRESULT CALLBACK FrmUserDiagToolBarProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
             }
 			break;
 		case WM_NOTIFY:
-            switch(WAControlGetNotifiedMsg(lParam))
+            switch(ControlGetNotifiedMsg(lParam))
             {
                 case TTN_NEEDTEXT:
-                    switch(WAControlGetNotifiedID(lParam))
+                    switch(ControlGetNotifiedID(lParam))
                     {
                         case DIALOGCURSOR:
-                            WAToolBarDisplayToolTip("Pointer", lParam);
+                            ToolBarDisplayToolTip("Pointer", lParam);
                             return(0);
                         case DIALOGPICTURE:
-                            WAToolBarDisplayToolTip("Picture", lParam);
+                            ToolBarDisplayToolTip("Picture", lParam);
                             return(0);
                         case DIALOGLABEL:
-                            WAToolBarDisplayToolTip("Static Text", lParam);
+                            ToolBarDisplayToolTip("Static Text", lParam);
                             return(0);
                         case DIALOGTEXTBOX:
-                            WAToolBarDisplayToolTip("EditBox", lParam);
+                            ToolBarDisplayToolTip("EditBox", lParam);
                             return(0);
                         case DIALOGFRAME:
-                            WAToolBarDisplayToolTip("GroupBox", lParam);
+                            ToolBarDisplayToolTip("GroupBox", lParam);
                             return(0);
                         case DIALOGBUTTON:
-                            WAToolBarDisplayToolTip("Button", lParam);
+                            ToolBarDisplayToolTip("Button", lParam);
                             return(0);
                         case DIALOGCHECKBOX:
-                            WAToolBarDisplayToolTip("CheckBox", lParam);
+                            ToolBarDisplayToolTip("CheckBox", lParam);
                             return(0);
                         case DIALOGRADIOBUTTON:
-                            WAToolBarDisplayToolTip("Radio Button", lParam);
+                            ToolBarDisplayToolTip("Radio Button", lParam);
                             return(0);
                         case DIALOGCOMBOBOX:
-                            WAToolBarDisplayToolTip("ComboBox", lParam);
+                            ToolBarDisplayToolTip("ComboBox", lParam);
                             return(0);
                         case DIALOGLISTBOX:
-                            WAToolBarDisplayToolTip("ListBox", lParam);
+                            ToolBarDisplayToolTip("ListBox", lParam);
                             return(0);
                         case DIALOGHSCROLLBAR:
-                            WAToolBarDisplayToolTip("ScrollBar", lParam);
+                            ToolBarDisplayToolTip("ScrollBar", lParam);
                             return(0);
                         case DIALOGTREEVIEW:
-                            WAToolBarDisplayToolTip("Tree Control", lParam);
+                            ToolBarDisplayToolTip("Tree Control", lParam);
                             return(0);
                         case DIALOGLISTVIEW:
-                            WAToolBarDisplayToolTip("List Control", lParam);
+                            ToolBarDisplayToolTip("List Control", lParam);
                             return(0);
                         case DIALOGSYSTAB:
-                            WAToolBarDisplayToolTip("Tab Control", lParam);
+                            ToolBarDisplayToolTip("Tab Control", lParam);
                             return(0);
                         case DIALOGPROGRESSBAR:
-                            WAToolBarDisplayToolTip("ProgressBar", lParam);
+                            ToolBarDisplayToolTip("ProgressBar", lParam);
                             return(0);
                         case DIALOGTRACKBAR:
-                            WAToolBarDisplayToolTip("TrackBar", lParam);
+                            ToolBarDisplayToolTip("TrackBar", lParam);
                             return(0);
                         case DIALOGSPIN:
-                            WAToolBarDisplayToolTip("Up/Down", lParam);
+                            ToolBarDisplayToolTip("Up/Down", lParam);
                             return(0);
                         case DIALOGXCOMBOBOX:
-                            WAToolBarDisplayToolTip("Extended ComboBox", lParam);
+                            ToolBarDisplayToolTip("Extended ComboBox", lParam);
                             return(0);
                         case DIALOGTEXTIP:
-                            WAToolBarDisplayToolTip("IP Address", lParam);
+                            ToolBarDisplayToolTip("IP Address", lParam);
                             return(0);
                         case DIALOGHOTKEY:
-                            WAToolBarDisplayToolTip("Hot Key", lParam);
+                            ToolBarDisplayToolTip("Hot Key", lParam);
                             return(0);
                         case DIALOGCALENDAR:
-                            WAToolBarDisplayToolTip("Month Calendar", lParam);
+                            ToolBarDisplayToolTip("Month Calendar", lParam);
                             return(0);
                         case DIALOGDATEPICKER:
-                            WAToolBarDisplayToolTip("Date/Time Picker", lParam);
+                            ToolBarDisplayToolTip("Date/Time Picker", lParam);
                             return(0);
                         case DIALOGANIMATION:
-                            WAToolBarDisplayToolTip("Animate", lParam);
+                            ToolBarDisplayToolTip("Animate", lParam);
                             return(0);
                         case DIALOGTOOLBAR:
-                            WAToolBarDisplayToolTip("ToolBar", lParam);
+                            ToolBarDisplayToolTip("ToolBar", lParam);
                             return(0);
                         case DIALOGSTATUSBAR:
-                            WAToolBarDisplayToolTip("StatusBar", lParam);
+                            ToolBarDisplayToolTip("StatusBar", lParam);
                             return(0);
                         case DIALOGRICHTEXT:
-                            WAToolBarDisplayToolTip("Rich EditBox", lParam);
+                            ToolBarDisplayToolTip("Rich EditBox", lParam);
                             return(0);
                         case DIALOGPAGER:
-                            WAToolBarDisplayToolTip("Pager", lParam);
+                            ToolBarDisplayToolTip("Pager", lParam);
                             return(0);
                         case DIALOGHEADER:
-                            WAToolBarDisplayToolTip("Header", lParam);
+                            ToolBarDisplayToolTip("Header", lParam);
                             return(0);
                         case DIALOGREBAR:
-                            WAToolBarDisplayToolTip("ReBar", lParam);
+                            ToolBarDisplayToolTip("ReBar", lParam);
                             return(0);
                         case DIALOGTOOLTIP:
-                            WAToolBarDisplayToolTip("ToolTip", lParam);
+                            ToolBarDisplayToolTip("ToolTip", lParam);
                             return(0);
                     }
             }
 			break;
         case WM_CLOSE:
-            ToolbarXPos = WAControlLeft(hWnd);
-            ToolbarYPos = WAControlTop(hWnd);
+            ToolbarXPos = ControlLeft(hWnd);
+            ToolbarYPos = ControlTop(hWnd);
 			break;
         case WM_DESTROY:
-            WAToolBarSetButtonChecked(hDiagTools, DIALOGTOOLS_TOOLBAR, 0);
+            ToolBarSetButtonChecked(hDiagTools, DIALOGTOOLS_TOOLBAR, 0);
             return(0);
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
@@ -807,30 +807,30 @@ LRESULT CALLBACK FrmUserDiagToolBarProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 // Tools form init
 void CALLBACK FrmUserDiagToolsInitProc(HWND hWnd)
 {
-    hDiagTools = WACreateToolBar(1, 1, 429, 45, hWnd, GlobalImageList5, 0, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, TBSTYLE_EX_DRAWDDARROWS);
-    WAToolBarAddButton(hDiagTools, "", DIALOGTOOLS_ALIGNLEFT, ICON_RES_TOOL_ALIGNLEFT, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagTools, "", DIALOGTOOLS_ALIGNRIGHT, ICON_RES_TOOL_ALIGNRIGHT, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagTools, "", DIALOGTOOLS_ALIGNTOP, ICON_RES_TOOL_ALIGNTOP, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagTools, "", DIALOGTOOLS_ALIGNBOTTOM, ICON_RES_TOOL_ALIGNBOTTOM, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagTools, "", DIALOGTOOLS_CENTERHORZ, ICON_RES_TOOL_CENTERHORZ, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagTools, "", DIALOGTOOLS_CENTERVERT, ICON_RES_TOOL_CENTERVERT, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagTools, "", DIALOGTOOLS_SAMEWIDTH, ICON_RES_TOOL_SAMEWIDTH, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagTools, "", DIALOGTOOLS_SAMEHEIGHT, ICON_RES_TOOL_SAMEHEIGHT, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagTools, "", DIALOGTOOLS_SAMESIZE, ICON_RES_TOOL_SAMESIZE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagTools, "", DIALOGTOOLS_SPACEACROSS, ICON_RES_TOOL_SPACEACROSS, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagTools, "", DIALOGTOOLS_SPACEDOWN, ICON_RES_TOOL_SPACEDOWN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagTools, "", DIALOGTOOLS_ALIGNGRID, ICON_RES_TOOL_ALIGNGRID, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagTools, "", DIALOGTOOLS_LOCKCTRL, ICON_RES_TOOL_LOCKCTRL, TBSTYLE_CHECK, TBSTATE_ENABLED, 1);
-    WAToolBarAddSeparator(hDiagTools, 0);
-    WAToolBarAddButton(hDiagTools, "", DIALOGTOOLS_GRID, ICON_RES_TOOL_GRID, TBSTYLE_DROPDOWN | TBSTYLE_CHECK, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagTools, "", DIALOGTOOLS_TOOLBAR, ICON_RES_TOOL_TOOLBAR, TBSTYLE_CHECK, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagTools, "", DIALOGTOOLS_PROPERTIES, ICON_RES_TOOL_PROPERTIES, TBSTYLE_CHECK, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(hDiagTools, "", DIALOGTOOLS_TEST, ICON_RES_TOOL_TEST, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    if(ToolbarMode == 1) WAToolBarSetButtonChecked(hDiagTools, DIALOGTOOLS_TOOLBAR, 1);
-    if(PropertiesMode == 1) WAToolBarSetButtonChecked(hDiagTools, DIALOGTOOLS_PROPERTIES, 1);
+    hDiagTools = CreateToolBar(1, 1, 429, 45, hWnd, GlobalImageList5, 0, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, TBSTYLE_EX_DRAWDDARROWS);
+    ToolBarAddButton(hDiagTools, "", DIALOGTOOLS_ALIGNLEFT, ICON_RES_TOOL_ALIGNLEFT, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagTools, "", DIALOGTOOLS_ALIGNRIGHT, ICON_RES_TOOL_ALIGNRIGHT, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagTools, "", DIALOGTOOLS_ALIGNTOP, ICON_RES_TOOL_ALIGNTOP, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagTools, "", DIALOGTOOLS_ALIGNBOTTOM, ICON_RES_TOOL_ALIGNBOTTOM, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagTools, "", DIALOGTOOLS_CENTERHORZ, ICON_RES_TOOL_CENTERHORZ, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagTools, "", DIALOGTOOLS_CENTERVERT, ICON_RES_TOOL_CENTERVERT, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagTools, "", DIALOGTOOLS_SAMEWIDTH, ICON_RES_TOOL_SAMEWIDTH, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagTools, "", DIALOGTOOLS_SAMEHEIGHT, ICON_RES_TOOL_SAMEHEIGHT, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagTools, "", DIALOGTOOLS_SAMESIZE, ICON_RES_TOOL_SAMESIZE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagTools, "", DIALOGTOOLS_SPACEACROSS, ICON_RES_TOOL_SPACEACROSS, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagTools, "", DIALOGTOOLS_SPACEDOWN, ICON_RES_TOOL_SPACEDOWN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagTools, "", DIALOGTOOLS_ALIGNGRID, ICON_RES_TOOL_ALIGNGRID, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagTools, "", DIALOGTOOLS_LOCKCTRL, ICON_RES_TOOL_LOCKCTRL, TBSTYLE_CHECK, TBSTATE_ENABLED, 1);
+    ToolBarAddSeparator(hDiagTools, 0);
+    ToolBarAddButton(hDiagTools, "", DIALOGTOOLS_GRID, ICON_RES_TOOL_GRID, TBSTYLE_DROPDOWN | TBSTYLE_CHECK, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagTools, "", DIALOGTOOLS_TOOLBAR, ICON_RES_TOOL_TOOLBAR, TBSTYLE_CHECK, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagTools, "", DIALOGTOOLS_PROPERTIES, ICON_RES_TOOL_PROPERTIES, TBSTYLE_CHECK, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagTools, "", DIALOGTOOLS_TEST, ICON_RES_TOOL_TEST, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    if(ToolbarMode == 1) ToolBarSetButtonChecked(hDiagTools, DIALOGTOOLS_TOOLBAR, 1);
+    if(PropertiesMode == 1) ToolBarSetButtonChecked(hDiagTools, DIALOGTOOLS_PROPERTIES, 1);
     if(GridMode == 1)
     {
-        WAToolBarSetButtonChecked(hDiagTools, DIALOGTOOLS_GRID, 1);
+        ToolBarSetButtonChecked(hDiagTools, DIALOGTOOLS_GRID, 1);
         CheckMenuItem(hGridMenu, GRID_TOGGLE_ID, MF_BYPOSITION | MF_CHECKED);
     }
 }
@@ -871,7 +871,7 @@ LRESULT CALLBACK FrmUserDiagToolsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                     case DIALOGTOOLS_SPACEDOWN:
                         return(0);
                     case DIALOGTOOLS_GRID:
-                        if(WAToolBarIsButtonChecked(hDiagTools, DIALOGTOOLS_GRID) == 1)
+                        if(ToolBarIsButtonChecked(hDiagTools, DIALOGTOOLS_GRID) == 1)
                         {
                             SetGridOn();
                         }
@@ -883,28 +883,28 @@ LRESULT CALLBACK FrmUserDiagToolsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                     case DIALOGTOOLS_LOCKCTRL:
                         return(0);
                     case DIALOGTOOLS_TOOLBAR:
-                        if(WAToolBarIsButtonChecked(hDiagTools, DIALOGTOOLS_TOOLBAR) == 1)
+                        if(ToolBarIsButtonChecked(hDiagTools, DIALOGTOOLS_TOOLBAR) == 1)
                         {
-                            FRMDiagTBhwnd = WACreateDialog(ToolbarXPos, ToolbarYPos, 398, 82, FRMDiaghwnd, 0, 0, "Controls", &FrmUserDiagToolBarInitProc, &FrmUserDiagToolBarProc, WS_EX_TOOLWINDOW, WS_SYSMENU, SW_SHOW);
-                            WAIniWriteKey("Layout", "DialogToolbar", "1", MainIniFile);
+                            FRMDiagTBhwnd = CreateNonModalDialog(ToolbarXPos, ToolbarYPos, 398, 82, FRMDiaghwnd, 0, 0, "Controls", &FrmUserDiagToolBarInitProc, &FrmUserDiagToolBarProc, WS_EX_TOOLWINDOW, WS_SYSMENU, SW_SHOW);
+                            IniWriteKey("Layout", "DialogToolbar", "1", MainIniFile);
 							ResizeFromToolbar(FRMDiagTBhwnd, hDiagToolBar, ToolbarXPos, ToolbarYPos, 15, 2, Tab_DiagTools);
                         }
                         else
                         {
-                            WAControlClose(FRMDiagTBhwnd);
-                            WAIniWriteKey("Layout", "DialogToolbar", "0", MainIniFile);
+                            ControlClose(FRMDiagTBhwnd);
+                            IniWriteKey("Layout", "DialogToolbar", "0", MainIniFile);
                         }
                         return(0);
                     case DIALOGTOOLS_PROPERTIES:
-                        if(WAToolBarIsButtonChecked(hDiagTools, DIALOGTOOLS_PROPERTIES) == 1)
+                        if(ToolBarIsButtonChecked(hDiagTools, DIALOGTOOLS_PROPERTIES) == 1)
                         {
-                            FRMDiagPropshwnd = WACreateDialog(PropertiesXPos, PropertiesYPos, PropertiesXLarg, PropertiesYLong, FRMDiaghwnd, 0, 0, "Properties", &FrmUserDiagPropsInitProc, &FrmUserDiagPropsProc, WS_EX_TOOLWINDOW, WS_SYSMENU | WS_SIZEBOX, SW_SHOW);
-                            WAIniWriteKey("Layout", "DialogProperties", "1", MainIniFile);
+                            FRMDiagPropshwnd = CreateNonModalDialog(PropertiesXPos, PropertiesYPos, PropertiesXLarg, PropertiesYLong, FRMDiaghwnd, 0, 0, "Properties", &FrmUserDiagPropsInitProc, &FrmUserDiagPropsProc, WS_EX_TOOLWINDOW, WS_SYSMENU | WS_SIZEBOX, SW_SHOW);
+                            IniWriteKey("Layout", "DialogProperties", "1", MainIniFile);
                         }
                         else
                         {
-                            WAControlClose(FRMDiagPropshwnd);
-                            WAIniWriteKey("Layout", "DialogProperties", "0", MainIniFile);
+                            ControlClose(FRMDiagPropshwnd);
+                            IniWriteKey("Layout", "DialogProperties", "0", MainIniFile);
                         }
                         return(0);
                     case DIALOGTOOLS_TEST:
@@ -920,78 +920,78 @@ LRESULT CALLBACK FrmUserDiagToolsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                         ToggleGridMode();
                         return(0);
                     case (GRID_IDBASE + GRID_SETTINGS_ID):
-                        WACreateModalDialog(-1, -1, 190, 110, FRMDiaghwnd, &FRMGridDiagProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+                        CreateModalDialog(-1, -1, 190, 110, FRMDiaghwnd, &FRMGridDiagProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
                         return(0);
 				}
             }
 			break;
         case WM_NOTIFY:
-            switch(WAControlGetNotifiedMsg(lParam))
+            switch(ControlGetNotifiedMsg(lParam))
             {
                 case TTN_NEEDTEXT:
-                    switch(WAControlGetNotifiedID(lParam))
+                    switch(ControlGetNotifiedID(lParam))
                     {
                         case DIALOGTOOLS_ALIGNLEFT:
-                            WAToolBarDisplayToolTip("Align Left", lParam);
+                            ToolBarDisplayToolTip("Align Left", lParam);
                             return(0);
                         case DIALOGTOOLS_ALIGNRIGHT:
-                            WAToolBarDisplayToolTip("Align Right", lParam);
+                            ToolBarDisplayToolTip("Align Right", lParam);
                             return(0);
                         case DIALOGTOOLS_ALIGNTOP:
-                            WAToolBarDisplayToolTip("Align Top", lParam);
+                            ToolBarDisplayToolTip("Align Top", lParam);
                             return(0);
                         case DIALOGTOOLS_ALIGNBOTTOM:
-                            WAToolBarDisplayToolTip("Align Bottom", lParam);
+                            ToolBarDisplayToolTip("Align Bottom", lParam);
                             return(0);
                         case DIALOGTOOLS_CENTERHORZ:
-                            WAToolBarDisplayToolTip("Center Horizontally", lParam);
+                            ToolBarDisplayToolTip("Center Horizontally", lParam);
                             return(0);
                         case DIALOGTOOLS_CENTERVERT:
-                            WAToolBarDisplayToolTip("Center Vertically", lParam);
+                            ToolBarDisplayToolTip("Center Vertically", lParam);
                             return(0);
                         case DIALOGTOOLS_SAMEWIDTH:
-                            WAToolBarDisplayToolTip("Make Same Width", lParam);
+                            ToolBarDisplayToolTip("Make Same Width", lParam);
                             return(0);
                         case DIALOGTOOLS_SAMEHEIGHT:
-                            WAToolBarDisplayToolTip("Make Same Height", lParam);
+                            ToolBarDisplayToolTip("Make Same Height", lParam);
                             return(0);
                         case DIALOGTOOLS_SAMESIZE:
-                            WAToolBarDisplayToolTip("Make Same Size", lParam);
+                            ToolBarDisplayToolTip("Make Same Size", lParam);
                             return(0);
                         case DIALOGTOOLS_SPACEACROSS:
-                            WAToolBarDisplayToolTip("Space Across", lParam);
+                            ToolBarDisplayToolTip("Space Across", lParam);
                             return(0);
                         case DIALOGTOOLS_SPACEDOWN:
-                            WAToolBarDisplayToolTip("Space Down", lParam);
+                            ToolBarDisplayToolTip("Space Down", lParam);
                             return(0);
                         case DIALOGTOOLS_ALIGNGRID:
-                            WAToolBarDisplayToolTip("Align To Grid", lParam);
+                            ToolBarDisplayToolTip("Align To Grid", lParam);
                             return(0);
                         case DIALOGTOOLS_GRID:
-                            WAToolBarDisplayToolTip("Show Grid", lParam);
+                            ToolBarDisplayToolTip("Show Grid", lParam);
                             return(0);
                         case DIALOGTOOLS_LOCKCTRL:
-                            WAToolBarDisplayToolTip("Toggle Controls Lock", lParam);
+                            ToolBarDisplayToolTip("Toggle Controls Lock", lParam);
                             return(0);
                         case DIALOGTOOLS_TOOLBAR:
-                            WAToolBarDisplayToolTip("Toggle Controls Toolbar", lParam);
+                            ToolBarDisplayToolTip("Toggle Controls Toolbar", lParam);
                             return(0);
                         case DIALOGTOOLS_PROPERTIES:
-                            WAToolBarDisplayToolTip("Toggle Properties Page", lParam);
+                            ToolBarDisplayToolTip("Toggle Properties Page", lParam);
                             return(0);
                         case DIALOGTOOLS_TEST:
-                            WAToolBarDisplayToolTip("Test Dialog", lParam);
+                            ToolBarDisplayToolTip("Test Dialog", lParam);
                             return(0);
                     }
 					break;
                 case TBN_DROPDOWN:
-                    WAToolBarDisplayPopupMenu(hDiagTools, WAToolBarGetNotifiedDropDownItem(lParam), hGridMenu, hWnd);
+                    ToolBarDisplayPopupMenu(hDiagTools, ToolBarGetNotifiedDropDownItem(lParam), hGridMenu, hWnd);
                     return(0);
             }
 			break;
         case WM_PAINT:
             BeginPaint(hWnd, &FrmDiagToolsPs);
-            WAGDIDrawHorzSep(hWnd, 0, 72, 104);
+            GDIDrawHorzSep(hWnd, 0, 72, 104);
             EndPaint(hWnd, &FrmDiagToolsPs);
 			break;
 		case WM_DESTROY:
@@ -1135,7 +1135,7 @@ void DiscardGrid(void)
 // Toggle grid mode
 void ToggleGridMode(void)
 {
-    WAToolBarSetButtonChecked(hDiagTools, DIALOGTOOLS_GRID, GridMode);
+    ToolBarSetButtonChecked(hDiagTools, DIALOGTOOLS_GRID, GridMode);
     if(GridMode == 1) SetGridOn();
     else SetGridOff();
 }
@@ -1145,7 +1145,7 @@ void ToggleGridMode(void)
 void SetGridOn(void)
 {
     CheckMenuItem(hGridMenu, GRID_TOGGLE_ID, MF_BYPOSITION | MF_CHECKED);
-    WAIniWriteKey("Layout", "DialogGrid", "1", MainIniFile);
+    IniWriteKey("Layout", "DialogGrid", "1", MainIniFile);
     GridMode = 1;
     RefreshDialog();
 }
@@ -1155,7 +1155,7 @@ void SetGridOn(void)
 void SetGridOff(void)
 {
     CheckMenuItem(hGridMenu, GRID_TOGGLE_ID, MF_BYPOSITION | MF_UNCHECKED);
-    WAIniWriteKey("Layout", "DialogGrid", "0", MainIniFile);
+    IniWriteKey("Layout", "DialogGrid", "0", MainIniFile);
     GridMode = 0;
 	RefreshDialog();
 }
@@ -1183,80 +1183,80 @@ int CALLBACK FRMGridDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
     switch(uMsg)
     {
         case WM_INITDIALOG:
-            WAControlSetText(hwndDlg, "Grid settings");
-            hGridOk = WACreateButton(31, 84, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
-            hGridCancel = WACreateButton(110, 84, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-            WACreateLabel(14, 8, 253, 17, hwndDlg, "Grid width :", 0, 0, 0, 0);
-            WACreateLabel(14, 33, 253, 17, hwndDlg, "Grid height :", 0, 0, 0, 0);
-            hGridWidth = WACreateTextBox(76, 5, 53, 20, hwndDlg, GridXLarg, 3, 0, WS_TABSTOP | ES_AUTOHSCROLL | ES_NUMBER, WS_EX_STATICEDGE);
-            hGridHeight = WACreateTextBox(76, 30, 53, 20, hwndDlg, GridYLong, 4, 0, WS_TABSTOP | ES_AUTOHSCROLL | ES_NUMBER, WS_EX_STATICEDGE);
-            hGridAlign = WACreateCheckBox(15, 55, 117, 19, hwndDlg, "Align controls to grid", 5, 0, WS_TABSTOP, 0);
+            ControlSetText(hwndDlg, "Grid settings");
+            hGridOk = CreateButton(31, 84, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
+            hGridCancel = CreateButton(110, 84, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+            CreateLabel(14, 8, 253, 17, hwndDlg, "Grid width :", 0, 0, 0, 0);
+            CreateLabel(14, 33, 253, 17, hwndDlg, "Grid height :", 0, 0, 0, 0);
+            hGridWidth = CreateTextBox(76, 5, 53, 20, hwndDlg, GridXLarg, 3, 0, WS_TABSTOP | ES_AUTOHSCROLL | ES_NUMBER, WS_EX_STATICEDGE);
+            hGridHeight = CreateTextBox(76, 30, 53, 20, hwndDlg, GridYLong, 4, 0, WS_TABSTOP | ES_AUTOHSCROLL | ES_NUMBER, WS_EX_STATICEDGE);
+            hGridAlign = CreateCheckBox(15, 55, 117, 19, hwndDlg, "Align controls to grid", 5, 0, WS_TABSTOP, 0);
             if(GridAlign) CheckBoxSetState(hGridAlign, 1);
             else CheckBoxSetState(hGridAlign, 0);
-            WATextBoxSetMaxLen(hGridWidth, 3);
-            WATextBoxSetMaxLen(hGridHeight, 3);
+            TextBoxSetMaxLen(hGridWidth, 3);
+            TextBoxSetMaxLen(hGridHeight, 3);
             SetFocus(hGridWidth);
             return(0);
         case WM_COMMAND:
             if((HWND) lParam == hGridOk)
             {
-                if(StringIsDecimal(WAControlGetText(hGridWidth), 3) == false)
+                if(StringIsDecimal(ControlGetText(hGridWidth), 3) == false)
                 {
-                    WAMiscMsgBox(hwndDlg, "Invalid width value.", MB_ERROR, Requesters);
+                    MiscMsgBox(hwndDlg, "Invalid width value.", MB_ERROR, Requesters);
                     SetFocus(hGridWidth);
                     return(0);
                 }
-                if(StringIsDecimal(WAControlGetText(hGridHeight), 3) == false)
+                if(StringIsDecimal(ControlGetText(hGridHeight), 3) == false)
                 {
-                    WAMiscMsgBox(hwndDlg, "Invalid height value.", MB_ERROR, Requesters);
+                    MiscMsgBox(hwndDlg, "Invalid height value.", MB_ERROR, Requesters);
                     SetFocus(hGridHeight);
                     return(0);
                 }
-                TmpGridWidth = WAControlGetText(hGridWidth).Get_Long();
+                TmpGridWidth = ControlGetText(hGridWidth).Get_Long();
                 if(TmpGridWidth < 2 || TmpGridWidth > 128)
                 {
-                    WAMiscMsgBox(hwndDlg, "Width value out of bounds (allowed values: 2 to 128).", MB_ERROR, Requesters);
+                    MiscMsgBox(hwndDlg, "Width value out of bounds (allowed values: 2 to 128).", MB_ERROR, Requesters);
                     SetFocus(hGridWidth);
                     return(0);
                 }
-                TmpGridHeight = WAControlGetText(hGridHeight).Get_Long();
+                TmpGridHeight = ControlGetText(hGridHeight).Get_Long();
                 if(TmpGridHeight < 2 || TmpGridHeight > 128)
                 {
-                    WAMiscMsgBox(hwndDlg, "Height value out of bounds (allowed values: 2 to 128).", MB_ERROR, Requesters);
+                    MiscMsgBox(hwndDlg, "Height value out of bounds (allowed values: 2 to 128).", MB_ERROR, Requesters);
                     SetFocus(hGridHeight);
                     return(0);
                 }
                 if(CheckBoxGetState(hGridAlign) != 0)
                 {
                     GridAlign = TRUE;
-                    WAIniWriteKey("Layout", "AlignGrid", "1", MainIniFile);
+                    IniWriteKey("Layout", "AlignGrid", "1", MainIniFile);
                 }
                 else
                 {
                     GridAlign = FALSE;
-                    WAIniWriteKey("Layout", "AlignGrid", "0", MainIniFile);
+                    IniWriteKey("Layout", "AlignGrid", "0", MainIniFile);
                 }
                 if((GridXLarg != TmpGridWidth) || (GridYLong != TmpGridHeight))
                 {
                     GridXLarg = TmpGridWidth;
                     GridYLong = TmpGridHeight;
-                    WAIniWriteKey("Layout", "GridWidth", GridXLarg, MainIniFile);
-                    WAIniWriteKey("Layout", "GridHeight", GridYLong, MainIniFile);
+                    IniWriteKey("Layout", "GridWidth", GridXLarg, MainIniFile);
+                    IniWriteKey("Layout", "GridHeight", GridYLong, MainIniFile);
                     CreateGrid(FRMDiaghwnd);
                     if(GridMode == 1) RefreshDialog();
                 }
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
 				return(0);
             }
             else if((HWND) lParam == hGridCancel)
             {
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
             }
 			break;
         case WM_PAINT:
             BeginPaint(hwndDlg, &ArgsPs);
-            WAGDIDrawHorzSep(hwndDlg, 0, 77, 190);
+            GDIDrawHorzSep(hwndDlg, 0, 77, 190);
             EndPaint(hwndDlg, &ArgsPs);
 			break;
 		case WM_CLOSE:
@@ -1277,13 +1277,13 @@ void SaveDialog(void)
 // Refresh dialogs and controls
 void RefreshDialog(void)
 {
-    WAControlRepaint(FRMDiaghwnd);
+    ControlRepaint(FRMDiaghwnd);
     for(int i = 0; i < ControlsList.Amount(); i++)
     {
 		int *CurMem = ControlsList.Get(i)->Content;
-		if(CurMem[OBJECT_HWNDCHILDCHILD]) WAControlRepaint((HWND) CurMem[OBJECT_HWNDCHILDCHILD]);
-		if(CurMem[OBJECT_HWNDCHILD]) WAControlRepaint((HWND) CurMem[OBJECT_HWNDCHILD]);
-		if(CurMem[OBJECT_HWND]) WAControlRepaint((HWND) CurMem[OBJECT_HWND]);
+		if(CurMem[OBJECT_HWNDCHILDCHILD]) ControlRepaint((HWND) CurMem[OBJECT_HWNDCHILDCHILD]);
+		if(CurMem[OBJECT_HWNDCHILD]) ControlRepaint((HWND) CurMem[OBJECT_HWNDCHILD]);
+		if(CurMem[OBJECT_HWND]) ControlRepaint((HWND) CurMem[OBJECT_HWND]);
 	}
 }
 
@@ -1295,9 +1295,9 @@ void ResizeFromToolbar(HWND Dialog, HWND Toolbar, int PosX, int PosY, int NbrCol
 
 	for(int i = 0; i < NbrColumns; i++)
 	{
-		X_Size += WAToolBarGetButtonIndexXSize(Toolbar, Tab_Buttons[i]);
+		X_Size += ToolBarGetButtonIndexXSize(Toolbar, Tab_Buttons[i]);
 	}
-	int Y_Size = WAToolBarGetButtonYSize(Toolbar) * NbrRows;
+	int Y_Size = ToolBarGetButtonYSize(Toolbar) * NbrRows;
 	MoveWindow(Dialog, PosX, PosY, X_Size + GetSystemMetrics(SM_CXFIXEDFRAME) + GetSystemMetrics(SM_CXEDGE) + 1, Y_Size + GetSystemMetrics(SM_CYSMCAPTION) + GetSystemMetrics(SM_CYFIXEDFRAME) + GetSystemMetrics(SM_CYEDGE) + 1, 1);
 	MoveWindow(Toolbar, 0, 0, X_Size, Y_Size, 1);
 }

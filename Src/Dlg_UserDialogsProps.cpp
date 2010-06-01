@@ -74,11 +74,11 @@ void CALLBACK FrmUserDiagPropsInitProc(HWND hWnd)
 	char *Property_Name;
     int i = 0;
 
-    hPropListbox = WACreateListBox(1, 20, WAControlWidth(hWnd) - 1, WAControlHeight(hWnd) - 20, hWnd, 0, &PropListboxHook, 0,
-                                   LBS_USETABSTOPS | LBS_OWNERDRAWFIXED | WS_VSCROLL, WS_EX_STATICEDGE);
-    hPropCombobox = WACreateComboBox(0, 0, WAControlWidth(hWnd), 150, hWnd, "", 1, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
-    WAComboBoxAddItem(hPropCombobox, DialogName + (CStr) " - " + (CStr) "Dialog", -1);
-    WAComboBoxSetIndex(hPropCombobox, 0);
+    hPropListbox = CreateListBox(1, 20, ControlWidth(hWnd) - 1, ControlHeight(hWnd) - 20, hWnd, 0, &PropListboxHook, 0,
+                                 LBS_USETABSTOPS | LBS_OWNERDRAWFIXED | WS_VSCROLL, WS_EX_STATICEDGE);
+    hPropCombobox = CreateComboBox(0, 0, ControlWidth(hWnd), 150, hWnd, "", 1, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
+    ComboBoxAddItem(hPropCombobox, DialogName + (CStr) " - " + (CStr) "Dialog", -1);
+    ComboBoxSetIndex(hPropCombobox, 0);
     FillPropertiesListbox(PROPDIAG_NBRPROPS);
     ProphDC = GetDC(hWnd);
     OldPropObject = SelectObject(ProphDC, WASerifFont);
@@ -93,9 +93,9 @@ void CALLBACK FrmUserDiagPropsInitProc(HWND hWnd)
     MaxPropXSize = MaxPropXSize + 10;
     SelectObject(ProphDC, OldPropObject);
     ReleaseDC(hWnd, ProphDC);
-    WAListBoxSetColumnsWidth(hPropListbox, MaxPropXSize);
-    WAListBoxSetIndex(hPropListbox, 0);
-    WAListBoxSetTopIndex(hPropListbox, 0);
+    ListBoxSetColumnsWidth(hPropListbox, MaxPropXSize);
+    ListBoxSetIndex(hPropListbox, 0);
+    ListBoxSetTopIndex(hPropListbox, 0);
 	// Get the icons
     hPropComboPoints = LoadImage(ApphInstance, MAKEINTRESOURCE(ICON_RES_TOOL_BASE + ICON_RES_TOOL_COMBOPOINTS), IMAGE_ICON, 0, 0, 0);
 }
@@ -131,12 +131,12 @@ LRESULT CALLBACK FrmUserDiagPropsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             {
                 // Redraw item
                 case ODA_DRAWENTIRE:
-                    XLargItem = WAControlClientWidth(LocalDraw.hwndItem);
+                    XLargItem = ControlClientWidth(LocalDraw.hwndItem);
                     LinesColor = 0xC0C0C0C0;
                     TextColor = GetSysColor(COLOR_WINDOWTEXT);
                     if(LocalDraw.itemState == ODS_SELECTED)
                     {
-                        CurrentControlHeight = WAControlHeight(CurrentEditControl);
+                        CurrentControlHeight = ControlHeight(CurrentEditControl);
                         PropCurrentTop = DatRect.top + (DatRect.bottom - DatRect.top) + 1;
                         PropCurrentLeft = MaxPropXSize + 1;
                         PropCurrentWidth = DatRect.right - MaxPropXSize - 1;
@@ -151,10 +151,10 @@ LRESULT CALLBACK FrmUserDiagPropsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                                 SetWindowPos(CurrentEditControl, 0, 0, 0, PropCurrentWidth, CurrentControlHeight, SWP_NOZORDER | SWP_NOMOVE);
 								break;
                             default:
-                                CurrentControlLeft = WAControlClientWidth(hPropListbox) - WAControlWidth(CurrentEditControl);
-                                CurrentControlWidth = CurrentControlLeft - WAControlLeft(CurrentEditControlSubEdit) + GetSystemMetrics(SM_CXVSCROLL);
+                                CurrentControlLeft = ControlClientWidth(hPropListbox) - ControlWidth(CurrentEditControl);
+                                CurrentControlWidth = CurrentControlLeft - ControlLeft(CurrentEditControlSubEdit) + GetSystemMetrics(SM_CXVSCROLL);
                                 if(CurrentControlLeft < PropCurrentLeft) CurrentControlLeft = PropCurrentLeft;
-                                CurrentControlWidth = (DatRect.right - DatRect.left) - WAControlWidth(CurrentEditControl) - 1;
+                                CurrentControlWidth = (DatRect.right - DatRect.left) - ControlWidth(CurrentEditControl) - 1;
                                 SetWindowPos(CurrentEditControlSubEdit, 0, 0, 0, CurrentControlWidth, CurrentControlHeight - 1, SWP_NOZORDER | SWP_NOMOVE);
                                 SetWindowPos(CurrentEditControl, 0, CurrentControlLeft, CurrentControlTop - 1, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
 								break;
@@ -167,33 +167,33 @@ LRESULT CALLBACK FrmUserDiagPropsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                                     CurrentEditControlIndex = LocalDraw.itemID;
                                     CurrentEditControlType = GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_TYPE);
                                     PropCurrentHeight = (DatRect.bottom - DatRect.top) - 1;
-                                    WAControlClose(CurrentEditControlSubEdit);
-                                    WAControlClose(CurrentEditControl);
+                                    ControlClose(CurrentEditControlSubEdit);
+                                    ControlClose(CurrentEditControl);
                                     if(GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_LOCKED) == 1)
                                     {
-                                        CurrentEditControl = WACreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropEditHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_READONLY, 0);
+                                        CurrentEditControl = CreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropEditHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_READONLY, 0);
                                     }
                                     else
                                     {
-                                        CurrentEditControl = WACreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropEditHook, WS_TABSTOP | ES_AUTOHSCROLL, 0);
+                                        CurrentEditControl = CreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropEditHook, WS_TABSTOP | ES_AUTOHSCROLL, 0);
                                     }
-                                    WATextBoxSetMaxLen(CurrentEditControl, 255);
+                                    TextBoxSetMaxLen(CurrentEditControl, 255);
 									break;
 								case PROP_INTEGER:
                                     CurrentEditControlIndex = LocalDraw.itemID;
                                     CurrentEditControlType = GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_TYPE);
                                     PropCurrentHeight = (DatRect.bottom - DatRect.top) - 1;
-                                    WAControlClose(CurrentEditControlSubEdit);
-                                    WAControlClose(CurrentEditControl);
+                                    ControlClose(CurrentEditControlSubEdit);
+                                    ControlClose(CurrentEditControl);
                                     if(GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_LOCKED) == 1)
                                     {
-										CurrentEditControl = WACreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropEditHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_NUMBER | ES_READONLY, 0);
+										CurrentEditControl = CreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropEditHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_NUMBER | ES_READONLY, 0);
                                     }
                                     else
                                     {
-                                        CurrentEditControl = WACreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropEditHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_NUMBER, 0);
+                                        CurrentEditControl = CreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropEditHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_NUMBER, 0);
                                     }
-                                    WATextBoxSetMaxLen(CurrentEditControl, 5);
+                                    TextBoxSetMaxLen(CurrentEditControl, 5);
 									break;
                                 case PROP_BOOLEAN:
 									CurrentEditControlIndex = LocalDraw.itemID;
@@ -202,12 +202,12 @@ LRESULT CALLBACK FrmUserDiagPropsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                                     PropCurrentLeft = MaxPropXSize + 1;
                                     PropCurrentWidth = DatRect.right - MaxPropXSize - 1;
                                     PropCurrentHeight = (DatRect.bottom - DatRect.top) - 1;
-                                    WAControlClose(CurrentEditControlSubEdit);
-                                    CurrentEditControlSubEdit = WACreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropSubComboHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_READONLY, 0);
-                                    WATextBoxSetMaxLen(CurrentEditControlSubEdit, 5);
-                                    WAControlClose(CurrentEditControl);
-                                    CurrentEditControl = WACreateButton(DatRect.right - (DatRect.bottom - DatRect.top), DatRect.top - 1, (DatRect.bottom - DatRect.top), (DatRect.bottom - DatRect.top), hPropListbox, "6", 0, 0, 0, &PropBooleanHook, WS_TABSTOP, 0);
-									WAControlSetFont(CurrentEditControl, WAMarlettFont9);
+                                    ControlClose(CurrentEditControlSubEdit);
+                                    CurrentEditControlSubEdit = CreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropSubComboHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_READONLY, 0);
+                                    TextBoxSetMaxLen(CurrentEditControlSubEdit, 5);
+                                    ControlClose(CurrentEditControl);
+                                    CurrentEditControl = CreateButton(DatRect.right - (DatRect.bottom - DatRect.top), DatRect.top - 1, (DatRect.bottom - DatRect.top), (DatRect.bottom - DatRect.top), hPropListbox, "6", 0, 0, 0, &PropBooleanHook, WS_TABSTOP, 0);
+									ControlSetFont(CurrentEditControl, WAMarlettFont9);
 									break;
                                 case PROP_COMBO:
                                     CurrentEditControlIndex = LocalDraw.itemID;
@@ -216,12 +216,12 @@ LRESULT CALLBACK FrmUserDiagPropsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                                     PropCurrentLeft = MaxPropXSize + 1;
                                     PropCurrentWidth = DatRect.right - MaxPropXSize - 1;
                                     PropCurrentHeight = (DatRect.bottom - DatRect.top) - 1;
-                                    WAControlClose(CurrentEditControlSubEdit);
-                                    CurrentEditControlSubEdit = WACreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropSubComboHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_READONLY, 0);
-                                    WATextBoxSetMaxLen(CurrentEditControlSubEdit, 255);
-                                    WAControlClose(CurrentEditControl);
-                                    CurrentEditControl = WACreateButton(DatRect.right - (DatRect.bottom - DatRect.top), DatRect.top - 1, (DatRect.bottom - DatRect.top), (DatRect.bottom - DatRect.top), hPropListbox, "6", 0, 0, 0, &PropComboHook, WS_TABSTOP, 0);
-									WAControlSetFont(CurrentEditControl, WAMarlettFont9);
+                                    ControlClose(CurrentEditControlSubEdit);
+                                    CurrentEditControlSubEdit = CreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropSubComboHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_READONLY, 0);
+                                    TextBoxSetMaxLen(CurrentEditControlSubEdit, 255);
+                                    ControlClose(CurrentEditControl);
+                                    CurrentEditControl = CreateButton(DatRect.right - (DatRect.bottom - DatRect.top), DatRect.top - 1, (DatRect.bottom - DatRect.top), (DatRect.bottom - DatRect.top), hPropListbox, "6", 0, 0, 0, &PropComboHook, WS_TABSTOP, 0);
+									ControlSetFont(CurrentEditControl, WAMarlettFont9);
 									break;
 								case PROP_FONTSELECT:
                                     CurrentEditControlIndex = LocalDraw.itemID;
@@ -230,11 +230,11 @@ LRESULT CALLBACK FrmUserDiagPropsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                                     PropCurrentLeft = MaxPropXSize + 1;
                                     PropCurrentWidth = DatRect.right - MaxPropXSize - 1;
                                     PropCurrentHeight = (DatRect.bottom - DatRect.top) - 1;
-                                    WAControlClose(CurrentEditControlSubEdit);
-                                    CurrentEditControlSubEdit = WACreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, 0, WS_TABSTOP | ES_AUTOHSCROLL | ES_READONLY, 0);
-                                    WATextBoxSetMaxLen(CurrentEditControlSubEdit, 255);
-                                    WAControlClose(CurrentEditControl);
-                                    CurrentEditControl = WACreateButton(DatRect.right - (DatRect.bottom - DatRect.top), DatRect.top - 1, (DatRect.bottom - DatRect.top), (DatRect.bottom - DatRect.top), hPropListbox, "", 0, IMAGE_ICON, (HICON) hPropComboPoints, &PropFontHook, WS_TABSTOP, 0);
+                                    ControlClose(CurrentEditControlSubEdit);
+                                    CurrentEditControlSubEdit = CreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, 0, WS_TABSTOP | ES_AUTOHSCROLL | ES_READONLY, 0);
+                                    TextBoxSetMaxLen(CurrentEditControlSubEdit, 255);
+                                    ControlClose(CurrentEditControl);
+                                    CurrentEditControl = CreateButton(DatRect.right - (DatRect.bottom - DatRect.top), DatRect.top - 1, (DatRect.bottom - DatRect.top), (DatRect.bottom - DatRect.top), hPropListbox, "", 0, IMAGE_ICON, (HICON) hPropComboPoints, &PropFontHook, WS_TABSTOP, 0);
 									break;
                             }
                             PropScrollUp = 0;
@@ -246,24 +246,24 @@ LRESULT CALLBACK FrmUserDiagPropsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                         FocusRect.top = FocusRect.top + 1;
                         FocusRect.bottom = FocusRect.bottom + 1;
                     }
-                    WAGDIWriteText(LocalDraw.hDC, LocalDraw.rcItem.left + 2, LocalDraw.rcItem.top + 1,
-                                   (char *) GetPropertyDatas(hCurrentObject, LocalDraw.itemID, PROPERTY_NAME),
-                                   TextColor, WASerifFont, 1, 0);
+                    GDIWriteText(LocalDraw.hDC, LocalDraw.rcItem.left + 2, LocalDraw.rcItem.top + 1,
+                                 (char *) GetPropertyDatas(hCurrentObject, LocalDraw.itemID, PROPERTY_NAME),
+                                 TextColor, WASerifFont, 1, 0);
                     TextColor = GetSysColor(COLOR_WINDOWTEXT);
-                    WAGDIWriteText(LocalDraw.hDC, DatRect.left + 1, LocalDraw.rcItem.top + 1,
-                                   (char *) GetPropertyDatas(hCurrentObject, LocalDraw.itemID, PROPERTY_STORAGE),
-                                   TextColor, WASerifFont, 1, 0);
-                    if((LocalDraw.rcItem.bottom - 1) < WAControlClientHeight(hPropListbox))
+                    GDIWriteText(LocalDraw.hDC, DatRect.left + 1, LocalDraw.rcItem.top + 1,
+                                 (char *) GetPropertyDatas(hCurrentObject, LocalDraw.itemID, PROPERTY_STORAGE),
+                                 TextColor, WASerifFont, 1, 0);
+                    if((LocalDraw.rcItem.bottom - 1) < ControlClientHeight(hPropListbox))
                     {
-                        WAGDIDrawLine(LocalDraw.hwndItem, LocalDraw.rcItem.left, LocalDraw.rcItem.bottom - 1, XLargItem, LocalDraw.rcItem.bottom - 1, LinesColor);
+                        GDIDrawLine(LocalDraw.hwndItem, LocalDraw.rcItem.left, LocalDraw.rcItem.bottom - 1, XLargItem, LocalDraw.rcItem.bottom - 1, LinesColor);
                     }
-                    if(XLargItem > MaxPropXSize) WAGDIDrawLine(LocalDraw.hwndItem, MaxPropXSize, LocalDraw.rcItem.top, MaxPropXSize, LocalDraw.rcItem.bottom - 1, LinesColor);
+                    if(XLargItem > MaxPropXSize) GDIDrawLine(LocalDraw.hwndItem, MaxPropXSize, LocalDraw.rcItem.top, MaxPropXSize, LocalDraw.rcItem.bottom - 1, LinesColor);
                     return(1);
                 // Item selection (no scrolling)
                 case ODA_SELECT:
                     if(hListBoolean != 0)
                     {
-                        WAControlClose(hListBoolean);
+                        ControlClose(hListBoolean);
                         hListBoolean = 0;
                     }
                     if(LocalDraw.itemState == ODS_SELECTED)
@@ -280,36 +280,36 @@ LRESULT CALLBACK FrmUserDiagPropsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                                 CurrentEditControlIndex = LocalDraw.itemID;
                                 CurrentEditControlType = GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_TYPE);
                                 PropCurrentHeight = (DatRect.bottom - DatRect.top) - 1;
-                                WAControlClose(CurrentEditControlSubEdit);
-                                WAControlClose(CurrentEditControl);
+                                ControlClose(CurrentEditControlSubEdit);
+                                ControlClose(CurrentEditControl);
                                 CurrentEditControlSubEdit = 0;
 								CurrentEditControl = 0;
 					            if(GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_LOCKED) == 1)
 					            {
-                                    CurrentEditControl = WACreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropEditHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_READONLY, 0);
+                                    CurrentEditControl = CreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropEditHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_READONLY, 0);
 					            }
 					            else
 					            {
-                                    CurrentEditControl = WACreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropEditHook, WS_TABSTOP | ES_AUTOHSCROLL, 0);
+                                    CurrentEditControl = CreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropEditHook, WS_TABSTOP | ES_AUTOHSCROLL, 0);
                                 }
 								break;
                             case PROP_INTEGER:
 								CurrentEditControlIndex = LocalDraw.itemID;
                                 CurrentEditControlType = GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_TYPE);
                                 PropCurrentHeight = (DatRect.bottom - DatRect.top) - 1;
-                                WAControlClose(CurrentEditControlSubEdit);
-								WAControlClose(CurrentEditControl);
+                                ControlClose(CurrentEditControlSubEdit);
+								ControlClose(CurrentEditControl);
                                 CurrentEditControlSubEdit = 0;
 								CurrentEditControl = 0;
 								if(GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_LOCKED) == 1)
 								{
-                                    CurrentEditControl = WACreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropEditHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_NUMBER | ES_READONLY, 0);
+                                    CurrentEditControl = CreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropEditHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_NUMBER | ES_READONLY, 0);
 								}
 								else
 								{
-                                    CurrentEditControl = WACreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropEditHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_NUMBER, 0);
+                                    CurrentEditControl = CreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropEditHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_NUMBER, 0);
                                 }
-                                WATextBoxSetMaxLen(CurrentEditControl, 5);
+                                TextBoxSetMaxLen(CurrentEditControl, 5);
 								break;
 							case PROP_BOOLEAN:
 								CurrentEditControlIndex = LocalDraw.itemID;
@@ -318,11 +318,11 @@ LRESULT CALLBACK FrmUserDiagPropsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                                 PropCurrentLeft = MaxPropXSize + 1;
                                 PropCurrentWidth = DatRect.right - MaxPropXSize - 1;
                                 PropCurrentHeight = (DatRect.bottom - DatRect.top) - 1;
-                                WAControlClose(CurrentEditControlSubEdit);
-                                CurrentEditControlSubEdit = WACreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropSubComboHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_READONLY, 0);
-                                WAControlClose(CurrentEditControl);
-                                CurrentEditControl = WACreateButton(DatRect.right - (DatRect.bottom - DatRect.top), DatRect.top - 1, (DatRect.bottom - DatRect.top), (DatRect.bottom - DatRect.top), hPropListbox, "6", 0, 0, 0, &PropBooleanHook, WS_TABSTOP, 0);
-								WAControlSetFont(CurrentEditControl, WAMarlettFont9);
+                                ControlClose(CurrentEditControlSubEdit);
+                                CurrentEditControlSubEdit = CreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropSubComboHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_READONLY, 0);
+                                ControlClose(CurrentEditControl);
+                                CurrentEditControl = CreateButton(DatRect.right - (DatRect.bottom - DatRect.top), DatRect.top - 1, (DatRect.bottom - DatRect.top), (DatRect.bottom - DatRect.top), hPropListbox, "6", 0, 0, 0, &PropBooleanHook, WS_TABSTOP, 0);
+								ControlSetFont(CurrentEditControl, WAMarlettFont9);
 								break;
 							case PROP_COMBO:
                                 CurrentEditControlIndex = LocalDraw.itemID;
@@ -331,11 +331,11 @@ LRESULT CALLBACK FrmUserDiagPropsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                                 PropCurrentLeft = MaxPropXSize + 1;
                                 PropCurrentWidth = DatRect.right - MaxPropXSize - 1;
                                 PropCurrentHeight = (DatRect.bottom - DatRect.top) - 1;
-                                WAControlClose(CurrentEditControlSubEdit);
-                                CurrentEditControlSubEdit = WACreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropSubComboHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_READONLY, 0);
-                                WAControlClose(CurrentEditControl);
-                                CurrentEditControl = WACreateButton(DatRect.right - (DatRect.bottom - DatRect.top), DatRect.top - 1, (DatRect.bottom - DatRect.top), (DatRect.bottom - DatRect.top), hPropListbox, "6", 0, 0, 0, &PropComboHook, WS_TABSTOP, 0);
-								WAControlSetFont(CurrentEditControl, WAMarlettFont9);
+                                ControlClose(CurrentEditControlSubEdit);
+                                CurrentEditControlSubEdit = CreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, &PropSubComboHook, WS_TABSTOP | ES_AUTOHSCROLL | ES_READONLY, 0);
+                                ControlClose(CurrentEditControl);
+                                CurrentEditControl = CreateButton(DatRect.right - (DatRect.bottom - DatRect.top), DatRect.top - 1, (DatRect.bottom - DatRect.top), (DatRect.bottom - DatRect.top), hPropListbox, "6", 0, 0, 0, &PropComboHook, WS_TABSTOP, 0);
+								ControlSetFont(CurrentEditControl, WAMarlettFont9);
 								break;
 							case PROP_FONTSELECT:
                                 CurrentEditControlIndex = LocalDraw.itemID;
@@ -344,10 +344,10 @@ LRESULT CALLBACK FrmUserDiagPropsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                                 PropCurrentLeft = MaxPropXSize + 1;
                                 PropCurrentWidth = DatRect.right - MaxPropXSize - 1;
                                 PropCurrentHeight = (DatRect.bottom - DatRect.top) - 1;
-                                WAControlClose(CurrentEditControlSubEdit);
-                                CurrentEditControlSubEdit = WACreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, 0, WS_TABSTOP | ES_AUTOHSCROLL | ES_READONLY, 0);
-                                WAControlClose(CurrentEditControl);
-                                CurrentEditControl = WACreateButton(DatRect.right - (DatRect.bottom - DatRect.top), DatRect.top - 1, (DatRect.bottom - DatRect.top), (DatRect.bottom - DatRect.top), hPropListbox, "...", 0, IMAGE_ICON, (HICON) hPropComboPoints, &PropFontHook, WS_TABSTOP, 0);
+                                ControlClose(CurrentEditControlSubEdit);
+                                CurrentEditControlSubEdit = CreateTextBox(DatRect.left + 1, DatRect.top, (DatRect.right - DatRect.left) - PropCurrentHeight, (DatRect.bottom - DatRect.top) - 1, hPropListbox, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), 0, 0, WS_TABSTOP | ES_AUTOHSCROLL | ES_READONLY, 0);
+                                ControlClose(CurrentEditControl);
+                                CurrentEditControl = CreateButton(DatRect.right - (DatRect.bottom - DatRect.top), DatRect.top - 1, (DatRect.bottom - DatRect.top), (DatRect.bottom - DatRect.top), hPropListbox, "...", 0, IMAGE_ICON, (HICON) hPropComboPoints, &PropFontHook, WS_TABSTOP, 0);
 								break;
                         }
                     }
@@ -361,26 +361,26 @@ LRESULT CALLBACK FrmUserDiagPropsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                         FocusRect.bottom = FocusRect.bottom + 1;
                         PropScrollUp = 1;
                     }
-                    WAGDIWriteText(LocalDraw.hDC, LocalDraw.rcItem.left + 2, LocalDraw.rcItem.top + 1, (char *) GetPropertyDatas(hCurrentObject, LocalDraw.itemID, PROPERTY_NAME), TextColor, WASerifFont, 1, 0);
+                    GDIWriteText(LocalDraw.hDC, LocalDraw.rcItem.left + 2, LocalDraw.rcItem.top + 1, (char *) GetPropertyDatas(hCurrentObject, LocalDraw.itemID, PROPERTY_NAME), TextColor, WASerifFont, 1, 0);
 			}
             return(1);
         case WM_SIZE:
-            MoveWindow(hPropListbox, 1, 24, WAControlClientWidth(hWnd) - 2, WAControlClientHeight(hWnd) - 25, 1);
-            MoveWindow(hPropCombobox, 1, 1, WAControlClientWidth(hWnd) - 2, 150, 1);
+            MoveWindow(hPropListbox, 1, 24, ControlClientWidth(hWnd) - 2, ControlClientHeight(hWnd) - 25, 1);
+            MoveWindow(hPropCombobox, 1, 1, ControlClientWidth(hWnd) - 2, 150, 1);
             if(hListBoolean != 0)
             {
-                WAControlClose(hListBoolean);
+                ControlClose(hListBoolean);
                 hListBoolean = 0;
             }
 			break;
         case WM_CLOSE:
-            PropertiesXPos = WAControlLeft(hWnd);
-            PropertiesYPos = WAControlTop(hWnd);
-            PropertiesXLarg = WAControlWidth(hWnd);
-            PropertiesYLong = WAControlHeight(hWnd);
+            PropertiesXPos = ControlLeft(hWnd);
+            PropertiesYPos = ControlTop(hWnd);
+            PropertiesXLarg = ControlWidth(hWnd);
+            PropertiesYLong = ControlHeight(hWnd);
 			break;
 		case WM_DESTROY:
-            WAToolBarSetButtonChecked(hDiagTools, DIALOGTOOLS_PROPERTIES, 0);
+            ToolBarSetButtonChecked(hDiagTools, DIALOGTOOLS_PROPERTIES, 0);
             return(0);
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
@@ -401,7 +401,7 @@ void FillPropertiesStrings(void)
 	// Fill it's properties
     StorePropertyHeader(0, hDialogEntry, "(ID)", PROP_STRING, PROPFLAG_NONE, 0, 0, 1, "DIALOG_0");
     StorePropertyHeader(1, hDialogEntry, "Border", PROP_COMBO, PROPFLAG_BORDER, AllocSubListBox("(None)|Fixed Single|Sizable|Fixed Dialog|Fixed ToolWindow|Sizable ToolWindow"), 0, 0, "Sizable");
-    StorePropertyHeader(2, hDialogEntry, "Caption", PROP_STRING, PROPFLAG_CAPTION, 0, (long) &Prop_DialogCaption, 0, WAControlGetText(FRMDiaghwnd));
+    StorePropertyHeader(2, hDialogEntry, "Caption", PROP_STRING, PROPFLAG_CAPTION, 0, (long) &Prop_DialogCaption, 0, ControlGetText(FRMDiaghwnd));
     StorePropertyHeader(3, hDialogEntry, "Child", PROP_BOOLEAN, PROPFLAG_NONE, 0, 0, 0, "False");
     StorePropertyHeader(4, hDialogEntry, "ClassName", PROP_STRING, PROPFLAG_NONE, 0, 0, 0, "");
     StorePropertyHeader(5, hDialogEntry, "Clipping", PROP_BOOLEAN, PROPFLAG_NONE, 0, 0, 0, "False");
@@ -409,14 +409,14 @@ void FillPropertiesStrings(void)
     StorePropertyHeader(7, hDialogEntry, "FontName", PROP_FONTSELECT, PROPFLAG_NONE, 0, (long) &Prop_DialogFontName, 0, "MS Sans Serif");
     StorePropertyHeader(8, hDialogEntry, "FontSize", PROP_INTEGER, PROPFLAG_NONE, 0, (long) &Prop_DialogFontSize, 0, "8");
     StorePropertyHeader(9, hDialogEntry, "Height", PROP_INTEGER, PROPFLAG_HEIGHT, 0, (long) &Prop_DialogHeight, 0, CurrentHeight);
-    StorePropertyHeader(10, hDialogEntry, "Left", PROP_INTEGER, PROPFLAG_LEFT, 0, (long) &Prop_DialogLeft, 0, WAControlLeft(FRMDiaghwnd));
+    StorePropertyHeader(10, hDialogEntry, "Left", PROP_INTEGER, PROPFLAG_LEFT, 0, (long) &Prop_DialogLeft, 0, ControlLeft(FRMDiaghwnd));
     StorePropertyHeader(11, hDialogEntry, "MaxButton", PROP_BOOLEAN, PROPFLAG_MAXIMIZE, 0, (long) &Prop_DialogMaxButton, 0, "True");
     StorePropertyHeader(12, hDialogEntry, "MenuID", PROP_COMBO, PROPFLAG_NONE, AllocSubListBox(GetMenusIDs()), 0, 0, "(None)");
     StorePropertyHeader(13, hDialogEntry, "MinButton", PROP_BOOLEAN, PROPFLAG_MINIMIZE, 0, (long) &Prop_DialogMinButton, 0, "True");
     StorePropertyHeader(14, hDialogEntry, "ScrollBars", PROP_COMBO, PROPFLAG_SCROLLBARS, AllocSubListBox("(None)|Horizontal|Vertical|Both"), (long) &Prop_DialogScrollBars, 0, "(None)");
     StorePropertyHeader(15, hDialogEntry, "StartupPos", PROP_COMBO, PROPFLAG_NONE, AllocSubListBox("(Manual)|Centered|On Mouse"), 0, 0, "(Manual)");
     StorePropertyHeader(16, hDialogEntry, "SysMenu", PROP_BOOLEAN, PROPFLAG_SYSMENU, 0, 0, 0, "True");
-    StorePropertyHeader(17, hDialogEntry, "Top", PROP_INTEGER, PROPFLAG_TOP, 0, (long) &Prop_DialogTop, 0, WAControlTop(FRMDiaghwnd));
+    StorePropertyHeader(17, hDialogEntry, "Top", PROP_INTEGER, PROPFLAG_TOP, 0, (long) &Prop_DialogTop, 0, ControlTop(FRMDiaghwnd));
     StorePropertyHeader(18, hDialogEntry, "TopMost", PROP_BOOLEAN, PROPFLAG_NONE, 0, 0, 0, "False");
     StorePropertyHeader(19, hDialogEntry, "Visible", PROP_BOOLEAN, PROPFLAG_NONE, 0, 0, 0, "True");
     StorePropertyHeader(20, hDialogEntry, "Width", PROP_INTEGER, PROPFLAG_WIDTH, 0, (long) &Prop_DialogWidth, 0, CurrentWidth);
@@ -440,10 +440,10 @@ void FillPropertiesListbox(long Entries)
 {
     int i = 0;
 
-    WAListBoxReset(hPropListbox);
+    ListBoxReset(hPropListbox);
     for(i = 0; i <= Entries; i++)
     {
-        WAListBoxAddItem(hPropListbox, "", -1);
+        ListBoxAddItem(hPropListbox, "", -1);
     }
 }
 
@@ -546,7 +546,7 @@ LRESULT CALLBACK PropEditHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
             PropEdithwnd = hWnd;
             if(PropEditCancel == 0)
             {
-				SetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE, (long) WAControlGetText(hWnd).Get_String());
+				SetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE, (long) ControlGetText(hWnd).Get_String());
                 SelectedInList = -1;
                 SelectedInListText = (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE);
 				// Execute property hook
@@ -557,7 +557,7 @@ LRESULT CALLBACK PropEditHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
             }
             else
             {
-				WAControlSetText(hWnd, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE));
+				ControlSetText(hWnd, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE));
             }
 			break;
 	}
@@ -578,7 +578,7 @@ LRESULT CALLBACK PropListboxHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
         case WM_VSCROLL:
             if(hListBoolean != 0)
             {
-                WAControlClose(hListBoolean);
+                ControlClose(hListBoolean);
                 hListBoolean = 0;
             }
 			break;
@@ -593,21 +593,21 @@ LRESULT CALLBACK PropListboxHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
                     case PROP_BOOLEAN:
                         if(hListBoolean != 0)
                         {
-                            WAControlClose(hListBoolean);
+                            ControlClose(hListBoolean);
                             hListBoolean = 0;
                         }
                         else
                         {
-                            PropCurrentTop = WAControlTop(CurrentEditControl) - 2 - WAControlTop(hPropListbox) + WAControlHeight(CurrentEditControl) + 2;
+                            PropCurrentTop = ControlTop(CurrentEditControl) - 2 - ControlTop(hPropListbox) + ControlHeight(CurrentEditControl) + 2;
                             // Bound bottom coordinate
-                            if(((PropCurrentHeight * 2) + (PropCurrentTop)) > WAControlClientHeight(hPropListbox))
+                            if(((PropCurrentHeight * 2) + (PropCurrentTop)) > ControlClientHeight(hPropListbox))
                             {
-                                PropCurrentTop = PropCurrentTop - (PropCurrentHeight * 2) - WAControlHeight(CurrentEditControl);
+                                PropCurrentTop = PropCurrentTop - (PropCurrentHeight * 2) - ControlHeight(CurrentEditControl);
                             }
-                            hListBoolean = WACreateListBox(PropCurrentLeft, PropCurrentTop - 2, PropCurrentWidth, PropCurrentHeight * 2, hPropListbox, 0, &PropSubListboxHook, 0, WS_VSCROLL | WS_BORDER, 0);
-                            WAListBoxAddItem(hListBoolean, "False", -1);
-                            WAListBoxAddItem(hListBoolean, "True", -1);
-							WAListBoxSetIndex(hListBoolean, WAListBoxItemExist(hListBoolean, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE)));
+                            hListBoolean = CreateListBox(PropCurrentLeft, PropCurrentTop - 2, PropCurrentWidth, PropCurrentHeight * 2, hPropListbox, 0, &PropSubListboxHook, 0, WS_VSCROLL | WS_BORDER, 0);
+                            ListBoxAddItem(hListBoolean, "False", -1);
+                            ListBoxAddItem(hListBoolean, "True", -1);
+							ListBoxSetIndex(hListBoolean, ListBoxItemExist(hListBoolean, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE)));
                             SelectedInList = -1;
                             SelectedInListText = "";
                             SetFocus(hListBoolean);
@@ -616,13 +616,13 @@ LRESULT CALLBACK PropListboxHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
                     case PROP_COMBO:
                         if(hListBoolean != 0)
                         {
-                            WAControlClose(hListBoolean);
+                            ControlClose(hListBoolean);
                             hListBoolean = 0;
                         }
                         else
                         {
                             // Bound bottom coordinate
-                            PropCurrentTop = WAControlTop(CurrentEditControl) - 2 - WAControlTop(hPropListbox) + WAControlHeight(CurrentEditControl) + 2;
+                            PropCurrentTop = ControlTop(CurrentEditControl) - 2 - ControlTop(hPropListbox) + ControlHeight(CurrentEditControl) + 2;
                             if(GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_EXTEND) != 0) {
 								ComboSubList = (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_EXTEND);
 								StrSubListBox = StrSubListBox.String(strlen(ComboSubList), 1);
@@ -631,19 +631,19 @@ LRESULT CALLBACK PropListboxHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
                                 if(StringGetSplitUBound(ArraySub) != -1)
                                 {
                                     // Bound bottom coordinate
-                                    if(((PropCurrentHeight * (StringGetSplitUBound(ArraySub) + 1)) + (PropCurrentTop)) > WAControlClientHeight(hPropListbox))
+                                    if(((PropCurrentHeight * (StringGetSplitUBound(ArraySub) + 1)) + (PropCurrentTop)) > ControlClientHeight(hPropListbox))
                                     {
-                                        PropCurrentTop = PropCurrentTop - (PropCurrentHeight * (StringGetSplitUBound(ArraySub) + 1)) - WAControlHeight(CurrentEditControl);
+                                        PropCurrentTop = PropCurrentTop - (PropCurrentHeight * (StringGetSplitUBound(ArraySub) + 1)) - ControlHeight(CurrentEditControl);
                                     }
-                                    hListBoolean = WACreateListBox(PropCurrentLeft, PropCurrentTop - 2, PropCurrentWidth, PropCurrentHeight * (StringGetSplitUBound(ArraySub) + 1), hPropListbox, 0, &PropSubListboxHook, 0, WS_VSCROLL | WS_BORDER, 0);
+                                    hListBoolean = CreateListBox(PropCurrentLeft, PropCurrentTop - 2, PropCurrentWidth, PropCurrentHeight * (StringGetSplitUBound(ArraySub) + 1), hPropListbox, 0, &PropSubListboxHook, 0, WS_VSCROLL | WS_BORDER, 0);
                                     for(i = 0; i <= StringGetSplitUBound(ArraySub); i++)
                                     {
-                                        WAListBoxAddItem(hListBoolean, StringGetSplitElement(&StrSubListBox, ArraySub, i), -1);
+                                        ListBoxAddItem(hListBoolean, StringGetSplitElement(&StrSubListBox, ArraySub, i), -1);
                                     }
                                 }
                                 StringReleaseSplit(ArraySub);
                             }
-						    WAListBoxSetIndex(hListBoolean, WAListBoxItemExist(hListBoolean, (char *) GetPropertyDatas(hCurrentObject,
+						    ListBoxSetIndex(hListBoolean, ListBoxItemExist(hListBoolean, (char *) GetPropertyDatas(hCurrentObject,
 						                                                                                               CurrentEditControlIndex,
 						                                                                                               PROPERTY_STORAGE)));
                             SelectedInList = -1;
@@ -654,7 +654,7 @@ LRESULT CALLBACK PropListboxHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 					case PROP_FILESELECT:
 						break;
                     case PROP_FONTSELECT:
-                        PropCurrentTop = WAControlTop(CurrentEditControl) - WAControlTop(hPropListbox) + WAControlHeight(CurrentEditControl);
+                        PropCurrentTop = ControlTop(CurrentEditControl) - ControlTop(hPropListbox) + ControlHeight(CurrentEditControl);
                         PropSelectFont();
 						break;
                 }
@@ -674,11 +674,11 @@ LRESULT CALLBACK PropSubListboxHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
             switch(wParam)
             {
                 case 13:
-                    SelectedInList = WAListBoxGetSelItemIndex(hListBoolean);
-                    SelectedInListText = WAListBoxGetCurrentItem(hListBoolean);
-                    WAControlClose(hListBoolean);
+                    SelectedInList = ListBoxGetSelItemIndex(hListBoolean);
+                    SelectedInListText = ListBoxGetCurrentItem(hListBoolean);
+                    ControlClose(hListBoolean);
 					SetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE, (long) SelectedInListText.Get_String());
-                    WAControlSetText(CurrentEditControlSubEdit, SelectedInListText);
+                    ControlSetText(CurrentEditControlSubEdit, SelectedInListText);
                     // Jump to associated routine (if any)
 					if(GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_ROUTINE) != 0) JumpToAddr((FARPROC) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_ROUTINE));
                     hListBoolean = 0;
@@ -686,18 +686,18 @@ LRESULT CALLBACK PropSubListboxHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
                 case 27:
                     SelectedInList = -1;
                     SelectedInListText = "";
-                    WAControlClose(hListBoolean);
+                    ControlClose(hListBoolean);
                     hListBoolean = 0;
                     return(0);
             }
             break;
         // Close listbox and update the list
         case WM_LBUTTONUP:
-            SelectedInList = WAListBoxGetSelItemIndex(hListBoolean);
-            SelectedInListText = WAListBoxGetCurrentItem(hListBoolean);
-            WAControlClose(hListBoolean);
+            SelectedInList = ListBoxGetSelItemIndex(hListBoolean);
+            SelectedInListText = ListBoxGetCurrentItem(hListBoolean);
+            ControlClose(hListBoolean);
 			SetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE, (long) SelectedInListText.Get_String());
-            WAControlSetText(CurrentEditControlSubEdit, SelectedInListText);
+            ControlSetText(CurrentEditControlSubEdit, SelectedInListText);
             // Jump to associated routine (if any)
             if(GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_ROUTINE) != 0) JumpToAddr((FARPROC) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_ROUTINE));
             hListBoolean = 0;
@@ -721,10 +721,10 @@ void PropSelectFont(void)
 	{
         FSize = atol((char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex + 1, PROPERTY_STORAGE));
     }
-	WAControlEnable(FRMDiagToolhwnd, 0);
-	WAControlEnable(FRMDiagTBhwnd, 0);
-	WAControlEnable(FRMDiagPropshwnd, 0);
-    if(WAComDlgChooseFont(FRMDiaghwnd, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), FSize, 0) != 0)
+	ControlEnable(FRMDiagToolhwnd, 0);
+	ControlEnable(FRMDiagTBhwnd, 0);
+	ControlEnable(FRMDiagPropshwnd, 0);
+    if(ComDlgChooseFont(FRMDiaghwnd, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE), FSize, 0) != 0)
     {
         for(i = 0; i <= LF_FACESIZE - 1; i++)
         {
@@ -736,17 +736,17 @@ void PropSelectFont(void)
 			BufString = MyFont.iPointSize / 10;
 			SetPropertyDatas(hCurrentObject, CurrentEditControlIndex + 1, PROPERTY_STORAGE, (long) BufString.Get_String());
 			SetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_STORAGE, (long) FName.Get_String());
-			WAControlSetText(CurrentEditControlSubEdit, FName);
+			ControlSetText(CurrentEditControlSubEdit, FName);
 			// Set size
 			NextDC = GetDC(hPropListbox);
-			WAGDIWriteClippedText(NextDC, PropCurrentLeft + 1, PropCurrentTop + 1, PropCurrentWidth - 1, PropCurrentHeight, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex + 1, PROPERTY_STORAGE), GetSysColor(COLOR_WINDOWTEXT), WASerifFont, 0, GetSysColor(COLOR_WINDOW));
+			GDIWriteClippedText(NextDC, PropCurrentLeft + 1, PropCurrentTop + 1, PropCurrentWidth - 1, PropCurrentHeight, (char *) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex + 1, PROPERTY_STORAGE), GetSysColor(COLOR_WINDOWTEXT), WASerifFont, 0, GetSysColor(COLOR_WINDOW));
 			ReleaseDC(hPropListbox, NextDC);
 			if(GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_ROUTINE) != 0) JumpToAddr((FARPROC) GetPropertyDatas(hCurrentObject, CurrentEditControlIndex, PROPERTY_ROUTINE));
 		}
     }
-	WAControlEnable(FRMDiagToolhwnd, 1);
-	WAControlEnable(FRMDiagTBhwnd, 1);
-	WAControlEnable(FRMDiagPropshwnd, 1);
+	ControlEnable(FRMDiagToolhwnd, 1);
+	ControlEnable(FRMDiagTBhwnd, 1);
+	ControlEnable(FRMDiagPropshwnd, 1);
 }
 
 // -----------------------------------------------------------------------
@@ -755,7 +755,7 @@ void RefreshProperty(long Position, long Value)
 {
     long PropTopIndex = 0;
 
-    PropTopIndex = WAListBoxGetTopIndex(hPropListbox);
+    PropTopIndex = ListBoxGetTopIndex(hPropListbox);
 }
 
 
@@ -767,7 +767,7 @@ void Prop_DialogDimWidth(void)
 {
 	CStr BufString;
 	
-	BufString = WAControlWidth(FRMDiaghwnd);
+	BufString = ControlWidth(FRMDiaghwnd);
 //    DiagLabelsFormStorage.Set(DiagLabelsFormDimRoutinePos.Get(2)->Content, BufString.Get_String());
 //    RefreshProperty(DiagLabelsFormDimRoutinePos.Get(2)->Content, (atol(DiagLabelsFormStorage.Get(DiagLabelsFormDimRoutinePos.Get(2)->Content)->Content)));
 }
@@ -776,7 +776,7 @@ void Prop_DialogDimHeight(void)
 {
 	CStr BufString;
 
-	BufString = WAControlHeight(FRMDiaghwnd);
+	BufString = ControlHeight(FRMDiaghwnd);
 //    DiagLabelsFormStorage.Set(DiagLabelsFormDimRoutinePos.Get(3)->Content, BufString.Get_String());
 //    RefreshProperty(DiagLabelsFormDimRoutinePos.Get(3)->Content, atol(DiagLabelsFormStorage.Get(DiagLabelsFormDimRoutinePos.Get(3)->Content)->Content));
 }
@@ -787,19 +787,19 @@ void Prop_DialogDimHeight(void)
 
 void Prop_DialogCaption(void)
 {
-//    DiagLabelsFormStorage.Set_Entry(CurrentEditControlIndex,WAControlGetText(PropEdithwnd).Get_String());
-//    WAControlSetText(FRMDiaghwnd, DiagLabelsFormStorage.Get(CurrentEditControlIndex)->Content);
+//    DiagLabelsFormStorage.Set_Entry(CurrentEditControlIndex,ControlGetText(PropEdithwnd).Get_String());
+//    ControlSetText(FRMDiaghwnd, DiagLabelsFormStorage.Get(CurrentEditControlIndex)->Content);
 }
 
 void Prop_DialogWidth(void)
 {
-//    WAControlResize(FRMDiaghwnd, WAControlLeft(FRMDiaghwnd), WAControlTop(FRMDiaghwnd), atol(DiagLabelsFormStorage.Get(CurrentEditControlIndex)->Content), WAControlHeight(FRMDiaghwnd));
+//    ControlResize(FRMDiaghwnd, ControlLeft(FRMDiaghwnd), ControlTop(FRMDiaghwnd), atol(DiagLabelsFormStorage.Get(CurrentEditControlIndex)->Content), ControlHeight(FRMDiaghwnd));
 //    CurrentWidth = atol(DiagLabelsFormStorage.Get(CurrentEditControlIndex)->Content);
 }
 
 void Prop_DialogHeight(void)
 {
-//    WAControlResize(FRMDiaghwnd, WAControlLeft(FRMDiaghwnd), WAControlTop(FRMDiaghwnd), WAControlWidth(FRMDiaghwnd), atol(DiagLabelsFormStorage.Get(CurrentEditControlIndex)->Content));
+//    ControlResize(FRMDiaghwnd, ControlLeft(FRMDiaghwnd), ControlTop(FRMDiaghwnd), ControlWidth(FRMDiaghwnd), atol(DiagLabelsFormStorage.Get(CurrentEditControlIndex)->Content));
 //    CurrentHeight = atol(DiagLabelsFormStorage.Get(CurrentEditControlIndex)->Content);
 }
 
@@ -849,8 +849,8 @@ void Prop_DialogScrollBars(void)
 void Prop_DialogFontName(void)
 {
     if(CurrentFont != 0) DeleteObject(CurrentFont);
-//    CurrentFont = WAGDIObtainFont(SelectedInListText, atol(DiagLabelsFormStorage.Get(CurrentEditControlIndex + 1)->Content), FRMDiaghwnd, 0, 0);
-    WAControlSetFont(FRMDiaghwnd, CurrentFont);
+//    CurrentFont = GDIObtainFont(SelectedInListText, atol(DiagLabelsFormStorage.Get(CurrentEditControlIndex + 1)->Content), FRMDiaghwnd, 0, 0);
+    ControlSetFont(FRMDiaghwnd, CurrentFont);
 }
 
 // -----------------------------------------------------------------------
@@ -860,7 +860,7 @@ void Prop_DialogFontSize(void)
     if(CurrentFont != 0) DeleteObject(CurrentFont);
     if(SelectedInListText.Len() != 0)
     {
-//        CurrentFont = WAGDIObtainFont(DiagLabelsFormStorage.Get(CurrentEditControlIndex - 1)->Content, SelectedInListText.Get_Long(), FRMDiaghwnd, 0, 0);
-//        WAControlSetFont(FRMDiaghwnd, CurrentFont);
+//        CurrentFont = GDIObtainFont(DiagLabelsFormStorage.Get(CurrentEditControlIndex - 1)->Content, SelectedInListText.Get_Long(), FRMDiaghwnd, 0, 0);
+//        ControlSetFont(FRMDiaghwnd, CurrentFont);
     }
 }

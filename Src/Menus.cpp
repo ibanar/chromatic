@@ -141,65 +141,65 @@ void CreateFileMenu(HMENU hParent, CStr MenuName, long BaseID)
     hFileMenu = CreatePopupMenu();
     CreateNewMenu(BaseID);
     AppendMenu(hFileMenu, MF_POPUP, (UINT) hFileMenuNew, "New");
-    AppendMenu(hFileMenu, MF_STRING, BaseID + MENU_FILE_CLEAR_ID, "Clear");
-    AppendMenu(hFileMenu, MF_STRING, BaseID + MENU_FILE_DUPLICATEFILE_ID, "Duplicate file");
-    AppendMenu(hFileMenu, MF_STRING, BaseID + MENU_FILE_RELOADFILE_ID, "Reload file\tCtrl+Shift+N");
-    AppendMenu(hFileMenu, MF_SEPARATOR, (UINT) -1, "-");
+    MenuAddString(hFileMenu, "Clear", BaseID + MENU_FILE_CLEAR_ID, TRUE);
+    MenuAddString(hFileMenu, "Duplicate file", BaseID + MENU_FILE_DUPLICATEFILE_ID, TRUE);
+    MenuAddString(hFileMenu, "Reload file\tCtrl+Shift+N", BaseID + MENU_FILE_RELOADFILE_ID, TRUE);
+    MenuAddSeparator(hFileMenu);
 
 	// ------
     hFileMenuOpen = CreatePopupMenu();
-    AppendMenu(hFileMenuOpen, MF_STRING, BaseID + MENU_FILE_OPENFILE_ID, "Source file(s)...\tCtrl+O");
-    WAMenuSetDefaultItem(hFileMenuOpen, 0);
+    MenuAddString(hFileMenuOpen, "Source file(s)...\tCtrl+O", BaseID + MENU_FILE_OPENFILE_ID, TRUE);
+    MenuSetDefaultItem(hFileMenuOpen, 0);
     hFileMenuFilters = CreatePopupMenu();
     CreateFiltersMenu(hFileMenuFilters, 17, BaseID + MENU_FILE_FILTERS_ID, "Laboratory...\tCtrl+Shift+O", 0);
 	AppendMenu(hFileMenuOpen, MF_POPUP, (UINT) hFileMenuFilters, "Filters");
-    AppendMenu(hFileMenuOpen, MF_STRING, BaseID + MENU_FILE_OPENWORKSPACE_ID, "Workspace...");
+    MenuAddString(hFileMenuOpen, "Workspace...", BaseID + MENU_FILE_OPENWORKSPACE_ID, TRUE);
     AppendMenu(hFileMenu, MF_POPUP, (UINT) hFileMenuOpen, "Open");
     
 	// ------
 	hFileMenuInclude = CreatePopupMenu();
-    AppendMenu(hFileMenuInclude, MF_STRING, BaseID + MENU_FILE_INCLUDEFILE_ID, "Source file(s)...\tCtrl+I");
-    WAMenuSetDefaultItem(hFileMenuInclude, 0);
+    MenuAddString(hFileMenuInclude, "Source file(s)...\tCtrl+I", BaseID + MENU_FILE_INCLUDEFILE_ID, TRUE);
+    MenuSetDefaultItem(hFileMenuInclude, 0);
 	hFileMenuIncludeFilters = CreatePopupMenu();
     CreateFiltersMenu(hFileMenuIncludeFilters, 18, BaseID + MENU_FILE_INCLUDEFILTERS_ID, "Laboratory...\tCtrl+Shift+I", 1);
     AppendMenu(hFileMenuInclude, MF_POPUP, (UINT) hFileMenuIncludeFilters, "Filters");
     AppendMenu(hFileMenu, MF_POPUP, (UINT) hFileMenuInclude, "Include");
 	// ------
 
-    AppendMenu(hFileMenu, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hFileMenu, MF_STRING, BaseID + MENU_FILE_FTPMANAGER_ID, "FTP manager...");
-    AppendMenu(hFileMenu, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hFileMenu, MF_STRING, BaseID + MENU_FILE_CLOSE_ID, "Close\tCtrl+F4");
-    AppendMenu(hFileMenu, MF_STRING, BaseID + MENU_FILE_CLOSEALL_ID, "Close all");
-    AppendMenu(hFileMenu, MF_SEPARATOR, (UINT) -1, "-");
+    MenuAddSeparator(hFileMenu);
+    MenuAddString(hFileMenu, "FTP manager...", BaseID + MENU_FILE_FTPMANAGER_ID, TRUE);
+    MenuAddSeparator(hFileMenu);
+    MenuAddString(hFileMenu, "Close\tCtrl+F4", BaseID + MENU_FILE_CLOSE_ID, TRUE);
+    MenuAddString(hFileMenu, "Close all", BaseID + MENU_FILE_CLOSEALL_ID, TRUE);
+    MenuAddSeparator(hFileMenu);
     hFileMenuSave = CreatePopupMenu();
-    AppendMenu(hFileMenuSave, MF_STRING, BaseID + MENU_FILE_SAVE_ID, "Current file\tCtrl+S");
-    WAMenuSetDefaultItem(hFileMenuSave, 0);
-    AppendMenu(hFileMenuSave, MF_STRING, BaseID + MENU_FILE_SAVEAS_ID, "To new file...\tAlt+Shift+S");
-    AppendMenu(hFileMenuSave, MF_STRING, BaseID + MENU_FILE_SAVEALL_ID, "All opened");
-    AppendMenu(hFileMenuSave, MF_STRING, BaseID + MENU_FILE_SAVEWORKSPACE_ID, "To workspace...");
+    MenuAddString(hFileMenuSave, "Current file\tCtrl+S", BaseID + MENU_FILE_SAVE_ID, TRUE);
+    MenuSetDefaultItem(hFileMenuSave, 0);
+    MenuAddString(hFileMenuSave, "To new file...\tAlt+Shift+S", BaseID + MENU_FILE_SAVEAS_ID, TRUE);
+    MenuAddString(hFileMenuSave, "All opened", BaseID + MENU_FILE_SAVEALL_ID, TRUE);
+    MenuAddString(hFileMenuSave, "To workspace...", BaseID + MENU_FILE_SAVEWORKSPACE_ID, TRUE);
     AppendMenu(hFileMenu, MF_POPUP, (UINT) hFileMenuSave, "Save");
-    AppendMenu(hFileMenu, MF_STRING, BaseID + MENU_FILE_REGISTERASSNIPPET_ID, "Register as code snippet...\tCtrl+H");
-    AppendMenu(hFileMenu, MF_STRING, BaseID + MENU_FILE_REGISTERASTEMPLATE_ID, "Register as source template...\tCtrl+Shift+H");
-    AppendMenu(hFileMenu, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hFileMenu, MF_STRING, BaseID + MENU_FILE_PRINTFILE_ID, "Print file...\tCtrl+P");
-    AppendMenu(hFileMenu, MF_SEPARATOR, (UINT) -1, "-");
+    MenuAddString(hFileMenu, "Register as code snippet...\tCtrl+H", BaseID + MENU_FILE_REGISTERASSNIPPET_ID, TRUE);
+    MenuAddString(hFileMenu, "Register as source template...\tCtrl+Shift+H", BaseID + MENU_FILE_REGISTERASTEMPLATE_ID, TRUE);
+    MenuAddSeparator(hFileMenu);
+    MenuAddString(hFileMenu, "Print file...\tCtrl+P", BaseID + MENU_FILE_PRINTFILE_ID, TRUE);
+    MenuAddSeparator(hFileMenu);
     hFileMenuConsole = CreatePopupMenu();
-    AppendMenu(hFileMenuConsole, MF_STRING, BaseID + MENU_FILE_CONSOLE_RUN_ID, "Run\tF5");
-    WAMenuSetDefaultItem(hFileMenuConsole, 0);
-    AppendMenu(hFileMenuConsole, MF_STRING, BaseID + MENU_FILE_CONSOLE_CHANGE_ID, "Change...");
+    MenuAddString(hFileMenuConsole, "Run\tF5", BaseID + MENU_FILE_CONSOLE_RUN_ID, TRUE);
+    MenuSetDefaultItem(hFileMenuConsole, 0);
+    MenuAddString(hFileMenuConsole, "Change...", BaseID + MENU_FILE_CONSOLE_CHANGE_ID, TRUE);
     AppendMenu(hFileMenu, MF_POPUP, (UINT) hFileMenuConsole, "Console prompt");
     hFileMenuRunProg = CreatePopupMenu();
     CreateRunProgMenu();
     AppendMenu(hFileMenu, MF_POPUP, (UINT) hFileMenuRunProg, "External programs");
-    AppendMenu(hFileMenu, MF_SEPARATOR, (UINT) -1, "-");
+    MenuAddSeparator(hFileMenu);
     hFileMenuFavorites = CreatePopupMenu();
     CreateFavoritesMenu();
     AppendMenu(hFileMenu, MF_POPUP, (UINT) hFileMenuFavorites, "Favorite files");
-    AppendMenu(hFileMenu, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hFileMenu, MF_STRING, BaseID + MENU_FILE_SETWORKINGDIRECTORY_ID, "Set working directory...\tF12");
-    AppendMenu(hFileMenu, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hFileMenu, MF_STRING, BaseID + MENU_FILE_EXIT_ID, "Exit\tCtrl+Q");
+    MenuAddSeparator(hFileMenu);
+    MenuAddString(hFileMenu, "Set working directory...\tF12", BaseID + MENU_FILE_SETWORKINGDIRECTORY_ID, TRUE);
+    MenuAddSeparator(hFileMenu);
+    MenuAddString(hFileMenu, "Exit\tCtrl+Q", BaseID + MENU_FILE_EXIT_ID, TRUE);
     AppendMenu(hParent, MF_POPUP, (UINT) hFileMenu, MenuName.Get_String());
 }
 
@@ -208,8 +208,8 @@ void CreateFileMenu(HMENU hParent, CStr MenuName, long BaseID)
 void CreateNewMenu(long BaseID)
 {
     hFileMenuNew = CreatePopupMenu();
-    AppendMenu(hFileMenuNew, MF_STRING, BaseID + MENU_FILE_NEW_ID, "Empty source\tCtrl+N");
-    WAMenuSetDefaultItem(hFileMenuNew, 0);
+    MenuAddString(hFileMenuNew, "Empty source\tCtrl+N", BaseID + MENU_FILE_NEW_ID, TRUE);
+    MenuSetDefaultItem(hFileMenuNew, 0);
     CreateTemplateMenu(hFileMenuNew);
     SubMenusArray[13] = hFileMenuNew;
 }
@@ -219,111 +219,111 @@ void CreateNewMenu(long BaseID)
 void CreateEditMenu(HMENU hParent, CStr MenuName, long BaseID)
 {
     hEditMenu = CreatePopupMenu();
-    AppendMenu(hEditMenu, MF_STRING, BaseID + MENU_EDIT_UNDO_ID, "Undo\tCtrl+Z");
-    AppendMenu(hEditMenu, MF_STRING, BaseID + MENU_EDIT_REDO_ID, "Redo\tCtrl+Y");
-    AppendMenu(hEditMenu, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hEditMenu, MF_STRING, BaseID + MENU_EDIT_CUT_ID, "Cut\tCtrl+X");
+    MenuAddString(hEditMenu, "Undo\tCtrl+Z", BaseID + MENU_EDIT_UNDO_ID, TRUE);
+    MenuAddString(hEditMenu, "Redo\tCtrl+Y", BaseID + MENU_EDIT_REDO_ID, TRUE);
+    MenuAddSeparator(hEditMenu);
+    MenuAddString(hEditMenu, "Cut\tCtrl+X", BaseID + MENU_EDIT_CUT_ID, TRUE);
     hEditMenuCopy = CreatePopupMenu();
-    AppendMenu(hEditMenuCopy, MF_STRING, BaseID + MENU_EDIT_COPY_ID, "Copy selection\tCtrl+C");
-    WAMenuSetDefaultItem(hEditMenuCopy, 0);
-    AppendMenu(hEditMenuCopy, MF_STRING, BaseID + MENU_EDIT_COPYFILEPATHNAME_ID, "Copy file path/name");
-    AppendMenu(hEditMenuCopy, MF_STRING, BaseID + MENU_EDIT_COPYENTIRETEXT_ID, "Copy entire text");
+    MenuAddString(hEditMenuCopy, "Copy selection\tCtrl+C", BaseID + MENU_EDIT_COPY_ID, TRUE);
+    MenuSetDefaultItem(hEditMenuCopy, 0);
+    MenuAddString(hEditMenuCopy, "Copy file path/name", BaseID + MENU_EDIT_COPYFILEPATHNAME_ID, TRUE);
+    MenuAddString(hEditMenuCopy, "Copy entire text", BaseID + MENU_EDIT_COPYENTIRETEXT_ID, TRUE);
     AppendMenu(hEditMenu, MF_POPUP, (UINT) hEditMenuCopy, "Copy");
     
     hEditMenuPaste = CreatePopupMenu();
-    AppendMenu(hEditMenuPaste, MF_STRING, BaseID + MENU_EDIT_PASTE_ID, "To current window\tCtrl+V");
-    WAMenuSetDefaultItem(hEditMenuPaste, 0);
-    AppendMenu(hEditMenuPaste, MF_STRING, BaseID + MENU_EDIT_PASTE_NEWWINDOW_ID, "To new window\tCtrl+Shift+V");
+    MenuAddString(hEditMenuPaste, "To current window\tCtrl+V", BaseID + MENU_EDIT_PASTE_ID, TRUE);
+    MenuSetDefaultItem(hEditMenuPaste, 0);
+    MenuAddString(hEditMenuPaste, "To new window\tCtrl+Shift+V", BaseID + MENU_EDIT_PASTE_NEWWINDOW_ID, TRUE);
     AppendMenu(hEditMenu, MF_POPUP, (UINT) hEditMenuPaste, "Paste");
     
-    AppendMenu(hEditMenu, MF_SEPARATOR, (UINT) -1, "-");
+    MenuAddSeparator(hEditMenu);
     hEditMenuDelete = CreatePopupMenu();
-    AppendMenu(hEditMenuDelete, MF_STRING, BaseID + MENU_EDIT_DELETE_DELETESELECTION_ID, "Delete selection\tDel");
-    WAMenuSetDefaultItem(hEditMenuDelete, 0);
-    AppendMenu(hEditMenuDelete, MF_STRING, BaseID + MENU_EDIT_DELETE_DELETELINE_ID, "Delete line\tCtrl+E");
-    AppendMenu(hEditMenuDelete, MF_STRING, BaseID + MENU_EDIT_DELETE_DELETETOSTARTOFLINE_ID, "Delete to start of line\tAlt+Bksp");
-    AppendMenu(hEditMenuDelete, MF_STRING, BaseID + MENU_EDIT_DELETE_DELETETOENDOFLINE_ID, "Delete to end of line\tAlt+Del");
-    AppendMenu(hEditMenuDelete, MF_STRING, BaseID + MENU_EDIT_DELETE_DELETEPARAGRAPH_ID, "Delete paragraph\tCtrl+Alt+K");
+    MenuAddString(hEditMenuDelete, "Delete selection\tDel", BaseID + MENU_EDIT_DELETE_DELETESELECTION_ID, TRUE);
+    MenuSetDefaultItem(hEditMenuDelete, 0);
+    MenuAddString(hEditMenuDelete, "Delete line\tCtrl+E", BaseID + MENU_EDIT_DELETE_DELETELINE_ID, TRUE);
+    MenuAddString(hEditMenuDelete, "Delete to start of line\tAlt+Bksp", BaseID + MENU_EDIT_DELETE_DELETETOSTARTOFLINE_ID, TRUE);
+    MenuAddString(hEditMenuDelete, "Delete to end of line\tAlt+Del", BaseID + MENU_EDIT_DELETE_DELETETOENDOFLINE_ID, TRUE);
+    MenuAddString(hEditMenuDelete, "Delete paragraph\tCtrl+Alt+K", BaseID + MENU_EDIT_DELETE_DELETEPARAGRAPH_ID, TRUE);
     AppendMenu(hEditMenu, MF_POPUP, (UINT) hEditMenuDelete, "Delete");
-    AppendMenu(hEditMenu, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hEditMenu, MF_STRING, BaseID + MENU_EDIT_SELECTLINE_ID, "Select line");
-    AppendMenu(hEditMenu, MF_STRING, BaseID + MENU_EDIT_SELECTALL_ID, "Select all\tCtrl+A");
+    MenuAddSeparator(hEditMenu);
+    MenuAddString(hEditMenu, "Select line", BaseID + MENU_EDIT_SELECTLINE_ID, TRUE);
+    MenuAddString(hEditMenu, "Select all\tCtrl+A", BaseID + MENU_EDIT_SELECTALL_ID, TRUE);
     hEditMenuProc = CreatePopupMenu();
-    AppendMenu(hEditMenuProc, MF_STRING, BaseID + MENU_EDIT_SELECTPROCEDURE_ID, "Select\tCtrl+Shift+A");
-    WAMenuSetDefaultItem(hEditMenuProc, 0);
-    AppendMenu(hEditMenuProc, MF_STRING, BaseID + MENU_EDIT_SELECTPROCANDCOLLAPSE_ID, "Select and collapse\tCtrl+Shift+Q");
-    AppendMenu(hEditMenuProc, MF_STRING, BaseID + MENU_EDIT_UNCOLLAPSEPROCEDURE_ID, "Expand\tCtrl+Shift+W");
+    MenuAddString(hEditMenuProc, "Select\tCtrl+Shift+A", BaseID + MENU_EDIT_SELECTPROCEDURE_ID, TRUE);
+    MenuSetDefaultItem(hEditMenuProc, 0);
+    MenuAddString(hEditMenuProc, "Select and collapse\tCtrl+Shift+Q", BaseID + MENU_EDIT_SELECTPROCANDCOLLAPSE_ID, TRUE);
+    MenuAddString(hEditMenuProc, "Expand\tCtrl+Shift+W", BaseID + MENU_EDIT_UNCOLLAPSEPROCEDURE_ID, TRUE);
     AppendMenu(hEditMenu, MF_POPUP, (UINT) hEditMenuProc, "Procedure");
-    AppendMenu(hEditMenu, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hEditMenu, MF_STRING, BaseID + MENU_EDIT_FIND_ID, "Find...\tCtrl+F");
-    AppendMenu(hEditMenu, MF_STRING, BaseID + MENU_EDIT_FINDSELECTION_ID, "Find fast\tCtrl+Shift+F3");
-    AppendMenu(hEditMenu, MF_STRING, BaseID + MENU_EDIT_FINDNEXT_ID, "Find next\tF3");
-    AppendMenu(hEditMenu, MF_STRING, BaseID + MENU_EDIT_FINDPREVIOUS_ID, "Find previous\tCtrl+F3");
-    AppendMenu(hEditMenu, MF_STRING, BaseID + MENU_EDIT_REPLACE_ID, "Replace...\tF4");
-    AppendMenu(hEditMenu, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hEditMenu, MF_STRING, BaseID + MENU_EDIT_PROCVARIABLESSEARCH_ID, "Proc/Var/Const search...\tCtrl+T");
-    AppendMenu(hEditMenu, MF_STRING, BaseID + MENU_EDIT_SEARCHINFILES_ID, "Search in files...\tCtrl+B");
-    AppendMenu(hEditMenu, MF_SEPARATOR, (UINT) -1, "-");
+    MenuAddSeparator(hEditMenu);
+    MenuAddString(hEditMenu, "Find...\tCtrl+F", BaseID + MENU_EDIT_FIND_ID, TRUE);
+    MenuAddString(hEditMenu, "Find fast\tCtrl+Shift+F3", BaseID + MENU_EDIT_FINDSELECTION_ID, TRUE);
+    MenuAddString(hEditMenu, "Find next\tF3", BaseID + MENU_EDIT_FINDNEXT_ID, TRUE);
+    MenuAddString(hEditMenu, "Find previous\tCtrl+F3", BaseID + MENU_EDIT_FINDPREVIOUS_ID, TRUE);
+    MenuAddString(hEditMenu, "Replace...\tF4", BaseID + MENU_EDIT_REPLACE_ID, TRUE);
+    MenuAddSeparator(hEditMenu);
+    MenuAddString(hEditMenu, "Proc/Var/Const search...\tCtrl+T", BaseID + MENU_EDIT_PROCVARIABLESSEARCH_ID, TRUE);
+    MenuAddString(hEditMenu, "Search in files...\tCtrl+B", BaseID + MENU_EDIT_SEARCHINFILES_ID, TRUE);
+    MenuAddSeparator(hEditMenu);
     hEditMenuBookmark = CreatePopupMenu();
-    AppendMenu(hEditMenuBookmark, MF_STRING, BaseID + MENU_EDIT_BOOKMARKS_TOGGLE_ID, "Toggle\tF2");
-    WAMenuSetDefaultItem(hEditMenuBookmark, 0);
-    AppendMenu(hEditMenuBookmark, MF_STRING, BaseID + MENU_EDIT_BOOKMARKS_FIRST_ID, "First\tCtrl+F7");
-    AppendMenu(hEditMenuBookmark, MF_STRING, BaseID + MENU_EDIT_BOOKMARKS_PREVIOUS_ID, "Previous\tShift+F2");
-    AppendMenu(hEditMenuBookmark, MF_STRING, BaseID + MENU_EDIT_BOOKMARKS_NEXT_ID, "Next\tCtrl+F2");
-    AppendMenu(hEditMenuBookmark, MF_STRING, BaseID + MENU_EDIT_BOOKMARKS_LAST_ID, "Last\tCtrl+Shift+F7");
-    AppendMenu(hEditMenuBookmark, MF_STRING, BaseID + MENU_EDIT_BOOKMARKS_CLEARALL_ID, "Clear all\tCtrl+Shift+F2");
+    MenuAddString(hEditMenuBookmark, "Toggle\tF2", BaseID + MENU_EDIT_BOOKMARKS_TOGGLE_ID, TRUE);
+    MenuSetDefaultItem(hEditMenuBookmark, 0);
+    MenuAddString(hEditMenuBookmark, "First\tCtrl+F7", BaseID + MENU_EDIT_BOOKMARKS_FIRST_ID, TRUE);
+    MenuAddString(hEditMenuBookmark, "Previous\tShift+F2", BaseID + MENU_EDIT_BOOKMARKS_PREVIOUS_ID, TRUE);
+    MenuAddString(hEditMenuBookmark, "Next\tCtrl+F2", BaseID + MENU_EDIT_BOOKMARKS_NEXT_ID, TRUE);
+    MenuAddString(hEditMenuBookmark, "Last\tCtrl+Shift+F7", BaseID + MENU_EDIT_BOOKMARKS_LAST_ID, TRUE);
+    MenuAddString(hEditMenuBookmark, "Clear all\tCtrl+Shift+F2", BaseID + MENU_EDIT_BOOKMARKS_CLEARALL_ID, TRUE);
     AppendMenu(hEditMenu, MF_POPUP, (UINT) hEditMenuBookmark, "Bookmarks");
 
     hEditMenuBreakpoint = CreatePopupMenu();
-    AppendMenu(hEditMenuBreakpoint, MF_STRING, BaseID + MENU_EDIT_BREAKPOINTS_TOGGLE_ID, "Toggle\tF10");
-    WAMenuSetDefaultItem(hEditMenuBreakpoint, 0);
-    AppendMenu(hEditMenuBreakpoint, MF_STRING, BaseID + MENU_EDIT_BREAKPOINTS_FIRST_ID, "First\tCtrl+F11");
-    AppendMenu(hEditMenuBreakpoint, MF_STRING, BaseID + MENU_EDIT_BREAKPOINTS_PREVIOUS_ID, "Previous\tShift+F10");
-    AppendMenu(hEditMenuBreakpoint, MF_STRING, BaseID + MENU_EDIT_BREAKPOINTS_NEXT_ID, "Next\tCtrl+F10");
-    AppendMenu(hEditMenuBreakpoint, MF_STRING, BaseID + MENU_EDIT_BREAKPOINTS_LAST_ID, "Last\tCtrl+Shift+F11");
-    AppendMenu(hEditMenuBreakpoint, MF_STRING, BaseID + MENU_EDIT_BREAKPOINTS_CLEARALL_ID, "Clear all\tCtrl+Shift+F10");
+    MenuAddString(hEditMenuBreakpoint, "Toggle\tF10", BaseID + MENU_EDIT_BREAKPOINTS_TOGGLE_ID, TRUE);
+    MenuSetDefaultItem(hEditMenuBreakpoint, 0);
+    MenuAddString(hEditMenuBreakpoint, "First\tCtrl+F11", BaseID + MENU_EDIT_BREAKPOINTS_FIRST_ID, TRUE);
+    MenuAddString(hEditMenuBreakpoint, "Previous\tShift+F10", BaseID + MENU_EDIT_BREAKPOINTS_PREVIOUS_ID, TRUE);
+    MenuAddString(hEditMenuBreakpoint, "Next\tCtrl+F10", BaseID + MENU_EDIT_BREAKPOINTS_NEXT_ID, TRUE);
+    MenuAddString(hEditMenuBreakpoint, "Last\tCtrl+Shift+F11", BaseID + MENU_EDIT_BREAKPOINTS_LAST_ID, TRUE);
+    MenuAddString(hEditMenuBreakpoint, "Clear all\tCtrl+Shift+F10", BaseID + MENU_EDIT_BREAKPOINTS_CLEARALL_ID, TRUE);
     AppendMenu(hEditMenu, MF_POPUP, (UINT) hEditMenuBreakpoint, "Code breakpoints");
 
-    AppendMenu(hEditMenu, MF_SEPARATOR, (UINT) -1, "-");
+    MenuAddSeparator(hEditMenu);
     hEditMenuGoto = CreatePopupMenu();
-    AppendMenu(hEditMenuGoto, MF_STRING, BaseID + MENU_EDIT_GOTO_TOP_ID, "Top\tCtrl+Home");
-    AppendMenu(hEditMenuGoto, MF_STRING, BaseID + MENU_EDIT_GOTO_BOTTOM_ID, "Bottom\tCtrl+End");
-    AppendMenu(hEditMenuGoto, MF_STRING, BaseID + MENU_EDIT_GOTO_LINE_ID, "Line\tCtrl+G");
-    AppendMenu(hEditMenuGoto, MF_STRING, BaseID + MENU_EDIT_GOTO_MATCHINGBRACKET_ID, "Matching bracket\tCtrl+[");
-    AppendMenu(hEditMenuGoto, MF_STRING, BaseID + MENU_EDIT_GOTO_PREVIOUSWORD_ID, "Previous word\tCtrl+Left");
-    AppendMenu(hEditMenuGoto, MF_STRING, BaseID + MENU_EDIT_GOTO_NEXTWORD_ID, "Next word\tCtrl+Right");
-    AppendMenu(hEditMenuGoto, MF_STRING, BaseID + MENU_EDIT_GOTO_PREVIOUSPROCEDURE_ID, "Previous procedure\tAlt+Up");
-    AppendMenu(hEditMenuGoto, MF_STRING, BaseID + MENU_EDIT_GOTO_NEXTPROCEDURE_ID, "Next procedure\tAlt+Down");
-    AppendMenu(hEditMenuGoto, MF_STRING, BaseID + MENU_EDIT_GOTO_PREVIOUSPARAGRAPH_ID, "Previous paragraph\tCtrl+Alt+Left");
-    AppendMenu(hEditMenuGoto, MF_STRING, BaseID + MENU_EDIT_GOTO_NEXTPARAGRAPH_ID, "Next paragraph\tCtrl+Alt+Right");
-    AppendMenu(hEditMenuGoto, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hEditMenuGoto, MF_STRING, BaseID + MENU_EDIT_GOTO_VARIABLEDECLARATION_ID, "Variable declaration\tCtrl+Alt+S");
-    AppendMenu(hEditMenuGoto, MF_STRING, BaseID + MENU_EDIT_GOTO_VARIABLENEXTUSE_ID, "Variable next use");
-    AppendMenu(hEditMenuGoto, MF_STRING, BaseID + MENU_EDIT_GOTO_PROCEDUREPROTOTYPE_ID, "Procedure declaration");
-    AppendMenu(hEditMenuGoto, MF_STRING, BaseID + MENU_EDIT_GOTO_PROCEDUREDECLARATION_ID, "Procedure entry point\tCtrl+Alt+F");
-    AppendMenu(hEditMenuGoto, MF_STRING, BaseID + MENU_EDIT_GOTO_PROCEDURENEXTUSE_ID, "Procedure next use");
-    WAMenuSetDefaultItem(hEditMenuGoto, 0);
+    MenuAddString(hEditMenuGoto, "Top\tCtrl+Home", BaseID + MENU_EDIT_GOTO_TOP_ID, TRUE);
+    MenuAddString(hEditMenuGoto, "Bottom\tCtrl+End", BaseID + MENU_EDIT_GOTO_BOTTOM_ID, TRUE);
+    MenuAddString(hEditMenuGoto, "Line\tCtrl+G", BaseID + MENU_EDIT_GOTO_LINE_ID, TRUE);
+    MenuAddString(hEditMenuGoto, "Matching bracket\tCtrl+[", BaseID + MENU_EDIT_GOTO_MATCHINGBRACKET_ID, TRUE);
+    MenuAddString(hEditMenuGoto, "Previous word\tCtrl+Left", BaseID + MENU_EDIT_GOTO_PREVIOUSWORD_ID, TRUE);
+    MenuAddString(hEditMenuGoto, "Next word\tCtrl+Right", BaseID + MENU_EDIT_GOTO_NEXTWORD_ID, TRUE);
+    MenuAddString(hEditMenuGoto, "Previous procedure\tAlt+Up", BaseID + MENU_EDIT_GOTO_PREVIOUSPROCEDURE_ID, TRUE);
+    MenuAddString(hEditMenuGoto, "Next procedure\tAlt+Down", BaseID + MENU_EDIT_GOTO_NEXTPROCEDURE_ID, TRUE);
+    MenuAddString(hEditMenuGoto, "Previous paragraph\tCtrl+Alt+Left", BaseID + MENU_EDIT_GOTO_PREVIOUSPARAGRAPH_ID, TRUE);
+    MenuAddString(hEditMenuGoto, "Next paragraph\tCtrl+Alt+Right", BaseID + MENU_EDIT_GOTO_NEXTPARAGRAPH_ID, TRUE);
+    MenuAddSeparator(hEditMenuGoto);
+    MenuAddString(hEditMenuGoto, "Variable declaration\tCtrl+Alt+S", BaseID + MENU_EDIT_GOTO_VARIABLEDECLARATION_ID, TRUE);
+    MenuAddString(hEditMenuGoto, "Variable next use", BaseID + MENU_EDIT_GOTO_VARIABLENEXTUSE_ID, TRUE);
+    MenuAddString(hEditMenuGoto, "Procedure declaration", BaseID + MENU_EDIT_GOTO_PROCEDUREPROTOTYPE_ID, TRUE);
+    MenuAddString(hEditMenuGoto, "Procedure entry point\tCtrl+Alt+F", BaseID + MENU_EDIT_GOTO_PROCEDUREDECLARATION_ID, TRUE);
+    MenuAddString(hEditMenuGoto, "Procedure next use", BaseID + MENU_EDIT_GOTO_PROCEDURENEXTUSE_ID, TRUE);
+    MenuSetDefaultItem(hEditMenuGoto, 0);
     AppendMenu(hEditMenu, MF_POPUP, (UINT) hEditMenuGoto, "Goto");
     hEditMenuBlock = CreatePopupMenu();
-    AppendMenu(hEditMenuBlock, MF_STRING, BaseID + MENU_EDIT_BLOCK_INDENT_ID, "Indent\tTab");
-    AppendMenu(hEditMenuBlock, MF_STRING, BaseID + MENU_EDIT_BLOCK_UNINDENT_ID, "Unindent\tShift+Tab");
-    AppendMenu(hEditMenuBlock, MF_STRING, BaseID + MENU_EDIT_BLOCK_UPPERCASE_ID, "Upper case\tCtrl+U");
-    AppendMenu(hEditMenuBlock, MF_STRING, BaseID + MENU_EDIT_BLOCK_LOWERCASE_ID, "Lower case\tCtrl+L");
-    AppendMenu(hEditMenuBlock, MF_STRING, BaseID + MENU_EDIT_BLOCK_TOGGLECASE_ID, "Toggle case\tCtrl+Shift+U");
-    AppendMenu(hEditMenuBlock, MF_STRING, BaseID + MENU_EDIT_BLOCK_COMMENT_ID, "Comment\tCtrl+K");
-    AppendMenu(hEditMenuBlock, MF_STRING, BaseID + MENU_EDIT_BLOCK_UNCOMMENT_ID, "Uncomment\tCtrl+M");
-    AppendMenu(hEditMenuBlock, MF_STRING, BaseID + MENU_EDIT_BLOCK_TABIFY_ID, "Tabify\tCtrl+Shift+T");
-    AppendMenu(hEditMenuBlock, MF_STRING, BaseID + MENU_EDIT_BLOCK_UNTABIFY_ID, "Untabify\tCtrl+Alt+T");
-    AppendMenu(hEditMenuBlock, MF_STRING, BaseID + MENU_EDIT_BLOCK_SPACESTOTABS_ID, "Spaces to tabs\tCtrl+Alt+R");
-    AppendMenu(hEditMenuBlock, MF_STRING, BaseID + MENU_EDIT_BLOCK_REGISTERS_ID, "Registers\tCtrl+R");
-    AppendMenu(hEditMenuBlock, MF_STRING, BaseID + MENU_EDIT_BLOCK_BLKCOMMENT_ID, "Comment (multi lines)\tCtrl+Shift+K");
-    AppendMenu(hEditMenuBlock, MF_STRING, BaseID + MENU_EDIT_BLOCK_CUSTOMCOMMENT_ID, "Custom comment...\tCtrl+Shift+F8");
-    AppendMenu(hEditMenuBlock, MF_STRING, BaseID + MENU_EDIT_BLOCK_TRIMSPACES_ID, "Trim trailing spaces\tCtrl+Alt+G");
-    AppendMenu(hEditMenuBlock, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hEditMenuBlock, MF_STRING, BaseID + MENU_EDIT_BLOCK_CONVERTTOINCLUDE_ID, "Convert to include...\tCtrl+Shift+L");
-    AppendMenu(hEditMenuBlock, MF_STRING, BaseID + MENU_EDIT_BLOCK_SAVEAS_ID, "Save as...\tCtrl+W");
-    AppendMenu(hEditMenuBlock, MF_STRING, BaseID + MENU_EDIT_BLOCK_PRINT_ID, "Print...\tCtrl+Shift+P");
-    WAMenuSetDefaultItem(hEditMenuBlock, 0);
+    MenuAddString(hEditMenuBlock, "Indent\tTab", BaseID + MENU_EDIT_BLOCK_INDENT_ID, TRUE);
+    MenuAddString(hEditMenuBlock, "Unindent\tShift+Tab", BaseID + MENU_EDIT_BLOCK_UNINDENT_ID, TRUE);
+    MenuAddString(hEditMenuBlock, "Upper case\tCtrl+U", BaseID + MENU_EDIT_BLOCK_UPPERCASE_ID, TRUE);
+    MenuAddString(hEditMenuBlock, "Lower case\tCtrl+L", BaseID + MENU_EDIT_BLOCK_LOWERCASE_ID, TRUE);
+    MenuAddString(hEditMenuBlock, "Toggle case\tCtrl+Shift+U", BaseID + MENU_EDIT_BLOCK_TOGGLECASE_ID, TRUE);
+    MenuAddString(hEditMenuBlock, "Comment\tCtrl+K", BaseID + MENU_EDIT_BLOCK_COMMENT_ID, TRUE);
+    MenuAddString(hEditMenuBlock, "Uncomment\tCtrl+M", BaseID + MENU_EDIT_BLOCK_UNCOMMENT_ID, TRUE);
+    MenuAddString(hEditMenuBlock, "Tabify\tCtrl+Shift+T", BaseID + MENU_EDIT_BLOCK_TABIFY_ID, TRUE);
+    MenuAddString(hEditMenuBlock, "Untabify\tCtrl+Alt+T", BaseID + MENU_EDIT_BLOCK_UNTABIFY_ID, TRUE);
+    MenuAddString(hEditMenuBlock, "Spaces to tabs\tCtrl+Alt+R", BaseID + MENU_EDIT_BLOCK_SPACESTOTABS_ID, TRUE);
+    MenuAddString(hEditMenuBlock, "Registers\tCtrl+R", BaseID + MENU_EDIT_BLOCK_REGISTERS_ID, TRUE);
+    MenuAddString(hEditMenuBlock, "Comment (multi lines)\tCtrl+Shift+K", BaseID + MENU_EDIT_BLOCK_BLKCOMMENT_ID, TRUE);
+    MenuAddString(hEditMenuBlock, "Custom comment...\tCtrl+Shift+F8", BaseID + MENU_EDIT_BLOCK_CUSTOMCOMMENT_ID, TRUE);
+    MenuAddString(hEditMenuBlock, "Trim trailing spaces\tCtrl+Alt+G", BaseID + MENU_EDIT_BLOCK_TRIMSPACES_ID, TRUE);
+    MenuAddSeparator(hEditMenuBlock);
+    MenuAddString(hEditMenuBlock, "Convert to include...\tCtrl+Shift+L", BaseID + MENU_EDIT_BLOCK_CONVERTTOINCLUDE_ID, TRUE);
+    MenuAddString(hEditMenuBlock, "Save as...\tCtrl+W", BaseID + MENU_EDIT_BLOCK_SAVEAS_ID, TRUE);
+    MenuAddString(hEditMenuBlock, "Print...\tCtrl+Shift+P", BaseID + MENU_EDIT_BLOCK_PRINT_ID, TRUE);
+    MenuSetDefaultItem(hEditMenuBlock, 0);
     AppendMenu(hEditMenu, MF_POPUP, (UINT) hEditMenuBlock, "Block");
     AppendMenu(hParent, MF_POPUP, (UINT) hEditMenu, MenuName.Get_String());
 }
@@ -333,21 +333,21 @@ void CreateEditMenu(HMENU hParent, CStr MenuName, long BaseID)
 void CreateViewMenu(HMENU hParent, CStr MenuName, long BaseID)
 {
     hViewMenu = CreatePopupMenu();
-    AppendMenu(hViewMenu, MF_STRING, BaseID + MENU_VIEW_STATUSBAR_ID, "Status bar");
+    MenuAddString(hViewMenu, "Status bar", BaseID + MENU_VIEW_STATUSBAR_ID, TRUE);
     hViewMenuDisplay = CreatePopupMenu();
-	AppendMenu(hViewMenuDisplay, MF_STRING, BaseID + MENU_VIEW_PROJECTDOCK_ID, "Project\tAlt+1");
-	AppendMenu(hViewMenuDisplay, MF_STRING, BaseID + MENU_VIEW_WINDOWSDOCK_ID, "Windows\tAlt+2");
-    AppendMenu(hViewMenuDisplay, MF_STRING, BaseID + MENU_VIEW_OUTPUTDOCK_ID, "Output\tAlt+3");
-	AppendMenu(hViewMenuDisplay, MF_SEPARATOR, (UINT) -1, "-");
+    MenuAddString(hViewMenuDisplay, "Project\tAlt+1", BaseID + MENU_VIEW_PROJECTDOCK_ID, TRUE);
+    MenuAddString(hViewMenuDisplay, "Windows\tAlt+2", BaseID + MENU_VIEW_WINDOWSDOCK_ID, TRUE);
+    MenuAddString(hViewMenuDisplay, "Output\tAlt+3", BaseID + MENU_VIEW_OUTPUTDOCK_ID, TRUE);
+    MenuAddSeparator(hViewMenuDisplay);
     // Disabled by default at startup (debugger related)
-    AppendMenu(hViewMenuDisplay, MF_STRING | MF_GRAYED, BaseID + MENU_VIEW_DEBUGDOCK_ID, "Process datas\tAlt+4");
-	AppendMenu(hViewMenuDisplay, MF_STRING | MF_GRAYED, BaseID + MENU_VIEW_REGISTERSDOCK_ID, "Registers\tAlt+5");
+    MenuAddString(hViewMenuDisplay, "Process datas\tAlt+4", BaseID + MENU_VIEW_DEBUGDOCK_ID, FALSE);
+    MenuAddString(hViewMenuDisplay, "Registers\tAlt+5", BaseID + MENU_VIEW_REGISTERSDOCK_ID, FALSE);
     AppendMenu(hViewMenu, MF_POPUP, (UINT) hViewMenuDisplay, "Display");
-    AppendMenu(hViewMenu, MF_STRING, BaseID + MENU_VIEW_FULLSCREEN_ID, "Full screen\tAlt+Shift+Z");
-    AppendMenu(hViewMenu, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hViewMenu, MF_STRING, BaseID + MENU_VIEW_PROPERTIES_ID, "Properties...\tF8");
-    AppendMenu(hViewMenu, MF_STRING, BaseID + MENU_VIEW_USERMENUSEDITOR_ID, "User menus editor...\tF9");
-    AppendMenu(hViewMenu, MF_STRING, BaseID + MENU_VIEW_USERTOOLBARSEDITOR_ID, "Toolbars manager...\tShift+F9");
+    MenuAddString(hViewMenu, "Full screen\tAlt+Shift+Z", BaseID + MENU_VIEW_FULLSCREEN_ID, TRUE);
+    MenuAddSeparator(hViewMenu);
+    MenuAddString(hViewMenu, "Properties...\tF8", BaseID + MENU_VIEW_PROPERTIES_ID, TRUE);
+    MenuAddString(hViewMenu, "User menus editor...\tF9", BaseID + MENU_VIEW_USERMENUSEDITOR_ID, TRUE);
+    MenuAddString(hViewMenu, "Toolbars manager...\tShift+F9", BaseID + MENU_VIEW_USERTOOLBARSEDITOR_ID, TRUE);
     AppendMenu(hParent, MF_POPUP, (UINT) hViewMenu, MenuName.Get_String());
 }
 
@@ -356,37 +356,37 @@ void CreateViewMenu(HMENU hParent, CStr MenuName, long BaseID)
 void CreateProjectMenu(HMENU hParent, CStr MenuName, long BaseID)
 {
     hProjectMenu = CreatePopupMenu();
-    AppendMenu(hProjectMenu, MF_STRING, BaseID + MENU_PROJECT_CREATENEWPROJECT_ID, "Create new project...");
-    AppendMenu(hProjectMenu, MF_STRING, BaseID + MENU_PROJECT_OPENPROJECT_ID, "Open project...\tCtrl+Alt+O");
-    AppendMenu(hProjectMenu, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hProjectMenu, MF_STRING, BaseID + MENU_PROJECT_SAVEPROJECT_ID, "Save project\tCtrl+Shift+S");
-    AppendMenu(hProjectMenu, MF_STRING, BaseID + MENU_PROJECT_SAVEPROJECTAS_ID, "Save project as...");
-    AppendMenu(hProjectMenu, MF_SEPARATOR, (UINT) -1, "-");
+    MenuAddString(hProjectMenu, "Create new project...", BaseID + MENU_PROJECT_CREATENEWPROJECT_ID, TRUE);
+    MenuAddString(hProjectMenu, "Open project...\tCtrl+Alt+O", BaseID + MENU_PROJECT_OPENPROJECT_ID, TRUE);
+    MenuAddSeparator(hProjectMenu);
+    MenuAddString(hProjectMenu, "Save project\tCtrl+Shift+S", BaseID + MENU_PROJECT_SAVEPROJECT_ID, TRUE);
+    MenuAddString(hProjectMenu, "Save project as...", BaseID + MENU_PROJECT_SAVEPROJECTAS_ID, TRUE);
+    MenuAddSeparator(hProjectMenu);
     hProjectAddToMenu = CreatePopupMenu();
-    AppendMenu(hProjectAddToMenu, MF_STRING, BaseID + MENU_PROJECT_ADDINCLUDE_ID, "Include file(s)...");
-    AppendMenu(hProjectAddToMenu, MF_STRING, BaseID + MENU_PROJECT_ADDLIBRARY_ID, "Library file(s)...");
-    AppendMenu(hProjectAddToMenu, MF_STRING, BaseID + MENU_PROJECT_ADDMODULE_ID, "Module file(s)...");
-    AppendMenu(hProjectAddToMenu, MF_STRING, BaseID + MENU_PROJECT_ADDOBJECT_ID, "Object file(s)...");
+    MenuAddString(hProjectAddToMenu, "Include file(s)...", BaseID + MENU_PROJECT_ADDINCLUDE_ID, TRUE);
+    MenuAddString(hProjectAddToMenu, "Library file(s)...", BaseID + MENU_PROJECT_ADDLIBRARY_ID, TRUE);
+    MenuAddString(hProjectAddToMenu, "Module file(s)...", BaseID + MENU_PROJECT_ADDMODULE_ID, TRUE);
+    MenuAddString(hProjectAddToMenu, "Object file(s)...", BaseID + MENU_PROJECT_ADDOBJECT_ID, TRUE);
     hProjectAddResToMenu = CreatePopupMenu();
-    AppendMenu(hProjectAddResToMenu, MF_STRING, BaseID + MENU_PROJECT_ADDRESOURCE_ID, "Rc file(s)...");
-    AppendMenu(hProjectAddResToMenu, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hProjectAddResToMenu, MF_STRING, BaseID + MENU_PROJECT_ADDICON_ID, "Icon file(s)...");
-    AppendMenu(hProjectAddResToMenu, MF_STRING, BaseID + MENU_PROJECT_ADDCURSOR_ID, "Cursor file(s)...");
-    AppendMenu(hProjectAddResToMenu, MF_STRING, BaseID + MENU_PROJECT_ADDBITMAP_ID, "Bitmap file(s)...");
-    AppendMenu(hProjectAddResToMenu, MF_STRING, BaseID + MENU_PROJECT_ADDSTRINGS_ID, "Strings file(s)...");
-    AppendMenu(hProjectAddResToMenu, MF_STRING, BaseID + MENU_PROJECT_ADDACCELERATORS_ID, "Accelerators file(s)...");
-    AppendMenu(hProjectAddResToMenu, MF_STRING, BaseID + MENU_PROJECT_ADDMENUS_ID, "Menus file(s)...");
-    AppendMenu(hProjectAddResToMenu, MF_STRING, BaseID + MENU_PROJECT_ADDDIALOG_ID, "Dialog file(s)...");
-    AppendMenu(hProjectAddResToMenu, MF_STRING, BaseID + MENU_PROJECT_ADDRAWDATA_ID, "Raw datas file(s)...");
+    MenuAddString(hProjectAddResToMenu, "Rc file(s)...", BaseID + MENU_PROJECT_ADDRESOURCE_ID, TRUE);
+    MenuAddSeparator(hProjectAddResToMenu);
+    MenuAddString(hProjectAddResToMenu, "Icon file(s)...", BaseID + MENU_PROJECT_ADDICON_ID, TRUE);
+    MenuAddString(hProjectAddResToMenu, "Cursor file(s)...", BaseID + MENU_PROJECT_ADDCURSOR_ID, TRUE);
+    MenuAddString(hProjectAddResToMenu, "Bitmap file(s)...", BaseID + MENU_PROJECT_ADDBITMAP_ID, TRUE);
+    MenuAddString(hProjectAddResToMenu, "Strings file(s)...", BaseID + MENU_PROJECT_ADDSTRINGS_ID, TRUE);
+    MenuAddString(hProjectAddResToMenu, "Accelerators file(s)...", BaseID + MENU_PROJECT_ADDACCELERATORS_ID, TRUE);
+    MenuAddString(hProjectAddResToMenu, "Menus file(s)...", BaseID + MENU_PROJECT_ADDMENUS_ID, TRUE);
+    MenuAddString(hProjectAddResToMenu, "Dialog file(s)...", BaseID + MENU_PROJECT_ADDDIALOG_ID, TRUE);
+    MenuAddString(hProjectAddResToMenu, "Raw datas file(s)...", BaseID + MENU_PROJECT_ADDRAWDATA_ID, TRUE);
     AppendMenu(hProjectAddToMenu, MF_POPUP, (UINT) hProjectAddResToMenu, "Resources");
-    AppendMenu(hProjectAddToMenu, MF_STRING, BaseID + MENU_PROJECT_ADDTEXT_ID, "Document file(s)...");
+    MenuAddString(hProjectAddToMenu, "Document file(s)...", BaseID + MENU_PROJECT_ADDTEXT_ID, TRUE);
     AppendMenu(hProjectMenu, MF_POPUP, (UINT) hProjectAddToMenu, "Add to project");
-    AppendMenu(hProjectMenu, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hProjectMenu, MF_STRING, BaseID + MENU_PROJECT_PROJECTPROPERTIES_ID, "Project properties...");
-    AppendMenu(hProjectMenu, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hProjectMenu, MF_STRING, BaseID + MENU_PROJECT_ASSEMBLEPROJECT_ID, "Build project\tShift+F5");
-    AppendMenu(hProjectMenu, MF_STRING, BaseID + MENU_PROJECT_RUNPROJECT_ID, "Run project\tCtrl+F5");
-    AppendMenu(hProjectMenu, MF_STRING, BaseID + MENU_PROJECT_DEBUGPROJECT_ID, "Debug project\tCtrl+Shift+F5");
+    MenuAddSeparator(hProjectMenu);
+    MenuAddString(hProjectMenu, "Project properties...", BaseID + MENU_PROJECT_PROJECTPROPERTIES_ID, TRUE);
+    MenuAddSeparator(hProjectMenu);
+    MenuAddString(hProjectMenu, "Build project\tShift+F5", BaseID + MENU_PROJECT_ASSEMBLEPROJECT_ID, TRUE);
+    MenuAddString(hProjectMenu, "Run project\tCtrl+F5", BaseID + MENU_PROJECT_RUNPROJECT_ID, TRUE);
+    MenuAddString(hProjectMenu, "Debug project\tCtrl+Shift+F5", BaseID + MENU_PROJECT_DEBUGPROJECT_ID, TRUE);
     AppendMenu(hParent, MF_POPUP, (UINT) hProjectMenu, MenuName.Get_String());
 }
 
@@ -395,7 +395,7 @@ void CreateProjectMenu(HMENU hParent, CStr MenuName, long BaseID)
 void CreateAddInsMenu(HMENU hParent, CStr MenuName, long BaseID)
 {
     hEditAddInsMenu = CreatePopupMenu();
-    AppendMenu(hEditAddInsMenu, MF_STRING, BaseID + MENU_ADDINS_MANAGER_ID, "AddIns manager...");
+    MenuAddString(hEditAddInsMenu, "AddIns manager...", BaseID + MENU_ADDINS_MANAGER_ID, TRUE);
     AppendMenu(hParent, MF_POPUP, (UINT) hEditAddInsMenu, MenuName.Get_String());
     FillAddInsArrays();
     FillAddInsMenu();
@@ -406,22 +406,22 @@ void CreateAddInsMenu(HMENU hParent, CStr MenuName, long BaseID)
 void CreateWindowMenu(HMENU hParent, CStr MenuName, long BaseID)
 {
     hWindowMenu = CreatePopupMenu();
-    AppendMenu(hWindowMenu, MF_STRING, BaseID + MENU_WINDOW_CONTEXTHELP_ID, "Context help\tF1");
-    AppendMenu(hWindowMenu, MF_STRING, BaseID + MENU_WINDOW_MSDNHELP_ID, "MSDN/Platform SDK help\tCtrl+F1");
-    AppendMenu(hWindowMenu, MF_STRING, BaseID + MENU_WINDOW_DDKHELP_ID, "Windows DDK help\tCtrl+Shift+F1");
-    AppendMenu(hWindowMenu, MF_STRING, BaseID + MENU_WINDOW_DIRECTXSDKHELP_ID, "DirectX SDK help\tAlt+Shift+F1");
-	AppendMenu(hWindowMenu, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hWindowMenu, MF_STRING, BaseID + MENU_WINDOW_TIPOFTHEDAY_ID, "Tip of the day...");
-    AppendMenu(hWindowMenu, MF_STRING, BaseID + MENU_WINDOW_ABOUT_ID, "About...");
-    AppendMenu(hWindowMenu, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hWindowMenu, MF_STRING, BaseID + MENU_WINDOW_SPLIT_ID, "Split");
-    AppendMenu(hWindowMenu, MF_STRING, BaseID + MENU_WINDOW_TILEHORIZONTALLY_ID, "Tile horizontally");
-    AppendMenu(hWindowMenu, MF_STRING, BaseID + MENU_WINDOW_TILEVERTICALLY_ID, "Tile vertically");
-    AppendMenu(hWindowMenu, MF_STRING, BaseID + MENU_WINDOW_CASCADE_ID, "Cascade");
-    AppendMenu(hWindowMenu, MF_STRING, BaseID + MENU_WINDOW_ARRANGEICONS_ID, "Arrange icons");
-    AppendMenu(hWindowMenu, MF_SEPARATOR, (UINT) -1, "-");
-    AppendMenu(hWindowMenu, MF_STRING, BaseID + MENU_WINDOW_NEXTWINDOW_ID, "Next window\tCtrl+F6 / Ctrl+Tab");
-    AppendMenu(hWindowMenu, MF_STRING, BaseID + MENU_WINDOW_PREVIOUSWINDOW_ID, "Previous window\tCtrl+Shift+F6 / Ctrl+Shift+Tab");
+    MenuAddString(hWindowMenu, "Context help\tF1", BaseID + MENU_WINDOW_CONTEXTHELP_ID, TRUE);
+    MenuAddString(hWindowMenu, "MSDN/Platform SDK help\tCtrl+F1", BaseID + MENU_WINDOW_MSDNHELP_ID, TRUE);
+    MenuAddString(hWindowMenu, "Windows DDK help\tCtrl+Shift+F1", BaseID + MENU_WINDOW_DDKHELP_ID, TRUE);
+    MenuAddString(hWindowMenu, "DirectX SDK help\tAlt+Shift+F1", BaseID + MENU_WINDOW_DIRECTXSDKHELP_ID, TRUE);
+    MenuAddSeparator(hWindowMenu);
+    MenuAddString(hWindowMenu, "Tip of the day...", BaseID + MENU_WINDOW_TIPOFTHEDAY_ID, TRUE);
+    MenuAddString(hWindowMenu, "About...", BaseID + MENU_WINDOW_ABOUT_ID, TRUE);
+    MenuAddSeparator(hWindowMenu);
+    MenuAddString(hWindowMenu, "Split", BaseID + MENU_WINDOW_SPLIT_ID, TRUE);
+    MenuAddString(hWindowMenu, "Tile horizontally", BaseID + MENU_WINDOW_TILEHORIZONTALLY_ID, TRUE);
+    MenuAddString(hWindowMenu, "Tile vertically", BaseID + MENU_WINDOW_TILEVERTICALLY_ID, TRUE);
+    MenuAddString(hWindowMenu, "Cascade", BaseID + MENU_WINDOW_CASCADE_ID, TRUE);
+    MenuAddString(hWindowMenu, "Arrange icons", BaseID + MENU_WINDOW_ARRANGEICONS_ID, TRUE);
+    MenuAddSeparator(hWindowMenu);
+    MenuAddString(hWindowMenu, "Next window\tCtrl+F6 / Ctrl+Tab", BaseID + MENU_WINDOW_NEXTWINDOW_ID, TRUE);
+    MenuAddString(hWindowMenu, "Previous window\tCtrl+Shift+F6 / Ctrl+Shift+Tab", BaseID + MENU_WINDOW_PREVIOUSWINDOW_ID, TRUE);
     AppendMenu(hParent, MF_POPUP, (UINT) hWindowMenu, MenuName.Get_String());
 }
 
@@ -447,17 +447,17 @@ void SetRecentFiles(HMENU hParent)
     hMenuRecent = CreateMenu();
     for(i = 0; i <= (long) MaxRecent - 1; i++)
     {
-        MainMenusRetVal = WAIniReadKey("Recents", "Rcnt" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        MainMenusRetVal = IniReadKey("Recents", "Rcnt" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         if(MainMenusRetVal.Len() == 0) break;
         Recents.Add(MainMenusRetVal.Get_String());
-        AppendMenu(hMenuRecent, MF_STRING, MENU_RECENTFILES_IDBASE + i, MainMenusRetVal.Get_String());
+        MenuAddString(hMenuRecent, MainMenusRetVal, MENU_RECENTFILES_IDBASE + i, TRUE);
         NbrRc++;
     }
     if(NbrRc != 0)
     {
-        AppendMenu(hMenuRecent, MF_SEPARATOR, (UINT) -1, "-");
-        AppendMenu(hMenuRecent, MF_STRING, MENU_RECENTFILESPURGE_IDBASE, "Remove obsoletes");
-        AppendMenu(hMenuRecent, MF_STRING, MENU_RECENTFILESPURGEALL_IDBASE, "Clear all entries");
+        MenuAddSeparator(hMenuRecent);
+        MenuAddString(hMenuRecent, "Remove obsoletes entries", MENU_RECENTFILESPURGE_IDBASE, TRUE);
+        MenuAddString(hMenuRecent, "Clear all entries", MENU_RECENTFILESPURGEALL_IDBASE, TRUE);
         InsertMenu(hMenu, 27 - 6 + 2, MF_POPUP + MF_BYPOSITION, (UINT) hMenuRecent, "Recent files");
         EntryInRecent = 1;
     }
@@ -491,17 +491,17 @@ void SetRecentProjects(HMENU hParent)
     hMenuRecentPrj = CreateMenu();
     for(i = 0; i <= (long) MaxRecentPrj - 1; i++)
     {
-        MainMenusRetVal = WAIniReadKey("RecentsPrjs", "Rcnt" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        MainMenusRetVal = IniReadKey("RecentsPrjs", "Rcnt" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         if(MainMenusRetVal.Len() == 0) break;
         RecentsPrj.Add(MainMenusRetVal.Get_String());
-        AppendMenu(hMenuRecentPrj, MF_STRING, MENU_RECENTPROJECTS_IDBASE + i, MainMenusRetVal.Get_String());
+        MenuAddString(hMenuRecentPrj, MainMenusRetVal, MENU_RECENTPROJECTS_IDBASE + i, TRUE);
         NbrRc++;
     }
     if(NbrRc != 0)
     {
-        AppendMenu(hMenuRecentPrj, MF_SEPARATOR, (UINT) -1, "-");
-        AppendMenu(hMenuRecentPrj, MF_STRING, MENU_RECENTPROJECTSPURGE_IDBASE, "Remove obsoletes");
-        AppendMenu(hMenuRecentPrj, MF_STRING, MENU_RECENTPROJECTSPURGEALL_IDBASE, "Clear all entries");
+        MenuAddSeparator(hMenuRecentPrj);
+        MenuAddString(hMenuRecentPrj, "Remove obsoletes entries", MENU_RECENTPROJECTSPURGE_IDBASE, TRUE);
+        MenuAddString(hMenuRecentPrj, "Clear all entries", MENU_RECENTPROJECTSPURGEALL_IDBASE, TRUE);
         // Recent file list there ?
         if(EntryInRecent == 1) InsertMenu(hMenu, 28 - 6 + 2, MF_BYPOSITION + MF_POPUP, (UINT) hMenuRecentPrj, "Recent projects");
         else InsertMenu(hMenu, 27 - 6 + 2, MF_BYPOSITION + MF_POPUP, (UINT) hMenuRecentPrj, "Recent projects");
@@ -578,9 +578,9 @@ void AddRecentFile(CStr FName, long AddFile, long ForceRemove)
 SaveRecent:
     for(i = 0; i <= 999; i++)
     {
-        if(WAIniReadKey("Recents", "Rcnt" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile).Len() != 0)
+        if(IniReadKey("Recents", "Rcnt" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile).Len() != 0)
         {
-            WAIniDeleteKey("Recents", "Rcnt" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+            IniDeleteKey("Recents", "Rcnt" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         }
         else
         {
@@ -592,7 +592,7 @@ SaveRecent:
     {
         if(strlen(Recents.Get(i)->Content) != 0)
         {
-            WAIniWriteKey("Recents", "Rcnt" + (CStr) StringNumberComplement(j, 3).Get_String(), Recents.Get(i)->Content, MainIniFile);
+            IniWriteKey("Recents", "Rcnt" + (CStr) StringNumberComplement(j, 3).Get_String(), Recents.Get(i)->Content, MainIniFile);
             j++;
         }
     }
@@ -661,9 +661,9 @@ void AddRecentPrj(CStr FName, long AddFile, long ForceRemove)
 SaveRecent:
     for(i = 0; i <= 999; i++)
     {
-        if((WAIniReadKey("RecentsPrjs", "Rcnt" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile)).Len() != 0)
+        if((IniReadKey("RecentsPrjs", "Rcnt" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile)).Len() != 0)
         {
-            WAIniDeleteKey("RecentsPrjs", "Rcnt" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+            IniDeleteKey("RecentsPrjs", "Rcnt" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         }
         else
         {
@@ -675,7 +675,7 @@ SaveRecent:
     {
         if(strlen(RecentsPrj.Get(i)->Content) != 0)
         {
-            WAIniWriteKey("RecentsPrjs", "Rcnt" + (CStr) StringNumberComplement(j, 3).Get_String(),
+            IniWriteKey("RecentsPrjs", "Rcnt" + (CStr) StringNumberComplement(j, 3).Get_String(),
                           RecentsPrj.Get(i)->Content, MainIniFile);
             j++;
         }
@@ -700,7 +700,7 @@ void SetMenus(void)
     MenusCmdsHelp.Erase();
     for(i = 0; i <= 999; i++)
     {
-        MainMenusRetVal = WAIniReadKey("Menus", "Menu" + (CStr) StringNumberComplement(i, 3).Get_String(), UserMenusIniFile);
+        MainMenusRetVal = IniReadKey("Menus", "Menu" + (CStr) StringNumberComplement(i, 3).Get_String(), UserMenusIniFile);
         if(MainMenusRetVal.Len() == 0) break;
         LocalMenuName = MainMenusRetVal;
         CreateMenuEntry(LocalMenuName);
@@ -728,7 +728,7 @@ void CreateMenuEntry(CStr MName)
     hSubMenu = CreateMenu();
     for(i = 0; i <= 999; i++)
     {
-        MainMenusRetVal = WAIniReadKey(MName, "Menu" + (CStr) StringNumberComplement(i, 3).Get_String(), UserMenusIniFile);
+        MainMenusRetVal = IniReadKey(MName, "Menu" + (CStr) StringNumberComplement(i, 3).Get_String(), UserMenusIniFile);
         if(MainMenusRetVal.Len() == 0) break;
         MainMenusRetVal = MainMenusRetVal.Trim();
         ArEntry = StringSplit(MainMenusRetVal, " | ");
@@ -789,11 +789,11 @@ PlaceOnly:
         StringReleaseSplit(ArEntry);
         if(strcmp(MainMenusRetVal.Get_String(), "-") == 0)
         {
-            if(AppendMenu(hSubMenu, MF_SEPARATOR, (UINT) -1, "-") == 0) break;
+            if(MenuAddSeparator(hSubMenu) == 0) break;
         }
         else
         {
-            if(AppendMenu(hSubMenu, MF_STRING, NbrCmds + 1 + MENU_USER_IDBASE, RecognizedPlug.Get_String()) == 0) break;
+            if(MenuAddString(hSubMenu, RecognizedPlug, NbrCmds + 1 + MENU_USER_IDBASE, TRUE) == 0) break;
         }
         NbrCmds++;
     }
@@ -813,7 +813,7 @@ void ClearMenus(void)
     long ChildState = 0;
     
 	hMenu = GetMenu(hMDIform.hWnd);
-    ChildState = WAControlGetWindowState(CurrentForm);
+    ChildState = ControlGetWindowState(CurrentForm);
     for(i = 0; i < MainMenuH.Amount(); i++)
     {
         if(NbForms == 0)
@@ -1278,9 +1278,9 @@ void AddInWinRecent(CStr FName)
 {
     CStr RcntVal;
 
-    RcntVal = WAIniReadKey("Layout", "WinRecent", MainIniFile);
+    RcntVal = IniReadKey("Layout", "WinRecent", MainIniFile);
     if(RcntVal.Len() == 0) return;
-    if(RcntVal == "1") WAMiscShellAddFileToRecents(FName);
+    if(RcntVal == "1") MiscShellAddFileToRecents(FName);
 }
 
 // -----------------------------------------------------------------------
@@ -1298,29 +1298,29 @@ void CreateRunProgMenu(void)
     {
     
     }
-    AppendMenu(hFileMenuRunProg, MF_STRING, MENU_FILE_IDBASE + MENU_FILE_RUNEXTERNALPROGRAM_ID, "Run...\tF6");
-    WAMenuSetDefaultItem(hFileMenuRunProg, 0);
+    MenuAddString(hFileMenuRunProg, "Run...\tF6", MENU_FILE_IDBASE + MENU_FILE_RUNEXTERNALPROGRAM_ID, TRUE);
+    MenuSetDefaultItem(hFileMenuRunProg, 0);
     for(i = 0; i <= 999; i++)
     {
-        ProgRetVal = WAIniReadKey("RunProg", "Name" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        ProgRetVal = IniReadKey("RunProg", "Name" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         if(ProgRetVal.Len() == 0) break;
         ProgRetVal = ChangeRelativePaths(ProgRetVal);
         // Check the file
-        if(WAFileExist(ProgRetVal) != 0)
+        if(FileExist(ProgRetVal) != 0)
         {
-            // Add a separator at first place
-            if(FoundProg == 0) AppendMenu(hFileMenuRunProg, MF_SEPARATOR, -1, "-");
+            // Add a separator at first row
+            if(FoundProg == 0) MenuAddSeparator(hFileMenuRunProg);
             FoundProg = 1;
             // Get the language
-            AppendMenu(hFileMenuRunProg, MF_STRING, k + MENU_RECENTAPPLICATIONS_IDBASE, ProgRetVal.Get_String());
+            MenuAddString(hFileMenuRunProg, ProgRetVal, k + MENU_RECENTAPPLICATIONS_IDBASE, TRUE);
             RunProgArray.Add(ProgRetVal.Get_String());
             k++;
         }
     }
     if(k != 0)
     {
-        AppendMenu(hFileMenuRunProg, MF_SEPARATOR, (UINT) -1, "-");
-        AppendMenu(hFileMenuRunProg, MF_STRING, MENU_RUNPROGCLEAR_IDBASE, "Clear all entries");
+        MenuAddSeparator(hFileMenuRunProg);
+        MenuAddString(hFileMenuRunProg, "Clear all entries", MENU_RUNPROGCLEAR_IDBASE, TRUE);
     }
     SubMenusArray[15] = hFileMenuRunProg;
 }
@@ -1391,9 +1391,9 @@ void AddRecentRunProg(CStr FName, long AddFile, long ForceRemove)
 SaveRecent:
     for(i = 0; i <= 999; i++)
     {
-        if(WAIniReadKey("RunProg", "Name" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile).Len() != 0)
+        if(IniReadKey("RunProg", "Name" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile).Len() != 0)
         {
-            WAIniDeleteKey("RunProg", "Name" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+            IniDeleteKey("RunProg", "Name" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         }
         else
         {
@@ -1405,7 +1405,7 @@ SaveRecent:
     {
         if(RunProgArray.Get(i)->Content != 0)
         {
-            WAIniWriteKey("RunProg", "Name" + (CStr) StringNumberComplement(j, 3).Get_String(),
+            IniWriteKey("RunProg", "Name" + (CStr) StringNumberComplement(j, 3).Get_String(),
                           RunProgArray.Get(i)->Content, MainIniFile);
             j++;
         }
@@ -1427,22 +1427,22 @@ void CreateFavoritesMenu(void)
     while(DeleteMenu(hFileMenuFavorites, 0, MF_BYPOSITION) != 0)
     {
     }
-    AppendMenu(hFileMenuFavorites, MF_STRING, MENU_FILE_IDBASE + MENU_FILE_ADD_FAVORITE_ID, "Add to favorites");
-    AppendMenu(hFileMenuFavorites, MF_STRING, MENU_FILE_IDBASE + MENU_FILE_FAVORITES_ID, "Organize favorites...");
-    WAMenuSetDefaultItem(hFileMenuFavorites, 1);
+    MenuAddString(hFileMenuFavorites, "Add to favorites", MENU_FILE_IDBASE + MENU_FILE_ADD_FAVORITE_ID, TRUE);
+    MenuAddString(hFileMenuFavorites, "Organize favorites...", MENU_FILE_IDBASE + MENU_FILE_FAVORITES_ID, TRUE);
+    MenuSetDefaultItem(hFileMenuFavorites, 1);
     for(i = 0; i <= 999; i++)
     {
-        ProgRetVal = WAIniReadKey("Favorites", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        ProgRetVal = IniReadKey("Favorites", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         if(ProgRetVal.Len() == 0) break;
         ProgRetVal = ChangeRelativePaths(ProgRetVal);
         // Check the file
-        if(WAFileExist(ProgRetVal) != 0)
+        if(FileExist(ProgRetVal) != 0)
         {
-            // Add a separator at first place
-            if(FoundProg == 0) AppendMenu(hFileMenuFavorites, MF_SEPARATOR, -1, "-");
+            // Add a separator at first row
+            if(FoundProg == 0) MenuAddSeparator(hFileMenuFavorites);
             FoundProg = 1;
             // Get the language
-            AppendMenu(hFileMenuFavorites, MF_STRING, k + MENU_FAVORITESFILES_IDBASE, ProgRetVal.Get_String());
+            MenuAddString(hFileMenuFavorites, ProgRetVal, k + MENU_FAVORITESFILES_IDBASE, TRUE);
             FavoritesArray.Add(ProgRetVal.Get_String());
             k++;
         }
@@ -1451,32 +1451,61 @@ void CreateFavoritesMenu(void)
 }
 
 // -----------------------------------------------------------------------
+// Clean up data before removing the list entry
+void FiltersArray_Erase_CallBack(LPFILTER_ENTRY Entry)
+{
+    if(Entry->Name) free(Entry->Name);
+    Entry->Name = NULL;
+}
+
+// -----------------------------------------------------------------------
 // Create the list of filters profiles
 void CreateFiltersMenu(HMENU Dest_Menu, int Index, int Lab_Index, CStr Label, int Include_Menu)
 {
     int i = 0;
     int k = 0;
+    int mnu_idx = 0;
     CStr ProgRetVal;
     long FoundProg = 0;
+    
+	LPFILTER_ENTRY Entry = (LPFILTER_ENTRY) calloc(sizeof(FILTER_ENTRY), 1);
 
-    FiltersArray.Erase();
+    FiltersArray.Erase(FiltersArray_Erase_CallBack);
 	k = 0;
     while(DeleteMenu(Dest_Menu, 0, MF_BYPOSITION) != 0)
     {
     }
-    AppendMenu(Dest_Menu, MF_STRING, Lab_Index, Label.Get_String());
-    WAMenuSetDefaultItem(Dest_Menu, 0);
+    MenuAddString(Dest_Menu, Label, Lab_Index, TRUE);
+    MenuSetDefaultItem(Dest_Menu, 0);
 
     for(i = 0; i <= 999; i++)
     {
-        ProgRetVal = WAIniReadKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), FiltersIniFile);
+        ProgRetVal = IniReadKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), FiltersIniFile);
         if(ProgRetVal.Len() == 0) break;
-        // Add a separator at first place
-        if(FoundProg == 0) AppendMenu(Dest_Menu, MF_SEPARATOR, -1, "-");
+        // Add a separator at first row
+        if(FoundProg == 0) MenuAddSeparator(Dest_Menu);
         FoundProg = 1;
-		if(Include_Menu) AppendMenu(Dest_Menu, MF_STRING, i + MENU_FILTERS_INCLUDE_IDBASE, ProgRetVal.Get_String());
-        else AppendMenu(Dest_Menu, MF_STRING, i + MENU_FILTERS_IDBASE, ProgRetVal.Get_String());
-		FiltersArray.Add(ProgRetVal.Get_String());
+		if(Include_Menu) MenuAddString(Dest_Menu, ProgRetVal + "\tTo window", i + MENU_FILTERS_INCLUDE_IDBASE, TRUE);
+        else MenuAddString(Dest_Menu, ProgRetVal + "\tTo window", i + MENU_FILTERS_IDBASE, TRUE);
+	    Entry->Name = strdup(ProgRetVal.Get_String());
+	    Entry->Type = 0;
+		FiltersArray.Add(Entry, sizeof(FILTER_ENTRY));
+        mnu_idx++;
+    }
+
+    if(!Include_Menu)
+    {
+        MenuAddSeparator(Dest_Menu);
+        for(i = 0; i <= 999; i++)
+        {
+            ProgRetVal = IniReadKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), FiltersIniFile);
+            if(ProgRetVal.Len() == 0) break;
+            MenuAddString(Dest_Menu, ProgRetVal + "\tTo file", mnu_idx + MENU_FILTERS_IDBASE, TRUE);
+	        Entry->Name = strdup(ProgRetVal.Get_String());
+	        Entry->Type = 1;
+		    FiltersArray.Add(Entry, sizeof(FILTER_ENTRY));
+            mnu_idx++;
+        }
     }
 	if(Index != 0) SubMenusArray[Index] = Dest_Menu;
 }

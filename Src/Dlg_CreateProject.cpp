@@ -74,49 +74,49 @@ int CALLBACK FRMCreateProjectProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
         case WM_INITDIALOG:
             ProjectCreate = 0;
             ProjectGather = 0;
-            WAControlSetText(hwndDlg, "Select a project");
-            FRMCreateProjectSysTab = WACreateSysTab(2, 1, 485, 280, hwndDlg, 0, 0, GlobalImageList1, WS_TABSTOP | TCS_BUTTONS | TCS_FLATBUTTONS | TCS_HOTTRACK);
-            WASysTabSetSeparators(FRMCreateProjectSysTab, 0);
+            ControlSetText(hwndDlg, "Select a project");
+            FRMCreateProjectSysTab = CreateSysTab(2, 1, 485, 280, hwndDlg, 0, 0, GlobalImageList1, WS_TABSTOP | TCS_BUTTONS | TCS_FLATBUTTONS | TCS_HOTTRACK);
+            SysTabSetSeparators(FRMCreateProjectSysTab, 0);
             FRMCreateProjectTabs.Erase();
             FRMCreateProjectTabsNbr.Erase();
             for(i = 0; i <= 999; i++)
             {
-                FRMCreateProjectRetVal = WAIniReadKey("Tabs", "Tab" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+                FRMCreateProjectRetVal = IniReadKey("Tabs", "Tab" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
                 if(FRMCreateProjectRetVal.Len() == 0) break;
 				FRMCreateProjectTabs.Add(FRMCreateProjectRetVal.Get_String());
 				FRMCreateProjectTabsNbr.Add(0L);
-                WASysTabAddItem(FRMCreateProjectSysTab, FRMCreateProjectRetVal, i, ICON_NEWDIR);
+                SysTabAddItem(FRMCreateProjectSysTab, FRMCreateProjectRetVal, i, ICON_NEWDIR);
                 FRMCreateProjectFillProjectsTabs(i);
             }
             // Recent files
             FRMCreateProjectRecentTabNbr = i;
-            WASysTabAddItem(FRMCreateProjectSysTab, "Recent", i, ICON_FILES);
-            FRMCreateProjectCmdOk = WACreateButton(331, 326 - 26, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
-            FRMCreateProjectCmdCancel = WACreateButton(410, 326 - 26, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-            FRMCreateProjectListView = WACreateListView(4, 26, 483, 237, hwndDlg, 3, GlobalImageList1, 0, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | WS_TABSTOP | LVS_NOSORTHEADER, WS_EX_STATICEDGE);
-            WAListViewAddCol(FRMCreateProjectListView, "Wizard", 50, 2);
-            WAListViewAddCol(FRMCreateProjectListView, "Author", 210, 1);
-            WAListViewAddCol(FRMCreateProjectListView, "Project type", 200, 0);
+            SysTabAddItem(FRMCreateProjectSysTab, "Recent", i, ICON_FILES);
+            FRMCreateProjectCmdOk = CreateButton(331, 326 - 26, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
+            FRMCreateProjectCmdCancel = CreateButton(410, 326 - 26, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+            FRMCreateProjectListView = CreateListView(4, 26, 483, 237, hwndDlg, 3, GlobalImageList1, 0, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | WS_TABSTOP | LVS_NOSORTHEADER, WS_EX_STATICEDGE);
+            ListViewAddCol(FRMCreateProjectListView, "Wizard", 50, 2);
+            ListViewAddCol(FRMCreateProjectListView, "Author", 210, 1);
+            ListViewAddCol(FRMCreateProjectListView, "Project type", 200, 0);
             FRMCreateProjectFilCListView(0);
-            FRMCreateProjectTextBox = WACreateTextBox(77, 266, 302, 20, hwndDlg, "", 4, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-            FRMCreateProjectCombo = WACreateComboBox(382, 266, 106, 150, hwndDlg, "", 5, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
-			WAComboBoxAddItem(FRMCreateProjectCombo, "Gather files", -1);
-			WAComboBoxAddItem(FRMCreateProjectCombo, "Don't gather files", -1);
-            if(WAIniReadBoolKey("Layout", "GatherFiles", MainIniFile) == 1)
+            FRMCreateProjectTextBox = CreateTextBox(77, 266, 302, 20, hwndDlg, "", 4, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+            FRMCreateProjectCombo = CreateComboBox(382, 266, 106, 150, hwndDlg, "", 5, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
+			ComboBoxAddItem(FRMCreateProjectCombo, "Gather files", -1);
+			ComboBoxAddItem(FRMCreateProjectCombo, "Don't gather files", -1);
+            if(IniReadBoolKey("Layout", "GatherFiles", MainIniFile) == 1)
             {
-				WAComboBoxSetIndex(FRMCreateProjectCombo, 1);
+				ComboBoxSetIndex(FRMCreateProjectCombo, 1);
             }
             else
             {
-				WAComboBoxSetIndex(FRMCreateProjectCombo, 0);
+				ComboBoxSetIndex(FRMCreateProjectCombo, 0);
 			}
-			FRMCreateProjectLabel = WACreateLabel(4, 268, 70, 16, hwndDlg, "Project name :", 6, 0, 0, 0);
-            FRMCreateProjectStartup = WACreateCheckBox(7, 304, 170, 15, hwndDlg, "Show at startup", 7, 0, WS_TABSTOP | WS_GROUP, 0);
-            ShowAtStartup = WAIniReadKey("Layout", "ShowProjects", MainIniFile);
+			FRMCreateProjectLabel = CreateLabel(4, 268, 70, 16, hwndDlg, "Project name :", 6, 0, 0, 0);
+            FRMCreateProjectStartup = CreateCheckBox(7, 304, 170, 15, hwndDlg, "Show at startup", 7, 0, WS_TABSTOP | WS_GROUP, 0);
+            ShowAtStartup = IniReadKey("Layout", "ShowProjects", MainIniFile);
             if(ShowAtStartup.Len() != 0) if(strcmpi(ShowAtStartup.Get_String(), "1") == 0) CheckBoxSetState(FRMCreateProjectStartup, 1);
-            FRMCreateProjectRecent = WACreateListView(4, 26, 483, 261, hwndDlg, 8, GlobalImageList1, 0, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | WS_TABSTOP | LVS_NOSORTHEADER, WS_EX_STATICEDGE);
-            WAListViewAddCol(FRMCreateProjectRecent, "Folder", 253, 1);
-            WAListViewAddCol(FRMCreateProjectRecent, "File", 208, 0);
+            FRMCreateProjectRecent = CreateListView(4, 26, 483, 261, hwndDlg, 8, GlobalImageList1, 0, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | WS_TABSTOP | LVS_NOSORTHEADER, WS_EX_STATICEDGE);
+            ListViewAddCol(FRMCreateProjectRecent, "Folder", 253, 1);
+            ListViewAddCol(FRMCreateProjectRecent, "File", 208, 0);
             if(FRMCreateProjectRecentTabNbr == 0)
             {
 				// No project type found: display recent projects list
@@ -124,79 +124,79 @@ int CALLBACK FRMCreateProjectProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
             }
             else
             {
-				WAControlVisible(FRMCreateProjectRecent, 0);
-				WAListViewSetItemSel(FRMCreateProjectListView, 0);
-				WAControlSendMessage(hwndDlg, EN_CHANGE << 16, (long) FRMCreateProjectTextBox);
+				ControlVisible(FRMCreateProjectRecent, 0);
+				ListViewSetItemSel(FRMCreateProjectListView, 0);
+				ControlSendMessage(hwndDlg, EN_CHANGE << 16, (long) FRMCreateProjectTextBox);
 				SetFocus(FRMCreateProjectTextBox);
             }
 			FreezeTimer = 1;
             return(0);
         case WM_PAINT:
             BeginPaint(hwndDlg, &CreatePs);
-            WAGDIDrawHorzSep(hwndDlg, 0, WAControlClientHeight(hwndDlg) - 33, 490);
+            GDIDrawHorzSep(hwndDlg, 0, ControlClientHeight(hwndDlg) - 33, 490);
             EndPaint(hwndDlg, &CreatePs);
 			break;
         case WM_COMMAND:
             if((HWND) lParam == FRMCreateProjectCmdOk)
             {
-				ProjectGather = WAComboBoxGetIndex(FRMCreateProjectCombo);
-                if(WASysTabGetCurrentItem(FRMCreateProjectSysTab) == FRMCreateProjectRecentTabNbr)
+				ProjectGather = ComboBoxGetIndex(FRMCreateProjectCombo);
+                if(SysTabGetCurrentItem(FRMCreateProjectSysTab) == FRMCreateProjectRecentTabNbr)
                 {
                     FRMCreateProjectSelRecent = RetrieveSelRecentPrj();
                     if(FRMCreateProjectSelRecent.Len() != 0)
                     {
 						ProjectCreate = 2;
-						WAControlClose(hwndDlg);
+						ControlClose(hwndDlg);
 					}
                 }
                 else
                 {
-					if(RetrieveProjectDatas() == 1) WAControlClose(hwndDlg);
+					if(RetrieveProjectDatas() == 1) ControlClose(hwndDlg);
                 }
                 return(0);
             }
             else if((HWND) lParam == FRMCreateProjectCmdCancel)
             {
                 ProjectCreate = 0;
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
             }
             else if((HWND) lParam == FRMCreateProjectTextBox)
             {
-                switch(WAControlGetNotifiedCommand(wParam))
+                switch(ControlGetNotifiedCommand(wParam))
                 {
                     case EN_CHANGE:
-                        if(WATextBoxGetLen(FRMCreateProjectTextBox) > 0)
+                        if(TextBoxGetLen(FRMCreateProjectTextBox) > 0)
                         {
-                            WAControlEnable(FRMCreateProjectCmdOk, 1);
+                            ControlEnable(FRMCreateProjectCmdOk, 1);
                         }
                         else
                         {
-                            WAControlEnable(FRMCreateProjectCmdOk, 0);
+                            ControlEnable(FRMCreateProjectCmdOk, 0);
                         }
 						break;
 				}
             }
 			break;
 		case WM_NOTIFY:
-            switch(WAControlGetNotifiedMsg(lParam))
+            switch(ControlGetNotifiedMsg(lParam))
             {
                 case NM_DBLCLK:
-                    if(WAControlGetNotifiedhWnd(lParam) == FRMCreateProjectListView)
+                    if(ControlGetNotifiedhWnd(lParam) == FRMCreateProjectListView)
                     {
-                        if(WAListViewGetItemUnderCursor(FRMCreateProjectListView) != -1)
+                        if(ListViewGetItemUnderCursor(FRMCreateProjectListView) != -1)
                         {
-                            if(RetrieveProjectDatas() == 1) WAControlClose(hwndDlg);
+                            if(RetrieveProjectDatas() == 1) ControlClose(hwndDlg);
                         }
                     }
-                    else if(WAControlGetNotifiedhWnd(lParam) == FRMCreateProjectRecent)
+                    else if(ControlGetNotifiedhWnd(lParam) == FRMCreateProjectRecent)
                     {
-                        SelectedItem = WAListViewGetItemUnderCursor(FRMCreateProjectRecent);
+                        SelectedItem = ListViewGetItemUnderCursor(FRMCreateProjectRecent);
                         if(SelectedItem != -1)
                         {
                             FRMCreateProjectSelRecent = RetrieveSelRecentPrj();
                             ProjectCreate = 2;
-                            WAControlClose(hwndDlg);
+                            ControlClose(hwndDlg);
                         }
                     }
                     return(0);
@@ -206,12 +206,12 @@ int CALLBACK FRMCreateProjectProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
             }
 			break;
         case WM_SYSCOLORCHANGE:
-            WAListViewSetBackColor(FRMCreateProjectListView, GetSysColor(COLOR_WINDOW));
-            WAListViewSetBackColor(FRMCreateProjectRecent, GetSysColor(COLOR_WINDOW));
+            ListViewSetBackColor(FRMCreateProjectListView, GetSysColor(COLOR_WINDOW));
+            ListViewSetBackColor(FRMCreateProjectRecent, GetSysColor(COLOR_WINDOW));
 			break;
 		case WM_CLOSE:
-            WAIniWriteKey("Layout", "ShowProjects", CheckBoxGetState(FRMCreateProjectStartup), MainIniFile);
-            WAIniWriteKey("Layout", "GatherFiles", WAComboBoxGetIndex(FRMCreateProjectCombo), MainIniFile);
+            IniWriteKey("Layout", "ShowProjects", CheckBoxGetState(FRMCreateProjectStartup), MainIniFile);
+            IniWriteKey("Layout", "GatherFiles", ComboBoxGetIndex(FRMCreateProjectCombo), MainIniFile);
             FreezeTimer = 0;
             EndDialog(hwndDlg, 0);
 			break;
@@ -228,16 +228,16 @@ LRESULT CALLBACK FRMCreateProjectSysTabProc(HWND hWnd, UINT uMsg, WPARAM wParam,
         case WM_COMMAND:
             if((HWND) lParam == FRMCreateProjectTextBox)
             {
-                switch(WAControlGetNotifiedCommand(wParam))
+                switch(ControlGetNotifiedCommand(wParam))
                 {
                     case EN_CHANGE:
-                        if(WATextBoxGetLen(FRMCreateProjectTextBox) > 0)
+                        if(TextBoxGetLen(FRMCreateProjectTextBox) > 0)
                         {
-                            WAControlEnable(FRMCreateProjectCmdOk, 1);
+                            ControlEnable(FRMCreateProjectCmdOk, 1);
                         }
                         else
                         {
-                            WAControlEnable(FRMCreateProjectCmdOk, 0);
+                            ControlEnable(FRMCreateProjectCmdOk, 0);
                         }
 						break;
 				}
@@ -250,35 +250,35 @@ LRESULT CALLBACK FRMCreateProjectSysTabProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 // Change the current tab
 void FRMCreateProjectChangeCurrentTab(HWND hwndDlg)
 {
-    if(WASysTabGetCurrentItem(FRMCreateProjectSysTab) == FRMCreateProjectRecentTabNbr)
+    if(SysTabGetCurrentItem(FRMCreateProjectSysTab) == FRMCreateProjectRecentTabNbr)
     {
-        WAControlFreeze(FRMCreateProjectListView, 1);
-		WAControlFreeze(FRMCreateProjectRecent, 1);
-		WAControlVisible(FRMCreateProjectTextBox, 0);
-		WAControlVisible(FRMCreateProjectCombo, 0);
-        WAControlVisible(FRMCreateProjectLabel, 0);
-        if(FillProjectsRecents() != 0) WAControlEnable(FRMCreateProjectCmdOk, 1);
-        else WAControlEnable(FRMCreateProjectCmdOk, 0);
-		if(WAControlIsVisible(FRMCreateProjectRecent) == 0) WAControlVisible(FRMCreateProjectRecent, 1);
-        if(WAControlIsVisible(FRMCreateProjectListView) == 1) WAControlVisible(FRMCreateProjectListView, 0);
-        WAControlFreeze(FRMCreateProjectListView, 0);
-		WAControlFreeze(FRMCreateProjectRecent, 0);
+        ControlFreeze(FRMCreateProjectListView, 1);
+		ControlFreeze(FRMCreateProjectRecent, 1);
+		ControlVisible(FRMCreateProjectTextBox, 0);
+		ControlVisible(FRMCreateProjectCombo, 0);
+        ControlVisible(FRMCreateProjectLabel, 0);
+        if(FillProjectsRecents() != 0) ControlEnable(FRMCreateProjectCmdOk, 1);
+        else ControlEnable(FRMCreateProjectCmdOk, 0);
+		if(ControlIsVisible(FRMCreateProjectRecent) == 0) ControlVisible(FRMCreateProjectRecent, 1);
+        if(ControlIsVisible(FRMCreateProjectListView) == 1) ControlVisible(FRMCreateProjectListView, 0);
+        ControlFreeze(FRMCreateProjectListView, 0);
+		ControlFreeze(FRMCreateProjectRecent, 0);
     }
     else
     {
-		WAControlFreeze(FRMCreateProjectListView, 1);
-		WAControlFreeze(FRMCreateProjectRecent, 1);
-        FRMCreateProjectFilCListView(WASysTabGetCurrentItem(FRMCreateProjectSysTab));
-        WAControlVisible(FRMCreateProjectTextBox, 1);
-        WAControlVisible(FRMCreateProjectCombo, 1);
-        WAControlVisible(FRMCreateProjectLabel, 1);
-        WAControlSendMessage(hwndDlg, EN_CHANGE << 16, (long) FRMCreateProjectTextBox);
+		ControlFreeze(FRMCreateProjectListView, 1);
+		ControlFreeze(FRMCreateProjectRecent, 1);
+        FRMCreateProjectFilCListView(SysTabGetCurrentItem(FRMCreateProjectSysTab));
+        ControlVisible(FRMCreateProjectTextBox, 1);
+        ControlVisible(FRMCreateProjectCombo, 1);
+        ControlVisible(FRMCreateProjectLabel, 1);
+        ControlSendMessage(hwndDlg, EN_CHANGE << 16, (long) FRMCreateProjectTextBox);
         SetFocus(FRMCreateProjectTextBox);
-        WAControlBringToTop(FRMCreateProjectListView);
-		if(WAControlIsVisible(FRMCreateProjectListView) == 0) WAControlVisible(FRMCreateProjectListView, 1);
-        if(WAControlIsVisible(FRMCreateProjectRecent) == 1) WAControlVisible(FRMCreateProjectRecent, 0);
-        WAControlFreeze(FRMCreateProjectListView, 0);
-		WAControlFreeze(FRMCreateProjectRecent, 0);
+        ControlBringToTop(FRMCreateProjectListView);
+		if(ControlIsVisible(FRMCreateProjectListView) == 0) ControlVisible(FRMCreateProjectListView, 1);
+        if(ControlIsVisible(FRMCreateProjectRecent) == 1) ControlVisible(FRMCreateProjectRecent, 0);
+        ControlFreeze(FRMCreateProjectListView, 0);
+		ControlFreeze(FRMCreateProjectRecent, 0);
     }
 }
 
@@ -293,10 +293,10 @@ void FRMCreateProjectFilCListView(long CurrentTab)
     int i = 0;
     int k = 0;
 
-    WAListViewClear(FRMCreateProjectListView);
+    ListViewClear(FRMCreateProjectListView);
     for(i = 0; i <= 999; i++)
     {
-        FRMCreateProjectRetVal = WAIniReadKey("Projects", "Prj" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+        FRMCreateProjectRetVal = IniReadKey("Projects", "Prj" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
         if(FRMCreateProjectRetVal.Len() == 0) break;
         PrjDats = StringSplit(FRMCreateProjectRetVal, "|");
         // Check if this is an old MAsmEd project ini file
@@ -315,11 +315,11 @@ void FRMCreateProjectFilCListView(long CurrentTab)
         SavePrjDats = StringGetSplitElement(FRMCreateProjectRetVal, PrjDats, 5);
         if(CurrentTab == GetTabNumber(SavePrjDats))
         {
-            WAListViewAddItem(FRMCreateProjectListView, StringGetSplitElement(FRMCreateProjectRetVal, PrjDats, 1), i, StringGetSplitElement(FRMCreateProjectRetVal, PrjDats, 2).Get_Long());
-            WAListViewSetSubItem(FRMCreateProjectListView, Credits, k, 1);
+            ListViewAddItem(FRMCreateProjectListView, StringGetSplitElement(FRMCreateProjectRetVal, PrjDats, 1), i, StringGetSplitElement(FRMCreateProjectRetVal, PrjDats, 2).Get_Long());
+            ListViewSetSubItem(FRMCreateProjectListView, Credits, k, 1);
 			Wizard = StringGetSplitElement(FRMCreateProjectRetVal, PrjDats, 7);
-            if(Wizard.Len() == 0) WAListViewSetSubItem(FRMCreateProjectListView, "No", k, 2);
-            else WAListViewSetSubItem(FRMCreateProjectListView, "Yes", k, 2);
+            if(Wizard.Len() == 0) ListViewSetSubItem(FRMCreateProjectListView, "No", k, 2);
+            else ListViewSetSubItem(FRMCreateProjectListView, "Yes", k, 2);
 			k++;
         }
         StringReleaseSplit(PrjDats);
@@ -336,7 +336,7 @@ void FRMCreateProjectFillProjectsTabs(long CurrentTab)
 
     for(i = 0; i <= 999; i++)
     {
-        FRMCreateProjectRetVal = WAIniReadKey("Projects", "Prj" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+        FRMCreateProjectRetVal = IniReadKey("Projects", "Prj" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
         if(FRMCreateProjectRetVal.Len() == 0) break;
         PrjDats = StringSplit(FRMCreateProjectRetVal, "|");
         // Check if this is an old MAsmEd project ini file
@@ -381,35 +381,35 @@ long RetrieveProjectDatas(void)
     long EntryAdd = 0;
     int i = 0;
 
-    if(WAControlGetText(FRMCreateProjectTextBox).Len() == 0)
+    if(ControlGetText(FRMCreateProjectTextBox).Len() == 0)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "Project not named.", MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, "Project not named.", MB_ERROR, Requesters);
         SetFocus(FRMCreateProjectTextBox);
         return(ReturnValue);
     }
     EntryAdd = 0;
-    if(WASysTabGetCurrentItem(FRMCreateProjectSysTab) != 0)
+    if(SysTabGetCurrentItem(FRMCreateProjectSysTab) != 0)
     {
-        for(i = 1; i <= WASysTabGetCurrentItem(FRMCreateProjectSysTab); i++)
+        for(i = 1; i <= SysTabGetCurrentItem(FRMCreateProjectSysTab); i++)
         {
             EntryAdd = EntryAdd + FRMCreateProjectTabsNbr.Get(i - 1)->Content + 1;
         }
     }
-    EntryNumber = WAListViewGetSelItem(FRMCreateProjectListView, -1);
+    EntryNumber = ListViewGetSelItem(FRMCreateProjectListView, -1);
 	if(EntryNumber == -1)
 	{
-		WAMiscMsgBox(hMDIform.hWnd, "No project type selected.", MB_ERROR, Requesters);
+		MiscMsgBox(hMDIform.hWnd, "No project type selected.", MB_ERROR, Requesters);
 		return(0);
 	}
 	EntryNumber += EntryAdd;
-    FRMCreateProjectRetVal = WAIniReadKey("Projects", "Prj" + (CStr) StringNumberComplement(EntryNumber, 3).Get_String(), ProjectsIniFile);
+    FRMCreateProjectRetVal = IniReadKey("Projects", "Prj" + (CStr) StringNumberComplement(EntryNumber, 3).Get_String(), ProjectsIniFile);
     if(FRMCreateProjectRetVal.Len() == 0)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "Mangled projects header.", MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, "Mangled projects header.", MB_ERROR, Requesters);
         return(ReturnValue);
     }
     PrjDats = StringSplit(FRMCreateProjectRetVal, "|");
-    ProjectTitle = WAControlGetText(FRMCreateProjectTextBox);
+    ProjectTitle = ControlGetText(FRMCreateProjectTextBox);
     ProjectType = StringGetSplitElement(FRMCreateProjectRetVal, PrjDats, 0);
     ProjectTypeName = StringGetSplitElement(FRMCreateProjectRetVal, PrjDats, 1);
     ProjectTypeExtInternalImg = StringGetSplitElement(FRMCreateProjectRetVal, PrjDats, 2);
@@ -417,7 +417,7 @@ long RetrieveProjectDatas(void)
 	ProjectPostRename = StringGetSplitElement(FRMCreateProjectRetVal, PrjDats, 6);
 	ProjectWizard = StringGetSplitElement(FRMCreateProjectRetVal, PrjDats, 7);
 
-    ProjectTypeImg = WAIniReadKey(ProjectType, "APPICON", ProjectsIniFile);
+    ProjectTypeImg = IniReadKey(ProjectType, "APPICON", ProjectsIniFile);
     ProjectCreate = 1;
     ReturnValue = 1;
     StringReleaseSplit(PrjDats);
@@ -436,14 +436,14 @@ long FillProjectsRecents(void)
     long RealIcon = 0;
     CStr BufString;
 
-    WAListViewClear(FRMCreateProjectRecent);
+    ListViewClear(FRMCreateProjectRecent);
     for(i = 0; i <= MaxRecentPrj - 1; i++)
     {
-        ProjectRetVal = WAIniReadKey("RecentsPrjs", "Rcnt" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        ProjectRetVal = IniReadKey("RecentsPrjs", "Rcnt" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         if(ProjectRetVal.Len() == 0) break;
-        RealProjectName = WAFileReplaceExtension(WAFileGetFileName(ProjectRetVal), "");
+        RealProjectName = FileReplaceExtension(FileGetFileName(ProjectRetVal), "");
         if(strcmp(RealProjectName.Right(1).Get_String(), ".") == 0) RealProjectName = RealProjectName.Mid(1, RealProjectName.Len() - 1);
-        ProjectRetType = WAIniReadKey("Project", "TypeExt", ProjectRetVal);
+        ProjectRetType = IniReadKey("Project", "TypeExt", ProjectRetVal);
         BufString = ProjectRetType.Upper_Case();
 		if(BufString == "WINEXE")
 		{
@@ -469,13 +469,13 @@ long FillProjectsRecents(void)
 		{
             RealIcon = ICON_FILEASSOC;
         }
-        WAListViewAddItem(FRMCreateProjectRecent, RealProjectName, i, RealIcon);
-        RealProjectName = WAFileGetDirectory(ProjectRetVal);
+        ListViewAddItem(FRMCreateProjectRecent, RealProjectName, i, RealIcon);
+        RealProjectName = FileGetDirectory(ProjectRetVal);
         if(strcmp(RealProjectName.Right(1).Get_String(), "\\") == 0) RealProjectName = RealProjectName.Mid(1, RealProjectName.Len() - 1);
-        WAListViewSetSubItem(FRMCreateProjectRecent, RealProjectName, i, 1);
+        ListViewSetSubItem(FRMCreateProjectRecent, RealProjectName, i, 1);
         ReturnValue++;
     }
-    if(WAListViewItemCount(FRMCreateProjectRecent) != 0) WAListViewSetItemSel(FRMCreateProjectRecent, 0);
+    if(ListViewItemCount(FRMCreateProjectRecent) != 0) ListViewSetItemSel(FRMCreateProjectRecent, 0);
 	return(ReturnValue);
 }
 
@@ -487,14 +487,14 @@ CStr RetrieveSelRecentPrj(void)
     CStr PrjName;
 	long SelectedItem;
 
-    SelectedItem = WAListViewGetSelItem(FRMCreateProjectRecent, -1);
+    SelectedItem = ListViewGetSelItem(FRMCreateProjectRecent, -1);
 	if(SelectedItem == -1)
 	{
-		WAMiscMsgBox(hMDIform.hWnd, "No project type selected.", MB_ERROR, Requesters);
+		MiscMsgBox(hMDIform.hWnd, "No project type selected.", MB_ERROR, Requesters);
 		return(ReturnValue);
 	}
-    PrjName = WAListViewGetItemText(FRMCreateProjectRecent, SelectedItem, 1) + (CStr) "\\";
-    PrjName = PrjName + (CStr) WAListViewGetItemText(FRMCreateProjectRecent, SelectedItem, 0).Get_String() + (CStr) ".med";
+    PrjName = ListViewGetItemText(FRMCreateProjectRecent, SelectedItem, 1) + (CStr) "\\";
+    PrjName = PrjName + (CStr) ListViewGetItemText(FRMCreateProjectRecent, SelectedItem, 0).Get_String() + (CStr) ".med";
     ReturnValue = PrjName;
 	return(ReturnValue);
 }

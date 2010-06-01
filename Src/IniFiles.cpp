@@ -58,7 +58,7 @@ long ReadIniFile(void)
     for(i = 0; i <= 999; i++)
     {
         TmpExt = "Ext" + (CStr) StringNumberComplement(i, 3).Get_String();
-        InitRetVal = WAIniReadKey("Extensions", TmpExt, MainIniFile);
+        InitRetVal = IniReadKey("Extensions", TmpExt, MainIniFile);
         if(InitRetVal.Len() == 0) break;
         RegisteredExts.Add(InitRetVal.Get_String());
     }
@@ -66,7 +66,7 @@ long ReadIniFile(void)
     // Read working dir
     NotifiedCurrentdir = "";
     CurrentDir = AppPath;
-    InitRetVal = WAIniReadKey("Dirs", "WORKDIR", MainIniFile);
+    InitRetVal = IniReadKey("Dirs", "WORKDIR", MainIniFile);
 	// Should be empty at first install: take application directory
 	if(InitRetVal.Len() == 0) InitRetVal = AppPath;
     if(InitRetVal.Len() != 0)
@@ -78,7 +78,7 @@ long ReadIniFile(void)
 			NotifiedCurrentdir = CurrentDir;
 			ReturnValue = 1;
 			CurrentDir = "c:\\";
-			WAIniWriteKey("Dirs", "WORKDIR", CurrentDir, MainIniFile);
+			IniWriteKey("Dirs", "WORKDIR", CurrentDir, MainIniFile);
 			ChDrive(CurrentDir);
 			ChDir(CurrentDir);
 		}
@@ -86,19 +86,19 @@ long ReadIniFile(void)
 
     // Fill others directories + directories names replacements
     DirsRepl[DIR_ROOT] = "ROOTDIR";
-    Dirs[DIR_ROOT] = strdup(WAIniReadKey("Dirs", DirsRepl[DIR_ROOT], MainIniFile).Get_String());
+    Dirs[DIR_ROOT] = strdup(IniReadKey("Dirs", DirsRepl[DIR_ROOT], MainIniFile).Get_String());
     DirsRepl[DIR_BIN] = "BINDIR";
-    Dirs[DIR_BIN] = strdup(WAIniReadKey("Dirs", DirsRepl[DIR_BIN], MainIniFile).Get_String());
+    Dirs[DIR_BIN] = strdup(IniReadKey("Dirs", DirsRepl[DIR_BIN], MainIniFile).Get_String());
     DirsRepl[DIR_INCLUDE] = "INCLUDEDIR";
-    Dirs[DIR_INCLUDE] = strdup(WAIniReadKey("Dirs", DirsRepl[DIR_INCLUDE], MainIniFile).Get_String());
+    Dirs[DIR_INCLUDE] = strdup(IniReadKey("Dirs", DirsRepl[DIR_INCLUDE], MainIniFile).Get_String());
     DirsRepl[DIR_LIB] = "LIBDIR";
-    Dirs[DIR_LIB] = strdup(WAIniReadKey("Dirs", DirsRepl[DIR_LIB], MainIniFile).Get_String());
+    Dirs[DIR_LIB] = strdup(IniReadKey("Dirs", DirsRepl[DIR_LIB], MainIniFile).Get_String());
     DirsRepl[DIR_HELP] = "HELPDIR";
-    Dirs[DIR_HELP] = strdup(WAIniReadKey("Dirs", DirsRepl[DIR_HELP], MainIniFile).Get_String());
+    Dirs[DIR_HELP] = strdup(IniReadKey("Dirs", DirsRepl[DIR_HELP], MainIniFile).Get_String());
     DirsRepl[DIR_PROJECTS] = "PROJECTSDIR";
-    Dirs[DIR_PROJECTS] = strdup(WAIniReadKey("Dirs", DirsRepl[DIR_PROJECTS], MainIniFile).Get_String());
+    Dirs[DIR_PROJECTS] = strdup(IniReadKey("Dirs", DirsRepl[DIR_PROJECTS], MainIniFile).Get_String());
 	// Perform a sanity check on the retrieved directory
-    if(strlen(Dirs[DIR_PROJECTS]) == 0 || WAFileIsDirectory(Dirs[DIR_PROJECTS]) == 0)
+    if(strlen(Dirs[DIR_PROJECTS]) == 0 || FileIsDirectory(Dirs[DIR_PROJECTS]) == 0)
     {
 		free(Dirs[DIR_PROJECTS]);
 		// Set default projects directory
@@ -107,122 +107,122 @@ long ReadIniFile(void)
 		// Update project dir
 		// Note: at first install this directory must be empty.
 		// (So it points to the correct one)
-		WAIniWriteKey("Dirs", "PROJECTSDIR", BufString, MainIniFile);
+		IniWriteKey("Dirs", "PROJECTSDIR", BufString, MainIniFile);
     }
     
 	// Application directory
     Dirs[DIR_MAIN] = strdup(AppPath.Get_String());
     DirsRepl[DIR_MAIN] = "MAINDIR";
-    WAIniWriteKey("Dirs", "MAINDIR", Dirs[DIR_MAIN], MainIniFile);
+    IniWriteKey("Dirs", "MAINDIR", Dirs[DIR_MAIN], MainIniFile);
     
 	BufString = AppPath + (CStr) "\\Tools";
 	Dirs[DIR_TOOLS] = strdup(BufString.Get_String());
     DirsRepl[DIR_TOOLS] = "TOOLSDIR";
-    WAIniWriteKey("Dirs", "TOOLSDIR", Dirs[DIR_TOOLS], MainIniFile);
+    IniWriteKey("Dirs", "TOOLSDIR", Dirs[DIR_TOOLS], MainIniFile);
 
 	BufString = AppPath + (CStr) "\\Templates";
 	Dirs[DIR_TEMPLATES] = strdup(BufString.Get_String());
     DirsRepl[DIR_TEMPLATES] = "TEMPLATESDIR";
-    WAIniWriteKey("Dirs", "TEMPLATESDIR", Dirs[DIR_TEMPLATES], MainIniFile);
+    IniWriteKey("Dirs", "TEMPLATESDIR", Dirs[DIR_TEMPLATES], MainIniFile);
 
 	BufString = AppPath + (CStr) "\\Help";
     Dirs[DIR_MAINHELP] = strdup(BufString.Get_String());
     DirsRepl[DIR_MAINHELP] = "MAINHELPDIR";
-    WAIniWriteKey("Dirs", "MAINHELPDIR", Dirs[DIR_MAINHELP], MainIniFile);
+    IniWriteKey("Dirs", "MAINHELPDIR", Dirs[DIR_MAINHELP], MainIniFile);
 
 	BufString = AppPath + (CStr) "\\Snippets";
     Dirs[DIR_SNIPPETS] = strdup(BufString.Get_String());
     DirsRepl[DIR_SNIPPETS] = "SNIPPETSDIR";
-    WAIniWriteKey("Dirs", "SNIPPETSDIR", Dirs[DIR_SNIPPETS], MainIniFile);
+    IniWriteKey("Dirs", "SNIPPETSDIR", Dirs[DIR_SNIPPETS], MainIniFile);
 
 	BufString = AppPath + (CStr) "\\Databases";
     Dirs[DIR_DATABASES] = strdup(BufString.Get_String());
     DirsRepl[DIR_DATABASES] = "DATABASESDIR";
-    WAIniWriteKey("Dirs", "DATABASESDIR", Dirs[DIR_DATABASES], MainIniFile);
+    IniWriteKey("Dirs", "DATABASESDIR", Dirs[DIR_DATABASES], MainIniFile);
 
 	BufString = AppPath + (CStr) "\\Skins";
     Dirs[DIR_SKINS] = strdup(BufString.Get_String());
     DirsRepl[DIR_SKINS] = "SKINSDIR";
-    WAIniWriteKey("Dirs", "SKINSDIR", Dirs[DIR_SKINS], MainIniFile);
+    IniWriteKey("Dirs", "SKINSDIR", Dirs[DIR_SKINS], MainIniFile);
 
 	BufString = AppPath + (CStr) "\\Languages";
     Dirs[DIR_LANGUAGES] = strdup(BufString.Get_String());
     DirsRepl[DIR_LANGUAGES] = "LANGUAGESDIR";
-    WAIniWriteKey("Dirs", "LANGUAGESDIR", Dirs[DIR_LANGUAGES], MainIniFile);
+    IniWriteKey("Dirs", "LANGUAGESDIR", Dirs[DIR_LANGUAGES], MainIniFile);
     
 	BufString = AppPath + (CStr) "\\Languages\\Scripts";
     Dirs[DIR_LANGSCRIPTS] = strdup(BufString.Get_String());
     DirsRepl[DIR_LANGSCRIPTS] = "LANGSCRIPTSDIR";
-    WAIniWriteKey("Dirs", "LANGSCRIPTSDIR", Dirs[DIR_LANGSCRIPTS], MainIniFile);
+    IniWriteKey("Dirs", "LANGSCRIPTSDIR", Dirs[DIR_LANGSCRIPTS], MainIniFile);
 
 	BufString = AppPath + (CStr) "\\Downloads";
 	Dirs[DIR_DOWNLOADS] = strdup(BufString.Get_String());
     DirsRepl[DIR_DOWNLOADS] = "DOWNLOADSDIR";
-    WAIniWriteKey("Dirs", "DOWNLOADSDIR", Dirs[DIR_DOWNLOADS], MainIniFile);
+    IniWriteKey("Dirs", "DOWNLOADSDIR", Dirs[DIR_DOWNLOADS], MainIniFile);
     
 	BufString = AppPath + (CStr) "\\AddIns";
 	Dirs[DIR_ADDINS] = strdup(BufString.Get_String());
     DirsRepl[DIR_ADDINS] = "ADDINSDIR";
-    WAIniWriteKey("Dirs", "ADDINSDIR", Dirs[DIR_ADDINS], MainIniFile);
+    IniWriteKey("Dirs", "ADDINSDIR", Dirs[DIR_ADDINS], MainIniFile);
     
 	BufString = AppPath + (CStr) "\\Config";
     Dirs[DIR_CONFIG] = strdup(BufString.Get_String());
     DirsRepl[DIR_CONFIG] = "CONFIGDIR";
-    WAIniWriteKey("Dirs", "CONFIGDIR", Dirs[DIR_CONFIG], MainIniFile);
+    IniWriteKey("Dirs", "CONFIGDIR", Dirs[DIR_CONFIG], MainIniFile);
     
 	BufString = Dirs[DIR_CONFIG] + (CStr) "\\UserMenus";
     Dirs[DIR_MENUS] = strdup(BufString.Get_String());
     DirsRepl[DIR_MENUS] = "MENUSDIR";
-    WAIniWriteKey("Dirs", "MENUSDIR", Dirs[DIR_MENUS], MainIniFile);
+    IniWriteKey("Dirs", "MENUSDIR", Dirs[DIR_MENUS], MainIniFile);
 
     BufString = AppPath + (CStr) "\\Wizards";
     Dirs[DIR_WIZARDS] = strdup(BufString.Get_String());
     DirsRepl[DIR_WIZARDS] = "WIZARDSDIR";
-    WAIniWriteKey("Dirs", "WIZARDSDIR", Dirs[DIR_WIZARDS], MainIniFile);
+    IniWriteKey("Dirs", "WIZARDSDIR", Dirs[DIR_WIZARDS], MainIniFile);
 
     BufString = AppPath + (CStr) "\\Scripts";
     Dirs[DIR_SCRIPTS] = strdup(BufString.Get_String());
     DirsRepl[DIR_SCRIPTS] = "SCRIPTSDIR";
-    WAIniWriteKey("Dirs", "SCRIPTSDIR", Dirs[DIR_SCRIPTS], MainIniFile);
+    IniWriteKey("Dirs", "SCRIPTSDIR", Dirs[DIR_SCRIPTS], MainIniFile);
 
     BufString = AppPath + (CStr) "\\Filters";
     Dirs[DIR_FILTERS] = strdup(BufString.Get_String());
     DirsRepl[DIR_FILTERS] = "FILTERSDIR";
-    WAIniWriteKey("Dirs", "FILTERSDIR", Dirs[DIR_FILTERS], MainIniFile);
+    IniWriteKey("Dirs", "FILTERSDIR", Dirs[DIR_FILTERS], MainIniFile);
 
     BufString = Dirs[DIR_SKINS] + (CStr) "\\ExtraCode";
     Dirs[DIR_EXTRACODE] = strdup(BufString.Get_String());
     DirsRepl[DIR_EXTRACODE] = "EXTRACODEDIR";
-    WAIniWriteKey("Dirs", "EXTRACODEDIR", Dirs[DIR_EXTRACODE], MainIniFile);
+    IniWriteKey("Dirs", "EXTRACODEDIR", Dirs[DIR_EXTRACODE], MainIniFile);
 
     /*BufString = Dirs[DIR_TOOLS] + (CStr) "\\Tools";
     Dirs[DIR_TOOLS] = strdup(BufString.Get_String());
     DirsRepl[DIR_TOOLS] = "TOOLSDIR";
-    WAIniWriteKey("Dirs", "TOOLSDIR", Dirs[DIR_TOOLS], MainIniFile);*/
+    IniWriteKey("Dirs", "TOOLSDIR", Dirs[DIR_TOOLS], MainIniFile);*/
 
     // Handle databases
     APIFile = Dirs[DIR_DATABASES] + (CStr) "\\WinDetails.db";
-    InitRetVal = WAIniReadKey("Databases", "WinDetail", MainIniFile);
+    InitRetVal = IniReadKey("Databases", "WinDetail", MainIniFile);
     if(InitRetVal.Len() != 0) APIFile = InitRetVal;
-    WAIniWriteKey("Databases", "WinDetail", APIFile, MainIniFile);
+    IniWriteKey("Databases", "WinDetail", APIFile, MainIniFile);
     APIFile = ChangeRelativePaths(APIFile);
 
     APIFncFile = Dirs[DIR_DATABASES] + (CStr) "\\WinFnc.db";
-    InitRetVal = WAIniReadKey("Databases", "WinFnc", MainIniFile);
+    InitRetVal = IniReadKey("Databases", "WinFnc", MainIniFile);
     if(InitRetVal.Len() != 0) APIFncFile = InitRetVal;
-    WAIniWriteKey("Databases", "WinFnc", APIFncFile, MainIniFile);
+    IniWriteKey("Databases", "WinFnc", APIFncFile, MainIniFile);
     APIFncFile = ChangeRelativePaths(APIFncFile);
     
     APIConstFile = Dirs[DIR_DATABASES] + (CStr) "\\WinConst.db";
-    InitRetVal = WAIniReadKey("Databases", "WinConst", MainIniFile);
+    InitRetVal = IniReadKey("Databases", "WinConst", MainIniFile);
     if(InitRetVal.Len() != 0) APIConstFile = InitRetVal;
-    WAIniWriteKey("Databases", "WinConst", APIConstFile, MainIniFile);
+    IniWriteKey("Databases", "WinConst", APIConstFile, MainIniFile);
     APIConstFile = ChangeRelativePaths(APIConstFile);
 
 	// Set default value
     TipFileName = Dirs[DIR_MAIN] + (CStr) "\\Tips.txt";
     // Or take the one found ini main.ini
-	InitRetVal = WAIniReadKey("Layout", "TipsFile", MainIniFile);
+	InitRetVal = IniReadKey("Layout", "TipsFile", MainIniFile);
     if(InitRetVal.Len() != 0) TipFileName = InitRetVal;
     TipFileName = ChangeRelativePaths(TipFileName);
     
@@ -263,158 +263,158 @@ long ReadIniFile(void)
     
     // Read various layouts
     ShowStatusbar = 1;
-    InitRetVal = WAIniReadKey("Layout", "StatusBar", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "StatusBar", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "0") == 0) ShowStatusbar = 0;
     
 	ShowProjetDockWin = 1;
-    InitRetVal = WAIniReadKey("Layout", "DockProjectVisible", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "DockProjectVisible", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "0") == 0) ShowProjetDockWin = 0;
 
 	ShowWindowsDockWin = 1;
-    InitRetVal = WAIniReadKey("Layout", "DockWindowsVisible", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "DockWindowsVisible", MainIniFile);
 	if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "0") == 0) ShowWindowsDockWin = 0;
 
 	ShowOutputDockWin = 1;
-    InitRetVal = WAIniReadKey("Layout", "DockOutputVisible", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "DockOutputVisible", MainIniFile);
 	if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "0") == 0) ShowOutputDockWin = 0;
 
 	ShowDebugDockWin = 1;
-    InitRetVal = WAIniReadKey("Layout", "DockDebugVisible", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "DockDebugVisible", MainIniFile);
 	if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "0") == 0) ShowDebugDockWin = 0;
     
 	ShowRegistersDockWin = 1;
-    InitRetVal = WAIniReadKey("Layout", "DockRegistersVisible", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "DockRegistersVisible", MainIniFile);
 	if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "0") == 0) ShowRegistersDockWin = 0;
     
 	LeftM = 0;
-    InitRetVal = WAIniReadKey("Layout", "Margin", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "Margin", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) LeftM = 1;
     White = 0;
-    InitRetVal = WAIniReadKey("Layout", "WhiteSpace", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "WhiteSpace", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) White = 1;
     ShowH = 0;
-    InitRetVal = WAIniReadKey("Layout", "Highlight", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "Highlight", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) ShowH = 1;
     SyntaxH = 0;
-    InitRetVal = WAIniReadKey("Layout", "Syntax", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "Syntax", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) SyntaxH = 1;
     OutputDates = 0;
-    InitRetVal = WAIniReadKey("Layout", "OutputDates", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "OutputDates", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) OutputDates = 1;
     IndentScope = 0;
-    InitRetVal = WAIniReadKey("Layout", "IndentScope", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "IndentScope", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) IndentScope = 1;
     EnDragDrop = 1;
-    InitRetVal = WAIniReadKey("Layout", "EnDragDrop", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "EnDragDrop", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "0") == 0) EnDragDrop = 0;
     Remember = 0;
-    InitRetVal = WAIniReadKey("Layout", "Remember", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "Remember", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) Remember = 1;
     LineTTip = 0;
-    InitRetVal = WAIniReadKey("Layout", "LineToolTip", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "LineToolTip", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) LineTTip = 1;
     APITTip = 0;
-    InitRetVal = WAIniReadKey("Layout", "APIToolTip", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "APIToolTip", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) APITTip = 1;
     Smooth = 0;
-    InitRetVal = WAIniReadKey("Layout", "SmoothScrolling", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "SmoothScrolling", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) Smooth = 1;
     CursorFollow = 0;
-    InitRetVal = WAIniReadKey("Layout", "FollowScrolling", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "FollowScrolling", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) CursorFollow = 1;
     AcceptFiles = 0;
-    InitRetVal = WAIniReadKey("Layout", "AcceptFiles", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "AcceptFiles", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) AcceptFiles = 1;
     ItalicFont = 0;
-    InitRetVal = WAIniReadKey("Layout", "CommentItalic", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "CommentItalic", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) ItalicFont = 1;
     Wrap = 0;
-    InitRetVal = WAIniReadKey("Layout", "WordWrap", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "WordWrap", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) Wrap = 1;
     AutoSaveDelay = 0;
-    InitRetVal = WAIniReadKey("Layout", "AutoSaveDelay", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "AutoSaveDelay", MainIniFile);
     if(InitRetVal.Len() != 0) AutoSaveDelay = InitRetVal.Get_Long();
     VerboseSave = 0;
-    InitRetVal = WAIniReadKey("Layout", "VerboseSave", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "VerboseSave", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) VerboseSave = 1;
     AutoSave = 0;
-    InitRetVal = WAIniReadKey("Layout", "AutoSave", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "AutoSave", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) AutoSave = 1;
     AutoExpand = 0;
-    InitRetVal = WAIniReadKey("Layout", "ExpandTabs", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "ExpandTabs", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) AutoExpand = 1;
     CreateBak = 0;
-    InitRetVal = WAIniReadKey("Layout", "CreateBak", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "CreateBak", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) CreateBak = 1;
     DecorateBak = 0;
-    InitRetVal = WAIniReadKey("Layout", "DecorateBak", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "DecorateBak", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) DecorateBak = 1;
     HorizSplit = 0;
-    InitRetVal = WAIniReadKey("Layout", "HorizSplit", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "HorizSplit", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) HorizSplit = 1;
     DetectChange = 0;
-    InitRetVal = WAIniReadKey("Layout", "DetectChange", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "DetectChange", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) DetectChange = 1;
     AutoCorrectKey = 0;
-    InitRetVal = WAIniReadKey("Layout", "AutoCorrect", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "AutoCorrect", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) AutoCorrectKey = 1;
     MaxRecent = 10;
-    InitRetVal = WAIniReadKey("Layout", "Recent", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "Recent", MainIniFile);
     if(InitRetVal.Len() != 0) MaxRecent = InitRetVal.Get_Long();
     MaxRecentPrj = 5;
-    InitRetVal = WAIniReadKey("Layout", "RecentPrj", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "RecentPrj", MainIniFile);
     if(InitRetVal.Len() != 0) MaxRecentPrj = InitRetVal.Get_Long();
     LnStyle = 0;
-    InitRetVal = WAIniReadKey("Layout", "LinesStyle", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "LinesStyle", MainIniFile);
     if(InitRetVal.Len() != 0) LnStyle = InitRetVal.Get_Long();
 	LnStart = 0;
-    InitRetVal = WAIniReadKey("Layout", "LinesStart", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "LinesStart", MainIniFile);
     if(InitRetVal.Len() != 0) LnStart = InitRetVal.Get_Long();
     AutoMaximizeChilds = 0;
-    InitRetVal = WAIniReadKey("Layout", "AutoMax", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "AutoMax", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) AutoMaximizeChilds = 1;
     AutoClearOut = 0;
-    InitRetVal = WAIniReadKey("Layout", "AutoClear", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "AutoClear", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) AutoClearOut = 1;
     Tabulations = 8;
-    InitRetVal = WAIniReadKey("Layout", "Tabs", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "Tabs", MainIniFile);
     if(InitRetVal.Len() != 0) Tabulations = InitRetVal.Get_Long();
-    CurFontName = WAIniReadKey("Layout", "FontName", MainIniFile);
-    InitRetVal = WAIniReadKey("Layout", "FontSize", MainIniFile);
+    CurFontName = IniReadKey("Layout", "FontName", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "FontSize", MainIniFile);
     CurFontSize = 9;
     if(CurFontName.Len() == 0) CurFontName = "Courier New";
     if(InitRetVal.Len() != 0) CurFontSize = InitRetVal.Get_Long();
     CurFontBold = 0;
-    InitRetVal = WAIniReadKey("Layout", "FontBold", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "FontBold", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) CurFontBold = 1;
     if(CurFontName.Len() == 0) CurFontName = "Lucida console";
     if(CurFontSize == 0) CurFontSize = 8;
     UseWinRecent = 0;
-    InitRetVal = WAIniReadKey("Layout", "WinRecent", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "WinRecent", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) UseWinRecent = 1;
     FullScreenMode = 0;
-    InitRetVal = WAIniReadKey("Layout", "FullScreen", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "FullScreen", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) FullScreenMode = 1;
     // Load cgrep file
-    cGrepIniFile = WAIniReadKey("Layout", "cGrepFile", MainIniFile);
+    cGrepIniFile = IniReadKey("Layout", "cGrepFile", MainIniFile);
     cGrepIniFile = ChangeRelativePaths(cGrepIniFile);
     ReadColorsDefinition();
     UseDbFnc = 0;
-    InitRetVal = WAIniReadKey("Layout", "UseDbFnc", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "UseDbFnc", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) UseDbFnc = 1;
     UseDbConst = 0;
-    InitRetVal = WAIniReadKey("Layout", "UseDbConst", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "UseDbConst", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) UseDbConst = 1;
     DbLinesNumbers = 6;
-    InitRetVal = WAIniReadKey("Layout", "DbLinesNumbers", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "DbLinesNumbers", MainIniFile);
     if(InitRetVal.Len() != 0) DbLinesNumbers = InitRetVal.Get_Long();
     if(DbLinesNumbers < 1) DbLinesNumbers = 1;
     // User menus by default
     UserMenusIniFile = AppPath + "\\Config\\UserMenus\\Default.ume";
-    InitRetVal = WAIniReadKey("Layout", "CurrentMenus", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "CurrentMenus", MainIniFile);
     InitRetVal = ChangeRelativePaths(InitRetVal);
     if(InitRetVal.Len() != 0) UserMenusIniFile = InitRetVal;
-    if(WAFileExist(UserMenusIniFile) == 0) UserMenusIniFile = AppPath + "\\Config\\UserMenus\\Default.ume";
+    if(FileExist(UserMenusIniFile) == 0) UserMenusIniFile = AppPath + "\\Config\\UserMenus\\Default.ume";
 	UpdateResFiltersIni();
 	return(ReturnValue);
 }
@@ -443,41 +443,41 @@ void ReadColorsDefinition(void)
     LangColorFColor = 0xFFFFAA;
     LangColorGColor = 0xAAFFFF;
     LangColorHColor = 0xFFFFFF;
-    InitRetVal = WAIniReadKey("Layout", "BackColor", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "BackColor", MainIniFile);
     if(InitRetVal.Len() != 0) CurBackColor = InitRetVal.Get_Hex();
-    InitRetVal = WAIniReadKey("Layout", "NormText", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "NormText", MainIniFile);
     if(InitRetVal.Len() != 0) CurNormTextColor = InitRetVal.Get_Hex();
-    InitRetVal = WAIniReadKey("Layout", "HighText", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "HighText", MainIniFile);
     if(InitRetVal.Len() != 0) CurHighTextColor = InitRetVal.Get_Hex();
-    InitRetVal = WAIniReadKey("Layout", "MarginColor", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "MarginColor", MainIniFile);
     if(InitRetVal.Len() != 0) CurMarginColor = InitRetVal.Get_Hex();
-    InitRetVal = WAIniReadKey("Layout", "LinesColor", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "LinesColor", MainIniFile);
     if(InitRetVal.Len() != 0) CurLineColor = InitRetVal.Get_Hex();
-    InitRetVal = WAIniReadKey("Layout", "NumbersColorValue", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "NumbersColorValue", MainIniFile);
     if(InitRetVal.Len() != 0) LangNumbersColor = InitRetVal.Get_Hex();
-    InitRetVal = WAIniReadKey("Layout", "StringsColorValue", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "StringsColorValue", MainIniFile);
     if(InitRetVal.Len() != 0) LangStringsColor = InitRetVal.Get_Hex();
-    InitRetVal = WAIniReadKey("Layout", "CommentsColorValue", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "CommentsColorValue", MainIniFile);
     if(InitRetVal.Len() != 0) LangCommentsColor = InitRetVal.Get_Hex();
-    InitRetVal = WAIniReadKey("Layout", "KeyWordsColorValue", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "KeyWordsColorValue", MainIniFile);
     if(InitRetVal.Len() != 0) LangKeyWordsColor = InitRetVal.Get_Hex();
-    InitRetVal = WAIniReadKey("Layout", "ColorAValue", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "ColorAValue", MainIniFile);
     if(InitRetVal.Len() != 0) LangColorAColor = InitRetVal.Get_Hex();
-    InitRetVal = WAIniReadKey("Layout", "ColorBValue", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "ColorBValue", MainIniFile);
     if(InitRetVal.Len() != 0) LangColorBColor = InitRetVal.Get_Hex();
-    InitRetVal = WAIniReadKey("Layout", "ColorCValue", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "ColorCValue", MainIniFile);
     if(InitRetVal.Len() != 0) LangColorCColor = InitRetVal.Get_Hex();
-    InitRetVal = WAIniReadKey("Layout", "ColorDValue", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "ColorDValue", MainIniFile);
     if(InitRetVal.Len() != 0) LangColorDColor = InitRetVal.Get_Hex();
-    InitRetVal = WAIniReadKey("Layout", "ColorEValue", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "ColorEValue", MainIniFile);
     if(InitRetVal.Len() != 0) LangColorEColor = InitRetVal.Get_Hex();
-    InitRetVal = WAIniReadKey("Layout", "APIHighColor", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "APIHighColor", MainIniFile);
     if(InitRetVal.Len() != 0) APIColor = InitRetVal.Get_Hex();
-    InitRetVal = WAIniReadKey("Layout", "ColorFValue", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "ColorFValue", MainIniFile);
     if(InitRetVal.Len() != 0) LangColorFColor = InitRetVal.Get_Hex();
-    InitRetVal = WAIniReadKey("Layout", "ColorGValue", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "ColorGValue", MainIniFile);
     if(InitRetVal.Len() != 0) LangColorGColor = InitRetVal.Get_Hex();
-    InitRetVal = WAIniReadKey("Layout", "ColorHValue", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "ColorHValue", MainIniFile);
     if(InitRetVal.Len() != 0) LangColorHColor = InitRetVal.Get_Hex();
 }
 
@@ -486,18 +486,18 @@ void ReadColorsDefinition(void)
 // (Weren't present in version < 0.35)
 void UpdateResFiltersIni(void)
 {
-    InitRetVal = WAIniReadKey("ExtrasExt", "AddInclude", MainIniFile);
-    if(InitRetVal.Len() == 0) WAIniWriteKey("ExtrasExt", "AddInclude", "Source files|*.inc;*.a;*.asm;*.ash;*.asi;*.s;*.a86;*.c;*.cc;*.cpp;*.i;*.h;*.mac;*.hpp;*.pp;*.pas;*.bas|All files|*.*", MainIniFile);
-    InitRetVal = WAIniReadKey("ExtrasExt", "AddLibrary", MainIniFile);
-    if(InitRetVal.Len() == 0) WAIniWriteKey("ExtrasExt", "AddLibrary", "Library files|*.lib;*.a;*.ppw;*.ow|All files|*.*", MainIniFile);
-    InitRetVal = WAIniReadKey("ExtrasExt", "AddModule", MainIniFile);
-    if(InitRetVal.Len() == 0) WAIniWriteKey("ExtrasExt", "AddModule", "Source files|*.a;*.asm;*.s;*.a86;*.c;*.cc;*.cpp;*.pas;*.pp;*.bas|All files|*.*", MainIniFile);
-    InitRetVal = WAIniReadKey("ExtrasExt", "AddObject", MainIniFile);
-    if(InitRetVal.Len() == 0) WAIniWriteKey("ExtrasExt", "AddObject", "Object files|*.obj;*.o|All files|*.*", MainIniFile);
-    InitRetVal = WAIniReadKey("ExtrasExt", "AddResource", MainIniFile);
-    if(InitRetVal.Len() == 0) WAIniWriteKey("ExtrasExt", "AddResource", "Resources files|*.rc|All files|*.*", MainIniFile);
-    InitRetVal = WAIniReadKey("ExtrasExt", "AddText", MainIniFile);
-    if(InitRetVal.Len() == 0) WAIniWriteKey("ExtrasExt", "AddText", "Text files|*.txt|Ini files|*.ini|Batch files|*.bat|Log files|*.log|Registry files|*.reg|All files|*.*", MainIniFile);
-    InitRetVal = WAIniReadKey("ExtrasExt", "AddRawDatas", MainIniFile);
-    if(InitRetVal.Len() == 0) WAIniWriteKey("ExtrasExt", "AddRawDatas", "All files|*.*", MainIniFile);
+    InitRetVal = IniReadKey("ExtrasExt", "AddInclude", MainIniFile);
+    if(InitRetVal.Len() == 0) IniWriteKey("ExtrasExt", "AddInclude", "Source files|*.inc;*.a;*.asm;*.ash;*.asi;*.s;*.a86;*.c;*.cc;*.cpp;*.i;*.h;*.mac;*.hpp;*.pp;*.pas;*.bas|All files|*.*", MainIniFile);
+    InitRetVal = IniReadKey("ExtrasExt", "AddLibrary", MainIniFile);
+    if(InitRetVal.Len() == 0) IniWriteKey("ExtrasExt", "AddLibrary", "Library files|*.lib;*.a;*.ppw;*.ow|All files|*.*", MainIniFile);
+    InitRetVal = IniReadKey("ExtrasExt", "AddModule", MainIniFile);
+    if(InitRetVal.Len() == 0) IniWriteKey("ExtrasExt", "AddModule", "Source files|*.a;*.asm;*.s;*.a86;*.c;*.cc;*.cpp;*.pas;*.pp;*.bas|All files|*.*", MainIniFile);
+    InitRetVal = IniReadKey("ExtrasExt", "AddObject", MainIniFile);
+    if(InitRetVal.Len() == 0) IniWriteKey("ExtrasExt", "AddObject", "Object files|*.obj;*.o|All files|*.*", MainIniFile);
+    InitRetVal = IniReadKey("ExtrasExt", "AddResource", MainIniFile);
+    if(InitRetVal.Len() == 0) IniWriteKey("ExtrasExt", "AddResource", "Resources files|*.rc|All files|*.*", MainIniFile);
+    InitRetVal = IniReadKey("ExtrasExt", "AddText", MainIniFile);
+    if(InitRetVal.Len() == 0) IniWriteKey("ExtrasExt", "AddText", "Text files|*.txt|Ini files|*.ini|Batch files|*.bat|Log files|*.log|Registry files|*.reg|All files|*.*", MainIniFile);
+    InitRetVal = IniReadKey("ExtrasExt", "AddRawDatas", MainIniFile);
+    if(InitRetVal.Len() == 0) IniWriteKey("ExtrasExt", "AddRawDatas", "All files|*.*", MainIniFile);
 }

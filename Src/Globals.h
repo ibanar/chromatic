@@ -77,6 +77,14 @@
 #define NO_SECURITY_DESCRIPTOR 0
 
 // -----------------------------------------------------------------------
+// Structures
+typedef struct
+{
+    char *Name;
+    int Type;
+} FILTER_ENTRY, *LPFILTER_ENTRY;
+
+// -----------------------------------------------------------------------
 // Variables
 extern HWND CurrentForm;
 extern CStr CurrentLanguage;
@@ -159,7 +167,6 @@ extern CList <char *> TemplatesArray;
 extern CList <char *> LUAArray;
 extern CList <char *> RunProgArray;
 extern CList <char *> FavoritesArray;
-extern CList <char *> FiltersArray;
 extern long OldCursor;
 
 // -----------------------------------------------------------------------
@@ -432,5 +439,7 @@ extern long FncBase;
 extern long ConstBase;
 
 extern CStr TipFileName;
+
+extern CList <LPFILTER_ENTRY> FiltersArray;
 
 #endif

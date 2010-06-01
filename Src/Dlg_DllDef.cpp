@@ -58,7 +58,7 @@ void DisplayDefForm(CStr DefFile)
     DllDefFile = DefFile;
 	RealProcList = GetModulesProc();
     DllDefArray = StringSplit(RealProcList, RealProcList.Chr(2));
-    WACreateModalDialog(-1, -1, 342, 295, hMDIform.hWnd, &FRMDllDef, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    CreateModalDialog(-1, -1, 342, 295, hMDIform.hWnd, &FRMDllDef, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
 }
 
 // -----------------------------------------------------------------------
@@ -70,32 +70,32 @@ int CALLBACK FRMDllDef(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     switch(uMsg)
     {
         case WM_SYSCOLORCHANGE:
-            WAListViewSetBackColor(FRMDllDefListview, GetSysColor(COLOR_WINDOW));
+            ListViewSetBackColor(FRMDllDefListview, GetSysColor(COLOR_WINDOW));
 			break;
 		case WM_INITDIALOG:
-            WAControlSetText(hwndDlg, "Select procedures to export");
-            FRMDllDefCmdOk = WACreateButton(263, 1 + 16, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_GROUP, Buttons_StaticEdge);
-            FRMDllDefCmdCancel = WACreateButton(263, 25 + 16, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-            FRMDllDefCmdSelAll = WACreateButton(263, 51 + 16, 77, 23, hwndDlg, "Select all", 3, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-            FRMDllDefCmdUnSelAll = WACreateButton(263, 75 + 16, 77, 23, hwndDlg, "Unselect all", 4, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-            WACreateLabel(1, 2, 250, 15, hwndDlg, "Entry point :", 0, 0, 0, 0);
-            FRMDllDefComboBox = WACreateComboBox(2, 17, 258, 150, hwndDlg, "", 5, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
-            WACreateLabel(1, 40, 250, 15, hwndDlg, "Exports :", 0, 0, 0, 0);
-            FRMDllDefListview = WACreateListView(2, 55, 258, 238, hwndDlg, 6, 0, 0, LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | LVS_NOCOLUMNHEADER | WS_TABSTOP, WS_EX_STATICEDGE);
-            WAListViewAddCol(FRMDllDefListview, "", 300, 0);
-            WAComboBoxAddItem(FRMDllDefComboBox, "[None]", -1);
+            ControlSetText(hwndDlg, "Select procedures to export");
+            FRMDllDefCmdOk = CreateButton(263, 1 + 16, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_GROUP, Buttons_StaticEdge);
+            FRMDllDefCmdCancel = CreateButton(263, 25 + 16, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+            FRMDllDefCmdSelAll = CreateButton(263, 51 + 16, 77, 23, hwndDlg, "Select all", 3, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+            FRMDllDefCmdUnSelAll = CreateButton(263, 75 + 16, 77, 23, hwndDlg, "Unselect all", 4, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+            CreateLabel(1, 2, 250, 15, hwndDlg, "Entry point :", 0, 0, 0, 0);
+            FRMDllDefComboBox = CreateComboBox(2, 17, 258, 150, hwndDlg, "", 5, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
+            CreateLabel(1, 40, 250, 15, hwndDlg, "Exports :", 0, 0, 0, 0);
+            FRMDllDefListview = CreateListView(2, 55, 258, 238, hwndDlg, 6, 0, 0, LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | LVS_NOCOLUMNHEADER | WS_TABSTOP, WS_EX_STATICEDGE);
+            ListViewAddCol(FRMDllDefListview, "", 300, 0);
+            ComboBoxAddItem(FRMDllDefComboBox, "[None]", -1);
             FreezeTimer = 1;
-            WAComboBoxSetIndex(FRMDllDefComboBox, DllDefFillFilesList());
-            WAListViewSetItemSel(FRMDllDefListview, 0);
+            ComboBoxSetIndex(FRMDllDefComboBox, DllDefFillFilesList());
+            ListViewSetItemSel(FRMDllDefListview, 0);
             SetFocus(FRMDllDefComboBox);
             return(0);
         case WM_NOTIFY:
-            if(WAControlGetNotifiedhWnd(lParam) == FRMDllDefListview)
+            if(ControlGetNotifiedhWnd(lParam) == FRMDllDefListview)
             {
-                switch(WAControlGetNotifiedMsg(lParam))
+                switch(ControlGetNotifiedMsg(lParam))
                 {
                     case NM_DBLCLK:
-                        WAListViewCheckBoxItemDoubleClick(FRMDllDefListview);
+                        ListViewCheckBoxItemDoubleClick(FRMDllDefListview);
                         return(0);
                 }
             }
@@ -104,27 +104,27 @@ int CALLBACK FRMDllDef(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             if((HWND) lParam == FRMDllDefCmdOk)
             {
                 SaveDllDef();
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
             }
             else if((HWND) lParam == FRMDllDefCmdCancel)
             {
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
             }
             else if((HWND) lParam == FRMDllDefCmdSelAll)
             {
-                for(i = 0; i <= WAListViewItemCount(FRMDllDefListview) - 1; i++)
+                for(i = 0; i <= ListViewItemCount(FRMDllDefListview) - 1; i++)
                 {
-                    WAListViewSetItemCheckbox(FRMDllDefListview, i, 1);
+                    ListViewSetItemCheckbox(FRMDllDefListview, i, 1);
                 }
                 return(0);
             }
             else if((HWND) lParam == FRMDllDefCmdUnSelAll)
             {
-                for(i = 0; i <= WAListViewItemCount(FRMDllDefListview) - 1; i++)
+                for(i = 0; i <= ListViewItemCount(FRMDllDefListview) - 1; i++)
                 {
-                    WAListViewSetItemCheckbox(FRMDllDefListview, i, 0);
+                    ListViewSetItemCheckbox(FRMDllDefListview, i, 0);
                 }
                 return(0);
             }
@@ -146,16 +146,16 @@ long DllDefFillFilesList(void)
     CStr DefEntryValue;
     long ReturnValue = 0;
 
-    DefEntryValue = WAIniReadKey("ENTRYPOINT", "Proc", DllDefFile);
+    DefEntryValue = IniReadKey("ENTRYPOINT", "Proc", DllDefFile);
     for(i = 0; i <= StringGetSplitUBound(DllDefArray) - 1; i++)
     {
         if(strlen(StringGetSplitElement(RealProcList, DllDefArray, i).Get_String()) != 0)
         {
-            WAListViewAddItem(FRMDllDefListview, StringGetSplitElement(RealProcList, DllDefArray, i), i, 0);
+            ListViewAddItem(FRMDllDefListview, StringGetSplitElement(RealProcList, DllDefArray, i), i, 0);
             if(strcmpi(StringGetSplitElement(RealProcList, DllDefArray, i).Get_String(), DefEntryValue.Get_String()) == 0) ReturnValue = i + 1;
-            WAComboBoxAddItem(FRMDllDefComboBox, StringGetSplitElement(RealProcList, DllDefArray, i), -1);
-            DefValue = WAIniReadKey("EXPORTS", StringGetSplitElement(RealProcList, DllDefArray, i), DllDefFile);
-            if(DefValue.Len() != 0) WAListViewSetItemCheckbox(FRMDllDefListview, i, 1);
+            ComboBoxAddItem(FRMDllDefComboBox, StringGetSplitElement(RealProcList, DllDefArray, i), -1);
+            DefValue = IniReadKey("EXPORTS", StringGetSplitElement(RealProcList, DllDefArray, i), DllDefFile);
+            if(DefValue.Len() != 0) ListViewSetItemCheckbox(FRMDllDefListview, i, 1);
         }
     }
     return(ReturnValue);
@@ -168,22 +168,22 @@ void SaveDllDef(void)
     int i = 0;
     int j = 0;
 
-    WAIniWriteSection("ENTRYPOINT", "", DllDefFile);
-    if(WAComboBoxGetIndex(FRMDllDefComboBox) == 0)
+    IniWriteSection("ENTRYPOINT", "", DllDefFile);
+    if(ComboBoxGetIndex(FRMDllDefComboBox) == 0)
     {
-        WAIniWriteKey("ENTRYPOINT", "Proc", "", DllDefFile);
+        IniWriteKey("ENTRYPOINT", "Proc", "", DllDefFile);
     }
     else
     {
-        WAIniWriteKey("ENTRYPOINT", "Proc", WAControlGetText(FRMDllDefComboBox), DllDefFile);
+        IniWriteKey("ENTRYPOINT", "Proc", ControlGetText(FRMDllDefComboBox), DllDefFile);
     }
-    WAIniWriteSection("EXPORTS", "", DllDefFile);
-    for(i = 0; i <= WAListViewItemCount(FRMDllDefListview) - 1; i++)
+    IniWriteSection("EXPORTS", "", DllDefFile);
+    for(i = 0; i <= ListViewItemCount(FRMDllDefListview) - 1; i++)
     {
-        if(WAListViewGetItemCheckbox(FRMDllDefListview, i) == 1)
+        if(ListViewGetItemCheckbox(FRMDllDefListview, i) == 1)
         {
-            WAIniWriteKey("EXPORTS", WAListViewGetItemText(FRMDllDefListview, i, 0), "1", DllDefFile);
-            WAIniWriteKey("EXPORTS", "Fnc" + (CStr) StringNumberComplement(j, 3).Get_String(), WAListViewGetItemText(FRMDllDefListview, i, 0), DllDefFile);
+            IniWriteKey("EXPORTS", ListViewGetItemText(FRMDllDefListview, i, 0), "1", DllDefFile);
+            IniWriteKey("EXPORTS", "Fnc" + (CStr) StringNumberComplement(j, 3).Get_String(), ListViewGetItemText(FRMDllDefListview, i, 0), DllDefFile);
             j++;
         }
     }

@@ -119,7 +119,7 @@ CList <char *> TemplatesArray;
 CList <char *> LUAArray;
 CList <char *> RunProgArray;
 CList <char *> FavoritesArray;
-CList <char *> FiltersArray;
+CList <LPFILTER_ENTRY> FiltersArray;
 long OldCursor;
 
 // -----------------------------------------------------------------------

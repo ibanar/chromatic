@@ -80,12 +80,12 @@ void CALLBACK FrmRegsInitProc(HWND hWnd)
     CStr RepLines;
     CStr BufString;
 
-    FrmRegsListbox1 = WACreateListBox(0, 0, 50, -1, hWnd, 0, 0, 0, WS_TABSTOP, WS_EX_STATICEDGE);
-    FrmRegsListbox2 = WACreateListBox(50, 0, 98, -1, hWnd, 1, 0, 0, WS_TABSTOP | LBS_USETABSTOPS | WS_HSCROLL, WS_EX_STATICEDGE);
-    FrmRegsCmdClose = WACreateButton(150, 1, 77, 23, hWnd, "Close", 2, 0, 0, 0, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_GROUP, Buttons_StaticEdge);
-    FrmRegsCmdSave = WACreateButton(150, 26, 77, 23, hWnd, "To file", 3, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-    FrmRegsCmdView = WACreateButton(150, 50, 77, 23, hWnd, "View", 4, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-    FrmRegsCmdToDoc = WACreateButton(150, 74, 77, 23, hWnd, "To doc", 5, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+    FrmRegsListbox1 = CreateListBox(0, 0, 50, -1, hWnd, 0, 0, 0, WS_TABSTOP, WS_EX_STATICEDGE);
+    FrmRegsListbox2 = CreateListBox(50, 0, 98, -1, hWnd, 1, 0, 0, WS_TABSTOP | LBS_USETABSTOPS | WS_HSCROLL, WS_EX_STATICEDGE);
+    FrmRegsCmdClose = CreateButton(150, 1, 77, 23, hWnd, "Close", 2, 0, 0, 0, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_GROUP, Buttons_StaticEdge);
+    FrmRegsCmdSave = CreateButton(150, 26, 77, 23, hWnd, "To file", 3, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+    FrmRegsCmdView = CreateButton(150, 50, 77, 23, hWnd, "View", 4, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+    FrmRegsCmdToDoc = CreateButton(150, 74, 77, 23, hWnd, "To doc", 5, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
     LstIdx = 0;
     // Construct the register listbox
     for(i = 0; i < FoundReg.Amount(); i++)
@@ -93,11 +93,11 @@ void CALLBACK FrmRegsInitProc(HWND hWnd)
         if(strlen(FoundReg.Get(i)->Content) != 0)
         {
             FoundR = 0;
-            if(WAListBoxCount(FrmRegsListbox1) != 0)
+            if(ListBoxCount(FrmRegsListbox1) != 0)
             {
-                for(j = 0; j <= WAListBoxCount(FrmRegsListbox1) - 1; j++)
+                for(j = 0; j <= ListBoxCount(FrmRegsListbox1) - 1; j++)
                 {
-                    if(strcmpi(WAListBoxGetItem(FrmRegsListbox1, j).Get_String(), FoundReg.Get(i)->Content) == 0)
+                    if(strcmpi(ListBoxGetItem(FrmRegsListbox1, j).Get_String(), FoundReg.Get(i)->Content) == 0)
                     {
                         FoundR = 1;
                         break;
@@ -108,7 +108,7 @@ void CALLBACK FrmRegsInitProc(HWND hWnd)
             {
 				BufString = FoundReg.Get(i)->Content;
 			    BufString = BufString.Upper_Case(); 
-				WAListBoxAddItem(FrmRegsListbox1, BufString, LstIdx);
+				ListBoxAddItem(FrmRegsListbox1, BufString, LstIdx);
                 LstIdx++;
             }
         }
@@ -116,26 +116,26 @@ void CALLBACK FrmRegsInitProc(HWND hWnd)
     // Construct the lines ref. array for each register
     TabLines.Erase();
 
-    for(i = 0; i <= WAListBoxCount(FrmRegsListbox1) - 1; i++)
+    for(i = 0; i <= ListBoxCount(FrmRegsListbox1) - 1; i++)
     {
         RegRef = "";
         for(j = 0; j < FoundReg.Amount(); j++)
         {
-            if(strcmpi(WAListBoxGetItem(FrmRegsListbox1, i).Get_String(),
+            if(strcmpi(ListBoxGetItem(FrmRegsListbox1, i).Get_String(),
                        FoundReg.Get(j)->Content) == 0) RegRef = RegRef + (CStr) StringNumberComplement(j, 10).Get_String() + (CStr) "|";
         }
         TabLines.Add(RegRef.Get_String());
-        WAListBoxSetItemData(FrmRegsListbox1, i, TabLines.Amount() - 1);
+        ListBoxSetItemData(FrmRegsListbox1, i, TabLines.Amount() - 1);
     }
-    if(WAListBoxCount(FrmRegsListbox1) > 1)
+    if(ListBoxCount(FrmRegsListbox1) > 1)
     {
-        WAControlSetText(hWnd, "Found " + (CStr) WAListBoxCount(FrmRegsListbox1) + (CStr) " used registers in file: " + (CStr) FrmRegsFoundFile);
+        ControlSetText(hWnd, "Found " + (CStr) ListBoxCount(FrmRegsListbox1) + (CStr) " used registers in file: " + (CStr) FrmRegsFoundFile);
     }
     else
     {
-        WAControlSetText(hWnd, "Found " + (CStr) WAListBoxCount(FrmRegsListbox1) + (CStr) " used register in file: " + (CStr) FrmRegsFoundFile);
+        ControlSetText(hWnd, "Found " + (CStr) ListBoxCount(FrmRegsListbox1) + (CStr) " used register in file: " + (CStr) FrmRegsFoundFile);
     }
-    WAListBoxSetIndex(FrmRegsListbox1, 0);
+    ListBoxSetIndex(FrmRegsListbox1, 0);
     FrmRegsOn = 1;
     FillRegisterList();
 }
@@ -147,15 +147,15 @@ LRESULT CALLBACK FrmRegsWinHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
     switch(uMsg)
     {
         case WM_SIZE:
-            FrmRegsWidth = WAControlClientWidth(hWnd);
-            FrmRegsHeight = WAControlClientHeight(hWnd);
-            MoveWindow(FrmRegsCmdClose, FrmRegsWidth - WAControlWidth(FrmRegsCmdClose), 1, 77, 23, 1);
-            MoveWindow(FrmRegsCmdSave, FrmRegsWidth - WAControlWidth(FrmRegsCmdSave), 26, 77, 23, 1);
-            MoveWindow(FrmRegsCmdView, FrmRegsWidth - WAControlWidth(FrmRegsCmdView), 50, 77, 23, 1);
-            MoveWindow(FrmRegsCmdToDoc, FrmRegsWidth - WAControlWidth(FrmRegsCmdView), 74, 77, 23, 1);
+            FrmRegsWidth = ControlClientWidth(hWnd);
+            FrmRegsHeight = ControlClientHeight(hWnd);
+            MoveWindow(FrmRegsCmdClose, FrmRegsWidth - ControlWidth(FrmRegsCmdClose), 1, 77, 23, 1);
+            MoveWindow(FrmRegsCmdSave, FrmRegsWidth - ControlWidth(FrmRegsCmdSave), 26, 77, 23, 1);
+            MoveWindow(FrmRegsCmdView, FrmRegsWidth - ControlWidth(FrmRegsCmdView), 50, 77, 23, 1);
+            MoveWindow(FrmRegsCmdToDoc, FrmRegsWidth - ControlWidth(FrmRegsCmdView), 74, 77, 23, 1);
             MoveWindow(FrmRegsListbox1, 1, 1, FrmRegsWidth / 9, FrmRegsHeight - 2, 1);
-            MoveWindow(FrmRegsListbox2, WAControlWidth(FrmRegsListbox1) + 4, 1, FrmRegsWidth - WAControlWidth(FrmRegsCmdClose) - WAControlWidth(FrmRegsListbox1) - 2 - 5, FrmRegsHeight - 2, 1);
-            WAListBoxSetHorzScrollWidth(FrmRegsListbox2, WAControlWidth(FrmRegsListbox2) * 2);
+            MoveWindow(FrmRegsListbox2, ControlWidth(FrmRegsListbox1) + 4, 1, FrmRegsWidth - ControlWidth(FrmRegsCmdClose) - ControlWidth(FrmRegsListbox1) - 2 - 5, FrmRegsHeight - 2, 1);
+            ListBoxSetHorzScrollWidth(FrmRegsListbox2, ControlWidth(FrmRegsListbox2) * 2);
             return(DefWindowProc(hWnd, uMsg, wParam, lParam));;
         case WM_DESTROY:
             StringReleaseSplit(FrmRegsFoundLinesTxt);
@@ -164,7 +164,7 @@ LRESULT CALLBACK FrmRegsWinHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
         case WM_COMMAND:
             if((HWND) lParam == FrmRegsCmdClose)
             {
-                WAControlClose(hWnd);
+                ControlClose(hWnd);
                 return(0);
             }
             else if((HWND) lParam == FrmRegsCmdSave)
@@ -174,7 +174,7 @@ LRESULT CALLBACK FrmRegsWinHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
             }
             else if((HWND) lParam == FrmRegsCmdView)
             {
-                if(WAListBoxGetSelItemIndex(FrmRegsListbox2) != -1) GoToLine(FrmRegsFoundFile, WAListBoxGetItemData(FrmRegsListbox2, WAListBoxGetSelItemIndex(FrmRegsListbox2)), 1);
+                if(ListBoxGetSelItemIndex(FrmRegsListbox2) != -1) GoToLine(FrmRegsFoundFile, ListBoxGetItemData(FrmRegsListbox2, ListBoxGetSelItemIndex(FrmRegsListbox2)), 1);
                 return(0);
             }
             else if((HWND) lParam == FrmRegsCmdToDoc)
@@ -191,7 +191,7 @@ LRESULT CALLBACK FrmRegsWinHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
             {
                 if((wParam & 0xFFFF0000) == 0x20000)
                 {
-                    if(WAListBoxGetSelItemIndex(FrmRegsListbox2) != -1) GoToLine(FrmRegsFoundFile, WAListBoxGetItemData(FrmRegsListbox2, WAListBoxGetSelItemIndex(FrmRegsListbox2)), 1);
+                    if(ListBoxGetSelItemIndex(FrmRegsListbox2) != -1) GoToLine(FrmRegsFoundFile, ListBoxGetItemData(FrmRegsListbox2, ListBoxGetSelItemIndex(FrmRegsListbox2)), 1);
                     return(0);
                 }
             }
@@ -210,11 +210,11 @@ void FillRegisterList(void)
     long CurLine = 0;
     CStr StrLine;
 
-    if(WAListBoxGetSelItemIndex(FrmRegsListbox1) != -1)
+    if(ListBoxGetSelItemIndex(FrmRegsListbox1) != -1)
     {
-        StrLine = TabLines.Get(WAListBoxGetItemData(FrmRegsListbox1, WAListBoxGetSelItemIndex(FrmRegsListbox1)))->Content;
+        StrLine = TabLines.Get(ListBoxGetItemData(FrmRegsListbox1, ListBoxGetSelItemIndex(FrmRegsListbox1)))->Content;
         RefStr = StringSplit(StrLine, "|");
-        WAListBoxReset(FrmRegsListbox2);
+        ListBoxReset(FrmRegsListbox2);
         Lst2Idx = 0;
         for(i = 0; i <= StringGetSplitUBound(RefStr); i++)
         {
@@ -222,13 +222,13 @@ void FillRegisterList(void)
             if(StrCurrentLine.Len() != 0)
             {
 				CurLine = FoundLines.Get(StrCurrentLine.Get_Long())->Content;
-				WAListBoxAddItem(FrmRegsListbox2, "Line: " + (CStr) StringNumberComplement(CurLine + 1, 10).Get_String() + (CStr) " >> " + (CStr) StringReplace(StringGetSplitElement(FrmRegsPrimLinesTxt, FrmRegsFoundLinesTxt, CurLine - FrmRegsSelFirstLine), "\r", "", 1, -1, Binary_Compare), Lst2Idx);
-                WAListBoxSetItemData(FrmRegsListbox2, Lst2Idx, CurLine);
+				ListBoxAddItem(FrmRegsListbox2, "Line: " + (CStr) StringNumberComplement(CurLine + 1, 10).Get_String() + (CStr) " >> " + (CStr) StringReplace(StringGetSplitElement(FrmRegsPrimLinesTxt, FrmRegsFoundLinesTxt, CurLine - FrmRegsSelFirstLine), "\r", "", 1, -1, Binary_Compare), Lst2Idx);
+                ListBoxSetItemData(FrmRegsListbox2, Lst2Idx, CurLine);
                 Lst2Idx++;
             }
         }
         StringReleaseSplit(RefStr);
-        if(WAListBoxCount(FrmRegsListbox2) != 0) WAListBoxSetIndex(FrmRegsListbox2, 0);
+        if(ListBoxCount(FrmRegsListbox2) != 0) ListBoxSetIndex(FrmRegsListbox2, 0);
     }
 }
 
@@ -254,8 +254,8 @@ void FrmRegsSaveReport(void)
     CStr ToAdd;
 
     Filters = "All files (*.*)|*.*";
-    WAControlEnable(FrmRegshWnd, 0);
-    FName = WAComDlgGetSaveFileName(hMDIform.hWnd, Filters, "", CurrentDir);
+    ControlEnable(FrmRegshWnd, 0);
+    FName = ComDlgGetSaveFileName(hMDIform.hWnd, Filters, "", CurrentDir);
     if(FName.Len() != 0)
     {
         // List overview to check for greatest elements
@@ -268,13 +268,13 @@ void FrmRegsSaveReport(void)
         ResultStr = ResultStr + (CStr) ResultStr.String(32, '-') + (CStr) "\r\n";
         ResultStr = ResultStr + (CStr) "Register       Line Related code\r\n";
         ResultStr = ResultStr + (CStr) ResultStr.String(32, '-') + (CStr) "\r\n";
-        for(i = 0; i <= WAListBoxCount(FrmRegsListbox1) - 1; i++)
+        for(i = 0; i <= ListBoxCount(FrmRegsListbox1) - 1; i++)
         {
             ToAdd = "";
-            if((GreatestType - WAListBoxGetItem(FrmRegsListbox1, i).Len()) > 0) ToAdd = ToAdd.Space(GreatestType - WAListBoxGetItem(FrmRegsListbox1, i).Len());
-            ToWRiteVar1 = WAListBoxGetItem(FrmRegsListbox1, i) + (CStr) ToAdd;
+            if((GreatestType - ListBoxGetItem(FrmRegsListbox1, i).Len()) > 0) ToAdd = ToAdd.Space(GreatestType - ListBoxGetItem(FrmRegsListbox1, i).Len());
+            ToWRiteVar1 = ListBoxGetItem(FrmRegsListbox1, i) + (CStr) ToAdd;
             ResultStr = ResultStr + (CStr) ToWRiteVar1 + (CStr) "\r\n";
-            SaveRefToSave = TabLines.Get(WAListBoxGetItemData(FrmRegsListbox1, i))->Content;
+            SaveRefToSave = TabLines.Get(ListBoxGetItemData(FrmRegsListbox1, i))->Content;
             RefToSave = StringSplit(SaveRefToSave, "|");
             for(j = 0; j <= StringGetSplitUBound(RefToSave); j++)
             {
@@ -291,14 +291,14 @@ void FrmRegsSaveReport(void)
         }
         if(MSaveFile(FName.Get_String(), (long) ResultStr.Get_String(), ResultStr.Len()) == 0)
         {
-            WAMiscMsgBox(hMDIform.hWnd, "Error in saving file: '" + (CStr) FName + (CStr) "'.", MB_ERROR, Requesters);
+            MiscMsgBox(hMDIform.hWnd, "Error in saving file: '" + (CStr) FName + (CStr) "'.", MB_ERROR, Requesters);
         }
         else
         {
-            WAMiscMsgBox(hMDIform.hWnd, "Report saved as '" + (CStr) FName + (CStr) "'.", MB_INFORMATION, Requesters);
+            MiscMsgBox(hMDIform.hWnd, "Report saved as '" + (CStr) FName + (CStr) "'.", MB_INFORMATION, Requesters);
         }
     }
-    WAControlEnable(FrmRegshWnd, 1);
+    ControlEnable(FrmRegshWnd, 1);
 }
 
 // -----------------------------------------------------------------------
@@ -323,7 +323,7 @@ void FrmRegsToDoc(void)
     CStr ToAdd;
     HWND NewChildHandle = 0;
 
-    WAControlEnable(FrmRegshWnd, 0);
+    ControlEnable(FrmRegshWnd, 0);
     StoreLanguageToOpen("");
     NewChildHandle = CreateNewFile("Found registers.txt");
     if(NewChildHandle != 0)
@@ -339,13 +339,13 @@ void FrmRegsToDoc(void)
         ResultStr = ResultStr + (CStr) ResultStr.String(32, '-').Get_String() + (CStr) "\r\n";
         ResultStr = ResultStr + (CStr) "Register       Line Related code\r\n";
         ResultStr = ResultStr + (CStr) ResultStr.String(32, '-').Get_String() + (CStr) "\r\n";
-        for(i = 0; i <= WAListBoxCount(FrmRegsListbox1) - 1; i++)
+        for(i = 0; i <= ListBoxCount(FrmRegsListbox1) - 1; i++)
         {
             ToAdd = "";
-            if((GreatestType - WAListBoxGetItem(FrmRegsListbox1, i).Len()) > 0) ToAdd = ToAdd.Space(GreatestType - WAListBoxGetItem(FrmRegsListbox1, i).Len());
-            ToWRiteVar1 = WAListBoxGetItem(FrmRegsListbox1, i) + (CStr) ToAdd;
+            if((GreatestType - ListBoxGetItem(FrmRegsListbox1, i).Len()) > 0) ToAdd = ToAdd.Space(GreatestType - ListBoxGetItem(FrmRegsListbox1, i).Len());
+            ToWRiteVar1 = ListBoxGetItem(FrmRegsListbox1, i) + (CStr) ToAdd;
             ResultStr = ResultStr + (CStr) ToWRiteVar1 + (CStr) "\r\n";
-            SaveRefToSave = TabLines.Get(WAListBoxGetItemData(FrmRegsListbox1, i))->Content;
+            SaveRefToSave = TabLines.Get(ListBoxGetItemData(FrmRegsListbox1, i))->Content;
             RefToSave = StringSplit(SaveRefToSave, "|");
             for(j = 0; j <= StringGetSplitUBound(RefToSave); j++)
             {
@@ -362,5 +362,5 @@ void FrmRegsToDoc(void)
         }
         SendTextToChild(NewChildHandle, ResultStr);
     }
-    WAControlEnable(FrmRegshWnd, 1);
+    ControlEnable(FrmRegshWnd, 1);
 }

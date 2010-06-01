@@ -79,41 +79,41 @@ int CALLBACK FRMEnterValueProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
     switch(uMsg)
     {
         case WM_INITDIALOG:
-            WAControlSetText(hwndDlg, "Prompt");
+            ControlSetText(hwndDlg, "Prompt");
             FRMEnterhwnd = hwndDlg;
-            WACreatePictureBox(7, 10, 32, 32, hwndDlg, EnterValueIcon, IMAGE_ICON, 0, 0, SS_CENTERIMAGE);
-            WACreateLabel(4 + 44, 8, 253, 17, hwndDlg, EnterValueTxt, 0, 0, 0, 0);
+            CreatePictureBox(7, 10, 32, 32, hwndDlg, EnterValueIcon, IMAGE_ICON, 0, 0, SS_CENTERIMAGE);
+            CreateLabel(4 + 44, 8, 253, 17, hwndDlg, EnterValueTxt, 0, 0, 0, 0);
             PassValue = PassEdValue;
             hFRMEnterValuehTB = 0;
-            hFRMEnterValueOk = WACreateButton(145, 64, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
-            hFRMEnterValueCancel = WACreateButton(224, 64, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+            hFRMEnterValueOk = CreateButton(145, 64, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
+            hFRMEnterValueCancel = CreateButton(224, 64, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
             switch(EnterValueType)
             {
                 case INPUTBOX_SIMPLETEXT:
-                    hFRMEnterValueTextBox = WACreateTextBox(48, 30, 252, 20, hwndDlg, PassValue, 3, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-                    WATextBoxSetMaxLen(hFRMEnterValueTextBox, EnterValueLen);
-                    WATextBoxSelText(hFRMEnterValueTextBox, -1);
-                    WAControlSendMessage(hwndDlg, (EN_CHANGE << 16), (long) hFRMEnterValueTextBox);
+                    hFRMEnterValueTextBox = CreateTextBox(48, 30, 252, 20, hwndDlg, PassValue, 3, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+                    TextBoxSetMaxLen(hFRMEnterValueTextBox, EnterValueLen);
+                    TextBoxSelText(hFRMEnterValueTextBox, -1);
+                    ControlSendMessage(hwndDlg, (EN_CHANGE << 16), (long) hFRMEnterValueTextBox);
 					break;
 				case INPUTBOX_PASSWORD:
-                    hFRMEnterValueTextBox = WACreateTextBox(48, 30, 252, 20, hwndDlg, PassValue, 3, 0, WS_TABSTOP | ES_AUTOHSCROLL | ES_PASSWORD, WS_EX_STATICEDGE);
-                    WATextBoxSetMaxLen(hFRMEnterValueTextBox, EnterValueLen);
-                    WATextBoxSelText(hFRMEnterValueTextBox, -1);
-                    WAControlSendMessage(hwndDlg, (EN_CHANGE << 16), (long) hFRMEnterValueTextBox);
+                    hFRMEnterValueTextBox = CreateTextBox(48, 30, 252, 20, hwndDlg, PassValue, 3, 0, WS_TABSTOP | ES_AUTOHSCROLL | ES_PASSWORD, WS_EX_STATICEDGE);
+                    TextBoxSetMaxLen(hFRMEnterValueTextBox, EnterValueLen);
+                    TextBoxSelText(hFRMEnterValueTextBox, -1);
+                    ControlSendMessage(hwndDlg, (EN_CHANGE << 16), (long) hFRMEnterValueTextBox);
 					break;
                 case INPUTBOX_HEXA:
-                    hFRMEnterValueTextBox = WACreateHexBox(48, 30, 252, 20, hwndDlg, PassValue, 3, EnterValueLen, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-                    WATextBoxSelText(hFRMEnterValueTextBox, -1);
-                    WAControlSendMessage(hwndDlg, (EN_CHANGE << 16), (long) hFRMEnterValueTextBox);
+                    hFRMEnterValueTextBox = CreateHexBox(48, 30, 252, 20, hwndDlg, PassValue, 3, EnterValueLen, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+                    TextBoxSelText(hFRMEnterValueTextBox, -1);
+                    ControlSendMessage(hwndDlg, (EN_CHANGE << 16), (long) hFRMEnterValueTextBox);
 					break;
                 case INPUTBOX_COMBO:
-                    hFRMEnterValueTextBox = WACreateComboBox(48, 30, 227, 150, hwndDlg, PassValue, 3, 0, WS_TABSTOP | CBS_DROPDOWN);
-                    hFRMEnterValuehTB = WACreateToolBar(276, 29, 25, 23, hwndDlg, GlobalImageList1, 4, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
-                    WAToolBarAddButton(hFRMEnterValuehTB, "", ENTERVALUE_TB_CLEAR, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-                    WAComboBoxSetMaxLen(hFRMEnterValueTextBox, EnterValueLen);
-                    WATextBoxSelText(hFRMEnterValueTextBox, -1);
-                    if(EnterValueKey.Len() != 0) WAComboBoxFillFromIniFile(hFRMEnterValueTextBox, EnterValueKey, MainIniFile);
-                    WAControlSendMessage(hwndDlg, (CBN_EDITCHANGE << 16), (long) hFRMEnterValueTextBox);
+                    hFRMEnterValueTextBox = CreateComboBox(48, 30, 227, 150, hwndDlg, PassValue, 3, 0, WS_TABSTOP | CBS_DROPDOWN);
+                    hFRMEnterValuehTB = CreateToolBar(276, 29, 25, 23, hwndDlg, GlobalImageList1, 4, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+                    ToolBarAddButton(hFRMEnterValuehTB, "", ENTERVALUE_TB_CLEAR, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+                    ComboBoxSetMaxLen(hFRMEnterValueTextBox, EnterValueLen);
+                    TextBoxSelText(hFRMEnterValueTextBox, -1);
+                    if(EnterValueKey.Len() != 0) ComboBoxFillFromIniFile(hFRMEnterValueTextBox, EnterValueKey, MainIniFile);
+                    ControlSendMessage(hwndDlg, (CBN_EDITCHANGE << 16), (long) hFRMEnterValueTextBox);
 					break;
             }
             ValidValue = 0;
@@ -122,19 +122,19 @@ int CALLBACK FRMEnterValueProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
             return(0);
         case WM_PAINT:
             BeginPaint(hwndDlg, &EnterValuePs);
-            WAGDIDrawHorzSep(hwndDlg, 0, 57, 304);
+            GDIDrawHorzSep(hwndDlg, 0, 57, 304);
             EndPaint(hwndDlg, &EnterValuePs);
 			break;
         case WM_NOTIFY:
             if(EnterValueType == INPUTBOX_COMBO)
             {
-                switch(WAControlGetNotifiedMsg(lParam))
+                switch(ControlGetNotifiedMsg(lParam))
                 {
                     case TTN_NEEDTEXT:
-                        switch(WAControlGetNotifiedID(lParam))
+                        switch(ControlGetNotifiedID(lParam))
                         {
                             case ENTERVALUE_TB_CLEAR:
-                                WAToolBarDisplayToolTip("Clear list", lParam);
+                                ToolBarDisplayToolTip("Clear list", lParam);
                                 return(0);
                         }
 						break;
@@ -144,69 +144,69 @@ int CALLBACK FRMEnterValueProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
         case WM_COMMAND:
             if((HWND) lParam == hFRMEnterValueOk)
             {
-                if(CheckEnteredValue() == 1) WAControlClose(hwndDlg);
+                if(CheckEnteredValue() == 1) ControlClose(hwndDlg);
                 return(0);
             }
             else if((HWND) lParam == hFRMEnterValueCancel)
             {
                 PassValue = "";
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
             }
             else if((HWND) lParam == hFRMEnterValueTextBox)
             {
                 if(EnterValueType == INPUTBOX_COMBO)
                 {
-                    switch(WAControlGetNotifiedCommand(wParam))
+                    switch(ControlGetNotifiedCommand(wParam))
                     {
 						case CBN_SELENDOK:
                         case CBN_EDITCHANGE:
 							if(EnterValueAllowEmpty)
 							{
-                                WAControlEnable(hFRMEnterValueOk, 1);
+                                ControlEnable(hFRMEnterValueOk, 1);
 							}
 							else
 							{
-								if(WAControlGetTextLen(hFRMEnterValueTextBox) > 0)
+								if(ControlGetTextLen(hFRMEnterValueTextBox) > 0)
 								{
-									WAControlEnable(hFRMEnterValueOk, 1);
+									ControlEnable(hFRMEnterValueOk, 1);
 								}
 								else
 								{
-									WAControlEnable(hFRMEnterValueOk, 0);
+									ControlEnable(hFRMEnterValueOk, 0);
 								}
 							}
 							break;
                         case CBN_SELCHANGE:
-                            if(WAComboBoxGetIndex(hFRMEnterValueTextBox) != CB_ERR)
+                            if(ComboBoxGetIndex(hFRMEnterValueTextBox) != CB_ERR)
                             {
-                                WAControlEnable(hFRMEnterValueOk, 1);
+                                ControlEnable(hFRMEnterValueOk, 1);
                             }
                             else
                             {
-                                WAControlEnable(hFRMEnterValueOk, 0);
+                                ControlEnable(hFRMEnterValueOk, 0);
                             }
 							break;
                     }
                 }
                 else
                 {
-                    switch(WAControlGetNotifiedCommand(wParam))
+                    switch(ControlGetNotifiedCommand(wParam))
                     {
                         case EN_CHANGE:
 							if(EnterValueAllowEmpty)
 							{
-                                WAControlEnable(hFRMEnterValueOk, 1);
+                                ControlEnable(hFRMEnterValueOk, 1);
 							}
 							else
 							{
-								if(WATextBoxGetLen(hFRMEnterValueTextBox) > 0)
+								if(TextBoxGetLen(hFRMEnterValueTextBox) > 0)
 								{
-									WAControlEnable(hFRMEnterValueOk, 1);
+									ControlEnable(hFRMEnterValueOk, 1);
 								}
 								else
 								{
-									WAControlEnable(hFRMEnterValueOk, 0);
+									ControlEnable(hFRMEnterValueOk, 0);
 								}
 							}
 							break;
@@ -220,9 +220,9 @@ int CALLBACK FRMEnterValueProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                     switch(wParam)
                     {
                         case ENTERVALUE_TB_CLEAR:
-                            WAComboBoxReset(hFRMEnterValueTextBox);
-                            WAIniDeleteKey(EnterValueKey, "", MainIniFile);
-                            WAControlSendMessage(hwndDlg, (CBN_EDITCHANGE << 16), (long) hFRMEnterValueTextBox);
+                            ComboBoxReset(hFRMEnterValueTextBox);
+                            IniDeleteKey(EnterValueKey, "", MainIniFile);
+                            ControlSendMessage(hwndDlg, (CBN_EDITCHANGE << 16), (long) hFRMEnterValueTextBox);
                             return(0);
                     }
 				}
@@ -241,13 +241,13 @@ int CALLBACK FRMEnterValueProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 long CheckEnteredValue(void)
 {
 	// Retrieve user's input
-    PassValue = WAControlGetText(hFRMEnterValueTextBox);
+    PassValue = ControlGetText(hFRMEnterValueTextBox);
     // Check if it's empty or not
 	if(!EnterValueAllowEmpty)
 	{
 		if(PassValue.Len() == 0)
 		{
-			WAMiscMsgBox(FRMEnterhwnd, "Empty value is not allowed.", MB_ERROR, Requesters);
+			MiscMsgBox(FRMEnterhwnd, "Empty value is not allowed.", MB_ERROR, Requesters);
 			SetFocus(hFRMEnterValueTextBox);
 			return(0);
 		}
@@ -262,10 +262,10 @@ long CheckEnteredValue(void)
 			break;
         case INPUTBOX_HEXA:
 			// Check if the length matches the requested one
-            if(PassValue.Len() < WATextBoxGetMaxLen(hFRMEnterValueTextBox))
+            if(PassValue.Len() < TextBoxGetMaxLen(hFRMEnterValueTextBox))
             {
 				// No: halt process
-                WAMiscMsgBox(FRMEnterhwnd, WATextBoxGetMaxLen(hFRMEnterValueTextBox) + (CStr) " chars required.", MB_ERROR, Requesters);
+                MiscMsgBox(FRMEnterhwnd, TextBoxGetMaxLen(hFRMEnterValueTextBox) + (CStr) " chars required.", MB_ERROR, Requesters);
                 SetFocus(hFRMEnterValueTextBox);
 				return(0);
             }
@@ -273,14 +273,14 @@ long CheckEnteredValue(void)
             if(StringIsHexaDecimal(PassValue) != 0)
             {
 				// No: halt process
-				WAMiscMsgBox(FRMEnterhwnd, "Invalid hexadecimal value.", MB_ERROR, Requesters);
+				MiscMsgBox(FRMEnterhwnd, "Invalid hexadecimal value.", MB_ERROR, Requesters);
 				SetFocus(hFRMEnterValueTextBox);
 				return(0);
 			}
 			break;
 		case INPUTBOX_COMBO:
 			// Save combo datas in requested key/ini file.
-            WAComboBoxSaveInIniFile(hFRMEnterValueTextBox, PassValue, EnterValueKey, MainIniFile);
+            ComboBoxSaveInIniFile(hFRMEnterValueTextBox, PassValue, EnterValueKey, MainIniFile);
 			break;
     }
 	// (Internally validated)
@@ -301,7 +301,7 @@ CStr MiscInputBox(HWND hParent, CStr NameTitle, long Icon, CStr ValueToPass, lon
 	EnterValueAllowEmpty = PromptType & INPUTBOX_ALLOW_EMPTY;
     EnterValueKey = PromptIniKey;
     EnterValueIcon = LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + Icon));
-    WACreateModalDialog(-1, -1, 304, 90, hParent, &FRMEnterValueProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    CreateModalDialog(-1, -1, 304, 90, hParent, &FRMEnterValueProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
     if(ValidValue == 1) ReturnValue = PassValue;
 	return(ReturnValue);
 }

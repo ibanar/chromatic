@@ -88,7 +88,7 @@ Editor:
 - Text zooming (based on selected font).
 - Add customization abilities for the statusbar (not very important).
 - Include a hex editor mode for windows childs (Maybe an AddIn)
-  (it could be interesting to be able to paste alien datas from clipboard in
+  (it could be interesting to be able to paste unknown data from clipboard in
   hex form directly into these windows for further editing).
 
 Coding help:
@@ -97,7 +97,7 @@ Coding help:
   (belongs to code completion).
 - Include windows structures in code completion.
 - Include user's procedures/variables in code completion.
-- Editor for the databases.
+- Editor for the databases (or use them directly as text).
 - Create a better auto-correction engine (not just case correction).
 
 Projects:
@@ -105,7 +105,7 @@ Projects:
 - Add project metrics (procedures/variables loads/redundancies/orphans entities).
 - Hierarchic organigram of procedures (inter-connexions in diagrams form).
 - Create a full project explorer.
-- A tasks scheduler for projects (with auto-reminder and so on... see gantt).
+- A tasks scheduler for projects (with auto-reminder and so on... a la gantt).
 - Add a svn/cvs manager.
 - Create a MDI project type (never had the time to include this).
 - Add the ability to create new sub folders.

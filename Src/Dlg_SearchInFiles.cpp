@@ -103,71 +103,71 @@ int CALLBACK FRMFileSearchProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
         case WM_INITDIALOG:
             FRMFileSearchhWnd = hwndDlg;
             OkSearch = 0;
-            WAControlSetText(hwndDlg, "Search in files");
-			FRMFileSearchhFrame = WACreateFrame(2, -4, 262, 196, hwndDlg, "", 0, 0, 0);
-            WACreateLabel(5, 11, 180, 14, FRMFileSearchhFrame, "Keyword :", 0, 0, 0, 0);
-			WACreateLabel(5, 49, 180, 14, FRMFileSearchhFrame, "Extensions :", 0, 0, 0, 0);
-            WACreateLabel(5, 87, 180, 14, FRMFileSearchhFrame, "Directory :", 0, 0, 0, 0);
-            FRMFileSearchFileLabel = WACreateLabel(2, 194, 345, 16, hwndDlg, "", 103, 0, 0, 0);
-            FRMFileSearchOk = WACreateButton(268, 2, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
-            FRMFileSearchCancel = WACreateButton(268, 26, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-			FRMFileSearchComboKeyWord = WACreateComboBox(7, 22, 225, 100, hwndDlg, "", 3, 0, WS_TABSTOP | CBS_DROPDOWN | WS_GROUP);
-            FRMFileSearchTBKey = WACreateToolBar(234, 21, 25, 23, hwndDlg, GlobalImageList1, 5, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
-            WAToolBarAddButton(FRMFileSearchTBKey, "", FRMFileSearchBUTTONCLEARKEY, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-			FRMFileSearchComboExt = WACreateComboBox(7, 60, 201, 100, hwndDlg, LastWild, 4, 0, WS_TABSTOP | CBS_DROPDOWN);
-            FRMFileSearchTBExt = WACreateToolBar(210, 59, 50, 23, hwndDlg, GlobalImageList1, 5, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
-            WAToolBarAddButton(FRMFileSearchTBExt, "", FRMFileSearchBUTTONEXT, ICON_MENUDROPDOWN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-            WAToolBarAddButton(FRMFileSearchTBExt, "", FRMFileSearchBUTTONCLEAREXT, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-			FRMFileSearchComboDir = WACreateComboBox(7, 98, 201, 100, hwndDlg, WAIniReadKey("Layout", "SearchDir", MainIniFile), 6, 0, WS_TABSTOP | CBS_DROPDOWN);
-            FRMFileSearchTBSel = WACreateToolBar(210, 97, 50, 23, hwndDlg, GlobalImageList1, 7, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
-            WAToolBarAddButton(FRMFileSearchTBSel, "", FRMFileSearchBUTTONOPEN, ICON_DIRSEARCH, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-            WAToolBarAddButton(FRMFileSearchTBSel, "", FRMFileSearchBUTTONCLEAROPEN, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-			FRMFileSearchChkVariables = WACreateCheckBox(14, 131, 117, 19, hwndDlg, "Search for variables", 8, 0, WS_TABSTOP, 0);
-            FRMFileSearchChkCaseSens = WACreateCheckBox(14, 150, 117, 19, hwndDlg, "Case sensitive", 9, 0, WS_TABSTOP, 0);
-            FRMFileSearchChkRaw = WACreateCheckBox(14, 169, 117, 19, hwndDlg, "Raw results", 10, 0, WS_TABSTOP, 0);
-            FRMFileSearchChkIncludes = WACreateCheckBox(138, 131, 117, 19, hwndDlg, "Search in includes", 11, 0, WS_TABSTOP, 0);
-            FRMFileSearchChkSubDirs = WACreateCheckBox(138, 150, 117, 19, hwndDlg, "Sub directories", 12, 0, WS_TABSTOP, 0);
+            ControlSetText(hwndDlg, "Search in files");
+			FRMFileSearchhFrame = CreateFrame(2, -4, 262, 196, hwndDlg, "", 0, 0, 0);
+            CreateLabel(5, 11, 180, 14, FRMFileSearchhFrame, "Keyword :", 0, 0, 0, 0);
+			CreateLabel(5, 49, 180, 14, FRMFileSearchhFrame, "Extensions :", 0, 0, 0, 0);
+            CreateLabel(5, 87, 180, 14, FRMFileSearchhFrame, "Directory :", 0, 0, 0, 0);
+            FRMFileSearchFileLabel = CreateLabel(2, 194, 345, 16, hwndDlg, "", 103, 0, 0, 0);
+            FRMFileSearchOk = CreateButton(268, 2, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
+            FRMFileSearchCancel = CreateButton(268, 26, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+			FRMFileSearchComboKeyWord = CreateComboBox(7, 22, 225, 100, hwndDlg, "", 3, 0, WS_TABSTOP | CBS_DROPDOWN | WS_GROUP);
+            FRMFileSearchTBKey = CreateToolBar(234, 21, 25, 23, hwndDlg, GlobalImageList1, 5, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+            ToolBarAddButton(FRMFileSearchTBKey, "", FRMFileSearchBUTTONCLEARKEY, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+			FRMFileSearchComboExt = CreateComboBox(7, 60, 201, 100, hwndDlg, LastWild, 4, 0, WS_TABSTOP | CBS_DROPDOWN);
+            FRMFileSearchTBExt = CreateToolBar(210, 59, 50, 23, hwndDlg, GlobalImageList1, 5, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+            ToolBarAddButton(FRMFileSearchTBExt, "", FRMFileSearchBUTTONEXT, ICON_MENUDROPDOWN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            ToolBarAddButton(FRMFileSearchTBExt, "", FRMFileSearchBUTTONCLEAREXT, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+			FRMFileSearchComboDir = CreateComboBox(7, 98, 201, 100, hwndDlg, IniReadKey("Layout", "SearchDir", MainIniFile), 6, 0, WS_TABSTOP | CBS_DROPDOWN);
+            FRMFileSearchTBSel = CreateToolBar(210, 97, 50, 23, hwndDlg, GlobalImageList1, 7, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+            ToolBarAddButton(FRMFileSearchTBSel, "", FRMFileSearchBUTTONOPEN, ICON_DIRSEARCH, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            ToolBarAddButton(FRMFileSearchTBSel, "", FRMFileSearchBUTTONCLEAROPEN, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+			FRMFileSearchChkVariables = CreateCheckBox(14, 131, 117, 19, hwndDlg, "Search for variables", 8, 0, WS_TABSTOP, 0);
+            FRMFileSearchChkCaseSens = CreateCheckBox(14, 150, 117, 19, hwndDlg, "Case sensitive", 9, 0, WS_TABSTOP, 0);
+            FRMFileSearchChkRaw = CreateCheckBox(14, 169, 117, 19, hwndDlg, "Raw results", 10, 0, WS_TABSTOP, 0);
+            FRMFileSearchChkIncludes = CreateCheckBox(138, 131, 117, 19, hwndDlg, "Search in includes", 11, 0, WS_TABSTOP, 0);
+            FRMFileSearchChkSubDirs = CreateCheckBox(138, 150, 117, 19, hwndDlg, "Sub directories", 12, 0, WS_TABSTOP, 0);
             if(NbForms != 0)
             {
                 ChildStruct = LoadStructure(CurrentForm);
-                WAControlSetText(FRMFileSearchComboKeyWord, GetCurrentWord(ChildStruct->hChildCodeMax));
+                ControlSetText(FRMFileSearchComboKeyWord, GetCurrentWord(ChildStruct->hChildCodeMax));
             }
             CheckBoxSetState(FRMFileSearchChkVariables, FRMFileSearchChkVariablesValue);
             CheckBoxSetState(FRMFileSearchChkCaseSens, FRMFileSearchChkCaseSensValue);
             CheckBoxSetState(FRMFileSearchChkIncludes, FRMFileSearchChkIncludesValue);
             CheckBoxSetState(FRMFileSearchChkSubDirs, FRMFileSearchChkSubDirsValue);
             CheckBoxSetState(FRMFileSearchChkRaw, FRMFileSearchChkRawValue);
-            if(FRMFileSearchChkRawValue == 1) WAControlEnable(FRMFileSearchChkVariables, 0);
-            else WAControlEnable(FRMFileSearchChkVariables, 1);
-            WAControlBringToTop(FRMFileSearchTBSel);
-            WAControlBringToTop(FRMFileSearchComboDir);
-            WAControlBringToTop(FRMFileSearchTBExt);
-            WAControlBringToTop(FRMFileSearchComboExt);
-            WAControlBringToTop(FRMFileSearchTBKey);
-            WAControlBringToTop(FRMFileSearchComboKeyWord);
-            WAControlEnable(FRMFileSearchOk, 0);
-            WAControlSendMessage(hwndDlg, CBN_EDITCHANGE << 16, (long) FRMFileSearchComboKeyWord);
+            if(FRMFileSearchChkRawValue == 1) ControlEnable(FRMFileSearchChkVariables, 0);
+            else ControlEnable(FRMFileSearchChkVariables, 1);
+            ControlBringToTop(FRMFileSearchTBSel);
+            ControlBringToTop(FRMFileSearchComboDir);
+            ControlBringToTop(FRMFileSearchTBExt);
+            ControlBringToTop(FRMFileSearchComboExt);
+            ControlBringToTop(FRMFileSearchTBKey);
+            ControlBringToTop(FRMFileSearchComboKeyWord);
+            ControlEnable(FRMFileSearchOk, 0);
+            ControlSendMessage(hwndDlg, CBN_EDITCHANGE << 16, (long) FRMFileSearchComboKeyWord);
             // Create the extensions menus
             hExtensionsMenu = CreatePopupMenu();
 			ExtensionsNumber = 0;
 			SearchExtensions.Erase();
 			for(i = 0;i <= 999; i++)
 			{
-				ExtToAdd = WAIniReadKey("Extensions", "Ext" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+				ExtToAdd = IniReadKey("Extensions", "Ext" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
 				if(ExtToAdd.Len() == 0) break;
 				ExtArray = StringSplit(ExtToAdd, "|");
 				if(StringGetSplitUBound(ExtArray) == 1)
 				{
 					// Extract extensions and store them
 					SearchExtensions.Add(StringGetSplitElement(ExtToAdd, ExtArray, 1).Get_String());
-					AppendMenu(hExtensionsMenu, MF_STRING, EXT_IDBASE + i, ExtToAdd.Get_String());
+					MenuAddString(hExtensionsMenu, ExtToAdd, EXT_IDBASE + i, TRUE);
 					ExtensionsNumber++;
 				}
 				StringReleaseSplit(ExtArray);
 			}
-            WAComboBoxFillFromIniFile(FRMFileSearchComboKeyWord, "SearchKeys", MainIniFile);
-            WAComboBoxFillFromIniFile(FRMFileSearchComboExt, "SearchExts", MainIniFile);
-            WAComboBoxFillFromIniFile(FRMFileSearchComboDir, "SearchDirs", MainIniFile);
+            ComboBoxFillFromIniFile(FRMFileSearchComboKeyWord, "SearchKeys", MainIniFile);
+            ComboBoxFillFromIniFile(FRMFileSearchComboExt, "SearchExts", MainIniFile);
+            ComboBoxFillFromIniFile(FRMFileSearchComboDir, "SearchDirs", MainIniFile);
 			FreezeTimer = 1;
             return(1);
         case WM_COMMAND:
@@ -179,7 +179,7 @@ int CALLBACK FRMFileSearchProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
             else if((HWND) lParam == FRMFileSearchCancel)
             {
                 OkSearch = 0;
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
             }
             else if((HWND) lParam == FRMFileSearchTBKey)
@@ -187,9 +187,9 @@ int CALLBACK FRMFileSearchProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                 switch(wParam)
                 {
 					case FRMFileSearchBUTTONCLEARKEY:
-                        WAComboBoxReset(FRMFileSearchComboKeyWord);
-                        WAIniDeleteKey("SearchKeys", "", MainIniFile);
-                        WAControlSendMessage(hwndDlg, (CBN_EDITCHANGE << 16), (long) FRMFileSearchComboKeyWord);
+                        ComboBoxReset(FRMFileSearchComboKeyWord);
+                        IniDeleteKey("SearchKeys", "", MainIniFile);
+                        ControlSendMessage(hwndDlg, (CBN_EDITCHANGE << 16), (long) FRMFileSearchComboKeyWord);
 						break;
 				}
 				return(0);
@@ -200,12 +200,12 @@ int CALLBACK FRMFileSearchProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                 {
 					case FRMFileSearchBUTTONEXT:
 						GetCursorPos(&PopMenuCoords);
-						WAToolBarDisplayPopupMenu(FRMFileSearchTBExt, FRMFileSearchBUTTONEXT, hExtensionsMenu, hwndDlg);
+						ToolBarDisplayPopupMenu(FRMFileSearchTBExt, FRMFileSearchBUTTONEXT, hExtensionsMenu, hwndDlg);
 						break;
 					case FRMFileSearchBUTTONCLEAREXT:
-                        WAComboBoxReset(FRMFileSearchComboExt);
-                        WAIniDeleteKey("SearchExts", "", MainIniFile);
-                        WAControlSendMessage(hwndDlg, (CBN_EDITCHANGE << 16), (long) FRMFileSearchComboExt);
+                        ComboBoxReset(FRMFileSearchComboExt);
+                        IniDeleteKey("SearchExts", "", MainIniFile);
+                        ControlSendMessage(hwndDlg, (CBN_EDITCHANGE << 16), (long) FRMFileSearchComboExt);
 						break;
 				}
 				return(0);
@@ -218,10 +218,10 @@ int CALLBACK FRMFileSearchProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 						SelectDirToSearch();
 						break;
 					case FRMFileSearchBUTTONCLEAROPEN:
-                        WAComboBoxReset(FRMFileSearchComboDir);
-                        WAIniDeleteKey("SearchDirs", "", MainIniFile);
-						WAIniDeleteKey("Layout", "SearchDir", MainIniFile);
-                        WAControlSendMessage(hwndDlg, (CBN_EDITCHANGE << 16), (long) FRMFileSearchComboDir);
+                        ComboBoxReset(FRMFileSearchComboDir);
+                        IniDeleteKey("SearchDirs", "", MainIniFile);
+						IniDeleteKey("Layout", "SearchDir", MainIniFile);
+                        ControlSendMessage(hwndDlg, (CBN_EDITCHANGE << 16), (long) FRMFileSearchComboDir);
 						break;
 				}
 				return(0);
@@ -251,116 +251,116 @@ int CALLBACK FRMFileSearchProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                 FRMFileSearchChkRawValue = CheckBoxGetState(FRMFileSearchChkRaw);
                 if(FRMFileSearchChkRawValue == 1)
                 {
-                    WAControlEnable(FRMFileSearchChkVariables, 0);
+                    ControlEnable(FRMFileSearchChkVariables, 0);
                 }
                 else
                 {
-                    WAControlEnable(FRMFileSearchChkVariables, 1);
+                    ControlEnable(FRMFileSearchChkVariables, 1);
                 }
                 return(0);
             }
             else if((HWND) lParam == FRMFileSearchComboKeyWord)
             {
-                switch(WAControlGetNotifiedCommand(wParam))
+                switch(ControlGetNotifiedCommand(wParam))
                 {
                     case CBN_SELENDOK:
                     case CBN_EDITCHANGE:
-                        if(WAControlGetTextLen(FRMFileSearchComboKeyWord) > 0)
+                        if(ControlGetTextLen(FRMFileSearchComboKeyWord) > 0)
                         {
-                            if(WAControlGetTextLen(FRMFileSearchComboExt) > 0)
+                            if(ControlGetTextLen(FRMFileSearchComboExt) > 0)
                             {
-								if(WAControlGetTextLen(FRMFileSearchComboDir) > 0)
+								if(ControlGetTextLen(FRMFileSearchComboDir) > 0)
 								{
-									WAControlEnable(FRMFileSearchOk, 1);
+									ControlEnable(FRMFileSearchOk, 1);
 									break;
 								}
 							}
                         }
-                        WAControlEnable(FRMFileSearchOk, 0);
+                        ControlEnable(FRMFileSearchOk, 0);
 						break;
                     case CBN_SELCHANGE:
-                        if(WAComboBoxGetIndex(FRMFileSearchComboKeyWord) != CB_ERR)
+                        if(ComboBoxGetIndex(FRMFileSearchComboKeyWord) != CB_ERR)
                         {
-                            if(WAControlGetTextLen(FRMFileSearchComboExt) > 0)
+                            if(ControlGetTextLen(FRMFileSearchComboExt) > 0)
                             {
-                                if(WAControlGetTextLen(FRMFileSearchComboDir) > 0)
+                                if(ControlGetTextLen(FRMFileSearchComboDir) > 0)
                                 {
-									WAControlEnable(FRMFileSearchOk, 1);
+									ControlEnable(FRMFileSearchOk, 1);
 									break;
 								}
 							}
                         }
-                        WAControlEnable(FRMFileSearchOk, 0);
+                        ControlEnable(FRMFileSearchOk, 0);
 						break;
 				}
             }
             else if((HWND) lParam == FRMFileSearchComboExt)
             {
-                switch(WAControlGetNotifiedCommand(wParam))
+                switch(ControlGetNotifiedCommand(wParam))
                 {
                     case CBN_SELENDOK:
                     case CBN_EDITCHANGE:
-                        if(WAControlGetTextLen(FRMFileSearchComboExt) > 0)
+                        if(ControlGetTextLen(FRMFileSearchComboExt) > 0)
                         {
-                            if(WAControlGetTextLen(FRMFileSearchComboKeyWord) > 0)
+                            if(ControlGetTextLen(FRMFileSearchComboKeyWord) > 0)
                             {
-								if(WAControlGetTextLen(FRMFileSearchComboDir) > 0)
+								if(ControlGetTextLen(FRMFileSearchComboDir) > 0)
 								{
-									WAControlEnable(FRMFileSearchOk, 1);
+									ControlEnable(FRMFileSearchOk, 1);
 									break;
 								}
 							}
 						}
-						WAControlEnable(FRMFileSearchOk, 0);
+						ControlEnable(FRMFileSearchOk, 0);
 						break;
                     case CBN_SELCHANGE:
-                        if(WAComboBoxGetIndex(FRMFileSearchComboExt) != CB_ERR)
+                        if(ComboBoxGetIndex(FRMFileSearchComboExt) != CB_ERR)
                         {
-                            if(WAControlGetTextLen(FRMFileSearchComboKeyWord) > 0)
+                            if(ControlGetTextLen(FRMFileSearchComboKeyWord) > 0)
                             {
-								if(WAControlGetTextLen(FRMFileSearchComboDir) > 0)
+								if(ControlGetTextLen(FRMFileSearchComboDir) > 0)
 								{
-									WAControlEnable(FRMFileSearchOk, 1);
+									ControlEnable(FRMFileSearchOk, 1);
 									break;
 								}
 							}
 						}
-                        WAControlEnable(FRMFileSearchOk, 0);
+                        ControlEnable(FRMFileSearchOk, 0);
 						break;
                 }
             }
             else if((HWND) lParam == FRMFileSearchComboDir)
             {
-                switch(WAControlGetNotifiedCommand(wParam))
+                switch(ControlGetNotifiedCommand(wParam))
                 {
                     case CBN_SELENDOK:
                     case CBN_EDITCHANGE:
-                        if(WAControlGetTextLen(FRMFileSearchComboDir) > 0)
+                        if(ControlGetTextLen(FRMFileSearchComboDir) > 0)
                         {
-                            if(WAControlGetTextLen(FRMFileSearchComboExt) > 0)
+                            if(ControlGetTextLen(FRMFileSearchComboExt) > 0)
                             {
-								if(WAControlGetTextLen(FRMFileSearchComboKeyWord) > 0)
+								if(ControlGetTextLen(FRMFileSearchComboKeyWord) > 0)
 								{
-									WAControlEnable(FRMFileSearchOk, 1);
+									ControlEnable(FRMFileSearchOk, 1);
 									break;
 								}
 							}
 						}
-						WAControlEnable(FRMFileSearchOk, 0);
+						ControlEnable(FRMFileSearchOk, 0);
 						break;
                     case CBN_SELCHANGE:
-                        if(WAComboBoxGetIndex(FRMFileSearchComboDir) != CB_ERR)
+                        if(ComboBoxGetIndex(FRMFileSearchComboDir) != CB_ERR)
                         {
-                            if(WAControlGetTextLen(FRMFileSearchComboExt) > 0)
+                            if(ControlGetTextLen(FRMFileSearchComboExt) > 0)
                             {
-								if(WAControlGetTextLen(FRMFileSearchComboKeyWord) > 0)
+								if(ControlGetTextLen(FRMFileSearchComboKeyWord) > 0)
 								{
-									WAControlEnable(FRMFileSearchOk, 1);
+									ControlEnable(FRMFileSearchOk, 1);
 									break;
 								}
 							}
 						}
-                        WAControlEnable(FRMFileSearchOk, 0);
+                        ControlEnable(FRMFileSearchOk, 0);
 						break;
                 }
             }
@@ -370,36 +370,36 @@ int CALLBACK FRMFileSearchProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 				{
 					if((long) (wParam - EXT_IDBASE) < ExtensionsNumber)
 					{
-						WAControlSetText(FRMFileSearchComboExt, SearchExtensions.Get(wParam - EXT_IDBASE)->Content);
+						ControlSetText(FRMFileSearchComboExt, SearchExtensions.Get(wParam - EXT_IDBASE)->Content);
 					}
 				}
 			}
 			break;
         case WM_PAINT:
             BeginPaint(hwndDlg, &FileSearchPs);
-            WAGDIDrawHorzSep(hwndDlg, 3, 126, 260);
+            GDIDrawHorzSep(hwndDlg, 3, 126, 260);
             EndPaint(hwndDlg, &FileSearchPs);
 			break;
         case WM_NOTIFY:
-            switch(WAControlGetNotifiedMsg(lParam))
+            switch(ControlGetNotifiedMsg(lParam))
             {
                 case TTN_NEEDTEXT:
-                    switch(WAControlGetNotifiedID(lParam))
+                    switch(ControlGetNotifiedID(lParam))
                     {
                         case FRMFileSearchBUTTONEXT:
-                            WAToolBarDisplayToolTip("Select extensions from global list", lParam);
+                            ToolBarDisplayToolTip("Select extensions from global list", lParam);
                             return(0);
                         case FRMFileSearchBUTTONOPEN:
-                            WAToolBarDisplayToolTip("Select search directory", lParam);
+                            ToolBarDisplayToolTip("Select search directory", lParam);
                             return(0);
                         case FRMFileSearchBUTTONCLEARKEY:
-                            WAToolBarDisplayToolTip("Clear list", lParam);
+                            ToolBarDisplayToolTip("Clear list", lParam);
                             return(0);
                         case FRMFileSearchBUTTONCLEAREXT:
-                            WAToolBarDisplayToolTip("Clear list", lParam);
+                            ToolBarDisplayToolTip("Clear list", lParam);
                             return(0);
                         case FRMFileSearchBUTTONCLEAROPEN:
-                            WAToolBarDisplayToolTip("Clear list", lParam);
+                            ToolBarDisplayToolTip("Clear list", lParam);
                             return(0);
                     }
             }
@@ -420,7 +420,7 @@ void CheckSubDirs(CStr DirToCheck)
     CStr RetDir;
     CStr BufString;
     
-	RetDir = WAFileDir(&((CStr) DirToCheck + (CStr) "*.*"), FILE_ATTRIBUTE_DIRECTORY);
+	RetDir = FileDir(&((CStr) DirToCheck + (CStr) "*.*"), FILE_ATTRIBUTE_DIRECTORY);
     while(RetDir.Len() != 0)
     {
 		// Pass over parent directories
@@ -438,7 +438,7 @@ void CheckSubDirs(CStr DirToCheck)
             }
         }
 NoValidDir:
-        RetDir = WAFileDir();
+        RetDir = FileDir();
     }
 }
 
@@ -514,33 +514,33 @@ void RunfileSearch(HWND hWnd)
     }
 
     // Check for valid informations
-    if(WAControlGetText(FRMFileSearchComboKeyWord).Len() == 0)
+    if(ControlGetText(FRMFileSearchComboKeyWord).Len() == 0)
     {
-        WAMiscMsgBox(FRMFileSearchhWnd, "Enter a keyword.", MB_ERROR, Requesters);
+        MiscMsgBox(FRMFileSearchhWnd, "Enter a keyword.", MB_ERROR, Requesters);
         SetFocus(FRMFileSearchComboKeyWord);
         return;
     }
-    if(WAControlGetText(FRMFileSearchComboExt).Len() == 0)
+    if(ControlGetText(FRMFileSearchComboExt).Len() == 0)
     {
-        WAMiscMsgBox(FRMFileSearchhWnd, "Enter a search pattern.", MB_ERROR, Requesters);
+        MiscMsgBox(FRMFileSearchhWnd, "Enter a search pattern.", MB_ERROR, Requesters);
         SetFocus(FRMFileSearchComboExt);
         return;
     }
     // Ask for a directory if entry is empty or invalid
-	if((WAControlGetText(FRMFileSearchComboDir).Len() == 0) || (WAFileIsDirectory(WAControlGetText(FRMFileSearchComboDir)) == 0))
+	if((ControlGetText(FRMFileSearchComboDir).Len() == 0) || (FileIsDirectory(ControlGetText(FRMFileSearchComboDir)) == 0))
 	{
         SelectDirToSearch();
-        if((WAControlGetText(FRMFileSearchComboDir).Len() == 0) || (WAFileIsDirectory(WAControlGetText(FRMFileSearchComboDir)) == 0)) return;
+        if((ControlGetText(FRMFileSearchComboDir).Len() == 0) || (FileIsDirectory(ControlGetText(FRMFileSearchComboDir)) == 0)) return;
     }
 
     // Store datas for results display
-    LastSearch = WAControlGetText(FRMFileSearchComboKeyWord);
-    LastWild = WAControlGetText(FRMFileSearchComboExt);
+    LastSearch = ControlGetText(FRMFileSearchComboKeyWord);
+    LastWild = ControlGetText(FRMFileSearchComboExt);
 	
-	WAComboBoxSaveInIniFile(FRMFileSearchComboKeyWord, LastSearch, "SearchKeys", MainIniFile);
-	WAComboBoxSaveInIniFile(FRMFileSearchComboExt, LastWild, "SearchExts", MainIniFile);
-	WAComboBoxSaveInIniFile(FRMFileSearchComboDir, WAControlGetText(FRMFileSearchComboDir), "SearchDirs", MainIniFile);
-	WAIniWriteKey("Layout", "SearchDir", WAControlGetText(FRMFileSearchComboDir), MainIniFile);
+	ComboBoxSaveInIniFile(FRMFileSearchComboKeyWord, LastSearch, "SearchKeys", MainIniFile);
+	ComboBoxSaveInIniFile(FRMFileSearchComboExt, LastWild, "SearchExts", MainIniFile);
+	ComboBoxSaveInIniFile(FRMFileSearchComboDir, ControlGetText(FRMFileSearchComboDir), "SearchDirs", MainIniFile);
+	IniWriteKey("Layout", "SearchDir", ControlGetText(FRMFileSearchComboDir), MainIniFile);
 
     // Store keyword for results display
     switch(FRMFileSearchChkVariablesValue)
@@ -558,21 +558,21 @@ void RunfileSearch(HWND hWnd)
     FRMFileSearchInCalc = 1;
     FRMFileSearchStopCalc = 0;
 
-    WACursorSetWait();
-    WAControlSetText(hWnd, "Search in files (seeking " + (CStr) ProcType + (CStr) "...)");
+    CursorSetWait();
+    ControlSetText(hWnd, "Search in files (seeking " + (CStr) ProcType + (CStr) "...)");
 
-    WAControlSetText(FRMFileSearchOk, "Stop");
-    WAControlEnable(FRMFileSearchCancel, 0);
+    ControlSetText(FRMFileSearchOk, "Stop");
+    ControlEnable(FRMFileSearchCancel, 0);
 
     if(hFRMResults != 0)
     {
-		WAListViewClear(FrmResultsListView);
-		WAMiscDoEvents(hMDIform.hClient, hGlobAccelerators, hMDIform.hWnd);
-		WAControlFreeze(FrmResultsListView,1);
+		ListViewClear(FrmResultsListView);
+		MiscDoEvents(hMDIform.hClient, hGlobAccelerators, hMDIform.hWnd);
+		ControlFreeze(FrmResultsListView,1);
 	}
 
     // Take search word
-    FRMFileSearchSearchWord = WAControlGetText(FRMFileSearchComboKeyWord).Trim();
+    FRMFileSearchSearchWord = ControlGetText(FRMFileSearchComboKeyWord).Trim();
 
 	switch(FRMFileSearchChkCaseSensValue)
 	{
@@ -584,9 +584,9 @@ void RunfileSearch(HWND hWnd)
 			break;
     }
     
-    if(strcmp(WAControlGetText(FRMFileSearchComboDir).Right(1).Get_String(), "\\") != 0)
+    if(strcmp(ControlGetText(FRMFileSearchComboDir).Right(1).Get_String(), "\\") != 0)
     {
-        WAControlSetText(FRMFileSearchComboDir, WAControlGetText(FRMFileSearchComboDir) + (CStr) "\\");
+        ControlSetText(FRMFileSearchComboDir, ControlGetText(FRMFileSearchComboDir) + (CStr) "\\");
     }
 
     // Reset global linezs
@@ -597,14 +597,14 @@ void RunfileSearch(HWND hWnd)
     Directories.Erase();
 
     // Get wildcards
-	TempWildCards = WAControlGetText(FRMFileSearchComboExt) + (CStr) ";";
+	TempWildCards = ControlGetText(FRMFileSearchComboExt) + (CStr) ";";
 	WildCardArray = StringSplit(TempWildCards, ";");
 
     // Include Sub directories
     if(FRMFileSearchChkSubDirsValue == BST_CHECKED)
     {
-        WAControlSetText(FRMFileSearchFileLabel, "Retrieving directory structure...");
-        PrimDir = WAControlGetText(FRMFileSearchComboDir);
+        ControlSetText(FRMFileSearchFileLabel, "Retrieving directory structure...");
+        PrimDir = ControlGetText(FRMFileSearchComboDir);
         CheckSubDirs(PrimDir);
         // Check if directories were found in primary target
         if(Directories.Amount() != 0)
@@ -628,13 +628,13 @@ void RunfileSearch(HWND hWnd)
 					TempSingleWildCard = StringGetSplitElement(TempWildCards, WildCardArray, j);
 					if(TempSingleWildCard.Len() != 0)
 					{
-						RetfileToAdd = WAFileDir(&((CStr) Directories.Get(i)->Content + (CStr) TempSingleWildCard), FILE_ATTRIBUTE_READONLY | FILE_ATTRIBUTE_ARCHIVE | FILE_ATTRIBUTE_NORMAL | FILE_ATTRIBUTE_COMPRESSED);
+						RetfileToAdd = FileDir(&((CStr) Directories.Get(i)->Content + (CStr) TempSingleWildCard), FILE_ATTRIBUTE_READONLY | FILE_ATTRIBUTE_ARCHIVE | FILE_ATTRIBUTE_NORMAL | FILE_ATTRIBUTE_COMPRESSED);
 						while(RetfileToAdd.Len() != 0)
 						{
 							BufString = Directories.Get(i)->Content + (CStr) RetfileToAdd;
 							Includes.Add(BufString.Get_String());
 							IncludesBol.Add(0L);
-							RetfileToAdd = WAFileDir();
+							RetfileToAdd = FileDir();
 						}
 					}
 				}
@@ -649,22 +649,22 @@ void RunfileSearch(HWND hWnd)
 		TempSingleWildCard = StringGetSplitElement(TempWildCards, WildCardArray, i);
 		if(TempSingleWildCard.Len() != 0)
 		{
-			SPat = WAControlGetText(FRMFileSearchComboDir) + (CStr) TempSingleWildCard;
+			SPat = ControlGetText(FRMFileSearchComboDir) + (CStr) TempSingleWildCard;
 			// Return to primary dir and begin the checkup
-			RetFile = WAFileDir(&SPat, FILE_ATTRIBUTE_READONLY | FILE_ATTRIBUTE_ARCHIVE | FILE_ATTRIBUTE_NORMAL | FILE_ATTRIBUTE_COMPRESSED);
+			RetFile = FileDir(&SPat, FILE_ATTRIBUTE_READONLY | FILE_ATTRIBUTE_ARCHIVE | FILE_ATTRIBUTE_NORMAL | FILE_ATTRIBUTE_COMPRESSED);
 			if(RetFile.Len() != 0)
 			{
 				// Take first file (others are considered as includes)
-				FirstFile = WAControlGetText(FRMFileSearchComboDir) + (CStr) RetFile;
+				FirstFile = ControlGetText(FRMFileSearchComboDir) + (CStr) RetFile;
 				// Proceed with second file
-				RetFile = WAFileDir();
+				RetFile = FileDir();
 				// Begin search for asm file in given directory (primary)
 				while(RetFile.Len() != 0)
 				{
-					BufString = WAControlGetText(FRMFileSearchComboDir) + (CStr) RetFile;
+					BufString = ControlGetText(FRMFileSearchComboDir) + (CStr) RetFile;
 					Includes.Add(BufString.Get_String());
 					IncludesBol.Add(0L);
-					RetFile = WAFileDir();
+					RetFile = FileDir();
 				}
 			}
 		}
@@ -673,7 +673,7 @@ void RunfileSearch(HWND hWnd)
     // Perform include search
     if(FRMFileSearchChkIncludesValue == BST_CHECKED)
     {
-        WAControlSetText(FRMFileSearchFileLabel, "Preprocessing files...");
+        ControlSetText(FRMFileSearchFileLabel, "Preprocessing files...");
         j = 0;
         MaxCheckIncludes = Includes.Amount();
         while(j < MaxCheckIncludes)
@@ -682,7 +682,7 @@ void RunfileSearch(HWND hWnd)
             {
                 FRMFileSearchCommChar = GetCMLangCommentByFile(Includes.Get(j)->Content);
                 if(FRMFileSearchCommChar.Len() == 0) goto NoMoreIncludes;
-                WAControlSetText(FRMFileSearchFileLabel, Includes.Get(j)->Content);
+                ControlSetText(FRMFileSearchFileLabel, Includes.Get(j)->Content);
                 TextToSearch = (long) MLoadFile(Includes.Get(j)->Content, &TextToSearchLen);
                 LoCase((char *) TextToSearch);
                 // Remove single lines comments if not in raw mode
@@ -761,7 +761,7 @@ FoundMoreNestedIncludes:
                             hFindIncFile = FindFirstFile(IncludeFileName.Get_String(), &FindIncludeDat);
                             if(hFindIncFile == INVALID_HANDLE_VALUE)
                             {
-                                IncludeFileName = WAFileGetDirectory(Includes.Get(j)->Content) + (CStr) IncludeFileName;
+                                IncludeFileName = FileGetDirectory(Includes.Get(j)->Content) + (CStr) IncludeFileName;
                                 hFindIncFile = FindFirstFile(IncludeFileName.Get_String(), &FindIncludeDat);
                                 if(hFindIncFile == INVALID_HANDLE_VALUE) goto FalseInclude;
                                 FInclude = 0;
@@ -845,7 +845,7 @@ NoMoreIncludes:;
         }
     }
 
-    if(hFRMResults == 0) hFRMResults = WACreateDialog(-1, -1, 600, 264, hMDIform.hWnd, 0, LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_FIND + ICON_BASE)), "Search results", &FrmResultsInitProc, &FrmResultsWinHook, 0, WS_SYSMENU | WS_SIZEBOX | WS_MINIMIZEBOX, SW_HIDE);
+    if(hFRMResults == 0) hFRMResults = CreateNonModalDialog(-1, -1, 600, 264, hMDIform.hWnd, 0, LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_FIND + ICON_BASE)), "Search results", &FrmResultsInitProc, &FrmResultsWinHook, 0, WS_SYSMENU | WS_SIZEBOX | WS_MINIMIZEBOX, SW_HIDE);
     
 	ReCheckLn = 0;
     if(FirstFile.Len() != 0)
@@ -854,11 +854,11 @@ NoMoreIncludes:;
         SearchOpenFile(FirstFile);
         NbLinesPr = NbLinesPr + CurrentFileLines;
 		NbFilesPr++;
-        WAControlSetText(FRMFileSearchFileLabel, FirstFile);
+        ControlSetText(FRMFileSearchFileLabel, FirstFile);
         InCurFile = SearchInFile(FirstFile, FRMFileSearchSearchWord, CsSens, 1, FRMFileSearchChkRawValue);
         if(InCurFile != 0)
         {
-            WAControlSetText(FRMFileSearchFileLabel, FirstFile);
+            ControlSetText(FRMFileSearchFileLabel, FirstFile);
             InCurFileLine = InCurFile - 1;
 FoundMoreEntriesFirst:
             for(j = InCurFileLine; j <= CurrentFileLines - 1; j++)
@@ -902,7 +902,7 @@ NoMoreEntriesFirst:
         if(strlen(Includes.Get(m)->Content) != 0)
         {
             // Check if the file exists
-            if(WAFileExist(Includes.Get(m)->Content) != 0)
+            if(FileExist(Includes.Get(m)->Content) != 0)
             {
                 // Already checked file
                 if(IncludesBol.Get(m)->Content == 0)
@@ -916,7 +916,7 @@ NoMoreEntriesFirst:
                     // Search into a form
                     ReCheckLn = 0;
                     CurrentRetriPosition = 1;
-                    WAControlSetText(FRMFileSearchFileLabel, Includes.Get(m)->Content);
+                    ControlSetText(FRMFileSearchFileLabel, Includes.Get(m)->Content);
                     // Check if the keyword is in the file
                     // Return line
                     InCurFile = SearchInFile(Includes.Get(m)->Content, FRMFileSearchSearchWord, CsSens, CurrentRetriPosition, FRMFileSearchChkRawValue);
@@ -963,9 +963,9 @@ CantOpen:           IncludesBol.Set(m, 1L);
         m++;
     }
 StopAll:
-    WACursorSetNormal();
+    CursorSetNormal();
     SearchCloseFile();
-	if(FrmResultsListView != 0) WAControlFreeze(FrmResultsListView,0);
+	if(FrmResultsListView != 0) ControlFreeze(FrmResultsListView,0);
     if(NbFilesPr == 1) Plur = "";
     else Plur = "s";
     if(NbLinesPr == 1) Plur2 = "";
@@ -975,19 +975,19 @@ StopAll:
 	BufString = NbFilesPr + (CStr) " file" + (CStr) Plur + (CStr) " and " + (CStr) NbLinesPr + (CStr) " line" + (CStr) Plur2 + (CStr) ")";
     if(ProcLines == 1)
     {
-        WAControlSetText(hFRMResults, "Search results for " + (CStr) ProcType + (CStr) ": '" + (CStr) LastSearch + (CStr) "' (" + (CStr) WAListViewItemCount(FrmResultsListView) + (CStr) " occurrence in " + (CStr) BufString);
+        ControlSetText(hFRMResults, "Search results for " + (CStr) ProcType + (CStr) ": '" + (CStr) LastSearch + (CStr) "' (" + (CStr) ListViewItemCount(FrmResultsListView) + (CStr) " occurrence in " + (CStr) BufString);
     }
     else
     {
-        WAControlSetText(hFRMResults, "Search results for " + (CStr) ProcType + (CStr) ": '" + (CStr) LastSearch + (CStr) "' (" + (CStr) WAListViewItemCount(FrmResultsListView) + (CStr) " occurrences in " + (CStr) BufString);
+        ControlSetText(hFRMResults, "Search results for " + (CStr) ProcType + (CStr) ": '" + (CStr) LastSearch + (CStr) "' (" + (CStr) ListViewItemCount(FrmResultsListView) + (CStr) " occurrences in " + (CStr) BufString);
     }
-    WAControlSetText(FRMFileSearchOk, "Ok");
-    WAControlEnable(FRMFileSearchCancel, 1);
-    WAControlSetText(hWnd, "Search in files");
+    ControlSetText(FRMFileSearchOk, "Ok");
+    ControlEnable(FRMFileSearchCancel, 1);
+    ControlSetText(hWnd, "Search in files");
     FRMFileSearchInCalc = 0;
     FRMFileSearchStopCalc = 0;
     OkSearch = 1;
-    WAControlClose(hWnd);
+    ControlClose(hWnd);
 	// Clear the datas
 	StringReleaseSplit(WildCardArray);
     Includes.Erase();
@@ -1155,10 +1155,10 @@ FastReload:
 // Dir selection
 void SelectDirToSearch(void)
 {
-    FRMFileSearchSearchDir = WAComDlgBrowseForFolder(FRMFileSearchhWnd, "Select search directory...");
+    FRMFileSearchSearchDir = ComDlgBrowseForFolder(FRMFileSearchhWnd, "Select search directory...");
     if(FRMFileSearchSearchDir.Len() != 0)
     {
-        WAControlSetText(FRMFileSearchComboDir, FRMFileSearchSearchDir);
-        WAIniWriteKey("Layout", "SearchDir", FRMFileSearchSearchDir, MainIniFile);
+        ControlSetText(FRMFileSearchComboDir, FRMFileSearchSearchDir);
+        IniWriteKey("Layout", "SearchDir", FRMFileSearchSearchDir, MainIniFile);
 	}
 }

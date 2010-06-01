@@ -4,12 +4,12 @@
 ; Resulting smaller file and self modifiable code/datas.
 ; ------------------------------------------
 ; buildblock RELEASE
-;       CAPT [BINDIR]\ml.exe /c /coff /I"[INCLUDEDIR]" "%2"
-;       CAPT [BINDIR]\Link.exe /MERGE:.data=.text /LIBPATH:"[LIBDIR]" /MERGE:.rdata=.text /SECTION:.text,ERW /IGNORE:4078 /SUBSYSTEM:WINDOWS "%1.obj"
+;   CAPT [BINDIR]\ml.exe /c /coff /I"[INCLUDEDIR]" "%2"
+;   CAPT [BINDIR]\Link.exe /MERGE:.data=.text /LIBPATH:"[LIBDIR]" /MERGE:.rdata=.text /SECTION:.text,ERW /IGNORE:4078 /SUBSYSTEM:WINDOWS "%1.obj"
 ; buildblockend
 ; buildblock DEBUG
-;       CAPT [BINDIR]\ml.exe /Zd /Zi /c /coff /I"[INCLUDEDIR]" "%2"
-;       CAPT [BINDIR]\Link.exe /DEBUG /DEBUGTYPE:CV /INCREMENTAL:NO /LIBPATH:"[LIBDIR]" /MERGE:.data=.text /MERGE:.rdata=.text /SECTION:.text,ERW /IGNORE:4078 /SUBSYSTEM:WINDOWS "%1.obj"
+;   CAPT [BINDIR]\ml.exe /Zd /Zi /c /coff /I"[INCLUDEDIR]" "%2"
+;   CAPT [BINDIR]\Link.exe /DEBUG /DEBUGTYPE:CV /INCREMENTAL:NO /LIBPATH:"[LIBDIR]" /MERGE:.data=.text /MERGE:.rdata=.text /SECTION:.text,ERW /IGNORE:4078 /SUBSYSTEM:WINDOWS "%1.obj"
 ; buildblockend
 
 ; --------------- File model

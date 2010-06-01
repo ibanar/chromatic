@@ -77,9 +77,9 @@ void Read_Value(lua_State *L, int Index)
 int Allocate(lua_State *L)
 {
     int *Value = (int *) lua_newuserdata(L, sizeof(void *));
-    *Value = (int) WACreateImageList(luaL_checkinteger(L, 1), // long IconWidth
-                                     luaL_checkinteger(L, 2), // long IconHeight
-                                     luaL_checkinteger(L, 3)  // long MaxIcon
+    *Value = (int) CreateImageList(luaL_checkinteger(L, 1), // long IconWidth
+                                   luaL_checkinteger(L, 2), // long IconHeight
+                                   luaL_checkinteger(L, 3)  // long MaxIcon
                                      );
     luaL_getmetatable(L, CLASS_NAME);
     lua_setmetatable(L, -2);

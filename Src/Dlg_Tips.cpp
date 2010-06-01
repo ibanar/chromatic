@@ -68,7 +68,7 @@ void DisplayTip(HWND hParent)
 {
 	if(LoadTipFile() == 0) return;
 	TipNumberToDisplay = GetRandomTipLine();
-	WACreateModalDialog(-1, -1, 354, 250, hParent, &FRMTipProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+	CreateModalDialog(-1, -1, 354, 250, hParent, &FRMTipProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
 	return;
 }
 
@@ -84,21 +84,21 @@ int CALLBACK FRMTipProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         case WM_INITDIALOG:
             FRMTiphwnd = hwndDlg;
-            WAControlSetText(hwndDlg, "Tip of the day");
-            hFRMTipTip = WACreateLabel(0, 0, 354, 217, hwndDlg, "", 0, &FrmTipLabelHook, 0, 0);
-            hFRMTipDetails = WACreateLabel(39, 44, 354 - 49, 217 - 50, hwndDlg, ParseTipLine(TipNumberToDisplay), 0, 0, 0, 0);
-			hFRMTipNextTip = WACreateButton(195, 224, 77, 23, hwndDlg, "Next tip", 3, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-            hFRMTipClose = WACreateButton(274, 224, 77, 23, hwndDlg, "Close", 2, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
-            hFRMTipShow = WACreateCheckBox(8, 226, 117, 19, hwndDlg, "Show tips on startup", 3, 0, WS_TABSTOP, 0);
-			TipsIniKey = WAIniReadKey("Layout", "ShowTips", MainIniFile);
+            ControlSetText(hwndDlg, "Tip of the day");
+            hFRMTipTip = CreateLabel(0, 0, 354, 217, hwndDlg, "", 0, &FrmTipLabelHook, 0, 0);
+            hFRMTipDetails = CreateLabel(39, 44, 354 - 49, 217 - 50, hwndDlg, ParseTipLine(TipNumberToDisplay), 0, 0, 0, 0);
+			hFRMTipNextTip = CreateButton(195, 224, 77, 23, hwndDlg, "Next tip", 3, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+            hFRMTipClose = CreateButton(274, 224, 77, 23, hwndDlg, "Close", 2, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
+            hFRMTipShow = CreateCheckBox(8, 226, 117, 19, hwndDlg, "Show tips on startup", 3, 0, WS_TABSTOP, 0);
+			TipsIniKey = IniReadKey("Layout", "ShowTips", MainIniFile);
 			if(TipsIniKey.Len() != 0) CheckBoxSetState(hFRMTipShow, TipsIniKey.Get_Long());
 			else CheckBoxSetState(hFRMTipShow, 1);
-			hFRMTipBigFont = WAGDIObtainFont("MS Sans Serif", 9, 0, 1, 0);
+			hFRMTipBigFont = GDIObtainFont("MS Sans Serif", 9, 0, 1, 0);
 	        FreezeTimer = 1;
             return(0);
         case WM_PAINT:
             BeginPaint(hwndDlg, &TipPs);
-            WAGDIDrawHorzSep(hwndDlg, 0, 217, 354);
+            GDIDrawHorzSep(hwndDlg, 0, 217, 354);
 			EndPaint(hwndDlg, &TipPs);
 			break;
         case WM_CTLCOLORSTATIC:
@@ -109,18 +109,18 @@ int CALLBACK FRMTipProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             if((HWND) lParam == hFRMTipNextTip)
             {
 				TipNumberToDisplay = IncreaseTipLine(TipNumberToDisplay);
-				WAControlSetText(hFRMTipDetails, ParseTipLine(TipNumberToDisplay));
+				ControlSetText(hFRMTipDetails, ParseTipLine(TipNumberToDisplay));
                 return(0);
             }
 			else if((HWND) lParam == hFRMTipClose)
 			{
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
 			}
 			break;
         case WM_CLOSE:
 			if(hFRMTipBigFont != 0) DeleteObject(hFRMTipBigFont);
-			WAIniWriteKey("Layout", "ShowTips", CheckBoxGetState(hFRMTipShow), MainIniFile);
+			IniWriteKey("Layout", "ShowTips", CheckBoxGetState(hFRMTipShow), MainIniFile);
 			FreeMem(TipFile);
 			FreezeTimer = 0;
             EndDialog(hwndDlg, 0);
@@ -138,13 +138,13 @@ LRESULT CALLBACK FrmTipLabelHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
     switch(uMsg)
     {
         case WM_ERASEBKGND:
-			WAGDIFillWindow(hWnd, GetSysColor(COLOR_WINDOW));
+			GDIFillWindow(hWnd, GetSysColor(COLOR_WINDOW));
 			return(1);
         case WM_PAINT:
             BeginPaint(hWnd, &TipPs);
 			TipIcon = LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_LIGHT));
             DrawIconEx(TipPs.hdc, 4, 8, TipIcon, 0, 0, 0, 0, DI_NORMAL);
-			WAGDIWriteText(TipPs.hdc, 39, 17, "DON'T PANIC !" , GetSysColor(COLOR_WINDOWTEXT), hFRMTipBigFont, 1, 0);
+			GDIWriteText(TipPs.hdc, 39, 17, "DON'T PANIC !" , GetSysColor(COLOR_WINDOWTEXT), hFRMTipBigFont, 1, 0);
 			EndPaint(hWnd, &TipPs);
 			break;
     }

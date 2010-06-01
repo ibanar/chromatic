@@ -86,11 +86,11 @@ int CALLBACK FRMAboutProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         case WM_INITDIALOG:
             MainAbouthWnd = hwndDlg;
-            AboutSerFont8 = WAGDIObtainFont("MS Sans Serif", 8, hwndDlg, 0, 0);
-            AboutCourFont8 = WAGDIObtainFont("Courier New", 9, hwndDlg, 0, 0);
-            WACreatePictureBox(0, 0, 500, 194, hwndDlg, LoadBitmap(ApphInstance, MAKEINTRESOURCE(MBMP_BASE + MBMP_TITLE)), IMAGE_BITMAP, 0, 0, SS_CENTERIMAGE);
-            AbouthWnd = WACreateLabel(4, 195, 262, 104, hwndDlg, "", 2, &FrmAboutTypeWriterHook, 0, 0);
-            WAControlSetText(hwndDlg, "About " + (CStr) AppTitle);
+            AboutSerFont8 = GDIObtainFont("MS Sans Serif", 8, hwndDlg, 0, 0);
+            AboutCourFont8 = GDIObtainFont("Courier New", 9, hwndDlg, 0, 0);
+            CreatePictureBox(0, 0, 500, 194, hwndDlg, LoadBitmap(ApphInstance, MAKEINTRESOURCE(MBMP_BASE + MBMP_TITLE)), IMAGE_BITMAP, 0, 0, SS_CENTERIMAGE);
+            AbouthWnd = CreateLabel(4, 195, 262, 104, hwndDlg, "", 2, &FrmAboutTypeWriterHook, 0, 0);
+            ControlSetText(hwndDlg, "About " + (CStr) AppTitle);
             FreezeTimer = 1;
             AboutPosInText = 1;
             AboutPosOnScreen = 0;
@@ -102,7 +102,7 @@ int CALLBACK FRMAboutProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             AbLine6 = "";
             AbLine7 = "";
             AbLine8 = "";
-            AboutScrollAmount = WAGDIGetTextHeight(AbouthWnd, AboutCourFont8, "hg");
+            AboutScrollAmount = GDIGetTextHeight(AbouthWnd, AboutCourFont8, "hg");
             AboutText = "\r";
             AboutText = AboutText + (CStr) Requesters + (CStr) "\r";
             AboutText = AboutText + (CStr) "Integrated Development Environment\r\r";
@@ -167,7 +167,7 @@ LRESULT CALLBACK FrmAboutTypeWriterHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
             DisplayTypeWriterLine((HDC) wParam, AbLine6, AboutScrollAmount * 5, ABOUT_LABELSCOLOR6);
             DisplayTypeWriterLine((HDC) wParam, AbLine7, AboutScrollAmount * 6, ABOUT_LABELSCOLOR7);
             DisplayTypeWriterLine((HDC) wParam, AbLine8, AboutScrollAmount * 7, ABOUT_LABELSCOLOR8);
-            WAGDIWriteClippedText((HDC) wParam, AboutPosOnScreen, AboutScrollAmount * 7, WAGDIGetTextWidth(AbouthWnd, AboutCourFont8, "_"), AboutScrollAmount, "_", ABOUT_LABELSCOLOR8, AboutCourFont8, 0, ABOUT_BACKCOLOR);
+            GDIWriteClippedText((HDC) wParam, AboutPosOnScreen, AboutScrollAmount * 7, GDIGetTextWidth(AbouthWnd, AboutCourFont8, "_"), AboutScrollAmount, "_", ABOUT_LABELSCOLOR8, AboutCourFont8, 0, ABOUT_BACKCOLOR);
             return(1);
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
@@ -210,7 +210,7 @@ void CALLBACK AboutTimerNotify(HWND hWnd, UINT uMsg, UINT_PTR idEvent, unsigned 
             else
             {
                 AbLine8 = AbLine8 + (CStr) AboutText.Mid(AboutPosInText, 1).Get_String();
-                LetterWidth = WAGDIGetTextWidth(AbouthWnd, AboutCourFont8, AboutText.Mid(AboutPosInText, 1));
+                LetterWidth = GDIGetTextWidth(AbouthWnd, AboutCourFont8, AboutText.Mid(AboutPosInText, 1));
             }
             AboutPosOnScreen = AboutPosOnScreen + LetterWidth;
             AbouthDC = GetDC(AbouthWnd);
@@ -222,7 +222,7 @@ void CALLBACK AboutTimerNotify(HWND hWnd, UINT uMsg, UINT_PTR idEvent, unsigned 
             DisplayTypeWriterLine(AbouthDC, AbLine6, AboutScrollAmount * 5, ABOUT_LABELSCOLOR6);
             DisplayTypeWriterLine(AbouthDC, AbLine7, AboutScrollAmount * 6, ABOUT_LABELSCOLOR7);
             DisplayTypeWriterLine(AbouthDC, AbLine8, AboutScrollAmount * 7, ABOUT_LABELSCOLOR8);
-            WAGDIWriteClippedText(AbouthDC, AboutPosOnScreen, AboutScrollAmount * 7, WAGDIGetTextWidth(AbouthWnd, AboutCourFont8, "_"), AboutScrollAmount, "_", ABOUT_LABELSCOLOR8, AboutCourFont8, 0, ABOUT_BACKCOLOR);
+            GDIWriteClippedText(AbouthDC, AboutPosOnScreen, AboutScrollAmount * 7, GDIGetTextWidth(AbouthWnd, AboutCourFont8, "_"), AboutScrollAmount, "_", ABOUT_LABELSCOLOR8, AboutCourFont8, 0, ABOUT_BACKCOLOR);
             ReleaseDC(AbouthWnd, AbouthDC);
     }
 }
@@ -231,5 +231,5 @@ void CALLBACK AboutTimerNotify(HWND hWnd, UINT uMsg, UINT_PTR idEvent, unsigned 
 // isplay a line of text in the typewriter
 void DisplayTypeWriterLine(HDC hDC, CStr TextToShow, long Position, long Col)
 {
-    WAGDIWriteClippedText(hDC, 0, Position, 262, AboutScrollAmount, TextToShow, Col, AboutCourFont8, 0, ABOUT_BACKCOLOR);
+    GDIWriteClippedText(hDC, 0, Position, 262, AboutScrollAmount, TextToShow, Col, AboutCourFont8, 0, ABOUT_BACKCOLOR);
 }

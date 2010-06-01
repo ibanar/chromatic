@@ -28,11 +28,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 // -----------------------------------------------------------------------
-// WALib_WinSock.h: declaration of used variables / structures for WALib_WinSock.cpp
+// ChromaticLib_WinSock.h: declaration of used variables / structures for ChromaticLib_WinSock.cpp
 // -----------------------------------------------------------------------
 
-#ifndef _WALIB_WINSOCK_H_
-#define _WALIB_WINSOCK_H_
+#ifndef _CHROMATICLIB_WINSOCK_H_
+#define _CHROMATICLIB_WINSOCK_H_
 
 #include "WALib.h"
 
@@ -51,12 +51,12 @@ long CALLBACK SocketSendUnknownDatas(SOCKET hSock, long Buffer, long BufLen);
 long CALLBACK SocketGetRevcLen(SOCKET hSock);
 CStr CALLBACK SocketReceiveASCIIDatas(SOCKET hSock);
 long CALLBACK SocketReceiveUnknownDatas(SOCKET hSock, long *RecvBuffer, long LenBuffer);
-SOCKET CALLBACK WAFTPInitiatePort(SOCKET hSock, LPSOCKADDR_IN SockStruct, HWND hWnd, long Message);
-CStr CALLBACK WAFTPGetEntryDate(CStr DirEntry);
-CStr CALLBACK WAFTPGetEntryFileName(CStr DirEntry);
-CStr CALLBACK WAFTPGetEntryFileAttributes(CStr DirEntry);
-CStr CALLBACK WAFTPGetEntryFileSize(CStr DirEntry);
-long CALLBACK WAFTPIsEntryDir(CStr DirEntry);
-CStr CALLBACK WAFTPCutEntry(CStr FTPEntry);
+SOCKET CALLBACK FTPInitiatePort(SOCKET hSock, LPSOCKADDR_IN SockStruct, HWND hWnd, long Message);
+CStr CALLBACK FTPGetEntryDate(CStr DirEntry);
+CStr CALLBACK FTPGetEntryFileName(CStr DirEntry);
+CStr CALLBACK FTPGetEntryFileAttributes(CStr DirEntry);
+CStr CALLBACK FTPGetEntryFileSize(CStr DirEntry);
+long CALLBACK FTPIsEntryDir(CStr DirEntry);
+CStr CALLBACK FTPCutEntry(CStr FTPEntry);
 
 #endif

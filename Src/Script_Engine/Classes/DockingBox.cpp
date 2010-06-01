@@ -95,7 +95,7 @@ int Allocate(lua_State *L)
 
     Value = (int *) lua_newuserdata(L, sizeof(void *));
 
-    *Value = (int) Wrapper_WACreateDockingBox((char *) luaL_checkstring(L, 1), &Object_WindowProc);
+    *Value = (int) Wrapper_CreateDockingBox((char *) luaL_checkstring(L, 1), &Object_WindowProc);
     if(*Value)
     {
         luaL_getmetatable(L, CLASS_NAME);
@@ -121,7 +121,7 @@ int Release(lua_State *L)
     // I know it's ugly but lua was fucking with the windows messages
     SetWindowLong((HWND) *Value, 8, (long) 0);
     DockingBoxRemove((HWND) *Value);
-    WAControlClose((HWND) *Value);
+    ControlClose((HWND) *Value);
     DestroyWindow((HWND) *Value);
     luaL_unref(L, LUA_REGISTRYINDEX, Func);
 

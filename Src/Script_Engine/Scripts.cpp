@@ -68,17 +68,17 @@ int Stack_Pos;
 
 // -----------------------------------------------------------------------
 // Private functions
-void InsertPILLWALib(long CodeContext);
-long CALLBACK Script_WACreateStockModalDialog(long TemplateNumber, long DLeft, long DTop, long DWidth, long DHeight, HWND hParent, char *DTitle, DLGPROC WinProc, long Centered);
-HWND CALLBACK Script_WACreateDialog(long WADLeft, long WADTop, long WADWidth, long WADHeight, HWND WAHParent, HMENU WAhMenu, HICON WAhIcon, char *WADTitle, void (CALLBACK *WAInitProc)(HWND hwnd), WNDPROC WAWinProc, long WAWExStyle, long WAWStyle, long WAShowType);
-HWND CALLBACK Script_WACreateMDIChildDialog(HWND WAHParent, char *WACTitle, HICON WAhIcon, void (CALLBACK *WAInitProc)(HWND hwnd), WNDPROC WAWinProc, long WAExtraStyle, long WAZeroPos, char *WACustomClass);
-HWND CALLBACK Script_WACreateMDIDialog(long WAMDILeft, long WAMDITop, long WAMDIWidth, long WAMDIHeight, HWND WAHParent, HMENU WAhMenu, HICON WAhIcon, char *WAMDITitle, void (CALLBACK *WAInitProc)(HWND hwnd), WNDPROC WAWinProc, long WAExtraStyle, long WAShowType);
-HWND CALLBACK Script_WACreateSplashDialog(long WADLeft, long WADTop, long WADWidth, long WADHeight, char *WADTitle, HWND WAHParent, HMENU WAhMenu, HICON WAhIcon, void (CALLBACK *WAInitProc)(HWND hwnd), WNDPROC WAWinProc, long WAWExStyle, long WAWStyle, long WAShowType);
+//void InsertPILLWALib(long CodeContext);
+long CALLBACK Script_CreateStockModalDialog(long TemplateNumber, long DLeft, long DTop, long DWidth, long DHeight, HWND hParent, char *DTitle, DLGPROC WinProc, long Centered);
+HWND CALLBACK Script_CreateNonModalDialog(long WADLeft, long WADTop, long WADWidth, long WADHeight, HWND WAHParent, HMENU WAhMenu, HICON WAhIcon, char *WADTitle, void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WAWinProc, long WAWExStyle, long WAWStyle, long WAShowType);
+HWND CALLBACK Script_CreateMDIChildDialog(HWND WAHParent, char *WACTitle, HICON WAhIcon, void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WAWinProc, long WAExtraStyle, long WAZeroPos, char *WACustomClass);
+HWND CALLBACK Script_CreateMDIDialog(long WAMDILeft, long WAMDITop, long WAMDIWidth, long WAMDIHeight, HWND WAHParent, HMENU WAhMenu, HICON WAhIcon, char *WAMDITitle, void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WAWinProc, long WAExtraStyle, long WAShowType);
+HWND CALLBACK Script_CreateSplashDialog(long WADLeft, long WADTop, long WADWidth, long WADHeight, char *WADTitle, HWND WAHParent, HMENU WAhMenu, HICON WAhIcon, void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WAWinProc, long WAWExStyle, long WAWStyle, long WAShowType);
 void Script_FreeResources(lua_State *L);
 void CALLBACK WAMMEnumKillWindows(void);
 int CALLBACK EnumKill(HWND hWnd, long lParam);
-HGLOBAL CALLBACK PILL_WAMiscAllocMem(long Amount);
-long CALLBACK PILL_WAMiscFreeMem(void *MemHandle);
+HGLOBAL CALLBACK PILL_MiscAllocMem(long Amount);
+long CALLBACK PILL_MiscFreeMem(void *MemHandle);
 
 // -----------------------------------------------------------------------
 // Scripts debugging function
@@ -284,10 +284,10 @@ void Script_FreeResources(lua_State *L)
 		if(L->In_Dialog == 1)
 		{
 			Act_Window = GetActiveWindow();
-			Act_WinClass = WAControlGetClassName(Act_Window);
+			Act_WinClass = ControlGetClassName(Act_Window);
 			if(strcmp(Act_WinClass.Left(2).Upper_Case().Get_String(), "WA") != 0)
 			{
-				WAControlClose(Act_Window);
+				ControlClose(Act_Window);
 			}
 			else
 			{
@@ -312,7 +312,7 @@ void CALLBACK WAMMEnumKillWindows(void)
                     
 int CALLBACK EnumKill(HWND hWnd, long lParam)
 {
-	if(WAControlIsEnabled(hWnd))
+	if(ControlIsEnabled(hWnd))
 	{
 		DestroyWindow(hWnd);	
 		return(0);
@@ -328,7 +328,7 @@ int CALLBACK EnumKill(HWND hWnd, long lParam)
 // Special version of these routines for scripts
 // (mainly for resources tracking because we can't let a dialog around
 //  if the script contains errors or the interpreter crashes)
-int Script_WACreateStockModalDialog(lua_State *L)
+int Script_CreateStockModalDialog(lua_State *L)
 {
 	int TemplateNumber = luaL_checkint(L, 1);
 	int DLeft = luaL_checkint(L, 2);
@@ -349,10 +349,10 @@ int Script_WACreateStockModalDialog(lua_State *L)
 	switch(TemplateNumber)
     {
 		case MODALDLG_STOCK_WIZARD:
-			ReturnValue = WACreateStockModalDialog(TemplateNumber, DLeft, DTop, DWidth, DHeight, hParent, DTitle, WinProc, Centered, (long) MAKEINTRESOURCE(MBMP_BASE + MBMP_WIZARD));
+			ReturnValue = CreateStockModalDialog(TemplateNumber, DLeft, DTop, DWidth, DHeight, hParent, DTitle, WinProc, Centered, (long) MAKEINTRESOURCE(MBMP_BASE + MBMP_WIZARD));
 			break;
 		default:
-			ReturnValue = WACreateStockModalDialog(TemplateNumber, DLeft, DTop, DWidth, DHeight, hParent, DTitle, WinProc, Centered, 0);
+			ReturnValue = CreateStockModalDialog(TemplateNumber, DLeft, DTop, DWidth, DHeight, hParent, DTitle, WinProc, Centered, 0);
 			break;
 	}
     FreezeTimer = 0;
@@ -666,34 +666,34 @@ int Script_RadioButtonSetState(lua_State *L)
 
 // -----------------------------------------------------------------------
 
-/*HWND CALLBACK PILL_WACreateDialog(long WADLeft, long WADTop, long WADWidth, long WADHeight, HWND WAHParent, HMENU WAhMenu, HICON WAhIcon, char *WADTitle, void (CALLBACK *WAInitProc)(HWND hwnd), WNDPROC WAWinProc, long WAWExStyle, long WAWStyle, long WAShowType) {
+/*HWND CALLBACK PILL_CreateNonModalDialog(long WADLeft, long WADTop, long WADWidth, long WADHeight, HWND WAHParent, HMENU WAhMenu, HICON WAhIcon, char *WADTitle, void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WAWinProc, long WAWExStyle, long WAWStyle, long WAShowType) {
 	HWND NewhWnd;
     
-	NewhWnd = WACreateDialog(WADLeft, WADTop, WADWidth, WADHeight, WAHParent, WAhMenu, WAhIcon, StringConvertToCStr(WADTitle), WAInitProc, WAWinProc, WAWExStyle, WAWStyle, WAShowType);
+	NewhWnd = CreateNonModalDialog(WADLeft, WADTop, WADWidth, WADHeight, WAHParent, WAhMenu, WAhIcon, StringConvertToCStr(WADTitle), InitProc, WAWinProc, WAWExStyle, WAWStyle, WAShowType);
 	PILL_Windows.Add(NewhWnd);
 	return(NewhWnd);
 }
 
-HWND CALLBACK PILL_WACreateMDIChildDialog(HWND WAHParent, char *WACTitle, HICON WAhIcon, void (CALLBACK *WAInitProc)(HWND hwnd), WNDPROC WAWinProc, long WAExtraStyle, long WAZeroPos, char *WACustomClass) {
+HWND CALLBACK PILL_CreateMDIChildDialog(HWND WAHParent, char *WACTitle, HICON WAhIcon, void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WAWinProc, long WAExtraStyle, long WAZeroPos, char *WACustomClass) {
 	HWND NewhWnd;
 
-    NewhWnd = WACreateMDIChildDialog(WAHParent, StringConvertToCStr(WACTitle), WAhIcon, WAInitProc, WAWinProc, WAExtraStyle, WAZeroPos, StringConvertToCStr(WACustomClass));
+    NewhWnd = CreateMDIChildDialog(WAHParent, StringConvertToCStr(WACTitle), WAhIcon, InitProc, WAWinProc, WAExtraStyle, WAZeroPos, StringConvertToCStr(WACustomClass));
 	PILL_Windows.Add(NewhWnd);
 	return(NewhWnd);
 }
 
-HWND CALLBACK PILL_WACreateMDIDialog(long WAMDILeft, long WAMDITop, long WAMDIWidth, long WAMDIHeight, HWND WAHParent, HMENU WAhMenu, HICON WAhIcon, char *WAMDITitle, void (CALLBACK *WAInitProc)(HWND hwnd), WNDPROC WAWinProc, long WAExtraStyle, long WAShowType) {
+HWND CALLBACK PILL_CreateMDIDialog(long WAMDILeft, long WAMDITop, long WAMDIWidth, long WAMDIHeight, HWND WAHParent, HMENU WAhMenu, HICON WAhIcon, char *WAMDITitle, void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WAWinProc, long WAExtraStyle, long WAShowType) {
 	HWND NewhWnd;
 
-    NewhWnd = WACreateMDIDialog(WAMDILeft, WAMDITop, WAMDIWidth, WAMDIHeight, WAHParent, WAhMenu, WAhIcon, StringConvertToCStr(WAMDITitle), WAInitProc, WAWinProc, WAExtraStyle, WAShowType);
+    NewhWnd = CreateMDIDialog(WAMDILeft, WAMDITop, WAMDIWidth, WAMDIHeight, WAHParent, WAhMenu, WAhIcon, StringConvertToCStr(WAMDITitle), InitProc, WAWinProc, WAExtraStyle, WAShowType);
 	PILL_Windows.Add(NewhWnd);
 	return(NewhWnd);
 }
 
-HWND CALLBACK PILL_WACreateSplashDialog(long WADLeft, long WADTop, long WADWidth, long WADHeight, char *WADTitle, HWND WAHParent, HMENU WAhMenu, HICON WAhIcon, void (CALLBACK *WAInitProc)(HWND hwnd), WNDPROC WAWinProc, long WAWExStyle, long WAWStyle, long WAShowType) {
+HWND CALLBACK PILL_CreateSplashDialog(long WADLeft, long WADTop, long WADWidth, long WADHeight, char *WADTitle, HWND WAHParent, HMENU WAhMenu, HICON WAhIcon, void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WAWinProc, long WAWExStyle, long WAWStyle, long WAShowType) {
 	HWND NewhWnd;
 
-    NewhWnd = WACreateSplashDialog(WADLeft, WADTop, WADWidth, WADHeight, StringConvertToCStr(WADTitle), WAHParent, WAhMenu, WAhIcon, WAInitProc, WAWinProc, WAWExStyle, WAWStyle, WAShowType);
+    NewhWnd = CreateSplashDialog(WADLeft, WADTop, WADWidth, WADHeight, StringConvertToCStr(WADTitle), WAHParent, WAhMenu, WAhIcon, InitProc, WAWinProc, WAWExStyle, WAWStyle, WAShowType);
 	PILL_Windows.Add(NewhWnd);
 	return(NewhWnd);
 }
@@ -703,7 +703,7 @@ HWND CALLBACK PILL_WACreateSplashDialog(long WADLeft, long WADTop, long WADWidth
 // Static methods definitions for Chromatic table
 luaL_reg Chromatic_Methods[] =
 {
-    { "CreateStockModalDialog", Script_WACreateStockModalDialog },
+    { "CreateStockModalDialog", Script_CreateStockModalDialog },
 
     { "MsgBox", Script_MsgBox },
     { "ObtainExtendedFunctions", Script_ObtainExtendedFunctions },
@@ -788,18 +788,18 @@ luaL_reg Chromatic_Methods[] =
 	PILL_Add_Variable(CodeContext, "GetDlgItem", (long) &GetDlgItem, 0 },
 	PILL_Add_Variable(CodeContext, "GetProcAddress", (long) &GetProcAddress, 0 },
 
-	FillPILLConstant(CodeContext, "WAMiscClipBoardCopyText", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAMiscClipBoardPasteText", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAMiscClipBoardIsEmpty", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAMiscShellAddFileToRecents", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAMiscWaitEvents", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAMiscSendBroadCastMsg", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAMiscDoEvents", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAMiscObtainGUID", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAMiscAllocMem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAMiscFreeMem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAMiscCopyMemLoop", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAMiscCopyMemWithOffsets", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "MiscClipBoardCopyText", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "MiscClipBoardPasteText", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "MiscClipBoardIsEmpty", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "MiscShellAddFileToRecents", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "MiscWaitEvents", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "MiscSendBroadCastMsg", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "MiscDoEvents", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "MiscObtainGUID", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "MiscAllocMem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "MiscFreeMem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "MiscCopyMemLoop", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "MiscCopyMemWithOffsets", i, PILL_STORE_ENFORCE, 1);
 
 
 	FillPILLConstant(CodeContext, "StringIsLabel", i, PILL_STORE_ENFORCE, 1);
@@ -857,89 +857,89 @@ luaL_reg Chromatic_Methods[] =
 
 
 	i = 0;
-	FillPILLConstant(CodeContext, "WACreateSplashDialog", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateModalDialog", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateDialog", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateSplitter", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateMDIDialog", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateMDIChildDialog", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateToolBar", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateImageList", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateSysTab", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateTrackBar", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateUpDown", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateProgressBar", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateStatusBar", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateColorBox", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateGripBox", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateLabel", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreatePictureBox", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateFrame", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateIPBox", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateRichTextBox", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateHexBox", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateCheckBox", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateRebar", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreatePager", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateClient", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateRadioButton", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateListView", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateTreeView", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateComboBox", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateListBox", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateScrollBar", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateDumpBox", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACreateTextBox", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateSplashDialog", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateModalDialog", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateNonModalDialog", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateSplitter", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateMDIDialog", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateMDIChildDialog", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateToolBar", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateImageList", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateSysTab", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateTrackBar", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateUpDown", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateProgressBar", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateStatusBar", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateColorBox", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateGripBox", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateLabel", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreatePictureBox", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateFrame", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateIPBox", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateRichTextBox", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateHexBox", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateCheckBox", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateRebar", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreatePager", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateClient", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateRadioButton", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateListView", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateTreeView", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateComboBox", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateListBox", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateScrollBar", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateDumpBox", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CreateTextBox", i, PILL_STORE_ENFORCE, 1);
 	
-    FillPILLConstant(CodeContext, "WAToolBarAddButton", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarGetButton", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarGetButtonXSize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarGetButtonYSize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarGetButtonsCount", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarGetRowsCount", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarGetImagelist", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarAddSeparator", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarGetNotifiedToolTip", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarGetNotifiedDropDownItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarDisplayToolTip", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarResize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarSetButtonPressed", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarSetButtonChecked", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarSetButtonEnabled", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarIsButtonPressed", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarIsButtonChecked", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarDisplayPopupMenu", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarGetXSize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarGetYSize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarGetButtonXPosition", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarGetXYSize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarGetRealPos", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarGetButtonXYPos", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarGetButtonIndexXSize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarGetXPadding", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarGetYPadding", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarGetNotifiedHotItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAToolBarRemoveButton", i, PILL_STORE_ENFORCE, 1);
+    FillPILLConstant(CodeContext, "ToolBarAddButton", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarGetButton", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarGetButtonXSize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarGetButtonYSize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarGetButtonsCount", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarGetRowsCount", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarGetImagelist", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarAddSeparator", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarGetNotifiedToolTip", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarGetNotifiedDropDownItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarDisplayToolTip", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarResize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarSetButtonPressed", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarSetButtonChecked", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarSetButtonEnabled", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarIsButtonPressed", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarIsButtonChecked", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarDisplayPopupMenu", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarGetXSize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarGetYSize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarGetButtonXPosition", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarGetXYSize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarGetRealPos", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarGetButtonXYPos", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarGetButtonIndexXSize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarGetXPadding", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarGetYPadding", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarGetNotifiedHotItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ToolBarRemoveButton", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WASysTabAddItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WASysTabGetCurrentItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WASysTabGetImagelist", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WASysTabSetCurrentItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WASysTabSetFocusItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WASysTabHighLightItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WASysTabItemsCount", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WASysTabGetRowsCount", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WASysTabSetSeparators", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WASysTabSetItemsSize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WASysTabRemoveItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WASysTabSetMinWidth", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WASysTabSetPadding", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "SysTabAddItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "SysTabGetCurrentItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "SysTabGetImagelist", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "SysTabSetCurrentItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "SysTabSetFocusItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "SysTabHighLightItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "SysTabItemsCount", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "SysTabGetRowsCount", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "SysTabSetSeparators", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "SysTabSetItemsSize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "SysTabRemoveItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "SysTabSetMinWidth", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "SysTabSetPadding", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WATrackBarSetRange", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATrackBarSetPos", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATrackBarGetPos", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATrackBarSetTicks", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATrackBarGetToolTips", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TrackBarSetRange", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TrackBarSetPos", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TrackBarGetPos", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TrackBarSetTicks", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TrackBarGetToolTips", i, PILL_STORE_ENFORCE, 1);
 
 	FillPILLConstant(CodeContext, "GripBoxGetColor", i, PILL_STORE_ENFORCE, 1);
 	FillPILLConstant(CodeContext, "GripBoxSetColor", i, PILL_STORE_ENFORCE, 1);
@@ -954,337 +954,337 @@ luaL_reg Chromatic_Methods[] =
 	FillPILLConstant(CodeContext, "IPBoxSetRange", i, PILL_STORE_ENFORCE, 1);
 	FillPILLConstant(CodeContext, "IPBoxIsBlank", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WATextBoxGetLen", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxSetMaxLen", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxGetMaxLen", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxGetTextHandle", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxAddText", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxSelText", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxRemoveSel", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxSetCaretPos", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxLinesCount", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxGetMarginWidth", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxGetFirstVisibleLine", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxIsModified", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxGetCurrentOptions", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxGetPasswordChar", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxSetPasswordChar", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxGetSelection", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxGetScrollPos", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxGetBreakProcAddress", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxCanPaste", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATextBoxCanUndo", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxGetLen", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxSetMaxLen", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxGetMaxLen", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxGetTextHandle", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxAddText", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxSelText", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxRemoveSel", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxSetCaretPos", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxLinesCount", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxGetMarginWidth", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxGetFirstVisibleLine", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxIsModified", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxGetCurrentOptions", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxGetPasswordChar", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxSetPasswordChar", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxGetSelection", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxGetScrollPos", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxGetBreakProcAddress", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxCanPaste", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TextBoxCanUndo", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WARebarAddBand", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WARebarRemoveBand", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WARebarGetXSize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WARebarGetYSize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WARebarResize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WARebarSetBackColor", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WARebarSetTextColor", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WARebarBandVisible", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WARebarGetBandsCount", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WARebarGetHeight", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WARebarGetBackGroundColor", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WARebarGetRowsCount", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WARebarGetToolTips", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WARebarGetTextColor", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WARebarGetPalette", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WARebarGetImageList", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RebarAddBand", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RebarRemoveBand", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RebarGetXSize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RebarGetYSize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RebarResize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RebarSetBackColor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RebarSetTextColor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RebarBandVisible", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RebarGetBandsCount", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RebarGetHeight", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RebarGetBackGroundColor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RebarGetRowsCount", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RebarGetToolTips", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RebarGetTextColor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RebarGetPalette", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RebarGetImageList", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WAPagerDisplaySetSize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAPagerMaximizeX", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAPagerMaximizeY", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAPagerGetNotifiedChild", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAPagerSetBackColor", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAPagerGetBackColor", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAPagerGetBorderSize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAPagerGetButtonSize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAPagerGetScrollPos", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAPagerGetOrientation", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAPagerSetOrientation", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAPagerChangeOrientation", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "PagerDisplaySetSize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "PagerMaximizeX", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "PagerMaximizeY", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "PagerGetNotifiedChild", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "PagerSetBackColor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "PagerGetBackColor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "PagerGetBorderSize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "PagerGetButtonSize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "PagerGetScrollPos", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "PagerGetOrientation", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "PagerSetOrientation", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "PagerChangeOrientation", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WAClientResize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAClientGetActiveChild", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAClientSetNextChild", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAClientSetPreviousChild", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAClientTileHorizontal", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAClientTileVertical", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAClientTileCascade", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAClientTileArrangeIconic", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ClientResize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ClientGetActiveChild", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ClientSetNextChild", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ClientSetPreviousChild", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ClientTileHorizontal", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ClientTileVertical", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ClientTileCascade", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ClientTileArrangeIconic", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WAListViewAddCol", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewSetColWidth", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetColWidth", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewSetScroll", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewClear", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewDetachImageList", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewAddItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewDeleteItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewSetSubItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewSetSubItemImage", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetSubItemImage", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewEditValidated", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetEditResult", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewItemCount", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewSelItemCount", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewMultiSelFirstItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetItemSelState", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewSetEditModeOn", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewSetItemSel", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewSetItemHighlight", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewSetItemFocus", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetItemUnderCursor", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetFirstFocusItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetSelItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetSelItemText", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewSetSelItemText", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewCheckBoxItemDoubleClick", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetItemText", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetItemIcon", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetNotifiedColumnIndex", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewSort", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewReOrder", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetHeaderLabel", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetHeaderPosition", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewSetHeaderPosition", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewSetBackColor", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetBackColor", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetTextBackColor", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetTextColor", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetToolTips", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetTopIndex", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetCountPerPage", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetEditControl", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetExStyle", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetSysHeader", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetHotCursor", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetImageList", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewSetItemCheckbox", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewGetItemCheckbox", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewIsCheckboxNotify", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewFindItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewFindSubItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewBeginDrag", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewMoveDrag", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewEndDrag", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListViewPasteAutoEdit", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewAddCol", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewSetColWidth", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetColWidth", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewSetScroll", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewClear", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewDetachImageList", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewAddItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewDeleteItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewSetSubItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewSetSubItemImage", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetSubItemImage", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewEditValidated", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetEditResult", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewItemCount", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewSelItemCount", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewMultiSelFirstItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetItemSelState", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewSetEditModeOn", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewSetItemSel", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewSetItemHighlight", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewSetItemFocus", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetItemUnderCursor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetFirstFocusItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetSelItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetSelItemText", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewSetSelItemText", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewCheckBoxItemDoubleClick", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetItemText", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetItemIcon", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetNotifiedColumnIndex", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewSort", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewReOrder", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetHeaderLabel", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetHeaderPosition", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewSetHeaderPosition", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewSetBackColor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetBackColor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetTextBackColor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetTextColor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetToolTips", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetTopIndex", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetCountPerPage", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetEditControl", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetExStyle", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetSysHeader", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetHotCursor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetImageList", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewSetItemCheckbox", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewGetItemCheckbox", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewIsCheckboxNotify", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewFindItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewFindSubItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewBeginDrag", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewMoveDrag", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewEndDrag", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListViewPasteAutoEdit", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WATreeViewAddItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewSetToolTips", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetToolTips", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewSetIndent", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewRemoveItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewSetBackColor", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetExpandingState", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetExpandingItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetDeletedItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewSetItemIcon", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewSetItemExpandedState", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetItemExpandedState", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewSetSingleExpandState", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetSelectedItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetItemFromPos", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewSetSelectedItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetItemText", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewSetItemText", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetItemParent", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetRoot", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetItemCount", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetVisibleCount", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetFirstItemChild", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetNextItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetPreviousItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewSearchItemText", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewSearchChildPartialText", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetChildItemsCount", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetSelChildItemPos", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetItemLevel", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetBackColor", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetEditControl", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetImageList", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetIndent", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetInsertMarkColor", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetLineColor", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetTextColor", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetItemHeight", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetScrollTime", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetItemTextRect", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WATreeViewGetItemRect", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewAddItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewSetToolTips", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetToolTips", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewSetIndent", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewRemoveItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewSetBackColor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetExpandingState", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetExpandingItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetDeletedItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewSetItemIcon", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewSetItemExpandedState", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetItemExpandedState", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewSetSingleExpandState", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetSelectedItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetItemFromPos", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewSetSelectedItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetItemText", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewSetItemText", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetItemParent", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetRoot", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetItemCount", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetVisibleCount", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetFirstItemChild", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetNextItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetPreviousItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewSearchItemText", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewSearchChildPartialText", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetChildItemsCount", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetSelChildItemPos", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetItemLevel", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetBackColor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetEditControl", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetImageList", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetIndent", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetInsertMarkColor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetLineColor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetTextColor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetItemHeight", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetScrollTime", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetItemTextRect", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "TreeViewGetItemRect", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WAComboBoxAddItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAComboBoxDeleteItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAComboBoxReset", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAComboBoxSetMaxLen", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAComboBoxCount", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAComboBoxGetIndex", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAComboBoxSetIndex", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAComboBoxGetItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAComboBoxGetCurrentItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAComboBoxItemExist", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAComboBoxGetItemData", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAComboBoxSaveInIniFile", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAComboBoxFillFromIniFile", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ComboBoxAddItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ComboBoxDeleteItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ComboBoxReset", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ComboBoxSetMaxLen", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ComboBoxCount", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ComboBoxGetIndex", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ComboBoxSetIndex", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ComboBoxGetItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ComboBoxGetCurrentItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ComboBoxItemExist", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ComboBoxGetItemData", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ComboBoxSaveInIniFile", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ComboBoxFillFromIniFile", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WAListBoxAddItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxReset", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxSetHorzScrollWidth", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxSetColumnsWidth", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxCount", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxGetTopIndex", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxSetTopIndex", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxSetItemData", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxGetItemData", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxIsItemSelected", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxGetSelItemIndex", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxSetIndex", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxGetCurrentItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxGetItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxDeleteItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxReplaceItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxReplaceSelItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxProcessDrag", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxSelItemDown", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxSelItemUp", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxSelItemRemove", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxItemExist", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAListBoxItemUnderCursor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxAddItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxReset", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxSetHorzScrollWidth", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxSetColumnsWidth", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxCount", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxGetTopIndex", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxSetTopIndex", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxSetItemData", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxGetItemData", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxIsItemSelected", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxGetSelItemIndex", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxSetIndex", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxGetCurrentItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxGetItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxDeleteItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxReplaceItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxReplaceSelItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxProcessDrag", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxSelItemDown", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxSelItemUp", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxSelItemRemove", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxItemExist", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ListBoxItemUnderCursor", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WAScrollBarGetMinRange", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAScrollBarGetMaxRange", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAScrollBarGetPageRange", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAScrollBarSetPageRange", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAScrollBarShowHide", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAScrollBarSetMinMaxRange", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ScrollBarGetMinRange", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ScrollBarGetMaxRange", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ScrollBarGetPageRange", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ScrollBarSetPageRange", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ScrollBarShowHide", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ScrollBarSetMinMaxRange", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WADumpBoxResize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WADumpBoxScrollDown", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WADumpBoxScrollUp", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WADumpBoxGetVisibleLines", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WADumpBoxGetVisibleColumns", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "DumpBoxResize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "DumpBoxScrollDown", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "DumpBoxScrollUp", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "DumpBoxGetVisibleLines", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "DumpBoxGetVisibleColumns", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WAMenuGetString", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAMenuEnable", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAMenuSetDefaultItem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAMenuSetItemState", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAMenuSetItemType", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "MenuGetString", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "MenuEnable", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "MenuSetDefaultItem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "MenuSetItemState", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "MenuSetItemType", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WACursorSetWait", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACursorSetNo", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACursorSetCross", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACursorSetNormal", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACursorDisable", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WACursorEnable", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CursorSetWait", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CursorSetNo", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CursorSetCross", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CursorSetNormal", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CursorDisable", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "CursorEnable", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WAIniReadKey", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAIniReadBoolKey", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAIniWriteSection", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAIniDeleteKey", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAIniWriteKey", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "IniReadKey", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "IniReadBoolKey", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "IniWriteSection", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "IniDeleteKey", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "IniWriteKey", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WAFileGetWriteTime", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileGetCreationTime", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileGetAccessedTime", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileGetExtension", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileRemoveExtension", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileReplaceExtension", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileGetDirectory", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileGetFileName", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileOpenR", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileOpenW", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileOpenWAppend", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileClose", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileCreateEmpty", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileWriteBuffer", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileWriteLine", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileIsDirectory", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileGetSize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileExist", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileIsReadOnly", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileIsUnix", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileLoadIntoMem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileSaveFromMem", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFileDir", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileGetWriteTime", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileGetCreationTime", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileGetAccessedTime", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileGetExtension", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileRemoveExtension", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileReplaceExtension", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileGetDirectory", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileGetFileName", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileOpenR", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileOpenW", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileOpenWAppend", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileClose", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileCreateEmpty", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileWriteBuffer", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileWriteLine", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileIsDirectory", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileGetSize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileExist", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileIsReadOnly", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileIsUnix", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileLoadIntoMem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileSaveFromMem", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FileDir", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WARegistryUpdateKey", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WARegistryDeleteKey", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WARegistryGetKeyValue", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RegistryUpdateKey", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RegistryDeleteKey", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "RegistryGetKeyValue", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WAGDIFillWindow", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIFillWindowFromBrush", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIFillWindowFromBrushAndhDC", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDICreateColorBrush", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIObtainFont", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIDrawHorzSep", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIDrawVertSep", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIDrawLine", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIDrawLineXOR", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIDrawPixel", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIWriteText", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIWriteClippedText", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIGetTextWidth", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIGetTextHeight", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIGetFontWidth", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIGetFontHeight", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDICreateBackDC", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIDestroyBackDC", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIBlitBackDC", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIColorCalcLuminosity", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIGetSerif", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIGetSerif10", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAGDIGetCourierNew9", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIFillWindow", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIFillWindowFromBrush", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIFillWindowFromBrushAndhDC", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDICreateColorBrush", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIObtainFont", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIDrawHorzSep", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIDrawVertSep", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIDrawLine", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIDrawLineXOR", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIDrawPixel", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIWriteText", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIWriteClippedText", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIGetTextWidth", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIGetTextHeight", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIGetFontWidth", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIGetFontHeight", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDICreateBackDC", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIDestroyBackDC", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIBlitBackDC", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIColorCalcLuminosity", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIGetSerif", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIGetSerif10", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "GDIGetCourierNew9", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WAControlSendMessage", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlClientTop", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlClientLeft", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlClientWidth", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlClientHeight", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlBringToTop", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlBringToBottom", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlSetTopMost", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlRemTopMost", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlRefresh", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlRefreshLocal", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlRepaint", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlResize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlFreeze", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlBound", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlEnable", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlVisible", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlIsVisible", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlIsEnabled", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlGetText", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlGetTextLen", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlSetText", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlGetNotifiedMsg", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlGetNotifiedhWnd", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlGetNotifiedID", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlTop", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlLeft", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlWidth", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlHeight", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlGetHwndFromPoint", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlGetNotifiedCommand", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlGetXMousePos", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlGetYMousePos", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlGetFont", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlGetIcon", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlGetHotKey", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlSetFont", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlSetFontNoRedraw", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlIsWindowChild", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlGetClassName", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlSetClassCursor", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlGetWindowState", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAControlClose", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlSendMessage", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlClientTop", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlClientLeft", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlClientWidth", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlClientHeight", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlBringToTop", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlBringToBottom", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlSetTopMost", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlRemTopMost", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlRefresh", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlRefreshLocal", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlRepaint", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlResize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlFreeze", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlBound", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlEnable", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlVisible", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlIsVisible", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlIsEnabled", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlGetText", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlGetTextLen", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlSetText", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlGetNotifiedMsg", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlGetNotifiedhWnd", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlGetNotifiedID", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlTop", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlLeft", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlWidth", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlHeight", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlGetHwndFromPoint", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlGetNotifiedCommand", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlGetXMousePos", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlGetYMousePos", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlGetFont", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlGetIcon", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlGetHotKey", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlSetFont", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlSetFontNoRedraw", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlIsWindowChild", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlGetClassName", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlSetClassCursor", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlGetWindowState", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "ControlClose", i, PILL_STORE_ENFORCE, 1);
 
-	FillPILLConstant(CodeContext, "WAFTPInitiatePort", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFTPGetEntryDate", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFTPGetEntryFileName", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFTPGetEntryFileAttributes", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFTPGetEntryFileSize", i, PILL_STORE_ENFORCE, 1);
-	FillPILLConstant(CodeContext, "WAFTPIsEntryDir", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FTPInitiatePort", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FTPGetEntryDate", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FTPGetEntryFileName", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FTPGetEntryFileAttributes", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FTPGetEntryFileSize", i, PILL_STORE_ENFORCE, 1);
+	FillPILLConstant(CodeContext, "FTPIsEntryDir", i, PILL_STORE_ENFORCE, 1);
 
 	FillPILLConstant(CodeContext, "WAMMGetWindowLangGUID", i, PILL_STORE_ENFORCE, 1);
 	FillPILLConstant(CodeContext, "WAMMGetWindowLangInclude", i, PILL_STORE_ENFORCE, 1);

@@ -85,21 +85,21 @@ int CALLBACK FRMProcVarSearchProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
         case WM_INITDIALOG:
             FRMProcVarSearchhwnd = hwndDlg;
             OkSearch = 0;
-            WAControlSetText(hwndDlg, "Proc/Var/Const search");
-            FRMProcVarSearchFrame = WACreateFrame(2, -4, 262, 122, hwndDlg, "", 0, &FRMProcVarSearchFrameProc, 0);
-            WACreateLabel(5, 11, 180, 14, FRMProcVarSearchFrame, "Keyword :", 0, 0, 0, 0);
-            FRMProcVarSearchOk = WACreateButton(268, 2, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
-            FRMProcVarSearchCancel = WACreateButton(268, 26, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-            FRMProcVarSearchComboKeyWord = WACreateComboBox(7, 22, 225, 100, hwndDlg, "", 3, 0, WS_TABSTOP | CBS_DROPDOWN | WS_GROUP);
-            FRMProcVarSearchTBKey = WACreateToolBar(234, 21, 25, 23, hwndDlg, GlobalImageList1, 5, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
-            WAToolBarAddButton(FRMProcVarSearchTBKey, "", FRMProcVarSearchBUTTONKEY, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-            FRMProcVarSearchChkIncludes = WACreateCheckBox(14, 55, 130, 19, hwndDlg, "Search in includes", 4, 0, WS_TABSTOP, 0);
-            FRMProcVarSearchChkCaseSens = WACreateCheckBox(14, 73, 130, 19, hwndDlg, "Case sensitive", 5, 0, WS_TABSTOP, 0);
-            FRMProcVarSearchChkRaw = WACreateCheckBox(14, 91, 130, 19, hwndDlg, "Raw results", 6, 0, WS_TABSTOP, 0);
-            FRMProcVarSearchRadioProc = WACreateRadioButton(156, 55, 100, 19, hwndDlg, "Procedures", 7, 0, WS_TABSTOP | WS_GROUP);
-            FRMProcVarSearchRadioVar = WACreateRadioButton(156, 73, 100, 19, hwndDlg, "Var/Const", 8, 0, WS_TABSTOP);
-            FRMProcVarSearchFileLabel = WACreateLabel(2, 122, 345, 16, hwndDlg, "", 109, 0, 0, 0);
-            WAComboBoxFillFromIniFile(FRMProcVarSearchComboKeyWord, "SearchKeys", MainIniFile);
+            ControlSetText(hwndDlg, "Proc/Var/Const search");
+            FRMProcVarSearchFrame = CreateFrame(2, -4, 262, 122, hwndDlg, "", 0, &FRMProcVarSearchFrameProc, 0);
+            CreateLabel(5, 11, 180, 14, FRMProcVarSearchFrame, "Keyword :", 0, 0, 0, 0);
+            FRMProcVarSearchOk = CreateButton(268, 2, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
+            FRMProcVarSearchCancel = CreateButton(268, 26, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+            FRMProcVarSearchComboKeyWord = CreateComboBox(7, 22, 225, 100, hwndDlg, "", 3, 0, WS_TABSTOP | CBS_DROPDOWN | WS_GROUP);
+            FRMProcVarSearchTBKey = CreateToolBar(234, 21, 25, 23, hwndDlg, GlobalImageList1, 5, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+            ToolBarAddButton(FRMProcVarSearchTBKey, "", FRMProcVarSearchBUTTONKEY, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            FRMProcVarSearchChkIncludes = CreateCheckBox(14, 55, 130, 19, hwndDlg, "Search in includes", 4, 0, WS_TABSTOP, 0);
+            FRMProcVarSearchChkCaseSens = CreateCheckBox(14, 73, 130, 19, hwndDlg, "Case sensitive", 5, 0, WS_TABSTOP, 0);
+            FRMProcVarSearchChkRaw = CreateCheckBox(14, 91, 130, 19, hwndDlg, "Raw results", 6, 0, WS_TABSTOP, 0);
+            FRMProcVarSearchRadioProc = CreateRadioButton(156, 55, 100, 19, hwndDlg, "Procedures", 7, 0, WS_TABSTOP | WS_GROUP);
+            FRMProcVarSearchRadioVar = CreateRadioButton(156, 73, 100, 19, hwndDlg, "Var/Const", 8, 0, WS_TABSTOP);
+            FRMProcVarSearchFileLabel = CreateLabel(2, 122, 345, 16, hwndDlg, "", 109, 0, 0, 0);
+            ComboBoxFillFromIniFile(FRMProcVarSearchComboKeyWord, "SearchKeys", MainIniFile);
             switch(FRMProcVarSearchRadioVPValue)
             {
                 case 0:
@@ -112,41 +112,41 @@ int CALLBACK FRMProcVarSearchProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
             if(NbForms != 0)
             {
                 ChildStruct = LoadStructure(CurrentForm);
-                WAControlSetText(FRMProcVarSearchComboKeyWord, GetCurrentWord(ChildStruct->hChildCodeMax));
+                ControlSetText(FRMProcVarSearchComboKeyWord, GetCurrentWord(ChildStruct->hChildCodeMax));
             }
             CheckBoxSetState(FRMProcVarSearchChkIncludes, FRMProcVarSearchChkIncludesValue);
             CheckBoxSetState(FRMProcVarSearchChkCaseSens, FRMProcVarSearchChkCaseSensValue);
             CheckBoxSetState(FRMProcVarSearchChkRaw, FRMProcVarSearchChkRawValue);
             if(FRMProcVarSearchChkRawValue == 1)
             {
-                WAControlEnable(FRMProcVarSearchRadioProc, 0);
-                WAControlEnable(FRMProcVarSearchRadioVar, 0);
+                ControlEnable(FRMProcVarSearchRadioProc, 0);
+                ControlEnable(FRMProcVarSearchRadioVar, 0);
             }
             else
             {
-                WAControlEnable(FRMProcVarSearchRadioProc, 1);
-                WAControlEnable(FRMProcVarSearchRadioVar, 1);
+                ControlEnable(FRMProcVarSearchRadioProc, 1);
+                ControlEnable(FRMProcVarSearchRadioVar, 1);
             }
             FreezeTimer = 1;
-            WAControlEnable(FRMProcVarSearchOk, 0);
-            WAControlBringToTop(FRMProcVarSearchTBKey);
-			WAControlBringToTop(FRMProcVarSearchComboKeyWord);
-			WAControlSendMessage(hwndDlg, CBN_EDITCHANGE << 16, (LPARAM) FRMProcVarSearchComboKeyWord);
+            ControlEnable(FRMProcVarSearchOk, 0);
+            ControlBringToTop(FRMProcVarSearchTBKey);
+			ControlBringToTop(FRMProcVarSearchComboKeyWord);
+			ControlSendMessage(hwndDlg, CBN_EDITCHANGE << 16, (LPARAM) FRMProcVarSearchComboKeyWord);
             SetFocus(FRMProcVarSearchComboKeyWord);
             return(0);
         case WM_PAINT:
             BeginPaint(hwndDlg, &ProcVarSearchPs);
-            WAGDIDrawHorzSep(hwndDlg, 3, 50, 260);
+            GDIDrawHorzSep(hwndDlg, 3, 50, 260);
             EndPaint(hwndDlg, &ProcVarSearchPs);
 			break;
         case WM_NOTIFY:
-            switch(WAControlGetNotifiedMsg(lParam))
+            switch(ControlGetNotifiedMsg(lParam))
             {
                 case TTN_NEEDTEXT:
-					switch(WAControlGetNotifiedID(lParam))
+					switch(ControlGetNotifiedID(lParam))
 					{
 						case FRMProcVarSearchBUTTONKEY:
-                            WAToolBarDisplayToolTip("Clear list", lParam);
+                            ToolBarDisplayToolTip("Clear list", lParam);
 							return(0);
 					}
 					break;
@@ -161,7 +161,7 @@ int CALLBACK FRMProcVarSearchProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
             else if((HWND) lParam == FRMProcVarSearchCancel)
             {
                 OkSearch = 0;
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
             }
             else if((HWND) lParam == FRMProcVarSearchChkIncludes)
@@ -179,39 +179,39 @@ int CALLBACK FRMProcVarSearchProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
                 FRMProcVarSearchChkRawValue = CheckBoxGetState(FRMProcVarSearchChkRaw);
                 if(FRMProcVarSearchChkRawValue == 1)
                 {
-                    WAControlEnable(FRMProcVarSearchRadioProc, 0);
-                    WAControlEnable(FRMProcVarSearchRadioVar, 0);
+                    ControlEnable(FRMProcVarSearchRadioProc, 0);
+                    ControlEnable(FRMProcVarSearchRadioVar, 0);
                 }
                 else
                 {
-                    WAControlEnable(FRMProcVarSearchRadioProc, 1);
-                    WAControlEnable(FRMProcVarSearchRadioVar, 1);
+                    ControlEnable(FRMProcVarSearchRadioProc, 1);
+                    ControlEnable(FRMProcVarSearchRadioVar, 1);
                 }
                 return(0);
             }
             else if((HWND) lParam == FRMProcVarSearchComboKeyWord)
             {
-                switch(WAControlGetNotifiedCommand(wParam))
+                switch(ControlGetNotifiedCommand(wParam))
                 {
                     case CBN_SELENDOK:
                     case CBN_EDITCHANGE:
-                        if(WAControlGetTextLen(FRMProcVarSearchComboKeyWord) > 0)
+                        if(ControlGetTextLen(FRMProcVarSearchComboKeyWord) > 0)
                         {
-                            WAControlEnable(FRMProcVarSearchOk, 1);
+                            ControlEnable(FRMProcVarSearchOk, 1);
                         }
                         else
                         {
-                            WAControlEnable(FRMProcVarSearchOk, 0);
+                            ControlEnable(FRMProcVarSearchOk, 0);
                         }
 						break;
                     case CBN_SELCHANGE:
-                        if(WAComboBoxGetIndex(FRMProcVarSearchComboKeyWord) != CB_ERR)
+                        if(ComboBoxGetIndex(FRMProcVarSearchComboKeyWord) != CB_ERR)
                         {
-                            WAControlEnable(FRMProcVarSearchOk, 1);
+                            ControlEnable(FRMProcVarSearchOk, 1);
                         }
                         else
                         {
-                            WAControlEnable(FRMProcVarSearchOk, 0);
+                            ControlEnable(FRMProcVarSearchOk, 0);
                         }
 						break;
                 }
@@ -221,9 +221,9 @@ int CALLBACK FRMProcVarSearchProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
                 switch(wParam)
                 {
 					case FRMProcVarSearchBUTTONKEY:
-                        WAComboBoxReset(FRMProcVarSearchComboKeyWord);
-                        WAIniDeleteKey("SearchKeys", "", MainIniFile);
-                        WAControlSendMessage(hwndDlg, (CBN_EDITCHANGE << 16), (long) FRMProcVarSearchComboKeyWord);
+                        ComboBoxReset(FRMProcVarSearchComboKeyWord);
+                        IniDeleteKey("SearchKeys", "", MainIniFile);
+                        ControlSendMessage(hwndDlg, (CBN_EDITCHANGE << 16), (long) FRMProcVarSearchComboKeyWord);
 						break;
 				}
 				return(0);
@@ -308,17 +308,17 @@ void RunProcSearch(HWND hwnd)
     }
     
     // Check for valid informations
-    if(WAControlGetText(FRMProcVarSearchComboKeyWord).Len() == 0)
+    if(ControlGetText(FRMProcVarSearchComboKeyWord).Len() == 0)
     {
-        WAMiscMsgBox(FRMProcVarSearchhwnd, "Enter a keyword.", MB_ERROR, Requesters);
+        MiscMsgBox(FRMProcVarSearchhwnd, "Enter a keyword.", MB_ERROR, Requesters);
         SetFocus(FRMProcVarSearchComboKeyWord);
         return;
     }
     
     // Store keyword for results display
-    LastSearch = WAControlGetText(FRMProcVarSearchComboKeyWord);
+    LastSearch = ControlGetText(FRMProcVarSearchComboKeyWord);
 
-	WAComboBoxSaveInIniFile(FRMProcVarSearchComboKeyWord, LastSearch, "SearchKeys", MainIniFile);
+	ComboBoxSaveInIniFile(FRMProcVarSearchComboKeyWord, LastSearch, "SearchKeys", MainIniFile);
 
     switch(FRMProcVarSearchRadioVPValue)
     {
@@ -340,18 +340,18 @@ void RunProcSearch(HWND hwnd)
     if(NbForms != 0) FRMProcSearchCommChar = GetCMLangComment(CurrentForm);
     
     // Take search word
-    FRMProcSearchSearchWord = WAControlGetText(FRMProcVarSearchComboKeyWord).Trim();
-    WACursorSetWait();
-    WAControlSetText(hwnd, "Proc/Var/Const search (seeking " + (CStr) ProcType + (CStr) "...)");
-    WAControlSetText(FRMProcVarSearchOk, "Stop");
-    WAControlEnable(FRMProcVarSearchCancel, 0);
-    if(hFRMResults != 0) WAListViewClear(FrmResultsListView);
+    FRMProcSearchSearchWord = ControlGetText(FRMProcVarSearchComboKeyWord).Trim();
+    CursorSetWait();
+    ControlSetText(hwnd, "Proc/Var/Const search (seeking " + (CStr) ProcType + (CStr) "...)");
+    ControlSetText(FRMProcVarSearchOk, "Stop");
+    ControlEnable(FRMProcVarSearchCancel, 0);
+    if(hFRMResults != 0) ListViewClear(FrmResultsListView);
     GetAllFiles();
     
     // Perform include search
     if(FRMProcVarSearchChkIncludesValue == BST_CHECKED)
     {
-        WAControlSetText(FRMProcVarSearchFileLabel, "Preprocessing files...");
+        ControlSetText(FRMProcVarSearchFileLabel, "Preprocessing files...");
         j = 0;
         MaxCheckIncludes = FilesList.Amount();
         while(j < MaxCheckIncludes)
@@ -456,7 +456,7 @@ FoundMoreNestedIncludes:
                             hFindIncFile = FindFirstFile(IncludeFileName.Get_String(), &ProcFindIncludeDat);
                             if(hFindIncFile == INVALID_HANDLE_VALUE)
                             {
-                                IncludeFileName = WAFileGetDirectory(FilesList.Get(j)->Content) + (CStr) IncludeFileName;
+                                IncludeFileName = FileGetDirectory(FilesList.Get(j)->Content) + (CStr) IncludeFileName;
                                 hFindIncFile = FindFirstFile(IncludeFileName.Get_String(), &ProcFindIncludeDat);
                                 if(hFindIncFile == INVALID_HANDLE_VALUE) goto FalseInclude;
                                 FInclude = 0;
@@ -515,7 +515,7 @@ NoMoreIncludes:;
         if(TextToSearch != 0) FreeMem(TextToSearch);
         TextToSearch = 0;
     }
-    if(hFRMResults == 0) hFRMResults = WACreateDialog(-1, -1, 600, 264, hMDIform.hWnd, 0, LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_FIND + ICON_BASE)), "Search results", &FrmResultsInitProc, &FrmResultsWinHook, 0, WS_SYSMENU | WS_SIZEBOX | WS_MINIMIZEBOX, SW_HIDE);
+    if(hFRMResults == 0) hFRMResults = CreateNonModalDialog(-1, -1, 600, 264, hMDIform.hWnd, 0, LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_FIND + ICON_BASE)), "Search results", &FrmResultsInitProc, &FrmResultsWinHook, 0, WS_SYSMENU | WS_SIZEBOX | WS_MINIMIZEBOX, SW_HIDE);
     ReCheckLn = 0;
     MaxCheck = FilesList.Amount();
     m = 0;
@@ -540,7 +540,7 @@ NoMoreIncludes:;
 					NbFilesPr++;
                     ReCheckLn = 0;
                     CurrentRetriPosition = 1;
-                    WAControlSetText(FRMProcVarSearchFileLabel, FilesList.Get(m)->Content);
+                    ControlSetText(FRMProcVarSearchFileLabel, FilesList.Get(m)->Content);
                     InCurFile = SearchInFileCM(FilesListhWnd.Get(m)->Content, FRMProcSearchSearchWord, CsSens, CurrentRetriPosition, FRMProcSearchCommChar, FRMProcVarSearchChkRawValue);
                     if(InCurFile != 0)
                     {
@@ -584,13 +584,13 @@ SuiteCheckInc:              if(FRMProcSearchStopCalc == 1)
                 else
                 {
                     // Load file from disk
-                    if(WAFileExist(FilesList.Get(m)->Content) == 0) goto FToSearchNotFound;
+                    if(FileExist(FilesList.Get(m)->Content) == 0) goto FToSearchNotFound;
                     SearchOpenFile(FilesList.Get(m)->Content);
                     NbLinesPr = NbLinesPr + CurrentFileLines;
                     NbFilesPr++;
                     ReCheckLn = 0;
                     CurrentRetriPosition = 1;
-                    WAControlSetText(FRMProcVarSearchFileLabel, FilesList.Get(m)->Content);
+                    ControlSetText(FRMProcVarSearchFileLabel, FilesList.Get(m)->Content);
                     InCurFile = SearchInFile(FilesList.Get(m)->Content, FRMProcSearchSearchWord, CsSens, CurrentRetriPosition, FRMProcVarSearchChkRawValue);
                     if(InCurFile != 0)
                     {
@@ -638,7 +638,7 @@ FToSearchNotFound:;
         m++;
     }
 StopAll:
-    WACursorSetNormal();
+    CursorSetNormal();
     SearchCloseFile();
     if(NbFilesPr == 1) Plur = "";
     else Plur = "s";
@@ -647,16 +647,16 @@ StopAll:
 	LastSearchFiles = NbFilesPr;
 	LastSearchLines = NbLinesPr;
 	BufString = NbFilesPr + (CStr) " file" + (CStr) Plur + (CStr) " and " + (CStr) NbLinesPr + (CStr) " line" + (CStr) Plur2 + (CStr) ")";
-    if(ProcLines == 1) WAControlSetText(hFRMResults, "Search results for " + (CStr) ProcType + (CStr) ": '" + (CStr) LastSearch + (CStr) "' (" + (CStr) WAListViewItemCount(FrmResultsListView) + (CStr) " possible occurrence in " + (CStr) BufString);
-    else WAControlSetText(hFRMResults, "Search results for " + (CStr) ProcType + (CStr) ": '" + (CStr) LastSearch + (CStr) "' (" + (CStr) WAListViewItemCount(FrmResultsListView) + (CStr) " possible occurrences in " + (CStr) BufString);
-    WAControlSetText(FRMProcVarSearchOk, "Ok");
-    WAControlEnable(FRMProcVarSearchCancel, 1);
-    WAControlSetText(FRMProcVarSearchFileLabel, "");
-    WAControlSetText(hwnd, "Proc/Var/Const search");
+    if(ProcLines == 1) ControlSetText(hFRMResults, "Search results for " + (CStr) ProcType + (CStr) ": '" + (CStr) LastSearch + (CStr) "' (" + (CStr) ListViewItemCount(FrmResultsListView) + (CStr) " possible occurrence in " + (CStr) BufString);
+    else ControlSetText(hFRMResults, "Search results for " + (CStr) ProcType + (CStr) ": '" + (CStr) LastSearch + (CStr) "' (" + (CStr) ListViewItemCount(FrmResultsListView) + (CStr) " possible occurrences in " + (CStr) BufString);
+    ControlSetText(FRMProcVarSearchOk, "Ok");
+    ControlEnable(FRMProcVarSearchCancel, 1);
+    ControlSetText(FRMProcVarSearchFileLabel, "");
+    ControlSetText(hwnd, "Proc/Var/Const search");
     FRMProcSearchInCalc = 0;
     FRMProcSearchStopCalc = 0;
     OkSearch = 1;
-    WAControlClose(hwnd);
+    ControlClose(hwnd);
     return;
 
 // -----------------------------------------------------------------------

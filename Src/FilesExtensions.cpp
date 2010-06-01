@@ -61,15 +61,15 @@ void RegisterExt(CStr Extension, long IconNumber)
     RegFileNameLen = GetModuleFileName(0, RegFileName.Get_String(), MAX_PATH);
     if(RegFileNameLen == 0) return;
     RegFileName = RegFileName.Left(RegFileNameLen);
-    if(WARegistryUpdateKey(HKEY_CLASSES_ROOT, "." + (CStr) Extension, "", "Chromatic " + (CStr) Extension + (CStr) " file", REG_SZ) == 1)
+    if(RegistryUpdateKey(HKEY_CLASSES_ROOT, "." + (CStr) Extension, "", "Chromatic " + (CStr) Extension + (CStr) " file", REG_SZ) == 1)
     {
-        if(WARegistryUpdateKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file", "EditFlags", "00000040", REG_BINARY) == 1)
+        if(RegistryUpdateKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file", "EditFlags", "00000040", REG_BINARY) == 1)
         {
-            if(WARegistryUpdateKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file\\DefaultIcon", "", RegFileName + (CStr) "," + (CStr) IconNumber, REG_SZ) == 1)
+            if(RegistryUpdateKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file\\DefaultIcon", "", RegFileName + (CStr) "," + (CStr) IconNumber, REG_SZ) == 1)
             {
-                if(WARegistryUpdateKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file\\Shell\\Open\\Command", "", RegFileName + (CStr) " %1", REG_SZ) == 1)
+                if(RegistryUpdateKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file\\Shell\\Open\\Command", "", RegFileName + (CStr) " %1", REG_SZ) == 1)
                 {
-                    WARegistryUpdateKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file\\Shell\\Open with Chromatic\\Command", "", RegFileName + (CStr) " %1", REG_SZ);
+                    RegistryUpdateKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file\\Shell\\Open with Chromatic\\Command", "", RegFileName + (CStr) " %1", REG_SZ);
                 }
             }
         }
@@ -88,13 +88,13 @@ void UnRegisterExt(CStr Extension)
     RegFileNameLen = GetModuleFileName(0, RegFileName.Get_String(), MAX_PATH);
     if(RegFileNameLen == 0) return;
     RegFileName = RegFileName.Left(RegFileNameLen);
-    WARegistryDeleteKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file\\Shell\\Open with Chromatic", "Command", REG_SZ);
-    WARegistryDeleteKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file\\Shell\\Open", "Command", REG_SZ);
-    WARegistryDeleteKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file\\Shell\\Open", "", REG_SZ);
-    WARegistryDeleteKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file\\Shell", "Open with Chromatic", REG_SZ);
-    WARegistryDeleteKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file\\Shell", "Open", REG_SZ);
-    WARegistryDeleteKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file", "DefaultIcon", REG_SZ);
-    WARegistryDeleteKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file", "Shell", REG_SZ);
-    WARegistryDeleteKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file", "", REG_SZ);
-    WARegistryDeleteKey(HKEY_CLASSES_ROOT, "." + (CStr) Extension, "", REG_SZ);
+    RegistryDeleteKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file\\Shell\\Open with Chromatic", "Command", REG_SZ);
+    RegistryDeleteKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file\\Shell\\Open", "Command", REG_SZ);
+    RegistryDeleteKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file\\Shell\\Open", "", REG_SZ);
+    RegistryDeleteKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file\\Shell", "Open with Chromatic", REG_SZ);
+    RegistryDeleteKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file\\Shell", "Open", REG_SZ);
+    RegistryDeleteKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file", "DefaultIcon", REG_SZ);
+    RegistryDeleteKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file", "Shell", REG_SZ);
+    RegistryDeleteKey(HKEY_CLASSES_ROOT, "Chromatic " + (CStr) Extension + (CStr) " file", "", REG_SZ);
+    RegistryDeleteKey(HKEY_CLASSES_ROOT, "." + (CStr) Extension, "", REG_SZ);
 }

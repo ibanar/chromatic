@@ -70,7 +70,7 @@ int ChooseColor(lua_State *L)
     Color = lua_tointeger(L, -1);
     lua_pop(L, 1);
 
-    Return_Value = Wrapper_WAComDlgChooseColor((HWND) luaL_checkint(L, 1), (long *) &Color);
+    Return_Value = Wrapper_ComDlgChooseColor((HWND) luaL_checkint(L, 1), (long *) &Color);
 
     lua_pushinteger(L, Color);
     Write_Ref_Variable(L, Var_Result, &local);
@@ -90,7 +90,7 @@ int GetOpenFileName(lua_State *L)
     CStr TempRet;
     int Multi = luaL_checkboolean(L, 4);
 
-    Ret = Wrapper_WAComDlgGetOpenFileName((HWND) luaL_checkint(L, 1),
+    Ret = Wrapper_ComDlgGetOpenFileName((HWND) luaL_checkint(L, 1),
                                           (char *) luaL_checkstring(L, 2),
                                           (char *) luaL_checkstring(L, 3),
                                           Multi);
@@ -125,7 +125,7 @@ int GetSaveFileName(lua_State *L)
 {
     Pop_Class_Object(L);
 
-    lua_pushstring(L, Wrapper_WAComDlgGetSaveFileName((HWND) luaL_checkint(L, 1),
+    lua_pushstring(L, Wrapper_ComDlgGetSaveFileName((HWND) luaL_checkint(L, 1),
                                                       (char *) luaL_checkstring(L, 2),
                                                       (char *) luaL_checkstring(L, 3)
                                                      ));
@@ -138,7 +138,7 @@ int BrowseForFolder(lua_State *L)
 {
     Pop_Class_Object(L);
 
-    lua_pushstring(L, Wrapper_WAComDlgBrowseForFolder((HWND) luaL_checkint(L, 1),
+    lua_pushstring(L, Wrapper_ComDlgBrowseForFolder((HWND) luaL_checkint(L, 1),
                                                       (char *) luaL_checkstring(L, 2)
                                                      ));
     return(1);
@@ -175,7 +175,7 @@ int ChooseFont(lua_State *L)
     FontSize = lua_tointeger(L, -1);
     lua_pop(L, 1);
 
-    result = Wrapper_WAComDlgChooseFont((HWND) luaL_checkint(L, 1),
+    result = Wrapper_ComDlgChooseFont((HWND) luaL_checkint(L, 1),
                                         (char *) luaL_checkstring(L, 2),
                                         luaL_checkint(L, 3),
                                         luaL_checkboolean(L, 4),

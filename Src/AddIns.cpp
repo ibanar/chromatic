@@ -68,7 +68,7 @@ CList <char *> AddInsDescriptions;
 CList <FARPROC> AddInsLoad;
 CList <FARPROC> AddInsUnLoad;
 CList <FARPROC> AddInsMenu;
-WALIB AddInLib;
+CHROMATICLIB AddInLib;
 
 CList <long> MDICreateHooks;
 CList <DLGPROC> MDIHooks;
@@ -127,9 +127,9 @@ void FillAddInsArrays(void)
 	NbrAddin = 0;
     for(i = 0; i <= 999; i++)
     {
-        AddInFileName = WAIniReadKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-        AddInLoaded = WAIniReadKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-        AddInRunning = WAIniReadKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        AddInFileName = IniReadKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        AddInLoaded = IniReadKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        AddInRunning = IniReadKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         if(AddInFileName.Len() == 0) break;
         BufString = Dirs[DIR_ADDINS] + (CStr) "\\" + (CStr) AddInFileName;
 		AddInLibMod = LoadLibrary(BufString.Get_String());
@@ -155,26 +155,26 @@ void FillAddInsArrays(void)
                 AddInsLoad.Add(AddInLoad);
                 AddInsUnLoad.Add(AddInUnload);
                 AddInsMenu.Add(AddInMenu);
-				WAIniDeleteKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-                WAIniDeleteKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-                WAIniDeleteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-                WAIniWriteKey("AddIns", "File" + (CStr) StringNumberComplement(NbrAddin, 3).Get_String(), AddInFileName, MainIniFile);
-                WAIniWriteKey("AddIns", "Loaded" + (CStr) StringNumberComplement(NbrAddin, 3).Get_String(), AddInLoaded, MainIniFile);
-                WAIniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(NbrAddin, 3).Get_String(), AddInRunning, MainIniFile);
+				IniDeleteKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+                IniDeleteKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+                IniDeleteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+                IniWriteKey("AddIns", "File" + (CStr) StringNumberComplement(NbrAddin, 3).Get_String(), AddInFileName, MainIniFile);
+                IniWriteKey("AddIns", "Loaded" + (CStr) StringNumberComplement(NbrAddin, 3).Get_String(), AddInLoaded, MainIniFile);
+                IniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(NbrAddin, 3).Get_String(), AddInRunning, MainIniFile);
                 NbrAddin++;
             }
             else
             {
-                WAIniDeleteKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-                WAIniDeleteKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-                WAIniDeleteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+                IniDeleteKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+                IniDeleteKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+                IniDeleteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
             }
         }
         else
         {
-            WAIniDeleteKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-            WAIniDeleteKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-            WAIniDeleteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+            IniDeleteKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+            IniDeleteKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+            IniDeleteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         }
     }
 }
@@ -212,9 +212,9 @@ void ReFillAddInsArrays(void)
     
 	for(i = 0; i<= 999; i++)
 	{
-        AddInFileName = WAIniReadKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-        AddInLoaded = WAIniReadKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-        AddInRunning = WAIniReadKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        AddInFileName = IniReadKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        AddInLoaded = IniReadKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        AddInRunning = IniReadKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         if(AddInFileName.Len() == 0) break;
         // Search if an addin had been added in the directory
         // before displaying the manager.
@@ -269,28 +269,28 @@ void ReFillAddInsArrays(void)
             AddInsLoad.Add(AddInLoad);
             AddInsUnLoad.Add(AddInUnload);
             AddInsMenu.Add(AddInMenu);
-            WAIniDeleteKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-            WAIniDeleteKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-            WAIniDeleteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-            WAIniWriteKey("AddIns", "File" + (CStr) StringNumberComplement(NbrAddins, 3).Get_String(), AddInFileName, MainIniFile);
-            WAIniWriteKey("AddIns", "Loaded" + (CStr) StringNumberComplement(NbrAddins, 3).Get_String(), AddInLoaded, MainIniFile);
-            WAIniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(NbrAddins, 3).Get_String(), AddInRunning, MainIniFile);
+            IniDeleteKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+            IniDeleteKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+            IniDeleteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+            IniWriteKey("AddIns", "File" + (CStr) StringNumberComplement(NbrAddins, 3).Get_String(), AddInFileName, MainIniFile);
+            IniWriteKey("AddIns", "Loaded" + (CStr) StringNumberComplement(NbrAddins, 3).Get_String(), AddInLoaded, MainIniFile);
+            IniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(NbrAddins, 3).Get_String(), AddInRunning, MainIniFile);
             NbrAddins++;
         }
         else
         {
-            WAIniDeleteKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-            WAIniDeleteKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-            WAIniDeleteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+            IniDeleteKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+            IniDeleteKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+            IniDeleteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         }
     }
     LoadedAddIns.Erase();
     RunningAddIns.Erase();
     for(i = 0; i<= 999; i++)
     {
-        AddInFileName = WAIniReadKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-        AddInLoaded = WAIniReadKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-        AddInRunning = WAIniReadKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        AddInFileName = IniReadKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        AddInLoaded = IniReadKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        AddInRunning = IniReadKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         if(AddInFileName.Len() == 0) break;
         if(strcmpi(AddInLoaded.Get_String(), "1") == 0) LoadedAddIns.Add(1L);
         else LoadedAddIns.Add(0L);
@@ -321,7 +321,7 @@ void SetAddInsRunningState(void)
 						JumpToAddr(AddInsUnLoad.Get(i)->Content);
                     }
 					// Stop it for good
-                    WAIniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", MainIniFile);
+                    IniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", MainIniFile);
                 }
             }
         }
@@ -407,7 +407,7 @@ long RestartAddIn(long AddInNumber)
         AddInsMenu.Set(AddInNumber, AddInMenu);
         if(RunningAddIns.Get(AddInNumber)->Content == 1) RunAddIn(AddInNumber);
         ReturnValue = 1;
-        WAIniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(AddInNumber, 3).Get_String(), RunningAddIns.Get(AddInNumber)->Content, MainIniFile);
+        IniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(AddInNumber, 3).Get_String(), RunningAddIns.Get(AddInNumber)->Content, MainIniFile);
     }
 	return(ReturnValue);
 }
@@ -430,7 +430,7 @@ void FillAddInsMenu(void)
         {
             if(AddInSep == 0)
             {
-                AppendMenu(hEditAddInsMenu, MF_SEPARATOR, (UINT) -1, "-");
+                MenuAddSeparator(hEditAddInsMenu);
                 AddInSep = 1;
             }
             AppendMenu(hEditAddInsMenu, MF_STRING, MENU_ADDINS_IDBASE + MENU_ADDINS_FIRSTADDIN_ID + i, AddInsDescriptions.Get(i)->Content);
@@ -643,28 +643,28 @@ long RunAddIn(long AddInToRun)
 		}
     }
     // Store running state
-    WAIniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(AddInToRun, 3).Get_String(),
+    IniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(AddInToRun, 3).Get_String(),
                   RunningAddIns.Get(AddInToRun)->Content, MainIniFile);
 	return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
-// Fill the WALib datas
-void FillWaLib(void)
+// Fill the ChromaticLib datas
+void FillChromaticLib(void)
 {
     AddInLib.ButtonGetImage = (long) &ButtonGetImage;
     AddInLib.ButtonGetState = (long) &ButtonGetState;
     AddInLib.ButtonSetIcon = (long) &ButtonSetIcon;
     AddInLib.CheckBoxGetState = (long) &CheckBoxGetState;
     AddInLib.CheckBoxSetState = (long) &CheckBoxSetState;
-    AddInLib.WAClientGetActiveChild = (long) &WAClientGetActiveChild;
-    AddInLib.WAClientSetNextChild = (long) &WAClientSetNextChild;
-    AddInLib.WAClientSetPreviousChild = (long) &WAClientSetPreviousChild;
-    AddInLib.WAClientResize = (long) &WAClientResize;
-    AddInLib.WAClientTileArrangeIconic = (long) &WAClientTileArrangeIconic;
-    AddInLib.WAClientTileCascade = (long) &WAClientTileCascade;
-    AddInLib.WAClientTileHorizontal = (long) &WAClientTileHorizontal;
-    AddInLib.WAClientTileVertical = (long) &WAClientTileVertical;
+    AddInLib.ClientGetActiveChild = (long) &ClientGetActiveChild;
+    AddInLib.ClientSetNextChild = (long) &ClientSetNextChild;
+    AddInLib.ClientSetPreviousChild = (long) &ClientSetPreviousChild;
+    AddInLib.ClientResize = (long) &ClientResize;
+    AddInLib.ClientTileArrangeIconic = (long) &ClientTileArrangeIconic;
+    AddInLib.ClientTileCascade = (long) &ClientTileCascade;
+    AddInLib.ClientTileHorizontal = (long) &ClientTileHorizontal;
+    AddInLib.ClientTileVertical = (long) &ClientTileVertical;
     AddInLib.ColorBoxGetColor = (long) &ColorBoxGetColor;
     AddInLib.ColorBoxSetColor = (long) &ColorBoxSetColor;
     AddInLib.GripBoxGetColor = (long) &GripBoxGetColor;
@@ -672,118 +672,118 @@ void FillWaLib(void)
     AddInLib.GripBoxClose = (long) &GripBoxClose;
     AddInLib.GripBoxVisible = (long) &GripBoxVisible;
     AddInLib.GripBoxResize = (long) &GripBoxResize;
-	AddInLib.WAComboBoxAddItem = (long) &Wrapper_WAComboBoxAddItem;
-    AddInLib.WAComboBoxCount = (long) &WAComboBoxCount;
-    AddInLib.WAComboBoxDeleteItem = (long) &WAComboBoxDeleteItem;
-    AddInLib.WAComboBoxGetCurrentItem = (long) &Wrapper_WAComboBoxGetCurrentItem;
-    AddInLib.WAComboBoxGetIndex = (long) &WAComboBoxGetIndex;
-    AddInLib.WAComboBoxGetItem = (long) &Wrapper_WAComboBoxGetItem;
-    AddInLib.WAComboBoxGetItemData = (long) &WAComboBoxGetItemData;
-    AddInLib.WAComboBoxItemExist = (long) &Wrapper_WAComboBoxItemExist;
-    AddInLib.WAComboBoxReset = (long) &WAComboBoxReset;
-    AddInLib.WAComboBoxSetIndex = (long) &WAComboBoxSetIndex;
-    AddInLib.WAComboBoxSetMaxLen = (long) &WAComboBoxSetMaxLen;
-    AddInLib.WAComboBoxSaveInIniFile = (long) &Wrapper_WAComboBoxSaveInIniFile;
-    AddInLib.WAComboBoxFillFromIniFile = (long) &Wrapper_WAComboBoxFillFromIniFile;
-    AddInLib.WAControlNextHook = (long) &WAControlNextHook;
-    AddInLib.WAControlBound = (long) &WAControlBound;
-    AddInLib.WAControlBringToBottom = (long) &WAControlBringToBottom;
-    AddInLib.WAControlBringToTop = (long) &WAControlBringToTop;
-    AddInLib.WAControlClientHeight = (long) &WAControlClientHeight;
-    AddInLib.WAControlClientLeft = (long) &WAControlClientLeft;
-    AddInLib.WAControlClientTop = (long) &WAControlClientTop;
-    AddInLib.WAControlClientWidth = (long) &WAControlClientWidth;
-    AddInLib.WAControlClose = (long) &WAControlClose;
-    AddInLib.WAControlEnable = (long) &WAControlEnable;
-    AddInLib.WAControlFreeze = (long) &WAControlFreeze;
-    AddInLib.WAControlGetClassName = (long) &Wrapper_WAControlGetClassName;
-    AddInLib.WAControlGetFont = (long) &WAControlGetFont;
-    AddInLib.WAControlGetHotKey = (long) &WAControlGetHotKey;
-    AddInLib.WAControlGetHwndFromPoint = (long) &WAControlGetHwndFromPoint;
-    AddInLib.WAControlGetIcon = (long) &WAControlGetIcon;
-    AddInLib.WAControlGetNotifiedCommand = (long) &WAControlGetNotifiedCommand;
-    AddInLib.WAControlGetNotifiedhWnd = (long) &WAControlGetNotifiedhWnd;
-    AddInLib.WAControlGetNotifiedID = (long) &WAControlGetNotifiedID;
-    AddInLib.WAControlGetNotifiedMsg = (long) &WAControlGetNotifiedMsg;
-    AddInLib.WAControlGetText = (long) &Wrapper_WAControlGetText;
-    AddInLib.WAControlGetTextLen = (long) &WAControlGetTextLen;
-    AddInLib.WAControlGetWindowState = (long) &WAControlGetWindowState;
-    AddInLib.WAControlGetXMousePos = (long) &WAControlGetXMousePos;
-    AddInLib.WAControlGetYMousePos = (long) &WAControlGetYMousePos;
-    AddInLib.WAControlHeight = (long) &WAControlHeight;
-    AddInLib.WAControlIsEnabled = (long) &WAControlIsEnabled;
-    AddInLib.WAControlIsVisible = (long) &WAControlIsVisible;
-    AddInLib.WAControlIsWindowChild = (long) &WAControlIsWindowChild;
-    AddInLib.WAControlLeft = (long) &WAControlLeft;
-    AddInLib.WAControlRefresh = (long) &WAControlRefresh;
-    AddInLib.WAControlRefreshLocal = (long) &WAControlRefreshLocal;
-    AddInLib.WAControlRemTopMost = (long) &WAControlRemTopMost;
-    AddInLib.WAControlRepaint = (long) &WAControlRepaint;
-    AddInLib.WAControlResize = (long) &WAControlResize;
-    AddInLib.WAControlSendMessage = (long) &WAControlSendMessage;
-    AddInLib.WAControlSetClassCursor = (long) &WAControlSetClassCursor;
-    AddInLib.WAControlSetFont = (long) &WAControlSetFont;
-    AddInLib.WAControlSetFontNoRedraw = (long) &WAControlSetFontNoRedraw;
-    AddInLib.WAControlSetText = (long) &Wrapper_WAControlSetText;
-    AddInLib.WAControlSetTopMost = (long) &WAControlSetTopMost;
-    AddInLib.WAControlTop = (long) &WAControlTop;
-    AddInLib.WAControlVisible = (long) &WAControlVisible;
-    AddInLib.WAControlWidth = (long) &WAControlWidth;
-    AddInLib.WACreateButton = (long) &Wrapper_WACreateButton;
-    AddInLib.WACreateCheckBox = (long) &Wrapper_WACreateCheckBox;
-    AddInLib.WACreateClient = (long) &WACreateClient;
-    AddInLib.WACreateColorBox = (long) &WACreateColorBox;
-    AddInLib.WACreateGripBox = (long) &WACreateGripBox;
-    AddInLib.WACreateComboBox = (long) &Wrapper_WACreateComboBox;
-    AddInLib.WACreateDialog = (long) &Wrapper_WACreateDialog;
-    AddInLib.WACreateFrame = (long) &Wrapper_WACreateFrame;
-    AddInLib.WACreateHexBox = (long) &Wrapper_WACreateHexBox;
-    AddInLib.WACreateImageList = (long) &WACreateImageList;
-    AddInLib.WACreateIPBox = (long) &WACreateIPBox;
-    AddInLib.WACreateLabel = (long) &Wrapper_WACreateLabel;
-    AddInLib.WACreateListBox = (long) &WACreateListBox;
-    AddInLib.WACreateListView = (long) &WACreateListView;
-    AddInLib.WACreateMDIChildDialog = (long) &Wrapper_WACreateMDIChildDialog;
-    AddInLib.WACreateMDIDialog = (long) &Wrapper_WACreateMDIDialog;
-    AddInLib.WACreateModalDialog = (long) &Wrapper_WACreateModalDialog;
-    AddInLib.WACreatePager = (long) &WACreatePager;
-    AddInLib.WACreatePictureBox = (long) &WACreatePictureBox;
-    AddInLib.WACreateProgressBar = (long) &WACreateProgressBar;
-    AddInLib.WACreateRadioButton = (long) &Wrapper_WACreateRadioButton;
-    AddInLib.WACreateRebar = (long) &WACreateRebar;
-    AddInLib.WACreateRichTextBox = (long) &Wrapper_WACreateRichTextBox;
-    AddInLib.WACreateScrollBar = (long) &WACreateScrollBar;
-    AddInLib.WACreateDumpBox = (long) &WACreateDumpBox;
-    AddInLib.WACreateStockModalDialog = (long) &Wrapper_WACreateStockModalDialog;
-    AddInLib.WADumpBoxScrollDown = (long) &WADumpBoxScrollDown;
-    AddInLib.WADumpBoxScrollUp = (long) &WADumpBoxScrollUp;
-    AddInLib.WADumpBoxGetVisibleLines = (long) &WADumpBoxGetVisibleLines;
-    AddInLib.WADumpBoxGetVisibleColumns = (long) &WADumpBoxGetVisibleColumns;
-    AddInLib.WADumpBoxResize = (long) &WADumpBoxResize;
-    AddInLib.WACreateSplashDialog = (long) &Wrapper_WACreateSplashDialog;
-    AddInLib.WACreateSplitter = (long) &WACreateSplitter;
-    AddInLib.WACreateStatusBar = (long) &Wrapper_WACreateStatusBar;
-    AddInLib.WACreateSysTab = (long) &WACreateSysTab;
-    AddInLib.WACreateTextBox = (long) &Wrapper_WACreateTextBox;
-    AddInLib.WACreateToolBar = (long) &WACreateToolBar;
-    AddInLib.WACreateTrackBar = (long) &WACreateTrackBar;
-    AddInLib.WACreateTreeView = (long) &WACreateTreeView;
-    AddInLib.WACreateUpDown = (long) &WACreateUpDown;
-    AddInLib.WACursorDisable = (long) &WACursorDisable;
-    AddInLib.WACursorEnable = (long) &WACursorEnable;
-    AddInLib.WACursorSetCross = (long) &WACursorSetCross;
-    AddInLib.WACursorSetNo = (long) &WACursorSetNo;
-    AddInLib.WACursorSetNormal = (long) &WACursorSetNormal;
-    AddInLib.WACursorSetWait = (long) &WACursorSetWait;
-    AddInLib.WADateGetDay = (long) &Wrapper_WADateGetDay;
-    AddInLib.WADateGetFormat = (long) &Wrapper_WADateGetFormat;
-    AddInLib.WADateGetHour = (long) &Wrapper_WADateGetHour;
-    AddInLib.WADateGetMinutes = (long) &Wrapper_WADateGetMinutes;
-    AddInLib.WADateGetMonth = (long) &Wrapper_WADateGetMonth;
-    AddInLib.WADateGetNow = (long) &Wrapper_WADateGetNow;
-    AddInLib.WADateGetSeconds = (long) &Wrapper_WADateGetSeconds;
-    AddInLib.WADateGetTimeFormat = (long) &Wrapper_WADateGetTimeFormat;
-    AddInLib.WADateGetYear = (long) &Wrapper_WADateGetYear;
+	AddInLib.ComboBoxAddItem = (long) &Wrapper_ComboBoxAddItem;
+    AddInLib.ComboBoxCount = (long) &ComboBoxCount;
+    AddInLib.ComboBoxDeleteItem = (long) &ComboBoxDeleteItem;
+    AddInLib.ComboBoxGetCurrentItem = (long) &Wrapper_ComboBoxGetCurrentItem;
+    AddInLib.ComboBoxGetIndex = (long) &ComboBoxGetIndex;
+    AddInLib.ComboBoxGetItem = (long) &Wrapper_ComboBoxGetItem;
+    AddInLib.ComboBoxGetItemData = (long) &ComboBoxGetItemData;
+    AddInLib.ComboBoxItemExist = (long) &Wrapper_ComboBoxItemExist;
+    AddInLib.ComboBoxReset = (long) &ComboBoxReset;
+    AddInLib.ComboBoxSetIndex = (long) &ComboBoxSetIndex;
+    AddInLib.ComboBoxSetMaxLen = (long) &ComboBoxSetMaxLen;
+    AddInLib.ComboBoxSaveInIniFile = (long) &Wrapper_ComboBoxSaveInIniFile;
+    AddInLib.ComboBoxFillFromIniFile = (long) &Wrapper_ComboBoxFillFromIniFile;
+    AddInLib.ControlNextHook = (long) &ControlNextHook;
+    AddInLib.ControlBound = (long) &ControlBound;
+    AddInLib.ControlBringToBottom = (long) &ControlBringToBottom;
+    AddInLib.ControlBringToTop = (long) &ControlBringToTop;
+    AddInLib.ControlClientHeight = (long) &ControlClientHeight;
+    AddInLib.ControlClientLeft = (long) &ControlClientLeft;
+    AddInLib.ControlClientTop = (long) &ControlClientTop;
+    AddInLib.ControlClientWidth = (long) &ControlClientWidth;
+    AddInLib.ControlClose = (long) &ControlClose;
+    AddInLib.ControlEnable = (long) &ControlEnable;
+    AddInLib.ControlFreeze = (long) &ControlFreeze;
+    AddInLib.ControlGetClassName = (long) &Wrapper_ControlGetClassName;
+    AddInLib.ControlGetFont = (long) &ControlGetFont;
+    AddInLib.ControlGetHotKey = (long) &ControlGetHotKey;
+    AddInLib.ControlGetHwndFromPoint = (long) &ControlGetHwndFromPoint;
+    AddInLib.ControlGetIcon = (long) &ControlGetIcon;
+    AddInLib.ControlGetNotifiedCommand = (long) &ControlGetNotifiedCommand;
+    AddInLib.ControlGetNotifiedhWnd = (long) &ControlGetNotifiedhWnd;
+    AddInLib.ControlGetNotifiedID = (long) &ControlGetNotifiedID;
+    AddInLib.ControlGetNotifiedMsg = (long) &ControlGetNotifiedMsg;
+    AddInLib.ControlGetText = (long) &Wrapper_ControlGetText;
+    AddInLib.ControlGetTextLen = (long) &ControlGetTextLen;
+    AddInLib.ControlGetWindowState = (long) &ControlGetWindowState;
+    AddInLib.ControlGetXMousePos = (long) &ControlGetXMousePos;
+    AddInLib.ControlGetYMousePos = (long) &ControlGetYMousePos;
+    AddInLib.ControlHeight = (long) &ControlHeight;
+    AddInLib.ControlIsEnabled = (long) &ControlIsEnabled;
+    AddInLib.ControlIsVisible = (long) &ControlIsVisible;
+    AddInLib.ControlIsWindowChild = (long) &ControlIsWindowChild;
+    AddInLib.ControlLeft = (long) &ControlLeft;
+    AddInLib.ControlRefresh = (long) &ControlRefresh;
+    AddInLib.ControlRefreshLocal = (long) &ControlRefreshLocal;
+    AddInLib.ControlRemTopMost = (long) &ControlRemTopMost;
+    AddInLib.ControlRepaint = (long) &ControlRepaint;
+    AddInLib.ControlResize = (long) &ControlResize;
+    AddInLib.ControlSendMessage = (long) &ControlSendMessage;
+    AddInLib.ControlSetClassCursor = (long) &ControlSetClassCursor;
+    AddInLib.ControlSetFont = (long) &ControlSetFont;
+    AddInLib.ControlSetFontNoRedraw = (long) &ControlSetFontNoRedraw;
+    AddInLib.ControlSetText = (long) &Wrapper_ControlSetText;
+    AddInLib.ControlSetTopMost = (long) &ControlSetTopMost;
+    AddInLib.ControlTop = (long) &ControlTop;
+    AddInLib.ControlVisible = (long) &ControlVisible;
+    AddInLib.ControlWidth = (long) &ControlWidth;
+    AddInLib.CreateButton = (long) &Wrapper_CreateButton;
+    AddInLib.CreateCheckBox = (long) &Wrapper_CreateCheckBox;
+    AddInLib.CreateClient = (long) &CreateClient;
+    AddInLib.CreateColorBox = (long) &CreateColorBox;
+    AddInLib.CreateGripBox = (long) &CreateGripBox;
+    AddInLib.CreateComboBox = (long) &Wrapper_CreateComboBox;
+    AddInLib.CreateNonModalDialog = (long) &Wrapper_CreateNonModalDialog;
+    AddInLib.CreateFrame = (long) &Wrapper_CreateFrame;
+    AddInLib.CreateHexBox = (long) &Wrapper_CreateHexBox;
+    AddInLib.CreateImageList = (long) &CreateImageList;
+    AddInLib.CreateIPBox = (long) &CreateIPBox;
+    AddInLib.CreateLabel = (long) &Wrapper_CreateLabel;
+    AddInLib.CreateListBox = (long) &CreateListBox;
+    AddInLib.CreateListView = (long) &CreateListView;
+    AddInLib.CreateMDIChildDialog = (long) &Wrapper_CreateMDIChildDialog;
+    AddInLib.CreateMDIDialog = (long) &Wrapper_CreateMDIDialog;
+    AddInLib.CreateModalDialog = (long) &Wrapper_CreateModalDialog;
+    AddInLib.CreatePager = (long) &CreatePager;
+    AddInLib.CreatePictureBox = (long) &CreatePictureBox;
+    AddInLib.CreateProgressBar = (long) &CreateProgressBar;
+    AddInLib.CreateRadioButton = (long) &Wrapper_CreateRadioButton;
+    AddInLib.CreateRebar = (long) &CreateRebar;
+    AddInLib.CreateRichTextBox = (long) &Wrapper_CreateRichTextBox;
+    AddInLib.CreateScrollBar = (long) &CreateScrollBar;
+    AddInLib.CreateDumpBox = (long) &CreateDumpBox;
+    AddInLib.CreateStockModalDialog = (long) &Wrapper_CreateStockModalDialog;
+    AddInLib.DumpBoxScrollDown = (long) &DumpBoxScrollDown;
+    AddInLib.DumpBoxScrollUp = (long) &DumpBoxScrollUp;
+    AddInLib.DumpBoxGetVisibleLines = (long) &DumpBoxGetVisibleLines;
+    AddInLib.DumpBoxGetVisibleColumns = (long) &DumpBoxGetVisibleColumns;
+    AddInLib.DumpBoxResize = (long) &DumpBoxResize;
+    AddInLib.CreateSplashDialog = (long) &Wrapper_CreateSplashDialog;
+    AddInLib.CreateSplitter = (long) &CreateSplitter;
+    AddInLib.CreateStatusBar = (long) &Wrapper_CreateStatusBar;
+    AddInLib.CreateSysTab = (long) &CreateSysTab;
+    AddInLib.CreateTextBox = (long) &Wrapper_CreateTextBox;
+    AddInLib.CreateToolBar = (long) &CreateToolBar;
+    AddInLib.CreateTrackBar = (long) &CreateTrackBar;
+    AddInLib.CreateTreeView = (long) &CreateTreeView;
+    AddInLib.CreateUpDown = (long) &CreateUpDown;
+    AddInLib.CursorDisable = (long) &CursorDisable;
+    AddInLib.CursorEnable = (long) &CursorEnable;
+    AddInLib.CursorSetCross = (long) &CursorSetCross;
+    AddInLib.CursorSetNo = (long) &CursorSetNo;
+    AddInLib.CursorSetNormal = (long) &CursorSetNormal;
+    AddInLib.CursorSetWait = (long) &CursorSetWait;
+    AddInLib.DateGetDay = (long) &Wrapper_DateGetDay;
+    AddInLib.DateGetFormat = (long) &Wrapper_DateGetFormat;
+    AddInLib.DateGetHour = (long) &Wrapper_DateGetHour;
+    AddInLib.DateGetMinutes = (long) &Wrapper_DateGetMinutes;
+    AddInLib.DateGetMonth = (long) &Wrapper_DateGetMonth;
+    AddInLib.DateGetNow = (long) &Wrapper_DateGetNow;
+    AddInLib.DateGetSeconds = (long) &Wrapper_DateGetSeconds;
+    AddInLib.DateGetTimeFormat = (long) &Wrapper_DateGetTimeFormat;
+    AddInLib.DateGetYear = (long) &Wrapper_DateGetYear;
     AddInLib.DialogGetXUnit = (long) &DialogGetXUnit;
     AddInLib.DialogGetYUnit = (long) &DialogGetYUnit;
     AddInLib.DialogSetIcon = (long) &DialogSetIcon;
@@ -791,68 +791,68 @@ void FillWaLib(void)
     AddInLib.DialogXUnitToPixel = (long) &DialogXUnitToPixel;
     AddInLib.DialogYPixelToUnit = (long) &DialogYPixelToUnit;
     AddInLib.DialogYUnitToPixel = (long) &DialogYUnitToPixel;
-    AddInLib.WAFileClose = (long) &WAFileClose;
-    AddInLib.WAFileCreateEmpty = (long) &Wrapper_WAFileCreateEmpty;
-    AddInLib.WAFileExist = (long) &Wrapper_WAFileExist;
-    AddInLib.WAFileGetAccessedTime = (long) &Wrapper_WAFileGetAccessedTime;
-    AddInLib.WAFileGetCreationTime = (long) &Wrapper_WAFileGetCreationTime;
-    AddInLib.WAFileGetDirectory = (long) &Wrapper_WAFileGetDirectory;
-    AddInLib.WAFileGetExtension = (long) &Wrapper_WAFileGetExtension;
-    AddInLib.WAFileGetFileName = (long) &Wrapper_WAFileGetFileName;
-    AddInLib.WAFileGetSize = (long) &Wrapper_WAFileGetSize;
-    AddInLib.WAFileGetWriteTime = (long) &Wrapper_WAFileGetWriteTime;
-    AddInLib.WAFileIsDirectory = (long) &Wrapper_WAFileIsDirectory;
-    AddInLib.WAFileOpenR = (long) &Wrapper_WAFileOpenR;
-    AddInLib.WAFileOpenW = (long) &Wrapper_WAFileOpenW;
-    AddInLib.WAFileOpenWAppend = (long) &Wrapper_WAFileOpenWAppend;
-    AddInLib.WAFileRemoveExtension = (long) &Wrapper_WAFileRemoveExtension;
-    AddInLib.WAFileReplaceExtension = (long) &Wrapper_WAFileReplaceExtension;
-    AddInLib.WAFileIsReadOnly = (long) &Wrapper_WAFileIsReadOnly;
-    AddInLib.WAFileIsUnix = (long) &Wrapper_WAFileIsUnix;
-    AddInLib.WAFileWriteBuffer = (long) &WAFileWriteBuffer;
-    AddInLib.WAFileWriteLine = (long) &Wrapper_WAFileWriteLine;
-    AddInLib.WAFileLoadIntoMem = (long) &Wrapper_WAFileLoadIntoMem;
-    AddInLib.WAFileSaveFromMem = (long) &Wrapper_WAFileSaveFromMem;
-    AddInLib.WAFileDir = (long) &Wrapper_WAFileDir;
+    AddInLib.FileClose = (long) &FileClose;
+    AddInLib.FileCreateEmpty = (long) &Wrapper_FileCreateEmpty;
+    AddInLib.FileExist = (long) &Wrapper_FileExist;
+    AddInLib.FileGetAccessedTime = (long) &Wrapper_FileGetAccessedTime;
+    AddInLib.FileGetCreationTime = (long) &Wrapper_FileGetCreationTime;
+    AddInLib.FileGetDirectory = (long) &Wrapper_FileGetDirectory;
+    AddInLib.FileGetExtension = (long) &Wrapper_FileGetExtension;
+    AddInLib.FileGetFileName = (long) &Wrapper_FileGetFileName;
+    AddInLib.FileGetSize = (long) &Wrapper_FileGetSize;
+    AddInLib.FileGetWriteTime = (long) &Wrapper_FileGetWriteTime;
+    AddInLib.FileIsDirectory = (long) &Wrapper_FileIsDirectory;
+    AddInLib.FileOpenR = (long) &Wrapper_FileOpenR;
+    AddInLib.FileOpenW = (long) &Wrapper_FileOpenW;
+    AddInLib.FileOpenWAppend = (long) &Wrapper_FileOpenWAppend;
+    AddInLib.FileRemoveExtension = (long) &Wrapper_FileRemoveExtension;
+    AddInLib.FileReplaceExtension = (long) &Wrapper_FileReplaceExtension;
+    AddInLib.FileIsReadOnly = (long) &Wrapper_FileIsReadOnly;
+    AddInLib.FileIsUnix = (long) &Wrapper_FileIsUnix;
+    AddInLib.FileWriteBuffer = (long) &FileWriteBuffer;
+    AddInLib.FileWriteLine = (long) &Wrapper_FileWriteLine;
+    AddInLib.FileLoadIntoMem = (long) &Wrapper_FileLoadIntoMem;
+    AddInLib.FileSaveFromMem = (long) &Wrapper_FileSaveFromMem;
+    AddInLib.FileDir = (long) &Wrapper_FileDir;
     AddInLib.FrameRefreshToolbar = (long) &FrameRefreshToolbar;
-    AddInLib.WAFTPGetEntryDate = (long) &Wrapper_WAFTPGetEntryDate;
-    AddInLib.WAFTPGetEntryFileAttributes = (long) &Wrapper_WAFTPGetEntryFileAttributes;
-    AddInLib.WAFTPGetEntryFileName = (long) &Wrapper_WAFTPGetEntryFileName;
-    AddInLib.WAFTPGetEntryFileSize = (long) &Wrapper_WAFTPGetEntryFileSize;
-    AddInLib.WAFTPInitiatePort = (long) &WAFTPInitiatePort;
-    AddInLib.WAFTPIsEntryDir = (long) &Wrapper_WAFTPIsEntryDir;
-    AddInLib.WAGDIDrawHorzSep = (long) &WAGDIDrawHorzSep;
-    AddInLib.WAGDIDrawLine = (long) &WAGDIDrawLine;
-    AddInLib.WAGDIDrawLineXOR = (long) &WAGDIDrawLineXOR;
-    AddInLib.WAGDIDrawPixel = (long) &WAGDIDrawPixel;
-    AddInLib.WAGDIDrawVertSep = (long) &WAGDIDrawVertSep;
-    AddInLib.WAGDIFillWindow = (long) &WAGDIFillWindow;
-    AddInLib.WAGDIFillWindowFromBrush = (long) &WAGDIFillWindowFromBrush;
-    AddInLib.WAGDIFillWindowFromBrushAndhDC = (long) &WAGDIFillWindowFromBrushAndhDC;
-    AddInLib.WAGDICreateColorBrush = (long) &WAGDICreateColorBrush;
-    AddInLib.WAGDIGetTextHeight = (long) &Wrapper_WAGDIGetTextHeight;
-    AddInLib.WAGDIGetTextWidth = (long) &Wrapper_WAGDIGetTextWidth;
-    AddInLib.WAGDIObtainFont = (long) &Wrapper_WAGDIObtainFont;
-    AddInLib.WAGDIWriteClippedText = (long) &Wrapper_WAGDIWriteClippedText;
-    AddInLib.WAGDIWriteText = (long) &Wrapper_WAGDIWriteText;
-    AddInLib.WAGDIGetFontWidth = (long) &WAGDIGetFontWidth;
-    AddInLib.WAGDIGetFontHeight = (long) &WAGDIGetFontHeight;
-    AddInLib.WAGDICreateBackDC = (long) &WAGDICreateBackDC;
-    AddInLib.WAGDIDestroyBackDC = (long) &WAGDIDestroyBackDC;
-    AddInLib.WAGDIBlitBackDC = (long) &WAGDIBlitBackDC;
-    AddInLib.WAGDIColorCalcLuminosity = (long) &WAGDIColorCalcLuminosity;
-    AddInLib.WAGDIGetSerif = (long) &WAGDIGetSerif;
-    AddInLib.WAGDIGetSerif10 = (long) &WAGDIGetSerif10;
-    AddInLib.WAGDIGetCourierNew9 = (long) &WAGDIGetCourierNew9;
+    AddInLib.FTPGetEntryDate = (long) &Wrapper_FTPGetEntryDate;
+    AddInLib.FTPGetEntryFileAttributes = (long) &Wrapper_FTPGetEntryFileAttributes;
+    AddInLib.FTPGetEntryFileName = (long) &Wrapper_FTPGetEntryFileName;
+    AddInLib.FTPGetEntryFileSize = (long) &Wrapper_FTPGetEntryFileSize;
+    AddInLib.FTPInitiatePort = (long) &FTPInitiatePort;
+    AddInLib.FTPIsEntryDir = (long) &Wrapper_FTPIsEntryDir;
+    AddInLib.GDIDrawHorzSep = (long) &GDIDrawHorzSep;
+    AddInLib.GDIDrawLine = (long) &GDIDrawLine;
+    AddInLib.GDIDrawLineXOR = (long) &GDIDrawLineXOR;
+    AddInLib.GDIDrawPixel = (long) &GDIDrawPixel;
+    AddInLib.GDIDrawVertSep = (long) &GDIDrawVertSep;
+    AddInLib.GDIFillWindow = (long) &GDIFillWindow;
+    AddInLib.GDIFillWindowFromBrush = (long) &GDIFillWindowFromBrush;
+    AddInLib.GDIFillWindowFromBrushAndhDC = (long) &GDIFillWindowFromBrushAndhDC;
+    AddInLib.GDICreateColorBrush = (long) &GDICreateColorBrush;
+    AddInLib.GDIGetTextHeight = (long) &Wrapper_GDIGetTextHeight;
+    AddInLib.GDIGetTextWidth = (long) &Wrapper_GDIGetTextWidth;
+    AddInLib.GDIObtainFont = (long) &Wrapper_GDIObtainFont;
+    AddInLib.GDIWriteClippedText = (long) &Wrapper_GDIWriteClippedText;
+    AddInLib.GDIWriteText = (long) &Wrapper_GDIWriteText;
+    AddInLib.GDIGetFontWidth = (long) &GDIGetFontWidth;
+    AddInLib.GDIGetFontHeight = (long) &GDIGetFontHeight;
+    AddInLib.GDICreateBackDC = (long) &GDICreateBackDC;
+    AddInLib.GDIDestroyBackDC = (long) &GDIDestroyBackDC;
+    AddInLib.GDIBlitBackDC = (long) &GDIBlitBackDC;
+    AddInLib.GDIColorCalcLuminosity = (long) &GDIColorCalcLuminosity;
+    AddInLib.GDIGetSerif = (long) &GDIGetSerif;
+    AddInLib.GDIGetSerif10 = (long) &GDIGetSerif10;
+    AddInLib.GDIGetCourierNew9 = (long) &GDIGetCourierNew9;
     AddInLib.ImageListAddIcon = (long) &ImageListAddIcon;
     AddInLib.ImageListDestroy = (long) &ImageListDestroy;
     AddInLib.ImageListGetIcon = (long) &ImageListGetIcon;
     AddInLib.ImageListGetIconsCount = (long) &ImageListGetIconsCount;
-    AddInLib.WAIniDeleteKey = (long) &Wrapper_WAIniDeleteKey;
-    AddInLib.WAIniReadKey = (long) &Wrapper_WAIniReadKey;
-    AddInLib.WAIniReadBoolKey = (long) &Wrapper_WAIniReadBoolKey;
-    AddInLib.WAIniWriteKey = (long) &Wrapper_WAIniWriteKey;
-    AddInLib.WAIniWriteSection = (long) &Wrapper_WAIniWriteSection;
+    AddInLib.IniDeleteKey = (long) &Wrapper_IniDeleteKey;
+    AddInLib.IniReadKey = (long) &Wrapper_IniReadKey;
+    AddInLib.IniReadBoolKey = (long) &Wrapper_IniReadBoolKey;
+    AddInLib.IniWriteKey = (long) &Wrapper_IniWriteKey;
+    AddInLib.IniWriteSection = (long) &Wrapper_IniWriteSection;
     AddInLib.IPBoxClearIP = (long) &IPBoxClearIP;
     AddInLib.IPBoxGetIP = (long) &IPBoxGetIP;
     AddInLib.IPBoxIsBlank = (long) &IPBoxIsBlank;
@@ -860,137 +860,139 @@ void FillWaLib(void)
     AddInLib.IPBoxSetIP = (long) &IPBoxSetIP;
     AddInLib.IPBoxSetRange = (long) &IPBoxSetRange;
     AddInLib.LabelGetImage = (long) &LabelGetImage;
-    AddInLib.WAListBoxAddItem = (long) &Wrapper_WAListBoxAddItem;
-    AddInLib.WAListBoxCount = (long) &WAListBoxCount;
-    AddInLib.WAListBoxDeleteItem = (long) &WAListBoxDeleteItem;
-    AddInLib.WAListBoxGetCurrentItem = (long) &Wrapper_WAListBoxGetCurrentItem;
-    AddInLib.WAListBoxGetItem = (long) &Wrapper_WAListBoxGetItem;
-    AddInLib.WAListBoxGetItemData = (long) &WAListBoxGetItemData;
-    AddInLib.WAListBoxGetSelItemIndex = (long) &WAListBoxGetSelItemIndex;
-    AddInLib.WAListBoxGetTopIndex = (long) &WAListBoxGetTopIndex;
-    AddInLib.WAListBoxIsItemSelected = (long) &WAListBoxIsItemSelected;
-    AddInLib.WAListBoxItemExist = (long) &Wrapper_WAListBoxItemExist;
-    AddInLib.WAListBoxProcessDrag = (long) &WAListBoxProcessDrag;
-    AddInLib.WAListBoxReplaceItem = (long) &Wrapper_WAListBoxReplaceItem;
-    AddInLib.WAListBoxReplaceSelItem = (long) &Wrapper_WAListBoxReplaceSelItem;
-    AddInLib.WAListBoxReset = (long) &WAListBoxReset;
-    AddInLib.WAListBoxSelItemDown = (long) &WAListBoxSelItemDown;
-    AddInLib.WAListBoxSelItemRemove = (long) &WAListBoxSelItemRemove;
-    AddInLib.WAListBoxSelItemUp = (long) &WAListBoxSelItemUp;
-    AddInLib.WAListBoxSetColumnsWidth = (long) &WAListBoxSetColumnsWidth;
-    AddInLib.WAListBoxSetHorzScrollWidth = (long) &WAListBoxSetHorzScrollWidth;
-    AddInLib.WAListBoxSetIndex = (long) &WAListBoxSetIndex;
-    AddInLib.WAListBoxSetItemData = (long) &WAListBoxSetItemData;
-    AddInLib.WAListBoxSetTopIndex = (long) &WAListBoxSetTopIndex;
-    AddInLib.WAListBoxItemUnderCursor = (long) &WAListBoxItemUnderCursor;
-    AddInLib.WAListViewAddCol = (long) &Wrapper_WAListViewAddCol;
-    AddInLib.WAListViewAddItem = (long) &Wrapper_WAListViewAddItem;
-    AddInLib.WAListViewBeginDrag = (long) &WAListViewBeginDrag;
-    AddInLib.WAListViewCheckBoxItemDoubleClick = (long) &WAListViewCheckBoxItemDoubleClick;
-    AddInLib.WAListViewClear = (long) &WAListViewClear;
-    AddInLib.WAListViewDeleteItem = (long) &WAListViewDeleteItem;
-    AddInLib.WAListViewDetachImageList = (long) &WAListViewDetachImageList;
-    AddInLib.WAListViewEditValidated = (long) &WAListViewEditValidated;
-    AddInLib.WAListViewEndDrag = (long) &WAListViewEndDrag;
-    AddInLib.WAListViewFindItem = (long) &Wrapper_WAListViewFindItem;
-    AddInLib.WAListViewFindSubItem = (long) &Wrapper_WAListViewFindSubItem;
-    AddInLib.WAListViewGetBackColor = (long) &WAListViewGetBackColor;
-    AddInLib.WAListViewGetColWidth = (long) &WAListViewGetColWidth;
-    AddInLib.WAListViewGetCountPerPage = (long) &WAListViewGetCountPerPage;
-    AddInLib.WAListViewGetEditControl = (long) &WAListViewGetEditControl;
-    AddInLib.WAListViewGetEditResult = (long) &Wrapper_WAListViewGetEditResult;
-    AddInLib.WAListViewGetExStyle = (long) &WAListViewGetExStyle;
-    AddInLib.WAListViewGetFirstFocusItem = (long) &WAListViewGetFirstFocusItem;
-    AddInLib.WAListViewGetHeaderLabel = (long) &Wrapper_WAListViewGetHeaderLabel;
-    AddInLib.WAListViewGetHeaderPosition = (long) &WAListViewGetHeaderPosition;
-    AddInLib.WAListViewGetHotCursor = (long) &WAListViewGetHotCursor;
-    AddInLib.WAListViewGetImageList = (long) &WAListViewGetImageList;
-    AddInLib.WAListViewGetItemCheckbox = (long) &WAListViewGetItemCheckbox;
-    AddInLib.WAListViewGetItemIcon = (long) &WAListViewGetItemIcon;
-    AddInLib.WAListViewGetItemSelState = (long) &WAListViewGetItemSelState;
-    AddInLib.WAListViewGetItemText = (long) &Wrapper_WAListViewGetItemText;
-    AddInLib.WAListViewGetItemUnderCursor = (long) &WAListViewGetItemUnderCursor;
-    AddInLib.WAListViewGetNotifiedColumnIndex = (long) &WAListViewGetNotifiedColumnIndex;
-    AddInLib.WAListViewGetSelItem = (long) &WAListViewGetSelItem;
-    AddInLib.WAListViewGetSelItemText = (long) &Wrapper_WAListViewGetSelItemText;
-    AddInLib.WAListViewGetSubItemImage = (long) &WAListViewGetSubItemImage;
-    AddInLib.WAListViewGetSysHeader = (long) &WAListViewGetSysHeader;
-    AddInLib.WAListViewGetTextBackColor = (long) &WAListViewGetTextBackColor;
-    AddInLib.WAListViewGetTextColor = (long) &WAListViewGetTextColor;
-    AddInLib.WAListViewGetToolTips = (long) &WAListViewGetToolTips;
-    AddInLib.WAListViewGetTopIndex = (long) &WAListViewGetTopIndex;
-    AddInLib.WAListViewIsCheckboxNotify = (long) &WAListViewIsCheckboxNotify;
-    AddInLib.WAListViewItemCount = (long) &WAListViewItemCount;
-    AddInLib.WAListViewMoveDrag = (long) &WAListViewMoveDrag;
-    AddInLib.WAListViewMultiSelFirstItem = (long) &WAListViewMultiSelFirstItem;
-    AddInLib.WAListViewPasteAutoEdit = (long) &WAListViewPasteAutoEdit;
-    AddInLib.WAListViewReOrder = (long) &WAListViewReOrder;
-    AddInLib.WAListViewSelItemCount = (long) &WAListViewSelItemCount;
-    AddInLib.WAListViewSetBackColor = (long) &WAListViewSetBackColor;
-    AddInLib.WAListViewSetColWidth = (long) &WAListViewSetColWidth;
-    AddInLib.WAListViewSetEditModeOn = (long) &WAListViewSetEditModeOn;
-    AddInLib.WAListViewSetHeaderPosition = (long) &WAListViewSetHeaderPosition;
-    AddInLib.WAListViewSetItemCheckbox = (long) &WAListViewSetItemCheckbox;
-    AddInLib.WAListViewSetItemFocus = (long) &WAListViewSetItemFocus;
-    AddInLib.WAListViewSetItemSel = (long) &WAListViewSetItemSel;
-    AddInLib.WAListViewSetItemHighlight = (long) &WAListViewSetItemHighlight;
-    AddInLib.WAListViewSetScroll = (long) &WAListViewSetScroll;
-    AddInLib.WAListViewSetSelItemText = (long) &Wrapper_WAListViewSetSelItemText;
-    AddInLib.WAListViewSetSubItem = (long) &Wrapper_WAListViewSetSubItem;
-    AddInLib.WAListViewSetSubItemImage = (long) &WAListViewSetSubItemImage;
-    AddInLib.WAListViewSort = (long) &WAListViewSort;
-    AddInLib.WAMenuEnable = (long) &WAMenuEnable;
-    AddInLib.WAMenuGetString = (long) &Wrapper_WAMenuGetString;
-    AddInLib.WAMenuSetDefaultItem = (long) &WAMenuSetDefaultItem;
-    AddInLib.WAMenuSetItemState = (long) &WAMenuSetItemState;
-    AddInLib.WAMenuSetItemType = (long) &WAMenuSetItemType;
-    AddInLib.WAMenuSetItemText = (long) &Wrapper_WAMenuSetItemText;
-    AddInLib.WAPagerDisplaySetSize = (long) &WAPagerDisplaySetSize;
-    AddInLib.WAPagerGetBackColor = (long) &WAPagerGetBackColor;
-    AddInLib.WAPagerGetBorderSize = (long) &WAPagerGetBorderSize;
-    AddInLib.WAPagerGetButtonSize = (long) &WAPagerGetButtonSize;
-    AddInLib.WAPagerGetNotifiedChild = (long) &WAPagerGetNotifiedChild;
-    AddInLib.WAPagerGetScrollPos = (long) &WAPagerGetScrollPos;
-    AddInLib.WAPagerGetOrientation = (long) &WAPagerGetOrientation;
-    AddInLib.WAPagerSetOrientation = (long) &WAPagerSetOrientation;
-    AddInLib.WAPagerChangeOrientation = (long) &WAPagerChangeOrientation;
-    AddInLib.WAPagerMaximizeX = (long) &WAPagerMaximizeX;
-    AddInLib.WAPagerMaximizeY = (long) &WAPagerMaximizeY;
-    AddInLib.WAPagerSetBackColor = (long) &WAPagerSetBackColor;
+    AddInLib.ListBoxAddItem = (long) &Wrapper_ListBoxAddItem;
+    AddInLib.ListBoxCount = (long) &ListBoxCount;
+    AddInLib.ListBoxDeleteItem = (long) &ListBoxDeleteItem;
+    AddInLib.ListBoxGetCurrentItem = (long) &Wrapper_ListBoxGetCurrentItem;
+    AddInLib.ListBoxGetItem = (long) &Wrapper_ListBoxGetItem;
+    AddInLib.ListBoxGetItemData = (long) &ListBoxGetItemData;
+    AddInLib.ListBoxGetSelItemIndex = (long) &ListBoxGetSelItemIndex;
+    AddInLib.ListBoxGetTopIndex = (long) &ListBoxGetTopIndex;
+    AddInLib.ListBoxIsItemSelected = (long) &ListBoxIsItemSelected;
+    AddInLib.ListBoxItemExist = (long) &Wrapper_ListBoxItemExist;
+    AddInLib.ListBoxProcessDrag = (long) &ListBoxProcessDrag;
+    AddInLib.ListBoxReplaceItem = (long) &Wrapper_ListBoxReplaceItem;
+    AddInLib.ListBoxReplaceSelItem = (long) &Wrapper_ListBoxReplaceSelItem;
+    AddInLib.ListBoxReset = (long) &ListBoxReset;
+    AddInLib.ListBoxSelItemDown = (long) &ListBoxSelItemDown;
+    AddInLib.ListBoxSelItemRemove = (long) &ListBoxSelItemRemove;
+    AddInLib.ListBoxSelItemUp = (long) &ListBoxSelItemUp;
+    AddInLib.ListBoxSetColumnsWidth = (long) &ListBoxSetColumnsWidth;
+    AddInLib.ListBoxSetHorzScrollWidth = (long) &ListBoxSetHorzScrollWidth;
+    AddInLib.ListBoxSetIndex = (long) &ListBoxSetIndex;
+    AddInLib.ListBoxSetItemData = (long) &ListBoxSetItemData;
+    AddInLib.ListBoxSetTopIndex = (long) &ListBoxSetTopIndex;
+    AddInLib.ListBoxItemUnderCursor = (long) &ListBoxItemUnderCursor;
+    AddInLib.ListViewAddCol = (long) &Wrapper_ListViewAddCol;
+    AddInLib.ListViewAddItem = (long) &Wrapper_ListViewAddItem;
+    AddInLib.ListViewBeginDrag = (long) &ListViewBeginDrag;
+    AddInLib.ListViewCheckBoxItemDoubleClick = (long) &ListViewCheckBoxItemDoubleClick;
+    AddInLib.ListViewClear = (long) &ListViewClear;
+    AddInLib.ListViewDeleteItem = (long) &ListViewDeleteItem;
+    AddInLib.ListViewDetachImageList = (long) &ListViewDetachImageList;
+    AddInLib.ListViewEditValidated = (long) &ListViewEditValidated;
+    AddInLib.ListViewEndDrag = (long) &ListViewEndDrag;
+    AddInLib.ListViewFindItem = (long) &Wrapper_ListViewFindItem;
+    AddInLib.ListViewFindSubItem = (long) &Wrapper_ListViewFindSubItem;
+    AddInLib.ListViewGetBackColor = (long) &ListViewGetBackColor;
+    AddInLib.ListViewGetColWidth = (long) &ListViewGetColWidth;
+    AddInLib.ListViewGetCountPerPage = (long) &ListViewGetCountPerPage;
+    AddInLib.ListViewGetEditControl = (long) &ListViewGetEditControl;
+    AddInLib.ListViewGetEditResult = (long) &Wrapper_ListViewGetEditResult;
+    AddInLib.ListViewGetExStyle = (long) &ListViewGetExStyle;
+    AddInLib.ListViewGetFirstFocusItem = (long) &ListViewGetFirstFocusItem;
+    AddInLib.ListViewGetHeaderLabel = (long) &Wrapper_ListViewGetHeaderLabel;
+    AddInLib.ListViewGetHeaderPosition = (long) &ListViewGetHeaderPosition;
+    AddInLib.ListViewGetHotCursor = (long) &ListViewGetHotCursor;
+    AddInLib.ListViewGetImageList = (long) &ListViewGetImageList;
+    AddInLib.ListViewGetItemCheckbox = (long) &ListViewGetItemCheckbox;
+    AddInLib.ListViewGetItemIcon = (long) &ListViewGetItemIcon;
+    AddInLib.ListViewGetItemSelState = (long) &ListViewGetItemSelState;
+    AddInLib.ListViewGetItemText = (long) &Wrapper_ListViewGetItemText;
+    AddInLib.ListViewGetItemUnderCursor = (long) &ListViewGetItemUnderCursor;
+    AddInLib.ListViewGetNotifiedColumnIndex = (long) &ListViewGetNotifiedColumnIndex;
+    AddInLib.ListViewGetSelItem = (long) &ListViewGetSelItem;
+    AddInLib.ListViewGetSelItemText = (long) &Wrapper_ListViewGetSelItemText;
+    AddInLib.ListViewGetSubItemImage = (long) &ListViewGetSubItemImage;
+    AddInLib.ListViewGetSysHeader = (long) &ListViewGetSysHeader;
+    AddInLib.ListViewGetTextBackColor = (long) &ListViewGetTextBackColor;
+    AddInLib.ListViewGetTextColor = (long) &ListViewGetTextColor;
+    AddInLib.ListViewGetToolTips = (long) &ListViewGetToolTips;
+    AddInLib.ListViewGetTopIndex = (long) &ListViewGetTopIndex;
+    AddInLib.ListViewIsCheckboxNotify = (long) &ListViewIsCheckboxNotify;
+    AddInLib.ListViewItemCount = (long) &ListViewItemCount;
+    AddInLib.ListViewMoveDrag = (long) &ListViewMoveDrag;
+    AddInLib.ListViewMultiSelFirstItem = (long) &ListViewMultiSelFirstItem;
+    AddInLib.ListViewPasteAutoEdit = (long) &ListViewPasteAutoEdit;
+    AddInLib.ListViewReOrder = (long) &ListViewReOrder;
+    AddInLib.ListViewSelItemCount = (long) &ListViewSelItemCount;
+    AddInLib.ListViewSetBackColor = (long) &ListViewSetBackColor;
+    AddInLib.ListViewSetColWidth = (long) &ListViewSetColWidth;
+    AddInLib.ListViewSetEditModeOn = (long) &ListViewSetEditModeOn;
+    AddInLib.ListViewSetHeaderPosition = (long) &ListViewSetHeaderPosition;
+    AddInLib.ListViewSetItemCheckbox = (long) &ListViewSetItemCheckbox;
+    AddInLib.ListViewSetItemFocus = (long) &ListViewSetItemFocus;
+    AddInLib.ListViewSetItemSel = (long) &ListViewSetItemSel;
+    AddInLib.ListViewSetItemHighlight = (long) &ListViewSetItemHighlight;
+    AddInLib.ListViewSetScroll = (long) &ListViewSetScroll;
+    AddInLib.ListViewSetSelItemText = (long) &Wrapper_ListViewSetSelItemText;
+    AddInLib.ListViewSetSubItem = (long) &Wrapper_ListViewSetSubItem;
+    AddInLib.ListViewSetSubItemImage = (long) &ListViewSetSubItemImage;
+    AddInLib.ListViewSort = (long) &ListViewSort;
+    AddInLib.MenuEnable = (long) &MenuEnable;
+    AddInLib.MenuGetString = (long) &Wrapper_MenuGetString;
+    AddInLib.MenuSetDefaultItem = (long) &MenuSetDefaultItem;
+    AddInLib.MenuSetItemState = (long) &MenuSetItemState;
+    AddInLib.MenuSetItemType = (long) &MenuSetItemType;
+    AddInLib.MenuSetItemText = (long) &Wrapper_MenuSetItemText;
+    AddInLib.MenuAddSeparator = (long) &MenuAddSeparator;
+    AddInLib.MenuAddString = (long) &Wrapper_MenuAddString;
+    AddInLib.PagerDisplaySetSize = (long) &PagerDisplaySetSize;
+    AddInLib.PagerGetBackColor = (long) &PagerGetBackColor;
+    AddInLib.PagerGetBorderSize = (long) &PagerGetBorderSize;
+    AddInLib.PagerGetButtonSize = (long) &PagerGetButtonSize;
+    AddInLib.PagerGetNotifiedChild = (long) &PagerGetNotifiedChild;
+    AddInLib.PagerGetScrollPos = (long) &PagerGetScrollPos;
+    AddInLib.PagerGetOrientation = (long) &PagerGetOrientation;
+    AddInLib.PagerSetOrientation = (long) &PagerSetOrientation;
+    AddInLib.PagerChangeOrientation = (long) &PagerChangeOrientation;
+    AddInLib.PagerMaximizeX = (long) &PagerMaximizeX;
+    AddInLib.PagerMaximizeY = (long) &PagerMaximizeY;
+    AddInLib.PagerSetBackColor = (long) &PagerSetBackColor;
     AddInLib.PictureBoxChangeIcon = (long) &PictureBoxChangeIcon;
     AddInLib.PictureBoxChangeImage = (long) &PictureBoxChangeImage;
     AddInLib.ProgressBarSetRelPos = (long) &ProgressBarSetRelPos;
     AddInLib.ProgressBarSetRange = (long) &ProgressBarSetRange;
     AddInLib.RadioButtonGetState = (long) &RadioButtonGetState;
     AddInLib.RadioButtonSetState = (long) &RadioButtonSetState;
-    AddInLib.WARebarAddBand = (long) &Wrapper_WARebarAddBand;
-    AddInLib.WARebarBandVisible = (long) &WARebarBandVisible;
-    AddInLib.WARebarGetBackGroundColor = (long) &WARebarGetBackGroundColor;
-    AddInLib.WARebarGetBandsCount = (long) &WARebarGetBandsCount;
-    AddInLib.WARebarGetHeight = (long) &WARebarGetHeight;
-    AddInLib.WARebarGetImageList = (long) &WARebarGetImageList;
-    AddInLib.WARebarGetPalette = (long) &WARebarGetPalette;
-    AddInLib.WARebarGetRowsCount = (long) &WARebarGetRowsCount;
-    AddInLib.WARebarGetTextColor = (long) &WARebarGetTextColor;
-    AddInLib.WARebarGetToolTips = (long) &WARebarGetToolTips;
-    AddInLib.WARebarGetXSize = (long) &WARebarGetXSize;
-    AddInLib.WARebarGetYSize = (long) &WARebarGetYSize;
-    AddInLib.WARebarRemoveBand = (long) &WARebarRemoveBand;
-    AddInLib.WARebarResize = (long) &WARebarResize;
-    AddInLib.WARebarSetBackColor = (long) &WARebarSetBackColor;
-    AddInLib.WARebarSetTextColor = (long) &WARebarSetTextColor;
-    AddInLib.WARegistryDeleteKey = (long) &Wrapper_WARegistryDeleteKey;
-    AddInLib.WARegistryGetKeyValue = (long) &Wrapper_WARegistryGetKeyValue;
-    AddInLib.WARegistryUpdateKey = (long) &Wrapper_WARegistryUpdateKey;
+    AddInLib.RebarAddBand = (long) &Wrapper_RebarAddBand;
+    AddInLib.RebarBandVisible = (long) &RebarBandVisible;
+    AddInLib.RebarGetBackGroundColor = (long) &RebarGetBackGroundColor;
+    AddInLib.RebarGetBandsCount = (long) &RebarGetBandsCount;
+    AddInLib.RebarGetHeight = (long) &RebarGetHeight;
+    AddInLib.RebarGetImageList = (long) &RebarGetImageList;
+    AddInLib.RebarGetPalette = (long) &RebarGetPalette;
+    AddInLib.RebarGetRowsCount = (long) &RebarGetRowsCount;
+    AddInLib.RebarGetTextColor = (long) &RebarGetTextColor;
+    AddInLib.RebarGetToolTips = (long) &RebarGetToolTips;
+    AddInLib.RebarGetXSize = (long) &RebarGetXSize;
+    AddInLib.RebarGetYSize = (long) &RebarGetYSize;
+    AddInLib.RebarRemoveBand = (long) &RebarRemoveBand;
+    AddInLib.RebarResize = (long) &RebarResize;
+    AddInLib.RebarSetBackColor = (long) &RebarSetBackColor;
+    AddInLib.RebarSetTextColor = (long) &RebarSetTextColor;
+    AddInLib.RegistryDeleteKey = (long) &Wrapper_RegistryDeleteKey;
+    AddInLib.RegistryGetKeyValue = (long) &Wrapper_RegistryGetKeyValue;
+    AddInLib.RegistryUpdateKey = (long) &Wrapper_RegistryUpdateKey;
     AddInLib.ScreenHeight = (long) &ScreenHeight;
     AddInLib.ScreenWidth = (long) &ScreenWidth;
     AddInLib.ScreenRectToClient = (long) &ScreenRectToClient;
-    AddInLib.WAScrollBarGetMaxRange = (long) &WAScrollBarGetMaxRange;
-    AddInLib.WAScrollBarGetMinRange = (long) &WAScrollBarGetMinRange;
-    AddInLib.WAScrollBarGetPageRange = (long) &WAScrollBarGetPageRange;
-    AddInLib.WAScrollBarSetPageRange = (long) &WAScrollBarSetPageRange;
-    AddInLib.WAScrollBarShowHide = (long) &WAScrollBarShowHide;
-    AddInLib.WAScrollBarSetMinMaxRange = (long) &WAScrollBarSetMinMaxRange;
+    AddInLib.ScrollBarGetMaxRange = (long) &ScrollBarGetMaxRange;
+    AddInLib.ScrollBarGetMinRange = (long) &ScrollBarGetMinRange;
+    AddInLib.ScrollBarGetPageRange = (long) &ScrollBarGetPageRange;
+    AddInLib.ScrollBarSetPageRange = (long) &ScrollBarSetPageRange;
+    AddInLib.ScrollBarShowHide = (long) &ScrollBarShowHide;
+    AddInLib.ScrollBarSetMinMaxRange = (long) &ScrollBarSetMinMaxRange;
     AddInLib.MathGenerateRandomNumber = (long) &MathGenerateRandomNumber;
     AddInLib.SocketAcceptConnection = (long) &SocketAcceptConnection;
     AddInLib.SocketConnect = (long) &Wrapper_SocketConnect;
@@ -1061,137 +1063,137 @@ void FillWaLib(void)
 	AddInLib.StringFillHexWords = (long) &StringFillHexWords;
 	AddInLib.StringFillHexDWords = (long) &StringFillHexDWords;
 	AddInLib.StringFileNameToLabel = (long) &StringFileNameToLabel;
-	AddInLib.WASysTabAddItem = (long) &Wrapper_WASysTabAddItem;
-    AddInLib.WASysTabGetCurrentItem = (long) &WASysTabGetCurrentItem;
-    AddInLib.WASysTabGetImagelist = (long) &WASysTabGetImagelist;
-    AddInLib.WASysTabGetRowsCount = (long) &WASysTabGetRowsCount;
-    AddInLib.WASysTabHighLightItem = (long) &WASysTabHighLightItem;
-    AddInLib.WASysTabItemsCount = (long) &WASysTabItemsCount;
-    AddInLib.WASysTabSetCurrentItem = (long) &WASysTabSetCurrentItem;
-    AddInLib.WASysTabSetFocusItem = (long) &WASysTabSetFocusItem;
-    AddInLib.WASysTabSetSeparators = (long) &WASysTabSetSeparators;
-    AddInLib.WASysTabSetItemsSize = (long) &WASysTabSetItemsSize;
-    AddInLib.WASysTabRemoveItem = (long) &WASysTabRemoveItem;
-	AddInLib.WASysTabSetMinWidth = (long) &WASysTabSetMinWidth;
-    AddInLib.WASysTabSetPadding = (long) &WASysTabSetPadding;
-    AddInLib.WATextBoxGetLen = (long) &WATextBoxGetLen;
-    AddInLib.WATextBoxAddText = (long) &Wrapper_WATextBoxAddText;
-    AddInLib.WATextBoxCanPaste = (long) &WATextBoxCanPaste;
-    AddInLib.WATextBoxCanUndo = (long) &WATextBoxCanUndo;
-    AddInLib.WATextBoxGetBreakProcAddress = (long) &WATextBoxGetBreakProcAddress;
-    AddInLib.WATextBoxGetCurrentOptions = (long) &WATextBoxGetCurrentOptions;
-    AddInLib.WATextBoxGetFirstVisibleLine = (long) &WATextBoxGetFirstVisibleLine;
-    AddInLib.WATextBoxGetMarginWidth = (long) &WATextBoxGetMarginWidth;
-    AddInLib.WATextBoxGetMaxLen = (long) &WATextBoxGetMaxLen;
-    AddInLib.WATextBoxGetPasswordChar = (long) &Wrapper_WATextBoxGetPasswordChar;
-    AddInLib.WATextBoxSetPasswordChar = (long) &Wrapper_WATextBoxSetPasswordChar;
-	AddInLib.WATextBoxGetScrollPos = (long) &WATextBoxGetScrollPos;
-    AddInLib.WATextBoxGetSelection = (long) &WATextBoxGetSelection;
-    AddInLib.WATextBoxGetTextHandle = (long) &WATextBoxGetTextHandle;
-    AddInLib.WATextBoxIsModified = (long) &WATextBoxIsModified;
-    AddInLib.WATextBoxLinesCount = (long) &WATextBoxLinesCount;
-    AddInLib.WATextBoxRemoveSel = (long) &WATextBoxRemoveSel;
-    AddInLib.WATextBoxSelText = (long) &WATextBoxSelText;
-    AddInLib.WATextBoxSetCaretPos = (long) &WATextBoxSetCaretPos;
-    AddInLib.WATextBoxSetMaxLen = (long) &WATextBoxSetMaxLen;
-    AddInLib.WAToolBarAddButton = (long) &Wrapper_WAToolBarAddButton;
-    AddInLib.WAToolBarAddSeparator = (long) &WAToolBarAddSeparator;
-    AddInLib.WAToolBarDisplayPopupMenu = (long) &WAToolBarDisplayPopupMenu;
-    AddInLib.WAToolBarDisplayToolTip = (long) &Wrapper_WAToolBarDisplayToolTip;
-    AddInLib.WAToolBarGetButton = (long) &WAToolBarGetButton;
-    AddInLib.WAToolBarGetXPadding = (long) &WAToolBarGetXPadding;
-    AddInLib.WAToolBarGetYPadding = (long) &WAToolBarGetYPadding;
-    AddInLib.WAToolBarGetButtonIndexXSize = (long) &WAToolBarGetButtonIndexXSize;
-    AddInLib.WAToolBarGetButtonsCount = (long) &WAToolBarGetButtonsCount;
-    AddInLib.WAToolBarGetButtonXPosition = (long) &WAToolBarGetButtonXPosition;
-    AddInLib.WAToolBarGetButtonXSize = (long) &WAToolBarGetButtonXSize;
-    AddInLib.WAToolBarGetButtonXYPos = (long) &WAToolBarGetButtonXYPos;
-    AddInLib.WAToolBarGetButtonYSize = (long) &WAToolBarGetButtonYSize;
-    AddInLib.WAToolBarGetImagelist = (long) &WAToolBarGetImagelist;
-    AddInLib.WAToolBarGetNotifiedDropDownItem = (long) &WAToolBarGetNotifiedDropDownItem;
-    AddInLib.WAToolBarGetNotifiedHotItem = (long) &WAToolBarGetNotifiedHotItem;
-    AddInLib.WAToolBarGetNotifiedToolTip = (long) &WAToolBarGetNotifiedToolTip;
-    AddInLib.WAToolBarGetRealPos = (long) &WAToolBarGetRealPos;
-    AddInLib.WAToolBarGetRowsCount = (long) &WAToolBarGetRowsCount;
-    AddInLib.WAToolBarGetXSize = (long) &WAToolBarGetXSize;
-    AddInLib.WAToolBarGetXYSize = (long) &WAToolBarGetXYSize;
-    AddInLib.WAToolBarGetYSize = (long) &WAToolBarGetYSize;
-    AddInLib.WAToolBarIsButtonChecked = (long) &WAToolBarIsButtonChecked;
-    AddInLib.WAToolBarIsButtonPressed = (long) &WAToolBarIsButtonPressed;
-    AddInLib.WAToolBarResize = (long) &WAToolBarResize;
-    AddInLib.WAToolBarSetButtonChecked = (long) &WAToolBarSetButtonChecked;
-    AddInLib.WAToolBarSetButtonEnabled = (long) &WAToolBarSetButtonEnabled;
-    AddInLib.WAToolBarSetButtonPressed = (long) &WAToolBarSetButtonPressed;
-    AddInLib.WAToolBarRemoveButton = (long) &WAToolBarRemoveButton;
-    AddInLib.WAToolBarSetButtonBitmap = (long) &WAToolBarSetButtonBitmap;
-    AddInLib.WATrackBarGetPos = (long) &WATrackBarGetPos;
-    AddInLib.WATrackBarSetPos = (long) &WATrackBarSetPos;
-    AddInLib.WATrackBarSetRange = (long) &WATrackBarSetRange;
-    AddInLib.WATrackBarSetTicks = (long) &WATrackBarSetTicks;
-    AddInLib.WATrackBarGetToolTips = (long) &WATrackBarGetToolTips;
-    AddInLib.WATreeViewAddItem = (long) &Wrapper_WATreeViewAddItem;
-    AddInLib.WATreeViewGetBackColor = (long) &WATreeViewGetBackColor;
-    AddInLib.WATreeViewGetChildItemsCount = (long) &WATreeViewGetChildItemsCount;
-    AddInLib.WATreeViewGetDeletedItem = (long) &WATreeViewGetDeletedItem;
-    AddInLib.WATreeViewGetEditControl = (long) &WATreeViewGetEditControl;
-    AddInLib.WATreeViewGetExpandingItem = (long) &WATreeViewGetExpandingItem;
-    AddInLib.WATreeViewGetExpandingState = (long) &WATreeViewGetExpandingState;
-    AddInLib.WATreeViewGetFirstItemChild = (long) &WATreeViewGetFirstItemChild;
-    AddInLib.WATreeViewGetImageList = (long) &WATreeViewGetImageList;
-    AddInLib.WATreeViewGetIndent = (long) &WATreeViewGetIndent;
-    AddInLib.WATreeViewGetInsertMarkColor = (long) &WATreeViewGetInsertMarkColor;
-    AddInLib.WATreeViewGetItemCount = (long) &WATreeViewGetItemCount;
-    AddInLib.WATreeViewGetItemFromPos = (long) &WATreeViewGetItemFromPos;
-    AddInLib.WATreeViewGetItemHeight = (long) &WATreeViewGetItemHeight;
-    AddInLib.WATreeViewGetItemLevel = (long) &WATreeViewGetItemLevel;
-    AddInLib.WATreeViewGetItemParent = (long) &WATreeViewGetItemParent;
-    AddInLib.WATreeViewGetItemText = (long) &Wrapper_WATreeViewGetItemText;
-    AddInLib.WATreeViewGetLineColor = (long) &WATreeViewGetLineColor;
-    AddInLib.WATreeViewGetNextItem = (long) &WATreeViewGetNextItem;
-    AddInLib.WATreeViewGetPreviousItem = (long) &WATreeViewGetPreviousItem;
-    AddInLib.WATreeViewGetRoot = (long) &WATreeViewGetRoot;
-    AddInLib.WATreeViewGetScrollTime = (long) &WATreeViewGetScrollTime;
-    AddInLib.WATreeViewGetSelChildItemPos = (long) &WATreeViewGetSelChildItemPos;
-    AddInLib.WATreeViewGetSelectedItem = (long) &WATreeViewGetSelectedItem;
-    AddInLib.WATreeViewGetTextColor = (long) &WATreeViewGetTextColor;
-    AddInLib.WATreeViewGetToolTips = (long) &WATreeViewGetToolTips;
-    AddInLib.WATreeViewGetVisibleCount = (long) &WATreeViewGetVisibleCount;
-    AddInLib.WATreeViewRemoveItem = (long) &WATreeViewRemoveItem;
-    AddInLib.WATreeViewSearchChildPartialText = (long) &Wrapper_WATreeViewSearchChildPartialText;
-    AddInLib.WATreeViewSearchItemText = (long) &Wrapper_WATreeViewSearchItemText;
-    AddInLib.WATreeViewSetBackColor = (long) &WATreeViewSetBackColor;
-    AddInLib.WATreeViewSetIndent = (long) &WATreeViewSetIndent;
-    AddInLib.WATreeViewSetItemExpandedState = (long) &WATreeViewSetItemExpandedState;
-    AddInLib.WATreeViewGetItemExpandedState = (long) &WATreeViewGetItemExpandedState;
-    AddInLib.WATreeViewSetSingleExpandState = (long) &WATreeViewSetSingleExpandState;
-	AddInLib.WATreeViewSetItemIcon = (long) &WATreeViewSetItemIcon;
-    AddInLib.WATreeViewSetItemText = (long) &Wrapper_WATreeViewSetItemText;
-    AddInLib.WATreeViewSetSelectedItem = (long) &WATreeViewSetSelectedItem;
-    AddInLib.WATreeViewSetToolTips = (long) &WATreeViewSetToolTips;
-    AddInLib.WATreeViewGetItemTextRect = (long) &WATreeViewGetItemTextRect;
-    AddInLib.WATreeViewGetItemRect = (long) &WATreeViewGetItemRect;
-    AddInLib.WACreateDockingBox = (long) &Wrapper_WACreateDockingBox;
+	AddInLib.SysTabAddItem = (long) &Wrapper_SysTabAddItem;
+    AddInLib.SysTabGetCurrentItem = (long) &SysTabGetCurrentItem;
+    AddInLib.SysTabGetImagelist = (long) &SysTabGetImagelist;
+    AddInLib.SysTabGetRowsCount = (long) &SysTabGetRowsCount;
+    AddInLib.SysTabHighLightItem = (long) &SysTabHighLightItem;
+    AddInLib.SysTabItemsCount = (long) &SysTabItemsCount;
+    AddInLib.SysTabSetCurrentItem = (long) &SysTabSetCurrentItem;
+    AddInLib.SysTabSetFocusItem = (long) &SysTabSetFocusItem;
+    AddInLib.SysTabSetSeparators = (long) &SysTabSetSeparators;
+    AddInLib.SysTabSetItemsSize = (long) &SysTabSetItemsSize;
+    AddInLib.SysTabRemoveItem = (long) &SysTabRemoveItem;
+	AddInLib.SysTabSetMinWidth = (long) &SysTabSetMinWidth;
+    AddInLib.SysTabSetPadding = (long) &SysTabSetPadding;
+    AddInLib.TextBoxGetLen = (long) &TextBoxGetLen;
+    AddInLib.TextBoxAddText = (long) &Wrapper_TextBoxAddText;
+    AddInLib.TextBoxCanPaste = (long) &TextBoxCanPaste;
+    AddInLib.TextBoxCanUndo = (long) &TextBoxCanUndo;
+    AddInLib.TextBoxGetBreakProcAddress = (long) &TextBoxGetBreakProcAddress;
+    AddInLib.TextBoxGetCurrentOptions = (long) &TextBoxGetCurrentOptions;
+    AddInLib.TextBoxGetFirstVisibleLine = (long) &TextBoxGetFirstVisibleLine;
+    AddInLib.TextBoxGetMarginWidth = (long) &TextBoxGetMarginWidth;
+    AddInLib.TextBoxGetMaxLen = (long) &TextBoxGetMaxLen;
+    AddInLib.TextBoxGetPasswordChar = (long) &Wrapper_TextBoxGetPasswordChar;
+    AddInLib.TextBoxSetPasswordChar = (long) &Wrapper_TextBoxSetPasswordChar;
+	AddInLib.TextBoxGetScrollPos = (long) &TextBoxGetScrollPos;
+    AddInLib.TextBoxGetSelection = (long) &TextBoxGetSelection;
+    AddInLib.TextBoxGetTextHandle = (long) &TextBoxGetTextHandle;
+    AddInLib.TextBoxIsModified = (long) &TextBoxIsModified;
+    AddInLib.TextBoxLinesCount = (long) &TextBoxLinesCount;
+    AddInLib.TextBoxRemoveSel = (long) &TextBoxRemoveSel;
+    AddInLib.TextBoxSelText = (long) &TextBoxSelText;
+    AddInLib.TextBoxSetCaretPos = (long) &TextBoxSetCaretPos;
+    AddInLib.TextBoxSetMaxLen = (long) &TextBoxSetMaxLen;
+    AddInLib.ToolBarAddButton = (long) &Wrapper_ToolBarAddButton;
+    AddInLib.ToolBarAddSeparator = (long) &ToolBarAddSeparator;
+    AddInLib.ToolBarDisplayPopupMenu = (long) &ToolBarDisplayPopupMenu;
+    AddInLib.ToolBarDisplayToolTip = (long) &Wrapper_ToolBarDisplayToolTip;
+    AddInLib.ToolBarGetButton = (long) &ToolBarGetButton;
+    AddInLib.ToolBarGetXPadding = (long) &ToolBarGetXPadding;
+    AddInLib.ToolBarGetYPadding = (long) &ToolBarGetYPadding;
+    AddInLib.ToolBarGetButtonIndexXSize = (long) &ToolBarGetButtonIndexXSize;
+    AddInLib.ToolBarGetButtonsCount = (long) &ToolBarGetButtonsCount;
+    AddInLib.ToolBarGetButtonXPosition = (long) &ToolBarGetButtonXPosition;
+    AddInLib.ToolBarGetButtonXSize = (long) &ToolBarGetButtonXSize;
+    AddInLib.ToolBarGetButtonXYPos = (long) &ToolBarGetButtonXYPos;
+    AddInLib.ToolBarGetButtonYSize = (long) &ToolBarGetButtonYSize;
+    AddInLib.ToolBarGetImagelist = (long) &ToolBarGetImagelist;
+    AddInLib.ToolBarGetNotifiedDropDownItem = (long) &ToolBarGetNotifiedDropDownItem;
+    AddInLib.ToolBarGetNotifiedHotItem = (long) &ToolBarGetNotifiedHotItem;
+    AddInLib.ToolBarGetNotifiedToolTip = (long) &ToolBarGetNotifiedToolTip;
+    AddInLib.ToolBarGetRealPos = (long) &ToolBarGetRealPos;
+    AddInLib.ToolBarGetRowsCount = (long) &ToolBarGetRowsCount;
+    AddInLib.ToolBarGetXSize = (long) &ToolBarGetXSize;
+    AddInLib.ToolBarGetXYSize = (long) &ToolBarGetXYSize;
+    AddInLib.ToolBarGetYSize = (long) &ToolBarGetYSize;
+    AddInLib.ToolBarIsButtonChecked = (long) &ToolBarIsButtonChecked;
+    AddInLib.ToolBarIsButtonPressed = (long) &ToolBarIsButtonPressed;
+    AddInLib.ToolBarResize = (long) &ToolBarResize;
+    AddInLib.ToolBarSetButtonChecked = (long) &ToolBarSetButtonChecked;
+    AddInLib.ToolBarSetButtonEnabled = (long) &ToolBarSetButtonEnabled;
+    AddInLib.ToolBarSetButtonPressed = (long) &ToolBarSetButtonPressed;
+    AddInLib.ToolBarRemoveButton = (long) &ToolBarRemoveButton;
+    AddInLib.ToolBarSetButtonBitmap = (long) &ToolBarSetButtonBitmap;
+    AddInLib.TrackBarGetPos = (long) &TrackBarGetPos;
+    AddInLib.TrackBarSetPos = (long) &TrackBarSetPos;
+    AddInLib.TrackBarSetRange = (long) &TrackBarSetRange;
+    AddInLib.TrackBarSetTicks = (long) &TrackBarSetTicks;
+    AddInLib.TrackBarGetToolTips = (long) &TrackBarGetToolTips;
+    AddInLib.TreeViewAddItem = (long) &Wrapper_TreeViewAddItem;
+    AddInLib.TreeViewGetBackColor = (long) &TreeViewGetBackColor;
+    AddInLib.TreeViewGetChildItemsCount = (long) &TreeViewGetChildItemsCount;
+    AddInLib.TreeViewGetDeletedItem = (long) &TreeViewGetDeletedItem;
+    AddInLib.TreeViewGetEditControl = (long) &TreeViewGetEditControl;
+    AddInLib.TreeViewGetExpandingItem = (long) &TreeViewGetExpandingItem;
+    AddInLib.TreeViewGetExpandingState = (long) &TreeViewGetExpandingState;
+    AddInLib.TreeViewGetFirstItemChild = (long) &TreeViewGetFirstItemChild;
+    AddInLib.TreeViewGetImageList = (long) &TreeViewGetImageList;
+    AddInLib.TreeViewGetIndent = (long) &TreeViewGetIndent;
+    AddInLib.TreeViewGetInsertMarkColor = (long) &TreeViewGetInsertMarkColor;
+    AddInLib.TreeViewGetItemCount = (long) &TreeViewGetItemCount;
+    AddInLib.TreeViewGetItemFromPos = (long) &TreeViewGetItemFromPos;
+    AddInLib.TreeViewGetItemHeight = (long) &TreeViewGetItemHeight;
+    AddInLib.TreeViewGetItemLevel = (long) &TreeViewGetItemLevel;
+    AddInLib.TreeViewGetItemParent = (long) &TreeViewGetItemParent;
+    AddInLib.TreeViewGetItemText = (long) &Wrapper_TreeViewGetItemText;
+    AddInLib.TreeViewGetLineColor = (long) &TreeViewGetLineColor;
+    AddInLib.TreeViewGetNextItem = (long) &TreeViewGetNextItem;
+    AddInLib.TreeViewGetPreviousItem = (long) &TreeViewGetPreviousItem;
+    AddInLib.TreeViewGetRoot = (long) &TreeViewGetRoot;
+    AddInLib.TreeViewGetScrollTime = (long) &TreeViewGetScrollTime;
+    AddInLib.TreeViewGetSelChildItemPos = (long) &TreeViewGetSelChildItemPos;
+    AddInLib.TreeViewGetSelectedItem = (long) &TreeViewGetSelectedItem;
+    AddInLib.TreeViewGetTextColor = (long) &TreeViewGetTextColor;
+    AddInLib.TreeViewGetToolTips = (long) &TreeViewGetToolTips;
+    AddInLib.TreeViewGetVisibleCount = (long) &TreeViewGetVisibleCount;
+    AddInLib.TreeViewRemoveItem = (long) &TreeViewRemoveItem;
+    AddInLib.TreeViewSearchChildPartialText = (long) &Wrapper_TreeViewSearchChildPartialText;
+    AddInLib.TreeViewSearchItemText = (long) &Wrapper_TreeViewSearchItemText;
+    AddInLib.TreeViewSetBackColor = (long) &TreeViewSetBackColor;
+    AddInLib.TreeViewSetIndent = (long) &TreeViewSetIndent;
+    AddInLib.TreeViewSetItemExpandedState = (long) &TreeViewSetItemExpandedState;
+    AddInLib.TreeViewGetItemExpandedState = (long) &TreeViewGetItemExpandedState;
+    AddInLib.TreeViewSetSingleExpandState = (long) &TreeViewSetSingleExpandState;
+	AddInLib.TreeViewSetItemIcon = (long) &TreeViewSetItemIcon;
+    AddInLib.TreeViewSetItemText = (long) &Wrapper_TreeViewSetItemText;
+    AddInLib.TreeViewSetSelectedItem = (long) &TreeViewSetSelectedItem;
+    AddInLib.TreeViewSetToolTips = (long) &TreeViewSetToolTips;
+    AddInLib.TreeViewGetItemTextRect = (long) &TreeViewGetItemTextRect;
+    AddInLib.TreeViewGetItemRect = (long) &TreeViewGetItemRect;
+    AddInLib.CreateDockingBox = (long) &Wrapper_CreateDockingBox;
     AddInLib.DockingBoxGetState = (long) &DockingBoxGetState;
     AddInLib.DockingBoxRemove = (long) &DockingBoxRemove;
     AddInLib.DockingBoxShow = (long) &Wrapper_DockingBoxShow;
     AddInLib.DockingBoxWasVisible = (long) &Wrapper_DockingBoxWasVisible;
 	AddInLib.WinsockInit = (long) &WinsockInit;
     AddInLib.WinsockUnInit = (long) &WinsockUnInit;
-    AddInLib.WAMiscClipBoardCopyText = (long) &Wrapper_WAMiscClipBoardCopyText;
-    AddInLib.WAMiscClipBoardPasteText = (long) &Wrapper_WAMiscClipBoardPasteText;
-    AddInLib.WAMiscClipBoardIsEmpty = (long) &WAMiscClipBoardIsEmpty;
-    AddInLib.WAMiscDoEvents = (long) &WAMiscDoEvents;
-    AddInLib.WAMiscMsgBox = (long) &Wrapper_WAMiscMsgBox;
-    AddInLib.WAMiscSendBroadCastMsg = (long) &WAMiscSendBroadCastMsg;
-    AddInLib.WAMiscWaitEvents = (long) &WAMiscWaitEvents;
-    AddInLib.WAMiscObtainGUID = (long) &WAMiscObtainGUID;
-    AddInLib.WAMiscAllocMem = (long) &WAMiscAllocMem;
-    AddInLib.WAMiscFreeMem = (long) &WAMiscFreeMem;
-    AddInLib.WAMiscCopyMemLoop = (long) &WAMiscCopyMemLoop;
-    AddInLib.WAMiscCopyMemWithOffsets = (long) &WAMiscCopyMemWithOffsets;
-    AddInLib.WAMiscShellAddFileToRecents = (long) &Wrapper_WAMiscShellAddFileToRecents;
-    AddInLib.WAMiscGetOSClass = (long) &WAMiscGetOSClass;
-	AddInLib.WAMiscObtainExtendedFunctions = (long) &WAMiscObtainExtendedFunctions;
+    AddInLib.MiscClipBoardCopyText = (long) &Wrapper_MiscClipBoardCopyText;
+    AddInLib.MiscClipBoardPasteText = (long) &Wrapper_MiscClipBoardPasteText;
+    AddInLib.MiscClipBoardIsEmpty = (long) &MiscClipBoardIsEmpty;
+    AddInLib.MiscDoEvents = (long) &MiscDoEvents;
+    AddInLib.MiscMsgBox = (long) &Wrapper_MiscMsgBox;
+    AddInLib.MiscSendBroadCastMsg = (long) &MiscSendBroadCastMsg;
+    AddInLib.MiscWaitEvents = (long) &MiscWaitEvents;
+    AddInLib.MiscObtainGUID = (long) &MiscObtainGUID;
+    AddInLib.MiscAllocMem = (long) &MiscAllocMem;
+    AddInLib.MiscFreeMem = (long) &MiscFreeMem;
+    AddInLib.MiscCopyMemLoop = (long) &MiscCopyMemLoop;
+    AddInLib.MiscCopyMemWithOffsets = (long) &MiscCopyMemWithOffsets;
+    AddInLib.MiscShellAddFileToRecents = (long) &Wrapper_MiscShellAddFileToRecents;
+    AddInLib.MiscGetOSClass = (long) &MiscGetOSClass;
+	AddInLib.MiscObtainExtendedFunctions = (long) &MiscObtainExtendedFunctions;
     AddInLib.WAMMGetWindowLangGUID = (long) &WAMMGetWindowLangGUID;
     AddInLib.WAMMGetWindowLangInclude = (long) &WAMMGetWindowLangInclude;
     AddInLib.WAMMGetWindowLangDoubleSlash = (long) &WAMMGetWindowLangDoubleSlash;
@@ -1213,12 +1215,12 @@ void FillWaLib(void)
     AddInLib.WAMMRunUserCommand = (long) &WAMMRunUserCommand;
     AddInLib.WAMMRunCommandScript = (long) &WAMMRunCommandScript;
 
-    AddInLib.WAComDlgChooseColor = (long) &Wrapper_WAComDlgChooseColor;
-    AddInLib.WAComDlgGetOpenFileName = (long) &Wrapper_WAComDlgGetOpenFileName;
-    AddInLib.WAComDlgGetSaveFileName = (long) &Wrapper_WAComDlgGetSaveFileName;
-    AddInLib.WAComDlgChooseFont = (long) &Wrapper_WAComDlgChooseFont;
-    AddInLib.WAComDlgBrowseForFolder = (long) &Wrapper_WAComDlgBrowseForFolder;
-    AddInLib.WAComDlgParseMultiFilesSelection = (long) &Wrapper_WAComDlgParseMultiFilesSelection;
+    AddInLib.ComDlgChooseColor = (long) &Wrapper_ComDlgChooseColor;
+    AddInLib.ComDlgGetOpenFileName = (long) &Wrapper_ComDlgGetOpenFileName;
+    AddInLib.ComDlgGetSaveFileName = (long) &Wrapper_ComDlgGetSaveFileName;
+    AddInLib.ComDlgChooseFont = (long) &Wrapper_ComDlgChooseFont;
+    AddInLib.ComDlgBrowseForFolder = (long) &Wrapper_ComDlgBrowseForFolder;
+    AddInLib.ComDlgParseMultiFilesSelection = (long) &Wrapper_ComDlgParseMultiFilesSelection;
 
     AddInLib.WAMMDisplayHelpFile = (long) &WAMMDisplayHelpFile;
     AddInLib.WAMMRunDOSCmd = (long) &WAMMRunDOSCmd;
@@ -1313,7 +1315,7 @@ void FillWaLib(void)
 
 // -----------------------------------------------------------------------
 // Create a stock dialog
-long CALLBACK Wrapper_WACreateStockModalDialog(long TemplateNumber, long DLeft, long DTop, long DWidth, long DHeight,
+long CALLBACK Wrapper_CreateStockModalDialog(long TemplateNumber, long DLeft, long DTop, long DWidth, long DHeight,
                                                HWND hParent, char *DTitle, DLGPROC WinProc, long Centered)
 {
 	int RetValue = 0;
@@ -1323,10 +1325,10 @@ long CALLBACK Wrapper_WACreateStockModalDialog(long TemplateNumber, long DLeft, 
 	switch(TemplateNumber)
 	{
 		case MODALDLG_STOCK_WIZARD:
-			RetValue = WACreateStockModalDialog(TemplateNumber, DLeft, DTop, DWidth, DHeight, hParent, DTitle, WinProc, Centered, (long) MAKEINTRESOURCE(MBMP_BASE + MBMP_WIZARD));
+			RetValue = CreateStockModalDialog(TemplateNumber, DLeft, DTop, DWidth, DHeight, hParent, DTitle, WinProc, Centered, (long) MAKEINTRESOURCE(MBMP_BASE + MBMP_WIZARD));
 			break;
 		default:
-			RetValue = WACreateStockModalDialog(TemplateNumber, DLeft, DTop, DWidth, DHeight, hParent, DTitle, WinProc, Centered, 0);
+			RetValue = CreateStockModalDialog(TemplateNumber, DLeft, DTop, DWidth, DHeight, hParent, DTitle, WinProc, Centered, 0);
 			break;
 	}
 	// And restart it
@@ -1544,11 +1546,11 @@ void CALLBACK WAMMRunCommandScript(char *CommandScript, long SaveFiles)
 
 // -----------------------------------------------------------------------
 // Display a color selector
-long CALLBACK Wrapper_WAComDlgChooseColor(HWND hWnd, long *ColorToGet)
+long CALLBACK Wrapper_ComDlgChooseColor(HWND hWnd, long *ColorToGet)
 {
     long ReturnValue = 0;
 
-    if(WAComDlgChooseColor(hWnd, ColorToGet[0]) != 0)
+    if(ComDlgChooseColor(hWnd, ColorToGet[0]) != 0)
     {
         ColorToGet[0] = MyColor.rgbResult;
         ReturnValue = 1;
@@ -1558,39 +1560,39 @@ long CALLBACK Wrapper_WAComDlgChooseColor(HWND hWnd, long *ColorToGet)
 
 // -----------------------------------------------------------------------
 // Display an open file selector
-char * CALLBACK Wrapper_WAComDlgGetOpenFileName(HWND hWnd, char *FilesFilter, char *PrimaryDir, long MultiSelect)
+char * CALLBACK Wrapper_ComDlgGetOpenFileName(HWND hWnd, char *FilesFilter, char *PrimaryDir, long MultiSelect)
 {
     CStr LdFile;
     CStr ReturnValue;
 
-    LdFile = WAComDlgGetOpenFileName(hWnd, StringConvertToCStr(FilesFilter), StringConvertToCStr(PrimaryDir), MultiSelect, CurrentDir);
+    LdFile = ComDlgGetOpenFileName(hWnd, StringConvertToCStr(FilesFilter), StringConvertToCStr(PrimaryDir), MultiSelect, CurrentDir);
     if(LdFile.Len() != 0) ReturnValue.Set_String(LdFile.Get_String());
     return(StringCStrConvertToString(ReturnValue));
 }
 
 // -----------------------------------------------------------------------
 // Display a multi files selector
-char * CALLBACK Wrapper_WAComDlgParseMultiFilesSelection(char *SelectedFiles, long (CALLBACK *EnumProc)(char *, long),
+char * CALLBACK Wrapper_ComDlgParseMultiFilesSelection(char *SelectedFiles, long (CALLBACK *EnumProc)(char *, long),
                                                          long SearchDirection, long UserValue)
 {
-	return(StringCStrConvertToString(WAComDlgParseMultiFilesSelection(StringConvertToCStr(SelectedFiles), EnumProc, SearchDirection, UserValue)));
+	return(StringCStrConvertToString(ComDlgParseMultiFilesSelection(StringConvertToCStr(SelectedFiles), EnumProc, SearchDirection, UserValue)));
 }
 
 // -----------------------------------------------------------------------
 // Display a save file selector
-char * CALLBACK Wrapper_WAComDlgGetSaveFileName(HWND hWnd, char *FilesFilter, char *PrimaryDir)
+char * CALLBACK Wrapper_ComDlgGetSaveFileName(HWND hWnd, char *FilesFilter, char *PrimaryDir)
 {
     CStr LdFile;
     CStr ReturnValue;
 
-    LdFile = WAComDlgGetSaveFileName(hWnd, StringConvertToCStr(FilesFilter), StringConvertToCStr(PrimaryDir), CurrentDir);
+    LdFile = ComDlgGetSaveFileName(hWnd, StringConvertToCStr(FilesFilter), StringConvertToCStr(PrimaryDir), CurrentDir);
     if(LdFile.Len() != 0) ReturnValue = LdFile;
     return(StringCStrConvertToString(ReturnValue));
 }
 
 // -----------------------------------------------------------------------
 // Choose a font
-long CALLBACK Wrapper_WAComDlgChooseFont(HWND hWnd, char *FntName, long FntSize,
+long CALLBACK Wrapper_ComDlgChooseFont(HWND hWnd, char *FntName, long FntSize,
                                          long FixedOnly, LPLOGFONT WALogFont,
                                          LPCHOOSEFONT WAMyFont)
 {
@@ -1650,11 +1652,11 @@ long CALLBACK Wrapper_WAComDlgChooseFont(HWND hWnd, char *FntName, long FntSize,
 
 // -----------------------------------------------------------------------
 // Browse directories
-char * CALLBACK Wrapper_WAComDlgBrowseForFolder(HWND hParent, char *BrowseTitle)
+char * CALLBACK Wrapper_ComDlgBrowseForFolder(HWND hParent, char *BrowseTitle)
 {
 	CStr ReturnValue;
 
-    ReturnValue = WAComDlgBrowseForFolder(hParent, StringConvertToCStr(BrowseTitle));
+    ReturnValue = ComDlgBrowseForFolder(hParent, StringConvertToCStr(BrowseTitle));
     if(ReturnValue.Len() == 0)
     {
         return(0);
@@ -1869,8 +1871,8 @@ void CALLBACK WAMMReloadWindow(HWND hForm)
 // Close a window
 void CALLBACK WAMMCloseWindow(HWND hForm)
 {
-    if(NbForms != 0) if(hForm != 0) WAControlClose(hForm);
-    if(NbForms != 0) WAClientSetPreviousChild(hMDIform.hClient);
+    if(NbForms != 0) if(hForm != 0) ControlClose(hForm);
+    if(NbForms != 0) ClientSetPreviousChild(hMDIform.hClient);
 }
 
 // -----------------------------------------------------------------------
@@ -1963,7 +1965,7 @@ long CALLBACK WAMMCopyFilePathName(HWND hForm)
     {
         ChildStruct = LoadStructure(hForm);
         if(ChildStruct->FileLoaded == 0) return(ReturnValue);
-        ReturnValue = WAMiscClipBoardCopyText(CMGetRealFile(ChildStruct->RFile));
+        ReturnValue = MiscClipBoardCopyText(CMGetRealFile(ChildStruct->RFile));
     }
 	return(ReturnValue);
 }
@@ -1981,7 +1983,7 @@ long CALLBACK WAMMCopyEntireText(HWND hForm)
         ChildStruct = LoadStructure(hForm);
         EntText = EntText.String(CM_GetTextLengthAll(ChildStruct->hChildCodeMax, 1), 1);
         CM_GetTextAll(ChildStruct->hChildCodeMax, EntText.Get_String());
-        ReturnValue = WAMiscClipBoardCopyText(EntText);
+        ReturnValue = MiscClipBoardCopyText(EntText);
     }
 	return(ReturnValue);
 }
@@ -3069,7 +3071,7 @@ int CALLBACK EnumChilds(HWND hWnd, long lParam)
     }
     else
     {
-        if(WAControlIsWindowChild(hWnd) == 0) goto NoEnumChildsProc;
+        if(ControlIsWindowChild(hWnd) == 0) goto NoEnumChildsProc;
         if(GetWindowLong(hWnd, GWL_USERDATA) == 0) goto NoEnumChildsProc;
         if(lParam != 0) return(JumpToAddrArg((FARPROC) lParam, (long) hWnd));
 NoEnumChildsProc:
@@ -3100,9 +3102,9 @@ void CALLBACK WAMMAddInKillZombie(long CallBack)
 		JumpToAddr(AddInsUnLoad.Get(i)->Content);
     }
 	RunningAddIns.Set(i, 0L);
-    WAIniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), RunningAddIns.Get(i)->Content, MainIniFile);
+    IniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), RunningAddIns.Get(i)->Content, MainIniFile);
     // Change icon
-    if(FRMAddInsListView != 0) WAListViewSetSubItemImage(FRMAddInsListView, ICON_ADDINR, i, 0);
+    if(FRMAddInsListView != 0) ListViewSetSubItemImage(FRMAddInsListView, ICON_ADDINR, i, 0);
 }
                     
 // -----------------------------------------------------------------------
@@ -3127,482 +3129,487 @@ char * CALLBACK WAMMMiscInputBox(HWND hParent, char *NameTitle, long Icon, char 
 // WA Library wrappers for wide strings conversions
 // -----------------------------------------------------------------------
     
-long CALLBACK Wrapper_WAMenuSetItemText(HMENU hMenu, char *Wrapper_ItemText, long ItemID)
+long CALLBACK Wrapper_MenuSetItemText(HMENU hMenu, char *Wrapper_ItemText, long ItemID)
 {
-    return(WAMenuSetItemText(hMenu, StringConvertToCStr(Wrapper_ItemText), ItemID));
+    return(MenuSetItemText(hMenu, StringConvertToCStr(Wrapper_ItemText), ItemID));
 }
 
-long CALLBACK Wrapper_WAMiscClipBoardCopyText(char *Wrapper_WATxt)
+long CALLBACK Wrapper_MenuAddString(HMENU hMenu, char *Wrapper_ItemText, long ItemID, long Enabled)
 {
-    return(WAMiscClipBoardCopyText(StringConvertToCStr(Wrapper_WATxt)));
+    return(MenuAddString(hMenu, StringConvertToCStr(Wrapper_ItemText), ItemID, Enabled));
 }
 
-char * CALLBACK Wrapper_WAMiscClipBoardPasteText(void)
+long CALLBACK Wrapper_MiscClipBoardCopyText(char *Wrapper_WATxt)
 {
-    return(StringCStrConvertToString(WAMiscClipBoardPasteText()));
+    return(MiscClipBoardCopyText(StringConvertToCStr(Wrapper_WATxt)));
 }
 
-long CALLBACK Wrapper_WAComboBoxAddItem(HWND Wrapper_WAhCB, char *Wrapper_WACBItemText, long Wrapper_WACBItemIndex)
+char * CALLBACK Wrapper_MiscClipBoardPasteText(void)
 {
-    return(WAComboBoxAddItem(Wrapper_WAhCB, StringConvertToCStr(Wrapper_WACBItemText), Wrapper_WACBItemIndex));
+    return(StringCStrConvertToString(MiscClipBoardPasteText()));
 }
 
-char * CALLBACK Wrapper_WAComboBoxGetCurrentItem(HWND Wrapper_WAhCB)
+long CALLBACK Wrapper_ComboBoxAddItem(HWND Wrapper_WAhCB, char *Wrapper_WACBItemText, long Wrapper_WACBItemIndex)
 {
-    return(StringCStrConvertToString(WAComboBoxGetCurrentItem(Wrapper_WAhCB)));
+    return(ComboBoxAddItem(Wrapper_WAhCB, StringConvertToCStr(Wrapper_WACBItemText), Wrapper_WACBItemIndex));
 }
 
-char * CALLBACK Wrapper_WAComboBoxGetItem(HWND Wrapper_WAhCB, long Wrapper_WACBIndex)
+char * CALLBACK Wrapper_ComboBoxGetCurrentItem(HWND Wrapper_WAhCB)
 {
-    return(StringCStrConvertToString(WAComboBoxGetItem(Wrapper_WAhCB, Wrapper_WACBIndex)));
+    return(StringCStrConvertToString(ComboBoxGetCurrentItem(Wrapper_WAhCB)));
 }
 
-long CALLBACK Wrapper_WAComboBoxItemExist(HWND Wrapper_WAhCB, char *Wrapper_WACBItem)
+char * CALLBACK Wrapper_ComboBoxGetItem(HWND Wrapper_WAhCB, long Wrapper_WACBIndex)
 {
-    return(WAComboBoxItemExist(Wrapper_WAhCB, StringConvertToCStr(Wrapper_WACBItem)));
+    return(StringCStrConvertToString(ComboBoxGetItem(Wrapper_WAhCB, Wrapper_WACBIndex)));
 }
 
-void CALLBACK Wrapper_WAComboBoxSaveInIniFile(HWND Wrapper_WAhCB, char *EntryToAdd, char *IniKey, char *IniFile)
+long CALLBACK Wrapper_ComboBoxItemExist(HWND Wrapper_WAhCB, char *Wrapper_WACBItem)
 {
-    WAComboBoxSaveInIniFile(Wrapper_WAhCB, StringConvertToCStr(EntryToAdd), StringConvertToCStr(IniKey), StringConvertToCStr(IniFile));
+    return(ComboBoxItemExist(Wrapper_WAhCB, StringConvertToCStr(Wrapper_WACBItem)));
+}
+
+void CALLBACK Wrapper_ComboBoxSaveInIniFile(HWND Wrapper_WAhCB, char *EntryToAdd, char *IniKey, char *IniFile)
+{
+    ComboBoxSaveInIniFile(Wrapper_WAhCB, StringConvertToCStr(EntryToAdd), StringConvertToCStr(IniKey), StringConvertToCStr(IniFile));
 	return;
 }
 
-void CALLBACK Wrapper_WAComboBoxFillFromIniFile(HWND Wrapper_WAhCB, char *IniKey, char *IniFile)
+void CALLBACK Wrapper_ComboBoxFillFromIniFile(HWND Wrapper_WAhCB, char *IniKey, char *IniFile)
 {
-    WAComboBoxFillFromIniFile(Wrapper_WAhCB, StringConvertToCStr(IniKey), StringConvertToCStr(IniFile));
+    ComboBoxFillFromIniFile(Wrapper_WAhCB, StringConvertToCStr(IniKey), StringConvertToCStr(IniFile));
 	return;
 }
 
-char * CALLBACK Wrapper_WAControlGetClassName(HWND Wrapper_WAhWnd)
+char * CALLBACK Wrapper_ControlGetClassName(HWND Wrapper_WAhWnd)
 {
-    return(StringCStrConvertToString(WAControlGetClassName(Wrapper_WAhWnd)));
+    return(StringCStrConvertToString(ControlGetClassName(Wrapper_WAhWnd)));
 }
 
-char * CALLBACK Wrapper_WAControlGetText(HWND Wrapper_WAhWnd)
+char * CALLBACK Wrapper_ControlGetText(HWND Wrapper_WAhWnd)
 {
-    return(StringCStrConvertToString(WAControlGetText(Wrapper_WAhWnd)));
+    return(StringCStrConvertToString(ControlGetText(Wrapper_WAhWnd)));
 }
 
-long CALLBACK Wrapper_WAControlSetText(HWND Wrapper_WAhWnd, char *WAATextToSet)
+long CALLBACK Wrapper_ControlSetText(HWND Wrapper_WAhWnd, char *WAATextToSet)
 {
-    return(WAControlSetText(Wrapper_WAhWnd, StringConvertToCStr(WAATextToSet)));
+    return(ControlSetText(Wrapper_WAhWnd, StringConvertToCStr(WAATextToSet)));
 }
 
-HWND CALLBACK Wrapper_WACreateButton(long Wrapper_WABLeft, long Wrapper_WABTop, long Wrapper_WABWidth, long Wrapper_WABHeight,
+HWND CALLBACK Wrapper_CreateButton(long Wrapper_WABLeft, long Wrapper_WABTop, long Wrapper_WABWidth, long Wrapper_WABHeight,
                                      HWND Wrapper_WAhParent, char *Wrapper_WABText, long Wrapper_WACtrlID, long Wrapper_WAImgType,
                                      HICON Wrapper_WAhImage, WNDPROC Wrapper_WAWinProc, long Wrapper_WAExtraStyle, long Wrapper_WAExtraExStyle)
 {
-    return(WACreateButton(Wrapper_WABLeft, Wrapper_WABTop, Wrapper_WABWidth, Wrapper_WABHeight, Wrapper_WAhParent, StringConvertToCStr(Wrapper_WABText), Wrapper_WACtrlID, Wrapper_WAImgType, Wrapper_WAhImage, Wrapper_WAWinProc, Wrapper_WAExtraStyle, Wrapper_WAExtraExStyle | Buttons_StaticEdge));
+    return(CreateButton(Wrapper_WABLeft, Wrapper_WABTop, Wrapper_WABWidth, Wrapper_WABHeight, Wrapper_WAhParent, StringConvertToCStr(Wrapper_WABText), Wrapper_WACtrlID, Wrapper_WAImgType, Wrapper_WAhImage, Wrapper_WAWinProc, Wrapper_WAExtraStyle, Wrapper_WAExtraExStyle | Buttons_StaticEdge));
 }
 
-long CALLBACK Wrapper_WAMiscMsgBox(HWND WAHParent, char *WAMBText, long WAMBType)
+long CALLBACK Wrapper_MiscMsgBox(HWND WAHParent, char *WAMBText, long WAMBType)
 {
-    return(WAMiscMsgBox(WAHParent, StringConvertToCStr(WAMBText), WAMBType, Requesters));
+    return(MiscMsgBox(WAHParent, StringConvertToCStr(WAMBText), WAMBType, Requesters));
 }
 
-HWND CALLBACK Wrapper_WACreateCheckBox(long WABLeft, long WABTop, long WABWidth, long WABHeight, HWND WAHParent, char *WABText, long WACtrlID, WNDPROC WAWinProc, long WAExtraStyle, long WAUnderState)
+HWND CALLBACK Wrapper_CreateCheckBox(long WABLeft, long WABTop, long WABWidth, long WABHeight, HWND WAHParent, char *WABText, long WACtrlID, WNDPROC WAWinProc, long WAExtraStyle, long WAUnderState)
 {
-    return(WACreateCheckBox(WABLeft, WABTop, WABWidth, WABHeight, WAHParent, StringConvertToCStr(WABText), WACtrlID, WAWinProc, WAExtraStyle, WAUnderState));
+    return(CreateCheckBox(WABLeft, WABTop, WABWidth, WABHeight, WAHParent, StringConvertToCStr(WABText), WACtrlID, WAWinProc, WAExtraStyle, WAUnderState));
 }
 
-HWND CALLBACK Wrapper_WACreateComboBox(long WABLeft, long WABTop, long WABWidth, long WABHeight, HWND WAHParent, char *WABText, long WACtrlID, WNDPROC WAWinProc, long WAExtraStyle)
+HWND CALLBACK Wrapper_CreateComboBox(long WABLeft, long WABTop, long WABWidth, long WABHeight, HWND WAHParent, char *WABText, long WACtrlID, WNDPROC WAWinProc, long WAExtraStyle)
 {
-    return(WACreateComboBox(WABLeft, WABTop, WABWidth, WABHeight, WAHParent, StringConvertToCStr(WABText), WACtrlID, WAWinProc, WAExtraStyle));
+    return(CreateComboBox(WABLeft, WABTop, WABWidth, WABHeight, WAHParent, StringConvertToCStr(WABText), WACtrlID, WAWinProc, WAExtraStyle));
 }
 
-HWND CALLBACK Wrapper_WACreateDialog(long WADLeft, long WADTop, long WADWidth, long WADHeight, HWND WAHParent, HMENU WAhMenu, HICON WAhIcon, char *WADTitle, void (CALLBACK *WAInitProc)(HWND hwnd), WNDPROC WAWinProc, long WAWExStyle, long WAWStyle, long WAShowType)
+HWND CALLBACK Wrapper_CreateNonModalDialog(long WADLeft, long WADTop, long WADWidth, long WADHeight, HWND WAHParent, HMENU WAhMenu, HICON WAhIcon, char *WADTitle, void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WAWinProc, long WAWExStyle, long WAWStyle, long WAShowType)
 {
-    return(WACreateDialog(WADLeft, WADTop, WADWidth, WADHeight, WAHParent, WAhMenu, WAhIcon, StringConvertToCStr(WADTitle), WAInitProc, WAWinProc, WAWExStyle, WAWStyle, WAShowType));
+    return(CreateNonModalDialog(WADLeft, WADTop, WADWidth, WADHeight, WAHParent, WAhMenu, WAhIcon, StringConvertToCStr(WADTitle), InitProc, WAWinProc, WAWExStyle, WAWStyle, WAShowType));
 }
 
-HWND CALLBACK Wrapper_WACreateFrame(long WABLeft, long WABTop, long WABWidth, long WABHeight, HWND WAHParent, char *WABText, long WACtrlID, WNDPROC WAWinProc, long WAExtraStyle)
+HWND CALLBACK Wrapper_CreateFrame(long WABLeft, long WABTop, long WABWidth, long WABHeight, HWND WAHParent, char *WABText, long WACtrlID, WNDPROC WAWinProc, long WAExtraStyle)
 {
-    return(WACreateFrame(WABLeft, WABTop, WABWidth, WABHeight, WAHParent, StringConvertToCStr(WABText), WACtrlID, WAWinProc, WAExtraStyle));
+    return(CreateFrame(WABLeft, WABTop, WABWidth, WABHeight, WAHParent, StringConvertToCStr(WABText), WACtrlID, WAWinProc, WAExtraStyle));
 }
 
-HWND CALLBACK Wrapper_WACreateHexBox(long WAEDLeft, long WAEDTop, long WAEDWidth, long WAEDHeight, HWND WAHParent, char *WAEDText, long WACtrlID, long WAMaxDigits, long WAExtraStyle, long WAExtraExStyle)
+HWND CALLBACK Wrapper_CreateHexBox(long WAEDLeft, long WAEDTop, long WAEDWidth, long WAEDHeight, HWND WAHParent, char *WAEDText, long WACtrlID, long WAMaxDigits, long WAExtraStyle, long WAExtraExStyle)
 {
-    return(WACreateHexBox(WAEDLeft, WAEDTop, WAEDWidth, WAEDHeight, WAHParent, StringConvertToCStr(WAEDText), WACtrlID, WAMaxDigits, WAExtraStyle, WAExtraExStyle));
+    return(CreateHexBox(WAEDLeft, WAEDTop, WAEDWidth, WAEDHeight, WAHParent, StringConvertToCStr(WAEDText), WACtrlID, WAMaxDigits, WAExtraStyle, WAExtraExStyle));
 }
 
-HWND CALLBACK Wrapper_WACreateLabel(long WALLeft, long WALTop, long WALWidth, long WALHeight, HWND WAHParent, char *WALText, long WACtrlID, WNDPROC WAWinProc, long WAExtraStyle, HFONT WAhFont)
+HWND CALLBACK Wrapper_CreateLabel(long WALLeft, long WALTop, long WALWidth, long WALHeight, HWND WAHParent, char *WALText, long WACtrlID, WNDPROC WAWinProc, long WAExtraStyle, HFONT WAhFont)
 {
-    return(WACreateLabel(WALLeft, WALTop, WALWidth, WALHeight, WAHParent, StringConvertToCStr(WALText), WACtrlID, WAWinProc, WAExtraStyle, WAhFont));
+    return(CreateLabel(WALLeft, WALTop, WALWidth, WALHeight, WAHParent, StringConvertToCStr(WALText), WACtrlID, WAWinProc, WAExtraStyle, WAhFont));
 }
 
-HWND CALLBACK Wrapper_WACreateMDIChildDialog(HWND WAHParent, char *WACTitle, HICON WAhIcon, void (CALLBACK *WAInitProc)(HWND hwnd), WNDPROC WAWinProc, long WAExtraStyle, long WAZeroPos, char *WACustomClass)
+HWND CALLBACK Wrapper_CreateMDIChildDialog(HWND WAHParent, char *WACTitle, HICON WAhIcon, void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WAWinProc, long WAExtraStyle, long WAZeroPos, char *WACustomClass)
 {
-    return(WACreateMDIChildDialog(WAHParent, StringConvertToCStr(WACTitle), WAhIcon, WAInitProc, WAWinProc, WAExtraStyle, WAZeroPos, StringConvertToCStr(WACustomClass)));
+    return(CreateMDIChildDialog(WAHParent, StringConvertToCStr(WACTitle), WAhIcon, InitProc, WAWinProc, WAExtraStyle, WAZeroPos, StringConvertToCStr(WACustomClass)));
 }
 
-HWND CALLBACK Wrapper_WACreateMDIDialog(long WAMDILeft, long WAMDITop, long WAMDIWidth, long WAMDIHeight, HWND WAHParent, HMENU WAhMenu, HICON WAhIcon, char *WAMDITitle, void (CALLBACK *WAInitProc)(HWND hwnd), WNDPROC WAWinProc, long WAExtraStyle, long WAShowType)
+HWND CALLBACK Wrapper_CreateMDIDialog(long WAMDILeft, long WAMDITop, long WAMDIWidth, long WAMDIHeight, HWND WAHParent, HMENU WAhMenu, HICON WAhIcon, char *WAMDITitle, void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WAWinProc, long WAExtraStyle, long WAShowType)
 {
-    return(WACreateMDIDialog(WAMDILeft, WAMDITop, WAMDIWidth, WAMDIHeight, WAHParent, WAhMenu, WAhIcon, StringConvertToCStr(WAMDITitle), WAInitProc, WAWinProc, WAExtraStyle, WAShowType));
+    return(CreateMDIDialog(WAMDILeft, WAMDITop, WAMDIWidth, WAMDIHeight, WAHParent, WAhMenu, WAhIcon, StringConvertToCStr(WAMDITitle), InitProc, WAWinProc, WAExtraStyle, WAShowType));
 }
 
-long CALLBACK Wrapper_WACreateModalDialog(long WADLeft, long WADTop, long WADWidth, long WADHeight, HWND WAHParent, DLGPROC WAWinProc, long WAExtraStyle, long WACentered)
+long CALLBACK Wrapper_CreateModalDialog(long WADLeft, long WADTop, long WADWidth, long WADHeight, HWND WAHParent, DLGPROC WAWinProc, long WAExtraStyle, long WACentered)
 {
-    return(WACreateModalDialog(WADLeft, WADTop, WADWidth, WADHeight, WAHParent, WAWinProc, WAExtraStyle, WACentered));
+    return(CreateModalDialog(WADLeft, WADTop, WADWidth, WADHeight, WAHParent, WAWinProc, WAExtraStyle, WACentered));
 }
 
-HWND CALLBACK Wrapper_WACreateRadioButton(long WABLeft, long WABTop, long WABWidth, long WABHeight, HWND WAHParent, char *WABText, long WACtrlID, WNDPROC WAWinProc, long WAExtraStyle)
+HWND CALLBACK Wrapper_CreateRadioButton(long WABLeft, long WABTop, long WABWidth, long WABHeight, HWND WAHParent, char *WABText, long WACtrlID, WNDPROC WAWinProc, long WAExtraStyle)
 {
-    return(WACreateRadioButton(WABLeft, WABTop, WABWidth, WABHeight, WAHParent, StringConvertToCStr(WABText), WACtrlID, WAWinProc, WAExtraStyle));
+    return(CreateRadioButton(WABLeft, WABTop, WABWidth, WABHeight, WAHParent, StringConvertToCStr(WABText), WACtrlID, WAWinProc, WAExtraStyle));
 }
 
-HWND CALLBACK Wrapper_WACreateRichTextBox(long WAEDLeft, long WAEDTop, long WAEDWidth, long WAEDHeight, HWND WAHParent, char *WAEDText, long WACtrlID, WNDPROC WAWinProc, long WAExtraStyle, long WASetborder)
+HWND CALLBACK Wrapper_CreateRichTextBox(long WAEDLeft, long WAEDTop, long WAEDWidth, long WAEDHeight, HWND WAHParent, char *WAEDText, long WACtrlID, WNDPROC WAWinProc, long WAExtraStyle, long WASetborder)
 {
-    return(WACreateRichTextBox(WAEDLeft, WAEDTop, WAEDWidth, WAEDHeight, WAHParent, StringConvertToCStr(WAEDText), WACtrlID, WAWinProc, WAExtraStyle, WASetborder));
+    return(CreateRichTextBox(WAEDLeft, WAEDTop, WAEDWidth, WAEDHeight, WAHParent, StringConvertToCStr(WAEDText), WACtrlID, WAWinProc, WAExtraStyle, WASetborder));
 }
 
-HWND CALLBACK Wrapper_WACreateSplashDialog(long WADLeft, long WADTop, long WADWidth, long WADHeight, char *WADTitle, HWND WAHParent, HMENU WAhMenu, HICON WAhIcon, void (CALLBACK *WAInitProc)(HWND hwnd), WNDPROC WAWinProc, long WAWExStyle, long WAWStyle, long WAShowType)
+HWND CALLBACK Wrapper_CreateSplashDialog(long WADLeft, long WADTop, long WADWidth, long WADHeight, char *WADTitle, HWND WAHParent, HMENU WAhMenu, HICON WAhIcon, void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WAWinProc, long WAWExStyle, long WAWStyle, long WAShowType)
 {
-    return(WACreateSplashDialog(WADLeft, WADTop, WADWidth, WADHeight, StringConvertToCStr(WADTitle), WAHParent, WAhMenu, WAhIcon, WAInitProc, WAWinProc, WAWExStyle, WAWStyle, WAShowType));
+    return(CreateSplashDialog(WADLeft, WADTop, WADWidth, WADHeight, StringConvertToCStr(WADTitle), WAHParent, WAhMenu, WAhIcon, InitProc, WAWinProc, WAWExStyle, WAWStyle, WAShowType));
 }
 
-HWND CALLBACK Wrapper_WACreateStatusBar(char *WASBText, long WARaiseType, HWND WAHParent, long WACtrlID, WNDPROC WAWinProc, long WAExtraStyle)
+HWND CALLBACK Wrapper_CreateStatusBar(char *WASBText, long WARaiseType, HWND WAHParent, long WACtrlID, WNDPROC WAWinProc, long WAExtraStyle)
 {
-    return(WACreateStatusBar(StringConvertToCStr(WASBText), WARaiseType, WAHParent, WACtrlID, WAWinProc, WAExtraStyle));
+    return(CreateStatusBar(StringConvertToCStr(WASBText), WARaiseType, WAHParent, WACtrlID, WAWinProc, WAExtraStyle));
 }
 
-HWND CALLBACK Wrapper_WACreateTextBox(long WAEDLeft, long WAEDTop, long WAEDWidth, long WAEDHeight, HWND WAHParent, char *WAEDText, long WACtrlID, WNDPROC WAWinProc, long WAExtraStyle, long WAExtraExStyle)
+HWND CALLBACK Wrapper_CreateTextBox(long WAEDLeft, long WAEDTop, long WAEDWidth, long WAEDHeight, HWND WAHParent, char *WAEDText, long WACtrlID, WNDPROC WAWinProc, long WAExtraStyle, long WAExtraExStyle)
 {
-    return(WACreateTextBox(WAEDLeft, WAEDTop, WAEDWidth, WAEDHeight, WAHParent, StringConvertToCStr(WAEDText), WACtrlID, WAWinProc, WAExtraStyle, WAExtraExStyle));
+    return(CreateTextBox(WAEDLeft, WAEDTop, WAEDWidth, WAEDHeight, WAHParent, StringConvertToCStr(WAEDText), WACtrlID, WAWinProc, WAExtraStyle, WAExtraExStyle));
 }
 
-char * CALLBACK Wrapper_WADateGetDay(void)
+char * CALLBACK Wrapper_DateGetDay(void)
 {
-    return(StringCStrConvertToString(WADateGetDay()));
+    return(StringCStrConvertToString(DateGetDay()));
 }
 
-char * CALLBACK Wrapper_WADateGetFormat(char *WADateformat)
+char * CALLBACK Wrapper_DateGetFormat(char *Dateformat)
 {
-    return(StringCStrConvertToString(WADateGetFormat(StringConvertToCStr(WADateformat))));
+    return(StringCStrConvertToString(DateGetFormat(StringConvertToCStr(Dateformat))));
 }
 
-char * CALLBACK Wrapper_WADateGetHour(void)
+char * CALLBACK Wrapper_DateGetHour(void)
 {
-    return(StringCStrConvertToString(WADateGetHour()));
+    return(StringCStrConvertToString(DateGetHour()));
 }
 
-char * CALLBACK Wrapper_WADateGetMinutes(void)
+char * CALLBACK Wrapper_DateGetMinutes(void)
 {
-    return(StringCStrConvertToString(WADateGetMinutes()));
+    return(StringCStrConvertToString(DateGetMinutes()));
 }
 
-char * CALLBACK Wrapper_WADateGetMonth(void)
+char * CALLBACK Wrapper_DateGetMonth(void)
 {
-    return(StringCStrConvertToString(WADateGetMonth()));
+    return(StringCStrConvertToString(DateGetMonth()));
 }
 
-char * CALLBACK Wrapper_WADateGetNow(long WAReportSeconds)
+char * CALLBACK Wrapper_DateGetNow(long WAReportSeconds)
 {
-    return(StringCStrConvertToString(WADateGetNow(WAReportSeconds)));
+    return(StringCStrConvertToString(DateGetNow(WAReportSeconds)));
 }
 
-char * CALLBACK Wrapper_WADateGetSeconds(void)
+char * CALLBACK Wrapper_DateGetSeconds(void)
 {
-    return(StringCStrConvertToString(WADateGetSeconds()));
+    return(StringCStrConvertToString(DateGetSeconds()));
 }
 
-char * CALLBACK Wrapper_WADateGetTimeFormat(char *WADateformat)
+char * CALLBACK Wrapper_DateGetTimeFormat(char *Dateformat)
 {
-    return(StringCStrConvertToString(WADateGetTimeFormat(StringConvertToCStr(WADateformat))));
+    return(StringCStrConvertToString(DateGetTimeFormat(StringConvertToCStr(Dateformat))));
 }
 
-char * CALLBACK Wrapper_WADateGetYear(void)
+char * CALLBACK Wrapper_DateGetYear(void)
 {
-    return(StringCStrConvertToString(WADateGetYear()));
+    return(StringCStrConvertToString(DateGetYear()));
 }
 
-HANDLE CALLBACK Wrapper_WAFileCreateEmpty(char *WAFileName, long WASecurity)
+HANDLE CALLBACK Wrapper_FileCreateEmpty(char *FileName, long WASecurity)
 {
-    return(WAFileCreateEmpty(StringConvertToCStr(WAFileName), WASecurity));
+    return(FileCreateEmpty(StringConvertToCStr(FileName), WASecurity));
 }
 
-long CALLBACK Wrapper_WAFileExist(char *WAFileToSearch)
+long CALLBACK Wrapper_FileExist(char *FileToSearch)
 {
-    return(WAFileExist(StringConvertToCStr(WAFileToSearch)));
+    return(FileExist(StringConvertToCStr(FileToSearch)));
 }
 
-long CALLBACK Wrapper_WAFileGetAccessedTime(char *WAFileName, LPFILETIME WAFileAccessedTime)
+long CALLBACK Wrapper_FileGetAccessedTime(char *FileName, LPFILETIME FileAccessedTime)
 {
-    return(WAFileGetAccessedTime(StringConvertToCStr(WAFileName), WAFileAccessedTime));
+    return(FileGetAccessedTime(StringConvertToCStr(FileName), FileAccessedTime));
 }
 
-long CALLBACK Wrapper_WAFileGetCreationTime(char *WAFileName, LPFILETIME WAFileCreationTime)
+long CALLBACK Wrapper_FileGetCreationTime(char *FileName, LPFILETIME FileCreationTime)
 {
-    return(WAFileGetCreationTime(StringConvertToCStr(WAFileName), WAFileCreationTime));
+    return(FileGetCreationTime(StringConvertToCStr(FileName), FileCreationTime));
 }
 
-char * CALLBACK Wrapper_WAFileGetDirectory(char *WAFileName)
+char * CALLBACK Wrapper_FileGetDirectory(char *FileName)
 {
-    return(StringCStrConvertToString(WAFileGetDirectory(StringConvertToCStr(WAFileName))));
+    return(StringCStrConvertToString(FileGetDirectory(StringConvertToCStr(FileName))));
 }
 
-char * CALLBACK Wrapper_WAFileGetExtension(char *WAFileName)
+char * CALLBACK Wrapper_FileGetExtension(char *FileName)
 {
-    return(StringCStrConvertToString(WAFileGetExtension(StringConvertToCStr(WAFileName))));
+    return(StringCStrConvertToString(FileGetExtension(StringConvertToCStr(FileName))));
 }
 
-char * CALLBACK Wrapper_WAFileGetFileName(char *WAFileName)
+char * CALLBACK Wrapper_FileGetFileName(char *FileName)
 {
-    return(StringCStrConvertToString(WAFileGetFileName(StringConvertToCStr(WAFileName))));
+    return(StringCStrConvertToString(FileGetFileName(StringConvertToCStr(FileName))));
 }
 
-long CALLBACK Wrapper_WAFileGetSize(char *WAFileName)
+long CALLBACK Wrapper_FileGetSize(char *FileName)
 {
-    return(WAFileGetSize(StringConvertToCStr(WAFileName)));
+    return(FileGetSize(StringConvertToCStr(FileName)));
 }
 
-long CALLBACK Wrapper_WAFileGetWriteTime(char *WAFileName, LPFILETIME WAFileWriteTime)
+long CALLBACK Wrapper_FileGetWriteTime(char *FileName, LPFILETIME FileWriteTime)
 {
-    return(WAFileGetWriteTime(StringConvertToCStr(WAFileName), WAFileWriteTime));
+    return(FileGetWriteTime(StringConvertToCStr(FileName), FileWriteTime));
 }
 
-long CALLBACK Wrapper_WAFileIsDirectory(char *WAFileToSearch)
+long CALLBACK Wrapper_FileIsDirectory(char *FileToSearch)
 {
-    return(WAFileIsDirectory(StringConvertToCStr(WAFileToSearch)));
+    return(FileIsDirectory(StringConvertToCStr(FileToSearch)));
 }
 
-HANDLE CALLBACK Wrapper_WAFileOpenR(char *WAFileName) {
-    return(WAFileOpenR(StringConvertToCStr(WAFileName)));
+HANDLE CALLBACK Wrapper_FileOpenR(char *FileName) {
+    return(FileOpenR(StringConvertToCStr(FileName)));
 }
 
-HANDLE CALLBACK Wrapper_WAFileOpenW(char *WAFileName, long WAFilePos)
+HANDLE CALLBACK Wrapper_FileOpenW(char *FileName, long FilePos)
 {
-    return(WAFileOpenW(StringConvertToCStr(WAFileName), WAFilePos));
+    return(FileOpenW(StringConvertToCStr(FileName), FilePos));
 }
 
-HANDLE CALLBACK Wrapper_WAFileOpenWAppend(char *WAFileName)
+HANDLE CALLBACK Wrapper_FileOpenWAppend(char *FileName)
 {
-    return(WAFileOpenWAppend(StringConvertToCStr(WAFileName)));
+    return(FileOpenWAppend(StringConvertToCStr(FileName)));
 }
 
-char * CALLBACK Wrapper_WAFileRemoveExtension(char *WAFileName)
+char * CALLBACK Wrapper_FileRemoveExtension(char *FileName)
 {
-    return(StringCStrConvertToString(WAFileRemoveExtension(StringConvertToCStr(WAFileName))));
+    return(StringCStrConvertToString(FileRemoveExtension(StringConvertToCStr(FileName))));
 }
 
-char * CALLBACK Wrapper_WAFileReplaceExtension(char *WAFileName, char *WANewExtension)
+char * CALLBACK Wrapper_FileReplaceExtension(char *FileName, char *WANewExtension)
 {
-    return(StringCStrConvertToString(WAFileReplaceExtension(StringConvertToCStr(WAFileName), StringConvertToCStr(WANewExtension))));
+    return(StringCStrConvertToString(FileReplaceExtension(StringConvertToCStr(FileName), StringConvertToCStr(WANewExtension))));
 }
 
-long CALLBACK Wrapper_WAFileIsReadOnly(char *WAFileToCheck)
+long CALLBACK Wrapper_FileIsReadOnly(char *FileToCheck)
 {
-    return(WAFileIsReadOnly(StringConvertToCStr(WAFileToCheck)));
+    return(FileIsReadOnly(StringConvertToCStr(FileToCheck)));
 }
 
-long CALLBACK Wrapper_WAFileIsUnix(char *WAFileToCheck)
+long CALLBACK Wrapper_FileIsUnix(char *FileToCheck)
 {
-    return(WAFileIsUnix(StringConvertToCStr(WAFileToCheck)));
+    return(FileIsUnix(StringConvertToCStr(FileToCheck)));
 }
 
-HGLOBAL CALLBACK Wrapper_WAFileLoadIntoMem(char *WAFileToLoad, long *BytesRd)
+HGLOBAL CALLBACK Wrapper_FileLoadIntoMem(char *FileToLoad, long *BytesRd)
 {
-    return(WAFileLoadIntoMem(StringConvertToCStr(WAFileToLoad), BytesRd));
+    return(FileLoadIntoMem(StringConvertToCStr(FileToLoad), BytesRd));
 }
 
-long CALLBACK Wrapper_WAFileSaveFromMem(char *WAFileToSave, long MemToSave, long LenToSave)
+long CALLBACK Wrapper_FileSaveFromMem(char *FileToSave, long MemToSave, long LenToSave)
 {
-    return(WAFileSaveFromMem(StringConvertToCStr(WAFileToSave), MemToSave, LenToSave));
+    return(FileSaveFromMem(StringConvertToCStr(FileToSave), MemToSave, LenToSave));
 }
 
-char * CALLBACK Wrapper_WAFileDir(char *WAWildCard, long FileType)
+char * CALLBACK Wrapper_FileDir(char *WAWildCard, long FileType)
 {
-    return(StringCStrConvertToString(WAFileDir(&(CStr) StringConvertToCStr(WAWildCard), FileType)));
+    return(StringCStrConvertToString(FileDir(&(CStr) StringConvertToCStr(WAWildCard), FileType)));
 }
 
-long CALLBACK Wrapper_WAFileWriteLine(HANDLE WAFileHandle, char *WALineToWrite)
+long CALLBACK Wrapper_FileWriteLine(HANDLE FileHandle, char *WALineToWrite)
 {
-    return(WAFileWriteLine(WAFileHandle, StringConvertToCStr(WALineToWrite)));
+    return(FileWriteLine(FileHandle, StringConvertToCStr(WALineToWrite)));
 }
 
-char * CALLBACK Wrapper_WAFTPGetEntryDate(char *WADirEntry)
+char * CALLBACK Wrapper_FTPGetEntryDate(char *WADirEntry)
 {
-    return(StringCStrConvertToString(WAFTPGetEntryDate(StringConvertToCStr(WADirEntry))));
+    return(StringCStrConvertToString(FTPGetEntryDate(StringConvertToCStr(WADirEntry))));
 }
 
-char * CALLBACK Wrapper_WAFTPGetEntryFileAttributes(char *WADirEntry)
+char * CALLBACK Wrapper_FTPGetEntryFileAttributes(char *WADirEntry)
 {
-    return(StringCStrConvertToString(WAFTPGetEntryFileAttributes(StringConvertToCStr(WADirEntry))));
+    return(StringCStrConvertToString(FTPGetEntryFileAttributes(StringConvertToCStr(WADirEntry))));
 }
 
-char * CALLBACK Wrapper_WAFTPGetEntryFileName(char *WADirEntry)
+char * CALLBACK Wrapper_FTPGetEntryFileName(char *WADirEntry)
 {
-    return(StringCStrConvertToString(WAFTPGetEntryFileName(StringConvertToCStr(WADirEntry))));
+    return(StringCStrConvertToString(FTPGetEntryFileName(StringConvertToCStr(WADirEntry))));
 }
 
-char * CALLBACK Wrapper_WAFTPGetEntryFileSize(char *WADirEntry)
+char * CALLBACK Wrapper_FTPGetEntryFileSize(char *WADirEntry)
 {
-    return(StringCStrConvertToString(WAFTPGetEntryFileSize(StringConvertToCStr(WADirEntry))));
+    return(StringCStrConvertToString(FTPGetEntryFileSize(StringConvertToCStr(WADirEntry))));
 }
 
-long CALLBACK Wrapper_WAFTPIsEntryDir(char *WADirEntry)
+long CALLBACK Wrapper_FTPIsEntryDir(char *WADirEntry)
 {
-    return(WAFTPIsEntryDir(StringConvertToCStr(WADirEntry)));
+    return(FTPIsEntryDir(StringConvertToCStr(WADirEntry)));
 }
 
-long CALLBACK Wrapper_WAGDIGetTextHeight(HWND WAhWnd, HFONT WAhFont, char *WATxt)
+long CALLBACK Wrapper_GDIGetTextHeight(HWND WAhWnd, HFONT WAhFont, char *WATxt)
 {
-    return(WAGDIGetTextHeight(WAhWnd, WAhFont, StringConvertToCStr(WATxt)));
+    return(GDIGetTextHeight(WAhWnd, WAhFont, StringConvertToCStr(WATxt)));
 }
 
-long CALLBACK Wrapper_WAGDIGetTextWidth(HWND WAhWnd, HFONT WAhFont, char *WATxt)
+long CALLBACK Wrapper_GDIGetTextWidth(HWND WAhWnd, HFONT WAhFont, char *WATxt)
 {
-    return(WAGDIGetTextWidth(WAhWnd, WAhFont, StringConvertToCStr(WATxt)));
+    return(GDIGetTextWidth(WAhWnd, WAhFont, StringConvertToCStr(WATxt)));
 }
 
-HFONT CALLBACK Wrapper_WAGDIObtainFont(char *WAFontNameToObtain, long WAFontSizeToObtain, HWND WAhWnd, long WABold, long WAItalic)
+HFONT CALLBACK Wrapper_GDIObtainFont(char *WAFontNameToObtain, long WAFontSizeToObtain, HWND WAhWnd, long WABold, long WAItalic)
 {
-    return(WAGDIObtainFont(StringConvertToCStr(WAFontNameToObtain), WAFontSizeToObtain, WAhWnd, WABold, WAItalic));
+    return(GDIObtainFont(StringConvertToCStr(WAFontNameToObtain), WAFontSizeToObtain, WAhWnd, WABold, WAItalic));
 }
 
-void CALLBACK Wrapper_WAGDIWriteClippedText(HDC WAhDC, long WAx, long WAy, long WAWidth, long WAHeight, char *WAText, long WATextColor, HFONT WAhTextFont, long WATextTransparent, long WABackGroundColor)
+void CALLBACK Wrapper_GDIWriteClippedText(HDC WAhDC, long WAx, long WAy, long WAWidth, long WAHeight, char *WAText, long WATextColor, HFONT WAhTextFont, long WATextTransparent, long WABackGroundColor)
 {
-    WAGDIWriteClippedText(WAhDC, WAx, WAy, WAWidth, WAHeight, StringConvertToCStr(WAText), WATextColor, WAhTextFont, WATextTransparent, WABackGroundColor);
+    GDIWriteClippedText(WAhDC, WAx, WAy, WAWidth, WAHeight, StringConvertToCStr(WAText), WATextColor, WAhTextFont, WATextTransparent, WABackGroundColor);
 }
 
-void CALLBACK Wrapper_WAGDIWriteText(HDC WAhDC, long WAx, long WAy, char *WAText, long WATextColor, HFONT WAhTextFont, long WATextTransparent, long WABackGroundColor)
+void CALLBACK Wrapper_GDIWriteText(HDC WAhDC, long WAx, long WAy, char *WAText, long WATextColor, HFONT WAhTextFont, long WATextTransparent, long WABackGroundColor)
 {
-    WAGDIWriteText(WAhDC, WAx, WAy, StringConvertToCStr(WAText), WATextColor, WAhTextFont, WATextTransparent, WABackGroundColor);
+    GDIWriteText(WAhDC, WAx, WAy, StringConvertToCStr(WAText), WATextColor, WAhTextFont, WATextTransparent, WABackGroundColor);
 }
 
-long CALLBACK Wrapper_WAIniDeleteKey(char *WASection, char *WAKey, char *WAFile)
+long CALLBACK Wrapper_IniDeleteKey(char *WASection, char *WAKey, char *File)
 {
-    return(WAIniDeleteKey(StringConvertToCStr(WASection), StringConvertToCStr(WAKey), StringConvertToCStr(WAFile)));
+    return(IniDeleteKey(StringConvertToCStr(WASection), StringConvertToCStr(WAKey), StringConvertToCStr(File)));
 }
 
-char * CALLBACK Wrapper_WAIniReadKey(char *WASection, char *WAKey, char *WAFile)
+char * CALLBACK Wrapper_IniReadKey(char *WASection, char *WAKey, char *File)
 {
-    return(StringCStrConvertToString(WAIniReadKey(StringConvertToCStr(WASection), StringConvertToCStr(WAKey), StringConvertToCStr(WAFile))));
+    return(StringCStrConvertToString(IniReadKey(StringConvertToCStr(WASection), StringConvertToCStr(WAKey), StringConvertToCStr(File))));
 }
 
-long CALLBACK Wrapper_WAIniReadBoolKey(char *WASection, char *WAKey, char *WAFile)
+long CALLBACK Wrapper_IniReadBoolKey(char *WASection, char *WAKey, char *File)
 {
-    return(WAIniReadBoolKey(StringConvertToCStr(WASection), StringConvertToCStr(WAKey), StringConvertToCStr(WAFile)));
+    return(IniReadBoolKey(StringConvertToCStr(WASection), StringConvertToCStr(WAKey), StringConvertToCStr(File)));
 }
 
-long CALLBACK Wrapper_WAIniWriteKey(char *WASection, char *WAKey, char *WAValue, char *WAFile)
+long CALLBACK Wrapper_IniWriteKey(char *WASection, char *WAKey, char *WAValue, char *File)
 {
-    return(WAIniWriteKey(StringConvertToCStr(WASection), StringConvertToCStr(WAKey), StringConvertToCStr(WAValue), StringConvertToCStr(WAFile)));
+    return(IniWriteKey(StringConvertToCStr(WASection), StringConvertToCStr(WAKey), StringConvertToCStr(WAValue), StringConvertToCStr(File)));
 }
 
-long CALLBACK Wrapper_WAIniWriteSection(char *WASection, char *WAKey, char *WAFile)
+long CALLBACK Wrapper_IniWriteSection(char *WASection, char *WAKey, char *File)
 {
-    return(WAIniWriteSection(StringConvertToCStr(WASection), StringConvertToCStr(WAKey), StringConvertToCStr(WAFile)));
+    return(IniWriteSection(StringConvertToCStr(WASection), StringConvertToCStr(WAKey), StringConvertToCStr(File)));
 }
 
-long CALLBACK Wrapper_WAListBoxAddItem(HWND WAhLB, char *WALBItemText, long WALBItemIndex)
+long CALLBACK Wrapper_ListBoxAddItem(HWND WAhLB, char *WALBItemText, long WALBItemIndex)
 {
-    return(WAListBoxAddItem(WAhLB, StringConvertToCStr(WALBItemText), WALBItemIndex));
+    return(ListBoxAddItem(WAhLB, StringConvertToCStr(WALBItemText), WALBItemIndex));
 }
 
-char * CALLBACK Wrapper_WAListBoxGetCurrentItem(HWND WAhLB)
+char * CALLBACK Wrapper_ListBoxGetCurrentItem(HWND WAhLB)
 {
-    return(StringCStrConvertToString(WAListBoxGetCurrentItem(WAhLB)));
+    return(StringCStrConvertToString(ListBoxGetCurrentItem(WAhLB)));
 }
 
-char * CALLBACK Wrapper_WAListBoxGetItem(HWND WAhLB, long WALBIndex)
+char * CALLBACK Wrapper_ListBoxGetItem(HWND WAhLB, long WALBIndex)
 {
-    return(StringCStrConvertToString(WAListBoxGetItem(WAhLB, WALBIndex)));
+    return(StringCStrConvertToString(ListBoxGetItem(WAhLB, WALBIndex)));
 }
 
-long CALLBACK Wrapper_WAListBoxItemExist(HWND WAhListBox, char *WACBItem)
+long CALLBACK Wrapper_ListBoxItemExist(HWND WAhListBox, char *WACBItem)
 {
-    return(WAListBoxItemExist(WAhListBox, StringConvertToCStr(WACBItem)));
+    return(ListBoxItemExist(WAhListBox, StringConvertToCStr(WACBItem)));
 }
 
-long CALLBACK Wrapper_WAListBoxReplaceItem(HWND WAhLB, long WALBIndex, char *WALBNewItem)
+long CALLBACK Wrapper_ListBoxReplaceItem(HWND WAhLB, long WALBIndex, char *WALBNewItem)
 {
-    return(WAListBoxReplaceItem(WAhLB, WALBIndex, StringConvertToCStr(WALBNewItem)));
+    return(ListBoxReplaceItem(WAhLB, WALBIndex, StringConvertToCStr(WALBNewItem)));
 }
 
-long CALLBACK Wrapper_WAListBoxReplaceSelItem(HWND WAhLB, char *WBLBNewItemText)
+long CALLBACK Wrapper_ListBoxReplaceSelItem(HWND WAhLB, char *WBLBNewItemText)
 {
-    return(WAListBoxReplaceSelItem(WAhLB, StringConvertToCStr(WBLBNewItemText)));
+    return(ListBoxReplaceSelItem(WAhLB, StringConvertToCStr(WBLBNewItemText)));
 }
 
-long CALLBACK Wrapper_WAListViewAddCol(HWND WAhListView, char *WALVColText, long WALVWidth, long WAColPosition)
+long CALLBACK Wrapper_ListViewAddCol(HWND WAhListView, char *WALVColText, long WALVWidth, long WAColPosition)
 {
-    return(WAListViewAddCol(WAhListView, StringConvertToCStr(WALVColText), WALVWidth, WAColPosition));
+    return(ListViewAddCol(WAhListView, StringConvertToCStr(WALVColText), WALVWidth, WAColPosition));
 }
 
-long CALLBACK Wrapper_WAListViewAddItem(HWND WAhListView, char *WALVItemText, long WALVItemPos, long WALVImage)
+long CALLBACK Wrapper_ListViewAddItem(HWND WAhListView, char *WALVItemText, long WALVItemPos, long WALVImage)
 {
-    return(WAListViewAddItem(WAhListView, StringConvertToCStr(WALVItemText), WALVItemPos, WALVImage));
+    return(ListViewAddItem(WAhListView, StringConvertToCStr(WALVItemText), WALVItemPos, WALVImage));
 }
 
-long CALLBACK Wrapper_WAListViewFindItem(HWND WAhListView, char *WALVItemText)
+long CALLBACK Wrapper_ListViewFindItem(HWND WAhListView, char *WALVItemText)
 {
-    return(WAListViewFindItem(WAhListView, StringConvertToCStr(WALVItemText)));
+    return(ListViewFindItem(WAhListView, StringConvertToCStr(WALVItemText)));
 }
 
-long CALLBACK Wrapper_WAListViewFindSubItem(HWND WAhListView, char *WATextToFind, long WASubItemNbr, long WASearchCase)
+long CALLBACK Wrapper_ListViewFindSubItem(HWND WAhListView, char *WATextToFind, long WASubItemNbr, long WASearchCase)
 {
-    return(WAListViewFindSubItem(WAhListView, StringConvertToCStr(WATextToFind), WASubItemNbr, WASearchCase));
+    return(ListViewFindSubItem(WAhListView, StringConvertToCStr(WATextToFind), WASubItemNbr, WASearchCase));
 }
 
-char * CALLBACK Wrapper_WAListViewGetEditResult(long WAlParam)
+char * CALLBACK Wrapper_ListViewGetEditResult(long WAlParam)
 {
-    return(StringCStrConvertToString(WAListViewGetEditResult(WAlParam)));
+    return(StringCStrConvertToString(ListViewGetEditResult(WAlParam)));
 }
 
-char * CALLBACK Wrapper_WAListViewGetHeaderLabel(HWND WAhListView, long WALVColNumber)
+char * CALLBACK Wrapper_ListViewGetHeaderLabel(HWND WAhListView, long WALVColNumber)
 {
-    return(StringCStrConvertToString(WAListViewGetHeaderLabel(WAhListView, WALVColNumber)));
+    return(StringCStrConvertToString(ListViewGetHeaderLabel(WAhListView, WALVColNumber)));
 }
 
-char * CALLBACK Wrapper_WAListViewGetItemText(HWND WAhListView, long WALVItemIndex, long WALVSubItemNumber)
+char * CALLBACK Wrapper_ListViewGetItemText(HWND WAhListView, long WALVItemIndex, long WALVSubItemNumber)
 {
-    return(StringCStrConvertToString(WAListViewGetItemText(WAhListView, WALVItemIndex, WALVSubItemNumber)));
+    return(StringCStrConvertToString(ListViewGetItemText(WAhListView, WALVItemIndex, WALVSubItemNumber)));
 }
 
-char * CALLBACK Wrapper_WAListViewGetSelItemText(HWND WAhListView, long WALVSubItemNumber)
+char * CALLBACK Wrapper_ListViewGetSelItemText(HWND WAhListView, long WALVSubItemNumber)
 {
-    return(StringCStrConvertToString(WAListViewGetSelItemText(WAhListView, WALVSubItemNumber)));
+    return(StringCStrConvertToString(ListViewGetSelItemText(WAhListView, WALVSubItemNumber)));
 }
 
-long CALLBACK Wrapper_WAListViewSetSelItemText(HWND WAhListView, char *WALVItemText, long WALVSubItemNumber)
+long CALLBACK Wrapper_ListViewSetSelItemText(HWND WAhListView, char *WALVItemText, long WALVSubItemNumber)
 {
-    return(WAListViewSetSelItemText(WAhListView, StringConvertToCStr(WALVItemText), WALVSubItemNumber));
+    return(ListViewSetSelItemText(WAhListView, StringConvertToCStr(WALVItemText), WALVSubItemNumber));
 }
 
-long CALLBACK Wrapper_WAListViewSetSubItem(HWND WAhListView, char *WALVItemText, long WALVItemPos, long WALVSubItemPos)
+long CALLBACK Wrapper_ListViewSetSubItem(HWND WAhListView, char *WALVItemText, long WALVItemPos, long WALVSubItemPos)
 {
-    return(WAListViewSetSubItem(WAhListView, StringConvertToCStr(WALVItemText), WALVItemPos, WALVSubItemPos));
+    return(ListViewSetSubItem(WAhListView, StringConvertToCStr(WALVItemText), WALVItemPos, WALVSubItemPos));
 }
 
-char * CALLBACK Wrapper_WAMenuGetString(HMENU WAhMenu, long WAItemID)
+char * CALLBACK Wrapper_MenuGetString(HMENU WAhMenu, long WAItemID)
 {
-    return(StringCStrConvertToString(WAMenuGetString(WAhMenu, WAItemID)));
+    return(StringCStrConvertToString(MenuGetString(WAhMenu, WAItemID)));
 }
 
-long CALLBACK Wrapper_WARebarAddBand(HWND WAhRebar, HWND WAhChild, char *WARBText, long WARBYSize, long WAExtraStyle, long WAMinSize)
+long CALLBACK Wrapper_RebarAddBand(HWND WAhRebar, HWND WAhChild, char *WARBText, long WARBYSize, long WAExtraStyle, long WAMinSize)
 {
-    return(WARebarAddBand(WAhRebar, WAhChild, StringConvertToCStr(WARBText), WARBYSize, WAExtraStyle, WAMinSize));
+    return(RebarAddBand(WAhRebar, WAhChild, StringConvertToCStr(WARBText), WARBYSize, WAExtraStyle, WAMinSize));
 }
 
-long CALLBACK Wrapper_WARegistryDeleteKey(HKEY WAKeyRoot, char *WAKeyName, char *WASubKeyName, long WAKeyType)
+long CALLBACK Wrapper_RegistryDeleteKey(HKEY WAKeyRoot, char *WAKeyName, char *WASubKeyName, long WAKeyType)
 {
-    return(WARegistryDeleteKey(WAKeyRoot, StringConvertToCStr(WAKeyName), StringConvertToCStr(WASubKeyName), WAKeyType));
+    return(RegistryDeleteKey(WAKeyRoot, StringConvertToCStr(WAKeyName), StringConvertToCStr(WASubKeyName), WAKeyType));
 }
 
-char * CALLBACK Wrapper_WARegistryGetKeyValue(HKEY WAKeyRoot, char *WAKeyName, char *WASubKeyRef)
+char * CALLBACK Wrapper_RegistryGetKeyValue(HKEY WAKeyRoot, char *WAKeyName, char *WASubKeyRef)
 {
-    return(StringCStrConvertToString(WARegistryGetKeyValue(WAKeyRoot, StringConvertToCStr(WAKeyName), StringConvertToCStr(WASubKeyRef))));
+    return(StringCStrConvertToString(RegistryGetKeyValue(WAKeyRoot, StringConvertToCStr(WAKeyName), StringConvertToCStr(WASubKeyRef))));
 }
 
-long CALLBACK Wrapper_WARegistryUpdateKey(HKEY WAKeyRoot, char *WAKeyName, char *WASubKeyName, char *WASubKeyValue, long WAKeyType)
+long CALLBACK Wrapper_RegistryUpdateKey(HKEY WAKeyRoot, char *WAKeyName, char *WASubKeyName, char *WASubKeyValue, long WAKeyType)
 {
-    return(WARegistryUpdateKey(WAKeyRoot, StringConvertToCStr(WAKeyName), StringConvertToCStr(WASubKeyName), StringConvertToCStr(WASubKeyValue), WAKeyType));
+    return(RegistryUpdateKey(WAKeyRoot, StringConvertToCStr(WAKeyName), StringConvertToCStr(WASubKeyName), StringConvertToCStr(WASubKeyValue), WAKeyType));
 }
 
-void CALLBACK Wrapper_WAMiscShellAddFileToRecents(char *WAFileName)
+void CALLBACK Wrapper_MiscShellAddFileToRecents(char *FileName)
 {
-    WAMiscShellAddFileToRecents(StringConvertToCStr(WAFileName));
+    MiscShellAddFileToRecents(StringConvertToCStr(FileName));
 }
 
 long CALLBACK Wrapper_SocketConnect(SOCKET WAhSock, LPSOCKADDR_IN WASockStruct, long WAMessage, HWND WAhWnd, char *WAIP, long WAPort, long WATimeOut)
@@ -3780,59 +3787,59 @@ long CALLBACK Wrapper_StringStringToHex(char *WAHexString)
     return(StringStringToHex(StringConvertToCStr(WAHexString)));
 }
 
-long CALLBACK Wrapper_WASysTabAddItem(HWND WAhTab, char *WATabText, long WATabIndex, long WAImgIndex)
+long CALLBACK Wrapper_SysTabAddItem(HWND WAhTab, char *WATabText, long WATabIndex, long WAImgIndex)
 {
-    return(WASysTabAddItem(WAhTab, StringConvertToCStr(WATabText), WATabIndex, WAImgIndex));
+    return(SysTabAddItem(WAhTab, StringConvertToCStr(WATabText), WATabIndex, WAImgIndex));
 }
 
-void CALLBACK Wrapper_WATextBoxAddText(HWND WAhTextBox, char *WATbText)
+void CALLBACK Wrapper_TextBoxAddText(HWND WAhTextBox, char *WATbText)
 {
-    WATextBoxAddText(WAhTextBox, StringConvertToCStr(WATbText));
+    TextBoxAddText(WAhTextBox, StringConvertToCStr(WATbText));
 }
 
-char * CALLBACK Wrapper_WATextBoxGetPasswordChar(HWND WAhTextBox)
+char * CALLBACK Wrapper_TextBoxGetPasswordChar(HWND WAhTextBox)
 {
-    return(StringCStrConvertToString(WATextBoxGetPasswordChar(WAhTextBox)));
+    return(StringCStrConvertToString(TextBoxGetPasswordChar(WAhTextBox)));
 }
 
-long CALLBACK Wrapper_WATextBoxSetPasswordChar(HWND WAhTextBox, char *PassChar)
+long CALLBACK Wrapper_TextBoxSetPasswordChar(HWND WAhTextBox, char *PassChar)
 {
-    return(WATextBoxSetPasswordChar(WAhTextBox, StringConvertToCStr(PassChar)));
+    return(TextBoxSetPasswordChar(WAhTextBox, StringConvertToCStr(PassChar)));
 }
 
-long CALLBACK Wrapper_WAToolBarAddButton(HWND WAhToolbar, char *ButtonText, long WATBButtonID, long WAImgIndex, long ButtonStyle, long ButtonState, long WANoImage)
+long CALLBACK Wrapper_ToolBarAddButton(HWND WAhToolbar, char *ButtonText, long WATBButtonID, long WAImgIndex, long ButtonStyle, long ButtonState, long WANoImage)
 {
-    return(WAToolBarAddButton(WAhToolbar, StringConvertToCStr(ButtonText), WATBButtonID, WAImgIndex, ButtonStyle, ButtonState, WANoImage));
+    return(ToolBarAddButton(WAhToolbar, StringConvertToCStr(ButtonText), WATBButtonID, WAImgIndex, ButtonStyle, ButtonState, WANoImage));
 }
 
-void CALLBACK Wrapper_WAToolBarDisplayToolTip(char *WATextToShow, long WAlParam)
+void CALLBACK Wrapper_ToolBarDisplayToolTip(char *WATextToShow, long WAlParam)
 {
-    WAToolBarDisplayToolTip(StringConvertToCStr(WATextToShow), WAlParam);
+    ToolBarDisplayToolTip(StringConvertToCStr(WATextToShow), WAlParam);
 }
 
-HTREEITEM CALLBACK Wrapper_WATreeViewAddItem(HWND WAhTreeView, char *WATVItemText, HTREEITEM WATVParent, HTREEITEM WATVChildPos, long WATVImage, long WATVSelImage, long WAExtraStyle, long WARefreshParentAfterAdd)
+HTREEITEM CALLBACK Wrapper_TreeViewAddItem(HWND WAhTreeView, char *WATVItemText, HTREEITEM WATVParent, HTREEITEM WATVChildPos, long WATVImage, long WATVSelImage, long WAExtraStyle, long WARefreshParentAfterAdd)
 {
-    return(WATreeViewAddItem(WAhTreeView, StringConvertToCStr(WATVItemText), WATVParent, WATVChildPos, WATVImage, WATVSelImage, WAExtraStyle, WARefreshParentAfterAdd));
+    return(TreeViewAddItem(WAhTreeView, StringConvertToCStr(WATVItemText), WATVParent, WATVChildPos, WATVImage, WATVSelImage, WAExtraStyle, WARefreshParentAfterAdd));
 }
 
-char * CALLBACK Wrapper_WATreeViewGetItemText(HWND WAhTreeView, HTREEITEM WAhItem)
+char * CALLBACK Wrapper_TreeViewGetItemText(HWND WAhTreeView, HTREEITEM WAhItem)
 {
-    return(StringCStrConvertToString(WATreeViewGetItemText(WAhTreeView, WAhItem)));
+    return(StringCStrConvertToString(TreeViewGetItemText(WAhTreeView, WAhItem)));
 }
 
-long CALLBACK Wrapper_WATreeViewSearchChildPartialText(HWND WAhTreeView, HTREEITEM WAhNode, char *WAItemText)
+long CALLBACK Wrapper_TreeViewSearchChildPartialText(HWND WAhTreeView, HTREEITEM WAhNode, char *WAItemText)
 {
-    return(WATreeViewSearchChildPartialText(WAhTreeView, WAhNode, StringConvertToCStr(WAItemText)));
+    return(TreeViewSearchChildPartialText(WAhTreeView, WAhNode, StringConvertToCStr(WAItemText)));
 }
 
-long CALLBACK Wrapper_WATreeViewSearchItemText(HWND WAhTreeView, HTREEITEM WAhNode, char *WAItemText)
+long CALLBACK Wrapper_TreeViewSearchItemText(HWND WAhTreeView, HTREEITEM WAhNode, char *WAItemText)
 {
-    return(WATreeViewSearchItemText(WAhTreeView, WAhNode, StringConvertToCStr(WAItemText)));
+    return(TreeViewSearchItemText(WAhTreeView, WAhNode, StringConvertToCStr(WAItemText)));
 }
 
-long CALLBACK Wrapper_WATreeViewSetItemText(HWND WAhTreeView, HTREEITEM WAhItem, char *WAItemText)
+long CALLBACK Wrapper_TreeViewSetItemText(HWND WAhTreeView, HTREEITEM WAhItem, char *WAItemText)
 {
-    return(WATreeViewSetItemText(WAhTreeView, WAhItem, StringConvertToCStr(WAItemText)));
+    return(TreeViewSetItemText(WAhTreeView, WAhItem, StringConvertToCStr(WAItemText)));
 }
 
 char * CALLBACK StringLeft(char *String, long Dat)
@@ -3903,14 +3910,14 @@ long CALLBACK StringIsNumeric(char *String)
 }
 
 // Future extensions
-long CALLBACK WAMiscObtainExtendedFunctions(void)
+long CALLBACK MiscObtainExtendedFunctions(void)
 {
     return(0);
 }
 
-HWND CALLBACK Wrapper_WACreateDockingBox(char *Title, WNDPROC WindowProc)
+HWND CALLBACK Wrapper_CreateDockingBox(char *Title, WNDPROC WindowProc)
 {
-	return(WACreateDockingBox(StringConvertToCStr(Title), WindowProc, hMDIform.hDock, MainIniFile.Get_String()));
+	return(CreateDockingBox(StringConvertToCStr(Title), WindowProc, hMDIform.hDock, MainIniFile.Get_String()));
 }
 
 long CALLBACK Wrapper_DockingBoxWasVisible(char *DockName)
@@ -3938,17 +3945,17 @@ HWND WAMMCreateCustomChildDialog(CStr Title, void (CALLBACK *CallBackInit)(HWND 
 	CurCustChildProc = CallBackProc;
 	CurCustChildTitle = Title;
 	// Create a new child window
-    if(NbForms != 0) if(WAControlGetWindowState(CurrentForm) == SW_SHOWMAXIMIZED) goto ForceMaximize;
+    if(NbForms != 0) if(ControlGetWindowState(CurrentForm) == SW_SHOWMAXIMIZED) goto ForceMaximize;
 	// Save arguments
     switch(AutoMaximizeChilds)
     {
         case 0:
-            hWnd = WACreateMDIChildDialog(hMDIform.hClient, "", LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_SNAP)), 
+            hWnd = CreateMDIChildDialog(hMDIform.hClient, "", LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_SNAP)), 
                                           CustChildWinInitProc, CustChildWinProc, 0, 1, "");
 			break;
 		case 1:
 ForceMaximize:
-            hWnd = WACreateMDIChildDialog(hMDIform.hClient, "", LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_SNAP)),
+            hWnd = CreateMDIChildDialog(hMDIform.hClient, "", LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_SNAP)),
                                           CustChildWinInitProc, CustChildWinProc, WS_MAXIMIZE, 1, "");
 			break;
     }
@@ -3977,7 +3984,7 @@ void CALLBACK CustChildWinInitProc(HWND hWnd)
 	// Set title
 	NewChildMem->RFile->Set_String(CurCustChildTitle.Get_String());
 	// Set the child text
-	WAControlSetText(hWnd, CurCustChildTitle);
+	ControlSetText(hWnd, CurCustChildTitle);
     CurrentForm = hWnd;
 	// Now we can set the pointer to the structure
     SetWindowLong(hWnd, GWL_USERDATA, (long) NewChildMem);
@@ -4000,7 +4007,7 @@ LRESULT CALLBACK CustChildWinProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             CurrentForm = hWnd;
 			break;
         case WM_MOUSEACTIVATE:
-            if(WAClientGetActiveChild(hMDIform.hClient) != hWnd)
+            if(ClientGetActiveChild(hMDIform.hClient) != hWnd)
             {
                 CurrentForm = hWnd;
                 SetFocus(CurrentForm);
@@ -4015,7 +4022,7 @@ LRESULT CALLBACK CustChildWinProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             }
 			break;
         case WM_PAINT:
-            CurrentForm = WAClientGetActiveChild(hMDIform.hClient);
+            CurrentForm = ClientGetActiveChild(hMDIform.hClient);
 			break;
 		case WM_CLOSE:
 			ChildStruct = LoadStructure(hWnd);

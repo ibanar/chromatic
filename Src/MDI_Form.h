@@ -36,7 +36,7 @@
 
 // -----------------------------------------------------------------------
 // Variables
-extern WAMDIDAT hMDIform;
+extern MDIDAT hMDIform;
 extern CStr MDIRetVal;
 extern long TimerHandle;
 extern long FreezeTimer;

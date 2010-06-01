@@ -157,9 +157,9 @@ LRESULT CALLBACK Object_WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
         {
             PrintScriptError(L);
         }
-        return(WAControlNextHook(hWnd, uMsg, wParam, lParam));
+        return(ControlNextHook(hWnd, uMsg, wParam, lParam));
     }
-    return(WAControlNextHook(hWnd, uMsg, wParam, lParam));
+    return(ControlNextHook(hWnd, uMsg, wParam, lParam));
 }
 
 // -----------------------------------------------------------------------
