@@ -118,11 +118,16 @@ Source: "..\Debug\Projects\FilterRawToC\Filter.ico"; DestDir: "{app}\Projects\Fi
 Source: "..\Debug\Projects\FilterRawToC\FilterDatas.c"; DestDir: "{app}\Projects\FilterRawToC"; Flags: ignoreversion
 Source: "..\Debug\Projects\FilterRawToC\Filter.c"; DestDir: "{app}\Projects\FilterRawToC"; Flags: ignoreversion
 Source: "..\Debug\Projects\FilterRawToC\FilterRawToC.med"; DestDir: "{app}\Projects\FilterRawToC"; Flags: ignoreversion
-Source: "..\Debug\Projects\FilterRawToDB\Filter.mdf"; DestDir: "{app}\Projects\FilterRawToDB"; Flags: ignoreversion
-Source: "..\Debug\Projects\FilterRawToDB\Filter.ico"; DestDir: "{app}\Projects\FilterRawToDB"; Flags: ignoreversion
-Source: "..\Debug\Projects\FilterRawToDB\FilterDatas.c"; DestDir: "{app}\Projects\FilterRawToDB"; Flags: ignoreversion
-Source: "..\Debug\Projects\FilterRawToDB\Filter.c"; DestDir: "{app}\Projects\FilterRawToDB"; Flags: ignoreversion
-Source: "..\Debug\Projects\FilterRawToDB\FilterRawToDB.med"; DestDir: "{app}\Projects\FilterRawToDB"; Flags: ignoreversion
+Source: "..\Debug\Projects\FilterRawToDb\Filter.mdf"; DestDir: "{app}\Projects\FilterRawToDb"; Flags: ignoreversion
+Source: "..\Debug\Projects\FilterRawToDb\Filter.ico"; DestDir: "{app}\Projects\FilterRawToDb"; Flags: ignoreversion
+Source: "..\Debug\Projects\FilterRawToDb\FilterDatas.c"; DestDir: "{app}\Projects\FilterRawToDb"; Flags: ignoreversion
+Source: "..\Debug\Projects\FilterRawToDb\Filter.c"; DestDir: "{app}\Projects\FilterRawToDb"; Flags: ignoreversion
+Source: "..\Debug\Projects\FilterRawToDb\FilterRawToDb.med"; DestDir: "{app}\Projects\FilterRawToDb"; Flags: ignoreversion
+Source: "..\Debug\Projects\FilterRawToDcb\Filter.mdf"; DestDir: "{app}\Projects\FilterRawToDcb"; Flags: ignoreversion
+Source: "..\Debug\Projects\FilterRawToDcb\Filter.ico"; DestDir: "{app}\Projects\FilterRawToDcb"; Flags: ignoreversion
+Source: "..\Debug\Projects\FilterRawToDcb\FilterDatas.c"; DestDir: "{app}\Projects\FilterRawToDcb"; Flags: ignoreversion
+Source: "..\Debug\Projects\FilterRawToDcb\Filter.c"; DestDir: "{app}\Projects\FilterRawToDcb"; Flags: ignoreversion
+Source: "..\Debug\Projects\FilterRawToDcb\FilterRawToDcb.med"; DestDir: "{app}\Projects\FilterRawToDcb"; Flags: ignoreversion
 Source: "..\Debug\Projects\TestFreePascal\TestFreePascal.med"; DestDir: "{app}\Projects\TestFreePascal"; Flags: ignoreversion
 Source: "..\Debug\Projects\TestFreePascal\Windows.ico"; DestDir: "{app}\Projects\TestFreePascal"; Flags: ignoreversion
 Source: "..\Debug\Projects\TestFreePascal\WinHello.pp"; DestDir: "{app}\Projects\TestFreePascal"; Flags: ignoreversion
@@ -156,4 +161,3 @@ Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\Chromatic"; Filena
 
 [Run]
 Filename: "{app}\Chromatic.exe"; Description: "{cm:LaunchProgram,Chromatic}"; Flags: nowait postinstall skipifsilent
-
