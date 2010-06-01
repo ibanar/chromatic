@@ -2494,7 +2494,7 @@ char * CALLBACK WAMMGetQuickDirectory(long DirNumber)
 // Fill main context
 void CALLBACK WAMMGetContext(LPADDINCONTEXT VarsStruct)
 {
-    VarsStruct->Version = AppRevision | (AppVersion << 8);
+    VarsStruct->Version = AppRevMin | (AppRevMaj << 8) | (AppVersion << 12);
     VarsStruct->NbrChilds = NbForms;
     VarsStruct->hInstance = ApphInstance;
     VarsStruct->ActiveProject = ProjectOn;
@@ -2560,7 +2560,7 @@ int CALLBACK WAMMGetContextElement(int Idx)
             return(0);
 
         case 1:
-            return(AppRevision | (AppVersion << 8));
+            return(AppRevMin | (AppRevMaj << 8) | (AppVersion << 12));
 
         case 2:
             return(NbForms);

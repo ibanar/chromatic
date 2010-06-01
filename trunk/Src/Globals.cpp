@@ -102,7 +102,8 @@ char *TabAccelerators[84 + 1];
 // -----------------------------------------------------------------------
 // Startup variables
 long AppVersion;
-long AppRevision;
+long AppRevMaj;
+long AppRevMin;
 CStr AppPath;
 CStr VersionString;
 CStr AppTitle;

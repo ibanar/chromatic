@@ -681,7 +681,7 @@ void MCMD_SaveWorkSpace(void)
         WorkSpaceFileName = LdFile;
         // Delete the file first
         DeleteFile(WorkSpaceFileName.Get_String());
-        IniWriteKey(AppTitle.Upper_Case().Get_String() + (CStr) "WORKSPC", "Version", AppVersion + (CStr) AppRevision, WorkSpaceFileName);
+        IniWriteKey(AppTitle.Upper_Case().Get_String() + (CStr) "WORKSPC", "Version", AppVersion + (CStr) AppRevMaj + (CStr) AppRevMin, WorkSpaceFileName);
         SaveAllChildsInWorkSpace(hMDIform.hClient);
         // Include project file into the list
         if(ProjectOn == 1)
