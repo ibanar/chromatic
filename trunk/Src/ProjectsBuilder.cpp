@@ -186,7 +186,7 @@ void CreateProject(int GatherFiles)
     {
 		if(ProjectModified)
 		{
-			switch(WAMiscMsgBox(hMDIform.hWnd, "Current project modified. Save it now ?", MB_ICONQUESTION | MB_YESNOCANCEL, Requesters)) {
+			switch(MiscMsgBox(hMDIform.hWnd, "Current project modified. Save it now ?", MB_ICONQUESTION | MB_YESNOCANCEL, Requesters)) {
 				case IDYES:
 					MCMD_SaveProject();
 					break;
@@ -232,10 +232,10 @@ void CreateProject(int GatherFiles)
     }
     if(ProjectType.Len() != 0)
     {
-        if(WAFileExist(Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".med") != 0)
+        if(FileExist(Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".med") != 0)
         {
             BufString = (CStr) "Project structure already exists." + (CStr) "\r" + (CStr) "Overwrite project and associated files ?";
-            if(WAMiscMsgBox(hMDIform.hWnd, BufString, MB_QUESTION, Requesters) == IDNO)
+            if(MiscMsgBox(hMDIform.hWnd, BufString, MB_QUESTION, Requesters) == IDNO)
             {
                 WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Project creation aborted.");
                 return;
@@ -244,11 +244,11 @@ void CreateProject(int GatherFiles)
         else
         {
             BufString = Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle;
-			if(!WAFileExist(BufString))
+			if(!FileExist(BufString))
 			{
 				if(CreateDirectory(BufString.Get_String(), 0) == 0)
 				{
-					WAMiscMsgBox(hMDIform.hWnd, "Can't create directory structure.", MB_ERROR, Requesters);
+					MiscMsgBox(hMDIform.hWnd, "Can't create directory structure.", MB_ERROR, Requesters);
 					return;
 				}
 			}
@@ -259,12 +259,12 @@ void CreateProject(int GatherFiles)
         DeleteFile(ProjectFName.Get_String());
         
         // Create project file
-        WAIniWriteKey("Project", "Name", ProjectTitle, ProjectFName);
-        WAIniWriteKey("Project", "Title", ProjectTitle, ProjectFName);
-        WAIniWriteKey("Project", "Type", ProjectType, ProjectFName);
-        WAIniWriteKey("Project", "TypeExt", ProjectTypeExt, ProjectFName);
-        WAIniWriteKey("Project", "TypeName", ProjectTypeName, ProjectFName);
-        WAIniWriteKey("Project", "TypeRename", ProjectPostRename, ProjectFName);
+        IniWriteKey("Project", "Name", ProjectTitle, ProjectFName);
+        IniWriteKey("Project", "Title", ProjectTitle, ProjectFName);
+        IniWriteKey("Project", "Type", ProjectType, ProjectFName);
+        IniWriteKey("Project", "TypeExt", ProjectTypeExt, ProjectFName);
+        IniWriteKey("Project", "TypeName", ProjectTypeName, ProjectFName);
+        IniWriteKey("Project", "TypeRename", ProjectPostRename, ProjectFName);
         
         // --- (Re)Init the project values
         Prj_Major = 0;
@@ -279,9 +279,9 @@ void CreateProject(int GatherFiles)
         Prj_FileDescription = "";
         // Read registered values
 
-		Prj_CompanyName = StringReplace(WAIniReadKey("UserInfos", "CompanyName", MainIniFile), Prj_CompanyName.Chr(2), Prj_CompanyName.Chr(13) + Prj_CompanyName.Chr(10), 1, -1, Binary_Compare);
-		Prj_LegalCopyRight = StringReplace(WAIniReadKey("UserInfos", "LegalCopyRight", MainIniFile), Prj_LegalCopyRight.Chr(2), Prj_LegalCopyRight.Chr(13) + Prj_LegalCopyRight.Chr(10), 1, -1, Binary_Compare);
-		Prj_LegalTrademarks = StringReplace(WAIniReadKey("UserInfos", "LegalTrademarks", MainIniFile), Prj_LegalTrademarks.Chr(2), Prj_LegalTrademarks.Chr(13) + Prj_LegalTrademarks.Chr(10), 1, -1, Binary_Compare);
+		Prj_CompanyName = StringReplace(IniReadKey("UserInfos", "CompanyName", MainIniFile), Prj_CompanyName.Chr(2), Prj_CompanyName.Chr(13) + Prj_CompanyName.Chr(10), 1, -1, Binary_Compare);
+		Prj_LegalCopyRight = StringReplace(IniReadKey("UserInfos", "LegalCopyRight", MainIniFile), Prj_LegalCopyRight.Chr(2), Prj_LegalCopyRight.Chr(13) + Prj_LegalCopyRight.Chr(10), 1, -1, Binary_Compare);
+		Prj_LegalTrademarks = StringReplace(IniReadKey("UserInfos", "LegalTrademarks", MainIniFile), Prj_LegalTrademarks.Chr(2), Prj_LegalTrademarks.Chr(13) + Prj_LegalTrademarks.Chr(10), 1, -1, Binary_Compare);
 
         Prj_ProductName = "";
         ProjectDir = (CStr) Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle;
@@ -307,7 +307,7 @@ void CreateProject(int GatherFiles)
 		BufString2 = BufString2 + ProjectTypeImg;
         CopyFile(BufString.Get_String(), BufString2.Get_String(), 0);
 
-        WAIniWriteKey("Project", "Image", ProjectTypeImg, ProjectFName);
+        IniWriteKey("Project", "Image", ProjectTypeImg, ProjectFName);
         
 		if(ProjectWizard.Len() != 0)
 		{
@@ -338,156 +338,156 @@ void CreateProject(int GatherFiles)
 
 			for(i = 0; i <= 999; i++)
 			{
-				ProjectRetVal = WAIniReadKey(ProjectType, "MODULE" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+				ProjectRetVal = IniReadKey(ProjectType, "MODULE" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
 				if(ProjectRetVal.Len() == 0) break;
 				AbsPath = Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectRetVal;
 				DeleteFile(AbsPath.Get_String());
 				BufString = Dirs[DIR_TEMPLATES] + (CStr) "\\" + (CStr) ProjectRetVal;
 				CopyFile(BufString.Get_String(), AbsPath.Get_String(), 0);
 				AbsPath = ChangeAbsolutePaths(AbsPath);
-				WAIniWriteKey("MODULES", "MODULE" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
+				IniWriteKey("MODULES", "MODULE" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
 			}
         
 			for(i = 0; i <= 999; i++)
 			{
-				ProjectRetVal = WAIniReadKey(ProjectType, "OBJECT" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+				ProjectRetVal = IniReadKey(ProjectType, "OBJECT" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
 				if(ProjectRetVal.Len() == 0) break;
 				AbsPath = (CStr) Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectRetVal;
 				DeleteFile(AbsPath.Get_String());
 				BufString = (CStr) Dirs[DIR_TEMPLATES] + (CStr) "\\" + (CStr) ProjectRetVal;
 				CopyFile(BufString.Get_String(),AbsPath.Get_String(),0);
 				AbsPath = ChangeAbsolutePaths(AbsPath);
-				WAIniWriteKey("OBJECTS", "OBJECT" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
+				IniWriteKey("OBJECTS", "OBJECT" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
 			}
 
 			for(i = 0; i <= 999; i++)
 			{
-				ProjectRetVal = WAIniReadKey(ProjectType, "ICONS" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+				ProjectRetVal = IniReadKey(ProjectType, "ICONS" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
 				if(ProjectRetVal.Len() == 0) break;
 				AbsPath = (CStr) Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectRetVal;
 				DeleteFile(AbsPath.Get_String());
 				BufString = Dirs[DIR_TEMPLATES] + (CStr) "\\" + (CStr) ProjectRetVal;
 				CopyFile(BufString.Get_String(), AbsPath.Get_String(), 0);
 				AbsPath = ChangeAbsolutePaths(AbsPath);
-				WAIniWriteKey("ICONS", "ICON" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
-				WAIniWriteKey("ICONS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), "15", ProjectFName);
-				WAIniWriteKey("ICONS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ProjectFName);
+				IniWriteKey("ICONS", "ICON" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
+				IniWriteKey("ICONS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), "15", ProjectFName);
+				IniWriteKey("ICONS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ProjectFName);
 			}
         
 			for(i = 0; i <= 999; i++)
 			{
-				ProjectRetVal = WAIniReadKey(ProjectType, "CURSORS" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+				ProjectRetVal = IniReadKey(ProjectType, "CURSORS" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
 				if(ProjectRetVal.Len() == 0) break;
 				AbsPath = (CStr) Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectRetVal;
 				DeleteFile(AbsPath.Get_String());
 				BufString = Dirs[DIR_TEMPLATES] + (CStr) "\\" + (CStr) ProjectRetVal;
 				CopyFile(BufString.Get_String(),AbsPath.Get_String(), 0);
 				AbsPath = ChangeAbsolutePaths(AbsPath);
-				WAIniWriteKey("CURSORS", "CURSOR" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
-				WAIniWriteKey("CURSORS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), "15", ProjectFName);
-				WAIniWriteKey("CURSORS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ProjectFName);
+				IniWriteKey("CURSORS", "CURSOR" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
+				IniWriteKey("CURSORS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), "15", ProjectFName);
+				IniWriteKey("CURSORS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ProjectFName);
 			}
         
 			for(i = 0; i <= 999; i++)
 			{
-				ProjectRetVal = WAIniReadKey(ProjectType, "BITMAPS" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+				ProjectRetVal = IniReadKey(ProjectType, "BITMAPS" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
 				if(ProjectRetVal.Len() == 0) break;
 				AbsPath = Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectRetVal;
 				DeleteFile(AbsPath.Get_String());
 				BufString = Dirs[DIR_TEMPLATES] + (CStr) "\\" + (CStr) ProjectRetVal;
 				CopyFile(BufString.Get_String(), AbsPath.Get_String(), 0);
 				AbsPath = ChangeAbsolutePaths(AbsPath);
-				WAIniWriteKey("BITMAPS", "BITMAP" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
-				WAIniWriteKey("BITMAPS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), "15", ProjectFName);
-				WAIniWriteKey("BITMAPS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ProjectFName);
+				IniWriteKey("BITMAPS", "BITMAP" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
+				IniWriteKey("BITMAPS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), "15", ProjectFName);
+				IniWriteKey("BITMAPS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ProjectFName);
 			}
         
 			for(i = 0; i <= 999; i++)
 			{
-				ProjectRetVal = WAIniReadKey(ProjectType, "STRINGS" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+				ProjectRetVal = IniReadKey(ProjectType, "STRINGS" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
 				if(ProjectRetVal.Len() == 0) break;
 				AbsPath = Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectRetVal;
 				DeleteFile(AbsPath.Get_String());
 				BufString = Dirs[DIR_TEMPLATES] + (CStr) "\\" + (CStr) ProjectRetVal;
 				CopyFile(BufString.Get_String(), AbsPath.Get_String(), 0);
 				AbsPath = ChangeAbsolutePaths(AbsPath);
-				WAIniWriteKey("STRINGS", "STRING" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
-				WAIniWriteKey("STRINGS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), "15", ProjectFName);
-				WAIniWriteKey("STRINGS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ProjectFName);
+				IniWriteKey("STRINGS", "STRING" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
+				IniWriteKey("STRINGS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), "15", ProjectFName);
+				IniWriteKey("STRINGS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ProjectFName);
 			}
         
 			for(i = 0; i <= 999; i++)
 			{
-				ProjectRetVal = WAIniReadKey(ProjectType, "ACCELERATORS" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+				ProjectRetVal = IniReadKey(ProjectType, "ACCELERATORS" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
 				if(ProjectRetVal.Len() == 0) break;
 				AbsPath = Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectRetVal;
 				DeleteFile(AbsPath.Get_String());
 				BufString = Dirs[DIR_TEMPLATES] + (CStr) "\\" + (CStr) ProjectRetVal;
 				CopyFile(BufString.Get_String(), AbsPath.Get_String(), 0);
 				AbsPath = ChangeAbsolutePaths(AbsPath);
-				WAIniWriteKey("ACCELERATORS", "ACCELERATOR" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
-				WAIniWriteKey("ACCELERATORS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), "15", ProjectFName);
-				WAIniWriteKey("ACCELERATORS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ProjectFName);
+				IniWriteKey("ACCELERATORS", "ACCELERATOR" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
+				IniWriteKey("ACCELERATORS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), "15", ProjectFName);
+				IniWriteKey("ACCELERATORS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ProjectFName);
 			}
         
 			for(i = 0; i <= 999; i++)
 			{
-				ProjectRetVal = WAIniReadKey(ProjectType, "MENUS" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+				ProjectRetVal = IniReadKey(ProjectType, "MENUS" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
 				if(ProjectRetVal.Len() == 0) break;
 				AbsPath = Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectRetVal;
 				DeleteFile(AbsPath.Get_String());
 				BufString = Dirs[DIR_TEMPLATES] + (CStr) "\\" + (CStr) ProjectRetVal;
 				CopyFile(BufString.Get_String(), AbsPath.Get_String(), 0);
 				AbsPath = ChangeAbsolutePaths(AbsPath);
-				WAIniWriteKey("MENUS", "MENU" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
-				WAIniWriteKey("MENUS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), "15", ProjectFName);
-				WAIniWriteKey("MENUS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ProjectFName);
+				IniWriteKey("MENUS", "MENU" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
+				IniWriteKey("MENUS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), "15", ProjectFName);
+				IniWriteKey("MENUS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ProjectFName);
 			}
 
 			for(i = 0; i <= 999; i++)
 			{
-				ProjectRetVal = WAIniReadKey(ProjectType, "DIALOG" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+				ProjectRetVal = IniReadKey(ProjectType, "DIALOG" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
 				if(ProjectRetVal.Len() == 0) break;
 				AbsPath = Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectRetVal;
 				DeleteFile(AbsPath.Get_String());
 				BufString = Dirs[DIR_TEMPLATES] + (CStr) "\\" + (CStr) ProjectRetVal;
 				CopyFile(BufString.Get_String(), AbsPath.Get_String(), 0);
 				AbsPath = ChangeAbsolutePaths(AbsPath);
-				WAIniWriteKey("DIALOGS", "DIALOG" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
-				WAIniWriteKey("DIALOGS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), "15", ProjectFName);
-				WAIniWriteKey("DIALOGS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ProjectFName);
+				IniWriteKey("DIALOGS", "DIALOG" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
+				IniWriteKey("DIALOGS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), "15", ProjectFName);
+				IniWriteKey("DIALOGS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ProjectFName);
 			}
         
 			for(i = 0; i <= 999; i++)
 			{
-				ProjectRetVal = WAIniReadKey(ProjectType, "RAWDATAS" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+				ProjectRetVal = IniReadKey(ProjectType, "RAWDATAS" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
 				if(ProjectRetVal.Len() == 0) break;
 				AbsPath = Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectRetVal;
 				DeleteFile(AbsPath.Get_String());
 				BufString = Dirs[DIR_TEMPLATES] + (CStr) "\\" + (CStr) ProjectRetVal;
 				CopyFile(BufString.Get_String(), AbsPath.Get_String(), 0);
 				AbsPath = ChangeAbsolutePaths(AbsPath);
-				WAIniWriteKey("RAWDATAS", "RAWDATA" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
-				WAIniWriteKey("RAWDATAS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), "15", ProjectFName);
-				WAIniWriteKey("RAWDATAS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ProjectFName);
+				IniWriteKey("RAWDATAS", "RAWDATA" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
+				IniWriteKey("RAWDATAS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), "15", ProjectFName);
+				IniWriteKey("RAWDATAS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ProjectFName);
 			}
         
 			// Old resources
 			for(i = 0; i <= 999; i++)
 			{
-				ProjectRetVal = WAIniReadKey(ProjectType, "RESOURCE" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+				ProjectRetVal = IniReadKey(ProjectType, "RESOURCE" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
 				if(ProjectRetVal.Len() == 0) break;
 				AbsPath = Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectRetVal;
 				DeleteFile(AbsPath.Get_String());
 				BufString = Dirs[DIR_TEMPLATES] + (CStr) "\\" + (CStr) ProjectRetVal;
 				CopyFile(BufString.Get_String(), AbsPath.Get_String(), 0);
 				AbsPath = ChangeAbsolutePaths(AbsPath);
-				WAIniWriteKey("RESOURCES", "RESOURCE" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
+				IniWriteKey("RESOURCES", "RESOURCE" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
 			}
         
 			if(hTreeViewDefs != 0)
 			{
-				ProjectRetVal = WAIniReadKey(ProjectType, "DEF", ProjectsIniFile);
+				ProjectRetVal = IniReadKey(ProjectType, "DEF", ProjectsIniFile);
 				if(ProjectRetVal.Len() != 0)
 				{
 					AbsPath = Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectRetVal;
@@ -495,20 +495,20 @@ void CreateProject(int GatherFiles)
 					BufString = Dirs[DIR_TEMPLATES] + (CStr) "\\" + (CStr) ProjectRetVal;
 					CopyFile(BufString.Get_String(), AbsPath.Get_String(), 0);
 					AbsPath = ChangeAbsolutePaths(AbsPath);
-					WAIniWriteKey("DEFS", "DEF", AbsPath, ProjectFName);
+					IniWriteKey("DEFS", "DEF", AbsPath, ProjectFName);
 				}
 			}
         
 			for(i = 0; i <= 999; i++)
 			{
-				ProjectRetVal = WAIniReadKey(ProjectType, "TEXT" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+				ProjectRetVal = IniReadKey(ProjectType, "TEXT" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
 				if(ProjectRetVal.Len() == 0) break;
 				AbsPath = Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectRetVal;
 				DeleteFile(AbsPath.Get_String());
 				BufString = Dirs[DIR_TEMPLATES] + (CStr) "\\" + (CStr) ProjectRetVal;
 				CopyFile(BufString.Get_String(), AbsPath.Get_String(), 0);
 				AbsPath = ChangeAbsolutePaths(AbsPath);
-				WAIniWriteKey("TEXTS", "TEXT" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
+				IniWriteKey("TEXTS", "TEXT" + (CStr) StringNumberComplement(i, 3).Get_String(), AbsPath, ProjectFName);
 			}
 			Write_Custom_Constants();
 			WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Project created.");
@@ -528,11 +528,11 @@ void Write_Custom_Constants(void)
 	// Write custom constants
 	for(int i = 0; i <= 999; i++)
 	{
-		ProjectRetVal = WAIniReadKey(ProjectType, "CONSTANT" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+		ProjectRetVal = IniReadKey(ProjectType, "CONSTANT" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
 		if(ProjectRetVal.Len() == 0) break;
-		WAIniWriteKey("CONSTANTS", "NAME" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectRetVal, Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".med");
-		ProjectRetVal = WAIniReadKey(ProjectType, "CONSTANTVALUE" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
-		WAIniWriteKey("CONSTANTS", "VALUE" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectRetVal, Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".med");
+		IniWriteKey("CONSTANTS", "NAME" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectRetVal, Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".med");
+		ProjectRetVal = IniReadKey(ProjectType, "CONSTANTVALUE" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+		IniWriteKey("CONSTANTS", "VALUE" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectRetVal, Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".med");
 	}
 }
 
@@ -548,8 +548,8 @@ void Create_Project_IncludeLib(int GatherFiles, CStr IniSection, CStr IniKey, CS
 
 	for(i = 0; i <= 999; i++)
 	{
-		ProjectRetVal = WAIniReadKey(ProjectType, IniKey + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
-		CustInc = WAIniReadKey(ProjectType, "IMPORT" + IniKey + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+		ProjectRetVal = IniReadKey(ProjectType, IniKey + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
+		CustInc = IniReadKey(ProjectType, "IMPORT" + IniKey + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectsIniFile);
 		if(ProjectRetVal.Len() == 0 && CustInc.Len() == 0) break;
 		if(CustInc.Len() != 0)
 		{
@@ -560,16 +560,16 @@ void Create_Project_IncludeLib(int GatherFiles, CStr IniSection, CStr IniKey, CS
 				BufString = Dirs[DIR_TEMPLATES] + (CStr) "\\" + (CStr) CustInc;
 				CopyFile(BufString.Get_String(), AbsPath.Get_String(), 0);
 				AbsPath = ChangeAbsolutePaths(AbsPath);
-				WAIniWriteKey(IniSection, IniKey + (CStr) StringNumberComplement(k, 3).Get_String(), AbsPath, Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".med");
+				IniWriteKey(IniSection, IniKey + (CStr) StringNumberComplement(k, 3).Get_String(), AbsPath, Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".med");
 				k++;
 			}
 			else
 			{
 				// If there's no directory in given file then we know
 				// that it's located in [DIR_TEMPLATES] so reconstruct it
-				if(WAFileGetDirectory(CustInc).Len() == 0) CustInc = Dirs[DIR_TEMPLATES] + (CStr) "\\" + CustInc;
+				if(FileGetDirectory(CustInc).Len() == 0) CustInc = Dirs[DIR_TEMPLATES] + (CStr) "\\" + CustInc;
 				// Just reference it where it is
-				WAIniWriteKey(IniSection, IniKey + (CStr) StringNumberComplement(k, 3).Get_String(), CustInc, Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".med");
+				IniWriteKey(IniSection, IniKey + (CStr) StringNumberComplement(k, 3).Get_String(), CustInc, Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".med");
 				k++;
 			}
 		}
@@ -577,7 +577,7 @@ void Create_Project_IncludeLib(int GatherFiles, CStr IniSection, CStr IniKey, CS
 		{
 			AbsPath = Directory + (CStr) "\\" + (CStr) ProjectRetVal;
 			AbsPath = ChangeAbsolutePaths(AbsPath);
-			WAIniWriteKey(IniSection, IniKey + (CStr) StringNumberComplement(k, 3).Get_String(), AbsPath, Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".med");
+			IniWriteKey(IniSection, IniKey + (CStr) StringNumberComplement(k, 3).Get_String(), AbsPath, Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) ProjectTitle + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".med");
 			k++;
 		}
 	}
@@ -591,16 +591,16 @@ void OpenProjectAuto(CStr PrjName)
     CStr BufString;
 	
 	if(PrjName.Len() == 0) return;
-    if(WAFileExist(PrjName) == 0)
+    if(FileExist(PrjName) == 0)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "Project file not found.", MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, "Project file not found.", MB_ERROR, Requesters);
         AddRecentPrj(PrjName, 0, 0);
         return;
     }
     if(CheckProjectFile(PrjName) == 0)
     {
         BufString = "Not a " + (CStr) AppTitle + (CStr) " project file.";
-        WAMiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
         AddRecentPrj(PrjName, 0, 0);
         return;
     }
@@ -627,9 +627,9 @@ void SaveProject(void)
 	ConstValues.Erase();
 	for(i = 0; i < 999; i++)
 	{
-		CurrentStringFromStrings = WAIniReadKey("Constants", "Name" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectFName);
+		CurrentStringFromStrings = IniReadKey("Constants", "Name" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectFName);
         if(CurrentStringFromStrings.Len() == 0) break;
-        CurrentStringFromStrings2 = WAIniReadKey("Constants", "Value" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectFName);
+        CurrentStringFromStrings2 = IniReadKey("Constants", "Value" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectFName);
 		ConstNames.Add(CurrentStringFromStrings.Get_String());
 		ConstValues.Add(CurrentStringFromStrings2.Get_String());
 	}
@@ -637,34 +637,34 @@ void SaveProject(void)
     DeleteFile(ProjectFName.Get_String());
 
     // --- Header
-    WAIniWriteKey("Project", "Name", ProjectTitle, ProjectFName);
-    WAIniWriteKey("Project", "Type", ProjectType, ProjectFName);
-    WAIniWriteKey("Project", "TypeExt", ProjectTypeExt, ProjectFName);
-    WAIniWriteKey("Project", "TypeRename", ProjectPostRename, ProjectFName);
-    WAIniWriteKey("Project", "TypeName", ProjectTypeName, ProjectFName);
-    WAIniWriteKey("Project", "Image", ProjectTypeImg, ProjectFName);
+    IniWriteKey("Project", "Name", ProjectTitle, ProjectFName);
+    IniWriteKey("Project", "Type", ProjectType, ProjectFName);
+    IniWriteKey("Project", "TypeExt", ProjectTypeExt, ProjectFName);
+    IniWriteKey("Project", "TypeRename", ProjectPostRename, ProjectFName);
+    IniWriteKey("Project", "TypeName", ProjectTypeName, ProjectFName);
+    IniWriteKey("Project", "Image", ProjectTypeImg, ProjectFName);
 
     // --- New header
-    WAIniWriteKey("Project", "Major", Prj_Major, ProjectFName);
-    WAIniWriteKey("Project", "Minor",  Prj_Minor, ProjectFName);
-    WAIniWriteKey( "Project", "Revision",  Prj_Revision, ProjectFName);
-    WAIniWriteKey( "Project", "Release",  Prj_Release, ProjectFName);
-    WAIniWriteKey( "Project", "IncludeVersion",  Prj_IncludeVersion, ProjectFName);
-    WAIniWriteKey( "Project", "IncludeManifest",  Prj_IncludeManifest, ProjectFName);
-    WAIniWriteKey( "Project", "OS",  Prj_OS, ProjectFName);
-    WAIniWriteKey( "Project", "FileType",  Prj_FileType, ProjectFName);
-    WAIniWriteKey( "Project", "Title", ProjectTitle, ProjectFName);
+    IniWriteKey("Project", "Major", Prj_Major, ProjectFName);
+    IniWriteKey("Project", "Minor",  Prj_Minor, ProjectFName);
+    IniWriteKey( "Project", "Revision",  Prj_Revision, ProjectFName);
+    IniWriteKey( "Project", "Release",  Prj_Release, ProjectFName);
+    IniWriteKey( "Project", "IncludeVersion",  Prj_IncludeVersion, ProjectFName);
+    IniWriteKey( "Project", "IncludeManifest",  Prj_IncludeManifest, ProjectFName);
+    IniWriteKey( "Project", "OS",  Prj_OS, ProjectFName);
+    IniWriteKey( "Project", "FileType",  Prj_FileType, ProjectFName);
+    IniWriteKey( "Project", "Title", ProjectTitle, ProjectFName);
 
 	// Check if icon has been changed
 	if(ProjectTypeScheduledImg.Len() != 0)
 	{
-		IconName = WAFileGetFileName(ProjectTypeScheduledImg);
+		IconName = FileGetFileName(ProjectTypeScheduledImg);
 		// Check if new icon is same as old one
 		BufString = ProjectDir + (CStr) "\\" + (CStr) ProjectTypeImg;
 		if(strcmpi(BufString.Get_String(), ProjectTypeScheduledImg.Get_String()) != 0)
 		{
 			// Check if new icon actually exists
-			if(WAFileExist(ProjectTypeScheduledImg) != 0)
+			if(FileExist(ProjectTypeScheduledImg) != 0)
 			{
 				// Remove old icon
 				BufString = ProjectDir + (CStr) "\\" + (CStr) ProjectTypeImg;
@@ -682,66 +682,66 @@ void SaveProject(void)
 			} 
 		}
 	}
-	WAIniWriteKey("Project", "Image", ProjectTypeImg, ProjectFName);
+	IniWriteKey("Project", "Image", ProjectTypeImg, ProjectFName);
 	ProjectTypeScheduledImg = "";
 
-	WAIniWriteKey( "Project", "Comments", StringReplace(Prj_Comments, Prj_Comments.Chr(13) + Prj_Comments.Chr(10), Prj_Comments.Chr(2), 1, -1, Binary_Compare), ProjectFName);
-    WAIniWriteKey( "Project", "CompanyName", StringReplace(Prj_CompanyName, Prj_CompanyName.Chr(13) + Prj_CompanyName.Chr(10), Prj_CompanyName.Chr(2), 1, -1, Binary_Compare), ProjectFName);
-    WAIniWriteKey( "Project", "FileDescription", StringReplace(Prj_FileDescription, Prj_FileDescription.Chr(13) + Prj_FileDescription.Chr(10), Prj_FileDescription.Chr(2), 1, -1, Binary_Compare), ProjectFName);
-    WAIniWriteKey( "Project", "LegalCopyright", StringReplace(Prj_LegalCopyRight, Prj_LegalCopyRight.Chr(13) + Prj_LegalCopyRight.Chr(10), Prj_LegalCopyRight.Chr(2), 1, -1, Binary_Compare), ProjectFName);
-    WAIniWriteKey( "Project", "LegalTradeMarks", StringReplace(Prj_LegalTrademarks, Prj_LegalTrademarks.Chr(13) + Prj_LegalTrademarks.Chr(10), Prj_LegalTrademarks.Chr(2), 1, -1, Binary_Compare), ProjectFName);
-    WAIniWriteKey( "Project", "ProductName", StringReplace(Prj_ProductName, Prj_ProductName.Chr(13) + Prj_ProductName.Chr(10), Prj_ProductName.Chr(2), 1, -1, Binary_Compare), ProjectFName);
+	IniWriteKey( "Project", "Comments", StringReplace(Prj_Comments, Prj_Comments.Chr(13) + Prj_Comments.Chr(10), Prj_Comments.Chr(2), 1, -1, Binary_Compare), ProjectFName);
+    IniWriteKey( "Project", "CompanyName", StringReplace(Prj_CompanyName, Prj_CompanyName.Chr(13) + Prj_CompanyName.Chr(10), Prj_CompanyName.Chr(2), 1, -1, Binary_Compare), ProjectFName);
+    IniWriteKey( "Project", "FileDescription", StringReplace(Prj_FileDescription, Prj_FileDescription.Chr(13) + Prj_FileDescription.Chr(10), Prj_FileDescription.Chr(2), 1, -1, Binary_Compare), ProjectFName);
+    IniWriteKey( "Project", "LegalCopyright", StringReplace(Prj_LegalCopyRight, Prj_LegalCopyRight.Chr(13) + Prj_LegalCopyRight.Chr(10), Prj_LegalCopyRight.Chr(2), 1, -1, Binary_Compare), ProjectFName);
+    IniWriteKey( "Project", "LegalTradeMarks", StringReplace(Prj_LegalTrademarks, Prj_LegalTrademarks.Chr(13) + Prj_LegalTrademarks.Chr(10), Prj_LegalTrademarks.Chr(2), 1, -1, Binary_Compare), ProjectFName);
+    IniWriteKey( "Project", "ProductName", StringReplace(Prj_ProductName, Prj_ProductName.Chr(13) + Prj_ProductName.Chr(10), Prj_ProductName.Chr(2), 1, -1, Binary_Compare), ProjectFName);
 
     // Save includes
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewIncludes);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewIncludes);
     i = 0;
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
         TVEntryToSave = ChangeAbsolutePaths(TVEntryToSave, 1);
-        WAIniWriteKey("INCLUDES", "INCLUDE" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        IniWriteKey("INCLUDES", "INCLUDE" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         i++;
     }
 
     // Save libraries
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewLibs);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewLibs);
     i = 0;
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
         TVEntryToSave = ChangeAbsolutePaths(TVEntryToSave, 1);
-        WAIniWriteKey("LIBS", "LIBRARY" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        IniWriteKey("LIBS", "LIBRARY" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         i++;
     }
     
     // Save modules
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewModules);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewModules);
     i = 0;
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
         TVEntryToSave = ChangeAbsolutePaths(TVEntryToSave, 1);
-        WAIniWriteKey("MODULES", "MODULE" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        IniWriteKey("MODULES", "MODULE" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         i++;
     }
       
     // Save objects
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewObjects);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewObjects);
     i = 0;
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
         TVEntryToSave = ChangeAbsolutePaths(TVEntryToSave, 1);
-        WAIniWriteKey("OBJECTS", "OBJECT" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        IniWriteKey("OBJECTS", "OBJECT" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         i++;
     }
       
     // Save resources
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewResources);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewResources);
     i = 0;
     while(TreeViewChildEntry != 0)
     {
@@ -757,171 +757,171 @@ void SaveProject(void)
         {
             TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
             TVEntryToSave = ChangeAbsolutePaths(TVEntryToSave, 1);
-            WAIniWriteKey("RESOURCES", "RESOURCE" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
+            IniWriteKey("RESOURCES", "RESOURCE" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
             i++;
         }
 SaveNoValidResources:
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
     }
     
     // Save icons
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewIcons);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewIcons);
     i = 0;
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
         TVEntryToSave = ChangeAbsolutePaths(TVEntryToSave, 1);
-        WAIniWriteKey("ICONS", "NAME" + (CStr) StringNumberComplement(i, 3).Get_String(), GetLabelFromTreeView(TreeViewChildEntry).Get_String(), ProjectFName);
-        WAIniWriteKey("ICONS", "ICON" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
-        WAIniWriteKey("ICONS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), GetIconProps(i), ProjectFName);
-        WAIniWriteKey("ICONS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), GetIconLang(i), ProjectFName);
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        IniWriteKey("ICONS", "NAME" + (CStr) StringNumberComplement(i, 3).Get_String(), GetLabelFromTreeView(TreeViewChildEntry).Get_String(), ProjectFName);
+        IniWriteKey("ICONS", "ICON" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
+        IniWriteKey("ICONS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), GetIconProps(i), ProjectFName);
+        IniWriteKey("ICONS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), GetIconLang(i), ProjectFName);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         i++;
     }
 
     // Save cursors
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewCursors);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewCursors);
     i = 0;
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
         TVEntryToSave = ChangeAbsolutePaths(TVEntryToSave, 1);
-        WAIniWriteKey("CURSORS", "NAME" + (CStr) StringNumberComplement(i, 3).Get_String(), GetLabelFromTreeView(TreeViewChildEntry).Get_String(), ProjectFName);
-        WAIniWriteKey("CURSORS", "CURSOR" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
-        WAIniWriteKey("CURSORS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), GetCursorProps(i), ProjectFName);
-        WAIniWriteKey("CURSORS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), GetCursorLang(i), ProjectFName);
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        IniWriteKey("CURSORS", "NAME" + (CStr) StringNumberComplement(i, 3).Get_String(), GetLabelFromTreeView(TreeViewChildEntry).Get_String(), ProjectFName);
+        IniWriteKey("CURSORS", "CURSOR" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
+        IniWriteKey("CURSORS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), GetCursorProps(i), ProjectFName);
+        IniWriteKey("CURSORS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), GetCursorLang(i), ProjectFName);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         i++;
     }
     
     // Save bitmaps
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewBitmaps);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewBitmaps);
     i = 0;
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
         TVEntryToSave = ChangeAbsolutePaths(TVEntryToSave, 1);
-        WAIniWriteKey("BITMAPS", "NAME" + (CStr) StringNumberComplement(i, 3).Get_String(), GetLabelFromTreeView(TreeViewChildEntry).Get_String(), ProjectFName);
-        WAIniWriteKey("BITMAPS", "BITMAP" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
-        WAIniWriteKey("BITMAPS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), GetBitmapProps(i), ProjectFName);
-        WAIniWriteKey("BITMAPS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), GetBitmapLang(i), ProjectFName);
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        IniWriteKey("BITMAPS", "NAME" + (CStr) StringNumberComplement(i, 3).Get_String(), GetLabelFromTreeView(TreeViewChildEntry).Get_String(), ProjectFName);
+        IniWriteKey("BITMAPS", "BITMAP" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
+        IniWriteKey("BITMAPS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), GetBitmapProps(i), ProjectFName);
+        IniWriteKey("BITMAPS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), GetBitmapLang(i), ProjectFName);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         i++;
     }
     
     // Save strings
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewStrings);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewStrings);
     i = 0;
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
         TVEntryToSave = ChangeAbsolutePaths(TVEntryToSave, 1);
-        WAIniWriteKey("STRINGS", "NAME" + (CStr) StringNumberComplement(i, 3).Get_String(), GetLabelFromTreeView(TreeViewChildEntry).Get_String(), ProjectFName);
-        WAIniWriteKey("STRINGS", "STRING" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
-        WAIniWriteKey("STRINGS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), Get_StringProps(i), ProjectFName);
-        WAIniWriteKey("STRINGS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), Get_StringLang(i), ProjectFName);
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        IniWriteKey("STRINGS", "NAME" + (CStr) StringNumberComplement(i, 3).Get_String(), GetLabelFromTreeView(TreeViewChildEntry).Get_String(), ProjectFName);
+        IniWriteKey("STRINGS", "STRING" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
+        IniWriteKey("STRINGS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), Get_StringProps(i), ProjectFName);
+        IniWriteKey("STRINGS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), Get_StringLang(i), ProjectFName);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         i++;
     }
     
     // Save accelerators
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewAccelerators);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewAccelerators);
     i = 0;
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
         TVEntryToSave = ChangeAbsolutePaths(TVEntryToSave, 1);
-        WAIniWriteKey("ACCELERATORS", "NAME" + (CStr) StringNumberComplement(i, 3).Get_String(), GetLabelFromTreeView(TreeViewChildEntry).Get_String(), ProjectFName);
-        WAIniWriteKey("ACCELERATORS", "ACCELERATOR" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
-        WAIniWriteKey("ACCELERATORS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), GetAcceleratorProps(i), ProjectFName);
-        WAIniWriteKey("ACCELERATORS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), GetAcceleratorLang(i), ProjectFName);
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        IniWriteKey("ACCELERATORS", "NAME" + (CStr) StringNumberComplement(i, 3).Get_String(), GetLabelFromTreeView(TreeViewChildEntry).Get_String(), ProjectFName);
+        IniWriteKey("ACCELERATORS", "ACCELERATOR" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
+        IniWriteKey("ACCELERATORS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), GetAcceleratorProps(i), ProjectFName);
+        IniWriteKey("ACCELERATORS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), GetAcceleratorLang(i), ProjectFName);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         i++;
     }
     
     // Save menus
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewMenus);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewMenus);
     i = 0;
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
         TVEntryToSave = ChangeAbsolutePaths(TVEntryToSave, 1);
-        WAIniWriteKey("MENUS", "NAME" + (CStr) StringNumberComplement(i, 3).Get_String(), GetLabelFromTreeView(TreeViewChildEntry).Get_String(), ProjectFName);
-        WAIniWriteKey("MENUS", "MENU" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
-        WAIniWriteKey("MENUS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), GetMenuProps(i), ProjectFName);
-        WAIniWriteKey("MENUS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), GetMenuLang(i), ProjectFName);
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        IniWriteKey("MENUS", "NAME" + (CStr) StringNumberComplement(i, 3).Get_String(), GetLabelFromTreeView(TreeViewChildEntry).Get_String(), ProjectFName);
+        IniWriteKey("MENUS", "MENU" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
+        IniWriteKey("MENUS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), GetMenuProps(i), ProjectFName);
+        IniWriteKey("MENUS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), GetMenuLang(i), ProjectFName);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         i++;
     }
     
     // Save dialogs
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewDialogs);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewDialogs);
     i = 0;
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
         TVEntryToSave = ChangeAbsolutePaths(TVEntryToSave, 1);
-        WAIniWriteKey("DIALOGS", "DIALOG" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        IniWriteKey("DIALOGS", "DIALOG" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         i++;
     }
     
     // Save raw datas
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewRawdatas);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewRawdatas);
     i = 0;
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
         TVEntryToSave = ChangeAbsolutePaths(TVEntryToSave, 1);
-        WAIniWriteKey("RAWDATAS", "NAME" + (CStr) StringNumberComplement(i, 3).Get_String(), GetLabelFromTreeView(TreeViewChildEntry).Get_String(), ProjectFName);
-        WAIniWriteKey("RAWDATAS", "RAWDATA" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
-        WAIniWriteKey("RAWDATAS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), GetRawdataProps(i), ProjectFName);
-        WAIniWriteKey("RAWDATAS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), GetRawdataLang(i), ProjectFName);
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        IniWriteKey("RAWDATAS", "NAME" + (CStr) StringNumberComplement(i, 3).Get_String(), GetLabelFromTreeView(TreeViewChildEntry).Get_String(), ProjectFName);
+        IniWriteKey("RAWDATAS", "RAWDATA" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
+        IniWriteKey("RAWDATAS", "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), GetRawdataProps(i), ProjectFName);
+        IniWriteKey("RAWDATAS", "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), GetRawdataLang(i), ProjectFName);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         i++;
     }
     
     // Save exports
     if(hTreeViewDefs != 0)
     {
-        TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewDefs);
+        TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewDefs);
         if(TreeViewChildEntry != 0)
         {
             TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
             TVEntryToSave = ChangeAbsolutePaths(TVEntryToSave, 1);
-            WAIniWriteKey("DEFS", "DEF", TVEntryToSave, ProjectFName);
+            IniWriteKey("DEFS", "DEF", TVEntryToSave, ProjectFName);
         }
     }
     
     // Save texts
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewTexts);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewTexts);
     i = 0;
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
         TVEntryToSave = ChangeAbsolutePaths(TVEntryToSave, 1);
-        WAIniWriteKey("TEXTS", "TEXT" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        IniWriteKey("TEXTS", "TEXT" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave, ProjectFName);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         i++;
     }
 
 	// Restore the constants
     for(i = 0; i < ConstNames.Amount(); i++)
     {
-		WAIniWriteKey("Constants", "Name" + (CStr) StringNumberComplement(i, 3).Get_String(), ConstNames.Get(i)->Content, ProjectFName);
-		WAIniWriteKey("Constants", "Value" + (CStr) StringNumberComplement(i, 3).Get_String(), ConstValues.Get(i)->Content, ProjectFName);
+		IniWriteKey("Constants", "Name" + (CStr) StringNumberComplement(i, 3).Get_String(), ConstNames.Get(i)->Content, ProjectFName);
+		IniWriteKey("Constants", "Value" + (CStr) StringNumberComplement(i, 3).Get_String(), ConstValues.Get(i)->Content, ProjectFName);
 	}
 	ConstNames.Erase();
 	ConstValues.Erase();
 
-	WAIniDeleteKey("Windows", "", ProjectFName);
-	if(WAIniReadBoolKey("Layout", "SaveProjectState", MainIniFile))
+	IniDeleteKey("Windows", "", ProjectFName);
+	if(IniReadBoolKey("Layout", "SaveProjectState", MainIniFile))
 	{
 		SaveAllChildsInProject(hMDIform.hClient);
 	}
       
 	// Store the new writing date
-	WAFileGetWriteTime(ProjectFName, &ProjectFDate);
+	FileGetWriteTime(ProjectFName, &ProjectFDate);
 
     ProjectModified = FALSE;
     WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Done.");
@@ -945,7 +945,7 @@ int CALLBACK EnumSaveAllChildsInProject(HWND hWnd, long lParam)
     }
     else
     {
-        if(WAControlIsWindowChild(hWnd) == 1)
+        if(ControlIsWindowChild(hWnd) == 1)
         {
             if(GetWindowLong(hWnd, GWL_USERDATA) != 0)
             {
@@ -958,12 +958,12 @@ int CALLBACK EnumSaveAllChildsInProject(HWND hWnd, long lParam)
                         if(IsFileInProject(FileName.Get_String()))
                         {
 							FileName = ChangeAbsolutePaths(FileName, TRUE);
-							WAIniWriteKey("Windows", "Window" + (CStr) StringNumberComplement(ProjectFileNumber, 3).Get_String(), FileName, ProjectFName);
+							IniWriteKey("Windows", "Window" + (CStr) StringNumberComplement(ProjectFileNumber, 3).Get_String(), FileName, ProjectFName);
 							// Check if this file is the on on focus
 							if(hWnd == CurrentForm)
 							{
-								WAIniWriteKey("Windows", "Focus", FileName, ProjectFName);
-								WAIniWriteKey("Windows", "FocusLine", GetCurrentLineNumber(ChildStruct->hChildCodeMax), ProjectFName);
+								IniWriteKey("Windows", "Focus", FileName, ProjectFName);
+								IniWriteKey("Windows", "FocusLine", GetCurrentLineNumber(ChildStruct->hChildCodeMax), ProjectFName);
 							}
 							ProjectFileNumber++;
 						}
@@ -988,26 +988,26 @@ long CheckProjectFile(CStr FileName)
     CStr BufString;
     
 	PrjHeader = PrjHeader.String(15,1);
-	if(WAFileExist(FileName) == 1)
+	if(FileExist(FileName) == 1)
 	{
-        if(WAFileIsDirectory(FileName) == 0)
+        if(FileIsDirectory(FileName) == 0)
         {
-            PrjFileHandle = WAFileOpenR(FileName);
+            PrjFileHandle = FileOpenR(FileName);
             if(PrjFileHandle != INVALID_HANDLE_VALUE)
             {
                 ReadFile(PrjFileHandle, PrjHeader.Get_String(), 15, &PrjFileRead, 0);
-                WAFileClose(PrjFileHandle);
+                FileClose(PrjFileHandle);
             }
 			// Is it an old project ?
 			BufString = "[MASMEDPROJECT]";
             if(strcmpi(PrjHeader.Get_String(),BufString.Get_String()) == 0) return(1);
 
 			PrjHeader = PrjHeader.String(9,1);
-			PrjFileHandle = WAFileOpenR(FileName);
+			PrjFileHandle = FileOpenR(FileName);
             if(PrjFileHandle != INVALID_HANDLE_VALUE)
             {
                 ReadFile(PrjFileHandle, PrjHeader.Get_String(), 9, &PrjFileRead, 0);
-                WAFileClose(PrjFileHandle);
+                FileClose(PrjFileHandle);
             }
 			// New style project ?
 			BufString = "[PROJECT]";
@@ -1031,7 +1031,7 @@ long RealOpenPrj(CStr PrjName)
     {
 		if(ProjectModified)
 		{
-			switch(WAMiscMsgBox(hMDIform.hWnd, "Current project modified. Save it now ?", MB_ICONQUESTION | MB_YESNOCANCEL, Requesters))
+			switch(MiscMsgBox(hMDIform.hWnd, "Current project modified. Save it now ?", MB_ICONQUESTION | MB_YESNOCANCEL, Requesters))
 			{
 				case IDYES:
 					MCMD_SaveProject();
@@ -1054,7 +1054,7 @@ long RealOpenPrj(CStr PrjName)
     
     // Save project name (to resave it)
     ProjectFName = PrjName;
-    ProjectDir = WAFileGetDirectory(PrjName);
+    ProjectDir = FileGetDirectory(PrjName);
     if(strcmp(ProjectDir.Right(1).Get_String(), "\\") == 0) ProjectDir = ProjectDir.Left(ProjectDir.Len() - 1);
 
 	PrjHeaderKey = "Project";
@@ -1062,17 +1062,17 @@ long RealOpenPrj(CStr PrjName)
 	if(CheckProjectFile(PrjName) == 1) PrjHeaderKey = "MAsmEdProject";
     
     // Read project header
-    ProjectTypeExt = WAIniReadKey(PrjHeaderKey, "TypeExt", PrjName);
+    ProjectTypeExt = IniReadKey(PrjHeaderKey, "TypeExt", PrjName);
     if(ProjectTypeExt.Len() == 0) goto MangledOpPrj;
-    ProjectTypeName = WAIniReadKey(PrjHeaderKey, "TypeName", PrjName);
+    ProjectTypeName = IniReadKey(PrjHeaderKey, "TypeName", PrjName);
     if(ProjectTypeName.Len() == 0) goto MangledOpPrj;
-    ProjectTypeImg = WAIniReadKey(PrjHeaderKey, "Image", PrjName);
-    ProjectType = WAIniReadKey(PrjHeaderKey, "Type", PrjName);
+    ProjectTypeImg = IniReadKey(PrjHeaderKey, "Image", PrjName);
+    ProjectType = IniReadKey(PrjHeaderKey, "Type", PrjName);
     if(ProjectType.Len() == 0) goto MangledOpPrj;
-    ProjectTitle = WAIniReadKey(PrjHeaderKey, "Name", PrjName);
+    ProjectTitle = IniReadKey(PrjHeaderKey, "Name", PrjName);
     if(ProjectTitle.Len() == 0) goto MangledOpPrj;
     // Can be empty
-    ProjectPostRename = WAIniReadKey(PrjHeaderKey, "TypeRename", PrjName);
+    ProjectPostRename = IniReadKey(PrjHeaderKey, "TypeRename", PrjName);
     
     // --- New header
     Prj_Major = 0;
@@ -1090,36 +1090,36 @@ long RealOpenPrj(CStr PrjName)
     Prj_LegalTrademarks = "";
     Prj_ProductName = "";
 	ProjectTypeScheduledImg = "";
-    ProjectRetVal = WAIniReadKey(PrjHeaderKey, "Major", PrjName);
+    ProjectRetVal = IniReadKey(PrjHeaderKey, "Major", PrjName);
     if(ProjectRetVal.Len() != 0) Prj_Major = ProjectRetVal.Get_Long();
-    ProjectRetVal = WAIniReadKey(PrjHeaderKey, "Minor", PrjName);
+    ProjectRetVal = IniReadKey(PrjHeaderKey, "Minor", PrjName);
     if(ProjectRetVal.Len() != 0) Prj_Minor = ProjectRetVal.Get_Long();
-    ProjectRetVal = WAIniReadKey(PrjHeaderKey, "Revision", PrjName);
+    ProjectRetVal = IniReadKey(PrjHeaderKey, "Revision", PrjName);
     if(ProjectRetVal.Len() != 0) Prj_Revision = ProjectRetVal.Get_Long();
-    ProjectRetVal = WAIniReadKey(PrjHeaderKey, "Release", PrjName);
+    ProjectRetVal = IniReadKey(PrjHeaderKey, "Release", PrjName);
     if(ProjectRetVal.Len() != 0) Prj_Release = ProjectRetVal.Get_Long();
-    ProjectRetVal = WAIniReadKey(PrjHeaderKey, "IncludeVersion", PrjName);
+    ProjectRetVal = IniReadKey(PrjHeaderKey, "IncludeVersion", PrjName);
     if(ProjectRetVal.Len() != 0) Prj_IncludeVersion = ProjectRetVal.Get_Long();
-    ProjectRetVal = WAIniReadKey(PrjHeaderKey, "IncludeManifest", PrjName);
+    ProjectRetVal = IniReadKey(PrjHeaderKey, "IncludeManifest", PrjName);
     if(ProjectRetVal.Len() != 0) Prj_IncludeManifest = ProjectRetVal.Get_Long();
-    ProjectRetVal = WAIniReadKey(PrjHeaderKey, "OS", PrjName);
+    ProjectRetVal = IniReadKey(PrjHeaderKey, "OS", PrjName);
     if(ProjectRetVal.Len() != 0) Prj_OS = ProjectRetVal.Get_Long();
-    ProjectRetVal = WAIniReadKey(PrjHeaderKey, "FileType", PrjName);
+    ProjectRetVal = IniReadKey(PrjHeaderKey, "FileType", PrjName);
     if(ProjectRetVal.Len() != 0) Prj_FileType = ProjectRetVal.Get_Long();
-    ProjectRetVal = WAIniReadKey(PrjHeaderKey, "Title", PrjName);
+    ProjectRetVal = IniReadKey(PrjHeaderKey, "Title", PrjName);
     if(ProjectRetVal.Len() != 0) ProjectTitle = ProjectRetVal;
     
-	ProjectRetVal = StringReplace(WAIniReadKey(PrjHeaderKey, "Comments", PrjName), ProjectRetVal.Chr(2), ProjectRetVal.Chr(13) + ProjectRetVal.Chr(10), 1, -1, Binary_Compare);
+	ProjectRetVal = StringReplace(IniReadKey(PrjHeaderKey, "Comments", PrjName), ProjectRetVal.Chr(2), ProjectRetVal.Chr(13) + ProjectRetVal.Chr(10), 1, -1, Binary_Compare);
     if(ProjectRetVal.Len() != 0) Prj_Comments = ProjectRetVal;
-	ProjectRetVal = StringReplace(WAIniReadKey(PrjHeaderKey, "CompanyName", PrjName), ProjectRetVal.Chr(2), ProjectRetVal.Chr(13) + ProjectRetVal.Chr(10), 1, -1, Binary_Compare);
+	ProjectRetVal = StringReplace(IniReadKey(PrjHeaderKey, "CompanyName", PrjName), ProjectRetVal.Chr(2), ProjectRetVal.Chr(13) + ProjectRetVal.Chr(10), 1, -1, Binary_Compare);
     if(ProjectRetVal.Len() != 0) Prj_CompanyName = ProjectRetVal;
-	ProjectRetVal = StringReplace(WAIniReadKey(PrjHeaderKey, "FileDescription", PrjName), ProjectRetVal.Chr(2), ProjectRetVal.Chr(13) + ProjectRetVal.Chr(10), 1, -1, Binary_Compare);
+	ProjectRetVal = StringReplace(IniReadKey(PrjHeaderKey, "FileDescription", PrjName), ProjectRetVal.Chr(2), ProjectRetVal.Chr(13) + ProjectRetVal.Chr(10), 1, -1, Binary_Compare);
     if(ProjectRetVal.Len() != 0) Prj_FileDescription = ProjectRetVal;
-	ProjectRetVal = StringReplace(WAIniReadKey(PrjHeaderKey, "LegalCopyright", PrjName), ProjectRetVal.Chr(2), ProjectRetVal.Chr(13) + ProjectRetVal.Chr(10), 1, -1, Binary_Compare);
+	ProjectRetVal = StringReplace(IniReadKey(PrjHeaderKey, "LegalCopyright", PrjName), ProjectRetVal.Chr(2), ProjectRetVal.Chr(13) + ProjectRetVal.Chr(10), 1, -1, Binary_Compare);
     if(ProjectRetVal.Len() != 0) Prj_LegalCopyRight = ProjectRetVal;
-	ProjectRetVal = StringReplace(WAIniReadKey(PrjHeaderKey, "LegalTradeMarks", PrjName), ProjectRetVal.Chr(2), ProjectRetVal.Chr(13) + ProjectRetVal.Chr(10), 1, -1, Binary_Compare);
+	ProjectRetVal = StringReplace(IniReadKey(PrjHeaderKey, "LegalTradeMarks", PrjName), ProjectRetVal.Chr(2), ProjectRetVal.Chr(13) + ProjectRetVal.Chr(10), 1, -1, Binary_Compare);
     if(ProjectRetVal.Len() != 0) Prj_LegalTrademarks = ProjectRetVal;
-	ProjectRetVal = StringReplace(WAIniReadKey(PrjHeaderKey, "ProductName", PrjName), ProjectRetVal.Chr(2), ProjectRetVal.Chr(13) + ProjectRetVal.Chr(10), 1, -1, Binary_Compare);
+	ProjectRetVal = StringReplace(IniReadKey(PrjHeaderKey, "ProductName", PrjName), ProjectRetVal.Chr(2), ProjectRetVal.Chr(13) + ProjectRetVal.Chr(10), 1, -1, Binary_Compare);
     if(ProjectRetVal.Len() != 0) Prj_ProductName = ProjectRetVal;
     
     CreateProjectStruct();
@@ -1128,21 +1128,21 @@ long RealOpenPrj(CStr PrjName)
     // Read includes definitions
     for(i = 0; i <= 999; i++)
     {
-        ProjectRetVal = WAIniReadKey("INCLUDES", "INCLUDE" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
+        ProjectRetVal = IniReadKey("INCLUDES", "INCLUDE" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
         if(ProjectRetVal.Len() == 0) break;
         EntryToAdd = ProjectRetVal;
         EntryToAdd = ChangeRelativePaths(EntryToAdd, ProjectDir);
         if(CheckMissingFile(EntryToAdd, TRUE, hTreeViewIncludes, "", 0, 0))
         {
-            EntryToAdd = WAFileGetFileName(EntryToAdd).Get_String() + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")";
-            WATreeViewAddItem(hTreeView, EntryToAdd, hTreeViewIncludes, 0, ICON_NEW, ICON_NEW, 0, 0);
+            EntryToAdd = FileGetFileName(EntryToAdd).Get_String() + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")";
+            TreeViewAddItem(hTreeView, EntryToAdd, hTreeViewIncludes, 0, ICON_NEW, ICON_NEW, 0, 0);
         }
     }
 
     // Read libs definitions
     for(i = 0; i <= 999; i++)
     {
-        ProjectRetVal = WAIniReadKey("LIBS", "LIBRARY" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
+        ProjectRetVal = IniReadKey("LIBS", "LIBRARY" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
         if(ProjectRetVal.Len() == 0) break;
         EntryToAdd = ProjectRetVal;
         EntryToAdd = ChangeRelativePaths(EntryToAdd, ProjectDir);
@@ -1171,8 +1171,8 @@ long RealOpenPrj(CStr PrjName)
 				ProjectModified = TRUE;
 				// Only report it if modified
 				WriteToStatus("File: '" + Original_Name + (CStr) "' changed into: '" + EntryToAdd + (CStr) "'.");
-				EntryToAdd = WAFileGetFileName(EntryToAdd).Get_String() + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")";
-				WATreeViewAddItem(hTreeView, EntryToAdd, hTreeViewLibs, 0, ICON_STATIC, ICON_STATIC, 0, 0);
+				EntryToAdd = FileGetFileName(EntryToAdd).Get_String() + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")";
+				TreeViewAddItem(hTreeView, EntryToAdd, hTreeViewLibs, 0, ICON_STATIC, ICON_STATIC, 0, 0);
 			}
 			else
 			{
@@ -1186,22 +1186,22 @@ long RealOpenPrj(CStr PrjName)
 		}
 		else
 		{
-			EntryToAdd = WAFileGetFileName(EntryToAdd).Get_String() + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")";
-			WATreeViewAddItem(hTreeView, EntryToAdd, hTreeViewLibs, 0, ICON_STATIC, ICON_STATIC, 0, 0);
+			EntryToAdd = FileGetFileName(EntryToAdd).Get_String() + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")";
+			TreeViewAddItem(hTreeView, EntryToAdd, hTreeViewLibs, 0, ICON_STATIC, ICON_STATIC, 0, 0);
 		}
     }
 
     // Read modules definitions
     for(i = 0; i <= 999; i++)
     {
-        ProjectRetVal = WAIniReadKey("MODULES", "MODULE" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
+        ProjectRetVal = IniReadKey("MODULES", "MODULE" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
         if(ProjectRetVal.Len() == 0) break;
         EntryToAdd = ProjectRetVal;
         EntryToAdd = ChangeRelativePaths(EntryToAdd, ProjectDir);
         if(CheckMissingFile(EntryToAdd, TRUE, hTreeViewModules, "", 0, 0))
         {
-            EntryToAdd = WAFileGetFileName(EntryToAdd).Get_String() + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")";
-            WATreeViewAddItem(hTreeView, EntryToAdd, hTreeViewModules, 0, ICON_NEW, ICON_NEW, 0, 0);
+            EntryToAdd = FileGetFileName(EntryToAdd).Get_String() + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")";
+            TreeViewAddItem(hTreeView, EntryToAdd, hTreeViewModules, 0, ICON_NEW, ICON_NEW, 0, 0);
         }
 
     }
@@ -1209,7 +1209,7 @@ long RealOpenPrj(CStr PrjName)
     // Read objects definitions
     for(i = 0; i <= 999; i++)
     {
-        ProjectRetVal = WAIniReadKey("OBJECTS", "OBJECT" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
+        ProjectRetVal = IniReadKey("OBJECTS", "OBJECT" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
         if(ProjectRetVal.Len() == 0) break;
         EntryToAdd = ProjectRetVal;
         EntryToAdd = ChangeRelativePaths(EntryToAdd, ProjectDir);
@@ -1232,8 +1232,8 @@ long RealOpenPrj(CStr PrjName)
 				ProjectModified = TRUE;
 				// Only report it if modified
 				WriteToStatus("File: '" + Original_Name + (CStr) "' changed into: '" + EntryToAdd + (CStr) "'.");
-				EntryToAdd = WAFileGetFileName(EntryToAdd).Get_String() + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")";
-				WATreeViewAddItem(hTreeView, EntryToAdd, hTreeViewObjects, 0, ICON_OBJECT, ICON_OBJECT, 0, 0);
+				EntryToAdd = FileGetFileName(EntryToAdd).Get_String() + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")";
+				TreeViewAddItem(hTreeView, EntryToAdd, hTreeViewObjects, 0, ICON_OBJECT, ICON_OBJECT, 0, 0);
 			}
 			else
 			{
@@ -1247,30 +1247,30 @@ long RealOpenPrj(CStr PrjName)
 		}
 		else
 		{
-			EntryToAdd = WAFileGetFileName(EntryToAdd).Get_String() + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")";
-            WATreeViewAddItem(hTreeView, EntryToAdd, hTreeViewObjects, 0, ICON_OBJECT, ICON_OBJECT, 0, 0);
+			EntryToAdd = FileGetFileName(EntryToAdd).Get_String() + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")";
+            TreeViewAddItem(hTreeView, EntryToAdd, hTreeViewObjects, 0, ICON_OBJECT, ICON_OBJECT, 0, 0);
 		}
     }
 
     // Read old resources definitions
     for(i = 0; i <= 999; i++)
     {
-        ProjectRetVal = WAIniReadKey("RESOURCES", "RESOURCE" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
+        ProjectRetVal = IniReadKey("RESOURCES", "RESOURCE" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
         if(ProjectRetVal.Len() == 0) break;
         EntryToAdd = ProjectRetVal;
         EntryToAdd = ChangeRelativePaths(EntryToAdd, ProjectDir);
 
         if(CheckMissingFile(EntryToAdd, TRUE, hTreeViewResources, "", 0, 0))
         {
-            EntryToAdd = WAFileGetFileName(EntryToAdd).Get_String() + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")";
-            WATreeViewAddItem(hTreeView, EntryToAdd, hTreeViewResources, 0, ICON_RES, ICON_RES, 0, 0);
+            EntryToAdd = FileGetFileName(EntryToAdd).Get_String() + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")";
+            TreeViewAddItem(hTreeView, EntryToAdd, hTreeViewResources, 0, ICON_RES, ICON_RES, 0, 0);
         }
     }
 
     // Read icons definitions
     for(i = 0; i <= 999; i++)
     {
-        ProjectRetVal = WAIniReadKey("ICONS", "ICON" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
+        ProjectRetVal = IniReadKey("ICONS", "ICON" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
         if(ProjectRetVal.Len() == 0) break;
         EntryToAdd = ProjectRetVal;
         EntryToAdd = ChangeRelativePaths(EntryToAdd, ProjectDir);
@@ -1280,7 +1280,7 @@ long RealOpenPrj(CStr PrjName)
     // Read cursors definitions
     for(i = 0; i <= 999; i++)
     {
-        ProjectRetVal = WAIniReadKey("CURSORS", "CURSOR" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
+        ProjectRetVal = IniReadKey("CURSORS", "CURSOR" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
         if(ProjectRetVal.Len() == 0) break;
         EntryToAdd = ProjectRetVal;
         EntryToAdd = ChangeRelativePaths(EntryToAdd, ProjectDir);
@@ -1290,7 +1290,7 @@ long RealOpenPrj(CStr PrjName)
     // Read bitmaps definitions
     for(i = 0; i <= 999; i++)
     {
-        ProjectRetVal = WAIniReadKey("BITMAPS", "BITMAP" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
+        ProjectRetVal = IniReadKey("BITMAPS", "BITMAP" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
         if(ProjectRetVal.Len() == 0) break;
         EntryToAdd = ProjectRetVal;
         EntryToAdd = ChangeRelativePaths(EntryToAdd, ProjectDir);
@@ -1300,7 +1300,7 @@ long RealOpenPrj(CStr PrjName)
     // Read strings definitions
     for(i = 0; i <= 999; i++)
     {
-        ProjectRetVal = WAIniReadKey("STRINGS", "STRING" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
+        ProjectRetVal = IniReadKey("STRINGS", "STRING" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
         if(ProjectRetVal.Len() == 0) break;
         EntryToAdd = ProjectRetVal;
         EntryToAdd = ChangeRelativePaths(EntryToAdd, ProjectDir);
@@ -1310,7 +1310,7 @@ long RealOpenPrj(CStr PrjName)
     // Read accelerators definitions
     for(i = 0; i <= 999; i++)
     {
-        ProjectRetVal = WAIniReadKey("ACCELERATORS", "ACCELERATOR" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
+        ProjectRetVal = IniReadKey("ACCELERATORS", "ACCELERATOR" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
         if(ProjectRetVal.Len() == 0) break;
         EntryToAdd = ProjectRetVal;
         EntryToAdd = ChangeRelativePaths(EntryToAdd, ProjectDir);
@@ -1320,7 +1320,7 @@ long RealOpenPrj(CStr PrjName)
     // Read menus definitions
     for(i = 0; i <= 999; i++)
     {
-        ProjectRetVal = WAIniReadKey("MENUS", "MENU" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
+        ProjectRetVal = IniReadKey("MENUS", "MENU" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
         if(ProjectRetVal.Len() == 0) break;
         EntryToAdd = ProjectRetVal;
         EntryToAdd = ChangeRelativePaths(EntryToAdd, ProjectDir);
@@ -1330,7 +1330,7 @@ long RealOpenPrj(CStr PrjName)
     // Read dialogs definitions
     for(i = 0; i <= 999; i++)
     {
-        ProjectRetVal = WAIniReadKey("DIALOGS", "DIALOG" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
+        ProjectRetVal = IniReadKey("DIALOGS", "DIALOG" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
         if(ProjectRetVal.Len() == 0) break;
         EntryToAdd = ProjectRetVal;
         EntryToAdd = ChangeRelativePaths(EntryToAdd, ProjectDir);
@@ -1340,7 +1340,7 @@ long RealOpenPrj(CStr PrjName)
     // Read rcdatas definitions
     for(i = 0; i <= 999; i++)
     {
-        ProjectRetVal = WAIniReadKey("RAWDATAS", "RAWDATA" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
+        ProjectRetVal = IniReadKey("RAWDATAS", "RAWDATA" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
         if(ProjectRetVal.Len() == 0) break;
         EntryToAdd = ProjectRetVal;
         EntryToAdd = ChangeRelativePaths(EntryToAdd, ProjectDir);
@@ -1350,15 +1350,15 @@ long RealOpenPrj(CStr PrjName)
     if(hTreeViewDefs != 0)
     {
         // Read exports definitions
-        ProjectRetVal = WAIniReadKey("DEFS", "DEF", PrjName);
+        ProjectRetVal = IniReadKey("DEFS", "DEF", PrjName);
         if(ProjectRetVal.Len() != 0)
         {
             EntryToAdd = ProjectRetVal;
             EntryToAdd = ChangeRelativePaths(EntryToAdd, ProjectDir);
 			if(CheckMissingFile(EntryToAdd, TRUE, hTreeViewDefs, "", 0, 0))
 			{
-                EntryToAdd = WAFileGetFileName(EntryToAdd).Get_String() + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")";
-                WATreeViewAddItem(hTreeView, EntryToAdd, hTreeViewDefs, 0, ICON_NEW, ICON_NEW, 0, 0);
+                EntryToAdd = FileGetFileName(EntryToAdd).Get_String() + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")";
+                TreeViewAddItem(hTreeView, EntryToAdd, hTreeViewDefs, 0, ICON_NEW, ICON_NEW, 0, 0);
             }
         }
     }
@@ -1366,52 +1366,52 @@ long RealOpenPrj(CStr PrjName)
     // Read texts definitions
     for(i = 0; i <= 999; i++)
     {
-        ProjectRetVal = WAIniReadKey("TEXTS", "TEXT" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
+        ProjectRetVal = IniReadKey("TEXTS", "TEXT" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
         if(ProjectRetVal.Len() == 0) break;
         EntryToAdd = ProjectRetVal;
         EntryToAdd = ChangeRelativePaths(EntryToAdd, ProjectDir);
         if(CheckMissingFile(EntryToAdd, TRUE, hTreeViewTexts, "", 0, 0))
         {
-            EntryToAdd = WAFileGetFileName(EntryToAdd) + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")";
-            WATreeViewAddItem(hTreeView, EntryToAdd, hTreeViewTexts, 0, ICON_NEW, ICON_NEW, 0, 0);
+            EntryToAdd = FileGetFileName(EntryToAdd) + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")";
+            TreeViewAddItem(hTreeView, EntryToAdd, hTreeViewTexts, 0, ICON_NEW, ICON_NEW, 0, 0);
         }
     }
     SwitchProjectOn();
 
-	if(WAIniReadBoolKey("Layout", "SaveProjectState", MainIniFile))
+	if(IniReadBoolKey("Layout", "SaveProjectState", MainIniFile))
 	{
 		// Try to reload the files that wheres saved within the project
 		for(i = 0; i <= 999; i++)
 		{
-			ProjectRetVal = WAIniReadKey("Windows", "Window" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
+			ProjectRetVal = IniReadKey("Windows", "Window" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
 			if(ProjectRetVal.Len() == 0) break;
 			ProjectRetVal = ChangeRelativePaths(ProjectRetVal);
 			// Open the file without adding it in recent list
 			OpenUnknownFile(ProjectRetVal, FALSE);
 		}
-		ProjectRetVal = WAIniReadKey("Windows", "Focus", PrjName);
+		ProjectRetVal = IniReadKey("Windows", "Focus", PrjName);
 		if(ProjectRetVal.Len() != 0)
 		{
 			ProjectRetVal = ChangeRelativePaths(ProjectRetVal);
-			GoToLine(ProjectRetVal, WAIniReadKey("Windows", "FocusLine", PrjName).Get_Long(), TRUE);
+			GoToLine(ProjectRetVal, IniReadKey("Windows", "FocusLine", PrjName).Get_Long(), TRUE);
 		}
 	} 
 
     if(PossibleMissingFiles.Amount() != 0)
     {
-        WACreateModalDialog(-1, -1, 402, 204, hMDIform.hWnd, &FRMMissingFiles, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+        CreateModalDialog(-1, -1, 402, 204, hMDIform.hWnd, &FRMMissingFiles, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
     }
 
 	// Store the new writing date
-	WAFileGetWriteTime(ProjectFName, &ProjectFDate);
+	FileGetWriteTime(ProjectFName, &ProjectFDate);
     return(1);
 
 MangledOpPrj:
 	// Clear everything
-    if(hTreeViewRoot != 0) WATreeViewRemoveItem(hTreeView, hTreeViewRoot);
+    if(hTreeViewRoot != 0) TreeViewRemoveItem(hTreeView, hTreeViewRoot);
     ProjectModified = FALSE;
 	ProjectOn = FALSE;
-    WAMiscMsgBox(hMDIform.hWnd, "Corrupted project file.", MB_ERROR, Requesters);
+    MiscMsgBox(hMDIform.hWnd, "Corrupted project file.", MB_ERROR, Requesters);
     return(0);
 }
 
@@ -1435,19 +1435,19 @@ void ReadResourceFromProject(CStr PrjName, CStr EntryToAdd, CStr ResourceName, i
 	long EntryProp = 0;
     long EntryLang = 0;
 
-	ProjectRetVal = WAIniReadKey(ResourceName, "NAME" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
+	ProjectRetVal = IniReadKey(ResourceName, "NAME" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
 	if(ProjectRetVal.Len() == 0) EntryToAddResName = ResourceDefaultLabel + (CStr) i;
 	else EntryToAddResName = ProjectRetVal;
-	ProjectRetVal = WAIniReadKey(ResourceName, "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
+	ProjectRetVal = IniReadKey(ResourceName, "PROP" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
 	if(ProjectRetVal.Len() == 0) ProjectRetVal = "15";
 	EntryProp = ProjectRetVal.Get_Long();
-	ProjectRetVal = WAIniReadKey(ResourceName, "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
+	ProjectRetVal = IniReadKey(ResourceName, "LANG" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjName);
 	if(ProjectRetVal.Len() == 0) ProjectRetVal = "0";
 	EntryLang = ProjectRetVal.Get_Long();
 	if(CheckMissingFile(EntryToAdd, TRUE, hTreeItem, EntryToAddResName, EntryProp, EntryLang))
 	{
 		AddInArray(EntryProp, EntryLang);
-		WATreeViewAddItem(hTreeView, EntryToAddResName + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")", hTreeItem, 0, ICON_RES, ICON_RES, 0, 0);
+		TreeViewAddItem(hTreeView, EntryToAddResName + (CStr) " (" + (CStr) EntryToAdd + (CStr) ")", hTreeItem, 0, ICON_RES, ICON_RES, 0, 0);
 	}
 }
 
@@ -1459,13 +1459,13 @@ long IsInProject(CStr FileToSearch, long IncludeTexts)
     long ReturnValue = -1;
     CStr RealTVToSearch;
  
-    RealTVToSearch = WAFileGetFileName(FileToSearch);
+    RealTVToSearch = FileGetFileName(FileToSearch);
 	RealTVToSearch = RealTVToSearch + (CStr) " (" + (CStr) FileToSearch.Get_String() + (CStr) ")";
-    ReturnValue = WATreeViewSearchItemText(hTreeView, hTreeViewIncludes, RealTVToSearch);
+    ReturnValue = TreeViewSearchItemText(hTreeView, hTreeViewIncludes, RealTVToSearch);
     if(ReturnValue != -1) return(ReturnValue);
-    ReturnValue = WATreeViewSearchItemText(hTreeView, hTreeViewModules, RealTVToSearch);
+    ReturnValue = TreeViewSearchItemText(hTreeView, hTreeViewModules, RealTVToSearch);
     if(ReturnValue != -1) return(ReturnValue);
-    if(IncludeTexts == 1) ReturnValue = WATreeViewSearchItemText(hTreeView, hTreeViewTexts, RealTVToSearch);
+    if(IncludeTexts == 1) ReturnValue = TreeViewSearchItemText(hTreeView, hTreeViewTexts, RealTVToSearch);
     return(ReturnValue);
 }
 
@@ -1477,10 +1477,10 @@ long GetModulesNumber(void)
     HTREEITEM TreeViewChildEntry;
  
     // Enumerate treeview childs
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewModules);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewModules);
     while(TreeViewChildEntry != 0)
     {
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         ReturnValue++;
     }
     return(ReturnValue);
@@ -1571,25 +1571,25 @@ void BuildProject(long BuildType)
     SkinArrayDat.Erase();
     PrjDebugLink = "";
     // Retrieve current build file
-    PrjBuildIniFile = WAIniReadKey("BuildSkins", "CurrentSkin", SkinsIniFile);
+    PrjBuildIniFile = IniReadKey("BuildSkins", "CurrentSkin", SkinsIniFile);
     PrjBuildIniFile = ChangeRelativePaths(PrjBuildIniFile);
     
     if(GetModulesNumber() == 0)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "Can't proceed: no module file in project.", MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, "Can't proceed: no module file in project.", MB_ERROR, Requesters);
         return;
     }
     
-    if(WAIniReadKey("LINKER", "Prog" + (CStr) ProjectTypeExt + (CStr) "000", PrjBuildIniFile).Len() == 0)
+    if(IniReadKey("LINKER", "Prog" + (CStr) ProjectTypeExt + (CStr) "000", PrjBuildIniFile).Len() == 0)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "Can't proceed: project type is unavailable for selected skin.", MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, "Can't proceed: project type is unavailable for selected skin.", MB_ERROR, Requesters);
         return;
     }
     
-    ProjectDir = WAFileGetDirectory(ProjectFName);
+    ProjectDir = FileGetDirectory(ProjectFName);
     if(strcmp(ProjectDir.Right(1).Get_String(), "\\") == 0) ProjectDir = ProjectDir.Left(ProjectDir.Len() - 1);
     WriteComment("Building project...");
-    WACursorSetWait();
+    CursorSetWait();
     MCMD_SaveAll();
     MCMD_SaveProject();
     
@@ -1617,27 +1617,27 @@ void BuildProject(long BuildType)
     }
 
     BufString = EndProjectFileName;
-    if(ProjectPostRename.Len()) BufString = WAFileReplaceExtension(PostRealName, ProjectPostRename);
+    if(ProjectPostRename.Len()) BufString = FileReplaceExtension(PostRealName, ProjectPostRename);
 	DeleteFile(BufString.Get_String());
 
     WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Building resources...");
     
-    ResourcesFile = WAFileCreateEmpty(ProjectDir + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".trc", NO_SECURITY_DESCRIPTOR);
+    ResourcesFile = FileCreateEmpty(ProjectDir + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".trc", NO_SECURITY_DESCRIPTOR);
     // Put accelerators header equates
     WriteAcceleratorEquates(ResourcesFile);
     // Include application icon
-    WAFileWriteLine(ResourcesFile, "500 ICON MOVEABLE PURE LOADONCALL DISCARDABLE " + (CStr) ResIncludeFile(ProjectTypeImg).Get_String());
+    FileWriteLine(ResourcesFile, "500 ICON MOVEABLE PURE LOADONCALL DISCARDABLE " + (CStr) ResIncludeFile(ProjectTypeImg).Get_String());
     
-    AddResLanguage = WAIniReadKey("RES", "AddResLanguage", PrjBuildIniFile);
+    AddResLanguage = IniReadKey("RES", "AddResLanguage", PrjBuildIniFile);
     if(AddResLanguage.Len() == 0) AddResLanguage = "0";
     AddResLanguageLng = AddResLanguage.Get_Long();
     
-    PutExtendedRes = WAIniReadKey("RES", "ExtendedRes", PrjBuildIniFile);
+    PutExtendedRes = IniReadKey("RES", "ExtendedRes", PrjBuildIniFile);
     if(PutExtendedRes.Len() == 0) PutExtendedRes = "0";
     if(PutExtendedRes.Get_Long() == 0) WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "*** Warning: extended menus resources are not available.");
     
     // Include version info
-    UseVInf = WAIniReadKey("RES", "AddVInfo", PrjBuildIniFile);
+    UseVInf = IniReadKey("RES", "AddVInfo", PrjBuildIniFile);
     if(UseVInf.Len() == 0) UseVInf = "0";
     if(Prj_IncludeVersion != 0)
     {
@@ -1649,82 +1649,82 @@ void BuildProject(long BuildType)
     // TODO : dialogs
     
     // Icons
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewIcons);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewIcons);
     i = 0;
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
-        WAFileWriteLine(ResourcesFile, ObjIndex + (CStr) " ICON " + (CStr) CalcResourceHeader(GetIconProps(i)).Get_String() + (CStr) " " + (CStr) ResIncludeFile(TVEntryToSave).Get_String());
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        FileWriteLine(ResourcesFile, ObjIndex + (CStr) " ICON " + (CStr) CalcResourceHeader(GetIconProps(i)).Get_String() + (CStr) " " + (CStr) ResIncludeFile(TVEntryToSave).Get_String());
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         ObjIndex++;
     }
       
     // Cursors
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewCursors);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewCursors);
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
-        WAFileWriteLine(ResourcesFile, ObjIndex + (CStr) " CURSOR " + (CStr) CalcResourceHeader(GetCursorProps(i)).Get_String() + (CStr) " " + (CStr) ResIncludeFile(TVEntryToSave).Get_String());
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        FileWriteLine(ResourcesFile, ObjIndex + (CStr) " CURSOR " + (CStr) CalcResourceHeader(GetCursorProps(i)).Get_String() + (CStr) " " + (CStr) ResIncludeFile(TVEntryToSave).Get_String());
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         ObjIndex++;
     }
       
     // Bitmaps
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewBitmaps);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewBitmaps);
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
-        WAFileWriteLine(ResourcesFile, ObjIndex + (CStr) " BITMAP " + (CStr) CalcResourceHeader(GetBitmapProps(i)).Get_String() + (CStr) " " + (CStr) ResIncludeFile(TVEntryToSave).Get_String());
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        FileWriteLine(ResourcesFile, ObjIndex + (CStr) " BITMAP " + (CStr) CalcResourceHeader(GetBitmapProps(i)).Get_String() + (CStr) " " + (CStr) ResIncludeFile(TVEntryToSave).Get_String());
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         ObjIndex++;
     }
 
     // Strings
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewStrings);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewStrings);
     i = 0;
     k = 0;
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
-        WAFileWriteLine(ResourcesFile, WriteLanguageEquate(Get_StringLang(k)).Get_String());
-        WAFileWriteLine(ResourcesFile, "STRINGTABLE");
-        WAFileWriteLine(ResourcesFile, CalcResourceHeader(Get_StringProps(k)).Get_String());
-        if(AddResLanguageLng == 1) WAFileWriteLine(ResourcesFile, CalcResourceLanguage(Get_StringLang(k)).Get_String());
-        WAFileWriteLine(ResourcesFile, "BEGIN");
+        FileWriteLine(ResourcesFile, WriteLanguageEquate(Get_StringLang(k)).Get_String());
+        FileWriteLine(ResourcesFile, "STRINGTABLE");
+        FileWriteLine(ResourcesFile, CalcResourceHeader(Get_StringProps(k)).Get_String());
+        if(AddResLanguageLng == 1) FileWriteLine(ResourcesFile, CalcResourceLanguage(Get_StringLang(k)).Get_String());
+        FileWriteLine(ResourcesFile, "BEGIN");
         for(j = 0; j <= 15; j++)
         {
-            StringStr = WAIniReadKey("STRDAT", "STR" + (CStr) StringNumberComplement(j, 3).Get_String(), TVEntryToSave);
-            if(StringStr.Len() != 0) WAFileWriteLine(ResourcesFile, (CStr) i + (CStr) ",\"" + (CStr) ResIncludeString(StringStr).Get_String() + (CStr) "\"");
+            StringStr = IniReadKey("STRDAT", "STR" + (CStr) StringNumberComplement(j, 3).Get_String(), TVEntryToSave);
+            if(StringStr.Len() != 0) FileWriteLine(ResourcesFile, (CStr) i + (CStr) ",\"" + (CStr) ResIncludeString(StringStr).Get_String() + (CStr) "\"");
             i++;
         }
-        WAFileWriteLine(ResourcesFile, "END");
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        FileWriteLine(ResourcesFile, "END");
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         ObjIndex++;
         k++;
     }
 
     // Accelerators
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewAccelerators);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewAccelerators);
     i = 0;
     k = 0;
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
-        WAFileWriteLine(ResourcesFile, WriteLanguageEquate(GetAcceleratorLang(k)).Get_String());
+        FileWriteLine(ResourcesFile, WriteLanguageEquate(GetAcceleratorLang(k)).Get_String());
         if(AddResLanguageLng == 1)
         {
-            WAFileWriteLine(ResourcesFile, ObjIndex + (CStr) " ACCELERATORS " + (CStr) CalcResourceHeader(GetAcceleratorProps(k)).Get_String());
-            WAFileWriteLine(ResourcesFile, CalcResourceLanguage(GetAcceleratorLang(k)).Get_String());
+            FileWriteLine(ResourcesFile, ObjIndex + (CStr) " ACCELERATORS " + (CStr) CalcResourceHeader(GetAcceleratorProps(k)).Get_String());
+            FileWriteLine(ResourcesFile, CalcResourceLanguage(GetAcceleratorLang(k)).Get_String());
         }
         else
         {
-            WAFileWriteLine(ResourcesFile, ObjIndex + (CStr) " ACCELERATORS");
+            FileWriteLine(ResourcesFile, ObjIndex + (CStr) " ACCELERATORS");
         }
-        WAFileWriteLine(ResourcesFile, "BEGIN");
+        FileWriteLine(ResourcesFile, "BEGIN");
         for(i = 0; i <= 999; i++)
         {
-            AcceleratorKeys = WAIniReadKey("ACCELDAT", "ACCEL" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave);
-            AcceleratorCmd = WAIniReadKey("ACCELDAT", "COMMAND" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave);
+            AcceleratorKeys = IniReadKey("ACCELDAT", "ACCEL" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave);
+            AcceleratorCmd = IniReadKey("ACCELDAT", "COMMAND" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave);
             if(AcceleratorKeys.Len() == 0) break;
             if(AcceleratorCmd.Len() == 0) break;
             AccelCtrlState = 0;
@@ -1779,32 +1779,32 @@ GetAccelerator:
                 }
             }
             AccelKey = StrToAddToAccel + (CStr) AccelKey + (CStr) StrToAddToAccel;
-            WAFileWriteLine(ResourcesFile, AccelKey + (CStr) "," + (CStr) AcceleratorCmd + (CStr) "," + (CStr) CtrlAltShiftStr + (CStr) "VIRTKEY");
+            FileWriteLine(ResourcesFile, AccelKey + (CStr) "," + (CStr) AcceleratorCmd + (CStr) "," + (CStr) CtrlAltShiftStr + (CStr) "VIRTKEY");
         }
-        WAFileWriteLine(ResourcesFile, "END");
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        FileWriteLine(ResourcesFile, "END");
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         ObjIndex++;
     }
 
     // Menus
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewMenus);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewMenus);
     k = 0;
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
         ResMenusString = ConvertMenusRes(TVEntryToSave, ObjIndex, k);
-        WAFileWriteBufferVB(ResourcesFile, ResMenusString, ResMenusString.Len());
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        FileWriteBufferVB(ResourcesFile, ResMenusString, ResMenusString.Len());
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         ObjIndex++;
         k++;
     }
     
     // Raw datas
-    UseRawComma = WAIniReadKey("RES", "UseRawComma", PrjBuildIniFile);
+    UseRawComma = IniReadKey("RES", "UseRawComma", PrjBuildIniFile);
     if(UseRawComma.Len() == 0) UseRawComma = "0";
     BolUseRawComma = 0;
     if(strcmpi(UseRawComma.Get_String(), "1") == 0) BolUseRawComma = 1;
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewRawdatas);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewRawdatas);
     k = 0;
     while(TreeViewChildEntry != 0)
     {
@@ -1815,15 +1815,15 @@ GetAccelerator:
         }
         else
         {
-            WAFileWriteBufferVB(ResourcesFile, ConversionStringHead, ConversionStringHead.Len());
+            FileWriteBufferVB(ResourcesFile, ConversionStringHead, ConversionStringHead.Len());
         }
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         ObjIndex++;
         k++;
     }
     
     // Write user text resources (custom resources as texts)
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewResources);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewResources);
     while(TreeViewChildEntry != 0)
     {
         if(TreeViewChildEntry == hTreeViewIcons) goto NoWriteUserText;
@@ -1837,29 +1837,29 @@ GetAccelerator:
 		else
 		{
 			TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
-			WAFileWriteLine(ResourcesFile, "#include \"" + (CStr) TVEntryToSave + (CStr) "\"");
+			FileWriteLine(ResourcesFile, "#include \"" + (CStr) TVEntryToSave + (CStr) "\"");
         }
 NoWriteUserText:    
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
     }
 
     // Include Windows XP manifest if requested
     if(Prj_IncludeManifest != 0)
     { 
-		ManifestName = WAFileReplaceExtension(EndProjectFileName, "Manifest");
-		ManifestFile = WAFileCreateEmpty(ManifestName, NO_SECURITY_DESCRIPTOR);
+		ManifestName = FileReplaceExtension(EndProjectFileName, "Manifest");
+		ManifestFile = FileCreateEmpty(ManifestName, NO_SECURITY_DESCRIPTOR);
     	if(ManifestFile != INVALID_HANDLE_VALUE)
     	{
 			ManifestName = StringReplace(ManifestName, "\\", "\\\\", 1, -1, Binary_Compare);
 			ManifestDatas = Project_Write_XPManifest_Res();
-			WAFileWriteBufferVB(ManifestFile, ManifestDatas, ManifestDatas.Len());
-			WAFileClose(ManifestFile);
+			FileWriteBufferVB(ManifestFile, ManifestDatas, ManifestDatas.Len());
+			FileClose(ManifestFile);
 			ManifestName = "1 24 \"" + ManifestName + "\"\r\n";
-			WAFileWriteBufferVB(ResourcesFile, ManifestName, ManifestName.Len());
+			FileWriteBufferVB(ResourcesFile, ManifestName, ManifestName.Len());
 		}
     }
     
-    WAFileClose(ResourcesFile);
+    FileClose(ResourcesFile);
     ResourcesFile = 0;
     
     WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Building make file...");
@@ -1868,129 +1868,129 @@ NoWriteUserText:
     DefinedEntryPoint = "";
     if(hTreeViewDefs != 0)
     {
-        DllDefFile = WAFileCreateEmpty(ProjectDir + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".def", NO_SECURITY_DESCRIPTOR);
-        WAFileWriteLine(DllDefFile, "LIBRARY " + (CStr) ProjectTitle);
-        TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewDefs);
+        DllDefFile = FileCreateEmpty(ProjectDir + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".def", NO_SECURITY_DESCRIPTOR);
+        FileWriteLine(DllDefFile, "LIBRARY " + (CStr) ProjectTitle);
+        TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewDefs);
         if(TreeViewChildEntry != 0)
         {
-            WAFileWriteLine(DllDefFile, "EXPORTS");
+            FileWriteLine(DllDefFile, "EXPORTS");
             TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
             TVEntryToSave = ChangeRelativePaths(TVEntryToSave);
             // Retrieve wanted entry point
-            DefinedEntryPoint = WAIniReadKey("ENTRYPOINT", "Proc", TVEntryToSave);
+            DefinedEntryPoint = IniReadKey("ENTRYPOINT", "Proc", TVEntryToSave);
             for(i = 0; i <= 999; i++)
             {
-                DefVal = WAIniReadKey("EXPORTS", "Fnc" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave);
+                DefVal = IniReadKey("EXPORTS", "Fnc" + (CStr) StringNumberComplement(i, 3).Get_String(), TVEntryToSave);
                 if(DefVal.Len() == 0) break;
-                WAFileWriteLine(DllDefFile, DefVal);
+                FileWriteLine(DllDefFile, DefVal);
             }
         }
-        WAFileClose(DllDefFile);
+        FileClose(DllDefFile);
         DllDefFile = 0;
     }
     
-    HeadExt = WAIniReadKey("EXTENSION", "Ext", PrjBuildIniFile);
+    HeadExt = IniReadKey("EXTENSION", "Ext", PrjBuildIniFile);
     BufString = ProjectTypeExt.Upper_Case();
 	if(BufString == "WINEXE")
 	{
-        PascalName = WAIniReadKey("PASCALNAME", "WINEXE", PrjBuildIniFile);
+        PascalName = IniReadKey("PASCALNAME", "WINEXE", PrjBuildIniFile);
 	}
 	else if(BufString == "DOSEXE")
 	{
-        PascalName = WAIniReadKey("PASCALNAME", "DOSEXE", PrjBuildIniFile);
+        PascalName = IniReadKey("PASCALNAME", "DOSEXE", PrjBuildIniFile);
 	}
 	else if(BufString == "DOSCOM")
 	{
-        PascalName = WAIniReadKey("PASCALNAME", "DOSCOM", PrjBuildIniFile);
+        PascalName = IniReadKey("PASCALNAME", "DOSCOM", PrjBuildIniFile);
 	}
 	else if(BufString == "WINDLL") 
 	{
-        PascalName = WAIniReadKey("PASCALNAME", "WINDLL", PrjBuildIniFile);
+        PascalName = IniReadKey("PASCALNAME", "WINDLL", PrjBuildIniFile);
 	}
 	else if(BufString == "WINSYS")
 	{
-        PascalName = WAIniReadKey("PASCALNAME", "WINSYS", PrjBuildIniFile);
+        PascalName = IniReadKey("PASCALNAME", "WINSYS", PrjBuildIniFile);
 	}
 	else if(BufString == "WINLIB")
 	{
-        PascalName = WAIniReadKey("PASCALNAME", "WINLIB", PrjBuildIniFile);
+        PascalName = IniReadKey("PASCALNAME", "WINLIB", PrjBuildIniFile);
 	}
 	else
 	{
-        PascalName = WAIniReadKey("PASCALNAME", "WINEXE", PrjBuildIniFile);
+        PascalName = IniReadKey("PASCALNAME", "WINEXE", PrjBuildIniFile);
     }
     
 	if(PascalName.Len() != 0)
 	{
-        PascalName = StringReplace(PascalName, "%0", WAFileRemoveExtension(WAFileGetFileName(EndProjectFileName).Get_String()).Get_String() , 1, -1, Binary_Compare);
+        PascalName = StringReplace(PascalName, "%0", FileRemoveExtension(FileGetFileName(EndProjectFileName).Get_String()).Get_String() , 1, -1, Binary_Compare);
         PascalName = StringReplace(PascalName, "{NL}", "\r\n", 1, -1, Text_Compare);
         PascalName = StringReplace(PascalName, "{SPC}", " ", 1, -1, Text_Compare);
     }
     
-    PrjIncludeType = WAIniReadKey("INCLUDE", "IncType", PrjBuildIniFile);
-    PrjIncludeLibType = WAIniReadKey("INCLUDELIB", "IncType", PrjBuildIniFile);
+    PrjIncludeType = IniReadKey("INCLUDE", "IncType", PrjBuildIniFile);
+    PrjIncludeLibType = IniReadKey("INCLUDELIB", "IncType", PrjBuildIniFile);
     // Pascal, je te merde
-    PreInc = WAIniReadKey("INCLUDELIB", "PreInc", PrjBuildIniFile);
-    InInc = WAIniReadKey("INCLUDELIB", "InInc", PrjBuildIniFile);
-    PostInc = WAIniReadKey("INCLUDELIB", "PostInc", PrjBuildIniFile);
+    PreInc = IniReadKey("INCLUDELIB", "PreInc", PrjBuildIniFile);
+    InInc = IniReadKey("INCLUDELIB", "InInc", PrjBuildIniFile);
+    PostInc = IniReadKey("INCLUDELIB", "PostInc", PrjBuildIniFile);
         
-    ConstantType = WAIniReadKey("CONSTANTS", "Const", PrjBuildIniFile);
-    EarlyInclude = WAIniReadKey("INCLUDELIB", "EarlyInclude", PrjBuildIniFile);
+    ConstantType = IniReadKey("CONSTANTS", "Const", PrjBuildIniFile);
+    EarlyInclude = IniReadKey("INCLUDELIB", "EarlyInclude", PrjBuildIniFile);
     if(EarlyInclude.Len() == 0) EarlyInclude = "0";
     
-    BatchFile = WAFileCreateEmpty(ProjectDir + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".bat", NO_SECURITY_DESCRIPTOR);
-    WAFileWriteLine(BatchFile, "@echo off");
+    BatchFile = FileCreateEmpty(ProjectDir + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".bat", NO_SECURITY_DESCRIPTOR);
+    FileWriteLine(BatchFile, "@echo off");
     // Switch to drive if required
 	if(ProjectDir.Mid(2, 2) == ":\\")
 	{
-		WAFileWriteLine(BatchFile, ProjectDir.Mid(1, 2));
+		FileWriteLine(BatchFile, ProjectDir.Mid(1, 2));
 	}
-	WAFileWriteLine(BatchFile, "cd \"" + (CStr) CorrectFileName(ProjectDir).Get_String() + (CStr) "\"");
+	FileWriteLine(BatchFile, "cd \"" + (CStr) CorrectFileName(ProjectDir).Get_String() + (CStr) "\"");
     
     // Add resource compiler to batch file
-    BuildSteps = WAIniReadKey("Layout", "StepRes", MainIniFile);
+    BuildSteps = IniReadKey("Layout", "StepRes", MainIniFile);
     if(BuildSteps.Len() != 0) if(strcmpi(BuildSteps.Get_String(), "1") != 0) goto NoResStep;
     
-    StopOnError = WAIniReadKey("RES", "StopOnError", PrjBuildIniFile);
+    StopOnError = IniReadKey("RES", "StopOnError", PrjBuildIniFile);
     
     for(i = 0; i <= 999; i++)
     {
-        SkinVal = WAIniReadKey("RES", "Prog" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
+        SkinVal = IniReadKey("RES", "Prog" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
         if(SkinVal.Len() == 0) break;
         SkinVal = ChangeRelativePaths(SkinVal);
         SkinVal = SkinCommand(SkinVal);
-        if(WAFileExist(SkinVal) == 0)
+        if(FileExist(SkinVal) == 0)
         {
             WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Can't find specified resource compiler: " + (CStr) SkinVal);
             WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Process halted.");
             CleanBuildFiles();
             return;
         }
-        SkinValB = WAIniReadKey("RES", "Args" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
+        SkinValB = IniReadKey("RES", "Args" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
         SkinValB = ChangeRelativePaths(SkinValB);
         SkinValB = SkinCommand(SkinValB);
         //+ (CStr) CustomRedirector
-		WAFileWriteLine(BatchFile, "\"" + (CStr) SkinVal + (CStr) "\" " + (CStr) SkinValB);
-        if(strcmpi(StopOnError.Get_String(), "1") == 0) WAFileWriteLine(BatchFile, "if errorlevel 1 goto AsmEnd");
+		FileWriteLine(BatchFile, "\"" + (CStr) SkinVal + (CStr) "\" " + (CStr) SkinValB);
+        if(strcmpi(StopOnError.Get_String(), "1") == 0) FileWriteLine(BatchFile, "if errorlevel 1 goto AsmEnd");
     }
 NoResStep:
     
-    HeaderFile = WAFileCreateEmpty(ProjectDir + (CStr) "\\ChromaticHead." + (CStr) HeadExt, NO_SECURITY_DESCRIPTOR);
+    HeaderFile = FileCreateEmpty(ProjectDir + (CStr) "\\ChromaticHead." + (CStr) HeadExt, NO_SECURITY_DESCRIPTOR);
     for(i = 0; i <= 999; i++)
     {
-        SkinVal = WAIniReadKey("TEMPHEADER", "Opt" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
+        SkinVal = IniReadKey("TEMPHEADER", "Opt" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
         if(SkinVal.Len() == 0) break;
         if(strcmpi(SkinVal.Left(5).Get_String(), "LISTC") == 0)
         {
             for(L = 0; L <= 999; L++)
             {
-                SkinValB = WAIniReadKey("CURRENT", SkinVal + (CStr) StringNumberComplement(L, 3).Get_String(), PrjBuildIniFile);
+                SkinValB = IniReadKey("CURRENT", SkinVal + (CStr) StringNumberComplement(L, 3).Get_String(), PrjBuildIniFile);
                 if(SkinValB.Len() == 0) break;
                 SkinOption = SkinValB.Get_Long();
                 // Checked ?
                 if(SkinOption != 0)
                 {
-                    SkinValB = WAIniReadKey(SkinVal, "Dat" + (CStr) StringNumberComplement(L, 3).Get_String(), PrjBuildIniFile);
+                    SkinValB = IniReadKey(SkinVal, "Dat" + (CStr) StringNumberComplement(L, 3).Get_String(), PrjBuildIniFile);
                     SkinValB = ChangeRelativePaths(SkinValB);
                     SkinValB = SkinCommand(SkinValB);
                     TempArguments = StringSplit(SkinValB, "|");
@@ -2001,7 +2001,7 @@ NoResStep:
 						if(BufString == "<")
 						{
 							// Redirect to file
-                            WAFileWriteLine(HeaderFile, TempskinVal.Mid(2));
+                            FileWriteLine(HeaderFile, TempskinVal.Mid(2));
 						}
 						else if(BufString == "%")
 						{
@@ -2026,7 +2026,7 @@ NoResStep:
         }
         else
         {
-            SkinValB = WAIniReadKey("CURRENT", SkinVal, PrjBuildIniFile);
+            SkinValB = IniReadKey("CURRENT", SkinVal, PrjBuildIniFile);
             SkinValTextBox = "";
             if(SkinValB.Len() == 0)
             {
@@ -2046,7 +2046,7 @@ NoResStep:
                     SkinOption = SkinValB.Get_Long();
                 }
             }
-            SkinValB = WAIniReadKey(SkinVal, "Dat" + (CStr) StringNumberComplement(SkinOption, 3).Get_String(), PrjBuildIniFile);
+            SkinValB = IniReadKey(SkinVal, "Dat" + (CStr) StringNumberComplement(SkinOption, 3).Get_String(), PrjBuildIniFile);
             SkinValB = ChangeRelativePaths(SkinValB);
             SkinValB = SkinCommand(SkinValB);
             TempArguments = StringSplit(SkinValB, "|");
@@ -2057,7 +2057,7 @@ NoResStep:
                 if(BufString == "<")
                 {
 					// Redirect to file
-                    WAFileWriteLine(HeaderFile, TempskinVal.Mid(2));
+                    FileWriteLine(HeaderFile, TempskinVal.Mid(2));
                 }
                 else if(BufString == "%")
                 {
@@ -2081,7 +2081,7 @@ NoResStep:
     }
 
     // Add that (fucking) pascal program name
-    if(PascalName.Len() != 0) WAFileWriteLine(HeaderFile, PascalName);
+    if(PascalName.Len() != 0) FileWriteLine(HeaderFile, PascalName);
     
     // --------------------------
     // --- Early including (mainly for Pascal language)
@@ -2089,10 +2089,10 @@ NoResStep:
     if(strcmpi(EarlyInclude.Get_String(), "1") == 0)
     {
         // Add libraries to header
-        TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewLibs);
+        TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewLibs);
         AddLibToLink = "";
-        PrefixLib = WAIniReadKey("LINKER", "PrefixLib", PrjBuildIniFile);
-        if(TreeViewChildEntry != 0) if(PreInc.Len() != 0) WAFileWriteLine(HeaderFile, PreInc);
+        PrefixLib = IniReadKey("LINKER", "PrefixLib", PrjBuildIniFile);
+        if(TreeViewChildEntry != 0) if(PreInc.Len() != 0) FileWriteLine(HeaderFile, PreInc);
         NoIncludePascal = 0;
         while(TreeViewChildEntry != 0)
         {
@@ -2103,15 +2103,15 @@ NoResStep:
             {
                 TempInclude = PrjIncludeLibType;
                 TempInclude = StringReplace(TempInclude, "%0", TVEntryToSave, 1, -1, Binary_Compare);
-                TempInclude = StringReplace(TempInclude, "%1", WAFileRemoveExtension(WAFileGetFileName(TVEntryToSave)), 1, -1, Binary_Compare);
+                TempInclude = StringReplace(TempInclude, "%1", FileRemoveExtension(FileGetFileName(TVEntryToSave)), 1, -1, Binary_Compare);
                 if(PreInc.Len() != 0)
                 {
                     // No carriage return
-                    WAFileWriteBufferVB(HeaderFile, TempInclude, TempInclude.Len());
+                    FileWriteBufferVB(HeaderFile, TempInclude, TempInclude.Len());
                 }
                 else
                 {
-                    WAFileWriteLine(HeaderFile, TempInclude);
+                    FileWriteLine(HeaderFile, TempInclude);
                 }
             }
             else
@@ -2122,10 +2122,10 @@ NoResStep:
 				AddLibToLink = AddLibToLink + TVEntryToSave;
 				AddLibToLink = AddLibToLink + "\" ";
             }
-            TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
-            if(TreeViewChildEntry != 0) if(InInc.Len() != 0) WAFileWriteBufferVB(HeaderFile, InInc, InInc.Len());
+            TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+            if(TreeViewChildEntry != 0) if(InInc.Len() != 0) FileWriteBufferVB(HeaderFile, InInc, InInc.Len());
         }
-        if(NoIncludePascal == 1) if(PostInc.Len() != 0) WAFileWriteLine(HeaderFile, PostInc);
+        if(NoIncludePascal == 1) if(PostInc.Len() != 0) FileWriteLine(HeaderFile, PostInc);
     }
     
     // --------------------------
@@ -2135,12 +2135,12 @@ NoResStep:
     TempInclude = ConstantType;
     TempInclude = StringReplace(TempInclude, "%0", "ICON_APP", 1, -1, Binary_Compare);
     TempInclude = StringReplace(TempInclude, "%1", ObjIndex, 1, -1, Binary_Compare);
-    WAFileWriteLine(HeaderFile, TempInclude);
+    FileWriteLine(HeaderFile, TempInclude);
 
     ObjIndex++;
     
     // Add icons constants to header
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewIcons);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewIcons);
     while(TreeViewChildEntry != 0)
     {
 		TreeViewChildEntry = Add_Project_Constant(HeaderFile, TreeViewChildEntry, ConstantType, ObjIndex);
@@ -2148,7 +2148,7 @@ NoResStep:
     }
     
     // Add cursors constants to header
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewCursors);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewCursors);
     while(TreeViewChildEntry != 0)
     {
 		TreeViewChildEntry = Add_Project_Constant(HeaderFile, TreeViewChildEntry, ConstantType, ObjIndex);
@@ -2156,7 +2156,7 @@ NoResStep:
     }
     
     // Add bitmaps constants to header
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewBitmaps);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewBitmaps);
     while(TreeViewChildEntry != 0)
     {
 		TreeViewChildEntry = Add_Project_Constant(HeaderFile, TreeViewChildEntry, ConstantType, ObjIndex);
@@ -2164,7 +2164,7 @@ NoResStep:
     }
     
     // Add strings constants to header
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewStrings);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewStrings);
     while(TreeViewChildEntry != 0)
     {
 		TreeViewChildEntry = Add_Project_Constant(HeaderFile, TreeViewChildEntry, ConstantType, ObjIndex);
@@ -2172,7 +2172,7 @@ NoResStep:
     }
     
     // Add accelerators constants to header
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewAccelerators);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewAccelerators);
     while(TreeViewChildEntry != 0)
     {
 		TreeViewChildEntry = Add_Project_Constant(HeaderFile, TreeViewChildEntry, ConstantType, ObjIndex);
@@ -2180,7 +2180,7 @@ NoResStep:
     }
     
     // Add menus constants to header
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewMenus);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewMenus);
     while(TreeViewChildEntry != 0)
     {
 		TreeViewChildEntry = Add_Project_Constant(HeaderFile, TreeViewChildEntry, ConstantType, ObjIndex);
@@ -2188,7 +2188,7 @@ NoResStep:
     }
 
     // Add dialogs constants to header
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewDialogs);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewDialogs);
     while(TreeViewChildEntry != 0)
     {
 		TreeViewChildEntry = Add_Project_Constant(HeaderFile, TreeViewChildEntry, ConstantType, ObjIndex);
@@ -2196,7 +2196,7 @@ NoResStep:
     }
     
     // Add raw datas constants to header
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewRawdatas);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewRawdatas);
     while(TreeViewChildEntry != 0)
     {
 		TreeViewChildEntry = Add_Project_Constant(HeaderFile, TreeViewChildEntry, ConstantType, ObjIndex);
@@ -2208,35 +2208,35 @@ NoResStep:
     // Add project constants to header
 	for(i = 0; i < 999; i++)
 	{
-		RespSep = WAIniReadKey("CONSTANTS", "Name" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectFName);
+		RespSep = IniReadKey("CONSTANTS", "Name" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectFName);
 		if(RespSep.Len() == 0) break;
 		TempInclude = ConstantType;
 		TempInclude = StringReplace(TempInclude, "%0", RespSep, 1, -1, Binary_Compare);
-		RespSep = WAIniReadKey("CONSTANTS", "Value" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectFName);
+		RespSep = IniReadKey("CONSTANTS", "Value" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectFName);
 		if(RespSep.Len() == 0) RespSep = "1";
 		TempInclude = StringReplace(TempInclude, "%1", RespSep, 1, -1, Binary_Compare);
-        WAFileWriteLine(HeaderFile, TempInclude);
+        FileWriteLine(HeaderFile, TempInclude);
 	}
 
     // Add includes to header
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewIncludes);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewIncludes);
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
         TempInclude = PrjIncludeType;
         TempInclude = StringReplace(TempInclude, "%0", TVEntryToSave, 1, -1, Binary_Compare);
-        TempInclude = StringReplace(TempInclude, "%1", WAFileRemoveExtension(WAFileGetFileName(TVEntryToSave)), 1, -1, Binary_Compare);
-        WAFileWriteLine(HeaderFile, TempInclude);
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        TempInclude = StringReplace(TempInclude, "%1", FileRemoveExtension(FileGetFileName(TVEntryToSave)), 1, -1, Binary_Compare);
+        FileWriteLine(HeaderFile, TempInclude);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
     }
     
     if(strcmpi(EarlyInclude.Get_String(), "0") == 0)
     {
         // Add libraries to header
-        TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewLibs);
+        TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewLibs);
         AddLibToLink = "";
-        PrefixLib = WAIniReadKey("LINKER", "PrefixLib", PrjBuildIniFile);
-        if(TreeViewChildEntry != 0) if(PreInc.Len() != 0) WAFileWriteLine(HeaderFile, PreInc);
+        PrefixLib = IniReadKey("LINKER", "PrefixLib", PrjBuildIniFile);
+        if(TreeViewChildEntry != 0) if(PreInc.Len() != 0) FileWriteLine(HeaderFile, PreInc);
         NoIncludePascal = 0;
         while(TreeViewChildEntry != 0)
         {
@@ -2247,15 +2247,15 @@ NoResStep:
             {
                 TempInclude = PrjIncludeLibType;
                 TempInclude = StringReplace(TempInclude, "%0", TVEntryToSave, 1, -1, Binary_Compare);
-                TempInclude = StringReplace(TempInclude, "%1", WAFileRemoveExtension(WAFileGetFileName(TVEntryToSave)), 1, -1, Binary_Compare);
+                TempInclude = StringReplace(TempInclude, "%1", FileRemoveExtension(FileGetFileName(TVEntryToSave)), 1, -1, Binary_Compare);
                 if(PreInc.Len() != 0)
                 {
                     // No carriage return
-                    WAFileWriteBufferVB(HeaderFile, TempInclude, TempInclude.Len());
+                    FileWriteBufferVB(HeaderFile, TempInclude, TempInclude.Len());
                 }
                 else
                 {
-                    WAFileWriteLine(HeaderFile, TempInclude);
+                    FileWriteLine(HeaderFile, TempInclude);
                 }
             }
             else
@@ -2266,34 +2266,34 @@ NoResStep:
 				AddLibToLink = AddLibToLink + TVEntryToSave;
 				AddLibToLink = AddLibToLink + "\" ";
             }
-            TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
-            if(TreeViewChildEntry != 0) if(InInc.Len() != 0) WAFileWriteBufferVB(HeaderFile, InInc, InInc.Len());
+            TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+            if(TreeViewChildEntry != 0) if(InInc.Len() != 0) FileWriteBufferVB(HeaderFile, InInc, InInc.Len());
         }
-        if(NoIncludePascal = 1) if(PostInc.Len() != 0) WAFileWriteLine(HeaderFile, PostInc);
+        if(NoIncludePascal = 1) if(PostInc.Len() != 0) FileWriteLine(HeaderFile, PostInc);
     }
     
     // Create linker files
-    ObjectsFile = WAFileCreateEmpty(ProjectDir + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".ode", NO_SECURITY_DESCRIPTOR);
+    ObjectsFile = FileCreateEmpty(ProjectDir + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".ode", NO_SECURITY_DESCRIPTOR);
     
     // Get response file separator
-    RespSep = WAIniReadKey("RESP", "RespSep", PrjBuildIniFile);
+    RespSep = IniReadKey("RESP", "RespSep", PrjBuildIniFile);
     RespSep = StringReplace(RespSep, "{NL}", "\r\n", 1, -1, Text_Compare);
     RespSep = StringReplace(RespSep, "{TAB}", "\t", 1, -1, Text_Compare);
     RespSep = StringReplace(RespSep, "{SPC}", " ", 1, -1, Text_Compare);
-    DirectObjects = WAIniReadKey("RESP", "RespDirect", PrjBuildIniFile);
-    LibForeChar = WAIniReadKey("LIBSPEC", "ForeChar", PrjBuildIniFile);
+    DirectObjects = IniReadKey("RESP", "RespDirect", PrjBuildIniFile);
+    LibForeChar = IniReadKey("LIBSPEC", "ForeChar", PrjBuildIniFile);
     LibForeChar = StringReplace(LibForeChar, "{NL}", "\r\n", 1, -1, Text_Compare);
-    LibBackChar = WAIniReadKey("LIBSPEC", "BackChar", PrjBuildIniFile);
+    LibBackChar = IniReadKey("LIBSPEC", "BackChar", PrjBuildIniFile);
     LibBackChar = StringReplace(LibBackChar, "{NL}", "\r\n", 1, -1, Text_Compare);
-    LibRetrieveChar = WAIniReadKey("LIBSPEC", "RetrieveChar", PrjBuildIniFile);
+    LibRetrieveChar = IniReadKey("LIBSPEC", "RetrieveChar", PrjBuildIniFile);
     LibRetrieveChar = StringReplace(LibRetrieveChar, "{NL}", "\r\n", 1, -1, Text_Compare);
     
-    ObjLstPrefix = WAIniReadKey("EXTRAS", "ObjLstPrefix", PrjBuildIniFile);
+    ObjLstPrefix = IniReadKey("EXTRAS", "ObjLstPrefix", PrjBuildIniFile);
     
     // Construct user objects list
     UserObjects = "";
     ObjectsList = "";
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewObjects);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewObjects);
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
@@ -2314,7 +2314,7 @@ NoResStep:
             UserObjects = UserObjects + (CStr) ResponseEntry + (CStr) LibBackChar;
             ObjectsList = ObjectsList + (CStr) ObjLstPrefix + (CStr) ResponseEntry + (CStr) " ";
         }
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         // Don't write last char
         if(TreeViewChildEntry != 0)
         {
@@ -2325,12 +2325,12 @@ NoResStep:
     ObjectsList = ObjectsList.Trim();
     
     // Add direct objects to header
-    if(DirectObjects.Len() != 0) WAFileWriteLine(HeaderFile, UserObjects);
+    if(DirectObjects.Len() != 0) FileWriteLine(HeaderFile, UserObjects);
 
     // Write possible code prologue
-    if(WAIniReadBoolKey("EXTRACODE", "UseStartCode", PrjBuildIniFile) == 1)
+    if(IniReadBoolKey("EXTRACODE", "UseStartCode", PrjBuildIniFile) == 1)
     {
-		CodePrologue = WAIniReadKey("EXTRACODE", "StartCode" + (CStr) ProjectTypeExt, PrjBuildIniFile);
+		CodePrologue = IniReadKey("EXTRACODE", "StartCode" + (CStr) ProjectTypeExt, PrjBuildIniFile);
 		if(CodePrologue.Len())
 		{
 			CodePrologue = Dirs[DIR_EXTRACODE] + (CStr) "\\" + CodePrologue;
@@ -2340,28 +2340,28 @@ NoResStep:
 			{
 				CodePrologue = (char *) ExtraCodeBytes;
 				CodePrologue = SkinCommand(CodePrologue);
-				WAFileWriteBuffer(HeaderFile, CodePrologue.Get_String(), ReadCodeBytes);
-				WAFileWriteLine(HeaderFile, "\r\n");
+				FileWriteBuffer(HeaderFile, CodePrologue.Get_String(), ReadCodeBytes);
+				FileWriteLine(HeaderFile, "\r\n");
 				FreeMem(ExtraCodeBytes);
 			}
 		}
 	}
 
     // Add user modules to header
-    TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewModules);
+    TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewModules);
     while(TreeViewChildEntry != 0)
     {
         TVEntryToSave = GetFileNameFromTreeView(TreeViewChildEntry);
         TempInclude = PrjIncludeType;
         TempInclude = StringReplace(TempInclude, "%0", TVEntryToSave, 1, -1, Binary_Compare);
-        WAFileWriteLine(HeaderFile, TempInclude);
-        TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+        FileWriteLine(HeaderFile, TempInclude);
+        TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
     }
 
     // Write possible code epilogue
-    if(WAIniReadBoolKey("EXTRACODE", "UseEndCode", PrjBuildIniFile) == 1)
+    if(IniReadBoolKey("EXTRACODE", "UseEndCode", PrjBuildIniFile) == 1)
     {
-		CodeEpilogue = WAIniReadKey("EXTRACODE", "EndCode" + (CStr) ProjectTypeExt, PrjBuildIniFile);
+		CodeEpilogue = IniReadKey("EXTRACODE", "EndCode" + (CStr) ProjectTypeExt, PrjBuildIniFile);
 		if(CodeEpilogue.Len())
 		{
 			CodeEpilogue = Dirs[DIR_EXTRACODE] + (CStr) "\\" + CodeEpilogue;
@@ -2371,8 +2371,8 @@ NoResStep:
 			{
 				CodeEpilogue = (char *) ExtraCodeBytes;
 				CodeEpilogue = SkinCommand(CodeEpilogue);
-				WAFileWriteBuffer(HeaderFile, CodeEpilogue.Get_String(), ReadCodeBytes);
-				WAFileWriteLine(HeaderFile, "\r\n");
+				FileWriteBuffer(HeaderFile, CodeEpilogue.Get_String(), ReadCodeBytes);
+				FileWriteLine(HeaderFile, "\r\n");
 				FreeMem(ExtraCodeBytes);
 			}
 		}
@@ -2380,7 +2380,7 @@ NoResStep:
 
     for(i = 0; i <= 999; i++)
     {
-        SkinVal = WAIniReadKey("RESP", "Resp" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
+        SkinVal = IniReadKey("RESP", "Resp" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
         if(SkinVal.Len() == 0) break;
         SkinVal = SkinCommand(SkinVal);
         // Put user object if needed
@@ -2399,20 +2399,20 @@ NoResStep:
         {
             if(strcmpi(ResponseEntry.Get_String(), "\r\n") != 0)
             {
-                WAFileWriteBufferVB(ObjectsFile, ResponseEntry, ResponseEntry.Len());
-                WAFileWriteBufferVB(ObjectsFile, RespSep, RespSep.Len());
+                FileWriteBufferVB(ObjectsFile, ResponseEntry, ResponseEntry.Len());
+                FileWriteBufferVB(ObjectsFile, RespSep, RespSep.Len());
             }
         }
 NoUserObjectsFound:;
     }
 
-    WAFileClose(ObjectsFile);
+    FileClose(ObjectsFile);
     ObjectsFile = 0;
 
-    BuildSteps = WAIniReadKey("Layout", "StepAsm", MainIniFile);
+    BuildSteps = IniReadKey("Layout", "StepAsm", MainIniFile);
     if(BuildSteps.Len() != 0) if(strcmpi(BuildSteps.Get_String(), "1") != 0) goto NoAsmStep;
     
-    StopOnError = WAIniReadKey("COMPILER", "StopOnError", PrjBuildIniFile);
+    StopOnError = IniReadKey("COMPILER", "StopOnError", PrjBuildIniFile);
 
     // Get dos commands
     FillCompDOSCommand();
@@ -2420,7 +2420,7 @@ NoUserObjectsFound:;
     // Write compiler commands to batch file
     for(i = 0; i <= 999; i++)
     {
-        SkinVal = WAIniReadKey("COMPILER", "Prog" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
+        SkinVal = IniReadKey("COMPILER", "Prog" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
         if(SkinVal.Len() == 0) break;
         SkinVal = ChangeRelativePaths(SkinVal);
         SkinVal = SkinCommand(SkinVal);
@@ -2428,7 +2428,7 @@ NoUserObjectsFound:;
         BufString = SkinVal.Left(7).Upper_Case(); 
 		if(BufString != "{DOSCOM")
 		{
-			if(WAFileExist(SkinVal) == 0)
+			if(FileExist(SkinVal) == 0)
 			{
 				WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Can't find specified compiler: " + (CStr) SkinVal);
 				WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Process halted.");
@@ -2436,7 +2436,7 @@ NoUserObjectsFound:;
 				return;
 			}
 		}
-        SkinValB = WAIniReadKey("COMPILER", "Args" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
+        SkinValB = IniReadKey("COMPILER", "Args" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
         SkinValB = ChangeRelativePaths(SkinValB);
         SkinValB = SkinCommand(SkinValB);
         for(k = 1; k <= 26; k++)
@@ -2450,29 +2450,29 @@ NoUserObjectsFound:;
             // Simple DOS command
             CurrDOSCom = GetCompDOSCommand(SkinVal);
             SkinVal = StringReplace(SkinVal, SkinVal, CurrDOSCom, 1, -1, Text_Compare);
-            WAFileWriteLine(BatchFile, SkinVal + (CStr) " " + (CStr) SkinValB);
+            FileWriteLine(BatchFile, SkinVal + (CStr) " " + (CStr) SkinValB);
         }
         else
         {
-			WAFileWriteLine(BatchFile, "\"" + (CStr) SkinVal + (CStr) "\" " + (CStr) SkinValB);
-			if(strcmpi(StopOnError.Get_String(), "1") == 0) WAFileWriteLine(BatchFile, "if errorlevel 1 goto AsmEnd");
+			FileWriteLine(BatchFile, "\"" + (CStr) SkinVal + (CStr) "\" " + (CStr) SkinValB);
+			if(strcmpi(StopOnError.Get_String(), "1") == 0) FileWriteLine(BatchFile, "if errorlevel 1 goto AsmEnd");
 		}
 	}
 NoAsmStep:
     
-    BuildSteps = WAIniReadKey("Layout", "StepLink", MainIniFile);
+    BuildSteps = IniReadKey("Layout", "StepLink", MainIniFile);
     NoLinkCom = 0;
     if(BuildSteps.Len() != 0) if(strcmpi(BuildSteps.Get_String(), "1") != 0) NoLinkCom = 1;
    
-    HeadLib = WAIniReadKey("LINKER", "HeadLib", PrjBuildIniFile);
-    StopOnError = WAIniReadKey("LINKER", "StopOnError", PrjBuildIniFile);
+    HeadLib = IniReadKey("LINKER", "HeadLib", PrjBuildIniFile);
+    StopOnError = IniReadKey("LINKER", "StopOnError", PrjBuildIniFile);
             
     // If user don't want any entry point then just report it as an empty string
     if(DefinedEntryPoint.Len() != 0)
     {
-        if(WAIniReadKey("LINKER", "DllEntryPoint", PrjBuildIniFile).Len() != 0)
+        if(IniReadKey("LINKER", "DllEntryPoint", PrjBuildIniFile).Len() != 0)
         {
-            DefinedEntryPoint = WAIniReadKey("LINKER", "DllEntryPoint", PrjBuildIniFile).Get_String() + (CStr) DefinedEntryPoint;
+            DefinedEntryPoint = IniReadKey("LINKER", "DllEntryPoint", PrjBuildIniFile).Get_String() + (CStr) DefinedEntryPoint;
         }
         else
         {
@@ -2487,7 +2487,7 @@ NoAsmStep:
     DisabledImports = 1;
 	for(i = 0; i <= 999; i++)
 	{
-        SkinVal = WAIniReadKey("LINKER", "Prog" + (CStr) ProjectTypeExt + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
+        SkinVal = IniReadKey("LINKER", "Prog" + (CStr) ProjectTypeExt + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
         if(SkinVal.Len() == 0) break;
         SkinVal = ChangeRelativePaths(SkinVal);
         SkinVal = SkinCommand(SkinVal);
@@ -2500,7 +2500,7 @@ NoAsmStep:
 			{
 				if(NoLinkCom == 0)
 				{
-	                if(WAFileExist(SkinVal) == 0)
+	                if(FileExist(SkinVal) == 0)
 	                {
 						WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Can't find specified linker: " + (CStr) SkinVal);
 						WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Process halted.");
@@ -2510,7 +2510,7 @@ NoAsmStep:
 				}
 			}
 		}
-        SkinValB = WAIniReadKey("LINKER", "Args" + (CStr) ProjectTypeExt + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
+        SkinValB = IniReadKey("LINKER", "Args" + (CStr) ProjectTypeExt + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
         SkinValB = ChangeRelativePaths(SkinValB);
         SkinValB = SkinCommand(SkinValB);
         for(k = 1; k <= 26; k++)
@@ -2525,7 +2525,7 @@ NoAsmStep:
             // Simple DOS command
             CurrDOSCom = GetLinkDOSCommand(SkinVal);
             SkinVal = StringReplace(SkinVal, SkinVal, CurrDOSCom, 1, -1, Text_Compare);
-            WAFileWriteLine(BatchFile, SkinVal + (CStr) " " + (CStr) SkinValB);
+            FileWriteLine(BatchFile, SkinVal + (CStr) " " + (CStr) SkinValB);
         }
         else
         {
@@ -2550,12 +2550,12 @@ NoAsmStep:
 							if(DisabledImports)
 							{
 								//+ (CStr) " " + (CStr) CustomRedirector
-								WAFileWriteLine(BatchFile, "\"" + (CStr) SkinVal + (CStr) "\" " + (CStr) AddLibToLink + (CStr) " " + (CStr) SkinValB);
+								FileWriteLine(BatchFile, "\"" + (CStr) SkinVal + (CStr) "\" " + (CStr) AddLibToLink + (CStr) " " + (CStr) SkinValB);
 							}
 							else
 							{
 								//+ (CStr) " " + (CStr) CustomRedirector
-								WAFileWriteLine(BatchFile, "\"" + (CStr) SkinVal + (CStr) "\" " + (CStr) SkinValB);
+								FileWriteLine(BatchFile, "\"" + (CStr) SkinVal + (CStr) "\" " + (CStr) SkinValB);
 							}
 						}
 						else
@@ -2563,43 +2563,43 @@ NoAsmStep:
 							if(DisabledImports)
 							{
 								//+ (CStr) CustomRedirector
-								WAFileWriteLine(BatchFile, "\"" + (CStr) SkinVal + (CStr) "\" " + (CStr) SkinValB + (CStr) " " + (CStr) AddLibToLink);
+								FileWriteLine(BatchFile, "\"" + (CStr) SkinVal + (CStr) "\" " + (CStr) SkinValB + (CStr) " " + (CStr) AddLibToLink);
 							}
 							else
 							{
 								//+ (CStr) " " + (CStr) CustomRedirector
-								WAFileWriteLine(BatchFile, "\"" + (CStr) SkinVal + (CStr) "\" " + (CStr) SkinValB);
+								FileWriteLine(BatchFile, "\"" + (CStr) SkinVal + (CStr) "\" " + (CStr) SkinValB);
 							}
 						}
 					}
 				}
 			}
         }
-        if(NoLinkCom == 0) if(strcmpi(StopOnError.Get_String(), "1") == 0) WAFileWriteLine(BatchFile, "if errorlevel 1 goto AsmEnd");
+        if(NoLinkCom == 0) if(strcmpi(StopOnError.Get_String(), "1") == 0) FileWriteLine(BatchFile, "if errorlevel 1 goto AsmEnd");
     }
 
-    WAFileWriteLine(BatchFile, ":AsmEnd");
-    WAFileWriteLine(BatchFile, "if exist " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".trc").Get_String() + (CStr) " del " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".trc").Get_String());
-    WAFileWriteLine(BatchFile, "if exist " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".ode").Get_String() + (CStr) " del " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".ode").Get_String());
-    WAFileWriteLine(BatchFile, "if exist " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".def").Get_String() + (CStr) " del " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".def").Get_String());
-    WAFileWriteLine(BatchFile, "if exist Chromatichead." + (CStr) HeadExt + (CStr) " del Chromatichead." + (CStr) HeadExt);
-    WAFileWriteLine(BatchFile, "if exist " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".manifest").Get_String() + (CStr) " del " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".manifest").Get_String());
-    BuildSteps = WAIniReadKey("Layout", "StepClean", MainIniFile);
+    FileWriteLine(BatchFile, ":AsmEnd");
+    FileWriteLine(BatchFile, "if exist " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".trc").Get_String() + (CStr) " del " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".trc").Get_String());
+    FileWriteLine(BatchFile, "if exist " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".ode").Get_String() + (CStr) " del " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".ode").Get_String());
+    FileWriteLine(BatchFile, "if exist " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".def").Get_String() + (CStr) " del " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".def").Get_String());
+    FileWriteLine(BatchFile, "if exist Chromatichead." + (CStr) HeadExt + (CStr) " del Chromatichead." + (CStr) HeadExt);
+    FileWriteLine(BatchFile, "if exist " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".manifest").Get_String() + (CStr) " del " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".manifest").Get_String());
+    BuildSteps = IniReadKey("Layout", "StepClean", MainIniFile);
     if(BuildSteps.Len() != 0)
     {
         if(strcmpi(BuildSteps.Get_String(), "1") == 0)
         {
-			WAFileWriteLine(BatchFile, "if exist " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".res").Get_String() + (CStr) " del " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".res").Get_String());
-			WAFileWriteLine(BatchFile, "if exist " + (CStr) CorrectFileName("resources.obj").Get_String() + (CStr) " del " + (CStr) CorrectFileName("resources.obj").Get_String());
-			WAFileWriteLine(BatchFile, "if exist " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".obj").Get_String() + (CStr) " del " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".obj").Get_String());
-			WAFileWriteLine(BatchFile, "if exist " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".o").Get_String() + (CStr) " del " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".o").Get_String());
+			FileWriteLine(BatchFile, "if exist " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".res").Get_String() + (CStr) " del " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".res").Get_String());
+			FileWriteLine(BatchFile, "if exist " + (CStr) CorrectFileName("resources.obj").Get_String() + (CStr) " del " + (CStr) CorrectFileName("resources.obj").Get_String());
+			FileWriteLine(BatchFile, "if exist " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".obj").Get_String() + (CStr) " del " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".obj").Get_String());
+			FileWriteLine(BatchFile, "if exist " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".o").Get_String() + (CStr) " del " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".o").Get_String());
         }
     }
 
-    WAFileWriteLine(BatchFile, "exit");
-    WAFileClose(HeaderFile);
+    FileWriteLine(BatchFile, "exit");
+    FileClose(HeaderFile);
     HeaderFile = 0;
-    WAFileClose(BatchFile);
+    FileClose(BatchFile);
     BatchFile = 0;
 	WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Creating target file...");
     
@@ -2613,54 +2613,54 @@ NoAsmStep:
 	if(BufString == "WINLIB")
 	{
 //        ResRealExt = "lib";
-        PostRealName = EndProjectFileName; //WAFileReplaceExtension(EndProjectFileName, ResRealExt);
+        PostRealName = EndProjectFileName; //FileReplaceExtension(EndProjectFileName, ResRealExt);
         if(ProjectPostRename.Len() != 0)
         {
-            BufString = WAFileReplaceExtension(PostRealName, ProjectPostRename);
+            BufString = FileReplaceExtension(PostRealName, ProjectPostRename);
 			DeleteFile(BufString.Get_String());
 			MoveFile(PostRealName.Get_String(), BufString.Get_String());
             PostRealName = BufString;
         }
-        WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "File size: " + (CStr) WAFileGetSize(PostRealName) + (CStr) " bytes");
+        WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "File size: " + (CStr) FileGetSize(PostRealName) + (CStr) " bytes");
 	}
 	else if(BufString == "WINDLL")
 	{
         //ResRealExt = "dll";
-        PostRealName = EndProjectFileName; //WAFileReplaceExtension(EndProjectFileName, ResRealExt);
+        PostRealName = EndProjectFileName; //FileReplaceExtension(EndProjectFileName, ResRealExt);
         if(ProjectPostRename.Len() != 0)
         {
-            BufString = WAFileReplaceExtension(PostRealName, ProjectPostRename);
+            BufString = FileReplaceExtension(PostRealName, ProjectPostRename);
             DeleteFile(BufString.Get_String());
 			MoveFile(PostRealName.Get_String(), BufString.Get_String());
             PostRealName = BufString;
         }
-        WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "File size: " + (CStr) WAFileGetSize(PostRealName) + (CStr) " bytes");
+        WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "File size: " + (CStr) FileGetSize(PostRealName) + (CStr) " bytes");
 	}
 	else if(BufString == "WINSYS")
 	{
         //ResRealExt = "sys";
-        PostRealName = EndProjectFileName; //WAFileReplaceExtension(EndProjectFileName, ResRealExt);
+        PostRealName = EndProjectFileName; //FileReplaceExtension(EndProjectFileName, ResRealExt);
         if(ProjectPostRename.Len() != 0)
         {
-            BufString = WAFileReplaceExtension(PostRealName, ProjectPostRename);
+            BufString = FileReplaceExtension(PostRealName, ProjectPostRename);
             DeleteFile(BufString.Get_String());
             MoveFile(PostRealName.Get_String(), BufString.Get_String());
             PostRealName = BufString;
         }
-        WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "File size: " + (CStr) WAFileGetSize(PostRealName) + (CStr) " bytes");
+        WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "File size: " + (CStr) FileGetSize(PostRealName) + (CStr) " bytes");
 	}
 	else
 	{
         //ResRealExt = "exe";
-        PostRealName = EndProjectFileName; //WAFileReplaceExtension(EndProjectFileName, ResRealExt);
+        PostRealName = EndProjectFileName; //FileReplaceExtension(EndProjectFileName, ResRealExt);
         if(ProjectPostRename.Len() != 0)
         {
-            BufString = WAFileReplaceExtension(PostRealName, ProjectPostRename);
+            BufString = FileReplaceExtension(PostRealName, ProjectPostRename);
             DeleteFile(BufString.Get_String());
             MoveFile(PostRealName.Get_String(), BufString.Get_String());
             PostRealName = BufString;
         }
-        WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "File size: " + (CStr) WAFileGetSize(PostRealName) + (CStr) " bytes");
+        WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "File size: " + (CStr) FileGetSize(PostRealName) + (CStr) " bytes");
     }
     switch(BuildType)
     {
@@ -2675,7 +2675,7 @@ NoAsmStep:
 			break;
     }
     WriteComment("");
-    WACursorSetNormal();
+    CursorSetNormal();
 }
 
 // -----------------------------------------------------------------------
@@ -2685,79 +2685,79 @@ void Project_Write_Version_Res(HANDLE ResourcesFile)
 	CStr ResRealExt;
 	CStr BufString;
 
-	WAFileWriteLine(ResourcesFile, "1 VERSIONINFO");
-	WAFileWriteLine(ResourcesFile, "FILEVERSION " + (CStr) Prj_Major + (CStr) "," + (CStr) Prj_Minor + (CStr) "," + (CStr) Prj_Revision + (CStr) "," + (CStr) Prj_Release);
-	WAFileWriteLine(ResourcesFile, "PRODUCTVERSION " + (CStr) Prj_Major + (CStr) "," + (CStr) Prj_Minor + (CStr) "," + (CStr) Prj_Revision + (CStr) "," + (CStr) Prj_Release);
-	WAFileWriteLine(ResourcesFile, "FILEFLAGSMASK 0x3fL");
-	WAFileWriteLine(ResourcesFile, "FILEFLAGS 0x0L");
-	WAFileWriteLine(ResourcesFile, "FILEOS 0x" + (CStr) Prj_OS + (CStr) "L");
-	WAFileWriteLine(ResourcesFile, "FILETYPE 0x" + (CStr) Prj_FileType + (CStr) "L");
-	WAFileWriteLine(ResourcesFile, "FILESUBTYPE 0x0L");
-	WAFileWriteLine(ResourcesFile, "BEGIN");
-	WAFileWriteLine(ResourcesFile, "BLOCK \"StringFileInfo\"");
-	WAFileWriteLine(ResourcesFile, "BEGIN");
-	WAFileWriteLine(ResourcesFile, "BLOCK \"040904B0\"");
-	WAFileWriteLine(ResourcesFile, "BEGIN");
-	if(Prj_CompanyName.Len() != 0) WAFileWriteLine(ResourcesFile, "VALUE \"CompanyName\", \"" + (CStr) StringReplace(Prj_CompanyName, "\r\n", " ", 1, -1, Binary_Compare) + (CStr) "\\0\"");
-	if(Prj_FileDescription.Len() != 0) WAFileWriteLine(ResourcesFile, "VALUE \"FileDescription\", \"" + (CStr) StringReplace(Prj_FileDescription, "\r\n", " ", 1, -1, Binary_Compare) + (CStr) "\\0\"");
-	WAFileWriteLine(ResourcesFile, "VALUE \"FileVersion\", \"" + (CStr) Prj_Major + (CStr) "." + (CStr) Prj_Minor + (CStr) "." + (CStr) Prj_Revision + (CStr) "." + (CStr) Prj_Release + (CStr) "\\0\"");
-	WAFileWriteLine(ResourcesFile, "VALUE \"InternalName\", \"" + (CStr) ProjectTitle + (CStr) "\\0\"");
-	if(Prj_LegalCopyRight.Len() != 0) WAFileWriteLine(ResourcesFile, "VALUE \"LegalCopyright\", \"" + (CStr) StringReplace(Prj_LegalCopyRight, "\r\n", " ", 1, -1, Binary_Compare) + (CStr) "\\0\"");
-	if(Prj_LegalTrademarks.Len() != 0) WAFileWriteLine(ResourcesFile, "VALUE \"LegalTrademarks\", \"" + (CStr) StringReplace(Prj_LegalTrademarks, "\r\n", " ", 1, -1, Binary_Compare) + (CStr) "\\0\"");
-	if(Prj_Comments.Len() != 0) WAFileWriteLine(ResourcesFile, "VALUE \"Comments\", \"" + (CStr) StringReplace(Prj_Comments, "\r\n", " ", 1, -1, Binary_Compare) + (CStr) "\\0\"");
+	FileWriteLine(ResourcesFile, "1 VERSIONINFO");
+	FileWriteLine(ResourcesFile, "FILEVERSION " + (CStr) Prj_Major + (CStr) "," + (CStr) Prj_Minor + (CStr) "," + (CStr) Prj_Revision + (CStr) "," + (CStr) Prj_Release);
+	FileWriteLine(ResourcesFile, "PRODUCTVERSION " + (CStr) Prj_Major + (CStr) "," + (CStr) Prj_Minor + (CStr) "," + (CStr) Prj_Revision + (CStr) "," + (CStr) Prj_Release);
+	FileWriteLine(ResourcesFile, "FILEFLAGSMASK 0x3fL");
+	FileWriteLine(ResourcesFile, "FILEFLAGS 0x0L");
+	FileWriteLine(ResourcesFile, "FILEOS 0x" + (CStr) Prj_OS + (CStr) "L");
+	FileWriteLine(ResourcesFile, "FILETYPE 0x" + (CStr) Prj_FileType + (CStr) "L");
+	FileWriteLine(ResourcesFile, "FILESUBTYPE 0x0L");
+	FileWriteLine(ResourcesFile, "BEGIN");
+	FileWriteLine(ResourcesFile, "BLOCK \"StringFileInfo\"");
+	FileWriteLine(ResourcesFile, "BEGIN");
+	FileWriteLine(ResourcesFile, "BLOCK \"040904B0\"");
+	FileWriteLine(ResourcesFile, "BEGIN");
+	if(Prj_CompanyName.Len() != 0) FileWriteLine(ResourcesFile, "VALUE \"CompanyName\", \"" + (CStr) StringReplace(Prj_CompanyName, "\r\n", " ", 1, -1, Binary_Compare) + (CStr) "\\0\"");
+	if(Prj_FileDescription.Len() != 0) FileWriteLine(ResourcesFile, "VALUE \"FileDescription\", \"" + (CStr) StringReplace(Prj_FileDescription, "\r\n", " ", 1, -1, Binary_Compare) + (CStr) "\\0\"");
+	FileWriteLine(ResourcesFile, "VALUE \"FileVersion\", \"" + (CStr) Prj_Major + (CStr) "." + (CStr) Prj_Minor + (CStr) "." + (CStr) Prj_Revision + (CStr) "." + (CStr) Prj_Release + (CStr) "\\0\"");
+	FileWriteLine(ResourcesFile, "VALUE \"InternalName\", \"" + (CStr) ProjectTitle + (CStr) "\\0\"");
+	if(Prj_LegalCopyRight.Len() != 0) FileWriteLine(ResourcesFile, "VALUE \"LegalCopyright\", \"" + (CStr) StringReplace(Prj_LegalCopyRight, "\r\n", " ", 1, -1, Binary_Compare) + (CStr) "\\0\"");
+	if(Prj_LegalTrademarks.Len() != 0) FileWriteLine(ResourcesFile, "VALUE \"LegalTrademarks\", \"" + (CStr) StringReplace(Prj_LegalTrademarks, "\r\n", " ", 1, -1, Binary_Compare) + (CStr) "\\0\"");
+	if(Prj_Comments.Len() != 0) FileWriteLine(ResourcesFile, "VALUE \"Comments\", \"" + (CStr) StringReplace(Prj_Comments, "\r\n", " ", 1, -1, Binary_Compare) + (CStr) "\\0\"");
 	BufString = ProjectTypeExt.Upper_Case();
 	if(BufString == "WINEXE")
 	{
 		ResRealExt = "exe";
 		if(ProjectPostRename.Len() != 0) ResRealExt = ProjectPostRename;
-		WAFileWriteLine(ResourcesFile, "VALUE \"OriginalFilename\", \"" + (CStr) ProjectTitle + (CStr) "." + (CStr) ResRealExt + (CStr) "\\0\"");
+		FileWriteLine(ResourcesFile, "VALUE \"OriginalFilename\", \"" + (CStr) ProjectTitle + (CStr) "." + (CStr) ResRealExt + (CStr) "\\0\"");
 	}
 	else if(BufString == "DOSCOM")
 	{
 		ResRealExt = "com";
 		if(ProjectPostRename.Len() != 0) ResRealExt = ProjectPostRename;
-		WAFileWriteLine(ResourcesFile, "VALUE \"OriginalFilename\", \"" + (CStr) ProjectTitle + (CStr) "." + (CStr) ResRealExt + (CStr) "\\0\"");
+		FileWriteLine(ResourcesFile, "VALUE \"OriginalFilename\", \"" + (CStr) ProjectTitle + (CStr) "." + (CStr) ResRealExt + (CStr) "\\0\"");
 	}
 	else if(BufString == "DOSEXE")
 	{
 		ResRealExt = "exe";
 		if(ProjectPostRename.Len() != 0) ResRealExt = ProjectPostRename;
-		WAFileWriteLine(ResourcesFile, "VALUE \"OriginalFilename\", \"" + (CStr) ProjectTitle + (CStr) "." + (CStr) ResRealExt + (CStr) "\\0\"");
+		FileWriteLine(ResourcesFile, "VALUE \"OriginalFilename\", \"" + (CStr) ProjectTitle + (CStr) "." + (CStr) ResRealExt + (CStr) "\\0\"");
 	}
 	else if(BufString == "WINDLL")
 	{
 		ResRealExt = "dll";
 		if(ProjectPostRename.Len() != 0) ResRealExt = ProjectPostRename;
-		WAFileWriteLine(ResourcesFile, "VALUE \"OriginalFilename\", \"" + (CStr) ProjectTitle + (CStr) "." + (CStr) ResRealExt + (CStr) "\\0\"");
+		FileWriteLine(ResourcesFile, "VALUE \"OriginalFilename\", \"" + (CStr) ProjectTitle + (CStr) "." + (CStr) ResRealExt + (CStr) "\\0\"");
 	}
 	else if(BufString == "WINSYS")
 	{
 		ResRealExt = "sys";
 		if(ProjectPostRename.Len() != 0) ResRealExt = ProjectPostRename;
-		WAFileWriteLine(ResourcesFile, "VALUE \"OriginalFilename\", \"" + (CStr) ProjectTitle + (CStr) "." + (CStr) ResRealExt + (CStr) "\\0\"");
+		FileWriteLine(ResourcesFile, "VALUE \"OriginalFilename\", \"" + (CStr) ProjectTitle + (CStr) "." + (CStr) ResRealExt + (CStr) "\\0\"");
 	}
 	else if(BufString == "WINLIB")
 	{
 		ResRealExt = "lib";
 		if(ProjectPostRename.Len() != 0) ResRealExt = ProjectPostRename;
-		WAFileWriteLine(ResourcesFile, "VALUE \"OriginalFilename\", \"" + (CStr) ProjectTitle + (CStr) "." + (CStr) ResRealExt + (CStr) "\\0\"");
+		FileWriteLine(ResourcesFile, "VALUE \"OriginalFilename\", \"" + (CStr) ProjectTitle + (CStr) "." + (CStr) ResRealExt + (CStr) "\\0\"");
 	}
 	else
 	{
 		ResRealExt = "exe";
 		if(ProjectPostRename.Len() != 0) ResRealExt = ProjectPostRename;
-		WAFileWriteLine(ResourcesFile, "VALUE \"OriginalFilename\", \"" + (CStr) ProjectTitle + (CStr) "." + (CStr) ResRealExt + (CStr) "\\0\"");
+		FileWriteLine(ResourcesFile, "VALUE \"OriginalFilename\", \"" + (CStr) ProjectTitle + (CStr) "." + (CStr) ResRealExt + (CStr) "\\0\"");
 	}
 
-	if(Prj_ProductName.Len() != 0) WAFileWriteLine(ResourcesFile, "VALUE \"ProductName\", \"" + (CStr) StringReplace(Prj_ProductName, "\r\n", " ", 1, -1, Binary_Compare) + (CStr) "\\0\"");
-	WAFileWriteLine(ResourcesFile, "VALUE \"ProductVersion\", \"" + (CStr) Prj_Major + (CStr) "." + (CStr) Prj_Minor + (CStr) "." + (CStr) Prj_Revision + (CStr) "." + (CStr) Prj_Release + (CStr) "\\0\"");
-	WAFileWriteLine(ResourcesFile, "END");
-	WAFileWriteLine(ResourcesFile, "END");
-	WAFileWriteLine(ResourcesFile, "BLOCK \"VarFileInfo\"");
-	WAFileWriteLine(ResourcesFile, "BEGIN");
-	WAFileWriteLine(ResourcesFile, "VALUE \"Translation\", 0x409, 1200");
-	WAFileWriteLine(ResourcesFile, "END");
-	WAFileWriteLine(ResourcesFile, "END");
+	if(Prj_ProductName.Len() != 0) FileWriteLine(ResourcesFile, "VALUE \"ProductName\", \"" + (CStr) StringReplace(Prj_ProductName, "\r\n", " ", 1, -1, Binary_Compare) + (CStr) "\\0\"");
+	FileWriteLine(ResourcesFile, "VALUE \"ProductVersion\", \"" + (CStr) Prj_Major + (CStr) "." + (CStr) Prj_Minor + (CStr) "." + (CStr) Prj_Revision + (CStr) "." + (CStr) Prj_Release + (CStr) "\\0\"");
+	FileWriteLine(ResourcesFile, "END");
+	FileWriteLine(ResourcesFile, "END");
+	FileWriteLine(ResourcesFile, "BLOCK \"VarFileInfo\"");
+	FileWriteLine(ResourcesFile, "BEGIN");
+	FileWriteLine(ResourcesFile, "VALUE \"Translation\", 0x409, 1200");
+	FileWriteLine(ResourcesFile, "END");
+	FileWriteLine(ResourcesFile, "END");
 }
 
 // -----------------------------------------------------------------------
@@ -2801,8 +2801,8 @@ HTREEITEM Add_Project_Constant(HANDLE HeaderFile, HTREEITEM TreeViewChildEntry, 
 	TempInclude = ConstantType;
 	TempInclude = StringReplace(TempInclude, "%0", TVEntryToSave, 1, -1, Binary_Compare);
 	TempInclude = StringReplace(TempInclude, "%1", ObjIndex, 1, -1, Binary_Compare);
-	WAFileWriteLine(HeaderFile, TempInclude);
-	return(WATreeViewGetNextItem(hTreeView, TreeViewChildEntry));
+	FileWriteLine(HeaderFile, TempInclude);
+	return(TreeViewGetNextItem(hTreeView, TreeViewChildEntry));
 }
 
 // -----------------------------------------------------------------------
@@ -2811,11 +2811,11 @@ void CleanBuildFiles(void)
 {
     CStr BufString;
 	
-	WAFileClose(ObjectsFile);
+	FileClose(ObjectsFile);
     ObjectsFile = 0;
-    WAFileClose(HeaderFile);
+    FileClose(HeaderFile);
     HeaderFile = 0;
-    WAFileClose(BatchFile);
+    FileClose(BatchFile);
     BatchFile = 0;
     BufString = ProjectTitle;
 	BufString = BufString + ".trc";
@@ -2841,7 +2841,7 @@ void FillCompDOSCommand(void)
     CompDOSCom.Erase();
     for(i = 0; i <= 999; i++)
     {
-        DOSCom = WAIniReadKey("COMPILER", "DOSCom" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
+        DOSCom = IniReadKey("COMPILER", "DOSCom" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
         if(DOSCom.Len() == 0) break;
         CompDOSCom.Add(DOSCom.Get_String());
     }
@@ -2869,7 +2869,7 @@ void FillLinkDOSCommand(void)
     LinkDOSCom.Erase();
     for(i = 0; i <= 999; i++)
     {
-        DOSCom = WAIniReadKey("LINKER", "DOSCom" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
+        DOSCom = IniReadKey("LINKER", "DOSCom" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
         if(DOSCom.Len() == 0) break;
         LinkDOSCom.Add(DOSCom.Get_String());
     }
@@ -2900,8 +2900,8 @@ void RunProject(void)
     else if(BufString == "WINSYS") WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Run command disabled.");
     else
     {
-		if(ProjectPostRename.Len() != 0) RunError = ShellExecute(hMDIform.hWnd, "open", WAFileReplaceExtension(ProjectFName, ProjectPostRename).Get_String(), WAIniReadKey("Layout", "PrjArg", MainIniFile).Get_String(), WAFileGetDirectory(ProjectFName).Get_String(), SW_SHOW);
-        else RunError = ShellExecute(hMDIform.hWnd, "open", WAFileReplaceExtension(ProjectFName, "exe").Get_String(), WAIniReadKey("Layout", "PrjArg", MainIniFile).Get_String(), WAFileGetDirectory(ProjectFName).Get_String(), SW_SHOW);
+		if(ProjectPostRename.Len() != 0) RunError = ShellExecute(hMDIform.hWnd, "open", FileReplaceExtension(ProjectFName, ProjectPostRename).Get_String(), IniReadKey("Layout", "PrjArg", MainIniFile).Get_String(), FileGetDirectory(ProjectFName).Get_String(), SW_SHOW);
+        else RunError = ShellExecute(hMDIform.hWnd, "open", FileReplaceExtension(ProjectFName, "exe").Get_String(), IniReadKey("Layout", "PrjArg", MainIniFile).Get_String(), FileGetDirectory(ProjectFName).Get_String(), SW_SHOW);
 		if((long) RunError <= 32)
 		{
 			WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Can't run file (Error " + (CStr) (long) RunError + (CStr) ").");
@@ -2924,7 +2924,7 @@ void DebugProject(void)
     CStr BufString;
     CStr FileToDebug;
 
-    ProjectDir = WAFileGetDirectory(ProjectFName);
+    ProjectDir = FileGetDirectory(ProjectFName);
     BufString = ProjectTypeExt.Upper_Case();
 	if(BufString == "WINLIB")
 	{
@@ -2943,7 +2943,7 @@ void DebugProject(void)
         FileToDebug = ProjectDir + (CStr) "\\" + (CStr) ProjectTitle + (CStr) ".exe";
     }
 
-	DebuggerToUse = WAIniReadKey("Layout", "PrjDebugger", MainIniFile);
+	DebuggerToUse = IniReadKey("Layout", "PrjDebugger", MainIniFile);
 	/*if(ProjectPostRename.Len() != 0) {
         RealExt = ProjectPostRename;
     } else {
@@ -2959,7 +2959,7 @@ void DebugProject(void)
     {
         DebuggerToUseArgs = DebuggerToUse;
 	    // Search for the real filename
-        while(!WAFileExist(DebuggerToUse))
+        while(!FileExist(DebuggerToUse))
         {
             DebuggerToUse = DebuggerToUse.Left(DebuggerToUse.Len() - 1);
             if(DebuggerToUse.Len() == 0)
@@ -2985,7 +2985,7 @@ void DebugProject(void)
         else
         {
             WriteToStatus("Starting external debugger...");
-            RunDOSCmd(DebuggerToUse, DebuggerToUseArgs, WAFileGetDirectory(FileToDebug), "");
+            RunDOSCmd(DebuggerToUse, DebuggerToUseArgs, FileGetDirectory(FileToDebug), "");
             WriteToStatus("Done.");
         }
     }
@@ -2993,7 +2993,7 @@ void DebugProject(void)
     {
         if(DebuggerToUse.Lower_Case() == "(use internal debugger)")
         {
-			if(WaitForDebugOutput(FileToDebug, WAIniReadKey("Layout", "PrjArg", MainIniFile).Get_String()) == 0)
+			if(WaitForDebugOutput(FileToDebug, IniReadKey("Layout", "PrjArg", MainIniFile).Get_String()) == 0)
 			{
 				WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Can't create process.");
 			}
@@ -3001,7 +3001,7 @@ void DebugProject(void)
         else
         {
             WriteToStatus("Starting external debugger...");
-            RunDOSCmd(DebuggerToUse, DebuggerToUseArgs, WAFileGetDirectory(FileToDebug), "");
+            RunDOSCmd(DebuggerToUse, DebuggerToUseArgs, FileGetDirectory(FileToDebug), "");
             WriteToStatus("Done.");
 		}
     }
@@ -3037,9 +3037,9 @@ void GenProto(CStr LibFile)
     CStr GenDest;
 
     WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Generating prototypes...");
-    GenProg = WAIniReadKey("Layout", "GenProto", MainIniFile);
-    GenCmd = WAIniReadKey("Layout", "GenCmd", MainIniFile);
-    GenDest = WAIniReadKey("Layout", "GenDest", MainIniFile);
+    GenProg = IniReadKey("Layout", "GenProto", MainIniFile);
+    GenCmd = IniReadKey("Layout", "GenCmd", MainIniFile);
+    GenDest = IniReadKey("Layout", "GenDest", MainIniFile);
     GenProg = ChangeRelativePaths(GenProg);
     GenCmd = ChangeRelativePaths(GenCmd);
     GenDest = ChangeRelativePaths(GenDest);
@@ -3059,14 +3059,14 @@ void GenProto(CStr LibFile)
     }
     if(strcmp(GenDest.Left(1).Get_String(), "|") == 0)
     {
-        RunDOSCmd(GenProg, GenCmd, WAFileGetDirectory(GenDest.Mid(2)), "");
+        RunDOSCmd(GenProg, GenCmd, FileGetDirectory(GenDest.Mid(2)), "");
     }
     else
     {
-        RunDOSCmd(GenProg, GenCmd + (CStr) " " + (CStr) GenDest, WAFileGetDirectory(GenDest).Get_String(), "");
+        RunDOSCmd(GenProg, GenCmd + (CStr) " " + (CStr) GenDest, FileGetDirectory(GenDest).Get_String(), "");
     }
     if(strcmp(GenDest.Left(1).Get_String(), "|") == 0) GenDest = GenDest.Mid(2);
-    if(WAFileExist(GenDest) != 0)
+    if(FileExist(GenDest) != 0)
     {
         WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Done.");
     }
@@ -3075,14 +3075,14 @@ void GenProto(CStr LibFile)
         WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Error: can't find generated file.");
         return;
     }
-    if(WAMiscMsgBox(hMDIform.hWnd, "Prototypes generated.\rAdd new include file ?", MB_QUESTION, Requesters) == IDYES)
+    if(MiscMsgBox(hMDIform.hWnd, "Prototypes generated.\rAdd new include file ?", MB_QUESTION, Requesters) == IDYES)
     {
-        if(WATreeViewSearchItemText(hTreeView, hTreeViewIncludes, WAFileGetFileName(GenDest).Get_String() + (CStr) " (" + (CStr) GenDest + (CStr) ")") != -1)
+        if(TreeViewSearchItemText(hTreeView, hTreeViewIncludes, FileGetFileName(GenDest).Get_String() + (CStr) " (" + (CStr) GenDest + (CStr) ")") != -1)
         {
-            WAMiscMsgBox(hMDIform.hWnd, "File '" + (CStr) GenDest + (CStr) "' already referenced in project.", MB_ERROR, Requesters);
+            MiscMsgBox(hMDIform.hWnd, "File '" + (CStr) GenDest + (CStr) "' already referenced in project.", MB_ERROR, Requesters);
             return;
         }
-        WATreeViewAddItem(hTreeView, WAFileGetFileName(GenDest).Get_String() + (CStr) " (" + (CStr) GenDest + (CStr) ")", hTreeViewIncludes, 0, ICON_NEW, ICON_NEW, 0, 1);
+        TreeViewAddItem(hTreeView, FileGetFileName(GenDest).Get_String() + (CStr) " (" + (CStr) GenDest + (CStr) ")", hTreeViewIncludes, 0, ICON_NEW, ICON_NEW, 0, 1);
         ProjectModified = TRUE;
     }
 }
@@ -3091,24 +3091,24 @@ void GenProto(CStr LibFile)
 // Create the treeview structure
 void CreateProjectStruct(void)
 {
-    if(hTreeViewRoot != 0) WATreeViewRemoveItem(hTreeView, hTreeViewRoot);
-    hTreeViewRoot = WATreeViewAddItem(hTreeView, ProjectTypeName + (CStr) " (" + (CStr) ProjectFName + (CStr) ")", TVI_ROOT, 0, ICON_FILES, ICON_FILES, TVIS_BOLD, 0);
-    hTreeViewIncludes = WATreeViewAddItem(hTreeView, "Includes", hTreeViewRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
-    hTreeViewLibs = WATreeViewAddItem(hTreeView, "Libraries", hTreeViewRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
-    hTreeViewModules = WATreeViewAddItem(hTreeView, "Modules", hTreeViewRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
-    hTreeViewObjects = WATreeViewAddItem(hTreeView, "Objects", hTreeViewRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
-    hTreeViewResources = WATreeViewAddItem(hTreeView, "Resources", hTreeViewRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
-    hTreeViewIcons = WATreeViewAddItem(hTreeView, "Icons", hTreeViewResources, 0, ICON_FILES, ICON_FILES, 0, 0);
-    hTreeViewCursors = WATreeViewAddItem(hTreeView, "Cursors", hTreeViewResources, 0, ICON_FILES, ICON_FILES, 0, 0);
-    hTreeViewBitmaps = WATreeViewAddItem(hTreeView, "Bitmaps", hTreeViewResources, 0, ICON_FILES, ICON_FILES, 0, 0);
-    hTreeViewStrings = WATreeViewAddItem(hTreeView, "Strings", hTreeViewResources, 0, ICON_FILES, ICON_FILES, 0, 0);
-    hTreeViewAccelerators = WATreeViewAddItem(hTreeView, "Accelerators", hTreeViewResources, 0, ICON_FILES, ICON_FILES, 0, 0);
-    hTreeViewMenus = WATreeViewAddItem(hTreeView, "Menus", hTreeViewResources, 0, ICON_FILES, ICON_FILES, 0, 0);
-    hTreeViewDialogs = WATreeViewAddItem(hTreeView, "Dialogs", hTreeViewResources, 0, ICON_FILES, ICON_FILES, 0, 0);
-    hTreeViewRawdatas = WATreeViewAddItem(hTreeView, "Raw datas", hTreeViewResources, 0, ICON_FILES, ICON_FILES, 0, 0);
+    if(hTreeViewRoot != 0) TreeViewRemoveItem(hTreeView, hTreeViewRoot);
+    hTreeViewRoot = TreeViewAddItem(hTreeView, ProjectTypeName + (CStr) " (" + (CStr) ProjectFName + (CStr) ")", TVI_ROOT, 0, ICON_FILES, ICON_FILES, TVIS_BOLD, 0);
+    hTreeViewIncludes = TreeViewAddItem(hTreeView, "Includes", hTreeViewRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
+    hTreeViewLibs = TreeViewAddItem(hTreeView, "Libraries", hTreeViewRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
+    hTreeViewModules = TreeViewAddItem(hTreeView, "Modules", hTreeViewRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
+    hTreeViewObjects = TreeViewAddItem(hTreeView, "Objects", hTreeViewRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
+    hTreeViewResources = TreeViewAddItem(hTreeView, "Resources", hTreeViewRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
+    hTreeViewIcons = TreeViewAddItem(hTreeView, "Icons", hTreeViewResources, 0, ICON_FILES, ICON_FILES, 0, 0);
+    hTreeViewCursors = TreeViewAddItem(hTreeView, "Cursors", hTreeViewResources, 0, ICON_FILES, ICON_FILES, 0, 0);
+    hTreeViewBitmaps = TreeViewAddItem(hTreeView, "Bitmaps", hTreeViewResources, 0, ICON_FILES, ICON_FILES, 0, 0);
+    hTreeViewStrings = TreeViewAddItem(hTreeView, "Strings", hTreeViewResources, 0, ICON_FILES, ICON_FILES, 0, 0);
+    hTreeViewAccelerators = TreeViewAddItem(hTreeView, "Accelerators", hTreeViewResources, 0, ICON_FILES, ICON_FILES, 0, 0);
+    hTreeViewMenus = TreeViewAddItem(hTreeView, "Menus", hTreeViewResources, 0, ICON_FILES, ICON_FILES, 0, 0);
+    hTreeViewDialogs = TreeViewAddItem(hTreeView, "Dialogs", hTreeViewResources, 0, ICON_FILES, ICON_FILES, 0, 0);
+    hTreeViewRawdatas = TreeViewAddItem(hTreeView, "Raw datas", hTreeViewResources, 0, ICON_FILES, ICON_FILES, 0, 0);
     hTreeViewDefs = 0;
-    if((strcmpi(ProjectTypeExt.Get_String(), "WINDLL") == 0) || (strcmpi(ProjectTypeExt.Get_String(), "WINSYS") == 0)) hTreeViewDefs = WATreeViewAddItem(hTreeView, "Exports", hTreeViewRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
-    hTreeViewTexts = WATreeViewAddItem(hTreeView, "Documents", hTreeViewRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
+    if((strcmpi(ProjectTypeExt.Get_String(), "WINDLL") == 0) || (strcmpi(ProjectTypeExt.Get_String(), "WINSYS") == 0)) hTreeViewDefs = TreeViewAddItem(hTreeView, "Exports", hTreeViewRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
+    hTreeViewTexts = TreeViewAddItem(hTreeView, "Documents", hTreeViewRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
 }
 
 // -----------------------------------------------------------------------
@@ -3704,7 +3704,7 @@ void RemRawDataFromArray(long Idx)
 int CheckMissingFile(CStr FileName, int ReportMissing, HTREEITEM hOrigTreeItem,
                      CStr ResourceName, int ResourceProp, int ResourceLang)
 {
-    if(WAFileExist(FileName) == 0)
+    if(FileExist(FileName) == 0)
     {
         if(ReportMissing)
         {
@@ -3771,91 +3771,91 @@ CStr  WriteLanguageEquate(long ResourceID)
 // Put accelerators constants in resource file
 void WriteAcceleratorEquates(HANDLE ResFile)
 {
-    WAFileWriteLine(ResFile, "#define VK_LBUTTON 0x1");
-    WAFileWriteLine(ResFile, "#define VK_RBUTTON 0x2");
-    WAFileWriteLine(ResFile, "#define VK_CANCEL 0x3");
-    WAFileWriteLine(ResFile, "#define VK_MBUTTON 0x4");
-    WAFileWriteLine(ResFile, "#define VK_BACK 0x8");
-    WAFileWriteLine(ResFile, "#define VK_TAB 0x9");
-    WAFileWriteLine(ResFile, "#define VK_CLEAR 0xc");
-    WAFileWriteLine(ResFile, "#define VK_RETURN 0xd");
-    WAFileWriteLine(ResFile, "#define VK_SHIFT 0x10");
-    WAFileWriteLine(ResFile, "#define VK_CONTROL 0x11");
-    WAFileWriteLine(ResFile, "#define VK_MENU 0x12");
-    WAFileWriteLine(ResFile, "#define VK_PAUSE 0x13");
-    WAFileWriteLine(ResFile, "#define VK_CAPITAL 0x14");
-    WAFileWriteLine(ResFile, "#define VK_ESCAPE 0x1b");
-    WAFileWriteLine(ResFile, "#define VK_SPACE 0x20");
-    WAFileWriteLine(ResFile, "#define VK_PRIOR 0x21");
-    WAFileWriteLine(ResFile, "#define VK_NEXT 0x22");
-    WAFileWriteLine(ResFile, "#define VK_END 0x23");
-    WAFileWriteLine(ResFile, "#define VK_HOME 0x24");
-    WAFileWriteLine(ResFile, "#define VK_LEFT 0x25");
-    WAFileWriteLine(ResFile, "#define VK_UP 0x26");
-    WAFileWriteLine(ResFile, "#define VK_RIGHT 0x27");
-    WAFileWriteLine(ResFile, "#define VK_DOWN 0x28");
-    WAFileWriteLine(ResFile, "#define VK_SELECT 0x29");
-    WAFileWriteLine(ResFile, "#define VK_PRINT 0x2a");
-    WAFileWriteLine(ResFile, "#define VK_EXECUTE 0x2b");
-    WAFileWriteLine(ResFile, "#define VK_SNAPSHOT 0x2c");
-    WAFileWriteLine(ResFile, "#define VK_INSERT 0x2d");
-    WAFileWriteLine(ResFile, "#define VK_DELETE 0x2e");
-    WAFileWriteLine(ResFile, "#define VK_HELP 0x2f");
-    WAFileWriteLine(ResFile, "#define VK_LWIN 0x5b");
-    WAFileWriteLine(ResFile, "#define VK_RWIN 0x5c");
-    WAFileWriteLine(ResFile, "#define VK_APPS 0x5d");
-    WAFileWriteLine(ResFile, "#define VK_NUMPAD0 0x60");
-    WAFileWriteLine(ResFile, "#define VK_NUMPAD1 0x61");
-    WAFileWriteLine(ResFile, "#define VK_NUMPAD2 0x62");
-    WAFileWriteLine(ResFile, "#define VK_NUMPAD3 0x63");
-    WAFileWriteLine(ResFile, "#define VK_NUMPAD4 0x64");
-    WAFileWriteLine(ResFile, "#define VK_NUMPAD5 0x65");
-    WAFileWriteLine(ResFile, "#define VK_NUMPAD6 0x66");
-    WAFileWriteLine(ResFile, "#define VK_NUMPAD7 0x67");
-    WAFileWriteLine(ResFile, "#define VK_NUMPAD8 0x68");
-    WAFileWriteLine(ResFile, "#define VK_NUMPAD9 0x69");
-    WAFileWriteLine(ResFile, "#define VK_MULTIPLY 0x6a");
-    WAFileWriteLine(ResFile, "#define VK_ADD 0x6b");
-    WAFileWriteLine(ResFile, "#define VK_SEPARATOR 0x6c");
-    WAFileWriteLine(ResFile, "#define VK_SUBTRACT 0x6d");
-    WAFileWriteLine(ResFile, "#define VK_DECIMAL 0x6e");
-    WAFileWriteLine(ResFile, "#define VK_DIVIDE 0x6f");
-    WAFileWriteLine(ResFile, "#define VK_F1 0x70");
-    WAFileWriteLine(ResFile, "#define VK_F2 0x71");
-    WAFileWriteLine(ResFile, "#define VK_F3 0x72");
-    WAFileWriteLine(ResFile, "#define VK_F4 0x73");
-    WAFileWriteLine(ResFile, "#define VK_F5 0x74");
-    WAFileWriteLine(ResFile, "#define VK_F6 0x75");
-    WAFileWriteLine(ResFile, "#define VK_F7 0x76");
-    WAFileWriteLine(ResFile, "#define VK_F8 0x77");
-    WAFileWriteLine(ResFile, "#define VK_F9 0x78");
-    WAFileWriteLine(ResFile, "#define VK_F10 0x79");
-    WAFileWriteLine(ResFile, "#define VK_F11 0x7a");
-    WAFileWriteLine(ResFile, "#define VK_F12 0x7b");
-    WAFileWriteLine(ResFile, "#define VK_F13 0x7c");
-    WAFileWriteLine(ResFile, "#define VK_F14 0x7d");
-    WAFileWriteLine(ResFile, "#define VK_F15 0x7e");
-    WAFileWriteLine(ResFile, "#define VK_F16 0x7f");
-    WAFileWriteLine(ResFile, "#define VK_F17 0x80");
-    WAFileWriteLine(ResFile, "#define VK_F18 0x81");
-    WAFileWriteLine(ResFile, "#define VK_F19 0x82");
-    WAFileWriteLine(ResFile, "#define VK_F20 0x83");
-    WAFileWriteLine(ResFile, "#define VK_F21 0x84");
-    WAFileWriteLine(ResFile, "#define VK_F22 0x85");
-    WAFileWriteLine(ResFile, "#define VK_F23 0x86");
-    WAFileWriteLine(ResFile, "#define VK_F24 0x87");
-    WAFileWriteLine(ResFile, "#define VK_NUMLOCK 0x90");
-    WAFileWriteLine(ResFile, "#define VK_SCROLL 0x91");
-    WAFileWriteLine(ResFile, "#define VK_PROCESSKEY 0xe5");
-    WAFileWriteLine(ResFile, "#define VK_ATTN 0xf6");
-    WAFileWriteLine(ResFile, "#define VK_CRSEL 0xf7");
-    WAFileWriteLine(ResFile, "#define VK_EXSEL 0xf8");
-    WAFileWriteLine(ResFile, "#define VK_EREOF 0xf9");
-    WAFileWriteLine(ResFile, "#define VK_PLAY 0xfa");
-    WAFileWriteLine(ResFile, "#define VK_ZOOM 0xfb");
-    WAFileWriteLine(ResFile, "#define VK_NONAME 0xfc");
-    WAFileWriteLine(ResFile, "#define VK_PA1 0xfd");
-    WAFileWriteLine(ResFile, "#define VK_OEM_CLEAR 0xfe");
+    FileWriteLine(ResFile, "#define VK_LBUTTON 0x1");
+    FileWriteLine(ResFile, "#define VK_RBUTTON 0x2");
+    FileWriteLine(ResFile, "#define VK_CANCEL 0x3");
+    FileWriteLine(ResFile, "#define VK_MBUTTON 0x4");
+    FileWriteLine(ResFile, "#define VK_BACK 0x8");
+    FileWriteLine(ResFile, "#define VK_TAB 0x9");
+    FileWriteLine(ResFile, "#define VK_CLEAR 0xc");
+    FileWriteLine(ResFile, "#define VK_RETURN 0xd");
+    FileWriteLine(ResFile, "#define VK_SHIFT 0x10");
+    FileWriteLine(ResFile, "#define VK_CONTROL 0x11");
+    FileWriteLine(ResFile, "#define VK_MENU 0x12");
+    FileWriteLine(ResFile, "#define VK_PAUSE 0x13");
+    FileWriteLine(ResFile, "#define VK_CAPITAL 0x14");
+    FileWriteLine(ResFile, "#define VK_ESCAPE 0x1b");
+    FileWriteLine(ResFile, "#define VK_SPACE 0x20");
+    FileWriteLine(ResFile, "#define VK_PRIOR 0x21");
+    FileWriteLine(ResFile, "#define VK_NEXT 0x22");
+    FileWriteLine(ResFile, "#define VK_END 0x23");
+    FileWriteLine(ResFile, "#define VK_HOME 0x24");
+    FileWriteLine(ResFile, "#define VK_LEFT 0x25");
+    FileWriteLine(ResFile, "#define VK_UP 0x26");
+    FileWriteLine(ResFile, "#define VK_RIGHT 0x27");
+    FileWriteLine(ResFile, "#define VK_DOWN 0x28");
+    FileWriteLine(ResFile, "#define VK_SELECT 0x29");
+    FileWriteLine(ResFile, "#define VK_PRINT 0x2a");
+    FileWriteLine(ResFile, "#define VK_EXECUTE 0x2b");
+    FileWriteLine(ResFile, "#define VK_SNAPSHOT 0x2c");
+    FileWriteLine(ResFile, "#define VK_INSERT 0x2d");
+    FileWriteLine(ResFile, "#define VK_DELETE 0x2e");
+    FileWriteLine(ResFile, "#define VK_HELP 0x2f");
+    FileWriteLine(ResFile, "#define VK_LWIN 0x5b");
+    FileWriteLine(ResFile, "#define VK_RWIN 0x5c");
+    FileWriteLine(ResFile, "#define VK_APPS 0x5d");
+    FileWriteLine(ResFile, "#define VK_NUMPAD0 0x60");
+    FileWriteLine(ResFile, "#define VK_NUMPAD1 0x61");
+    FileWriteLine(ResFile, "#define VK_NUMPAD2 0x62");
+    FileWriteLine(ResFile, "#define VK_NUMPAD3 0x63");
+    FileWriteLine(ResFile, "#define VK_NUMPAD4 0x64");
+    FileWriteLine(ResFile, "#define VK_NUMPAD5 0x65");
+    FileWriteLine(ResFile, "#define VK_NUMPAD6 0x66");
+    FileWriteLine(ResFile, "#define VK_NUMPAD7 0x67");
+    FileWriteLine(ResFile, "#define VK_NUMPAD8 0x68");
+    FileWriteLine(ResFile, "#define VK_NUMPAD9 0x69");
+    FileWriteLine(ResFile, "#define VK_MULTIPLY 0x6a");
+    FileWriteLine(ResFile, "#define VK_ADD 0x6b");
+    FileWriteLine(ResFile, "#define VK_SEPARATOR 0x6c");
+    FileWriteLine(ResFile, "#define VK_SUBTRACT 0x6d");
+    FileWriteLine(ResFile, "#define VK_DECIMAL 0x6e");
+    FileWriteLine(ResFile, "#define VK_DIVIDE 0x6f");
+    FileWriteLine(ResFile, "#define VK_F1 0x70");
+    FileWriteLine(ResFile, "#define VK_F2 0x71");
+    FileWriteLine(ResFile, "#define VK_F3 0x72");
+    FileWriteLine(ResFile, "#define VK_F4 0x73");
+    FileWriteLine(ResFile, "#define VK_F5 0x74");
+    FileWriteLine(ResFile, "#define VK_F6 0x75");
+    FileWriteLine(ResFile, "#define VK_F7 0x76");
+    FileWriteLine(ResFile, "#define VK_F8 0x77");
+    FileWriteLine(ResFile, "#define VK_F9 0x78");
+    FileWriteLine(ResFile, "#define VK_F10 0x79");
+    FileWriteLine(ResFile, "#define VK_F11 0x7a");
+    FileWriteLine(ResFile, "#define VK_F12 0x7b");
+    FileWriteLine(ResFile, "#define VK_F13 0x7c");
+    FileWriteLine(ResFile, "#define VK_F14 0x7d");
+    FileWriteLine(ResFile, "#define VK_F15 0x7e");
+    FileWriteLine(ResFile, "#define VK_F16 0x7f");
+    FileWriteLine(ResFile, "#define VK_F17 0x80");
+    FileWriteLine(ResFile, "#define VK_F18 0x81");
+    FileWriteLine(ResFile, "#define VK_F19 0x82");
+    FileWriteLine(ResFile, "#define VK_F20 0x83");
+    FileWriteLine(ResFile, "#define VK_F21 0x84");
+    FileWriteLine(ResFile, "#define VK_F22 0x85");
+    FileWriteLine(ResFile, "#define VK_F23 0x86");
+    FileWriteLine(ResFile, "#define VK_F24 0x87");
+    FileWriteLine(ResFile, "#define VK_NUMLOCK 0x90");
+    FileWriteLine(ResFile, "#define VK_SCROLL 0x91");
+    FileWriteLine(ResFile, "#define VK_PROCESSKEY 0xe5");
+    FileWriteLine(ResFile, "#define VK_ATTN 0xf6");
+    FileWriteLine(ResFile, "#define VK_CRSEL 0xf7");
+    FileWriteLine(ResFile, "#define VK_EXSEL 0xf8");
+    FileWriteLine(ResFile, "#define VK_EREOF 0xf9");
+    FileWriteLine(ResFile, "#define VK_PLAY 0xfa");
+    FileWriteLine(ResFile, "#define VK_ZOOM 0xfb");
+    FileWriteLine(ResFile, "#define VK_NONAME 0xfc");
+    FileWriteLine(ResFile, "#define VK_PA1 0xfd");
+    FileWriteLine(ResFile, "#define VK_OEM_CLEAR 0xfe");
 }
 
 // -----------------------------------------------------------------------
@@ -3867,7 +3867,7 @@ long Convert_Menus(CStr FileName, CStr IndexID, long ResIndex)
 
     // Force it
     PutExtendedRes = "1";
-    IconhWnd = CreateNewResourceFileWin(WAFileReplaceExtension(FileName, "rc"));
+    IconhWnd = CreateNewResourceFileWin(FileReplaceExtension(FileName, "rc"));
     if(IconhWnd != 0)
     {
         ChildStruct = LoadStructure(IconhWnd);
@@ -3917,15 +3917,15 @@ CStr ConvertMenusRes(CStr FileName, CStr IndexID, long ResIndex)
     MenuEntryOldLevel = -1;
     for(i = 0; i <= 999; i++)
     {
-        MenuEntryName = WAIniReadKey("MNUDAT", "MNU" + (CStr) StringNumberComplement(i, 3).Get_String(), FileName);
+        MenuEntryName = IniReadKey("MNUDAT", "MNU" + (CStr) StringNumberComplement(i, 3).Get_String(), FileName);
         if(MenuEntryName.Len() == 0) break;
-        MenuEntryCmd = WAIniReadKey("MNUDAT", "MNUCMD" + (CStr) StringNumberComplement(i, 3).Get_String(), FileName);
+        MenuEntryCmd = IniReadKey("MNUDAT", "MNUCMD" + (CStr) StringNumberComplement(i, 3).Get_String(), FileName);
         if(MenuEntryCmd.Len() == 0) break;
-        MenuEntryType = WAIniReadKey("MNUDAT", "MNUTYPE" + (CStr) StringNumberComplement(i, 3).Get_String(), FileName);
+        MenuEntryType = IniReadKey("MNUDAT", "MNUTYPE" + (CStr) StringNumberComplement(i, 3).Get_String(), FileName);
         if(MenuEntryType.Len() == 0) break;
-        MenuEntryProps = WAIniReadKey("MNUDAT", "MNUPROPS" + (CStr) StringNumberComplement(i, 3).Get_String(), FileName);
+        MenuEntryProps = IniReadKey("MNUDAT", "MNUPROPS" + (CStr) StringNumberComplement(i, 3).Get_String(), FileName);
         if(MenuEntryProps.Len() == 0) break;
-        MenuEntryLevel = WAIniReadKey("MNUDAT", "MNULEVEL" + (CStr) StringNumberComplement(i, 3).Get_String(), FileName);
+        MenuEntryLevel = IniReadKey("MNUDAT", "MNULEVEL" + (CStr) StringNumberComplement(i, 3).Get_String(), FileName);
         if(MenuEntryLevel.Len() == 0) break;
         MenuEntryTypeLng = MenuEntryType.Get_Long();
         MenuEntryLevelLng = MenuEntryLevel.Get_Long();
@@ -4192,7 +4192,7 @@ long Convert_Raw(CStr FileName, long IndexID, long ResIndex, long UseComma, CStr
 	CStr BufString;
     long ReturnValue = 0;
     
-	if(ByFile == 1) FLen = WAFileGetSize(FileName);
+	if(ByFile == 1) FLen = FileGetSize(FileName);
     else FLen = FileName.Len();
     if(FLen != 0)
     {
@@ -4291,7 +4291,7 @@ void Convert_Icon(CStr FileName, CStr IndexID, long ResIndex)
     HWND IconhWnd = 0;
 	CStr BufString;
     
-	IconhWnd = CreateNewResourceFileWin(WAFileReplaceExtension(FileName, "rc"));
+	IconhWnd = CreateNewResourceFileWin(FileReplaceExtension(FileName, "rc"));
     if(IconhWnd != 0)
     {
         ChildStruct = LoadStructure(IconhWnd);
@@ -4308,7 +4308,7 @@ void Convert_Cursor(CStr FileName, CStr IndexID, long ResIndex)
     HWND IconhWnd = 0;
 	CStr BufString;
     
-	IconhWnd = CreateNewResourceFileWin(WAFileReplaceExtension(FileName, "rc"));
+	IconhWnd = CreateNewResourceFileWin(FileReplaceExtension(FileName, "rc"));
     if(IconhWnd != 0)
     {
         ChildStruct = LoadStructure(IconhWnd);
@@ -4325,7 +4325,7 @@ void Convert_Bitmap(CStr FileName, CStr IndexID, long ResIndex)
     HWND IconhWnd = 0;
 	CStr BufString;
 
-    IconhWnd = CreateNewResourceFileWin(WAFileReplaceExtension(FileName, "rc"));
+    IconhWnd = CreateNewResourceFileWin(FileReplaceExtension(FileName, "rc"));
     if(IconhWnd != 0)
     {
         ChildStruct = LoadStructure(IconhWnd);
@@ -4345,7 +4345,7 @@ void Convert_Strings(CStr FileName, CStr IndexID, long ResIndex)
     CStr StringStr;
     HWND IconhWnd = 0;
     
-	IconhWnd = CreateNewResourceFileWin(WAFileReplaceExtension(FileName, "rc"));
+	IconhWnd = CreateNewResourceFileWin(FileReplaceExtension(FileName, "rc"));
     if(IconhWnd != 0)
     {
         ChildStruct = LoadStructure(IconhWnd);
@@ -4357,7 +4357,7 @@ void Convert_Strings(CStr FileName, CStr IndexID, long ResIndex)
         i = ResIndex * 16;
         for(j = 0; j <= 15; j++)
         {
-            StringStr = WAIniReadKey("STRDAT", "STR" + (CStr) StringNumberComplement(j, 3).Get_String(), FileName);
+            StringStr = IniReadKey("STRDAT", "STR" + (CStr) StringNumberComplement(j, 3).Get_String(), FileName);
             if(StringStr.Len() != 0) StringResToPaste = StringResToPaste + (CStr) " " + (CStr) i + (CStr) ",\"" + (CStr) ResIncludeString(StringStr).Get_String() + (CStr) "\"\r\n";
             i++;
         }
@@ -4386,7 +4386,7 @@ void Convert_Accelerators(CStr FileName, CStr IndexID, long ResIndex)
 	CStr BufString;
     HWND IconhWnd = 0;
 
-    IconhWnd = CreateNewResourceFileWin(WAFileReplaceExtension(FileName, "rc"));
+    IconhWnd = CreateNewResourceFileWin(FileReplaceExtension(FileName, "rc"));
     if(IconhWnd != 0)
     {
         ChildStruct = LoadStructure(IconhWnd);
@@ -4396,8 +4396,8 @@ void Convert_Accelerators(CStr FileName, CStr IndexID, long ResIndex)
         StringResToPaste = StringResToPaste + "BEGIN\r\n";
         for(i = 0; i <= 999; i++)
         {
-            AcceleratorKeys = WAIniReadKey("ACCELDAT", "ACCEL" + (CStr) StringNumberComplement(i, 3).Get_String(), FileName);
-            AcceleratorCmd = WAIniReadKey("ACCELDAT", "COMMAND" + (CStr) StringNumberComplement(i, 3).Get_String(), FileName);
+            AcceleratorKeys = IniReadKey("ACCELDAT", "ACCEL" + (CStr) StringNumberComplement(i, 3).Get_String(), FileName);
+            AcceleratorCmd = IniReadKey("ACCELDAT", "COMMAND" + (CStr) StringNumberComplement(i, 3).Get_String(), FileName);
             if(AcceleratorKeys.Len() == 0) break;
             if(AcceleratorCmd.Len() == 0) break;
             AccelCtrlState = 0;
@@ -4505,12 +4505,12 @@ void CaptureDOSError(CStr DOSCmdName, CStr DOSCmdArgs, CStr DOSCmdDir)
     MyProcStartup.hStdError = PipeOut;
     MyProcStartup.wShowWindow = SW_HIDE;
     DOSCmdDirBuf = DOSCmdDir;
-	if(DOSCmdDirBuf.Len() == 0) DOSCmdDirBuf = WAFileGetDirectory(DOSCmdName);
+	if(DOSCmdDirBuf.Len() == 0) DOSCmdDirBuf = FileGetDirectory(DOSCmdName);
     if(DOSCmdDirBuf.Len() == 0) DOSCmdDirBuf = CurDir();
     if(strcmp(DOSCmdDirBuf.Right(1).Get_String(), "\\") == 0) DOSCmdDirBuf = DOSCmdDirBuf.Mid(1, DOSCmdDirBuf.Len() - 1);
     // Create the process
     WriteComment("Executing process...");
-    WACursorSetWait();
+    CursorSetWait();
     DOSCmdName = StringReplace(DOSCmdName, "\"", "", 1, -1, Binary_Compare);
     DOSCmdDirBuf = StringReplace(&DOSCmdDirBuf, "\"", "", 1, -1, Binary_Compare);
     BufString = (CStr) CorrectFileName(DOSCmdName).Get_String() + (CStr) " " + (CStr) DOSCmdArgs.Get_String();
@@ -4537,7 +4537,7 @@ void CaptureDOSError(CStr DOSCmdName, CStr DOSCmdArgs, CStr DOSCmdDir)
         CloseHandle(PipeIn);
         CloseHandle(MyProcInfos.hThread);
         CloseHandle(MyProcInfos.hProcess);
-        WACursorSetNormal();
+        CursorSetNormal();
         WriteComment("");
         return;
     }
@@ -4547,7 +4547,7 @@ void CaptureDOSError(CStr DOSCmdName, CStr DOSCmdArgs, CStr DOSCmdDir)
         CloseHandle(PipeOut);
         CloseHandle(PipeIn);
     }
-    WACursorSetNormal();
+    CursorSetNormal();
     WriteComment("");
 }
 

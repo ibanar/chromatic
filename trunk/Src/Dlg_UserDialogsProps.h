@@ -28,7 +28,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 // -----------------------------------------------------------------------
-// Dlg_UserDialogsProps.h: declaration of used variables / structures for Dlg_UserDialogsProps.cpp
+// Dlg_UserDialogsBoxProps.h: declaration of used variables / structures for Dlg_UserDialogsProps.cpp
 // -----------------------------------------------------------------------
 
 #ifndef _DLG_USERDIALOGSPROPS_H_

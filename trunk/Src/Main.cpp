@@ -59,7 +59,7 @@
 // -----------------------------------------------------------------------
 // Constants
 #define CHROMATIC_VERSION 1
-#define CHROMATIC_REVISION 30
+#define CHROMATIC_REVISION 31
 
 // -----------------------------------------------------------------------
 // Variables
@@ -91,7 +91,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     BroadCastMessage = RegisterWindowMessage("hitchhikr was here");
     MultipleCheck = false;
     // Check if multiple instances are allowed
-    StartupRetVal = WAIniReadKey("Layout", "Multiple", MainIniFile);
+    StartupRetVal = IniReadKey("Layout", "Multiple", MainIniFile);
     if(StartupRetVal.Len() != 0)
     {
         if(StartupRetVal.Get_Long() == 0) MultipleCheck = false;
@@ -107,7 +107,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
             GetWindowsDirectory(TempWindowsDir.Get_String(), MAX_PATH);
             TempToSave = TempWindowsDir + (CStr) "\\TempOp.CF";
             MSaveFile(TempToSave.Get_String(), (long) PassedFile.Get_String(), PassedFile.Len());
-            WAMiscSendBroadCastMsg(BroadCastMessage);
+            MiscSendBroadCastMsg(BroadCastMessage);
             // Already created so exit
             CloseHandle(BroadCastMutex);
         }
@@ -119,13 +119,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			InitCodeMax(ApphInstance);
 			if(hCodeMax != 0)
 			{
-				if((WAWidgetInit(ApphInstance, LoadIcon(ApphInstance, MAKEINTRESOURCE(APP_ICON)), CURSOR_BASE + CURSOR_SPLITV,
-				                 CURSOR_BASE + CURSOR_SPLITH) & WAINIT_NOEXCONTROLS) == 0) {
+				if((WidgetInit(ApphInstance, LoadIcon(ApphInstance, MAKEINTRESOURCE(APP_ICON)), CURSOR_BASE + CURSOR_SPLITV,
+				               CURSOR_BASE + CURSOR_SPLITH) & INIT_NOEXCONTROLS) == 0) {
 					if(PassedFile.Len() == 0)
 					{
-						SplashStatus = WAIniReadKey("Layout", "ShowSplash", MainIniFile);
+						SplashStatus = IniReadKey("Layout", "ShowSplash", MainIniFile);
 						if(SplashStatus.Len() == 0) SplashStatus = "1";
-						if(SplashStatus == "1") hSplash = WACreateSplashDialog(-1, -1, 500, 215, "DON'T PANIC", 0, 0, 0, &FrmSplashInitProc, &FrmSplashWinHook, 0, 0, SW_SHOW);
+						if(SplashStatus == "1") hSplash = CreateSplashDialog(-1, -1, 500, 215, "DON'T PANIC", 0, 0, 0, &FrmSplashInitProc, &FrmSplashWinHook, 0, 0, SW_SHOW);
 					}
 					FrmSplashSetState("Checking directories structure...");
 					CheckDirectories();
@@ -150,9 +150,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 					InitMenuToolTips();
 					CreateMDIForm();
 					FrmSplashSetState("Initialization done.");
-					WAControlClose(hSplash);
-					if(NotifDirStructureError == 1) WAMiscMsgBox(hMDIform.hWnd, "Directory structure reconstructed.", MB_INFORMATION, Requesters);
-					if(NotifGrepError == 1) WAMiscMsgBox(hMDIform.hWnd, "Specified CGrep.ini file isn't usable.\rBuilt-in definitions will be used instead.", MB_INFORMATION, Requesters);
+					ControlClose(hSplash);
+					if(NotifDirStructureError == 1) MiscMsgBox(hMDIform.hWnd, "Directory structure reconstructed.", MB_INFORMATION, Requesters);
+					if(NotifGrepError == 1) MiscMsgBox(hMDIform.hWnd, "Specified CGrep.ini file isn't usable.\rBuilt-in definitions will be used instead.", MB_INFORMATION, Requesters);
 					if(PassedFile.Len() != 0)
 					{
 						if(OpenUnknownFile(PassedFile, TRUE) == 0)
@@ -164,7 +164,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 					else RestoreState(PrivateWorkSpaceFile);
 					SetForegroundWindow(hMDIform.hWnd);
 					// Display the tip of the day
-					TipsIniKey = WAIniReadKey("Layout", "ShowTips", MainIniFile);
+					TipsIniKey = IniReadKey("Layout", "ShowTips", MainIniFile);
 					if(TipsIniKey.Len() != 0)
 					{
 						if(strcmpi(TipsIniKey.Get_String(), "1") == 0) DisplayTip(hMDIform.hWnd);
@@ -174,7 +174,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 					    DisplayTip(hMDIform.hWnd);
                     }
                     AllocScriptEngine();
-					WAMiscWaitEvents(hMDIform.hClient, hGlobAccelerators, hMDIform.hWnd);
+					MiscWaitEvents(hMDIform.hClient, hGlobAccelerators, hMDIform.hWnd);
                     ReleaseScriptEngine();
 					// Stop running addins at the end
 					StopAddIns();
@@ -186,7 +186,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
         			if(FncBase != 0) FreeMem(FncBase);
 					if(ConstBase != 0) FreeMem(ConstBase);
 					Close_PSAPI();
-					WAWidgetUnInit(ApphInstance);
+					WidgetUnInit(ApphInstance);
 					EraseResArrays();
 					UnInitCodeMax();
 					if(CurFontHandle != 0) DeleteObject(CurFontHandle);
@@ -194,13 +194,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	            }
 				else
 				{
-					WAWidgetUnInit(ApphInstance);
+					WidgetUnInit(ApphInstance);
 					UnInitCodeMax();
 					BufString = "Sing that song with me:";
 					BufString = BufString + "\r\r";
 					BufString = BufString + AppTitle;
 					BufString = BufString + " cannot be started\rMy system is outdated\rI will use Notepad instead";
-					WAMiscMsgBox(NULL, BufString, MB_ERROR, Requesters);
+					MiscMsgBox(NULL, BufString, MB_ERROR, Requesters);
 					ShellExecute(0, "open", "notepad.exe", "", "", SW_SHOW);
 				}
 			}
@@ -208,7 +208,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			{
 				BufString = AppTitle;
 				BufString = BufString + " can't find CMaxXX.dll.\rPlease, be sure that this file is located in the Dlls directory\ror in Windows System directory.";
-				WAMiscMsgBox(NULL, BufString, MB_ERROR, Requesters);
+				MiscMsgBox(NULL, BufString, MB_ERROR, Requesters);
 			}
 			// Release mutex before exiting
 			if(BroadCastMutex != 0)
@@ -271,7 +271,7 @@ void InitAppVars(void)
     PrivateWorkSpaceFile = AppPath + (CStr) "\\Config\\Chromatic.wst";
 
 	Buttons_StaticEdge = WS_EX_STATICEDGE;
-	int OsType = WAMiscGetOSClass();
+	int OsType = MiscGetOSClass();
 	if(OsType & 1) WindowsNT = 1;
 	if(OsType & 2) Windows2K = 1;
 	if(OsType & 4)
@@ -281,7 +281,7 @@ void InitAppVars(void)
 	}
 
     // Fill the AddIns services datas
-    FillWaLib();
+    FillChromaticLib();
     // Get hwnd procs
     CurrentMDIChildProc = &MDIChildProc;
     CurrentCodeMaxProc = &CodeMaxProc;
@@ -353,7 +353,7 @@ long CALLBACK MainFilter(EXCEPTION_POINTERS *Filter)
     BufString = BufString + "You better call your local police station right now.\r";
     BufString = BufString + "(Ask for agent Scruggs).\r\r";
     BufString = BufString + "Before that, do you want to try to save your current work ?";
-	if(WAMiscMsgBox((HWND) 0, BufString, MB_ERROR + MB_YESNO, Requesters) == IDYES)
+	if(MiscMsgBox((HWND) 0, BufString, MB_ERROR + MB_YESNO, Requesters) == IDYES)
 	{
         MCMD_SaveAll();
         MCMD_SaveProject();
@@ -556,7 +556,7 @@ long CALLBACK MainFilter(EXCEPTION_POINTERS *Filter)
 	BufString = AppPath;
 	BufString = BufString + "\\Crash.Txt";
     MSaveFile(BufString.Get_String(), (long) DumpFile.Get_String(), DumpFile.Len());
-    WAMiscMsgBox(NULL, (CStr) "Created dump file: " + (CStr) AppPath + (CStr) "\\Crash.Txt", MB_INFORMATION, Requesters);
+    MiscMsgBox(NULL, (CStr) "Created dump file: " + (CStr) AppPath + (CStr) "\\Crash.Txt", MB_INFORMATION, Requesters);
     return(EXCEPTION_CONTINUE_SEARCH);
 }
 
@@ -591,7 +591,7 @@ void CheckDirectories(void)
 void CheckStockDirectory(CStr DirectoryName)
 {
 	// Check it
-	if(WAFileIsDirectory(DirectoryName) == 0)
+	if(FileIsDirectory(DirectoryName) == 0)
 	{
 		// Create it
 		CreateDirectory(DirectoryName.Get_String(),NULL);

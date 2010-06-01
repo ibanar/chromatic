@@ -141,7 +141,7 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         // Main socket
         case WM_SYSCOLORCHANGE:
-            WAListViewSetBackColor(FRMFTPListview, GetSysColor(COLOR_WINDOW));
+            ListViewSetBackColor(FRMFTPListview, GetSysColor(COLOR_WINDOW));
 			break;
 		case WM_MAINSOCKET:
             MainSocketEvents(lParam, hwndDlg);
@@ -158,33 +158,33 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			break;
         case WM_INITDIALOG:
             FRMFTPhWnd = hwndDlg;
-            WAControlSetText(hwndDlg, "FTP manager");
-            FRMFTPCbAccounts = WACreateComboBox(2, 2, 152, 150, hwndDlg, "", 0, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
+            ControlSetText(hwndDlg, "FTP manager");
+            FRMFTPCbAccounts = CreateComboBox(2, 2, 152, 150, hwndDlg, "", 0, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
             FillFTPCombo(FRMFTPCbAccounts);
-            FRMFTPToolbar = WACreateToolBar(155, 1, 449, 23, hwndDlg, GlobalImageList1, 1, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
-            WAToolBarAddButton(FRMFTPToolbar, "", FTPCONNECT, ICON_EARTH, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-            WAToolBarAddSeparator(FRMFTPToolbar, 0);
-            WAToolBarAddButton(FRMFTPToolbar, "", FTPREFRESH, ICON_REFRESH, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-            WAToolBarAddButton(FRMFTPToolbar, "", FTPDIRUP, ICON_DIRUP, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-            WAToolBarAddButton(FRMFTPToolbar, "", FTPDIRVIEW, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-            WAToolBarAddSeparator(FRMFTPToolbar, 0);
-            WAToolBarAddButton(FRMFTPToolbar, "", FTPNEWDIR, ICON_NEWDIR, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-            WAToolBarAddButton(FRMFTPToolbar, "", FTPDIRRENAME, ICON_RENAMEDIR, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-            WAToolBarAddButton(FRMFTPToolbar, "", FTPDEL, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-            WAToolBarAddButton(FRMFTPToolbar, "", FTPDIRPERMS, ICON_DIRPERMS, TBSTYLE_BUTTON, 0, 1);
-            WAToolBarAddSeparator(FRMFTPToolbar, 0);
-            WAToolBarAddButton(FRMFTPToolbar, "", FTPDOWNLOAD, ICON_DOWNLOAD, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-            WAToolBarAddButton(FRMFTPToolbar, "", FTPUPLOAD, ICON_UPLOAD, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-            FRMFTPListview = WACreateListView(2, 26, 556, 297, hwndDlg, 3, 0, &FRMFTPListviewHook, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | WS_TABSTOP, WS_EX_STATICEDGE);
-            WAListViewAddCol(FRMFTPListview, "Attributes", 76, 3);
-            WAListViewAddCol(FRMFTPListview, "Date", 123, 2);
-            WAListViewAddCol(FRMFTPListview, "Size", 105, 1);
-            WAListViewAddCol(FRMFTPListview, "Name", 230, 0);
-            FRMFTPCmdClose = WACreateButton(480, 336, 77, 23, hwndDlg, "Close", 2, 0, 0, 0, BS_DEFPUSHBUTTON | WS_TABSTOP, Buttons_StaticEdge);
-            FRMFTPStatLabel = WACreateLabel(2, 340, 470, 16, hwndDlg, "", 4, 0, 0, 0);
-            if(WAComboBoxCount(FRMFTPCbAccounts) == 1)
+            FRMFTPToolbar = CreateToolBar(155, 1, 449, 23, hwndDlg, GlobalImageList1, 1, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+            ToolBarAddButton(FRMFTPToolbar, "", FTPCONNECT, ICON_EARTH, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            ToolBarAddSeparator(FRMFTPToolbar, 0);
+            ToolBarAddButton(FRMFTPToolbar, "", FTPREFRESH, ICON_REFRESH, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            ToolBarAddButton(FRMFTPToolbar, "", FTPDIRUP, ICON_DIRUP, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            ToolBarAddButton(FRMFTPToolbar, "", FTPDIRVIEW, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            ToolBarAddSeparator(FRMFTPToolbar, 0);
+            ToolBarAddButton(FRMFTPToolbar, "", FTPNEWDIR, ICON_NEWDIR, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            ToolBarAddButton(FRMFTPToolbar, "", FTPDIRRENAME, ICON_RENAMEDIR, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            ToolBarAddButton(FRMFTPToolbar, "", FTPDEL, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            ToolBarAddButton(FRMFTPToolbar, "", FTPDIRPERMS, ICON_DIRPERMS, TBSTYLE_BUTTON, 0, 1);
+            ToolBarAddSeparator(FRMFTPToolbar, 0);
+            ToolBarAddButton(FRMFTPToolbar, "", FTPDOWNLOAD, ICON_DOWNLOAD, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            ToolBarAddButton(FRMFTPToolbar, "", FTPUPLOAD, ICON_UPLOAD, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            FRMFTPListview = CreateListView(2, 26, 556, 297, hwndDlg, 3, 0, &FRMFTPListviewHook, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | WS_TABSTOP, WS_EX_STATICEDGE);
+            ListViewAddCol(FRMFTPListview, "Attributes", 76, 3);
+            ListViewAddCol(FRMFTPListview, "Date", 123, 2);
+            ListViewAddCol(FRMFTPListview, "Size", 105, 1);
+            ListViewAddCol(FRMFTPListview, "Name", 230, 0);
+            FRMFTPCmdClose = CreateButton(480, 336, 77, 23, hwndDlg, "Close", 2, 0, 0, 0, BS_DEFPUSHBUTTON | WS_TABSTOP, Buttons_StaticEdge);
+            FRMFTPStatLabel = CreateLabel(2, 340, 470, 16, hwndDlg, "", 4, 0, 0, 0);
+            if(ComboBoxCount(FRMFTPCbAccounts) == 1)
             {
-                WAComboBoxSetIndex(FRMFTPCbAccounts, 0);
+                ComboBoxSetIndex(FRMFTPCbAccounts, 0);
                 FillAccount(0);
             }
             CurrentOperation = FTPOP_NONE;
@@ -192,10 +192,10 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             WriteFTPStatus("Not connected.");
             hFTPMenu = CreatePopupMenu();
             // Create the contextual menu
-            AppendMenu(hFTPMenu, MF_STRING, FTP_IDBASE + FTP_DOWNLOAD, "Download selected entries");
-            WAMenuSetDefaultItem(hFTPMenu, 0);
-            AppendMenu(hFTPMenu, MF_SEPARATOR, -1, "-");
-            AppendMenu(hFTPMenu, MF_STRING, FTP_IDBASE + FTP_DELETE, "Delete selected entries");
+            MenuAddString(hFTPMenu, "Download selected entries", FTP_IDBASE + FTP_DOWNLOAD, TRUE);
+            MenuSetDefaultItem(hFTPMenu, 0);
+            MenuAddSeparator(hFTPMenu);
+            MenuAddString(hFTPMenu, "Delete selected entries", FTP_IDBASE + FTP_DELETE, TRUE);
             FreezeTimer = 1;
             CurrentSelected = -1;
             return(1);
@@ -205,16 +205,16 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 switch(wParam)
                 {
                     case FTPCONNECT:
-                        if(WAControlGetText(FRMFTPCbAccounts).Len() == 0)
+                        if(ControlGetText(FRMFTPCbAccounts).Len() == 0)
                         {
-                            WAMiscMsgBox(FRMFTPhWnd, "Select an account.", MB_ERROR, Requesters);
+                            MiscMsgBox(FRMFTPhWnd, "Select an account.", MB_ERROR, Requesters);
                             SetFocus(FRMFTPCbAccounts);
                             return(0);
                         }
                         if(FTMFTPConnectionState == 1)
                         {
                             BufString = "FTP manager is currently connected to: \r" + (CStr) FTPCurrentIP + (CStr) " on port " + (CStr) FTPCurrentPort + (CStr) ".\rBreak connection ?";
-                            switch(WAMiscMsgBox(FRMFTPhWnd, BufString, MB_QUESTION, Requesters))
+                            switch(MiscMsgBox(FRMFTPhWnd, BufString, MB_QUESTION, Requesters))
                             {
                                 case IDYES:
                                     BreakConnection(hwndDlg);
@@ -231,16 +231,16 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     case FTPREFRESH:
                         if(FTMFTPConnectionState == 0)
                         {
-                            WAMiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
+                            MiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
                             return(0);
                         }
                         CurrentOperation = FTPOP_NONE;
-                        FRMFTPhSocketDir = WAFTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, hwndDlg, WM_DIRSOCKET);
+                        FRMFTPhSocketDir = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, hwndDlg, WM_DIRSOCKET);
                         return(0);
                     case FTPDIRUP:
                         if(FTMFTPConnectionState == 0)
                         {
-                            WAMiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
+                            MiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
                             return(0);
                         }
                         SocketSendASCIIDatasCR(FTMFTPhSocketMain, "CDUP");
@@ -248,22 +248,22 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     case FTPDIRVIEW:
                         if(FTMFTPConnectionState == 0)
                         {
-                            WAMiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
+                            MiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
                             return(0);
                         }
-                        if(strcmpi(WAListViewGetSelItemText(FRMFTPListview, 1).Get_String(), "(DIR)") == 0)
+                        if(strcmpi(ListViewGetSelItemText(FRMFTPListview, 1).Get_String(), "(DIR)") == 0)
                         {
-                            SocketSendASCIIDatasCR(FTMFTPhSocketMain, "CWD " + (CStr) WAListViewGetSelItemText(FRMFTPListview, 0).Get_String());
+                            SocketSendASCIIDatasCR(FTMFTPhSocketMain, "CWD " + (CStr) ListViewGetSelItemText(FRMFTPListview, 0).Get_String());
                         }
                         else
                         {
-                            WAMiscMsgBox(hwndDlg, "No directory selected.", MB_ERROR, Requesters);
+                            MiscMsgBox(hwndDlg, "No directory selected.", MB_ERROR, Requesters);
                         }
                         return(0);
                     case FTPNEWDIR:
                         if(FTMFTPConnectionState == 0)
                         {
-                            WAMiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
+                            MiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
                             return(0);
                         }
                         NewDatToSend = MiscInputBox(hwndDlg, "Enter new remote directory name", ICON_ASKDIR, "", 0, INPUTBOX_SIMPLETEXT, "");
@@ -272,16 +272,16 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     case FTPDIRRENAME:
                         if(FTMFTPConnectionState == 0)
                         {
-                            WAMiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
+                            MiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
                             return(0);
                         }
-                        if(WAListViewGetSelItemText(FRMFTPListview, 0).Len() == 0)
+                        if(ListViewGetSelItemText(FRMFTPListview, 0).Len() == 0)
                         {
-                            WAMiscMsgBox(hwndDlg, "No directory/file selected.", MB_ERROR, Requesters);
+                            MiscMsgBox(hwndDlg, "No directory/file selected.", MB_ERROR, Requesters);
                             return(0);
                         }
-                        OldRename = WAListViewGetSelItemText(FRMFTPListview, 0);
-                        if(strcmpi(WAListViewGetSelItemText(FRMFTPListview, 1).Get_String(), "(DIR)") == 0)
+                        OldRename = ListViewGetSelItemText(FRMFTPListview, 0);
+                        if(strcmpi(ListViewGetSelItemText(FRMFTPListview, 1).Get_String(), "(DIR)") == 0)
                         {
                             NewRename = MiscInputBox(hwndDlg, "Enter new directory name", ICON_RENAMEDIR, OldRename, 0, INPUTBOX_SIMPLETEXT, "");
                         }
@@ -294,27 +294,27 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     case FTPDEL:
                         if(FTMFTPConnectionState == 0)
                         {
-                            WAMiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
+                            MiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
                             return(0);
                         }
-                        CurrentSelected = WAListViewGetSelItem(FRMFTPListview, -1);
+                        CurrentSelected = ListViewGetSelItem(FRMFTPListview, -1);
                         if(CurrentSelected == -1)
                         {
-                            WAMiscMsgBox(hwndDlg, "No directories/files selected.", MB_ERROR, Requesters);
+                            MiscMsgBox(hwndDlg, "No directories/files selected.", MB_ERROR, Requesters);
                             return(0);
                         }
-                        switch(WAMiscMsgBox(hwndDlg, "Really want to delete all selected entries ?", MB_QUESTION, Requesters))
+                        switch(MiscMsgBox(hwndDlg, "Really want to delete all selected entries ?", MB_QUESTION, Requesters))
                         {
                             case IDYES:
                                 CurrentOperation = FTPOP_DELETE;
                                 WriteFTPStatus("Deleting entries...");
-                                if(strcmpi(WAListViewGetItemText(FRMFTPListview, CurrentSelected, 1).Get_String(), "(DIR)") == 0)
+                                if(strcmpi(ListViewGetItemText(FRMFTPListview, CurrentSelected, 1).Get_String(), "(DIR)") == 0)
                                 {
-                                    SocketSendASCIIDatasCR(FTMFTPhSocketMain, "RMD " + (CStr) WAListViewGetItemText(FRMFTPListview, CurrentSelected, 0));
+                                    SocketSendASCIIDatasCR(FTMFTPhSocketMain, "RMD " + (CStr) ListViewGetItemText(FRMFTPListview, CurrentSelected, 0));
                                 }
                                 else
                                 {
-                                    SocketSendASCIIDatasCR(FTMFTPhSocketMain, "DELE " + (CStr) WAListViewGetItemText(FRMFTPListview, CurrentSelected, 0));
+                                    SocketSendASCIIDatasCR(FTMFTPhSocketMain, "DELE " + (CStr) ListViewGetItemText(FRMFTPListview, CurrentSelected, 0));
                                 }
 								break;
 						}
@@ -322,29 +322,29 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     case FTPDIRPERMS:
                         if(FTMFTPConnectionState == 0)
                         {
-                            WAMiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
+                            MiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
                             return(0);
                         }
-                        CurrentSelected = WAListViewGetSelItem(FRMFTPListview, -1);
+                        CurrentSelected = ListViewGetSelItem(FRMFTPListview, -1);
                         if(CurrentSelected == -1)
                         {
-                            WAMiscMsgBox(hwndDlg, "No directories/files selected.", MB_ERROR, Requesters);
+                            MiscMsgBox(hwndDlg, "No directories/files selected.", MB_ERROR, Requesters);
                             return(0);
                         }
                         FillPermissions();
                         CurrentOperation = FTPOP_PERMS;
-                        WACreateModalDialog(-1, -1, 304, 110, FRMFTPhWnd, &FRMProcPerms, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+                        CreateModalDialog(-1, -1, 304, 110, FRMFTPhWnd, &FRMProcPerms, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
                         return(0);
                     case FTPDOWNLOAD:
                         if(FTMFTPConnectionState == 0)
                         {
-                            WAMiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
+                            MiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
                             return(0);
                         }
-                        CurrentSelected = WAListViewGetSelItem(FRMFTPListview, -1);
+                        CurrentSelected = ListViewGetSelItem(FRMFTPListview, -1);
                         if(CurrentSelected == -1)
                         {
-                            WAMiscMsgBox(hwndDlg, "No files selected.", MB_ERROR, Requesters);
+                            MiscMsgBox(hwndDlg, "No files selected.", MB_ERROR, Requesters);
                             return(0);
                         }
                         CurrentOperation = FTPOP_DOWNLOAD;
@@ -361,7 +361,7 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     case FTPUPLOAD:
                         if(FTMFTPConnectionState == 0)
                         {
-                            WAMiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
+                            MiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
                             return(0);
                         }
                         if(SelectFilesToUpload(FRMFTPhWnd) == 1)
@@ -384,12 +384,12 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			else if((HWND) lParam == FRMFTPCbAccounts)
 			{
-                    if((wParam & 0x7FFF0000) == 0x10000) FillAccount(WAComboBoxGetIndex(FRMFTPCbAccounts));
+                    if((wParam & 0x7FFF0000) == 0x10000) FillAccount(ComboBoxGetIndex(FRMFTPCbAccounts));
                     return(0);
 			}
 			else if((HWND) lParam == FRMFTPCmdClose)
 			{
-                    WAControlClose(hwndDlg);
+                    ControlClose(hwndDlg);
                     return(0);
             }
             // Wrap these two messages (coming from menu)
@@ -404,26 +404,26 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             }
 			break;
         case WM_NOTIFY:
-            if(WAControlGetNotifiedhWnd(lParam) == FRMFTPListview)
+            if(ControlGetNotifiedhWnd(lParam) == FRMFTPListview)
             {
-                switch(WAControlGetNotifiedMsg(lParam))
+                switch(ControlGetNotifiedMsg(lParam))
                 {
                     case NM_DBLCLK:
                         if(FTMFTPConnectionState == 0)
                         {
-                            WAMiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
+                            MiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
                             return(0);
                         }
-                        if(strcmpi(WAListViewGetSelItemText(FRMFTPListview, 1).Get_String(), "(DIR)") == 0)
+                        if(strcmpi(ListViewGetSelItemText(FRMFTPListview, 1).Get_String(), "(DIR)") == 0)
                         {
-                            SocketSendASCIIDatasCR(FTMFTPhSocketMain, "CWD " + (CStr) WAListViewGetSelItemText(FRMFTPListview, 0));
+                            SocketSendASCIIDatasCR(FTMFTPhSocketMain, "CWD " + (CStr) ListViewGetSelItemText(FRMFTPListview, 0));
                         }
                         else
                         {
-                            CurrentSelected = WAListViewGetSelItem(FRMFTPListview, -1);
+                            CurrentSelected = ListViewGetSelItem(FRMFTPListview, -1);
                             if(CurrentSelected == -1)
                             {
-                                WAMiscMsgBox(hwndDlg, "No directories/files selected.", MB_ERROR, Requesters);
+                                MiscMsgBox(hwndDlg, "No directories/files selected.", MB_ERROR, Requesters);
                                 return(0);
                             }
                             CurrentOperation = FTPOP_DOWNLOAD;
@@ -438,55 +438,55 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                         }
 						break;
                     case LVN_COLUMNCLICK:
-                        WAListViewSort(FRMFTPListview, WAListViewGetNotifiedColumnIndex(lParam), &FRMFTPListviewSort);
+                        ListViewSort(FRMFTPListview, ListViewGetNotifiedColumnIndex(lParam), &FRMFTPListviewSort);
                         return(0);
 				}
             }
-            switch(WAControlGetNotifiedMsg(lParam))
+            switch(ControlGetNotifiedMsg(lParam))
             {
                 case TTN_NEEDTEXT:
-                    switch(WAControlGetNotifiedID(lParam))
+                    switch(ControlGetNotifiedID(lParam))
                     {
                         case FTPCONNECT:
-                            WAToolBarDisplayToolTip("Connect to FTP server", lParam);
+                            ToolBarDisplayToolTip("Connect to FTP server", lParam);
                             return(0);
                         case FTPREFRESH:
-                            WAToolBarDisplayToolTip("Refresh content", lParam);
+                            ToolBarDisplayToolTip("Refresh content", lParam);
                             return(0);
                         case FTPDIRUP:
-                            WAToolBarDisplayToolTip("Back to parent directory", lParam);
+                            ToolBarDisplayToolTip("Back to parent directory", lParam);
                             return(0);
                         case FTPDIRVIEW:
-                            WAToolBarDisplayToolTip("View selected directory", lParam);
+                            ToolBarDisplayToolTip("View selected directory", lParam);
                             return(0);
                         case FTPNEWDIR:
-                            WAToolBarDisplayToolTip("Create new directory", lParam);
+                            ToolBarDisplayToolTip("Create new directory", lParam);
                             return(0);
                         case FTPDIRRENAME:
-                            WAToolBarDisplayToolTip("Rename file/directory", lParam);
+                            ToolBarDisplayToolTip("Rename file/directory", lParam);
                             return(0);
                         case FTPDEL:
-                            WAToolBarDisplayToolTip("Delete files/directories", lParam);
+                            ToolBarDisplayToolTip("Delete files/directories", lParam);
                             return(0);
                         case FTPDIRPERMS:
-                            WAToolBarDisplayToolTip("Change files/directories atttributes", lParam);
+                            ToolBarDisplayToolTip("Change files/directories atttributes", lParam);
                             return(0);
                         case FTPDOWNLOAD:
-                            WAToolBarDisplayToolTip("Download selected files", lParam);
+                            ToolBarDisplayToolTip("Download selected files", lParam);
                             return(0);
                         case FTPUPLOAD:
-                            WAToolBarDisplayToolTip("Upload files", lParam);
+                            ToolBarDisplayToolTip("Upload files", lParam);
                             return(0);
                     }
 					break;
 			}
 			break;
 		case WM_CONTEXTMENU:
-            CurrentLvItem = WAListViewGetItemUnderCursor(FRMFTPListview);
+            CurrentLvItem = ListViewGetItemUnderCursor(FRMFTPListview);
             if(CurrentLvItem != -1)
             {
-                WAListViewSetItemSel(FRMFTPListview, CurrentLvItem);
-                CurrentPopupItem = WAListViewGetItemUnderCursor(FRMFTPListview);
+                ListViewSetItemSel(FRMFTPListview, CurrentLvItem);
+                CurrentPopupItem = ListViewGetItemUnderCursor(FRMFTPListview);
                 SetFocus(FRMFTPListview);
 				GetCursorPos(&PopMenuCoords);
                 TrackPopupMenu(hFTPMenu, TPM_LEFTALIGN + TPM_LEFTBUTTON, PopMenuCoords.x, PopMenuCoords.y, 0, hwndDlg, NULL);
@@ -494,7 +494,7 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			return(0);
 		case WM_PAINT:
             BeginPaint(hwndDlg, &Ps);
-            WAGDIDrawHorzSep(hwndDlg, 0, WAControlClientHeight(hwndDlg) - 33, WAControlClientWidth(hwndDlg));
+            GDIDrawHorzSep(hwndDlg, 0, ControlClientHeight(hwndDlg) - 33, ControlClientWidth(hwndDlg));
             EndPaint(hwndDlg, &Ps);
 			break;
 		case WM_CLOSE:
@@ -502,7 +502,7 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             if(FTMFTPConnectionState == 1)
             {
                 BufString = "FTP manager is currently connected to: \r" + (CStr) FTPCurrentIP + (CStr) " on port " + (CStr) FTPCurrentPort + (CStr) ".\rBreak connection ?";
-                switch(WAMiscMsgBox(FRMFTPhWnd, BufString, MB_QUESTION, Requesters))
+                switch(MiscMsgBox(FRMFTPhWnd, BufString, MB_QUESTION, Requesters))
                 {
                     case IDYES:
                         BreakConnection(hwndDlg);
@@ -513,7 +513,7 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             }
             if(CurrenthFile != INVALID_HANDLE_VALUE)
             {
-                if(CurrenthFile != 0) WAFileClose(CurrenthFile);
+                if(CurrenthFile != 0) FileClose(CurrenthFile);
             }
             FTMFTPConnectionState = 0;
             CurrenthFile = 0;
@@ -536,42 +536,42 @@ void FillAccount(long AccNumber)
     CStr RetrieveUserP;
 
     if(AccNumber == -1) return;
-    AccName = WAComboBoxGetItem(FRMFTPCbAccounts, AccNumber);
-    FTPIP = WAIniReadKey(AccName, "FTPIP", FtpAccountsIniFile);
-    FFAnon = WAIniReadKey(AccName, "FTPAnon", FtpAccountsIniFile);
+    AccName = ComboBoxGetItem(FRMFTPCbAccounts, AccNumber);
+    FTPIP = IniReadKey(AccName, "FTPIP", FtpAccountsIniFile);
+    FFAnon = IniReadKey(AccName, "FTPAnon", FtpAccountsIniFile);
     FTPAnonymous = 0;
-    if(FFAnon.Len() != 0) FTPAnonymous = WAIniReadKey(AccName, "FTPAnon", FtpAccountsIniFile).Get_Long();
-    FTPUserName = WAIniReadKey(AccName, "FTPUserName", FtpAccountsIniFile);
+    if(FFAnon.Len() != 0) FTPAnonymous = IniReadKey(AccName, "FTPAnon", FtpAccountsIniFile).Get_Long();
+    FTPUserName = IniReadKey(AccName, "FTPUserName", FtpAccountsIniFile);
     FTPUserPass = "";
     FTPGotPass = 0;
-    RetrieveUserP = WAIniReadKey(AccName, "FTPSavePass", FtpAccountsIniFile);
+    RetrieveUserP = IniReadKey(AccName, "FTPSavePass", FtpAccountsIniFile);
     if(RetrieveUserP.Len() != 0) FTPGotPass = RetrieveUserP.Get_Long();
     if(strcmpi(RetrieveUserP.Get_String(), "2") == 0)
     {
         // Load and decrypt it
-        FTPUserPass = DecryptPassword(WAIniReadKey(AccName, "FTPUserPass", FtpAccountsIniFile));
+        FTPUserPass = DecryptPassword(IniReadKey(AccName, "FTPUserPass", FtpAccountsIniFile));
     }
     else
     {
         // Load password as plain text
-        FTPUserPass = WAIniReadKey(AccName, "FTPUserPass", FtpAccountsIniFile);
+        FTPUserPass = IniReadKey(AccName, "FTPUserPass", FtpAccountsIniFile);
     }
-    FTPPath = WAIniReadKey(AccName, "FTPPath", FtpAccountsIniFile);
-    FFPort = WAIniReadKey(AccName, "FTPPort", FtpAccountsIniFile);
-    FFTimeOut = WAIniReadKey(AccName, "FTPTimeout", FtpAccountsIniFile);
+    FTPPath = IniReadKey(AccName, "FTPPath", FtpAccountsIniFile);
+    FFPort = IniReadKey(AccName, "FTPPort", FtpAccountsIniFile);
+    FFTimeOut = IniReadKey(AccName, "FTPTimeout", FtpAccountsIniFile);
     FTPPort = 21;
     if(FFPort.Len() != 0) FTPPort = FFPort.Get_Long();
     FTPTimeOut = 500;
     if(FFTimeOut.Len() != 0) FTPTimeOut = FFTimeOut.Get_Long();
-    FTPTransType = WAIniReadKey(AccName, "FTPTransfersType", FtpAccountsIniFile).Get_Long();
-    FTPPassive = WAIniReadKey(AccName, "FTPPassive", FtpAccountsIniFile).Get_Long();
+    FTPTransType = IniReadKey(AccName, "FTPTransfersType", FtpAccountsIniFile).Get_Long();
+    FTPPassive = IniReadKey(AccName, "FTPPassive", FtpAccountsIniFile).Get_Long();
 }
 
 // -----------------------------------------------------------------------
 // Write a text in status part
 void WriteFTPStatus(CStr Txt)
 {
-    WAControlSetText(FRMFTPStatLabel, Txt);
+    ControlSetText(FRMFTPStatLabel, Txt);
 }
 
 // -----------------------------------------------------------------------
@@ -595,10 +595,10 @@ void DispatchFTPMessages(CStr Message)
                 case FTPOP_DOWNLOAD:
                     if(SavedMessage.In_Str(1, "PORT", Text_Compare) != 0)
                     {
-SkipDirs:				CurrentSize = WAListViewGetItemText(FRMFTPListview, CurrentSelected, 1);
+SkipDirs:				CurrentSize = ListViewGetItemText(FRMFTPListview, CurrentSelected, 1);
                         if(strcmpi(CurrentSize.Get_String(), "(DIR)") == 0)
                         {
-SkipFile:					CurrentSelected = WAListViewGetSelItem(FRMFTPListview, CurrentSelected);
+SkipFile:					CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelected);
                             if(CurrentSelected == -1)
                             {
                                 CurrentOperation = FTPOP_NONE;
@@ -606,14 +606,14 @@ SkipFile:					CurrentSelected = WAListViewGetSelItem(FRMFTPListview, CurrentSele
                             }
                             goto SkipDirs;
                         }
-                        CurrentDownloaded = WAListViewGetItemText(FRMFTPListview, CurrentSelected, 0);
+                        CurrentDownloaded = ListViewGetItemText(FRMFTPListview, CurrentSelected, 0);
                         CurrentSize = CurrentSize.Trim();
                         CurrentSizeLng = CurrentSize.Get_Long();
                         // Check if file exists to ask a resume operation
-                        if(WAFileExist(Dirs[DIR_DOWNLOADS] + (CStr) "\\" + (CStr) CurrentDownloaded) != 0)
+                        if(FileExist(Dirs[DIR_DOWNLOADS] + (CStr) "\\" + (CStr) CurrentDownloaded) != 0)
                         {
                             // File exist and size is lower: ask for resume
-                            CurrentResume = WAFileGetSize(Dirs[DIR_DOWNLOADS] + (CStr) "\\" + (CStr) CurrentDownloaded);
+                            CurrentResume = FileGetSize(Dirs[DIR_DOWNLOADS] + (CStr) "\\" + (CStr) CurrentDownloaded);
                             if(CurrentResume < CurrentSizeLng)
                             {
                                 SocketSendASCIIDatasCR(FTMFTPhSocketMain, "REST " + (CStr) CurrentResume);
@@ -621,7 +621,7 @@ SkipFile:					CurrentSelected = WAListViewGetSelItem(FRMFTPListview, CurrentSele
                             }
                             else
                             {
-                                if(WAMiscMsgBox(FRMFTPhWnd, "File '" + (CStr) Dirs[DIR_DOWNLOADS] + (CStr) "\\" + (CStr) CurrentDownloaded + (CStr) "' already exists.\rOverwrite ?", MB_QUESTION, Requesters) == IDNO) goto SkipFile;
+                                if(MiscMsgBox(FRMFTPhWnd, "File '" + (CStr) Dirs[DIR_DOWNLOADS] + (CStr) "\\" + (CStr) CurrentDownloaded + (CStr) "' already exists.\rOverwrite ?", MB_QUESTION, Requesters) == IDNO) goto SkipFile;
                             }
                         }
                         CurrentResume = 0;
@@ -629,7 +629,7 @@ SkipFile:					CurrentSelected = WAListViewGetSelItem(FRMFTPListview, CurrentSele
                     }
                     else
                     {
-                        FRMFTPhSocketDown = WAFTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DOWNLOADSOCKET);
+                        FRMFTPhSocketDown = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DOWNLOADSOCKET);
                     }
 					break;
                 case FTPOP_UPLOAD:
@@ -642,8 +642,8 @@ SkipFile:					CurrentSelected = WAListViewGetSelItem(FRMFTPListview, CurrentSele
                                 // No more file to upload: free array and refresh directory
                                 StringReleaseSplit(FilesArray);
                                 CurrentOperation = FTPOP_NONE;
-                                FRMFTPhSocketDir = WAFTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
-                                WACursorSetNormal();
+                                FRMFTPhSocketDir = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
+                                CursorSetNormal();
                             }
                             else
                             {
@@ -651,24 +651,24 @@ SkipFile:					CurrentSelected = WAListViewGetSelItem(FRMFTPListview, CurrentSele
                                 {
                                     // Initiate uploading
                                     CurrentUpReal = StringGetSplitElement(UpLdFile, FilesArray, CurrentUp);
-                                    CurrentUploaded = WAFileGetFileName(StringGetSplitElement(UpLdFile, FilesArray, CurrentUp));
+                                    CurrentUploaded = FileGetFileName(StringGetSplitElement(UpLdFile, FilesArray, CurrentUp));
                                     SocketSendASCIIDatasCR(FTMFTPhSocketMain, "STOR " + (CStr) CurrentUploaded);
                                 }
                             }
                         }
                         else
                         {
-                            FRMFTPhSocketUp = WAFTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_UPLOADSOCKET);
+                            FRMFTPhSocketUp = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_UPLOADSOCKET);
                         }
                     }
                     else
                     {
-                        WACursorSetNormal();
+                        CursorSetNormal();
                     }
 					break;
 				default:
                     // First dir
-                    if(TriggerDir == 1) FRMFTPhSocketDir = WAFTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
+                    if(TriggerDir == 1) FRMFTPhSocketDir = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
                     TriggerDir = 0;
                     if(SavedMessage.In_Str(1, "PORT", Text_Compare) != 0) SocketSendASCIIDatasCR(FTMFTPhSocketMain, "LIST");
             }
@@ -689,20 +689,20 @@ SkipFile:					CurrentSelected = WAListViewGetSelItem(FRMFTPListview, CurrentSele
             {
                 case FTPOP_DOWNLOAD:
                     // Transfer complete
-                    CurrentSelected = WAListViewGetSelItem(FRMFTPListview, CurrentSelected);
+                    CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelected);
                     if(CurrentSelected == -1)
                     {
                         // No more selected entries
-                        WACursorSetNormal();
+                        CursorSetNormal();
                         CurrentOperation = FTPOP_NONE;
                         SocketSendASCIIDatasCR(FTMFTPhSocketMain, "TYPE A");
                     }
                     else
                     {
                         // Download next file/directory
-                        if(strcmpi(WAListViewGetItemText(FRMFTPListview, CurrentSelected, 1).Get_String(), "(DIR)") != 0)
+                        if(strcmpi(ListViewGetItemText(FRMFTPListview, CurrentSelected, 1).Get_String(), "(DIR)") != 0)
                         {
-                            FRMFTPhSocketDown = WAFTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DOWNLOADSOCKET);
+                            FRMFTPhSocketDown = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DOWNLOADSOCKET);
                         }
                     }
 					break;
@@ -755,7 +755,7 @@ SkipFile:					CurrentSelected = WAListViewGetSelItem(FRMFTPListview, CurrentSele
                 else
                 {
                     TriggerDir = 0;
-                    FRMFTPhSocketDir = WAFTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
+                    FRMFTPhSocketDir = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
                 }
             }
             OkConnected = 1;
@@ -765,29 +765,29 @@ SkipFile:					CurrentSelected = WAListViewGetSelItem(FRMFTPListview, CurrentSele
             if(SavedMessage.In_Str(1, "DELE ") != 0)
             {
                 // Set next file to delete
-                CurrentSelected = WAListViewGetSelItem(FRMFTPListview, CurrentSelected);
+                CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelected);
                 if(CurrentSelected == -1)
                 {
                     // No more selected entries: refresh dir
-                    FRMFTPhSocketDir = WAFTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
+                    FRMFTPhSocketDir = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
                     CurrentOperation = FTPOP_NONE;
                 }
                 else
                 {
                     // Delete next file/directory
-                    if(strcmpi(WAListViewGetItemText(FRMFTPListview, CurrentSelected, 1).Get_String(), "(DIR)") == 0)
+                    if(strcmpi(ListViewGetItemText(FRMFTPListview, CurrentSelected, 1).Get_String(), "(DIR)") == 0)
                     {
-                        SocketSendASCIIDatasCR(FTMFTPhSocketMain, "RMD " + (CStr) WAListViewGetItemText(FRMFTPListview, CurrentSelected, 0).Get_String());
+                        SocketSendASCIIDatasCR(FTMFTPhSocketMain, "RMD " + (CStr) ListViewGetItemText(FRMFTPListview, CurrentSelected, 0).Get_String());
                     }
                     else
                     {
-                        SocketSendASCIIDatasCR(FTMFTPhSocketMain, "DELE " + (CStr) WAListViewGetItemText(FRMFTPListview, CurrentSelected, 0).Get_String());
+                        SocketSendASCIIDatasCR(FTMFTPhSocketMain, "DELE " + (CStr) ListViewGetItemText(FRMFTPListview, CurrentSelected, 0).Get_String());
                     }
                 }
             }
             else
             {
-                FRMFTPhSocketDir = WAFTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
+                FRMFTPhSocketDir = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
             }
 		}
 		else if(BufString == "331")
@@ -837,15 +837,15 @@ SkipFile:					CurrentSelected = WAListViewGetSelItem(FRMFTPListview, CurrentSele
 		}
 		else if(BufString == "421")
 		{
-            WAMiscMsgBox(FRMFTPhWnd, SavedMessage.Mid(5), MB_ERROR, Requesters);
+            MiscMsgBox(FRMFTPhWnd, SavedMessage.Mid(5), MB_ERROR, Requesters);
 		}
 		else if(BufString == "426")
 		{
-            WAMiscMsgBox(FRMFTPhWnd, SavedMessage.Mid(5), MB_ERROR, Requesters);
+            MiscMsgBox(FRMFTPhWnd, SavedMessage.Mid(5), MB_ERROR, Requesters);
 		}
 		else if(BufString == "257")
 		{
-            FRMFTPhSocketDir = WAFTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
+            FRMFTPhSocketDir = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
 		}
 		else if(BufString == "530")
 		{
@@ -890,7 +890,7 @@ SkipFile:					CurrentSelected = WAListViewGetSelItem(FRMFTPListview, CurrentSele
                 }
                 else
                 {
-                    WAMiscMsgBox(FRMFTPhWnd, SavedMessage, MB_ERROR, Requesters);
+                    MiscMsgBox(FRMFTPhWnd, SavedMessage, MB_ERROR, Requesters);
                 }
             }
 		}
@@ -899,38 +899,38 @@ SkipFile:					CurrentSelected = WAListViewGetSelItem(FRMFTPListview, CurrentSele
             if(CurrentSelected != -1)
             {
                 BufString = "Server returned message: \r" + (CStr) CMGetRealFile(SavedMessage) + (CStr) "\rWant to continue operation ?";
-                switch(WAMiscMsgBox(FRMFTPhWnd, BufString, MB_ERRORQUESTION, Requesters))
+                switch(MiscMsgBox(FRMFTPhWnd, BufString, MB_ERRORQUESTION, Requesters))
                 {
                     case IDYES:
-                        CurrentSelected = WAListViewGetSelItem(FRMFTPListview, CurrentSelected);
+                        CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelected);
                         if(CurrentSelected == -1)
                         {
                             // No more selected entries
-                            FRMFTPhSocketDir = WAFTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
+                            FRMFTPhSocketDir = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
                             CurrentOperation = FTPOP_NONE;
                         }
                         else
                         {
                             // Delete next file/directory
-                            if(strcmpi(WAListViewGetItemText(FRMFTPListview, CurrentSelected, 1).Get_String(), "(DIR)") == 0)
+                            if(strcmpi(ListViewGetItemText(FRMFTPListview, CurrentSelected, 1).Get_String(), "(DIR)") == 0)
                             {
-                                SocketSendASCIIDatasCR(FTMFTPhSocketMain, "RMD " + (CStr) WAListViewGetItemText(FRMFTPListview, CurrentSelected, 0));
+                                SocketSendASCIIDatasCR(FTMFTPhSocketMain, "RMD " + (CStr) ListViewGetItemText(FRMFTPListview, CurrentSelected, 0));
                             }
                             else
                             {
-                                SocketSendASCIIDatasCR(FTMFTPhSocketMain, "DELE " + (CStr) WAListViewGetItemText(FRMFTPListview, CurrentSelected, 0));
+                                SocketSendASCIIDatasCR(FTMFTPhSocketMain, "DELE " + (CStr) ListViewGetItemText(FRMFTPListview, CurrentSelected, 0));
                             }
                         }
 						break;
                     case IDNO:
-                        FRMFTPhSocketDir = WAFTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
+                        FRMFTPhSocketDir = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
                         CurrentOperation = FTPOP_NONE;
 						break;
 				}
             }
             else
             {
-                WAMiscMsgBox(FRMFTPhWnd, SavedMessage, MB_ERROR, Requesters);
+                MiscMsgBox(FRMFTPhWnd, SavedMessage, MB_ERROR, Requesters);
             }
         }
     }
@@ -949,7 +949,7 @@ void ConnectToFTP(HWND hWnd)
     if(FTMFTPhSocketMain == -1)
     {
         WriteFTPStatus("Not connected.");
-        WAMiscMsgBox(FRMFTPhWnd, "Can't create socket.", MB_ERROR, Requesters);
+        MiscMsgBox(FRMFTPhWnd, "Can't create socket.", MB_ERROR, Requesters);
         return;
     }
     FTPCurrentIP = FTPIP;
@@ -964,7 +964,7 @@ void ConnectToFTP(HWND hWnd)
         SocketDestroy(FTMFTPhSocketMain, hWnd);
         WriteFTPStatus("Not connected.");
         BufString = "Can't connect to " + (CStr) FTPCurrentIP + (CStr) " on port " + (CStr) FTPCurrentPort + (CStr) ".\rWinsock returned error: " + (CStr) WSError;
-        WAMiscMsgBox(FRMFTPhWnd, BufString, MB_ERROR, Requesters);
+        MiscMsgBox(FRMFTPhWnd, BufString, MB_ERROR, Requesters);
         return;
     }
     FTPNoAnonAllowed = 0;
@@ -992,13 +992,13 @@ void MainSocketEvents(long Message, HWND hWnd)
             {
                 FTMFTPConnectionState = 1;
                 WriteFTPStatus((CStr) "Connected to " + (CStr) FTPCurrentIP + (CStr) " on port " + (CStr) FTPCurrentPort + (CStr) ".");
-                WAControlEnable(FRMFTPCbAccounts, 0);
+                ControlEnable(FRMFTPCbAccounts, 0);
             }
 			break;
         case FD_CLOSE:
             WriteFTPStatus("Not connected.");
             SocketDestroy(FTMFTPhSocketMain, hWnd);
-            WAControlEnable(FRMFTPCbAccounts, 1);
+            ControlEnable(FRMFTPCbAccounts, 1);
             FTMFTPConnectionState = 0;
 			break;
 		case FD_ACCEPT:
@@ -1021,7 +1021,7 @@ void UploadSocketEvents(long Message, HWND hWnd)
 				CurrentSend = send(FRMFTPhSocketUploading, (char *) CurrentUphFile + CurrentUpActual, CurrentUpLen - CurrentUpActual, 0);
                 if(CurrentSend == -1)
                 {
-                    if(WAMiscMsgBox(FRMFTPhWnd, (CStr) "Winsock error: " + (CStr) WSAGetLastError() + (CStr) "\rContinue operation ?", MB_ERRORQUESTION, Requesters) == IDYES)
+                    if(MiscMsgBox(FRMFTPhWnd, (CStr) "Winsock error: " + (CStr) WSAGetLastError() + (CStr) "\rContinue operation ?", MB_ERRORQUESTION, Requesters) == IDYES)
                     {
                         FreeMem(CurrentUphFile);
                         CurrentUphFile = 0;
@@ -1076,7 +1076,7 @@ void UploadSocketEvents(long Message, HWND hWnd)
             CurrentUphFile = (long) MLoadFile(CurrentUpReal.Get_String(), &CurrentUpLen);
             if(CurrentUphFile == 0)
             {
-                if(WAMiscMsgBox(FRMFTPhWnd, (CStr) "Error while loading file '" + (CStr) CurrentUpReal + (CStr) "'\rContinue operation ?", MB_ERRORQUESTION, Requesters) == IDYES)
+                if(MiscMsgBox(FRMFTPhWnd, (CStr) "Error while loading file '" + (CStr) CurrentUpReal + (CStr) "'\rContinue operation ?", MB_ERRORQUESTION, Requesters) == IDYES)
                 {
                     FreeMem(CurrentUphFile);
                     CurrentUphFile = 0;
@@ -1112,7 +1112,7 @@ void UploadSocketEvents(long Message, HWND hWnd)
                     CurrentUpActual = send(FRMFTPhSocketUploading, (char *) CurrentUphFile, CurrentUpLen, 0);
                     if(CurrentUpActual == -1)
                     {
-                        if(WAMiscMsgBox(FRMFTPhWnd, (CStr) "Winsock error: " + (CStr) WSAGetLastError() + (CStr) "\rContinue operation ?", MB_ERRORQUESTION, Requesters) == IDYES)
+                        if(MiscMsgBox(FRMFTPhWnd, (CStr) "Winsock error: " + (CStr) WSAGetLastError() + (CStr) "\rContinue operation ?", MB_ERRORQUESTION, Requesters) == IDYES)
                         {
                             CurrentUp++;
                             // And proceed with next file
@@ -1140,7 +1140,7 @@ void UploadSocketEvents(long Message, HWND hWnd)
                     else
                     {
                         WriteFTPStatus((CStr) "Uploading file '" + (CStr) CurrentUploaded + (CStr) "' (0/" + (CStr) CurrentUpLen + (CStr) " bytes)...");
-                        WACursorSetWait();
+                        CursorSetWait();
                     }
                 }
             }
@@ -1173,7 +1173,7 @@ void DownloadSocketEvents(long Message, HWND hWnd)
             {
                 if(CurrenthFile != INVALID_HANDLE_VALUE)
                 {
-                    WAFileWriteBuffer(CurrenthFile, RetrievedDirEntry, RetrievedDirEntryLen);
+                    FileWriteBuffer(CurrenthFile, RetrievedDirEntry, RetrievedDirEntryLen);
                 }
                 CurrentResume = CurrentResume + RetrievedDirEntryLen;
             }
@@ -1187,26 +1187,26 @@ void DownloadSocketEvents(long Message, HWND hWnd)
                 WriteFTPStatus((CStr) "Resuming file '" + (CStr) CurrentDownloaded + (CStr) "' at " + (CStr) CurrentResume + (CStr) " bytes...");
                 if(CurrentResume != 0)
                 {
-                    CurrenthFile = WAFileOpenW(Dirs[DIR_DOWNLOADS] + (CStr) "\\" + (CStr) CurrentDownloaded, CurrentResume);
+                    CurrenthFile = FileOpenW(Dirs[DIR_DOWNLOADS] + (CStr) "\\" + (CStr) CurrentDownloaded, CurrentResume);
                 }
                 else
                 {
-                    CurrenthFile = WAFileCreateEmpty((CStr) Dirs[DIR_DOWNLOADS] + (CStr) "\\" + (CStr) CurrentDownloaded, NO_SECURITY_DESCRIPTOR);
+                    CurrenthFile = FileCreateEmpty((CStr) Dirs[DIR_DOWNLOADS] + (CStr) "\\" + (CStr) CurrentDownloaded, NO_SECURITY_DESCRIPTOR);
                 }
             }
             else
             {
                 WriteFTPStatus((CStr) "Retrieving file '" + (CStr) CurrentDownloaded + (CStr) "' (0/" + (CStr) CurrentSizeLng + (CStr) " bytes)...");
-                CurrenthFile = WAFileCreateEmpty(Dirs[DIR_DOWNLOADS] + (CStr) "\\" + (CStr) CurrentDownloaded, NO_SECURITY_DESCRIPTOR);
+                CurrenthFile = FileCreateEmpty(Dirs[DIR_DOWNLOADS] + (CStr) "\\" + (CStr) CurrentDownloaded, NO_SECURITY_DESCRIPTOR);
             }
-            WACursorSetWait();
+            CursorSetWait();
 			break;
 		case FD_CLOSE:
             if(CurrenthFile != INVALID_HANDLE_VALUE)
             {
                 if(CurrenthFile != 0)
                 {
-                    WAFileClose(CurrenthFile);
+                    FileClose(CurrenthFile);
                 }
             }
             CurrenthFile = 0;
@@ -1232,13 +1232,13 @@ void DirSocketEvents(long Message, HWND hWnd)
 		case FD_ACCEPT:
             FRMFTPhSocketDirIncoming = SocketAcceptConnection(FRMFTPhSocketDir, &FTMFTPSocketInfosAccept);
             WriteFTPStatus("Retrieving directory...");
-            WACursorSetWait();
+            CursorSetWait();
             FTPDirectories = "";
             FRMFTPDirEntries = 0;
 			break;
         case FD_CLOSE:
             FilCListView();
-            WACursorSetNormal();
+            CursorSetNormal();
             SocketDestroy(FRMFTPhSocketDirIncoming, hWnd);
             SocketDestroy(FRMFTPhSocketDir, hWnd);
             WriteFTPStatus((CStr) "Connected to " + (CStr) FTPCurrentIP + (CStr) " on port " + (CStr) FTPCurrentPort + (CStr) ".");
@@ -1256,7 +1256,7 @@ void BreakConnection(HWND hWnd)
         SocketSendASCIIDatasCR(FTMFTPhSocketMain, (CStr) "QUIT");
         SocketDestroy(FTMFTPhSocketMain, hWnd);
     }
-    WAControlEnable(FRMFTPCbAccounts, 1);
+    ControlEnable(FRMFTPCbAccounts, 1);
     FTMFTPConnectionState = 0;
     FTPNoAnonAllowed = 0;
 	WriteFTPStatus("Not connected.");
@@ -1278,47 +1278,47 @@ void FilCListView(void)
     CStr EntrDt;
 
     FTPDirectoriesArray = StringSplit(FTPDirectories, "\r\n");
-    WAListViewClear(FRMFTPListview);
+    ListViewClear(FRMFTPListview);
     for(i = 0; i <= (long) StringGetSplitUBound(FTPDirectoriesArray) - 1; i++)
     {
         CurrentDirEntry = StringGetSplitElement(FTPDirectories, FTPDirectoriesArray, i).Trim();
         if(CurrentDirEntry.Len() != 0)
         {
-            if(WAFTPIsEntryDir(CurrentDirEntry) == 0)
+            if(FTPIsEntryDir(CurrentDirEntry) == 0)
             {
-                EntrDt = WAFTPGetEntryDate(CurrentDirEntry);
+                EntrDt = FTPGetEntryDate(CurrentDirEntry);
                 if(EntrDt.Len() != 0)
                 {
-                    WAListViewAddItem(FRMFTPListview, WAFTPGetEntryFileName(CurrentDirEntry), FRMFTPDirEntries, 0);
-                    WAListViewSetSubItem(FRMFTPListview, WAFTPGetEntryFileSize(CurrentDirEntry), FRMFTPDirEntries, 1);
-                    WAListViewSetSubItem(FRMFTPListview, EntrDt, FRMFTPDirEntries, 2);
-                    WAListViewSetSubItem(FRMFTPListview, WAFTPGetEntryFileAttributes(CurrentDirEntry), FRMFTPDirEntries, 3);
+                    ListViewAddItem(FRMFTPListview, FTPGetEntryFileName(CurrentDirEntry), FRMFTPDirEntries, 0);
+                    ListViewSetSubItem(FRMFTPListview, FTPGetEntryFileSize(CurrentDirEntry), FRMFTPDirEntries, 1);
+                    ListViewSetSubItem(FRMFTPListview, EntrDt, FRMFTPDirEntries, 2);
+                    ListViewSetSubItem(FRMFTPListview, FTPGetEntryFileAttributes(CurrentDirEntry), FRMFTPDirEntries, 3);
                 }
             }
             else
             {
-                PointEntry = WAFTPGetEntryFileName(CurrentDirEntry);
+                PointEntry = FTPGetEntryFileName(CurrentDirEntry);
                 if(PointEntry == ".")
                 {
                     FoundPoint = 1;
-                    PointDate = WAFTPGetEntryDate(CurrentDirEntry);
-                    PointAttr = WAFTPGetEntryFileAttributes(CurrentDirEntry);
+                    PointDate = FTPGetEntryDate(CurrentDirEntry);
+                    PointAttr = FTPGetEntryFileAttributes(CurrentDirEntry);
                 }
                 else if(PointEntry == "..")
                 {
                     FoundDoublePoint = 1;
-                    DoublePointDate = WAFTPGetEntryDate(CurrentDirEntry);
-                    DoublePointAttr = WAFTPGetEntryFileAttributes(CurrentDirEntry);
+                    DoublePointDate = FTPGetEntryDate(CurrentDirEntry);
+                    DoublePointAttr = FTPGetEntryFileAttributes(CurrentDirEntry);
                 }
                 else
                 {
-                    EntrDt = WAFTPGetEntryDate(CurrentDirEntry);
+                    EntrDt = FTPGetEntryDate(CurrentDirEntry);
                     if(EntrDt.Len() != 0)
                     {
-                        WAListViewAddItem(FRMFTPListview, PointEntry, 0, 0);
-                        WAListViewSetSubItem(FRMFTPListview, "(DIR)", 0, 1);
-                        WAListViewSetSubItem(FRMFTPListview, EntrDt, 0, 2);
-                        WAListViewSetSubItem(FRMFTPListview, WAFTPGetEntryFileAttributes(CurrentDirEntry), 0, 3);
+                        ListViewAddItem(FRMFTPListview, PointEntry, 0, 0);
+                        ListViewSetSubItem(FRMFTPListview, "(DIR)", 0, 1);
+                        ListViewSetSubItem(FRMFTPListview, EntrDt, 0, 2);
+                        ListViewSetSubItem(FRMFTPListview, FTPGetEntryFileAttributes(CurrentDirEntry), 0, 3);
                         FRMFTPDirEntries++;
                     }
                 }
@@ -1328,17 +1328,17 @@ void FilCListView(void)
     StringReleaseSplit(FTPDirectoriesArray);
     if(FoundDoublePoint == 1)
     {
-        WAListViewAddItem(FRMFTPListview, "..", 0, 0);
-        WAListViewSetSubItem(FRMFTPListview, "(DIR)", 0, 1);
-        WAListViewSetSubItem(FRMFTPListview, DoublePointDate, 0, 2);
-        WAListViewSetSubItem(FRMFTPListview, DoublePointAttr, 0, 3);
+        ListViewAddItem(FRMFTPListview, "..", 0, 0);
+        ListViewSetSubItem(FRMFTPListview, "(DIR)", 0, 1);
+        ListViewSetSubItem(FRMFTPListview, DoublePointDate, 0, 2);
+        ListViewSetSubItem(FRMFTPListview, DoublePointAttr, 0, 3);
     }
     if(FoundPoint == 1)
     {
-        WAListViewAddItem(FRMFTPListview, ".", 0, 0);
-        WAListViewSetSubItem(FRMFTPListview, "(DIR)", 0, 1);
-        WAListViewSetSubItem(FRMFTPListview, PointDate, 0, 2);
-        WAListViewSetSubItem(FRMFTPListview, PointAttr, 0, 3);
+        ListViewAddItem(FRMFTPListview, ".", 0, 0);
+        ListViewSetSubItem(FRMFTPListview, "(DIR)", 0, 1);
+        ListViewSetSubItem(FRMFTPListview, PointDate, 0, 2);
+        ListViewSetSubItem(FRMFTPListview, PointAttr, 0, 3);
     }
 }
 
@@ -1351,7 +1351,7 @@ long SelectFilesToUpload(HWND hWnd)
     CStr BufString;
 
     OpFilters = "All files (*.*)|*.*";
-    UpLdFile = WAComDlgGetOpenFileName(hWnd, OpFilters, "", 1, CurrentDir);
+    UpLdFile = ComDlgGetOpenFileName(hWnd, OpFilters, "", 1, CurrentDir);
     FilesArray = 0;
     if(UpLdFile.Len() == 0) return(0);
     FilesArray = StringSplit(UpLdFile, BufString.Chr(2));
@@ -1397,7 +1397,7 @@ void FillPermissions(void)
 {
     CStr FDPerm;
 
-    CurrentSelected = WAListViewGetSelItem(FRMFTPListview, -1);
+    CurrentSelected = ListViewGetSelItem(FRMFTPListview, -1);
     PermFileName.Erase();
     PermFilePerms.Erase();
     PermNbrFiles = 0;
@@ -1412,10 +1412,10 @@ void FillPermissions(void)
     PermOtherX = 0;
     while(CurrentSelected != -1)
     {
-        PermFileName.Add(WAListViewGetItemText(FRMFTPListview, CurrentSelected, 0).Get_String());
+        PermFileName.Add(ListViewGetItemText(FRMFTPListview, CurrentSelected, 0).Get_String());
         PermFilePerms.Add("");
         PermNbrFiles++;
-        FDPerm = WAListViewGetItemText(FRMFTPListview, CurrentSelected, 3);
+        FDPerm = ListViewGetItemText(FRMFTPListview, CurrentSelected, 3);
         if(strcmpi(FDPerm.Mid(1, 1).Get_String(), "r") == 0) PermOwnerR++;
         if(strcmpi(FDPerm.Mid(2, 1).Get_String(), "w") == 0) PermOwnerW++;
         if(strcmpi(FDPerm.Mid(3, 1).Get_String(), "x") == 0) PermOwnerX++;
@@ -1425,7 +1425,7 @@ void FillPermissions(void)
         if(strcmpi(FDPerm.Mid(7, 1).Get_String(), "r") == 0) PermOtherR++;
         if(strcmpi(FDPerm.Mid(8, 1).Get_String(), "w") == 0) PermOtherW++;
         if(strcmpi(FDPerm.Mid(9, 1).Get_String(), "x") == 0) PermOtherX++;
-        CurrentSelected = WAListViewGetSelItem(FRMFTPListview, CurrentSelected);
+        CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelected);
     }
 }
 
@@ -1439,7 +1439,7 @@ LRESULT CALLBACK FRMFTPListviewHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
             // Del key
             if(wParam == 46)
             {
-                WAControlSendMessage(FRMFTPhWnd, FTPDEL, (long) FRMFTPToolbar);
+                ControlSendMessage(FRMFTPhWnd, FTPDEL, (long) FRMFTPToolbar);
                 return(0);
             }
     }
@@ -1458,8 +1458,8 @@ int CALLBACK FRMFTPListviewSort(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSor
 	FILETIME Date1;
 	FILETIME Date2;
 
-    Data1 = WAListViewGetItemText(FRMFTPListview, lParam1, 0);
-    Data2 = WAListViewGetItemText(FRMFTPListview, lParam2, 0);
+    Data1 = ListViewGetItemText(FRMFTPListview, lParam1, 0);
+    Data2 = ListViewGetItemText(FRMFTPListview, lParam2, 0);
     if((strcmpi(Data1.Get_String(), ".") == 0) ||
        (strcmpi(Data2.Get_String(), ".") == 0))
     {
@@ -1472,8 +1472,8 @@ int CALLBACK FRMFTPListviewSort(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSor
         ReturnValue = 0;
         goto ExitSort;
     }
-    Data1 = WAListViewGetItemText(FRMFTPListview, lParam1, lParamSort);
-    Data2 = WAListViewGetItemText(FRMFTPListview, lParam2, lParamSort);
+    Data1 = ListViewGetItemText(FRMFTPListview, lParam1, lParamSort);
+    Data2 = ListViewGetItemText(FRMFTPListview, lParam2, lParamSort);
     switch(lParamSort)
     {
         case 0:
@@ -1515,8 +1515,8 @@ int CALLBACK FRMFTPListviewSort(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSor
 			break;
         case 2:
 			// (Return values are ignored here)
-			WADateStringToDate(Data1, &Date1);
-			WADateStringToDate(Data2, &Date2);
+			DateStringToDate(Data1, &Date1);
+			DateStringToDate(Data2, &Date2);
 			ReturnValue = -CompareFileTime(&Date1, &Date2);
 			break;
 		case 3:
@@ -1525,6 +1525,6 @@ int CALLBACK FRMFTPListviewSort(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSor
 			break;
 	}
 ExitSort:
-    WAListViewReOrder(FRMFTPListview);
+    ListViewReOrder(FRMFTPListview);
 	return(ReturnValue);
 }

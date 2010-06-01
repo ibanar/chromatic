@@ -1,5 +1,5 @@
 [Project]
-Name=FilterRawToDb
+Name=FilterRawToDcb
 Type=FILTER_C
 TypeExt=WINDLL
 TypeRename=
@@ -13,7 +13,7 @@ IncludeVersion=1
 IncludeManifest=0
 OS=4
 FileType=1
-Title=FilterRawToDb
+Title=FilterRawToDcb
 Comments=
 CompanyName=hitchhikr SoftWorks
 FileDescription=
@@ -25,14 +25,14 @@ INCLUDE000=[INCLUDEDIR]\Windows.h
 INCLUDE001=[INCLUDEDIR]\Commctrl.h
 INCLUDE002=[TEMPLATESDIR]\AddInConst.h
 [MODULES]
-MODULE000=[PROJECTSDIR]\FilterRawToDb\FilterDatas.c
-MODULE001=[PROJECTSDIR]\FilterRawToDb\Filter.c
+MODULE000=[PROJECTSDIR]\FilterRawToDcb\FilterDatas.c
+MODULE001=[PROJECTSDIR]\FilterRawToDcb\Filter.c
 [DEFS]
-DEF=[PROJECTSDIR]\FilterRawToDb\Filter.mdf
+DEF=[PROJECTSDIR]\FilterRawToDcb\Filter.mdf
 [Constants]
 Name000=_WIN32_IE
 Value000=0x0500
 [Windows]
-Window000=[PROJECTSDIR]\FilterRawToDb\Filter.c
-Focus=[PROJECTSDIR]\FilterRawToDb\Filter.c
-FocusLine=39
+Window000=[PROJECTSDIR]\FilterRawToDcb\Filter.c
+Focus=[PROJECTSDIR]\FilterRawToDcb\Filter.c
+FocusLine=73

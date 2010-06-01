@@ -50,22 +50,22 @@ void Read_Value(lua_State *L, int Index)
     switch(Index)
     {
         case 0:
-            lua_pushstring(L, Wrapper_WADateGetYear());
+            lua_pushstring(L, Wrapper_DateGetYear());
             break;
         case 1:
-            lua_pushstring(L, Wrapper_WADateGetMonth());
+            lua_pushstring(L, Wrapper_DateGetMonth());
             break;
         case 2:
-            lua_pushstring(L, Wrapper_WADateGetDay());
+            lua_pushstring(L, Wrapper_DateGetDay());
             break;
         case 3:
-            lua_pushstring(L, Wrapper_WADateGetHour());
+            lua_pushstring(L, Wrapper_DateGetHour());
             break;
         case 4:
-            lua_pushstring(L, Wrapper_WADateGetMinutes());
+            lua_pushstring(L, Wrapper_DateGetMinutes());
             break;
         case 5:
-            lua_pushstring(L, Wrapper_WADateGetSeconds());
+            lua_pushstring(L, Wrapper_DateGetSeconds());
             break;
     }
 }
@@ -75,7 +75,7 @@ int GetNow(lua_State *L)
 {
     Pop_Class_Object(L);
 
-    lua_pushstring(L, Wrapper_WADateGetNow(luaL_checkinteger(L, 1)));
+    lua_pushstring(L, Wrapper_DateGetNow(luaL_checkinteger(L, 1)));
     return(1);
 }
 
@@ -84,7 +84,7 @@ int GetDateFormat(lua_State *L)
 {
     Pop_Class_Object(L);
 
-    lua_pushstring(L, Wrapper_WADateGetFormat((char *) luaL_checkstring(L, 1)));
+    lua_pushstring(L, Wrapper_DateGetFormat((char *) luaL_checkstring(L, 1)));
     return(1);
 }
 
@@ -93,7 +93,7 @@ int GetTimeFormat(lua_State *L)
 {
     Pop_Class_Object(L);
 
-    lua_pushstring(L, Wrapper_WADateGetTimeFormat((char *) luaL_checkstring(L, 1)));
+    lua_pushstring(L, Wrapper_DateGetTimeFormat((char *) luaL_checkstring(L, 1)));
     return(1);
 }
 

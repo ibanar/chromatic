@@ -54,9 +54,9 @@ HFONT APIListhFont;
 void CALLBACK FRMAPIListInitProc(HWND hWnd)
 {
     FRMAPIListhWnd = hWnd;
-    APIhListBox = WACreateListBox(1, 1, 0, 1, hWnd, 0, &FRMAPIhListBoxHook, 0, WS_VSCROLL | LBS_SORT, 0);
-    APIListhFont = WAGDIObtainFont(CurFontName, CurFontSize, hMDIform.hWnd, 0, 0);
-    WAControlSetFont(APIhListBox, APIListhFont);
+    APIhListBox = CreateListBox(1, 1, 0, 1, hWnd, 0, &FRMAPIhListBoxHook, 0, WS_VSCROLL | LBS_SORT, 0);
+    APIListhFont = GDIObtainFont(CurFontName, CurFontSize, hMDIform.hWnd, 0, 0);
+    ControlSetFont(APIhListBox, APIListhFont);
 }
 
 // -----------------------------------------------------------------------
@@ -138,7 +138,7 @@ void CompleteWord(HWND hWnd)
 {
     CStr WordToComplete;
 
-    WordToComplete = WAListBoxGetCurrentItem(hWnd);
+    WordToComplete = ListBoxGetCurrentItem(hWnd);
     ChildStruct = LoadStructure(CurrentForm);
     SelectLeftWord(ChildStruct->hChildCodeMax, LineToDisplay);
     SmartInsert(CurrentForm, &WordToComplete);

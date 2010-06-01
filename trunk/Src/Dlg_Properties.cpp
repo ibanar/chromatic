@@ -329,7 +329,7 @@ void AddNewDebugger(HWND hCombo, CStr Debugger);
 // Display properties according to FRMPropertiesFirstTab variable
 void DisplayProperties(void)
 {
-    WACreateModalDialog(-1, -1, 527, 370, hMDIform.hWnd, FRMPropertiesProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    CreateModalDialog(-1, -1, 527, 370, hMDIform.hWnd, FRMPropertiesProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
     if(RefreshProperties == 1) RefreshChilds();
     if(NbForms != 0) RefreshStatusBar(CurrentForm);
     else ClearStatusBarParts();
@@ -347,89 +347,89 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
     switch(uMsg)
     {
         case WM_SYSCOLORCHANGE:
-            WAListViewSetBackColor(FRMStepListView, GetSysColor(COLOR_WINDOW));
+            ListViewSetBackColor(FRMStepListView, GetSysColor(COLOR_WINDOW));
             for(i = 0; i < SkinListViews.Amount(); i++)
             {
-                if(SkinListViews.Get(i)->Content != 0) WAListViewSetBackColor(SkinListViews.Get(i)->Content, GetSysColor(COLOR_WINDOW));
+                if(SkinListViews.Get(i)->Content != 0) ListViewSetBackColor(SkinListViews.Get(i)->Content, GetSysColor(COLOR_WINDOW));
             }
 			break;
         case WM_INITDIALOG:
             FRMPropertiesInFtpCreation = 0;
             RefreshProperties = 0;
             FRMPropertieshwnd = hwndDlg;
-            WAControlSetText(hwndDlg, AppTitle + (CStr) " properties");
-			FRMPropertiesSysTab = WACreateSysTab(2, 1, 520, 334, hwndDlg, 0, 0, GlobalImageList1, WS_TABSTOP | TCS_BUTTONS | TCS_FLATBUTTONS | TCS_HOTTRACK);
-            WASysTabSetSeparators(FRMPropertiesSysTab, 0);
-            WASysTabAddItem(FRMPropertiesSysTab, "General", 0, ICON_PROPERTIES);
-            WASysTabAddItem(FRMPropertiesSysTab, "Editor layouts", 1, ICON_COLORS);
-            WASysTabAddItem(FRMPropertiesSysTab, "Compiler/Assembler", 2, ICON_ASM);
-            WASysTabAddItem(FRMPropertiesSysTab, "FTP accounts", 3, ICON_EARTH);
-            WASysTabAddItem(FRMPropertiesSysTab, "Extras options", 4, ICON_STAR);
+            ControlSetText(hwndDlg, AppTitle + (CStr) " properties");
+			FRMPropertiesSysTab = CreateSysTab(2, 1, 520, 334, hwndDlg, 0, 0, GlobalImageList1, WS_TABSTOP | TCS_BUTTONS | TCS_FLATBUTTONS | TCS_HOTTRACK);
+            SysTabSetSeparators(FRMPropertiesSysTab, 0);
+            SysTabAddItem(FRMPropertiesSysTab, "General", 0, ICON_PROPERTIES);
+            SysTabAddItem(FRMPropertiesSysTab, "Editor layouts", 1, ICON_COLORS);
+            SysTabAddItem(FRMPropertiesSysTab, "Compiler/Assembler", 2, ICON_ASM);
+            SysTabAddItem(FRMPropertiesSysTab, "FTP accounts", 3, ICON_EARTH);
+            SysTabAddItem(FRMPropertiesSysTab, "Extras options", 4, ICON_STAR);
             CreatePropPage1(hwndDlg);
             CreatePropPage2(hwndDlg);
             CreatePropPage3(hwndDlg);
             CreatePropPage4(hwndDlg);
             CreatePropPage5(hwndDlg);
             BuildFTP(FRMPropertiesCbAccounts);
-            FRMPropertiesCmdOk = WACreateButton(368, 344, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
-            FRMPropertiesCmdCancel = WACreateButton(447, 344, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+            FRMPropertiesCmdOk = CreateButton(368, 344, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
+            FRMPropertiesCmdCancel = CreateButton(447, 344, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
             FillProfil();
             FillProperties();
             Fillskins();
             FillCurrentSkin();
             FillDefLanguage();
             FRMPropertiesInitCodeMax(FRMPropertiesCodeMax);
-            WASysTabSetCurrentItem(FRMPropertiesSysTab, FRMPropertiesFirstTab);
+            SysTabSetCurrentItem(FRMPropertiesSysTab, FRMPropertiesFirstTab);
             FRMPropertiesChangeCurrentTab();
             FreezeTimer = 1;
             return(1);
         case WM_SIZE:
-            WAListBoxSetHorzScrollWidth(FRMPropertiesLbFileExt, WAControlWidth(FRMPropertiesLbFileExt) * 2);
+            ListBoxSetHorzScrollWidth(FRMPropertiesLbFileExt, ControlWidth(FRMPropertiesLbFileExt) * 2);
 			break;
 		case WM_NOTIFY:
-            switch(WAControlGetNotifiedMsg(lParam))
+            switch(ControlGetNotifiedMsg(lParam))
             {
                 case TCN_SELCHANGE:
                     FRMPropertiesChangeCurrentTab();
                     return(0);
                 case TTN_NEEDTEXT:
-					switch(WAControlGetNotifiedID(lParam))
+					switch(ControlGetNotifiedID(lParam))
 					{
 						case BACKUP_SELDIR:
-							WAToolBarDisplayToolTip("Select new backup dir", lParam);
+							ToolBarDisplayToolTip("Select new backup dir", lParam);
 							return(0);
 						case BACKUP_DELETE:
-							WAToolBarDisplayToolTip("Empty selected dir", lParam);
+							ToolBarDisplayToolTip("Empty selected dir", lParam);
 							return(0);
                         case EXT_REPLACE:
-                            WAToolBarDisplayToolTip("Replace entry", lParam);
+                            ToolBarDisplayToolTip("Replace entry", lParam);
                             return(0);
                         case EXT_INSERT:
-                            WAToolBarDisplayToolTip("Insert new entry", lParam);
+                            ToolBarDisplayToolTip("Insert new entry", lParam);
                             return(0);
                         case EXT_DELETE:
-                            WAToolBarDisplayToolTip("Delete entry", lParam);
+                            ToolBarDisplayToolTip("Delete entry", lParam);
                             return(0);
                         case PROFILE_LOAD:
-                            WAToolBarDisplayToolTip("Load selected colors profile", lParam);
+                            ToolBarDisplayToolTip("Load selected colors profile", lParam);
                             return(0);
                         case PROFILE_SAVE:
-                            WAToolBarDisplayToolTip("Save colors profile", lParam);
+                            ToolBarDisplayToolTip("Save colors profile", lParam);
                             return(0);
                         case FOLDER_CHOOSE:
-							WAToolBarDisplayToolTip("Select a directory", lParam);
+							ToolBarDisplayToolTip("Select a directory", lParam);
 							return(0);
                         case FTPACC_CREATE:
-                            WAToolBarDisplayToolTip("Create a new account", lParam);
+                            ToolBarDisplayToolTip("Create a new account", lParam);
                             return(0);
                         case FTPACC_SAVE:
-                            WAToolBarDisplayToolTip("Update current account", lParam);
+                            ToolBarDisplayToolTip("Update current account", lParam);
                             return(0);
                         case FTPACC_DELETE:
-                            WAToolBarDisplayToolTip("Delete current account", lParam);
+                            ToolBarDisplayToolTip("Delete current account", lParam);
                             return(0);
                         case DEBUGGER_VALID:
-							WAToolBarDisplayToolTip("Add entry into list", lParam);
+							ToolBarDisplayToolTip("Add entry into list", lParam);
 							return(0);
                     }
 			}
@@ -439,16 +439,16 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
             {
                 if(FRMPropertiesInFtpCreation == 1)
                 {
-                    if(WAMiscMsgBox(hwndDlg, "Current FTP account not saved.\rSave it now ?", MB_QUESTION, Requesters) == IDYES) SaveFTPProps();
+                    if(MiscMsgBox(hwndDlg, "Current FTP account not saved.\rSave it now ?", MB_QUESTION, Requesters) == IDYES) SaveFTPProps();
                 }
                 SavePrefs();
                 RefreshProperties = 1;
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
             }
             else if((HWND) lParam == FRMPropertiesCmdCancel)
             {
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
             }
             else if((HWND) lParam == FRMPropertiesCmdMSDN)
@@ -473,7 +473,7 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
             }
             else if((HWND) lParam == FRMPropertiesCmdRegs)
             {
-                WACreateModalDialog(-1, -1, 334, 215, FRMPropertieshwnd, FRMRegsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+                CreateModalDialog(-1, -1, 334, 215, FRMPropertieshwnd, FRMRegsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
                 return(0);
             }
             else if((HWND) lParam == FRMPropertiesCmdGenProg)
@@ -494,7 +494,7 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                         FRMPropertiesSelectBakDir();
                         return(0);
                     case BACKUP_DELETE:
-                        WAControlSetText(FRMPropertiesTxtBackupDir, "");
+                        ControlSetText(FRMPropertiesTxtBackupDir, "");
                         return(0);
                 }
             }
@@ -503,58 +503,58 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 				switch(wParam)
 				{
                     case EXT_REPLACE:
-                        if(WAListBoxCount(FRMPropertiesLbFileExt) != 0)
+                        if(ListBoxCount(FRMPropertiesLbFileExt) != 0)
                         {
-                            LbOldIdx = WAListBoxGetSelItemIndex(FRMPropertiesLbFileExt);
-                            if(WAControlGetText(FRMPropertiesTxtFileExt).Len() != 0)
+                            LbOldIdx = ListBoxGetSelItemIndex(FRMPropertiesLbFileExt);
+                            if(ControlGetText(FRMPropertiesTxtFileExt).Len() != 0)
                             {
-                                if(WAListBoxGetSelItemIndex(FRMPropertiesLbFileExt) != -1)
+                                if(ListBoxGetSelItemIndex(FRMPropertiesLbFileExt) != -1)
                                 {
-                                    WAListBoxReplaceItem(FRMPropertiesLbFileExt, WAListBoxGetSelItemIndex(FRMPropertiesLbFileExt), WAControlGetText(FRMPropertiesTxtFileExt));
-                                    WAListBoxSetIndex(FRMPropertiesLbFileExt, LbOldIdx);
+                                    ListBoxReplaceItem(FRMPropertiesLbFileExt, ListBoxGetSelItemIndex(FRMPropertiesLbFileExt), ControlGetText(FRMPropertiesTxtFileExt));
+                                    ListBoxSetIndex(FRMPropertiesLbFileExt, LbOldIdx);
                                     SetFocus(FRMPropertiesLbFileExt);
                                 }
                             }
                         }
                         return(0);
                     case EXT_INSERT:
-                        LbOldIdx = WAListBoxGetSelItemIndex(FRMPropertiesLbFileExt);
-                        if(WAControlGetText(FRMPropertiesTxtFileExt).Len() != 0)
+                        LbOldIdx = ListBoxGetSelItemIndex(FRMPropertiesLbFileExt);
+                        if(ControlGetText(FRMPropertiesTxtFileExt).Len() != 0)
                         {
-                            if(WAListBoxGetSelItemIndex(FRMPropertiesLbFileExt) != -1)
+                            if(ListBoxGetSelItemIndex(FRMPropertiesLbFileExt) != -1)
                             {
-AddFileExt:						WAListBoxAddItem(FRMPropertiesLbFileExt, WAControlGetText(FRMPropertiesTxtFileExt), WAListBoxGetSelItemIndex(FRMPropertiesLbFileExt));
-                                WAListBoxSetIndex(FRMPropertiesLbFileExt, LbOldIdx);
+AddFileExt:						ListBoxAddItem(FRMPropertiesLbFileExt, ControlGetText(FRMPropertiesTxtFileExt), ListBoxGetSelItemIndex(FRMPropertiesLbFileExt));
+                                ListBoxSetIndex(FRMPropertiesLbFileExt, LbOldIdx);
                                 SetFocus(FRMPropertiesLbFileExt);
                             }
                             else
                             {
-                                LbOldIdx = WAListBoxCount(FRMPropertiesLbFileExt);
-                                WAListBoxSetIndex(FRMPropertiesLbFileExt, WAListBoxCount(FRMPropertiesLbFileExt));
+                                LbOldIdx = ListBoxCount(FRMPropertiesLbFileExt);
+                                ListBoxSetIndex(FRMPropertiesLbFileExt, ListBoxCount(FRMPropertiesLbFileExt));
                                 goto AddFileExt;
                             }
                         }
                         return(0);
                     case EXT_DELETE:
-                        LbOldIdx = WAListBoxGetSelItemIndex(FRMPropertiesLbFileExt);
-                        if(WAListBoxCount(FRMPropertiesLbFileExt) != 0)
+                        LbOldIdx = ListBoxGetSelItemIndex(FRMPropertiesLbFileExt);
+                        if(ListBoxCount(FRMPropertiesLbFileExt) != 0)
                         {
-                            if(WAListBoxGetSelItemIndex(FRMPropertiesLbFileExt) != -1)
+                            if(ListBoxGetSelItemIndex(FRMPropertiesLbFileExt) != -1)
                             {
-                                WAListBoxDeleteItem(FRMPropertiesLbFileExt, WAListBoxGetSelItemIndex(FRMPropertiesLbFileExt));
-                                if(WAListBoxCount(FRMPropertiesLbFileExt) != 0)
+                                ListBoxDeleteItem(FRMPropertiesLbFileExt, ListBoxGetSelItemIndex(FRMPropertiesLbFileExt));
+                                if(ListBoxCount(FRMPropertiesLbFileExt) != 0)
                                 {
-                                    if(LbOldIdx > (WAListBoxCount(FRMPropertiesLbFileExt) - 1)) LbOldIdx = WAListBoxCount(FRMPropertiesLbFileExt) - 1;
-                                    if(LbOldIdx != -1) WAListBoxSetIndex(FRMPropertiesLbFileExt, LbOldIdx);
-                                    WAControlSetText(FRMPropertiesTxtFileExt, WAListBoxGetItem(FRMPropertiesLbFileExt, WAListBoxGetSelItemIndex(FRMPropertiesLbFileExt)));
+                                    if(LbOldIdx > (ListBoxCount(FRMPropertiesLbFileExt) - 1)) LbOldIdx = ListBoxCount(FRMPropertiesLbFileExt) - 1;
+                                    if(LbOldIdx != -1) ListBoxSetIndex(FRMPropertiesLbFileExt, LbOldIdx);
+                                    ControlSetText(FRMPropertiesTxtFileExt, ListBoxGetItem(FRMPropertiesLbFileExt, ListBoxGetSelItemIndex(FRMPropertiesLbFileExt)));
                                     SetFocus(FRMPropertiesLbFileExt);
                                 }
                                 else
                                 {
-                                    WAControlSetText(FRMPropertiesTxtFileExt, "");
+                                    ControlSetText(FRMPropertiesTxtFileExt, "");
                                 }
                             }
-                            if(WAListBoxCount(FRMPropertiesLbFileExt) == 0) SetFocus(FRMPropertiesTxtFileExt);
+                            if(ListBoxCount(FRMPropertiesLbFileExt) == 0) SetFocus(FRMPropertiesTxtFileExt);
                         }
                         else
                         {
@@ -568,20 +568,20 @@ AddFileExt:						WAListBoxAddItem(FRMPropertiesLbFileExt, WAControlGetText(FRMPr
                 switch(wParam)
                 {
                     case PROFILE_LOAD:
-                        if(WAControlGetText(FRMPropertiesCbColors).Len() == 0)
+                        if(ControlGetText(FRMPropertiesCbColors).Len() == 0)
                         {
-                            WAMiscMsgBox(FRMPropertieshwnd, "Select a profile name.", MB_ERROR, Requesters);
+                            MiscMsgBox(FRMPropertieshwnd, "Select a profile name.", MB_ERROR, Requesters);
                             SetFocus(FRMPropertiesCbColors);
                         }
                         else
                         {
-                            LoadColorsProfile(WAControlGetText(FRMPropertiesCbColors));
+                            LoadColorsProfile(ControlGetText(FRMPropertiesCbColors));
                         }
                         return(0);
                     case PROFILE_SAVE:
-                        if(SaveColorsProfile(WAControlGetText(FRMPropertiesCbColors)) == 0)
+                        if(SaveColorsProfile(ControlGetText(FRMPropertiesCbColors)) == 0)
                         {
-                            WAMiscMsgBox(FRMPropertieshwnd, "Enter a profile name.", MB_ERROR, Requesters);
+                            MiscMsgBox(FRMPropertieshwnd, "Enter a profile name.", MB_ERROR, Requesters);
                             SetFocus(FRMPropertiesCbColors);
                         }
                         return(0);
@@ -620,8 +620,8 @@ AddFileExt:						WAListBoxAddItem(FRMPropertiesLbFileExt, WAControlGetText(FRMPr
             else if((HWND) lParam == FRMPropertiesTbValidDebugger)
             {
                 // Add teh entry into the list
-                BufString = WAControlGetText(FRMPropertiesCbDebugger);
-                WAComboBoxSaveInIniFile(FRMPropertiesCbDebugger, BufString, "ExtDebuggers", MainIniFile);
+                BufString = ControlGetText(FRMPropertiesCbDebugger);
+                ComboBoxSaveInIniFile(FRMPropertiesCbDebugger, BufString, "ExtDebuggers", MainIniFile);
                 AddNewDebugger(FRMPropertiesCbDebugger, BufString);
                 return(0);
             }
@@ -636,12 +636,12 @@ AddFileExt:						WAListBoxAddItem(FRMPropertiesLbFileExt, WAControlGetText(FRMPr
                         NewAccountName = MiscInputBox(FRMPropertieshwnd, "Enter new FTP account name", ICON_ASKDIR, "", 0, INPUTBOX_SIMPLETEXT, "");
                         if(NewAccountName.Len() != 0)
                         {
-                            if(WAComboBoxItemExist(FRMPropertiesCbAccounts, NewAccountName) != -1)
+                            if(ComboBoxItemExist(FRMPropertiesCbAccounts, NewAccountName) != -1)
                             {
-                                WAMiscMsgBox(FRMPropertieshwnd, "This account already exists.", MB_ERROR, Requesters);
+                                MiscMsgBox(FRMPropertieshwnd, "This account already exists.", MB_ERROR, Requesters);
                                 return(0);
                             }
-                            WAComboBoxSetIndex(FRMPropertiesCbAccounts, WAComboBoxAddItem(FRMPropertiesCbAccounts, NewAccountName, -1));
+                            ComboBoxSetIndex(FRMPropertiesCbAccounts, ComboBoxAddItem(FRMPropertiesCbAccounts, NewAccountName, -1));
                             ResetFTPProps();
                             FRMPropertiesInFtpCreation = 1;
                         }
@@ -654,20 +654,20 @@ AddFileExt:						WAListBoxAddItem(FRMPropertiesLbFileExt, WAControlGetText(FRMPr
                         return(0);
                     // Delete FTP account
                     case FTPACC_DELETE:
-                        if(WAComboBoxCount(FRMPropertiesCbAccounts) != 0)
+                        if(ComboBoxCount(FRMPropertiesCbAccounts) != 0)
                         {
-                            if(WAMiscMsgBox(FRMPropertieshwnd, "Do you really want to delete this account ?", MB_QUESTION, Requesters) == IDYES) {
-                                DeleteAccountFromIni(WAControlGetText(FRMPropertiesCbAccounts));
-                                WAComboBoxDeleteItem(FRMPropertiesCbAccounts, WAComboBoxGetIndex(FRMPropertiesCbAccounts));
-                                if(WAComboBoxCount(FRMPropertiesCbAccounts) != 0)
+                            if(MiscMsgBox(FRMPropertieshwnd, "Do you really want to delete this account ?", MB_QUESTION, Requesters) == IDYES) {
+                                DeleteAccountFromIni(ControlGetText(FRMPropertiesCbAccounts));
+                                ComboBoxDeleteItem(FRMPropertiesCbAccounts, ComboBoxGetIndex(FRMPropertiesCbAccounts));
+                                if(ComboBoxCount(FRMPropertiesCbAccounts) != 0)
                                 {
-                                    WAComboBoxSetIndex(FRMPropertiesCbAccounts, 0);
+                                    ComboBoxSetIndex(FRMPropertiesCbAccounts, 0);
                                     FillFTPProps();
                                 }
                                 else
                                 {
                                     ResetFTPProps();
-                                    WAComboBoxSetIndex(FRMPropertiesCbAccounts, -1);
+                                    ComboBoxSetIndex(FRMPropertiesCbAccounts, -1);
                                 }
                             }
                         }
@@ -683,7 +683,7 @@ AddFileExt:						WAListBoxAddItem(FRMPropertiesLbFileExt, WAControlGetText(FRMPr
 			break;
         case WM_PAINT:
             BeginPaint(hwndDlg, &CreatePs);
-            WAGDIDrawHorzSep(hwndDlg, 0, 337, 527);
+            GDIDrawHorzSep(hwndDlg, 0, 337, 527);
             EndPaint(hwndDlg, &CreatePs);
 			break;
 		case WM_CLOSE:
@@ -700,247 +700,247 @@ AddFileExt:						WAListBoxAddItem(FRMPropertiesLbFileExt, WAControlGetText(FRMPr
 // Create first properties page
 void CreatePropPage1(HWND hParent)
 {
-    FRMPropertiesPageEditor = WACreateFrame(4, 26, 155, 306, hParent, "Editor", 0, 0, 0);
-    FRMPropertiesPageFileExtensions = WACreateFrame(161, 26, 232, 183, hParent, "Files extensions", 0, &FRMPropertiesFrameExtensions, 0);
-    FRMPropertiesPageFont = WACreateFrame(161, 209, 232, 41, hParent, "Font", 0, 0, 0);
-    FRMPropertiesPageLineNumbering = WACreateFrame(161, 250, 232, 41, hParent, "Lines numbering", 0, 0, 0);
-    FRMPropertiesPageOther = WACreateFrame(395, 26, 128, 72, hParent, "Other", 0, 0, 0);
-    FRMPropertiesPageAutoSave = WACreateFrame(395, 98, 128, 56, hParent, "AutoSave", 0, 0, 0);
-    FRMPropertiesPageEditor2 = WACreateFrame(395, 154, 128, 178, hParent, "Editor", 0, &FRMPropertiesFrameGeneral, 0);
-    FRMPropertiesPageBackup = WACreateFrame(161, 291, 232, 41, hParent, "Default backup directory", 0, 0, 0);
-    FRMPropertiesChkLeftMargin = WACreateCheckBox(11, 21 - 7, 140, 15, FRMPropertiesPageEditor, "Left margin", 11, 0, WS_TABSTOP | WS_GROUP, 0);
-    FRMPropertiesChkWhiteSpaces = WACreateCheckBox(11, 37 - 7, 140, 15, FRMPropertiesPageEditor, "White spaces", 12, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkHighlightLine = WACreateCheckBox(11, 53 - 7, 140, 15, FRMPropertiesPageEditor, "Highlight selected line", 13, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkCursorwrap = WACreateCheckBox(11, 69 - 7, 140, 15, FRMPropertiesPageEditor, "Cursor wrap", 14, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkSyntaxHighlighting = WACreateCheckBox(11, 85 - 7, 140, 15, FRMPropertiesPageEditor, "Syntax highlighting", 15, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkLanguageScopeIndent = WACreateCheckBox(11, 101 - 7, 140, 15, FRMPropertiesPageEditor, "Language scope indent", 16, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkTextDragAndDrop = WACreateCheckBox(11, 117 - 7, 140, 15, FRMPropertiesPageEditor, "Text drag and drop", 17, 0, WS_TABSTOP, 0);
+    FRMPropertiesPageEditor = CreateFrame(4, 26, 155, 306, hParent, "Editor", 0, 0, 0);
+    FRMPropertiesPageFileExtensions = CreateFrame(161, 26, 232, 183, hParent, "Files extensions", 0, &FRMPropertiesFrameExtensions, 0);
+    FRMPropertiesPageFont = CreateFrame(161, 209, 232, 41, hParent, "Font", 0, 0, 0);
+    FRMPropertiesPageLineNumbering = CreateFrame(161, 250, 232, 41, hParent, "Lines numbering", 0, 0, 0);
+    FRMPropertiesPageOther = CreateFrame(395, 26, 128, 72, hParent, "Other", 0, 0, 0);
+    FRMPropertiesPageAutoSave = CreateFrame(395, 98, 128, 56, hParent, "AutoSave", 0, 0, 0);
+    FRMPropertiesPageEditor2 = CreateFrame(395, 154, 128, 178, hParent, "Editor", 0, &FRMPropertiesFrameGeneral, 0);
+    FRMPropertiesPageBackup = CreateFrame(161, 291, 232, 41, hParent, "Default backup directory", 0, 0, 0);
+    FRMPropertiesChkLeftMargin = CreateCheckBox(11, 21 - 7, 140, 15, FRMPropertiesPageEditor, "Left margin", 11, 0, WS_TABSTOP | WS_GROUP, 0);
+    FRMPropertiesChkWhiteSpaces = CreateCheckBox(11, 37 - 7, 140, 15, FRMPropertiesPageEditor, "White spaces", 12, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkHighlightLine = CreateCheckBox(11, 53 - 7, 140, 15, FRMPropertiesPageEditor, "Highlight selected line", 13, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkCursorwrap = CreateCheckBox(11, 69 - 7, 140, 15, FRMPropertiesPageEditor, "Cursor wrap", 14, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkSyntaxHighlighting = CreateCheckBox(11, 85 - 7, 140, 15, FRMPropertiesPageEditor, "Syntax highlighting", 15, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkLanguageScopeIndent = CreateCheckBox(11, 101 - 7, 140, 15, FRMPropertiesPageEditor, "Language scope indent", 16, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkTextDragAndDrop = CreateCheckBox(11, 117 - 7, 140, 15, FRMPropertiesPageEditor, "Text drag and drop", 17, 0, WS_TABSTOP, 0);
     CheckBoxSetState(FRMPropertiesChkTextDragAndDrop, 1);
-    FRMPropertiesChkSmoothScrolling = WACreateCheckBox(11, 133 - 7, 140, 15, FRMPropertiesPageEditor, "Smooth scrolling", 18, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkLineNumberTooltip = WACreateCheckBox(11, 149 - 7, 140, 15, FRMPropertiesPageEditor, "Line number tooltip", 19, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkCaretAlwaysVisible = WACreateCheckBox(11, 165 - 7, 140, 15, FRMPropertiesPageEditor, "Caret always visible", 20, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkTabsToSpaces = WACreateCheckBox(11, 181 - 7, 140, 15, FRMPropertiesPageEditor, "Tabs to spaces", 21, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkHorizontalSplitter = WACreateCheckBox(11, 197 - 7, 140, 15, FRMPropertiesPageEditor, "Horizontal splitter", 23, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkDetectChange = WACreateCheckBox(11, 213- 7, 140, 15, FRMPropertiesPageEditor, "File change detection", 24, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkRememberState = WACreateCheckBox(11, 229 - 7, 140, 15, FRMPropertiesPageEditor, "Remember last state", 25, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkUNIX = WACreateCheckBox(11, 245 - 7, 140, 15, FRMPropertiesPageEditor, "Auto convert Unix files", 26, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkAutoZoom = WACreateCheckBox(11, 261 - 7, 140, 15, FRMPropertiesPageEditor, "Auto focus opened files", 27, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkOutputDates = WACreateCheckBox(11, 277 - 7, 140, 15, FRMPropertiesPageEditor, "Dates prefix in output", 28, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkSaveAll = WACreateCheckBox(11, 293 - 7, 140, 15, FRMPropertiesPageEditor, "Save files on user cmd", 29, 0, WS_TABSTOP, 0);
-    FRMPropertiesCbLines = WACreateComboBox(39, 15, 84, 150, FRMPropertiesPageLineNumbering, "", 30, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
-    WAComboBoxAddItem(FRMPropertiesCbLines, "(None)", -1);
-    WAComboBoxAddItem(FRMPropertiesCbLines, "Binary", -1);
-    WAComboBoxAddItem(FRMPropertiesCbLines, "Decimal", -1);
-    WAComboBoxAddItem(FRMPropertiesCbLines, "Hexadecimal", -1);
-    WAComboBoxAddItem(FRMPropertiesCbLines, "Octal", -1);
-    WAComboBoxSetIndex(FRMPropertiesCbLines, 0);
-    WACreateLabel(5, 18, 33, 15, FRMPropertiesPageLineNumbering, "Style :", 0, 0, 0, 0);
-    WACreateLabel(126, 18, 44, 15, FRMPropertiesPageLineNumbering, "Start at :", 0, 0, 0, 0);
-    FRMPropertiesTxtLines = WACreateTextBox(172, 15, 54, 20, FRMPropertiesPageLineNumbering, "", 31, 0, WS_TABSTOP | ES_NUMBER, WS_EX_STATICEDGE);
-    FRMPropertiesTxtFileExt = WACreateTextBox(5, 15, 222, 20, FRMPropertiesPageFileExtensions, "", 32, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-    FRMPropertiesLbFileExt = WACreateListBox(4, 36, 197, 143, FRMPropertiesPageFileExtensions, 33, 0, 0, WS_TABSTOP | WS_HSCROLL, WS_EX_STATICEDGE);
-    FRMPropertiesTbFileExt = WACreateToolBar(203 + 161, 37 + 26, 25, 72, hParent, GlobalImageList1, 34, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBSTYLE_WRAPABLE | WS_TABSTOP | TBS_FIXEDLENGTH, 0);
-    WAToolBarAddButton(FRMPropertiesTbFileExt, "", EXT_REPLACE, ICON_REPLACE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(FRMPropertiesTbFileExt, "", EXT_INSERT, ICON_INSERT, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(FRMPropertiesTbFileExt, "", EXT_DELETE, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    FRMPropertiesLbFont = WACreateLabel(7, 17, 195, 15, FRMPropertiesPageFont, "", 0, 0, 0, 0);
-	FRMPropertiesCmdFontChoose = WACreateButton(202 + 161, 14 + 209, 25, 21, hParent, "...", 35, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-	WACreateLabel(27, 12, 63, 15, FRMPropertiesPageOther, "Tabulations :", 0, 0, 0, 0);
-    FRMPropertiesTabulations = WACreateTextBox(92, 10, 27, 20, FRMPropertiesPageOther, "", 36, 0, WS_TABSTOP | ES_NUMBER, WS_EX_STATICEDGE);
-    WACreateLabel(26, 31, 63, 15, FRMPropertiesPageOther, "Recent files :", 0, 0, 0, 0);
-    FRMPropertiesRecentFiles = WACreateTextBox(92, 29, 27, 20, FRMPropertiesPageOther, "", 37, 0, WS_TABSTOP | ES_NUMBER, WS_EX_STATICEDGE);
-    WACreateLabel(7, 50, 84, 15, FRMPropertiesPageOther, "Recent projects :", 0, 0, 0, 0);
-    FRMPropertiesRecentProjects = WACreateTextBox(92, 48, 27, 20, FRMPropertiesPageOther, "", 38, 0, WS_TABSTOP | ES_NUMBER, WS_EX_STATICEDGE);
-    FRMPropertiesCbSave = WACreateComboBox(7, 14, 114, 150, FRMPropertiesPageAutoSave, "", 39, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
-    WAComboBoxAddItem(FRMPropertiesCbSave, "(None)", -1);
-    WAComboBoxAddItem(FRMPropertiesCbSave, "1 minute", -1);
-    WAComboBoxAddItem(FRMPropertiesCbSave, "2 minutes", -1);
-    WAComboBoxAddItem(FRMPropertiesCbSave, "5 minutes", -1);
-    WAComboBoxAddItem(FRMPropertiesCbSave, "10 minutes", -1);
-    WAComboBoxAddItem(FRMPropertiesCbSave, "15 minutes", -1);
-    WAComboBoxAddItem(FRMPropertiesCbSave, "30 minutes", -1);
-    WAComboBoxAddItem(FRMPropertiesCbSave, "45 minutes", -1);
-    WAComboBoxAddItem(FRMPropertiesCbSave, "1 hour", -1);
-    WAComboBoxSetIndex(FRMPropertiesCbSave, 0);
-    FRMPropertiesChkVerbose = WACreateCheckBox(7, 37, 110, 15, FRMPropertiesPageAutoSave, "Display files list", 40, 0, WS_TABSTOP, 0);
-	FRMPropertiesChkMultiplesInst = WACreateCheckBox(5, 9 + 5, 120, 15, FRMPropertiesPageEditor2, "Multiple instances", 41, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkRemember = WACreateCheckBox(5, 25 + 5, 120, 15, FRMPropertiesPageEditor2, "Remember last pos", 42, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkBakFiles = WACreateCheckBox(5, 41 + 5, 120, 15, FRMPropertiesPageEditor2, "Create .BAK files", 43, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkDecorateBak = WACreateCheckBox(5, 57 + 5, 120, 15, FRMPropertiesPageEditor2, "Decorate .BAK files", 44, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkAcceptFiles = WACreateCheckBox(5, 73 + 5, 120, 15, FRMPropertiesPageEditor2, "Accept files", 45, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkAutoMax = WACreateCheckBox(5, 89 + 5, 118, 15, FRMPropertiesPageEditor2, "Auto maximize childs", 46, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkAutoClean = WACreateCheckBox(5, 105 + 5, 118, 15, FRMPropertiesPageEditor2, "Auto clear output", 47, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkMinimize = WACreateCheckBox(5, 121 + 5, 118, 15, FRMPropertiesPageEditor2, "Minimize to systray", 48, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkOnTop = WACreateCheckBox(5, 137 + 5, 118, 15, FRMPropertiesPageEditor2, "Always on top", 49, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkSaveBk = WACreateCheckBox(5, 153 + 5, 118, 15, FRMPropertiesPageEditor2, "Save bookmarks", 50, 0, WS_TABSTOP, 0);
-	FRMPropertiesTxtBackupDir = WACreateTextBox(6, 14, 169, 20, FRMPropertiesPageBackup, "", 50, 0, ES_READONLY | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-	FRMPropertiesTbBackup = WACreateToolBar(177 + 161, 13 + 291, 50, 24, hParent, GlobalImageList1, 51, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | WS_TABSTOP | TBS_FIXEDLENGTH, 0);
-    WAToolBarAddButton(FRMPropertiesTbBackup, "", BACKUP_SELDIR, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(FRMPropertiesTbBackup, "", BACKUP_DELETE, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    FRMPropertiesChkSmoothScrolling = CreateCheckBox(11, 133 - 7, 140, 15, FRMPropertiesPageEditor, "Smooth scrolling", 18, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkLineNumberTooltip = CreateCheckBox(11, 149 - 7, 140, 15, FRMPropertiesPageEditor, "Line number tooltip", 19, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkCaretAlwaysVisible = CreateCheckBox(11, 165 - 7, 140, 15, FRMPropertiesPageEditor, "Caret always visible", 20, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkTabsToSpaces = CreateCheckBox(11, 181 - 7, 140, 15, FRMPropertiesPageEditor, "Tabs to spaces", 21, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkHorizontalSplitter = CreateCheckBox(11, 197 - 7, 140, 15, FRMPropertiesPageEditor, "Horizontal splitter", 23, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkDetectChange = CreateCheckBox(11, 213- 7, 140, 15, FRMPropertiesPageEditor, "File change detection", 24, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkRememberState = CreateCheckBox(11, 229 - 7, 140, 15, FRMPropertiesPageEditor, "Remember last state", 25, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkUNIX = CreateCheckBox(11, 245 - 7, 140, 15, FRMPropertiesPageEditor, "Auto convert Unix files", 26, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkAutoZoom = CreateCheckBox(11, 261 - 7, 140, 15, FRMPropertiesPageEditor, "Auto focus opened files", 27, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkOutputDates = CreateCheckBox(11, 277 - 7, 140, 15, FRMPropertiesPageEditor, "Dates prefix in output", 28, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkSaveAll = CreateCheckBox(11, 293 - 7, 140, 15, FRMPropertiesPageEditor, "Save files on user cmd", 29, 0, WS_TABSTOP, 0);
+    FRMPropertiesCbLines = CreateComboBox(39, 15, 84, 150, FRMPropertiesPageLineNumbering, "", 30, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
+    ComboBoxAddItem(FRMPropertiesCbLines, "(None)", -1);
+    ComboBoxAddItem(FRMPropertiesCbLines, "Binary", -1);
+    ComboBoxAddItem(FRMPropertiesCbLines, "Decimal", -1);
+    ComboBoxAddItem(FRMPropertiesCbLines, "Hexadecimal", -1);
+    ComboBoxAddItem(FRMPropertiesCbLines, "Octal", -1);
+    ComboBoxSetIndex(FRMPropertiesCbLines, 0);
+    CreateLabel(5, 18, 33, 15, FRMPropertiesPageLineNumbering, "Style :", 0, 0, 0, 0);
+    CreateLabel(126, 18, 44, 15, FRMPropertiesPageLineNumbering, "Start at :", 0, 0, 0, 0);
+    FRMPropertiesTxtLines = CreateTextBox(172, 15, 54, 20, FRMPropertiesPageLineNumbering, "", 31, 0, WS_TABSTOP | ES_NUMBER, WS_EX_STATICEDGE);
+    FRMPropertiesTxtFileExt = CreateTextBox(5, 15, 222, 20, FRMPropertiesPageFileExtensions, "", 32, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+    FRMPropertiesLbFileExt = CreateListBox(4, 36, 197, 143, FRMPropertiesPageFileExtensions, 33, 0, 0, WS_TABSTOP | WS_HSCROLL, WS_EX_STATICEDGE);
+    FRMPropertiesTbFileExt = CreateToolBar(203 + 161, 37 + 26, 25, 72, hParent, GlobalImageList1, 34, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBSTYLE_WRAPABLE | WS_TABSTOP | TBS_FIXEDLENGTH, 0);
+    ToolBarAddButton(FRMPropertiesTbFileExt, "", EXT_REPLACE, ICON_REPLACE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(FRMPropertiesTbFileExt, "", EXT_INSERT, ICON_INSERT, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(FRMPropertiesTbFileExt, "", EXT_DELETE, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    FRMPropertiesLbFont = CreateLabel(7, 17, 195, 15, FRMPropertiesPageFont, "", 0, 0, 0, 0);
+	FRMPropertiesCmdFontChoose = CreateButton(202 + 161, 14 + 209, 25, 21, hParent, "...", 35, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+	CreateLabel(27, 12, 63, 15, FRMPropertiesPageOther, "Tabulations :", 0, 0, 0, 0);
+    FRMPropertiesTabulations = CreateTextBox(92, 10, 27, 20, FRMPropertiesPageOther, "", 36, 0, WS_TABSTOP | ES_NUMBER, WS_EX_STATICEDGE);
+    CreateLabel(26, 31, 63, 15, FRMPropertiesPageOther, "Recent files :", 0, 0, 0, 0);
+    FRMPropertiesRecentFiles = CreateTextBox(92, 29, 27, 20, FRMPropertiesPageOther, "", 37, 0, WS_TABSTOP | ES_NUMBER, WS_EX_STATICEDGE);
+    CreateLabel(7, 50, 84, 15, FRMPropertiesPageOther, "Recent projects :", 0, 0, 0, 0);
+    FRMPropertiesRecentProjects = CreateTextBox(92, 48, 27, 20, FRMPropertiesPageOther, "", 38, 0, WS_TABSTOP | ES_NUMBER, WS_EX_STATICEDGE);
+    FRMPropertiesCbSave = CreateComboBox(7, 14, 114, 150, FRMPropertiesPageAutoSave, "", 39, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
+    ComboBoxAddItem(FRMPropertiesCbSave, "(None)", -1);
+    ComboBoxAddItem(FRMPropertiesCbSave, "1 minute", -1);
+    ComboBoxAddItem(FRMPropertiesCbSave, "2 minutes", -1);
+    ComboBoxAddItem(FRMPropertiesCbSave, "5 minutes", -1);
+    ComboBoxAddItem(FRMPropertiesCbSave, "10 minutes", -1);
+    ComboBoxAddItem(FRMPropertiesCbSave, "15 minutes", -1);
+    ComboBoxAddItem(FRMPropertiesCbSave, "30 minutes", -1);
+    ComboBoxAddItem(FRMPropertiesCbSave, "45 minutes", -1);
+    ComboBoxAddItem(FRMPropertiesCbSave, "1 hour", -1);
+    ComboBoxSetIndex(FRMPropertiesCbSave, 0);
+    FRMPropertiesChkVerbose = CreateCheckBox(7, 37, 110, 15, FRMPropertiesPageAutoSave, "Display files list", 40, 0, WS_TABSTOP, 0);
+	FRMPropertiesChkMultiplesInst = CreateCheckBox(5, 9 + 5, 120, 15, FRMPropertiesPageEditor2, "Multiple instances", 41, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkRemember = CreateCheckBox(5, 25 + 5, 120, 15, FRMPropertiesPageEditor2, "Remember last pos", 42, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkBakFiles = CreateCheckBox(5, 41 + 5, 120, 15, FRMPropertiesPageEditor2, "Create .BAK files", 43, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkDecorateBak = CreateCheckBox(5, 57 + 5, 120, 15, FRMPropertiesPageEditor2, "Decorate .BAK files", 44, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkAcceptFiles = CreateCheckBox(5, 73 + 5, 120, 15, FRMPropertiesPageEditor2, "Accept files", 45, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkAutoMax = CreateCheckBox(5, 89 + 5, 118, 15, FRMPropertiesPageEditor2, "Auto maximize childs", 46, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkAutoClean = CreateCheckBox(5, 105 + 5, 118, 15, FRMPropertiesPageEditor2, "Auto clear output", 47, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkMinimize = CreateCheckBox(5, 121 + 5, 118, 15, FRMPropertiesPageEditor2, "Minimize to systray", 48, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkOnTop = CreateCheckBox(5, 137 + 5, 118, 15, FRMPropertiesPageEditor2, "Always on top", 49, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkSaveBk = CreateCheckBox(5, 153 + 5, 118, 15, FRMPropertiesPageEditor2, "Save bookmarks", 50, 0, WS_TABSTOP, 0);
+	FRMPropertiesTxtBackupDir = CreateTextBox(6, 14, 169, 20, FRMPropertiesPageBackup, "", 50, 0, ES_READONLY | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+	FRMPropertiesTbBackup = CreateToolBar(177 + 161, 13 + 291, 50, 24, hParent, GlobalImageList1, 51, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | WS_TABSTOP | TBS_FIXEDLENGTH, 0);
+    ToolBarAddButton(FRMPropertiesTbBackup, "", BACKUP_SELDIR, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(FRMPropertiesTbBackup, "", BACKUP_DELETE, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
 }
 
 // -----------------------------------------------------------------------
 // Create second properties page
 void CreatePropPage2(HWND hParent)
 {
-    FRMPropertiesPageColors = WACreateFrame(4, 26, 257, 210, hParent, "Editor colors", 0, &FRMPropertiesFrameColors, 0);
-    FRMPropertiesPageAPIHelp = WACreateFrame(263, 26, 260, 43, hParent, "Windows API help", 0, 0, 0);
-    FRMPropertiesPageSDKHelp = WACreateFrame(263, 69, 260, 43, hParent, "MSDN/Platform SDK help", 0, 0, 0);
-    FRMPropertiesPageDDKHelp = WACreateFrame(263, 112, 260, 43, hParent, "Windows DDK help", 0, 0, 0);
-    FRMPropertiesPageDirectXSDKHelp = WACreateFrame(263, 155, 260, 43, hParent, "DirectX SDK help", 0, 0, 0);
-    FRMPropertiesPageExtrasLayouts = WACreateFrame(263, 198, 260, 38, hParent, "Extra layouts", 0, 0, 0);
-    FRMPropertiesPageCodeMax = WACreateFrame(6 - 2, 235, 518, 97, hParent, "", 0, &FRMPropertiesFrameCodeMax, 0);
+    FRMPropertiesPageColors = CreateFrame(4, 26, 257, 210, hParent, "Editor colors", 0, &FRMPropertiesFrameColors, 0);
+    FRMPropertiesPageAPIHelp = CreateFrame(263, 26, 260, 43, hParent, "Windows API help", 0, 0, 0);
+    FRMPropertiesPageSDKHelp = CreateFrame(263, 69, 260, 43, hParent, "MSDN/Platform SDK help", 0, 0, 0);
+    FRMPropertiesPageDDKHelp = CreateFrame(263, 112, 260, 43, hParent, "Windows DDK help", 0, 0, 0);
+    FRMPropertiesPageDirectXSDKHelp = CreateFrame(263, 155, 260, 43, hParent, "DirectX SDK help", 0, 0, 0);
+    FRMPropertiesPageExtrasLayouts = CreateFrame(263, 198, 260, 38, hParent, "Extra layouts", 0, 0, 0);
+    FRMPropertiesPageCodeMax = CreateFrame(6 - 2, 235, 518, 97, hParent, "", 0, &FRMPropertiesFrameCodeMax, 0);
     FRMPropertiesCodeMax = CreateCodeMax(0, 4, 518, 93, FRMPropertiesPageCodeMax, ApphInstance, 0);
-    WAControlHookWin(FRMPropertiesCodeMax, &FRMPropertiesCMHook);
-    FRMPropertiesCbColors = WACreateComboBox(7, 14, 116, 150, FRMPropertiesPageColors, "", 0, 0, CBS_DROPDOWN | WS_TABSTOP);
-    FRMPropertiesTbColors = WACreateToolBar(125 + 4 , 13 + 26, 50, 24, hParent, GlobalImageList1, 3, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | WS_TABSTOP | TBS_FIXEDLENGTH, 0);
-    WAToolBarAddButton(FRMPropertiesTbColors, "", PROFILE_LOAD, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(FRMPropertiesTbColors, "", PROFILE_SAVE, ICON_SAVE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WACreateLabel(7, 39, 97, 15, FRMPropertiesPageColors, "Background :", 0, 0, 0, 0);
-    WACreateLabel(7, 39 + (16 * 1), 97, 15, FRMPropertiesPageColors, "Lines numbers :", 0, 0, 0, 0);
-    WACreateLabel(7, 39 + (16 * 2), 97, 15, FRMPropertiesPageColors, "Numbers :", 0, 0, 0, 0);
-    WACreateLabel(7, 39 + (16 * 3), 97, 15, FRMPropertiesPageColors, "Strings :", 0, 0, 0, 0);
-    WACreateLabel(7, 39 + (16 * 4), 97, 15, FRMPropertiesPageColors, "Comments :", 0, 0, 0, 0);
-    WACreateLabel(7, 39 + (16 * 5), 97, 15, FRMPropertiesPageColors, "Keywords :", 0, 0, 0, 0);
-    WACreateLabel(7, 39 + (16 * 6), 97, 15, FRMPropertiesPageColors, "Directives :", 0, 0, 0, 0);
-    WACreateLabel(7, 39 + (16 * 7), 97, 15, FRMPropertiesPageColors, "API highlighting :", 0, 0, 0, 0);
-    WACreateLabel(7, 39 + (16 * 8), 97, 15, FRMPropertiesPageColors, "Extra keywords :", 0, 0, 0, 0);
-    WACreateLabel(131, 39, 97, 15, FRMPropertiesPageColors, "Normal text :", 0, 0, 0, 0);
-    WACreateLabel(131, 39 + (16 * 1), 97, 15, FRMPropertiesPageColors, "Margin :", 0, 0, 0, 0);
-    WACreateLabel(131, 39 + (16 * 2), 97, 15, FRMPropertiesPageColors, "Highlight text :", 0, 0, 0, 0);
-    WACreateLabel(131, 39 + (16 * 3), 97, 15, FRMPropertiesPageColors, "Registers :", 0, 0, 0, 0);
-    WACreateLabel(131, 39 + (16 * 4), 97, 15, FRMPropertiesPageColors, "Extra functions :", 0, 0, 0, 0);
-    WACreateLabel(131, 39 + (16 * 5), 97, 15, FRMPropertiesPageColors, "Scope keywords :", 0, 0, 0, 0);
-    WACreateLabel(131, 39 + (16 * 6), 97, 15, FRMPropertiesPageColors, "Separators :", 0, 0, 0, 0);
-    WACreateLabel(131, 39 + (16 * 7), 97, 15, FRMPropertiesPageColors, "Extra keywords :", 0, 0, 0, 0);
-    WACreateLabel(131, 39 + (16 * 8), 97, 15, FRMPropertiesPageColors, "Extra keywords :", 0, 0, 0, 0);
-    FRMPropertiesColBackGround = WACreateColorBox(96, 38, 26, 15, FRMPropertiesPageColors, 2, 0, 0);
-    FRMPropertiesColLineNumber = WACreateColorBox(96, 38 + (16 * 1), 26, 15, FRMPropertiesPageColors, 3, 0, 0);
-    FRMPropertiesColNumber = WACreateColorBox(96, 38 + (16 * 2), 26, 15, FRMPropertiesPageColors, 4, 0, 0);
-    FRMPropertiesColStrings = WACreateColorBox(96, 38 + (16 * 3), 26, 15, FRMPropertiesPageColors, 5, 0, 0);
-    FRMPropertiesColComments = WACreateColorBox(96, 38 + (16 * 4), 26, 15, FRMPropertiesPageColors, 6, 0, 0);
-    FRMPropertiesColKeywords = WACreateColorBox(96, 38 + (16 * 5), 26, 15, FRMPropertiesPageColors, 7, 0, 0);
-    FRMPropertiesColDirectives = WACreateColorBox(96, 38 + (16 * 6), 26, 15, FRMPropertiesPageColors, 8, 0, 0);
-    FRMPropertiesColAPIHighlighting = WACreateColorBox(96, 38 + (16 * 7), 26, 15, FRMPropertiesPageColors, 9, 0, 0);
-    FRMPropertiesColExtraHighLight1 = WACreateColorBox(96, 38 + (16 * 8), 26, 15, FRMPropertiesPageColors, 10, 0, 0);
-    FRMPropertiesColNormalText = WACreateColorBox(221, 38, 26, 15, FRMPropertiesPageColors, 11, 0, 0);
-    FRMPropertiesColMargin = WACreateColorBox(221, 38 + (16 * 1), 26, 15, FRMPropertiesPageColors, 12, 0, 0);
-    FRMPropertiesColHighlightText = WACreateColorBox(221, 38 + (16 * 2), 26, 15, FRMPropertiesPageColors, 13, 0, 0);
-    FRMPropertiesColRegisters = WACreateColorBox(221, 38 + (16 * 3), 26, 15, FRMPropertiesPageColors, 14, 0, 0);
-    FRMPropertiesColExtraFunctions = WACreateColorBox(221, 38 + (16 * 4), 26, 15, FRMPropertiesPageColors, 15, 0, 0);
-    FRMPropertiesColScopeKeywords = WACreateColorBox(221, 38 + (16 * 5), 26, 15, FRMPropertiesPageColors, 16, 0, 0);
-    FRMPropertiesColSeparators = WACreateColorBox(221, 38 + (16 * 6), 26, 15, FRMPropertiesPageColors, 17, 0, 0);
-    FRMPropertiesColExtraHighLight2 = WACreateColorBox(221, 38 + (16 * 7), 26, 15, FRMPropertiesPageColors, 18, 0, 0);
-    FRMPropertiesColExtraHighLight3 = WACreateColorBox(221, 38 + (16 * 8), 26, 15, FRMPropertiesPageColors, 19, 0, 0);
-    FRMPropertiesColLuminosity = WACreateTrackBar(2, 187, 152, 20, FRMPropertiesPageColors, 20, 0, 0, 200, TBS_NOTICKS | TBS_TOOLTIPS | TBS_BOTH);
-    WATrackBarSetPos(FRMPropertiesColLuminosity, 100);
-	Assigned_ToolTip = WATrackBarGetToolTips(FRMPropertiesColLuminosity);
-	FRMPropertiesChkItalic = WACreateCheckBox(155, 188, 97, 15, FRMPropertiesPageColors, "Italic comments", 20, 0, WS_TABSTOP, 0);
-    FRMPropertiesTxtWindowsAPI = WACreateTextBox(5, 16, 223, 20, FRMPropertiesPageAPIHelp, "", 21, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-	FRMPropertiesCmdWindowsAPI = WACreateButton(230 + 263, 16 + 26, 25, 21, hParent, "...", 22, 0, 0, 0, WS_TABSTOP | WS_GROUP, Buttons_StaticEdge);
-    FRMPropertiesTxtMSDN = WACreateTextBox(5, 16, 223, 20, FRMPropertiesPageSDKHelp, "", 23, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-    FRMPropertiesCmdMSDN = WACreateButton(230 + 263, 16 + 69, 25, 21, hParent, "...", 24, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-    FRMPropertiesTxtDDK = WACreateTextBox(5, 16, 223, 20, FRMPropertiesPageDDKHelp, "", 25, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-    FRMPropertiesCmdDDK = WACreateButton(230 + 263, 16 + 112, 25, 21, hParent, "...", 26, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-    FRMPropertiesTxtDirectXSDK = WACreateTextBox(5, 16, 223, 20, FRMPropertiesPageDirectXSDKHelp, "", 27, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-    FRMPropertiesCmdDirectXSDK = WACreateButton(230 + 263, 16 + 155, 25, 21, hParent, "...", 28, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-    WACreateLabel(5, 15, 97, 15, FRMPropertiesPageExtrasLayouts, "Default language :", 0, 0, 0, 0);
-    FRMPropertiesCbDefLang = WACreateComboBox(100, 12, 87, 150, FRMPropertiesPageExtrasLayouts, "", 29, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
-    FRMPropertiesCmdRegs = WACreateButton(189 + 263, 12 + 198, 66, 21, hParent, "Extensions", 30, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+    ControlHookWin(FRMPropertiesCodeMax, &FRMPropertiesCMHook);
+    FRMPropertiesCbColors = CreateComboBox(7, 14, 116, 150, FRMPropertiesPageColors, "", 0, 0, CBS_DROPDOWN | WS_TABSTOP);
+    FRMPropertiesTbColors = CreateToolBar(125 + 4 , 13 + 26, 50, 24, hParent, GlobalImageList1, 3, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | WS_TABSTOP | TBS_FIXEDLENGTH, 0);
+    ToolBarAddButton(FRMPropertiesTbColors, "", PROFILE_LOAD, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(FRMPropertiesTbColors, "", PROFILE_SAVE, ICON_SAVE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    CreateLabel(7, 39, 97, 15, FRMPropertiesPageColors, "Background :", 0, 0, 0, 0);
+    CreateLabel(7, 39 + (16 * 1), 97, 15, FRMPropertiesPageColors, "Lines numbers :", 0, 0, 0, 0);
+    CreateLabel(7, 39 + (16 * 2), 97, 15, FRMPropertiesPageColors, "Numbers :", 0, 0, 0, 0);
+    CreateLabel(7, 39 + (16 * 3), 97, 15, FRMPropertiesPageColors, "Strings :", 0, 0, 0, 0);
+    CreateLabel(7, 39 + (16 * 4), 97, 15, FRMPropertiesPageColors, "Comments :", 0, 0, 0, 0);
+    CreateLabel(7, 39 + (16 * 5), 97, 15, FRMPropertiesPageColors, "Keywords :", 0, 0, 0, 0);
+    CreateLabel(7, 39 + (16 * 6), 97, 15, FRMPropertiesPageColors, "Directives :", 0, 0, 0, 0);
+    CreateLabel(7, 39 + (16 * 7), 97, 15, FRMPropertiesPageColors, "API highlighting :", 0, 0, 0, 0);
+    CreateLabel(7, 39 + (16 * 8), 97, 15, FRMPropertiesPageColors, "Extra keywords :", 0, 0, 0, 0);
+    CreateLabel(131, 39, 97, 15, FRMPropertiesPageColors, "Normal text :", 0, 0, 0, 0);
+    CreateLabel(131, 39 + (16 * 1), 97, 15, FRMPropertiesPageColors, "Margin :", 0, 0, 0, 0);
+    CreateLabel(131, 39 + (16 * 2), 97, 15, FRMPropertiesPageColors, "Highlight text :", 0, 0, 0, 0);
+    CreateLabel(131, 39 + (16 * 3), 97, 15, FRMPropertiesPageColors, "Registers :", 0, 0, 0, 0);
+    CreateLabel(131, 39 + (16 * 4), 97, 15, FRMPropertiesPageColors, "Extra functions :", 0, 0, 0, 0);
+    CreateLabel(131, 39 + (16 * 5), 97, 15, FRMPropertiesPageColors, "Scope keywords :", 0, 0, 0, 0);
+    CreateLabel(131, 39 + (16 * 6), 97, 15, FRMPropertiesPageColors, "Separators :", 0, 0, 0, 0);
+    CreateLabel(131, 39 + (16 * 7), 97, 15, FRMPropertiesPageColors, "Extra keywords :", 0, 0, 0, 0);
+    CreateLabel(131, 39 + (16 * 8), 97, 15, FRMPropertiesPageColors, "Extra keywords :", 0, 0, 0, 0);
+    FRMPropertiesColBackGround = CreateColorBox(96, 38, 26, 15, FRMPropertiesPageColors, 2, 0, 0);
+    FRMPropertiesColLineNumber = CreateColorBox(96, 38 + (16 * 1), 26, 15, FRMPropertiesPageColors, 3, 0, 0);
+    FRMPropertiesColNumber = CreateColorBox(96, 38 + (16 * 2), 26, 15, FRMPropertiesPageColors, 4, 0, 0);
+    FRMPropertiesColStrings = CreateColorBox(96, 38 + (16 * 3), 26, 15, FRMPropertiesPageColors, 5, 0, 0);
+    FRMPropertiesColComments = CreateColorBox(96, 38 + (16 * 4), 26, 15, FRMPropertiesPageColors, 6, 0, 0);
+    FRMPropertiesColKeywords = CreateColorBox(96, 38 + (16 * 5), 26, 15, FRMPropertiesPageColors, 7, 0, 0);
+    FRMPropertiesColDirectives = CreateColorBox(96, 38 + (16 * 6), 26, 15, FRMPropertiesPageColors, 8, 0, 0);
+    FRMPropertiesColAPIHighlighting = CreateColorBox(96, 38 + (16 * 7), 26, 15, FRMPropertiesPageColors, 9, 0, 0);
+    FRMPropertiesColExtraHighLight1 = CreateColorBox(96, 38 + (16 * 8), 26, 15, FRMPropertiesPageColors, 10, 0, 0);
+    FRMPropertiesColNormalText = CreateColorBox(221, 38, 26, 15, FRMPropertiesPageColors, 11, 0, 0);
+    FRMPropertiesColMargin = CreateColorBox(221, 38 + (16 * 1), 26, 15, FRMPropertiesPageColors, 12, 0, 0);
+    FRMPropertiesColHighlightText = CreateColorBox(221, 38 + (16 * 2), 26, 15, FRMPropertiesPageColors, 13, 0, 0);
+    FRMPropertiesColRegisters = CreateColorBox(221, 38 + (16 * 3), 26, 15, FRMPropertiesPageColors, 14, 0, 0);
+    FRMPropertiesColExtraFunctions = CreateColorBox(221, 38 + (16 * 4), 26, 15, FRMPropertiesPageColors, 15, 0, 0);
+    FRMPropertiesColScopeKeywords = CreateColorBox(221, 38 + (16 * 5), 26, 15, FRMPropertiesPageColors, 16, 0, 0);
+    FRMPropertiesColSeparators = CreateColorBox(221, 38 + (16 * 6), 26, 15, FRMPropertiesPageColors, 17, 0, 0);
+    FRMPropertiesColExtraHighLight2 = CreateColorBox(221, 38 + (16 * 7), 26, 15, FRMPropertiesPageColors, 18, 0, 0);
+    FRMPropertiesColExtraHighLight3 = CreateColorBox(221, 38 + (16 * 8), 26, 15, FRMPropertiesPageColors, 19, 0, 0);
+    FRMPropertiesColLuminosity = CreateTrackBar(2, 187, 152, 20, FRMPropertiesPageColors, 20, 0, 0, 200, TBS_NOTICKS | TBS_TOOLTIPS | TBS_BOTH);
+    TrackBarSetPos(FRMPropertiesColLuminosity, 100);
+	Assigned_ToolTip = TrackBarGetToolTips(FRMPropertiesColLuminosity);
+	FRMPropertiesChkItalic = CreateCheckBox(155, 188, 97, 15, FRMPropertiesPageColors, "Italic comments", 20, 0, WS_TABSTOP, 0);
+    FRMPropertiesTxtWindowsAPI = CreateTextBox(5, 16, 223, 20, FRMPropertiesPageAPIHelp, "", 21, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+	FRMPropertiesCmdWindowsAPI = CreateButton(230 + 263, 16 + 26, 25, 21, hParent, "...", 22, 0, 0, 0, WS_TABSTOP | WS_GROUP, Buttons_StaticEdge);
+    FRMPropertiesTxtMSDN = CreateTextBox(5, 16, 223, 20, FRMPropertiesPageSDKHelp, "", 23, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+    FRMPropertiesCmdMSDN = CreateButton(230 + 263, 16 + 69, 25, 21, hParent, "...", 24, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+    FRMPropertiesTxtDDK = CreateTextBox(5, 16, 223, 20, FRMPropertiesPageDDKHelp, "", 25, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+    FRMPropertiesCmdDDK = CreateButton(230 + 263, 16 + 112, 25, 21, hParent, "...", 26, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+    FRMPropertiesTxtDirectXSDK = CreateTextBox(5, 16, 223, 20, FRMPropertiesPageDirectXSDKHelp, "", 27, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+    FRMPropertiesCmdDirectXSDK = CreateButton(230 + 263, 16 + 155, 25, 21, hParent, "...", 28, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+    CreateLabel(5, 15, 97, 15, FRMPropertiesPageExtrasLayouts, "Default language :", 0, 0, 0, 0);
+    FRMPropertiesCbDefLang = CreateComboBox(100, 12, 87, 150, FRMPropertiesPageExtrasLayouts, "", 29, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
+    FRMPropertiesCmdRegs = CreateButton(189 + 263, 12 + 198, 66, 21, hParent, "Extensions", 30, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
 }
 
 // -----------------------------------------------------------------------
 // Create third properties page
 void CreatePropPage3(HWND hParent)
 {
-    FRMPropertiesPageFolders = WACreateFrame(4, 26, 275, 212, hParent, "Select folders", 0, 0, 0);
-    FRMPropertiesPageProjects = WACreateFrame(281, 26, 242, 306, hParent, "Project building", 0, &FRMPropertiesFrameBuilding, 0);
-    FRMPropertiesPageProtoGen = WACreateFrame(4, 238, 275, 94, hParent, "Prototypes generator", 0, 0, 0);
-    WACreateLabel(6, 13, 236, 15, FRMPropertiesPageFolders, "Main directory [ROOTDIR] :", 0, 0, 0, 0);
-    FRMPropertiesTxtROOTDIR = WACreateTextBox(6, 26, 236, 20, FRMPropertiesPageFolders, "", 1, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+    FRMPropertiesPageFolders = CreateFrame(4, 26, 275, 212, hParent, "Select folders", 0, 0, 0);
+    FRMPropertiesPageProjects = CreateFrame(281, 26, 242, 306, hParent, "Project building", 0, &FRMPropertiesFrameBuilding, 0);
+    FRMPropertiesPageProtoGen = CreateFrame(4, 238, 275, 94, hParent, "Prototypes generator", 0, 0, 0);
+    CreateLabel(6, 13, 236, 15, FRMPropertiesPageFolders, "Main directory [ROOTDIR] :", 0, 0, 0, 0);
+    FRMPropertiesTxtROOTDIR = CreateTextBox(6, 26, 236, 20, FRMPropertiesPageFolders, "", 1, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
 	
-    FRMPropertiesTbROOTDIR = WACreateToolBar(244 + 4, 25 + 26, 25, 23, hParent, GlobalImageList1, 3, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
-    WAToolBarAddButton(FRMPropertiesTbROOTDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    FRMPropertiesTbROOTDIR = CreateToolBar(244 + 4, 25 + 26, 25, 23, hParent, GlobalImageList1, 3, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+    ToolBarAddButton(FRMPropertiesTbROOTDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
 	
-    WACreateLabel(6, 13 + 32, 236, 15, FRMPropertiesPageFolders, "Bin directory [BINDIR] :", 0, 0, 0, 0);
-    FRMPropertiesTxtBINDIR = WACreateTextBox(6, 26 + 32, 236, 20, FRMPropertiesPageFolders, "", 3, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-	FRMPropertiesTbBINDIR = WACreateToolBar(244 + 4, 25 + 26 + 32, 25, 23, hParent, GlobalImageList1, 4, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
-    WAToolBarAddButton(FRMPropertiesTbBINDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-	WACreateLabel(6, 13 + (32 * 2), 236, 15, FRMPropertiesPageFolders, "Include directory [INCLUDEDIR] :", 0, 0, 0, 0);
-    FRMPropertiesTxtINCLUDEDIR = WACreateTextBox(6, 26 + (32 * 2), 236, 20, FRMPropertiesPageFolders, "", 5, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-	FRMPropertiesTbINCLUDEDIR = WACreateToolBar(244 + 4, 25 + 26 + (32 * 2), 25, 23, hParent, GlobalImageList1, 6, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
-    WAToolBarAddButton(FRMPropertiesTbINCLUDEDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-	WACreateLabel(6, 13 + (32 * 3), 236, 15, FRMPropertiesPageFolders, "Lib/Units directory [LIBDIR] :", 0, 0, 0, 0);
-    FRMPropertiesTxtLIBDIR = WACreateTextBox(6, 26 + (32 * 3), 236, 20, FRMPropertiesPageFolders, "", 7, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-	FRMPropertiesTbLIBDIR = WACreateToolBar(244 + 4, 25 + 26 + (32 * 3), 25, 23, hParent, GlobalImageList1, 8, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
-    WAToolBarAddButton(FRMPropertiesTbLIBDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-	WACreateLabel(6, 13 + (32 * 4), 236, 15, FRMPropertiesPageFolders, "Help directory [HELPDIR] :", 0, 0, 0, 0);
-    FRMPropertiesTxtHELPDIR = WACreateTextBox(6, 26 + (32 * 4), 236, 20, FRMPropertiesPageFolders, "", 9, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-	FRMPropertiesTbHELPDIR = WACreateToolBar(244 + 4, 25 + 26 + (32 * 4), 25, 23, hParent, GlobalImageList1, 10, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
-    WAToolBarAddButton(FRMPropertiesTbHELPDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-	WACreateLabel(6, 13 + (32 * 5), 236, 15, FRMPropertiesPageFolders, "Projects directory [PROJECTSDIR] :", 0, 0, 0, 0);
-    FRMPropertiesTxtPROJECTSDIR = WACreateTextBox(6, 26 + (32 * 5), 236, 20, FRMPropertiesPageFolders, "", 11, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-    FRMPropertiesTbPROJECTSDIR = WACreateToolBar(244 + 4, 25 + 26 + (32 * 5), 25, 23, hParent, GlobalImageList1, 12, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
-    WAToolBarAddButton(FRMPropertiesTbPROJECTSDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-	WACreateLabel(6, 20, 106, 15, FRMPropertiesPageProtoGen, "Program :", 0, 0, 0, 0);
-    FRMPropertiesTxtGenProg = WACreateTextBox(58, 17, 183, 20, FRMPropertiesPageProtoGen, "", 13, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-	FRMPropertiesCmdGenProg = WACreateButton(243 + 4, 17 + 238, 25, 21, hParent, "...", 14, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-    WACreateLabel(6, 20 + 25, 106, 15, FRMPropertiesPageProtoGen, "Source :", 0, 0, 0, 0);
-    FRMPropertiesTxtGenSource = WACreateTextBox(58, 17 + 25, 210, 20, FRMPropertiesPageProtoGen, "", 15, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-    WACreateLabel(6, 20 + 25 + 25, 106, 15, FRMPropertiesPageProtoGen, "Dest. :", 0, 0, 0, 0);
-    FRMPropertiesTxtGenDest = WACreateTextBox(58, 17 + 25 + 25, 210, 20, FRMPropertiesPageProtoGen, "", 16, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-    WACreateLabel(7, 13, 145, 15, FRMPropertiesPageProjects, "Debugger :", 0, 0, 0, 0);
-    FRMPropertiesCbDebugger = WACreateComboBox(7, 28, 177, 150, FRMPropertiesPageProjects, "", 17, 0, CBS_DROPDOWN | WS_TABSTOP);
-    WAComboBoxFillFromIniFile(FRMPropertiesCbDebugger, "ExtDebuggers", MainIniFile);
-    FRMPropertiesCmdDebugger = WACreateButton(177 + 289, 28 + 26, 25, 21, hParent, "...", 18, 0, 0, 0, WS_TABSTOP | WS_GROUP, Buttons_StaticEdge);
-    FRMPropertiesTbValidDebugger = WACreateToolBar(181 + 289 + 22, 25 + 28, 25, 23, hParent, GlobalImageList1, 19, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
-    WAToolBarAddButton(FRMPropertiesTbValidDebugger, "", DEBUGGER_VALID, ICON_INSERT, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WACreateLabel(7, 52, 131, 15, FRMPropertiesPageProjects, "Run arguments :", 0, 0, 0, 0);
-    FRMPropertiesTxtArgs = WACreateTextBox(7, 65, 130, 20, FRMPropertiesPageProjects, "", 20, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-    WACreateLabel(7, 88, 131, 15, FRMPropertiesPageProjects, "Building skin :", 0, 0, 0, 0);
-    FRMPropertiesCbSkin = WACreateComboBox(7, 103, 130, 150, FRMPropertiesPageProjects, "", 21, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
-    FRMStepListView = WACreateListView(140, 52, 95, 72, FRMPropertiesPageProjects, 22, 0, &PropStepListViewProc, LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | LVS_NOCOLUMNHEADER | WS_TABSTOP, WS_EX_STATICEDGE);
-    WAListViewAddCol(FRMStepListView, "", 76, 0);
-    WAListViewAddItem(FRMStepListView, "Build Res.", 0, -1);
-    WAListViewAddItem(FRMStepListView, "Compile", 1, -1);
-    WAListViewAddItem(FRMStepListView, "Link", 2, -1);
-    WAListViewAddItem(FRMStepListView, "Cleanup", 3, -1);
+    CreateLabel(6, 13 + 32, 236, 15, FRMPropertiesPageFolders, "Bin directory [BINDIR] :", 0, 0, 0, 0);
+    FRMPropertiesTxtBINDIR = CreateTextBox(6, 26 + 32, 236, 20, FRMPropertiesPageFolders, "", 3, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+	FRMPropertiesTbBINDIR = CreateToolBar(244 + 4, 25 + 26 + 32, 25, 23, hParent, GlobalImageList1, 4, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+    ToolBarAddButton(FRMPropertiesTbBINDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+	CreateLabel(6, 13 + (32 * 2), 236, 15, FRMPropertiesPageFolders, "Include directory [INCLUDEDIR] :", 0, 0, 0, 0);
+    FRMPropertiesTxtINCLUDEDIR = CreateTextBox(6, 26 + (32 * 2), 236, 20, FRMPropertiesPageFolders, "", 5, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+	FRMPropertiesTbINCLUDEDIR = CreateToolBar(244 + 4, 25 + 26 + (32 * 2), 25, 23, hParent, GlobalImageList1, 6, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+    ToolBarAddButton(FRMPropertiesTbINCLUDEDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+	CreateLabel(6, 13 + (32 * 3), 236, 15, FRMPropertiesPageFolders, "Lib/Units directory [LIBDIR] :", 0, 0, 0, 0);
+    FRMPropertiesTxtLIBDIR = CreateTextBox(6, 26 + (32 * 3), 236, 20, FRMPropertiesPageFolders, "", 7, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+	FRMPropertiesTbLIBDIR = CreateToolBar(244 + 4, 25 + 26 + (32 * 3), 25, 23, hParent, GlobalImageList1, 8, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+    ToolBarAddButton(FRMPropertiesTbLIBDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+	CreateLabel(6, 13 + (32 * 4), 236, 15, FRMPropertiesPageFolders, "Help directory [HELPDIR] :", 0, 0, 0, 0);
+    FRMPropertiesTxtHELPDIR = CreateTextBox(6, 26 + (32 * 4), 236, 20, FRMPropertiesPageFolders, "", 9, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+	FRMPropertiesTbHELPDIR = CreateToolBar(244 + 4, 25 + 26 + (32 * 4), 25, 23, hParent, GlobalImageList1, 10, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+    ToolBarAddButton(FRMPropertiesTbHELPDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+	CreateLabel(6, 13 + (32 * 5), 236, 15, FRMPropertiesPageFolders, "Projects directory [PROJECTSDIR] :", 0, 0, 0, 0);
+    FRMPropertiesTxtPROJECTSDIR = CreateTextBox(6, 26 + (32 * 5), 236, 20, FRMPropertiesPageFolders, "", 11, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+    FRMPropertiesTbPROJECTSDIR = CreateToolBar(244 + 4, 25 + 26 + (32 * 5), 25, 23, hParent, GlobalImageList1, 12, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+    ToolBarAddButton(FRMPropertiesTbPROJECTSDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+	CreateLabel(6, 20, 106, 15, FRMPropertiesPageProtoGen, "Program :", 0, 0, 0, 0);
+    FRMPropertiesTxtGenProg = CreateTextBox(58, 17, 183, 20, FRMPropertiesPageProtoGen, "", 13, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+	FRMPropertiesCmdGenProg = CreateButton(243 + 4, 17 + 238, 25, 21, hParent, "...", 14, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+    CreateLabel(6, 20 + 25, 106, 15, FRMPropertiesPageProtoGen, "Source :", 0, 0, 0, 0);
+    FRMPropertiesTxtGenSource = CreateTextBox(58, 17 + 25, 210, 20, FRMPropertiesPageProtoGen, "", 15, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+    CreateLabel(6, 20 + 25 + 25, 106, 15, FRMPropertiesPageProtoGen, "Dest. :", 0, 0, 0, 0);
+    FRMPropertiesTxtGenDest = CreateTextBox(58, 17 + 25 + 25, 210, 20, FRMPropertiesPageProtoGen, "", 16, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+    CreateLabel(7, 13, 145, 15, FRMPropertiesPageProjects, "Debugger :", 0, 0, 0, 0);
+    FRMPropertiesCbDebugger = CreateComboBox(7, 28, 177, 150, FRMPropertiesPageProjects, "", 17, 0, CBS_DROPDOWN | WS_TABSTOP);
+    ComboBoxFillFromIniFile(FRMPropertiesCbDebugger, "ExtDebuggers", MainIniFile);
+    FRMPropertiesCmdDebugger = CreateButton(177 + 289, 28 + 26, 25, 21, hParent, "...", 18, 0, 0, 0, WS_TABSTOP | WS_GROUP, Buttons_StaticEdge);
+    FRMPropertiesTbValidDebugger = CreateToolBar(181 + 289 + 22, 25 + 28, 25, 23, hParent, GlobalImageList1, 19, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+    ToolBarAddButton(FRMPropertiesTbValidDebugger, "", DEBUGGER_VALID, ICON_INSERT, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    CreateLabel(7, 52, 131, 15, FRMPropertiesPageProjects, "Run arguments :", 0, 0, 0, 0);
+    FRMPropertiesTxtArgs = CreateTextBox(7, 65, 130, 20, FRMPropertiesPageProjects, "", 20, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+    CreateLabel(7, 88, 131, 15, FRMPropertiesPageProjects, "Building skin :", 0, 0, 0, 0);
+    FRMPropertiesCbSkin = CreateComboBox(7, 103, 130, 150, FRMPropertiesPageProjects, "", 21, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
+    FRMStepListView = CreateListView(140, 52, 95, 72, FRMPropertiesPageProjects, 22, 0, &PropStepListViewProc, LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | LVS_NOCOLUMNHEADER | WS_TABSTOP, WS_EX_STATICEDGE);
+    ListViewAddCol(FRMStepListView, "", 76, 0);
+    ListViewAddItem(FRMStepListView, "Build Res.", 0, -1);
+    ListViewAddItem(FRMStepListView, "Compile", 1, -1);
+    ListViewAddItem(FRMStepListView, "Link", 2, -1);
+    ListViewAddItem(FRMStepListView, "Cleanup", 3, -1);
 }
 
 // -----------------------------------------------------------------------
 // Create fourth properties page
 void CreatePropPage4(HWND hParent)
 {
-    FRMPropertiesPageFTPManage = WACreateFrame(4, 26, 519, 49, hParent, "Managment", 0, &FRMPropertiesFrameManagment, 0);
-    FRMPropertiesPageAccountInfos = WACreateFrame(4, 75, 303, 170 + 17 + 8 + 20, hParent, "Account informations", 0, &FRMPropertiesFrameMain, 0);
-    FRMPropertiesPageTransfersTypes = WACreateFrame(318, 75, 205, 69, hParent, "Transfers type", 0, 0, 0);
-    WACreateLabel(9, 20, 78, 15, FRMPropertiesPageFTPManage, "Account name :", 0, 0, 0, 0);
-    FRMPropertiesCbAccounts = WACreateComboBox(90, 17, 152, 150, FRMPropertiesPageFTPManage, "", 0, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
-	FRMPropertiesTbAccounts = WACreateToolBar(244 + 4, 16 + 26, 84, 23, hParent, GlobalImageList1, 3, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
-    WAToolBarAddButton(FRMPropertiesTbAccounts, "", FTPACC_CREATE, ICON_ASKDIR, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(FRMPropertiesTbAccounts, "", FTPACC_SAVE, ICON_SAVE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WAToolBarAddButton(FRMPropertiesTbAccounts, "", FTPACC_DELETE, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    WACreateLabel(9, 20, 116, 15, FRMPropertiesPageAccountInfos, "Domain or IP address :", 0, 0, 0, 0);
-    WACreateLabel(9, 45 + 17, 116, 15, FRMPropertiesPageAccountInfos, "User name :", 0, 0, 0, 0);
-    WACreateLabel(9, 71 + 17, 116, 15, FRMPropertiesPageAccountInfos, "Password :", 0, 0, 0, 0);
-    WACreateLabel(9, 95 + 17, 116, 15, FRMPropertiesPageAccountInfos, "Save password :", 0, 0, 0, 0);
-    WACreateLabel(9, 112 + 17 + 8, 116, 15, FRMPropertiesPageAccountInfos, "Initial path :", 0, 0, 0, 0);
-    WACreateLabel(9, 137 + 17 + 8, 56, 15, FRMPropertiesPageAccountInfos, "FTP port :", 0, 0, 0, 0);
-    FRMPropertiesTxtIP = WACreateTextBox(124, 17, 170, 20, FRMPropertiesPageAccountInfos, "", 2, 0, ES_AUTOHSCROLL | WS_TABSTOP, WS_EX_STATICEDGE);
-    FRMPropertiesChkAnonymous = WACreateCheckBox(124, 41, 129, 15, FRMPropertiesPageAccountInfos, "Anonymous login", 3, 0, WS_TABSTOP, 0);
-    FRMPropertiesTxtUserName = WACreateTextBox(124, 42 + 17, 170, 20, FRMPropertiesPageAccountInfos, "", 4, 0, ES_AUTOHSCROLL | WS_TABSTOP, WS_EX_STATICEDGE);
-    FRMPropertiesTxtPassword = WACreateTextBox(124, 67 + 17, 170, 20, FRMPropertiesPageAccountInfos, "", 5, 0, ES_AUTOHSCROLL | WS_TABSTOP | ES_PASSWORD, WS_EX_STATICEDGE);
-    FRMPropertiesCbPasswordType = WACreateComboBox(205, 92 + 17, 89, 150, FRMPropertiesPageAccountInfos, "", 0, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
-    WAComboBoxAddItem(FRMPropertiesCbPasswordType, "Don't save", -1);
-    WAComboBoxAddItem(FRMPropertiesCbPasswordType, "Plain text", -1);
-    WAComboBoxAddItem(FRMPropertiesCbPasswordType, "Encrypted", -1);
-    FRMPropertiesTxtInitialPath = WACreateTextBox(124, 109 + 17 + 8, 170, 20, FRMPropertiesPageAccountInfos, "", 7, 0, ES_AUTOHSCROLL | WS_TABSTOP, WS_EX_STATICEDGE);
-    FRMPropertiesTxtFTPPort = WACreateTextBox(249, 134 + 17 + 8, 45, 20, FRMPropertiesPageAccountInfos, "", 8, 0, WS_TABSTOP | ES_NUMBER, WS_EX_STATICEDGE);
-    WACreateLabel(9, 162 + 17 + 8, 116, 15, FRMPropertiesPageAccountInfos, "Connection timeout :", 0, 0, 0, 0);
-    FRMPropertiesTxtFTPTimeOut = WACreateTextBox(249, 159 + 17 + 8, 45, 20, FRMPropertiesPageAccountInfos, "", 9, 0, WS_TABSTOP | ES_NUMBER, WS_EX_STATICEDGE);
-    FRMPropertiesRBASCII = WACreateRadioButton(21, 21, 75, 17, FRMPropertiesPageTransfersTypes, "ASCII type", 10, 0, WS_TABSTOP | WS_GROUP);
-    FRMPropertiesRBBinary = WACreateRadioButton(105, 21, 81, 17, FRMPropertiesPageTransfersTypes, "Binary type", 11, 0, WS_TABSTOP);
-    FRMPropertiesChkPassive = WACreateCheckBox(21, 42, 103, 15, FRMPropertiesPageTransfersTypes, "Passive transfers", 12, 0, WS_TABSTOP, 0);
+    FRMPropertiesPageFTPManage = CreateFrame(4, 26, 519, 49, hParent, "Managment", 0, &FRMPropertiesFrameManagment, 0);
+    FRMPropertiesPageAccountInfos = CreateFrame(4, 75, 303, 170 + 17 + 8 + 20, hParent, "Account informations", 0, &FRMPropertiesFrameMain, 0);
+    FRMPropertiesPageTransfersTypes = CreateFrame(318, 75, 205, 69, hParent, "Transfers type", 0, 0, 0);
+    CreateLabel(9, 20, 78, 15, FRMPropertiesPageFTPManage, "Account name :", 0, 0, 0, 0);
+    FRMPropertiesCbAccounts = CreateComboBox(90, 17, 152, 150, FRMPropertiesPageFTPManage, "", 0, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
+	FRMPropertiesTbAccounts = CreateToolBar(244 + 4, 16 + 26, 84, 23, hParent, GlobalImageList1, 3, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+    ToolBarAddButton(FRMPropertiesTbAccounts, "", FTPACC_CREATE, ICON_ASKDIR, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(FRMPropertiesTbAccounts, "", FTPACC_SAVE, ICON_SAVE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(FRMPropertiesTbAccounts, "", FTPACC_DELETE, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    CreateLabel(9, 20, 116, 15, FRMPropertiesPageAccountInfos, "Domain or IP address :", 0, 0, 0, 0);
+    CreateLabel(9, 45 + 17, 116, 15, FRMPropertiesPageAccountInfos, "User name :", 0, 0, 0, 0);
+    CreateLabel(9, 71 + 17, 116, 15, FRMPropertiesPageAccountInfos, "Password :", 0, 0, 0, 0);
+    CreateLabel(9, 95 + 17, 116, 15, FRMPropertiesPageAccountInfos, "Save password :", 0, 0, 0, 0);
+    CreateLabel(9, 112 + 17 + 8, 116, 15, FRMPropertiesPageAccountInfos, "Initial path :", 0, 0, 0, 0);
+    CreateLabel(9, 137 + 17 + 8, 56, 15, FRMPropertiesPageAccountInfos, "FTP port :", 0, 0, 0, 0);
+    FRMPropertiesTxtIP = CreateTextBox(124, 17, 170, 20, FRMPropertiesPageAccountInfos, "", 2, 0, ES_AUTOHSCROLL | WS_TABSTOP, WS_EX_STATICEDGE);
+    FRMPropertiesChkAnonymous = CreateCheckBox(124, 41, 129, 15, FRMPropertiesPageAccountInfos, "Anonymous login", 3, 0, WS_TABSTOP, 0);
+    FRMPropertiesTxtUserName = CreateTextBox(124, 42 + 17, 170, 20, FRMPropertiesPageAccountInfos, "", 4, 0, ES_AUTOHSCROLL | WS_TABSTOP, WS_EX_STATICEDGE);
+    FRMPropertiesTxtPassword = CreateTextBox(124, 67 + 17, 170, 20, FRMPropertiesPageAccountInfos, "", 5, 0, ES_AUTOHSCROLL | WS_TABSTOP | ES_PASSWORD, WS_EX_STATICEDGE);
+    FRMPropertiesCbPasswordType = CreateComboBox(205, 92 + 17, 89, 150, FRMPropertiesPageAccountInfos, "", 0, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
+    ComboBoxAddItem(FRMPropertiesCbPasswordType, "Don't save", -1);
+    ComboBoxAddItem(FRMPropertiesCbPasswordType, "Plain text", -1);
+    ComboBoxAddItem(FRMPropertiesCbPasswordType, "Encrypted", -1);
+    FRMPropertiesTxtInitialPath = CreateTextBox(124, 109 + 17 + 8, 170, 20, FRMPropertiesPageAccountInfos, "", 7, 0, ES_AUTOHSCROLL | WS_TABSTOP, WS_EX_STATICEDGE);
+    FRMPropertiesTxtFTPPort = CreateTextBox(249, 134 + 17 + 8, 45, 20, FRMPropertiesPageAccountInfos, "", 8, 0, WS_TABSTOP | ES_NUMBER, WS_EX_STATICEDGE);
+    CreateLabel(9, 162 + 17 + 8, 116, 15, FRMPropertiesPageAccountInfos, "Connection timeout :", 0, 0, 0, 0);
+    FRMPropertiesTxtFTPTimeOut = CreateTextBox(249, 159 + 17 + 8, 45, 20, FRMPropertiesPageAccountInfos, "", 9, 0, WS_TABSTOP | ES_NUMBER, WS_EX_STATICEDGE);
+    FRMPropertiesRBASCII = CreateRadioButton(21, 21, 75, 17, FRMPropertiesPageTransfersTypes, "ASCII type", 10, 0, WS_TABSTOP | WS_GROUP);
+    FRMPropertiesRBBinary = CreateRadioButton(105, 21, 81, 17, FRMPropertiesPageTransfersTypes, "Binary type", 11, 0, WS_TABSTOP);
+    FRMPropertiesChkPassive = CreateCheckBox(21, 42, 103, 15, FRMPropertiesPageTransfersTypes, "Passive transfers", 12, 0, WS_TABSTOP, 0);
     RadioButtonSetState(FRMPropertiesRBBinary, 1);
 }
 
@@ -948,23 +948,23 @@ void CreatePropPage4(HWND hParent)
 // Create fifth properties page
 void CreatePropPage5(HWND hParent)
 {
-    FRMPropertiesPageCodingHelp = WACreateFrame(4, 26, 185, 136, hParent, "Coding help", 0, 0, 0);
-    FRMPropertiesPageExtrasLayouts2 = WACreateFrame(4, 162, 185, 170, hParent, "Extras layouts", 0, 0, 0);
-	FRMPropertiesChkAutoCorrectKeywords = WACreateCheckBox(11, 23, 160, 15, FRMPropertiesPageCodingHelp, "Auto correct keywords", 22, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkWinAPITooltipInfos = WACreateCheckBox(11, 43, 160, 15, FRMPropertiesPageCodingHelp, "Display functions tooltips", 2, 0, WS_TABSTOP | WS_GROUP, 0);
-    WACreateLabel(37, 66, 110, 15, FRMPropertiesPageCodingHelp, "lines in keywords list", 0, 0, 0, 0);
-    FRMPropertiesTxtAPILines = WACreateTextBox(11, 63, 20, 20, FRMPropertiesPageCodingHelp, "", 3, 0, WS_TABSTOP | ES_NUMBER, WS_EX_STATICEDGE);
-    FRMPropertiesChkUseFncDB = WACreateCheckBox(11, 88, 160, 15, FRMPropertiesPageCodingHelp, "Use functions database", 4, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkUseConstDB = WACreateCheckBox(11, 108, 160, 15, FRMPropertiesPageCodingHelp, "Use constants database", 5, 0, WS_TABSTOP, 0);
+    FRMPropertiesPageCodingHelp = CreateFrame(4, 26, 185, 136, hParent, "Coding help", 0, 0, 0);
+    FRMPropertiesPageExtrasLayouts2 = CreateFrame(4, 162, 185, 170, hParent, "Extras layouts", 0, 0, 0);
+	FRMPropertiesChkAutoCorrectKeywords = CreateCheckBox(11, 23, 160, 15, FRMPropertiesPageCodingHelp, "Auto correct keywords", 22, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkWinAPITooltipInfos = CreateCheckBox(11, 43, 160, 15, FRMPropertiesPageCodingHelp, "Display functions tooltips", 2, 0, WS_TABSTOP | WS_GROUP, 0);
+    CreateLabel(37, 66, 110, 15, FRMPropertiesPageCodingHelp, "lines in keywords list", 0, 0, 0, 0);
+    FRMPropertiesTxtAPILines = CreateTextBox(11, 63, 20, 20, FRMPropertiesPageCodingHelp, "", 3, 0, WS_TABSTOP | ES_NUMBER, WS_EX_STATICEDGE);
+    FRMPropertiesChkUseFncDB = CreateCheckBox(11, 88, 160, 15, FRMPropertiesPageCodingHelp, "Use functions database", 4, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkUseConstDB = CreateCheckBox(11, 108, 160, 15, FRMPropertiesPageCodingHelp, "Use constants database", 5, 0, WS_TABSTOP, 0);
 
-	FRMPropertiesChkShowSplash = WACreateCheckBox(11, 19, 160, 15, FRMPropertiesPageExtrasLayouts2, "Show splash screen", 6, 0, WS_TABSTOP | WS_GROUP, 0);
-    FRMPropertiesChkTVSingle = WACreateCheckBox(11, 19 + (18 * 1), 160, 15, FRMPropertiesPageExtrasLayouts2, "Single click expand treeview", 7, 0, WS_TABSTOP | WS_GROUP, 0);
-	FRMPropertiesChkTVTool = WACreateCheckBox(11, 19 + (18 * 2), 160, 15, FRMPropertiesPageExtrasLayouts2, "Tooltips in treeview", 8, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkRecentDoc = WACreateCheckBox(11, 19 + (18 * 3), 160, 15, FRMPropertiesPageExtrasLayouts2, "Store in Windows docs", 9, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkAutoOut = WACreateCheckBox(11, 19 + (18 * 4), 160, 15, FRMPropertiesPageExtrasLayouts2, "Silent output", 10, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkUseFileDir = WACreateCheckBox(11, 19 + (18 * 5), 160, 15, FRMPropertiesPageExtrasLayouts2, "Use files directories", 11, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkCreateDrop = WACreateCheckBox(11, 19 + (18 * 6), 160, 15, FRMPropertiesPageExtrasLayouts2, "New window for dropped files", 12, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkSaveProjectState = WACreateCheckBox(11, 19 + (18 * 7), 160, 15, FRMPropertiesPageExtrasLayouts2, "Save project state", 13, 0, WS_TABSTOP, 0);
+	FRMPropertiesChkShowSplash = CreateCheckBox(11, 19, 160, 15, FRMPropertiesPageExtrasLayouts2, "Show splash screen", 6, 0, WS_TABSTOP | WS_GROUP, 0);
+    FRMPropertiesChkTVSingle = CreateCheckBox(11, 19 + (18 * 1), 160, 15, FRMPropertiesPageExtrasLayouts2, "Single click expand treeview", 7, 0, WS_TABSTOP | WS_GROUP, 0);
+	FRMPropertiesChkTVTool = CreateCheckBox(11, 19 + (18 * 2), 160, 15, FRMPropertiesPageExtrasLayouts2, "Tooltips in treeview", 8, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkRecentDoc = CreateCheckBox(11, 19 + (18 * 3), 160, 15, FRMPropertiesPageExtrasLayouts2, "Store in Windows docs", 9, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkAutoOut = CreateCheckBox(11, 19 + (18 * 4), 160, 15, FRMPropertiesPageExtrasLayouts2, "Silent output", 10, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkUseFileDir = CreateCheckBox(11, 19 + (18 * 5), 160, 15, FRMPropertiesPageExtrasLayouts2, "Use files directories", 11, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkCreateDrop = CreateCheckBox(11, 19 + (18 * 6), 160, 15, FRMPropertiesPageExtrasLayouts2, "New window for dropped files", 12, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkSaveProjectState = CreateCheckBox(11, 19 + (18 * 7), 160, 15, FRMPropertiesPageExtrasLayouts2, "Save project state", 13, 0, WS_TABSTOP, 0);
 }
 
 // -----------------------------------------------------------------------
@@ -973,12 +973,12 @@ void FillProfil(void)
 {
     int i = 0;
     
-	WAComboBoxReset(FRMPropertiesCbColors);
+	ComboBoxReset(FRMPropertiesCbColors);
     for(i = 0; i <= 999; i++)
     {
-        FRMPropertiesRetVal = WAIniReadKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), ColorsIniFile);
+        FRMPropertiesRetVal = IniReadKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), ColorsIniFile);
         if(FRMPropertiesRetVal.Len() == 0) break;
-        WAComboBoxAddItem(FRMPropertiesCbColors, FRMPropertiesRetVal, -1);
+        ComboBoxAddItem(FRMPropertiesCbColors, FRMPropertiesRetVal, -1);
     }
 }
 
@@ -988,27 +988,27 @@ void FillProperties(void)
 {
     int i = 0;
 
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "AutoSaveDelay", MainIniFile);
-    if(FRMPropertiesRetVal.Len() != 0) WAComboBoxSetIndex(FRMPropertiesCbSave, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "VerboseSave", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "AutoSaveDelay", MainIniFile);
+    if(FRMPropertiesRetVal.Len() != 0) ComboBoxSetIndex(FRMPropertiesCbSave, FRMPropertiesRetVal.Get_Long());
+    FRMPropertiesRetVal = IniReadKey("Layout", "VerboseSave", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkVerbose, FRMPropertiesRetVal.Get_Long());
-    WAControlSetText(FRMPropertiesTxtROOTDIR, WAIniReadKey("Dirs", DirsRepl[DIR_ROOT], MainIniFile));
-    WAControlSetText(FRMPropertiesTxtBINDIR, WAIniReadKey("Dirs", DirsRepl[DIR_BIN], MainIniFile));
-    WAControlSetText(FRMPropertiesTxtINCLUDEDIR, WAIniReadKey("Dirs", DirsRepl[DIR_INCLUDE], MainIniFile));
-    WAControlSetText(FRMPropertiesTxtLIBDIR, WAIniReadKey("Dirs", DirsRepl[DIR_LIB], MainIniFile));
-    WAControlSetText(FRMPropertiesTxtHELPDIR, WAIniReadKey("Dirs", DirsRepl[DIR_HELP], MainIniFile));
-    WAControlSetText(FRMPropertiesTxtPROJECTSDIR, WAIniReadKey("Dirs", DirsRepl[DIR_PROJECTS], MainIniFile));
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "LinesStyle", MainIniFile);
-    if(FRMPropertiesRetVal.Len() != 0) WAComboBoxSetIndex(FRMPropertiesCbLines, FRMPropertiesRetVal.Get_Long());
-    WAControlSetText(FRMPropertiesTxtLines, "0");
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "LinesStart", MainIniFile);
-    if(FRMPropertiesRetVal.Len() != 0) WAControlSetText(FRMPropertiesTxtLines, FRMPropertiesRetVal);
-    WAControlSetText(FRMPropertiesTabulations, "8");
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "Tabs", MainIniFile);
-    if(FRMPropertiesRetVal.Len() != 0) WAControlSetText(FRMPropertiesTabulations, FRMPropertiesRetVal);
+    ControlSetText(FRMPropertiesTxtROOTDIR, IniReadKey("Dirs", DirsRepl[DIR_ROOT], MainIniFile));
+    ControlSetText(FRMPropertiesTxtBINDIR, IniReadKey("Dirs", DirsRepl[DIR_BIN], MainIniFile));
+    ControlSetText(FRMPropertiesTxtINCLUDEDIR, IniReadKey("Dirs", DirsRepl[DIR_INCLUDE], MainIniFile));
+    ControlSetText(FRMPropertiesTxtLIBDIR, IniReadKey("Dirs", DirsRepl[DIR_LIB], MainIniFile));
+    ControlSetText(FRMPropertiesTxtHELPDIR, IniReadKey("Dirs", DirsRepl[DIR_HELP], MainIniFile));
+    ControlSetText(FRMPropertiesTxtPROJECTSDIR, IniReadKey("Dirs", DirsRepl[DIR_PROJECTS], MainIniFile));
+    FRMPropertiesRetVal = IniReadKey("Layout", "LinesStyle", MainIniFile);
+    if(FRMPropertiesRetVal.Len() != 0) ComboBoxSetIndex(FRMPropertiesCbLines, FRMPropertiesRetVal.Get_Long());
+    ControlSetText(FRMPropertiesTxtLines, "0");
+    FRMPropertiesRetVal = IniReadKey("Layout", "LinesStart", MainIniFile);
+    if(FRMPropertiesRetVal.Len() != 0) ControlSetText(FRMPropertiesTxtLines, FRMPropertiesRetVal);
+    ControlSetText(FRMPropertiesTabulations, "8");
+    FRMPropertiesRetVal = IniReadKey("Layout", "Tabs", MainIniFile);
+    if(FRMPropertiesRetVal.Len() != 0) ControlSetText(FRMPropertiesTabulations, FRMPropertiesRetVal);
 
     // Added fallback for non existant colors (should put default ones)
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "BackColor", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "BackColor", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0)
     {
         ColorBoxSetColor(FRMPropertiesColBackGround, FRMPropertiesRetVal.Get_Hex());
@@ -1017,7 +1017,7 @@ void FillProperties(void)
     {
         ColorBoxSetColor(FRMPropertiesColBackGround, CurBackColor);
     }
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "NormText", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "NormText", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0)
     {
         ColorBoxSetColor(FRMPropertiesColNormalText, FRMPropertiesRetVal.Get_Hex());
@@ -1026,7 +1026,7 @@ void FillProperties(void)
     {
         ColorBoxSetColor(FRMPropertiesColNormalText, CurNormTextColor);
     }
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "HighText", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "HighText", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0)
     {
         ColorBoxSetColor(FRMPropertiesColHighlightText, FRMPropertiesRetVal.Get_Hex());
@@ -1035,7 +1035,7 @@ void FillProperties(void)
     {
         ColorBoxSetColor(FRMPropertiesColHighlightText, CurHighTextColor);
     }
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "MarginColor", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "MarginColor", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0)
     {
         ColorBoxSetColor(FRMPropertiesColMargin, FRMPropertiesRetVal.Get_Hex());
@@ -1044,7 +1044,7 @@ void FillProperties(void)
     {
         ColorBoxSetColor(FRMPropertiesColMargin, CurMarginColor);
     }
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "LinesColor", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "LinesColor", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0)
     {
         ColorBoxSetColor(FRMPropertiesColLineNumber, FRMPropertiesRetVal.Get_Hex());
@@ -1053,7 +1053,7 @@ void FillProperties(void)
     {
         ColorBoxSetColor(FRMPropertiesColLineNumber, CurLineColor);
     }
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "APIHighColor", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "APIHighColor", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0)
     {
         ColorBoxSetColor(FRMPropertiesColAPIHighlighting, FRMPropertiesRetVal.Get_Hex());
@@ -1110,143 +1110,143 @@ void FillProperties(void)
     Orig_Prof_ColorGValue = Prof_ColorGValue;
     Prof_ColorHValue = ColorBoxGetColor(FRMPropertiesColExtraHighLight3);
     Orig_Prof_ColorHValue = Prof_ColorHValue;
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "CommentItalic", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "CommentItalic", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkItalic, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "Margin", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "Margin", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkLeftMargin, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "WhiteSpace", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "WhiteSpace", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkWhiteSpaces, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "HighLight", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "HighLight", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkHighlightLine, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "WordWrap", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "WordWrap", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkCursorwrap, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "Syntax", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "Syntax", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkSyntaxHighlighting, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "IndentScope", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "IndentScope", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkLanguageScopeIndent, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "EnDragDrop", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "EnDragDrop", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkTextDragAndDrop, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "APIToolTip", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "APIToolTip", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkWinAPITooltipInfos, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "SmoothScrolling", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "SmoothScrolling", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkSmoothScrolling, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "LineToolTip", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "LineToolTip", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkLineNumberTooltip, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "FollowScrolling", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "FollowScrolling", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkCaretAlwaysVisible, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "ExpandTabs", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "ExpandTabs", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkTabsToSpaces, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "AutoCorrect", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "AutoCorrect", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkAutoCorrectKeywords, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "HorizSplit", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "HorizSplit", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkHorizontalSplitter, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "DetectChange", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "DetectChange", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkDetectChange, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "RememberState", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "RememberState", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkRememberState, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "AutoConvUNIX", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "AutoConvUNIX", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkUNIX, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "AutoZoomFiles", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "AutoZoomFiles", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkAutoZoom, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "OutputDates", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "OutputDates", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkOutputDates, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "AutoSave", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "AutoSave", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkSaveAll, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "Multiple", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "Multiple", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkMultiplesInst, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "Remember", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "Remember", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkRemember, FRMPropertiesRetVal.Get_Long());
-	FRMPropertiesRetVal = WAIniReadKey("Layout", "CreateBak", MainIniFile);
+	FRMPropertiesRetVal = IniReadKey("Layout", "CreateBak", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkBakFiles, FRMPropertiesRetVal.Get_Long());
-	FRMPropertiesRetVal = WAIniReadKey("Layout", "DecorateBak", MainIniFile);
+	FRMPropertiesRetVal = IniReadKey("Layout", "DecorateBak", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkDecorateBak, FRMPropertiesRetVal.Get_Long());
-	FRMPropertiesRetVal = WAIniReadKey("Layout", "AcceptFiles", MainIniFile);
+	FRMPropertiesRetVal = IniReadKey("Layout", "AcceptFiles", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkAcceptFiles, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "AutoMax", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "AutoMax", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkAutoMax, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "AutoClear", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "AutoClear", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkAutoClean, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "UseSysTray", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "UseSysTray", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkMinimize, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "AlwaysOnTop", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "AlwaysOnTop", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkOnTop, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "SaveBookmarks", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "SaveBookmarks", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkSaveBk, FRMPropertiesRetVal.Get_Long());
-    WAControlSetText(FRMPropertiesTxtBackupDir, WAIniReadKey("Layout", "BackupDir", MainIniFile));
+    ControlSetText(FRMPropertiesTxtBackupDir, IniReadKey("Layout", "BackupDir", MainIniFile));
     SetBackupEn();
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "Recent", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "Recent", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0)
     {
-        WAControlSetText(FRMPropertiesRecentFiles, FRMPropertiesRetVal);
+        ControlSetText(FRMPropertiesRecentFiles, FRMPropertiesRetVal);
     }
     else
     {
-        WAControlSetText(FRMPropertiesRecentFiles, MaxRecent);
+        ControlSetText(FRMPropertiesRecentFiles, MaxRecent);
     }
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "RecentPrj", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "RecentPrj", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0)
     {
-        WAControlSetText(FRMPropertiesRecentProjects, FRMPropertiesRetVal);
+        ControlSetText(FRMPropertiesRecentProjects, FRMPropertiesRetVal);
     }
     else
     {
-        WAControlSetText(FRMPropertiesRecentProjects, MaxRecentPrj);
+        ControlSetText(FRMPropertiesRecentProjects, MaxRecentPrj);
     }
     SetFontView();
     for(i = 0; i < RegisteredExts.Amount(); i++)
     {
-        WAListBoxAddItem(FRMPropertiesLbFileExt, RegisteredExts.Get(i)->Content, -1);
+        ListBoxAddItem(FRMPropertiesLbFileExt, RegisteredExts.Get(i)->Content, -1);
     }
-    if(WAListBoxCount(FRMPropertiesLbFileExt) != 0)
+    if(ListBoxCount(FRMPropertiesLbFileExt) != 0)
     {
-        WAListBoxSetIndex(FRMPropertiesLbFileExt, 0);
-        WAControlSetText(FRMPropertiesTxtFileExt, WAListBoxGetItem(FRMPropertiesLbFileExt, WAListBoxGetSelItemIndex(FRMPropertiesLbFileExt)));
+        ListBoxSetIndex(FRMPropertiesLbFileExt, 0);
+        ControlSetText(FRMPropertiesTxtFileExt, ListBoxGetItem(FRMPropertiesLbFileExt, ListBoxGetSelItemIndex(FRMPropertiesLbFileExt)));
     }
-    WAControlSetText(FRMPropertiesTxtArgs, WAIniReadKey("Layout", "PrjArg", MainIniFile));
-    WAControlSetText(FRMPropertiesCbDebugger, WAIniReadKey("Layout", "PrjDebugger", MainIniFile));
-    WAControlSetText(FRMPropertiesTxtWindowsAPI, WAIniReadKey("Layout", "WinHelp", MainIniFile));
-    WAControlSetText(FRMPropertiesTxtMSDN, WAIniReadKey("Layout", "MSDNHelp", MainIniFile));
-    WAControlSetText(FRMPropertiesTxtDDK, WAIniReadKey("Layout", "DDKHelp", MainIniFile));
-    WAControlSetText(FRMPropertiesTxtDirectXSDK, WAIniReadKey("Layout", "DirectXSDKHelp", MainIniFile));
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "TVToolTips", MainIniFile);
+    ControlSetText(FRMPropertiesTxtArgs, IniReadKey("Layout", "PrjArg", MainIniFile));
+    ControlSetText(FRMPropertiesCbDebugger, IniReadKey("Layout", "PrjDebugger", MainIniFile));
+    ControlSetText(FRMPropertiesTxtWindowsAPI, IniReadKey("Layout", "WinHelp", MainIniFile));
+    ControlSetText(FRMPropertiesTxtMSDN, IniReadKey("Layout", "MSDNHelp", MainIniFile));
+    ControlSetText(FRMPropertiesTxtDDK, IniReadKey("Layout", "DDKHelp", MainIniFile));
+    ControlSetText(FRMPropertiesTxtDirectXSDK, IniReadKey("Layout", "DirectXSDKHelp", MainIniFile));
+    FRMPropertiesRetVal = IniReadKey("Layout", "TVToolTips", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkTVTool, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "WinRecent", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "WinRecent", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkRecentDoc, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "SilentAuto", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "SilentAuto", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkAutoOut, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "UseFileDir", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "UseFileDir", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkUseFileDir, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "NewWindowOnDrop", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "NewWindowOnDrop", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkCreateDrop, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "SaveProjectState", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "SaveProjectState", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkSaveProjectState, FRMPropertiesRetVal.Get_Long());
     // Load building steps
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "StepRes", MainIniFile);
-    if(FRMPropertiesRetVal.Len() != 0) WAListViewSetItemCheckbox(FRMStepListView, 0, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "StepAsm", MainIniFile);
-    if(FRMPropertiesRetVal.Len() != 0) WAListViewSetItemCheckbox(FRMStepListView, 1, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "StepLink", MainIniFile);
-    if(FRMPropertiesRetVal.Len() != 0) WAListViewSetItemCheckbox(FRMStepListView, 2, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "StepClean", MainIniFile);
-    if(FRMPropertiesRetVal.Len() != 0) WAListViewSetItemCheckbox(FRMStepListView, 3, FRMPropertiesRetVal.Get_Long());
+    FRMPropertiesRetVal = IniReadKey("Layout", "StepRes", MainIniFile);
+    if(FRMPropertiesRetVal.Len() != 0) ListViewSetItemCheckbox(FRMStepListView, 0, FRMPropertiesRetVal.Get_Long());
+    FRMPropertiesRetVal = IniReadKey("Layout", "StepAsm", MainIniFile);
+    if(FRMPropertiesRetVal.Len() != 0) ListViewSetItemCheckbox(FRMStepListView, 1, FRMPropertiesRetVal.Get_Long());
+    FRMPropertiesRetVal = IniReadKey("Layout", "StepLink", MainIniFile);
+    if(FRMPropertiesRetVal.Len() != 0) ListViewSetItemCheckbox(FRMStepListView, 2, FRMPropertiesRetVal.Get_Long());
+    FRMPropertiesRetVal = IniReadKey("Layout", "StepClean", MainIniFile);
+    if(FRMPropertiesRetVal.Len() != 0) ListViewSetItemCheckbox(FRMStepListView, 3, FRMPropertiesRetVal.Get_Long());
     // Load prototypes generator datas
-    PrefsGenProg = WAIniReadKey("Layout", "GenProto", MainIniFile);
-    PrefsGenCmd = WAIniReadKey("Layout", "GenCmd", MainIniFile);
-    PrefsGenDest = WAIniReadKey("Layout", "GenDest", MainIniFile);
-    WAControlSetText(FRMPropertiesTxtGenProg, PrefsGenProg);
-    WAControlSetText(FRMPropertiesTxtGenSource, PrefsGenCmd);
-    WAControlSetText(FRMPropertiesTxtGenDest, PrefsGenDest);
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "UseDbFnc", MainIniFile);
+    PrefsGenProg = IniReadKey("Layout", "GenProto", MainIniFile);
+    PrefsGenCmd = IniReadKey("Layout", "GenCmd", MainIniFile);
+    PrefsGenDest = IniReadKey("Layout", "GenDest", MainIniFile);
+    ControlSetText(FRMPropertiesTxtGenProg, PrefsGenProg);
+    ControlSetText(FRMPropertiesTxtGenSource, PrefsGenCmd);
+    ControlSetText(FRMPropertiesTxtGenDest, PrefsGenDest);
+    FRMPropertiesRetVal = IniReadKey("Layout", "UseDbFnc", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkUseFncDB, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "UseDbConst", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "UseDbConst", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkUseConstDB, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "DbLinesNumbers", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "DbLinesNumbers", MainIniFile);
     // Put a default value (6 lines)
 	if(FRMPropertiesRetVal.Len() == 0) FRMPropertiesRetVal = "6";
-    WAControlSetText(FRMPropertiesTxtAPILines, FRMPropertiesRetVal);
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "ShowSplash", MainIniFile);
+    ControlSetText(FRMPropertiesTxtAPILines, FRMPropertiesRetVal);
+    FRMPropertiesRetVal = IniReadKey("Layout", "ShowSplash", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkShowSplash, FRMPropertiesRetVal.Get_Long());
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "TVSingle", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "TVSingle", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkTVSingle, FRMPropertiesRetVal.Get_Long());
 }
 
@@ -1271,202 +1271,202 @@ void SavePrefs(void)
     RegisteredExts.Erase();
     for(i = 0; i <= 999; i++)
     {
-        FRMPropertiesRetVal = WAIniReadKey("Extensions", "Ext" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        FRMPropertiesRetVal = IniReadKey("Extensions", "Ext" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         if(FRMPropertiesRetVal.Len()  == 0) break;
-        WAIniDeleteKey("Extensions", "Ext" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        IniDeleteKey("Extensions", "Ext" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
     }
-    for(i = 0; i <= (long) WAListBoxCount(FRMPropertiesLbFileExt) - 1; i++)
+    for(i = 0; i <= (long) ListBoxCount(FRMPropertiesLbFileExt) - 1; i++)
     {
-        RegisteredExts.Add(WAListBoxGetItem(FRMPropertiesLbFileExt, i).Get_String());
-        WAIniWriteKey("Extensions", "Ext" + (CStr) StringNumberComplement(i, 3).Get_String(), RegisteredExts.Get(i)->Content, MainIniFile);
+        RegisteredExts.Add(ListBoxGetItem(FRMPropertiesLbFileExt, i).Get_String());
+        IniWriteKey("Extensions", "Ext" + (CStr) StringNumberComplement(i, 3).Get_String(), RegisteredExts.Get(i)->Content, MainIniFile);
     }
     // Correct extensions size
     //ReDim Preserve RegisteredExts(i)
 
     // Editor
-    WAIniWriteKey("Layout", "Margin", CheckBoxGetState(FRMPropertiesChkLeftMargin), MainIniFile);
+    IniWriteKey("Layout", "Margin", CheckBoxGetState(FRMPropertiesChkLeftMargin), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkLeftMargin) == 0) LeftM = 0;
     else LeftM = 1;
-    WAIniWriteKey("Layout", "WhiteSpace", CheckBoxGetState(FRMPropertiesChkWhiteSpaces), MainIniFile);
+    IniWriteKey("Layout", "WhiteSpace", CheckBoxGetState(FRMPropertiesChkWhiteSpaces), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkWhiteSpaces) == 0) White = 0;
     else White = 1;
-    WAIniWriteKey("Layout", "Highlight", CheckBoxGetState(FRMPropertiesChkHighlightLine), MainIniFile);
+    IniWriteKey("Layout", "Highlight", CheckBoxGetState(FRMPropertiesChkHighlightLine), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkHighlightLine) == 0) ShowH = 0;
     else ShowH = 1;
-    WAIniWriteKey("Layout", "WordWrap", CheckBoxGetState(FRMPropertiesChkCursorwrap), MainIniFile);
+    IniWriteKey("Layout", "WordWrap", CheckBoxGetState(FRMPropertiesChkCursorwrap), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkCursorwrap) == 0) Wrap = 0;
     else Wrap = 1;
-    WAIniWriteKey("Layout", "Syntax", CheckBoxGetState(FRMPropertiesChkSyntaxHighlighting), MainIniFile);
+    IniWriteKey("Layout", "Syntax", CheckBoxGetState(FRMPropertiesChkSyntaxHighlighting), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkSyntaxHighlighting) == 0) SyntaxH = 0;
     else SyntaxH = 1;
-    WAIniWriteKey("Layout", "IndentScope", CheckBoxGetState(FRMPropertiesChkLanguageScopeIndent), MainIniFile);
+    IniWriteKey("Layout", "IndentScope", CheckBoxGetState(FRMPropertiesChkLanguageScopeIndent), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkLanguageScopeIndent) == 0) IndentScope = 0;
     else IndentScope = 1;
-    WAIniWriteKey("Layout", "EnDragDrop", CheckBoxGetState(FRMPropertiesChkTextDragAndDrop), MainIniFile);
+    IniWriteKey("Layout", "EnDragDrop", CheckBoxGetState(FRMPropertiesChkTextDragAndDrop), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkTextDragAndDrop) == 0) EnDragDrop = 0;
     else EnDragDrop = 1;
-    WAIniWriteKey("Layout", "APIToolTip", CheckBoxGetState(FRMPropertiesChkWinAPITooltipInfos), MainIniFile);
+    IniWriteKey("Layout", "APIToolTip", CheckBoxGetState(FRMPropertiesChkWinAPITooltipInfos), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkWinAPITooltipInfos) == 0) APITTip = 0;
     else APITTip = 1;
-    WAIniWriteKey("Layout", "SmoothScrolling", CheckBoxGetState(FRMPropertiesChkSmoothScrolling), MainIniFile);
+    IniWriteKey("Layout", "SmoothScrolling", CheckBoxGetState(FRMPropertiesChkSmoothScrolling), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkSmoothScrolling) == 0) Smooth = 0;
     else Smooth = 1;
-    WAIniWriteKey("Layout", "LineToolTip", CheckBoxGetState(FRMPropertiesChkLineNumberTooltip), MainIniFile);
+    IniWriteKey("Layout", "LineToolTip", CheckBoxGetState(FRMPropertiesChkLineNumberTooltip), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkLineNumberTooltip) == 0) LineTTip = 0;
     else LineTTip = 1;
-    WAIniWriteKey("Layout", "FollowScrolling", CheckBoxGetState(FRMPropertiesChkCaretAlwaysVisible), MainIniFile);
+    IniWriteKey("Layout", "FollowScrolling", CheckBoxGetState(FRMPropertiesChkCaretAlwaysVisible), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkCaretAlwaysVisible) == 0) CursorFollow = 0;
     else CursorFollow = 1;
-    WAIniWriteKey("Layout", "ExpandTabs", CheckBoxGetState(FRMPropertiesChkTabsToSpaces), MainIniFile);
+    IniWriteKey("Layout", "ExpandTabs", CheckBoxGetState(FRMPropertiesChkTabsToSpaces), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkTabsToSpaces) == 0) AutoExpand = 0;
     else AutoExpand = 1;
-    WAIniWriteKey("Layout", "AutoCorrect", CheckBoxGetState(FRMPropertiesChkAutoCorrectKeywords), MainIniFile);
+    IniWriteKey("Layout", "AutoCorrect", CheckBoxGetState(FRMPropertiesChkAutoCorrectKeywords), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkAutoCorrectKeywords) == 0) AutoCorrectKey = 0;
     else AutoCorrectKey = 1;
-    WAIniWriteKey("Layout", "HorizSplit", CheckBoxGetState(FRMPropertiesChkHorizontalSplitter), MainIniFile);
+    IniWriteKey("Layout", "HorizSplit", CheckBoxGetState(FRMPropertiesChkHorizontalSplitter), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkHorizontalSplitter) == 0) HorizSplit = 0;
     else HorizSplit = 1;
-    WAIniWriteKey("Layout", "DetectChange", CheckBoxGetState(FRMPropertiesChkDetectChange), MainIniFile);
+    IniWriteKey("Layout", "DetectChange", CheckBoxGetState(FRMPropertiesChkDetectChange), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkDetectChange) == 0) DetectChange = 0;
     else DetectChange = 1;
-    WAIniWriteKey("Layout", "RememberState", CheckBoxGetState(FRMPropertiesChkRememberState), MainIniFile);
-    WAIniWriteKey("Layout", "AutoConvUNIX", CheckBoxGetState(FRMPropertiesChkUNIX), MainIniFile);
-    WAIniWriteKey("Layout", "AutoZoomFiles", CheckBoxGetState(FRMPropertiesChkAutoZoom), MainIniFile);
-    WAIniWriteKey("Layout", "OutputDates", CheckBoxGetState(FRMPropertiesChkOutputDates), MainIniFile);
+    IniWriteKey("Layout", "RememberState", CheckBoxGetState(FRMPropertiesChkRememberState), MainIniFile);
+    IniWriteKey("Layout", "AutoConvUNIX", CheckBoxGetState(FRMPropertiesChkUNIX), MainIniFile);
+    IniWriteKey("Layout", "AutoZoomFiles", CheckBoxGetState(FRMPropertiesChkAutoZoom), MainIniFile);
+    IniWriteKey("Layout", "OutputDates", CheckBoxGetState(FRMPropertiesChkOutputDates), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkOutputDates) == 0) OutputDates = 0;
     else OutputDates = 1;
     
     // Lines numbering
-    WAIniWriteKey("Layout", "LinesStyle", WAComboBoxGetIndex(FRMPropertiesCbLines), MainIniFile);
-    LnStyle = WAComboBoxGetIndex(FRMPropertiesCbLines);
-    if(WAControlGetText(FRMPropertiesTxtLines).Len() == 0) WAControlSetText(FRMPropertiesTxtLines, "0");
-    WAIniWriteKey("Layout", "LinesStart", WAControlGetText(FRMPropertiesTxtLines), MainIniFile);
-    LnStart = WAControlGetText(FRMPropertiesTxtLines).Get_Long();
+    IniWriteKey("Layout", "LinesStyle", ComboBoxGetIndex(FRMPropertiesCbLines), MainIniFile);
+    LnStyle = ComboBoxGetIndex(FRMPropertiesCbLines);
+    if(ControlGetText(FRMPropertiesTxtLines).Len() == 0) ControlSetText(FRMPropertiesTxtLines, "0");
+    IniWriteKey("Layout", "LinesStart", ControlGetText(FRMPropertiesTxtLines), MainIniFile);
+    LnStart = ControlGetText(FRMPropertiesTxtLines).Get_Long();
 
     // Font
-    WAIniWriteKey("Layout", "FontName", CurFontName, MainIniFile);
-    WAIniWriteKey("Layout", "FontSize", CurFontSize, MainIniFile);
+    IniWriteKey("Layout", "FontName", CurFontName, MainIniFile);
+    IniWriteKey("Layout", "FontSize", CurFontSize, MainIniFile);
     if(CurFontHandle != 0) DeleteObject(CurFontHandle);
-    CurFontHandle = WAGDIObtainFont(CurFontName, CurFontSize, hMDIform.hWnd, 0, 0);
+    CurFontHandle = GDIObtainFont(CurFontName, CurFontSize, hMDIform.hWnd, 0, 0);
     if(NbForms != 0) ChFontAllChilds(hMDIform.hClient);
 
     // Other
-    if(WAControlGetText(FRMPropertiesTabulations).Len() == 0) WAControlSetText(FRMPropertiesTabulations, "8");
-    WAIniWriteKey("Layout", "Tabs", WAControlGetText(FRMPropertiesTabulations), MainIniFile);
-    Tabulations = WAControlGetText(FRMPropertiesTabulations).Get_Long();
-    if(WAControlGetText(FRMPropertiesRecentFiles).Len() == 0) WAControlSetText(FRMPropertiesRecentFiles, "12");
-    WAIniWriteKey("Layout", "Recent", WAControlGetText(FRMPropertiesRecentFiles), MainIniFile);
-    MaxRecent = WAControlGetText(FRMPropertiesRecentFiles).Get_Long();
-    if(WAControlGetText(FRMPropertiesRecentProjects).Len() == 0) WAControlSetText(FRMPropertiesRecentProjects, "5");
-    WAIniWriteKey("Layout", "RecentPrj", WAControlGetText(FRMPropertiesRecentProjects), MainIniFile);
-    MaxRecentPrj = WAControlGetText(FRMPropertiesRecentProjects).Get_Long();
+    if(ControlGetText(FRMPropertiesTabulations).Len() == 0) ControlSetText(FRMPropertiesTabulations, "8");
+    IniWriteKey("Layout", "Tabs", ControlGetText(FRMPropertiesTabulations), MainIniFile);
+    Tabulations = ControlGetText(FRMPropertiesTabulations).Get_Long();
+    if(ControlGetText(FRMPropertiesRecentFiles).Len() == 0) ControlSetText(FRMPropertiesRecentFiles, "12");
+    IniWriteKey("Layout", "Recent", ControlGetText(FRMPropertiesRecentFiles), MainIniFile);
+    MaxRecent = ControlGetText(FRMPropertiesRecentFiles).Get_Long();
+    if(ControlGetText(FRMPropertiesRecentProjects).Len() == 0) ControlSetText(FRMPropertiesRecentProjects, "5");
+    IniWriteKey("Layout", "RecentPrj", ControlGetText(FRMPropertiesRecentProjects), MainIniFile);
+    MaxRecentPrj = ControlGetText(FRMPropertiesRecentProjects).Get_Long();
 
     // AutoSave delay
-    WAIniWriteKey("Layout", "AutoSaveDelay", WAComboBoxGetIndex(FRMPropertiesCbSave), MainIniFile);
-    AutoSaveDelay = WAComboBoxGetIndex(FRMPropertiesCbSave);
-    WAIniWriteKey("Layout", "VerboseSave", CheckBoxGetState(FRMPropertiesChkVerbose), MainIniFile);
+    IniWriteKey("Layout", "AutoSaveDelay", ComboBoxGetIndex(FRMPropertiesCbSave), MainIniFile);
+    AutoSaveDelay = ComboBoxGetIndex(FRMPropertiesCbSave);
+    IniWriteKey("Layout", "VerboseSave", CheckBoxGetState(FRMPropertiesChkVerbose), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkVerbose) == 0) VerboseSave = 0;
     else VerboseSave = 1;
-    FRMPropertiesRetVal = WAIniReadKey("Layout", "VerboseSave", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "VerboseSave", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkVerbose, FRMPropertiesRetVal.Get_Long());
     
     // General
-    WAIniWriteKey("Layout", "AutoSave", CheckBoxGetState(FRMPropertiesChkSaveAll), MainIniFile);
+    IniWriteKey("Layout", "AutoSave", CheckBoxGetState(FRMPropertiesChkSaveAll), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkSaveAll) == 0) AutoSave = 0;
     else AutoSave = 1;
-    WAIniWriteKey("Layout", "Multiple", CheckBoxGetState(FRMPropertiesChkMultiplesInst), MainIniFile);
-    WAIniWriteKey("Layout", "Remember", CheckBoxGetState(FRMPropertiesChkRemember), MainIniFile);
+    IniWriteKey("Layout", "Multiple", CheckBoxGetState(FRMPropertiesChkMultiplesInst), MainIniFile);
+    IniWriteKey("Layout", "Remember", CheckBoxGetState(FRMPropertiesChkRemember), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkRemember) == 0) Remember = 0;
     else Remember = 1;
-    WAIniWriteKey("Layout", "CreateBak", CheckBoxGetState(FRMPropertiesChkBakFiles), MainIniFile);
+    IniWriteKey("Layout", "CreateBak", CheckBoxGetState(FRMPropertiesChkBakFiles), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkBakFiles) == 0) CreateBak = 0;
     else CreateBak = 1;
-    WAIniWriteKey("Layout", "DecorateBak", CheckBoxGetState(FRMPropertiesChkDecorateBak), MainIniFile);
+    IniWriteKey("Layout", "DecorateBak", CheckBoxGetState(FRMPropertiesChkDecorateBak), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkDecorateBak) == 0) DecorateBak = 0;
     else DecorateBak = 1;
-    WAIniWriteKey("Layout", "AcceptFiles", CheckBoxGetState(FRMPropertiesChkAcceptFiles), MainIniFile);
+    IniWriteKey("Layout", "AcceptFiles", CheckBoxGetState(FRMPropertiesChkAcceptFiles), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkAcceptFiles) == 0) AcceptFiles = 0;
     else AcceptFiles = 1;
     
 	// Set client state
     DragAcceptFiles(hMDIform.hClient, AcceptFiles);
-    WAIniWriteKey("Layout", "AutoMax", CheckBoxGetState(FRMPropertiesChkAutoMax), MainIniFile);
+    IniWriteKey("Layout", "AutoMax", CheckBoxGetState(FRMPropertiesChkAutoMax), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkAutoMax) == 0) AutoMaximizeChilds = 0;
     else AutoMaximizeChilds = 1;
-    WAIniWriteKey("Layout", "AutoClear", CheckBoxGetState(FRMPropertiesChkAutoClean), MainIniFile);
+    IniWriteKey("Layout", "AutoClear", CheckBoxGetState(FRMPropertiesChkAutoClean), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkAutoClean) == 0) AutoClearOut = 0;
     else AutoClearOut = 1;
     
-    WAIniWriteKey("Layout", "UseSysTray", CheckBoxGetState(FRMPropertiesChkMinimize), MainIniFile);
-    WAIniWriteKey("Layout", "AlwaysOnTop", CheckBoxGetState(FRMPropertiesChkOnTop), MainIniFile);
-    WAIniWriteKey("Layout", "SaveBookmarks", CheckBoxGetState(FRMPropertiesChkSaveBk), MainIniFile);
-    WAIniWriteKey("Layout", "ShowSplash", CheckBoxGetState(FRMPropertiesChkShowSplash), MainIniFile);
-    WAIniWriteKey("Layout", "TVSingle", CheckBoxGetState(FRMPropertiesChkTVSingle), MainIniFile);
+    IniWriteKey("Layout", "UseSysTray", CheckBoxGetState(FRMPropertiesChkMinimize), MainIniFile);
+    IniWriteKey("Layout", "AlwaysOnTop", CheckBoxGetState(FRMPropertiesChkOnTop), MainIniFile);
+    IniWriteKey("Layout", "SaveBookmarks", CheckBoxGetState(FRMPropertiesChkSaveBk), MainIniFile);
+    IniWriteKey("Layout", "ShowSplash", CheckBoxGetState(FRMPropertiesChkShowSplash), MainIniFile);
+    IniWriteKey("Layout", "TVSingle", CheckBoxGetState(FRMPropertiesChkTVSingle), MainIniFile);
     
 	// Refresh the treeview's expand type
     SetTreeviewExpand();
-    WAIniWriteKey("Layout", "UseDbFnc", CheckBoxGetState(FRMPropertiesChkUseFncDB), MainIniFile);
+    IniWriteKey("Layout", "UseDbFnc", CheckBoxGetState(FRMPropertiesChkUseFncDB), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkUseFncDB) == 0) UseDbFnc = 0;
     else UseDbFnc = 1;
-    WAIniWriteKey("Layout", "UseDbConst", CheckBoxGetState(FRMPropertiesChkUseConstDB), MainIniFile);
+    IniWriteKey("Layout", "UseDbConst", CheckBoxGetState(FRMPropertiesChkUseConstDB), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkUseConstDB) == 0) UseDbConst = 0;
     else UseDbConst = 1;
     
     // Number of lines in API fncs/constants popup list
-    if(WAControlGetText(FRMPropertiesTxtAPILines).Len() == 0) WAControlSetText(FRMPropertiesTxtAPILines, "1");
-    WAIniWriteKey("Layout", "DbLinesNumbers", WAControlGetText(FRMPropertiesTxtAPILines), MainIniFile);
-    DbLinesNumbers = WAControlGetText(FRMPropertiesTxtAPILines).Get_Long();
+    if(ControlGetText(FRMPropertiesTxtAPILines).Len() == 0) ControlSetText(FRMPropertiesTxtAPILines, "1");
+    IniWriteKey("Layout", "DbLinesNumbers", ControlGetText(FRMPropertiesTxtAPILines), MainIniFile);
+    DbLinesNumbers = ControlGetText(FRMPropertiesTxtAPILines).Get_Long();
     
-    WAIniWriteKey("Layout", "TVToolTips", CheckBoxGetState(FRMPropertiesChkTVTool), MainIniFile);
+    IniWriteKey("Layout", "TVToolTips", CheckBoxGetState(FRMPropertiesChkTVTool), MainIniFile);
     // Refresh the treeview's tooltips
     SetTreeviewTT();
 
-    WAIniWriteKey("Layout", "WinRecent", CheckBoxGetState(FRMPropertiesChkRecentDoc), MainIniFile);
-    WAIniWriteKey("Layout", "SilentAuto", CheckBoxGetState(FRMPropertiesChkAutoOut), MainIniFile);
-    WAIniWriteKey("Layout", "UseFileDir", CheckBoxGetState(FRMPropertiesChkUseFileDir), MainIniFile);
-    WAIniWriteKey("Layout", "NewWindowOnDrop", CheckBoxGetState(FRMPropertiesChkCreateDrop), MainIniFile);
-    WAIniWriteKey("Layout", "SaveProjectState", CheckBoxGetState(FRMPropertiesChkSaveProjectState), MainIniFile);
+    IniWriteKey("Layout", "WinRecent", CheckBoxGetState(FRMPropertiesChkRecentDoc), MainIniFile);
+    IniWriteKey("Layout", "SilentAuto", CheckBoxGetState(FRMPropertiesChkAutoOut), MainIniFile);
+    IniWriteKey("Layout", "UseFileDir", CheckBoxGetState(FRMPropertiesChkUseFileDir), MainIniFile);
+    IniWriteKey("Layout", "NewWindowOnDrop", CheckBoxGetState(FRMPropertiesChkCreateDrop), MainIniFile);
+    IniWriteKey("Layout", "SaveProjectState", CheckBoxGetState(FRMPropertiesChkSaveProjectState), MainIniFile);
 
     // Default backup directory
-    TmpBakDir = WAControlGetText(FRMPropertiesTxtBackupDir);
+    TmpBakDir = ControlGetText(FRMPropertiesTxtBackupDir);
     TmpBakDir = ChangeAbsolutePaths(TmpBakDir);
-    WAIniWriteKey("Layout", "BackupDir", TmpBakDir, MainIniFile);
-    WAControlSetText(FRMPropertiesTxtBackupDir, TmpBakDir);
+    IniWriteKey("Layout", "BackupDir", TmpBakDir, MainIniFile);
+    ControlSetText(FRMPropertiesTxtBackupDir, TmpBakDir);
 
     // Help files
-    TmpHelpWinAPI = WAControlGetText(FRMPropertiesTxtWindowsAPI);
-    TmpHelpMSDN = WAControlGetText(FRMPropertiesTxtMSDN);
-    TmpHelpDDK = WAControlGetText(FRMPropertiesTxtDDK);
-    TmpHelpDirectXSDK = WAControlGetText(FRMPropertiesTxtDirectXSDK);
+    TmpHelpWinAPI = ControlGetText(FRMPropertiesTxtWindowsAPI);
+    TmpHelpMSDN = ControlGetText(FRMPropertiesTxtMSDN);
+    TmpHelpDDK = ControlGetText(FRMPropertiesTxtDDK);
+    TmpHelpDirectXSDK = ControlGetText(FRMPropertiesTxtDirectXSDK);
     TmpHelpWinAPI = ChangeAbsolutePaths(TmpHelpWinAPI);
     TmpHelpMSDN = ChangeAbsolutePaths(TmpHelpMSDN);
     TmpHelpDDK = ChangeAbsolutePaths(TmpHelpDDK);
     TmpHelpDirectXSDK = ChangeAbsolutePaths(TmpHelpDirectXSDK);
-    WAIniWriteKey("Layout", "WinHelp", TmpHelpWinAPI, MainIniFile);
-    WAIniWriteKey("Layout", "MSDNHelp", TmpHelpMSDN, MainIniFile);
-    WAIniWriteKey("Layout", "DDKHelp", TmpHelpDDK, MainIniFile);
-    WAIniWriteKey("Layout", "DirectXSDKHelp", TmpHelpDirectXSDK, MainIniFile);
-    WAControlSetText(FRMPropertiesTxtWindowsAPI, TmpHelpWinAPI);
-    WAControlSetText(FRMPropertiesTxtMSDN, TmpHelpMSDN);
+    IniWriteKey("Layout", "WinHelp", TmpHelpWinAPI, MainIniFile);
+    IniWriteKey("Layout", "MSDNHelp", TmpHelpMSDN, MainIniFile);
+    IniWriteKey("Layout", "DDKHelp", TmpHelpDDK, MainIniFile);
+    IniWriteKey("Layout", "DirectXSDKHelp", TmpHelpDirectXSDK, MainIniFile);
+    ControlSetText(FRMPropertiesTxtWindowsAPI, TmpHelpWinAPI);
+    ControlSetText(FRMPropertiesTxtMSDN, TmpHelpMSDN);
 
     // Refresh masm directories
     free(Dirs[DIR_ROOT]);
-	Dirs[DIR_ROOT] = strdup(WAControlGetText(FRMPropertiesTxtROOTDIR).Get_String());
-    WAIniWriteKey("Dirs", DirsRepl[DIR_ROOT], Dirs[DIR_ROOT], MainIniFile);
+	Dirs[DIR_ROOT] = strdup(ControlGetText(FRMPropertiesTxtROOTDIR).Get_String());
+    IniWriteKey("Dirs", DirsRepl[DIR_ROOT], Dirs[DIR_ROOT], MainIniFile);
     free(Dirs[DIR_BIN]);
-	Dirs[DIR_BIN] = strdup(WAControlGetText(FRMPropertiesTxtBINDIR).Get_String());
-    WAIniWriteKey("Dirs", DirsRepl[DIR_BIN], Dirs[DIR_BIN], MainIniFile);
+	Dirs[DIR_BIN] = strdup(ControlGetText(FRMPropertiesTxtBINDIR).Get_String());
+    IniWriteKey("Dirs", DirsRepl[DIR_BIN], Dirs[DIR_BIN], MainIniFile);
     free(Dirs[DIR_INCLUDE]);
-    Dirs[DIR_INCLUDE] = strdup(WAControlGetText(FRMPropertiesTxtINCLUDEDIR).Get_String());
-    WAIniWriteKey("Dirs",DirsRepl[DIR_INCLUDE], Dirs[DIR_INCLUDE], MainIniFile);
+    Dirs[DIR_INCLUDE] = strdup(ControlGetText(FRMPropertiesTxtINCLUDEDIR).Get_String());
+    IniWriteKey("Dirs",DirsRepl[DIR_INCLUDE], Dirs[DIR_INCLUDE], MainIniFile);
     free(Dirs[DIR_LIB]);
-    Dirs[DIR_LIB] = strdup(WAControlGetText(FRMPropertiesTxtLIBDIR).Get_String());
-    WAIniWriteKey("Dirs", DirsRepl[DIR_LIB], Dirs[DIR_LIB], MainIniFile);
+    Dirs[DIR_LIB] = strdup(ControlGetText(FRMPropertiesTxtLIBDIR).Get_String());
+    IniWriteKey("Dirs", DirsRepl[DIR_LIB], Dirs[DIR_LIB], MainIniFile);
     free(Dirs[DIR_HELP]);
-    Dirs[DIR_HELP] = strdup(WAControlGetText(FRMPropertiesTxtHELPDIR).Get_String());
-    WAIniWriteKey("Dirs", DirsRepl[DIR_HELP], Dirs[DIR_HELP], MainIniFile);
+    Dirs[DIR_HELP] = strdup(ControlGetText(FRMPropertiesTxtHELPDIR).Get_String());
+    IniWriteKey("Dirs", DirsRepl[DIR_HELP], Dirs[DIR_HELP], MainIniFile);
     free(Dirs[DIR_PROJECTS]);
-    Dirs[DIR_PROJECTS] = strdup(WAControlGetText(FRMPropertiesTxtPROJECTSDIR).Get_String());
+    Dirs[DIR_PROJECTS] = strdup(ControlGetText(FRMPropertiesTxtPROJECTSDIR).Get_String());
     // Set it by default just in case
     if(strlen(Dirs[DIR_PROJECTS]) == 0)
     {
@@ -1474,7 +1474,7 @@ void SavePrefs(void)
 		BufString = AppPath + (CStr) "\\Projects";
     	Dirs[DIR_PROJECTS] = strdup(BufString.Get_String());
     }
-	WAIniWriteKey("Dirs", DirsRepl[DIR_PROJECTS], Dirs[DIR_PROJECTS], MainIniFile);
+	IniWriteKey("Dirs", DirsRepl[DIR_PROJECTS], Dirs[DIR_PROJECTS], MainIniFile);
     
     // Save colors
     Prof_BackColor = ColorBoxGetColor(FRMPropertiesColBackGround);
@@ -1516,50 +1516,50 @@ void SavePrefs(void)
     LangColorHColor = Prof_ColorHValue;
     LangKeyWordsColor = Prof_KeyWordsColorValue;
  
-    WAIniWriteKey("Layout", "BackColor", "0x" + (CStr) BufString.Hex_To_String(Prof_BackColor).Get_String(), MainIniFile);
-    WAIniWriteKey("Layout", "NormText", "0x" + (CStr) BufString.Hex_To_String(Prof_NormText).Get_String(), MainIniFile);
-    WAIniWriteKey("Layout", "HighText", "0x" + (CStr) BufString.Hex_To_String(Prof_HighText).Get_String(), MainIniFile);
-    WAIniWriteKey("Layout", "MarginColor", "0x" + (CStr) BufString.Hex_To_String(Prof_MarginColor).Get_String(), MainIniFile);
-    WAIniWriteKey("Layout", "LinesColor", "0x" + (CStr) BufString.Hex_To_String(Prof_LinesColor).Get_String(), MainIniFile);
-    WAIniWriteKey("Layout", "NumbersColorValue", "0x" + (CStr) BufString.Hex_To_String(Prof_NumbersColorValue).Get_String(), MainIniFile);
-    WAIniWriteKey("Layout", "APIHighColor", "0x" + (CStr) BufString.Hex_To_String(Prof_APIHighColor).Get_String(), MainIniFile);
-    WAIniWriteKey("Layout", "StringsColorValue", "0x" + (CStr) BufString.Hex_To_String(Prof_StringsColorValue).Get_String(), MainIniFile);
-    WAIniWriteKey("Layout", "CommentsColorValue", "0x" + (CStr) BufString.Hex_To_String(Prof_CommentsColorValue).Get_String(), MainIniFile);
-    WAIniWriteKey("Layout", "KeyWordsColorValue", "0x" + (CStr) BufString.Hex_To_String(Prof_KeyWordsColorValue).Get_String(), MainIniFile);
-    WAIniWriteKey("Layout", "ColorAValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorAValue).Get_String(), MainIniFile);
-    WAIniWriteKey("Layout", "ColorBValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorBValue).Get_String(), MainIniFile);
-    WAIniWriteKey("Layout", "ColorCValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorCValue).Get_String(), MainIniFile);
-    WAIniWriteKey("Layout", "ColorDValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorDValue).Get_String(), MainIniFile);
-    WAIniWriteKey("Layout", "ColorEValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorEValue).Get_String(), MainIniFile);
-    WAIniWriteKey("Layout", "ColorFValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorFValue).Get_String(), MainIniFile);
-    WAIniWriteKey("Layout", "ColorGValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorGValue).Get_String(), MainIniFile);
-    WAIniWriteKey("Layout", "ColorHValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorHValue).Get_String(), MainIniFile);
-	WAIniWriteKey("Layout", "CommentItalic", CheckBoxGetState(FRMPropertiesChkItalic), MainIniFile);
+    IniWriteKey("Layout", "BackColor", "0x" + (CStr) BufString.Hex_To_String(Prof_BackColor).Get_String(), MainIniFile);
+    IniWriteKey("Layout", "NormText", "0x" + (CStr) BufString.Hex_To_String(Prof_NormText).Get_String(), MainIniFile);
+    IniWriteKey("Layout", "HighText", "0x" + (CStr) BufString.Hex_To_String(Prof_HighText).Get_String(), MainIniFile);
+    IniWriteKey("Layout", "MarginColor", "0x" + (CStr) BufString.Hex_To_String(Prof_MarginColor).Get_String(), MainIniFile);
+    IniWriteKey("Layout", "LinesColor", "0x" + (CStr) BufString.Hex_To_String(Prof_LinesColor).Get_String(), MainIniFile);
+    IniWriteKey("Layout", "NumbersColorValue", "0x" + (CStr) BufString.Hex_To_String(Prof_NumbersColorValue).Get_String(), MainIniFile);
+    IniWriteKey("Layout", "APIHighColor", "0x" + (CStr) BufString.Hex_To_String(Prof_APIHighColor).Get_String(), MainIniFile);
+    IniWriteKey("Layout", "StringsColorValue", "0x" + (CStr) BufString.Hex_To_String(Prof_StringsColorValue).Get_String(), MainIniFile);
+    IniWriteKey("Layout", "CommentsColorValue", "0x" + (CStr) BufString.Hex_To_String(Prof_CommentsColorValue).Get_String(), MainIniFile);
+    IniWriteKey("Layout", "KeyWordsColorValue", "0x" + (CStr) BufString.Hex_To_String(Prof_KeyWordsColorValue).Get_String(), MainIniFile);
+    IniWriteKey("Layout", "ColorAValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorAValue).Get_String(), MainIniFile);
+    IniWriteKey("Layout", "ColorBValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorBValue).Get_String(), MainIniFile);
+    IniWriteKey("Layout", "ColorCValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorCValue).Get_String(), MainIniFile);
+    IniWriteKey("Layout", "ColorDValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorDValue).Get_String(), MainIniFile);
+    IniWriteKey("Layout", "ColorEValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorEValue).Get_String(), MainIniFile);
+    IniWriteKey("Layout", "ColorFValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorFValue).Get_String(), MainIniFile);
+    IniWriteKey("Layout", "ColorGValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorGValue).Get_String(), MainIniFile);
+    IniWriteKey("Layout", "ColorHValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorHValue).Get_String(), MainIniFile);
+	IniWriteKey("Layout", "CommentItalic", CheckBoxGetState(FRMPropertiesChkItalic), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkItalic) == 0) ItalicFont = 0;
     else ItalicFont = 1;
    
     // Save prototypes generator datas
-    WAIniWriteKey("Layout", "GenProto", WAControlGetText(FRMPropertiesTxtGenProg), MainIniFile);
-    WAIniWriteKey("Layout", "GenCmd", WAControlGetText(FRMPropertiesTxtGenSource), MainIniFile);
-    WAIniWriteKey("Layout", "GenDest", WAControlGetText(FRMPropertiesTxtGenDest), MainIniFile);
+    IniWriteKey("Layout", "GenProto", ControlGetText(FRMPropertiesTxtGenProg), MainIniFile);
+    IniWriteKey("Layout", "GenCmd", ControlGetText(FRMPropertiesTxtGenSource), MainIniFile);
+    IniWriteKey("Layout", "GenDest", ControlGetText(FRMPropertiesTxtGenDest), MainIniFile);
 
     // Project building
-    WAIniWriteKey("Layout", "PrjArg", WAControlGetText(FRMPropertiesTxtArgs), MainIniFile);
-    WAIniWriteKey("Layout", "PrjDebugger", WAControlGetText(FRMPropertiesCbDebugger), MainIniFile);
+    IniWriteKey("Layout", "PrjArg", ControlGetText(FRMPropertiesTxtArgs), MainIniFile);
+    IniWriteKey("Layout", "PrjDebugger", ControlGetText(FRMPropertiesCbDebugger), MainIniFile);
     // Save the list of debuggers now
-    //WAComboBoxSaveInIniFile(FRMPropertiesCbDebugger, WAControlGetText(FRMPropertiesCbDebugger), "ExtDebuggers", MainIniFile);
-    //AddNewDebugger(FRMPropertiesCbDebugger, WAControlGetText(FRMPropertiesCbDebugger));
+    //ComboBoxSaveInIniFile(FRMPropertiesCbDebugger, ControlGetText(FRMPropertiesCbDebugger), "ExtDebuggers", MainIniFile);
+    //AddNewDebugger(FRMPropertiesCbDebugger, ControlGetText(FRMPropertiesCbDebugger));
 
     // Save building steps
-    WAIniWriteKey("Layout", "StepRes", WAListViewGetItemCheckbox(FRMStepListView, 0), MainIniFile);
-    WAIniWriteKey("Layout", "StepAsm", WAListViewGetItemCheckbox(FRMStepListView, 1), MainIniFile);
-    WAIniWriteKey("Layout", "StepLink", WAListViewGetItemCheckbox(FRMStepListView, 2), MainIniFile);
-    WAIniWriteKey("Layout", "StepClean", WAListViewGetItemCheckbox(FRMStepListView, 3), MainIniFile);
+    IniWriteKey("Layout", "StepRes", ListViewGetItemCheckbox(FRMStepListView, 0), MainIniFile);
+    IniWriteKey("Layout", "StepAsm", ListViewGetItemCheckbox(FRMStepListView, 1), MainIniFile);
+    IniWriteKey("Layout", "StepLink", ListViewGetItemCheckbox(FRMStepListView, 2), MainIniFile);
+    IniWriteKey("Layout", "StepClean", ListViewGetItemCheckbox(FRMStepListView, 3), MainIniFile);
     
     // Get skin filename
-    if(WAComboBoxCount(FRMPropertiesCbSkin) != 0)
+    if(ComboBoxCount(FRMPropertiesCbSkin) != 0)
     {
-		TmpSkinName = PrgSkinArray.Get(WAComboBoxGetIndex(FRMPropertiesCbSkin))->Content;
+		TmpSkinName = PrgSkinArray.Get(ComboBoxGetIndex(FRMPropertiesCbSkin))->Content;
     }
 	// Save skin
     for(i = 0; i < PrgSkinControlsDest.Amount(); i++)
@@ -1568,26 +1568,26 @@ void SavePrefs(void)
 		BufString = BufString.Left(5).Upper_Case();
 		if(BufString == "COMBO")
 		{
-            SkinValue = WAComboBoxGetIndex(PrgSkinControls.Get(i)->Content);
-            WAIniWriteKey("CURRENT", PrgSkinControlsDest.Get(i)->Content, SkinValue, TmpSkinName);
+            SkinValue = ComboBoxGetIndex(PrgSkinControls.Get(i)->Content);
+            IniWriteKey("CURRENT", PrgSkinControlsDest.Get(i)->Content, SkinValue, TmpSkinName);
 		}
 		else if(BufString == "CHECK")
 		{
             SkinValue = CheckBoxGetState(PrgSkinControls.Get(i)->Content);
-            WAIniWriteKey("CURRENT", PrgSkinControlsDest.Get(i)->Content, SkinValue, TmpSkinName);
+            IniWriteKey("CURRENT", PrgSkinControlsDest.Get(i)->Content, SkinValue, TmpSkinName);
 		}
 		else if(BufString == "TEXTB")
 		{
-            TextBoxValue = WAControlGetText(PrgSkinControls.Get(i)->Content);
-            WAIniWriteKey("CURRENT", PrgSkinControlsDest.Get(i)->Content, TextBoxValue, TmpSkinName);
+            TextBoxValue = ControlGetText(PrgSkinControls.Get(i)->Content);
+            IniWriteKey("CURRENT", PrgSkinControlsDest.Get(i)->Content, TextBoxValue, TmpSkinName);
 		}
 		else if(BufString == "LISTC")
 		{
-            for(k = 0; k <= (long) WAListViewItemCount(PrgSkinControls.Get(i)->Content); k++)
+            for(k = 0; k <= (long) ListViewItemCount(PrgSkinControls.Get(i)->Content); k++)
             {
                 BufString = PrgSkinControlsDest.Get(i)->Content;
 				BufString = BufString + (CStr) StringNumberComplement(k, 3).Get_String();
-				WAIniWriteKey("CURRENT", BufString, WAListViewGetItemCheckbox(PrgSkinControls.Get(i)->Content, k), TmpSkinName);
+				IniWriteKey("CURRENT", BufString, ListViewGetItemCheckbox(PrgSkinControls.Get(i)->Content, k), TmpSkinName);
             }
 		}
 		else if(BufString == "RADIO")
@@ -1600,21 +1600,21 @@ void SavePrefs(void)
 				RadioValue = BufString.Get_Long();
                 BufString = PrgSkinControlsDest.Get(i)->Content;
 				BufString = BufString.Left(8);
-				WAIniWriteKey("CURRENT", BufString, RadioValue, TmpSkinName);
+				IniWriteKey("CURRENT", BufString, RadioValue, TmpSkinName);
             }
         }
     }
     TmpSkinName = ChangeAbsolutePaths(TmpSkinName);
-    WAIniWriteKey("BuildSkins", "CurrentSkin", TmpSkinName, SkinsIniFile);
+    IniWriteKey("BuildSkins", "CurrentSkin", TmpSkinName, SkinsIniFile);
 
     // Set main window on top or not
-    if(CheckBoxGetState(FRMPropertiesChkOnTop) == 1) WAControlSetTopMost(hMDIform.hWnd);
-    else WAControlRemTopMost(hMDIform.hWnd);
+    if(CheckBoxGetState(FRMPropertiesChkOnTop) == 1) ControlSetTopMost(hMDIform.hWnd);
+    else ControlRemTopMost(hMDIform.hWnd);
     
     // Save default selected language
-    DefLangToStore = WAControlGetText(FRMPropertiesCbDefLang);
+    DefLangToStore = ControlGetText(FRMPropertiesCbDefLang);
     if(DefLangToStore.Len() == 0) DefLangToStore = "";
-    WAIniWriteKey("RefLanguages", "DefLang", DefLangToStore, LanguagesIniFile);
+    IniWriteKey("RefLanguages", "DefLang", DefLangToStore, LanguagesIniFile);
 
 	// Re-init the autosave timer
 	RefreshTimer(hMDIform.hWnd);
@@ -1627,14 +1627,14 @@ void SetBackupEn(void)
     switch(CheckBoxGetState(FRMPropertiesChkBakFiles))
     {
         case 0:
-            WAToolBarSetButtonEnabled(FRMPropertiesTbBackup, BACKUP_SELDIR, 0);
-            WAToolBarSetButtonEnabled(FRMPropertiesTbBackup, BACKUP_DELETE, 0);
-			WAControlEnable(FRMPropertiesChkDecorateBak, 0);
+            ToolBarSetButtonEnabled(FRMPropertiesTbBackup, BACKUP_SELDIR, 0);
+            ToolBarSetButtonEnabled(FRMPropertiesTbBackup, BACKUP_DELETE, 0);
+			ControlEnable(FRMPropertiesChkDecorateBak, 0);
 			break;
 		case 1:
-            WAToolBarSetButtonEnabled(FRMPropertiesTbBackup, BACKUP_SELDIR, 1);
-            WAToolBarSetButtonEnabled(FRMPropertiesTbBackup, BACKUP_DELETE, 1);
-			WAControlEnable(FRMPropertiesChkDecorateBak, 1);
+            ToolBarSetButtonEnabled(FRMPropertiesTbBackup, BACKUP_SELDIR, 1);
+            ToolBarSetButtonEnabled(FRMPropertiesTbBackup, BACKUP_DELETE, 1);
+			ControlEnable(FRMPropertiesChkDecorateBak, 1);
 			break;
     }
 }
@@ -1643,9 +1643,9 @@ void SetBackupEn(void)
 // View the font Name/Size
 void SetFontView(void)
 {
-    WAControlSetText(FRMPropertiesLbFont, CurFontName + (CStr) " (" + (CStr) CurFontSize + (CStr) ")");
+    ControlSetText(FRMPropertiesLbFont, CurFontName + (CStr) " (" + (CStr) CurFontSize + (CStr) ")");
     if(LblFont != 0) DeleteObject(LblFont);
-    LblFont = WAGDIObtainFont(CurFontName, CurFontSize, hMDIform.hWnd, 0, 0);
+    LblFont = GDIObtainFont(CurFontName, CurFontSize, hMDIform.hWnd, 0, 0);
 }
 
 // -----------------------------------------------------------------------
@@ -1776,15 +1776,15 @@ LRESULT CALLBACK FRMPropertiesFrameColors(HWND hWnd, UINT uMsg, WPARAM wParam, L
             }
 			break;
         case WM_NOTIFY:
-            switch(WAControlGetNotifiedMsg(lParam))
+            switch(ControlGetNotifiedMsg(lParam))
             {
                 case TTN_NEEDTEXT:
 					if(Assigned_ToolTip != NULL)
 					{
-						if(WAControlGetNotifiedhWnd(lParam) == Assigned_ToolTip)
+						if(ControlGetNotifiedhWnd(lParam) == Assigned_ToolTip)
 						{
-							Luminosity = WATrackBarGetPos(FRMPropertiesColLuminosity);
-							WAToolBarDisplayToolTip("Luminosity: " + (CStr) Luminosity + (CStr) "%", lParam);
+							Luminosity = TrackBarGetPos(FRMPropertiesColLuminosity);
+							ToolBarDisplayToolTip("Luminosity: " + (CStr) Luminosity + (CStr) "%", lParam);
 							return(0);
 						}
 					}
@@ -1801,25 +1801,25 @@ LRESULT CALLBACK FRMPropertiesFrameColors(HWND hWnd, UINT uMsg, WPARAM wParam, L
                 case TB_LINEDOWN:
                 case TB_PAGEUP:
                 case TB_PAGEDOWN:           
-					Prof_Luminosity = WATrackBarGetPos(FRMPropertiesColLuminosity);
-					ColorBoxSetColor(FRMPropertiesColBackGround, WAGDIColorCalcLuminosity(Orig_Prof_BackColor, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColNormalText, WAGDIColorCalcLuminosity(Orig_Prof_NormText, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColHighlightText, WAGDIColorCalcLuminosity(Orig_Prof_HighText, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColMargin, WAGDIColorCalcLuminosity(Orig_Prof_MarginColor, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColLineNumber, WAGDIColorCalcLuminosity(Orig_Prof_LinesColor, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColNumber, WAGDIColorCalcLuminosity(Orig_Prof_NumbersColorValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColStrings, WAGDIColorCalcLuminosity(Orig_Prof_StringsColorValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColComments, WAGDIColorCalcLuminosity(Orig_Prof_CommentsColorValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColScopeKeywords, WAGDIColorCalcLuminosity(Orig_Prof_KeyWordsColorValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColAPIHighlighting, WAGDIColorCalcLuminosity(Orig_Prof_APIHighColor, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColKeywords, WAGDIColorCalcLuminosity(Orig_Prof_ColorAValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColSeparators, WAGDIColorCalcLuminosity(Orig_Prof_ColorBValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColDirectives, WAGDIColorCalcLuminosity(Orig_Prof_ColorCValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColRegisters, WAGDIColorCalcLuminosity(Orig_Prof_ColorDValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColExtraFunctions, WAGDIColorCalcLuminosity(Orig_Prof_ColorEValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColExtraHighLight1, WAGDIColorCalcLuminosity(Orig_Prof_ColorFValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColExtraHighLight2, WAGDIColorCalcLuminosity(Orig_Prof_ColorGValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColExtraHighLight3, WAGDIColorCalcLuminosity(Orig_Prof_ColorHValue, Prof_Luminosity));
+					Prof_Luminosity = TrackBarGetPos(FRMPropertiesColLuminosity);
+					ColorBoxSetColor(FRMPropertiesColBackGround, GDIColorCalcLuminosity(Orig_Prof_BackColor, Prof_Luminosity));
+					ColorBoxSetColor(FRMPropertiesColNormalText, GDIColorCalcLuminosity(Orig_Prof_NormText, Prof_Luminosity));
+					ColorBoxSetColor(FRMPropertiesColHighlightText, GDIColorCalcLuminosity(Orig_Prof_HighText, Prof_Luminosity));
+					ColorBoxSetColor(FRMPropertiesColMargin, GDIColorCalcLuminosity(Orig_Prof_MarginColor, Prof_Luminosity));
+					ColorBoxSetColor(FRMPropertiesColLineNumber, GDIColorCalcLuminosity(Orig_Prof_LinesColor, Prof_Luminosity));
+					ColorBoxSetColor(FRMPropertiesColNumber, GDIColorCalcLuminosity(Orig_Prof_NumbersColorValue, Prof_Luminosity));
+					ColorBoxSetColor(FRMPropertiesColStrings, GDIColorCalcLuminosity(Orig_Prof_StringsColorValue, Prof_Luminosity));
+					ColorBoxSetColor(FRMPropertiesColComments, GDIColorCalcLuminosity(Orig_Prof_CommentsColorValue, Prof_Luminosity));
+					ColorBoxSetColor(FRMPropertiesColScopeKeywords, GDIColorCalcLuminosity(Orig_Prof_KeyWordsColorValue, Prof_Luminosity));
+					ColorBoxSetColor(FRMPropertiesColAPIHighlighting, GDIColorCalcLuminosity(Orig_Prof_APIHighColor, Prof_Luminosity));
+					ColorBoxSetColor(FRMPropertiesColKeywords, GDIColorCalcLuminosity(Orig_Prof_ColorAValue, Prof_Luminosity));
+					ColorBoxSetColor(FRMPropertiesColSeparators, GDIColorCalcLuminosity(Orig_Prof_ColorBValue, Prof_Luminosity));
+					ColorBoxSetColor(FRMPropertiesColDirectives, GDIColorCalcLuminosity(Orig_Prof_ColorCValue, Prof_Luminosity));
+					ColorBoxSetColor(FRMPropertiesColRegisters, GDIColorCalcLuminosity(Orig_Prof_ColorDValue, Prof_Luminosity));
+					ColorBoxSetColor(FRMPropertiesColExtraFunctions, GDIColorCalcLuminosity(Orig_Prof_ColorEValue, Prof_Luminosity));
+					ColorBoxSetColor(FRMPropertiesColExtraHighLight1, GDIColorCalcLuminosity(Orig_Prof_ColorFValue, Prof_Luminosity));
+					ColorBoxSetColor(FRMPropertiesColExtraHighLight2, GDIColorCalcLuminosity(Orig_Prof_ColorGValue, Prof_Luminosity));
+					ColorBoxSetColor(FRMPropertiesColExtraHighLight3, GDIColorCalcLuminosity(Orig_Prof_ColorHValue, Prof_Luminosity));
 					BuildPreview(FRMPropertiesCodeMax);
 					GdiFlush();
     				return(0);
@@ -1833,7 +1833,7 @@ LRESULT CALLBACK FRMPropertiesFrameColors(HWND hWnd, UINT uMsg, WPARAM wParam, L
 // Pick up a new color
 void FRMPropertiesSetColor(HWND hwnd)
 {
-    if(WAComDlgChooseColor(FRMPropertieshwnd, ColorBoxGetColor(hwnd)) != 0)
+    if(ComDlgChooseColor(FRMPropertieshwnd, ColorBoxGetColor(hwnd)) != 0)
     {
         ColorBoxSetColor(hwnd, MyColor.rgbResult);
         BuildPreview(FRMPropertiesCodeMax);
@@ -1849,7 +1849,7 @@ LRESULT CALLBACK FRMPropertiesFrameExtensions(HWND hWnd, UINT uMsg, WPARAM wPara
         case WM_COMMAND:
             if((HWND) lParam == FRMPropertiesLbFileExt)
             {
-				WAControlSetText(FRMPropertiesTxtFileExt, WAListBoxGetItem(FRMPropertiesLbFileExt, WAListBoxGetSelItemIndex(FRMPropertiesLbFileExt)));
+				ControlSetText(FRMPropertiesTxtFileExt, ListBoxGetItem(FRMPropertiesLbFileExt, ListBoxGetSelItemIndex(FRMPropertiesLbFileExt)));
 				return(0);
             } 
 			break;
@@ -1894,15 +1894,15 @@ void FRMPropertiesInitCodeMax(HWND hwnd)
 // Build the codemax preview control
 void BuildPreview(HWND hwnd)
 {
-    WAControlSetFont(hwnd, LblFont);
+    ControlSetFont(hwnd, LblFont);
     CM_EnableSelBounds(hwnd, CheckBoxGetState(FRMPropertiesChkCursorwrap));
     CM_EnableLeftMargin(hwnd, CheckBoxGetState(FRMPropertiesChkLeftMargin));
     CM_EnableWhitespaceDisplay(hwnd, CheckBoxGetState(FRMPropertiesChkWhiteSpaces));
     SetLines(hwnd);
     if(CheckBoxGetState(FRMPropertiesChkHighlightLine) != 0) CM_SetHighlightedLine(hwnd, FRMPropertiesGetCurrentLineNumber(hwnd));
     else CM_SetHighlightedLine(hwnd, -1);
-    if(WAControlGetText(FRMPropertiesTabulations).Len() == 0) CM_SetTabSize(hwnd, 8);
-    else CM_SetTabSize(hwnd, WAControlGetText(FRMPropertiesTabulations).Get_Long());
+    if(ControlGetText(FRMPropertiesTabulations).Len() == 0) CM_SetTabSize(hwnd, 8);
+    else CM_SetTabSize(hwnd, ControlGetText(FRMPropertiesTabulations).Get_Long());
 	switch(CheckBoxGetState(FRMPropertiesChkLanguageScopeIndent))
 	{
         case 0:
@@ -1928,10 +1928,10 @@ void GetHelpFile(HWND hwnd)
     CStr OpFilters;
 
     OpFilters = "Help files (*.hlp;*.chm;*.col)|*.hlp;*.chm;*.col";
-    LdFile = WAComDlgGetOpenFileName(FRMPropertieshwnd, OpFilters, "", 0, CurrentDir);
+    LdFile = ComDlgGetOpenFileName(FRMPropertieshwnd, OpFilters, "", 0, CurrentDir);
     if(LdFile.Len() == 0) return;
     LdFile = ChangeAbsolutePaths(LdFile);
-    WAControlSetText(hwnd, LdFile);
+    ControlSetText(hwnd, LdFile);
 }
 
 // -----------------------------------------------------------------------
@@ -1942,10 +1942,10 @@ void GetGenProtoProg(void)
     CStr OpFilters;
  
     OpFilters = "Exe files (*.exe;*.com)|*.exe;*.com";
-    LdFile = WAComDlgGetOpenFileName(FRMPropertieshwnd, OpFilters, "", 0, CurrentDir);
+    LdFile = ComDlgGetOpenFileName(FRMPropertieshwnd, OpFilters, "", 0, CurrentDir);
     if(LdFile.Len() == 0) return;
     LdFile = ChangeAbsolutePaths(LdFile);
-    WAControlSetText(FRMPropertiesTxtGenProg, LdFile);
+    ControlSetText(FRMPropertiesTxtGenProg, LdFile);
 }
 
 // -----------------------------------------------------------------------
@@ -1955,7 +1955,7 @@ void FRMPropertiesSelectFont(void)
     CStr FName;
     int i = 0;
 
-    if(WAComDlgChooseFont(FRMPropertieshwnd, CurFontName, CurFontSize, 1) != 0)
+    if(ComDlgChooseFont(FRMPropertieshwnd, CurFontName, CurFontSize, 1) != 0)
     {
         for(i = 0; i <= LF_FACESIZE - 1; i++)
         {
@@ -1983,81 +1983,81 @@ void FRMPropertiesChooseROOTDIR(HWND hwnd)
     else if(hwnd == FRMPropertiesTxtLIBDIR) NewMAsmCaption = "Select libraries/units directory...";
     else if(hwnd == FRMPropertiesTxtHELPDIR) NewMAsmCaption = "Select help directory...";
     else if(hwnd == FRMPropertiesTxtPROJECTSDIR) NewMAsmCaption = "Select Chromatic projects directory...";
-    NewROOTDIR = WAComDlgBrowseForFolder(FRMPropertieshwnd, NewMAsmCaption);
+    NewROOTDIR = ComDlgBrowseForFolder(FRMPropertieshwnd, NewMAsmCaption);
     if(NewROOTDIR.Len() != 0)
     {
-        WAControlSetText(hwnd, NewROOTDIR);
+        ControlSetText(hwnd, NewROOTDIR);
         if(hwnd == FRMPropertiesTxtROOTDIR)
         {
             BufString = "Populate directories from '" + (CStr) NewROOTDIR + (CStr) "' ?";
-            if(WAMiscMsgBox(FRMPropertieshwnd, BufString, MB_QUESTION, Requesters) == IDYES)
+            if(MiscMsgBox(FRMPropertieshwnd, BufString, MB_QUESTION, Requesters) == IDYES)
             {
                 if(strcmp(NewROOTDIR.Right(1).Get_String(), "\\") == 0) NewROOTDIR = NewROOTDIR.Left(NewROOTDIR.Len() - 1);
-                if(WAFileExist(NewROOTDIR + (CStr) "\\bin\\win32"))
+                if(FileExist(NewROOTDIR + (CStr) "\\bin\\win32"))
                 {
-					WAControlSetText(FRMPropertiesTxtBINDIR, NewROOTDIR + (CStr) "\\bin\\win32");
+					ControlSetText(FRMPropertiesTxtBINDIR, NewROOTDIR + (CStr) "\\bin\\win32");
                 }
                 else
                 {
-					if(WAFileExist(NewROOTDIR + (CStr) "\\bin"))
+					if(FileExist(NewROOTDIR + (CStr) "\\bin"))
 					{
-						WAControlSetText(FRMPropertiesTxtBINDIR, NewROOTDIR + (CStr) "\\bin");
+						ControlSetText(FRMPropertiesTxtBINDIR, NewROOTDIR + (CStr) "\\bin");
 					}
 					else
 					{
-						WAControlSetText(FRMPropertiesTxtBINDIR, "");
+						ControlSetText(FRMPropertiesTxtBINDIR, "");
 					}
 				}
-                if(WAFileExist(NewROOTDIR + (CStr) "\\include"))
+                if(FileExist(NewROOTDIR + (CStr) "\\include"))
                 {
-					WAControlSetText(FRMPropertiesTxtINCLUDEDIR, NewROOTDIR + (CStr) "\\include");
+					ControlSetText(FRMPropertiesTxtINCLUDEDIR, NewROOTDIR + (CStr) "\\include");
                 }
                 else
                 {
-					WAControlSetText(FRMPropertiesTxtINCLUDEDIR, "");
+					ControlSetText(FRMPropertiesTxtINCLUDEDIR, "");
 				}
-				if(WAFileExist(NewROOTDIR + (CStr) "\\lib"))
+				if(FileExist(NewROOTDIR + (CStr) "\\lib"))
 				{
-					WAControlSetText(FRMPropertiesTxtLIBDIR, NewROOTDIR + (CStr) "\\lib");
+					ControlSetText(FRMPropertiesTxtLIBDIR, NewROOTDIR + (CStr) "\\lib");
 				}
 				else
 				{
-					if(WAFileExist(NewROOTDIR + (CStr) "\\units\\win32\\rtl"))
+					if(FileExist(NewROOTDIR + (CStr) "\\units\\win32\\rtl"))
 					{
-						WAControlSetText(FRMPropertiesTxtLIBDIR, NewROOTDIR + (CStr) "\\units\\win32\\rtl");
+						ControlSetText(FRMPropertiesTxtLIBDIR, NewROOTDIR + (CStr) "\\units\\win32\\rtl");
 					}
 					else
 					{
-						if(WAFileExist(NewROOTDIR + (CStr) "\\units\\win32"))
+						if(FileExist(NewROOTDIR + (CStr) "\\units\\win32"))
 						{
-							WAControlSetText(FRMPropertiesTxtLIBDIR, NewROOTDIR + (CStr) "\\units\\win32");
+							ControlSetText(FRMPropertiesTxtLIBDIR, NewROOTDIR + (CStr) "\\units\\win32");
 						}
 						else
 						{
-							if(WAFileExist(NewROOTDIR + (CStr) "\\units"))
+							if(FileExist(NewROOTDIR + (CStr) "\\units"))
 							{
-								WAControlSetText(FRMPropertiesTxtLIBDIR, NewROOTDIR + (CStr) "\\units");
+								ControlSetText(FRMPropertiesTxtLIBDIR, NewROOTDIR + (CStr) "\\units");
 							}
 							else
 							{
-								WAControlSetText(FRMPropertiesTxtLIBDIR, "");
+								ControlSetText(FRMPropertiesTxtLIBDIR, "");
 							}
 						}
 					}
 				}
-				if(WAFileExist(NewROOTDIR + (CStr) "\\help"))
+				if(FileExist(NewROOTDIR + (CStr) "\\help"))
 				{
-					WAControlSetText(FRMPropertiesTxtHELPDIR, NewROOTDIR + (CStr) "\\help");
+					ControlSetText(FRMPropertiesTxtHELPDIR, NewROOTDIR + (CStr) "\\help");
 				}
 				else
 				{
-					if(WAFileExist(NewROOTDIR + (CStr) "\\doc"))
+					if(FileExist(NewROOTDIR + (CStr) "\\doc"))
 					{
-						WAControlSetText(FRMPropertiesTxtHELPDIR, NewROOTDIR + (CStr) "\\doc");
+						ControlSetText(FRMPropertiesTxtHELPDIR, NewROOTDIR + (CStr) "\\doc");
 					}
 					else
 					{
-						WAControlSetText(FRMPropertiesTxtHELPDIR, "");
+						ControlSetText(FRMPropertiesTxtHELPDIR, "");
 					}
 				}
 			}
@@ -2074,79 +2074,79 @@ void LoadColorsProfile(CStr ProfileName)
     CStr BufString;
 
     // Load profiles datas
-    RetColProf = WAIniReadKey(ProfileName, "BackColor", ColorsIniFile);
+    RetColProf = IniReadKey(ProfileName, "BackColor", ColorsIniFile);
     if(RetColProf.Len() == 0) goto ProfileCorrupted;
     Prof_BackColor = RetColProf.Get_Hex();
     Orig_Prof_BackColor = Prof_BackColor;
-	RetColProf = WAIniReadKey(ProfileName, "NormText", ColorsIniFile);
+	RetColProf = IniReadKey(ProfileName, "NormText", ColorsIniFile);
     if(RetColProf.Len() == 0) goto ProfileCorrupted;
     Prof_NormText = RetColProf.Get_Hex();
     Orig_Prof_NormText = Prof_NormText;
-    RetColProf = WAIniReadKey(ProfileName, "HighText", ColorsIniFile);
+    RetColProf = IniReadKey(ProfileName, "HighText", ColorsIniFile);
     if(RetColProf.Len() == 0) goto ProfileCorrupted;
     Prof_HighText = RetColProf.Get_Hex();
     Orig_Prof_HighText = Prof_HighText;
-    RetColProf = WAIniReadKey(ProfileName, "MarginColor", ColorsIniFile);
+    RetColProf = IniReadKey(ProfileName, "MarginColor", ColorsIniFile);
     if(RetColProf.Len() == 0) goto ProfileCorrupted;
     Prof_MarginColor = RetColProf.Get_Hex();
     Orig_Prof_MarginColor = Prof_MarginColor;
-    RetColProf = WAIniReadKey(ProfileName, "LinesColor", ColorsIniFile);
+    RetColProf = IniReadKey(ProfileName, "LinesColor", ColorsIniFile);
     if(RetColProf.Len() == 0) goto ProfileCorrupted;
     Prof_LinesColor = RetColProf.Get_Hex();
     Orig_Prof_LinesColor = Prof_LinesColor;
-    RetColProf = WAIniReadKey(ProfileName, "NumbersColorValue", ColorsIniFile);
+    RetColProf = IniReadKey(ProfileName, "NumbersColorValue", ColorsIniFile);
     if(RetColProf.Len() == 0) goto ProfileCorrupted;
     Prof_NumbersColorValue = RetColProf.Get_Hex();
     Orig_Prof_NumbersColorValue = Prof_NumbersColorValue;
-    RetColProf = WAIniReadKey(ProfileName, "StringsColorValue", ColorsIniFile);
+    RetColProf = IniReadKey(ProfileName, "StringsColorValue", ColorsIniFile);
     if(RetColProf.Len() == 0) goto ProfileCorrupted;
     Prof_StringsColorValue = RetColProf.Get_Hex();
     Orig_Prof_StringsColorValue = Prof_StringsColorValue;
-    RetColProf = WAIniReadKey(ProfileName, "CommentsColorValue", ColorsIniFile);
+    RetColProf = IniReadKey(ProfileName, "CommentsColorValue", ColorsIniFile);
     if(RetColProf.Len() == 0) goto ProfileCorrupted;
     Prof_CommentsColorValue = RetColProf.Get_Hex();
     Orig_Prof_CommentsColorValue = Prof_CommentsColorValue;
-    RetColProf = WAIniReadKey(ProfileName, "KeyWordsColorValue", ColorsIniFile);
+    RetColProf = IniReadKey(ProfileName, "KeyWordsColorValue", ColorsIniFile);
     if(RetColProf.Len() == 0) goto ProfileCorrupted;
     Prof_KeyWordsColorValue = RetColProf.Get_Hex();
     Orig_Prof_KeyWordsColorValue = Prof_KeyWordsColorValue;
-    RetColProf = WAIniReadKey(ProfileName, "APIHighColor", ColorsIniFile);
+    RetColProf = IniReadKey(ProfileName, "APIHighColor", ColorsIniFile);
     if(RetColProf.Len() == 0) goto ProfileCorrupted;
     Prof_APIHighColor = RetColProf.Get_Hex();
     Orig_Prof_APIHighColor = Prof_APIHighColor;
-    RetColProf = WAIniReadKey(ProfileName, "ColorAValue", ColorsIniFile);
+    RetColProf = IniReadKey(ProfileName, "ColorAValue", ColorsIniFile);
     if(RetColProf.Len() == 0) goto ProfileCorrupted;
     Prof_ColorAValue = RetColProf.Get_Hex();
     Orig_Prof_ColorAValue = Prof_ColorAValue;
-    RetColProf = WAIniReadKey(ProfileName, "ColorBValue", ColorsIniFile);
+    RetColProf = IniReadKey(ProfileName, "ColorBValue", ColorsIniFile);
     if(RetColProf.Len() == 0) goto ProfileCorrupted;
     Prof_ColorBValue = RetColProf.Get_Hex();
     Orig_Prof_ColorBValue = Prof_ColorBValue;
-    RetColProf = WAIniReadKey(ProfileName, "ColorCValue", ColorsIniFile);
+    RetColProf = IniReadKey(ProfileName, "ColorCValue", ColorsIniFile);
     if(RetColProf.Len() == 0) goto ProfileCorrupted;
     Prof_ColorCValue = RetColProf.Get_Hex();
     Orig_Prof_ColorCValue = Prof_ColorCValue;
-    RetColProf = WAIniReadKey(ProfileName, "ColorDValue", ColorsIniFile);
+    RetColProf = IniReadKey(ProfileName, "ColorDValue", ColorsIniFile);
     if(RetColProf.Len() == 0) goto ProfileCorrupted;
     Prof_ColorDValue = RetColProf.Get_Hex();
     Orig_Prof_ColorDValue = Prof_ColorDValue;
-    RetColProf = WAIniReadKey(ProfileName, "ColorEValue", ColorsIniFile);
+    RetColProf = IniReadKey(ProfileName, "ColorEValue", ColorsIniFile);
     if(RetColProf.Len() == 0) goto ProfileCorrupted;
     Prof_ColorEValue = RetColProf.Get_Hex();
     Orig_Prof_ColorEValue = Prof_ColorEValue;
 
-    RetValProf = WAIniReadKey(ProfileName, "ItalicComment", ColorsIniFile);
+    RetValProf = IniReadKey(ProfileName, "ItalicComment", ColorsIniFile);
     if(RetValProf.Len() == 0) goto ProfileCorrupted;
     Prof_ItalicComment = RetValProf.Get_Long();
 
     // Handle new profile keys
-    RetColProf = WAIniReadKey(ProfileName, "ColorFValue", ColorsIniFile);
+    RetColProf = IniReadKey(ProfileName, "ColorFValue", ColorsIniFile);
     if(RetColProf.Len() == 0) RetColProf = "0";
     Prof_ColorFValue = RetColProf.Get_Hex();
-    RetColProf = WAIniReadKey(ProfileName, "ColorGValue", ColorsIniFile);
+    RetColProf = IniReadKey(ProfileName, "ColorGValue", ColorsIniFile);
     if(RetColProf.Len() == 0) RetColProf = "0";
     Prof_ColorGValue = RetColProf.Get_Hex();
-    RetColProf = WAIniReadKey(ProfileName, "ColorHValue", ColorsIniFile);
+    RetColProf = IniReadKey(ProfileName, "ColorHValue", ColorsIniFile);
     if(RetColProf.Len() == 0) RetColProf = "0";
     Prof_ColorHValue = RetColProf.Get_Hex();
     
@@ -2170,12 +2170,12 @@ void LoadColorsProfile(CStr ProfileName)
     ColorBoxSetColor(FRMPropertiesColExtraHighLight3, Prof_ColorHValue);
     
 	// Reset slider
-    WATrackBarSetPos(FRMPropertiesColLuminosity, 100);
+    TrackBarSetPos(FRMPropertiesColLuminosity, 100);
 	CheckBoxSetState(FRMPropertiesChkItalic, Prof_ItalicComment);
     BuildPreview(FRMPropertiesCodeMax);
     return;
 ProfileCorrupted:
-    WAMiscMsgBox(FRMPropertieshwnd, "Color profile corrupted or missing.", MB_ERROR, Requesters);
+    MiscMsgBox(FRMPropertieshwnd, "Color profile corrupted or missing.", MB_ERROR, Requesters);
     SetFocus(FRMPropertiesCbColors);
 }
 
@@ -2195,12 +2195,12 @@ long SaveColorsProfile(CStr ProfileName)
     NoReg = 0;
     for(i = 0; i <= 999; i++)
     {
-        FRMPropertiesRetVal = WAIniReadKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), ColorsIniFile);
+        FRMPropertiesRetVal = IniReadKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), ColorsIniFile);
         if(FRMPropertiesRetVal.Len() == 0) break;
         if(strcmpi(FRMPropertiesRetVal.Get_String(), UProfName.Get_String()) == 0)
         {
             NoReg = 1;
-            if(WAMiscMsgBox(FRMPropertieshwnd, "Profile already exists. Overwrite it ?", MB_QUESTION, Requesters) == IDNO)
+            if(MiscMsgBox(FRMPropertieshwnd, "Profile already exists. Overwrite it ?", MB_QUESTION, Requesters) == IDNO)
             {
                 NoReg = 2;
                 break;
@@ -2216,34 +2216,34 @@ long SaveColorsProfile(CStr ProfileName)
         // New profil
         case 0:
             // Register name
-            WAIniWriteKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), ProfNameToRegister, ColorsIniFile);
+            IniWriteKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), ProfNameToRegister, ColorsIniFile);
 			break;
 		case 2:
             return(1);
     }
-    WAIniWriteKey(ProfNameToRegister, "BackColor", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColBackGround)).Get_String(), ColorsIniFile);
-    WAIniWriteKey(ProfNameToRegister, "NormText", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColNormalText)).Get_String(), ColorsIniFile);
-    WAIniWriteKey(ProfNameToRegister, "HighText", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColHighlightText)).Get_String(), ColorsIniFile);
-    WAIniWriteKey(ProfNameToRegister, "MarginColor", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColMargin)).Get_String(), ColorsIniFile);
-    WAIniWriteKey(ProfNameToRegister, "LinesColor", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColLineNumber)).Get_String(), ColorsIniFile);
-    WAIniWriteKey(ProfNameToRegister, "NumbersColorValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColNumber)).Get_String(), ColorsIniFile);
-    WAIniWriteKey(ProfNameToRegister, "StringsColorValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColStrings)).Get_String(), ColorsIniFile);
-    WAIniWriteKey(ProfNameToRegister, "CommentsColorValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColComments)).Get_String(), ColorsIniFile);
-    WAIniWriteKey(ProfNameToRegister, "KeyWordsColorValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColScopeKeywords)).Get_String(), ColorsIniFile);
-    WAIniWriteKey(ProfNameToRegister, "APIHighColor", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColAPIHighlighting)).Get_String(), ColorsIniFile);
-    WAIniWriteKey(ProfNameToRegister, "ColorAValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColKeywords)).Get_String(), ColorsIniFile);
-    WAIniWriteKey(ProfNameToRegister, "ColorBValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColSeparators)).Get_String(), ColorsIniFile);
-    WAIniWriteKey(ProfNameToRegister, "ColorCValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColDirectives)).Get_String(), ColorsIniFile);
-    WAIniWriteKey(ProfNameToRegister, "ColorDValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColRegisters)).Get_String(), ColorsIniFile);
-    WAIniWriteKey(ProfNameToRegister, "ColorEValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColExtraFunctions)).Get_String(), ColorsIniFile);
-    WAIniWriteKey(ProfNameToRegister, "ColorFValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColExtraHighLight1)).Get_String(), ColorsIniFile);
-    WAIniWriteKey(ProfNameToRegister, "ColorGValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColExtraHighLight2)).Get_String(), ColorsIniFile);
-    WAIniWriteKey(ProfNameToRegister, "ColorHValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColExtraHighLight3)).Get_String(), ColorsIniFile);
-    WAIniWriteKey(ProfNameToRegister, "ItalicComment", CheckBoxGetState(FRMPropertiesChkItalic), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "BackColor", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColBackGround)).Get_String(), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "NormText", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColNormalText)).Get_String(), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "HighText", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColHighlightText)).Get_String(), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "MarginColor", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColMargin)).Get_String(), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "LinesColor", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColLineNumber)).Get_String(), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "NumbersColorValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColNumber)).Get_String(), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "StringsColorValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColStrings)).Get_String(), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "CommentsColorValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColComments)).Get_String(), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "KeyWordsColorValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColScopeKeywords)).Get_String(), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "APIHighColor", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColAPIHighlighting)).Get_String(), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "ColorAValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColKeywords)).Get_String(), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "ColorBValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColSeparators)).Get_String(), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "ColorCValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColDirectives)).Get_String(), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "ColorDValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColRegisters)).Get_String(), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "ColorEValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColExtraFunctions)).Get_String(), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "ColorFValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColExtraHighLight1)).Get_String(), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "ColorGValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColExtraHighLight2)).Get_String(), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "ColorHValue", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColExtraHighLight3)).Get_String(), ColorsIniFile);
+    IniWriteKey(ProfNameToRegister, "ItalicComment", CheckBoxGetState(FRMPropertiesChkItalic), ColorsIniFile);
     FillProfil();
-    WAControlSetText(FRMPropertiesCbColors, ProfNameToRegister);
+    ControlSetText(FRMPropertiesCbColors, ProfNameToRegister);
     BufString = "Profile '" + (CStr) ProfNameToRegister + (CStr) "' saved.";
-    WAMiscMsgBox(FRMPropertieshwnd, BufString, MB_INFORMATION, Requesters);
+    MiscMsgBox(FRMPropertieshwnd, BufString, MB_INFORMATION, Requesters);
 	return(1);
 }
 
@@ -2253,13 +2253,13 @@ void SetLines(HWND hWnd)
 {
     CStr LnSt;
 
-    LnSt = WAControlGetText(FRMPropertiesTxtLines);
+    LnSt = ControlGetText(FRMPropertiesTxtLines);
     if(LnSt.Len() == 0)
     {
         LnSt = "0";
-        WAControlSetText(FRMPropertiesTxtLines, LnSt);
+        ControlSetText(FRMPropertiesTxtLines, LnSt);
     }
-	SetCodeMaxLineStyle(hWnd, WAComboBoxGetIndex(FRMPropertiesCbLines));
+	SetCodeMaxLineStyle(hWnd, ComboBoxGetIndex(FRMPropertiesCbLines));
 }
 
 // -----------------------------------------------------------------------
@@ -2378,11 +2378,11 @@ void FRMPropertiesSelectBakDir(void)
 {
     CStr NewBakDir;
     
-	NewBakDir = WAComDlgBrowseForFolder(FRMPropertieshwnd, "Select default .BAK directory...");
+	NewBakDir = ComDlgBrowseForFolder(FRMPropertieshwnd, "Select default .BAK directory...");
     if(NewBakDir.Len() != 0)
     {
         NewBakDir = ChangeAbsolutePaths(NewBakDir);
-        WAControlSetText(FRMPropertiesTxtBackupDir, NewBakDir);
+        ControlSetText(FRMPropertiesTxtBackupDir, NewBakDir);
     }
 }
 
@@ -2393,7 +2393,7 @@ LRESULT CALLBACK FRMPropertiesFrameCodeMax(HWND hWnd, UINT uMsg, WPARAM wParam, 
     switch(uMsg)
     {
         case WM_NOTIFY:
-            switch(WAControlGetNotifiedMsg(lParam))
+            switch(ControlGetNotifiedMsg(lParam))
             {
                 case CMN_SELCHANGE:
                     if(CheckBoxGetState(FRMPropertiesChkHighlightLine) == 1)
@@ -2423,7 +2423,7 @@ LRESULT CALLBACK FRMPropertiesFrameManagment(HWND hWnd, UINT uMsg, WPARAM wParam
         case WM_COMMAND:
             if((HWND) lParam == FRMPropertiesCbAccounts)
             {
-                if(WAControlGetNotifiedCommand(wParam) == CBN_SELCHANGE)
+                if(ControlGetNotifiedCommand(wParam) == CBN_SELCHANGE)
                 {
                     FRMPropertiesInFtpCreation = 0;
                     FillFTPProps();
@@ -2498,7 +2498,7 @@ int CALLBACK EnumRefreshChilds(HWND hWnd, long lParam)
     }
     else
     {
-        if(WAControlIsWindowChild(hWnd) == 1)
+        if(ControlIsWindowChild(hWnd) == 1)
         {
             if(GetWindowLong(hWnd, GWL_USERDATA) != 0)
             {
@@ -2527,9 +2527,9 @@ int CALLBACK EnumRefreshChilds(HWND hWnd, long lParam)
 void BuildFTP(HWND hComboBox)
 {
     FillFTPCombo(hComboBox);
-    if(WAComboBoxCount(FRMPropertiesCbAccounts) != 0)
+    if(ComboBoxCount(FRMPropertiesCbAccounts) != 0)
     {
-        WAComboBoxSetIndex(FRMPropertiesCbAccounts, 0);
+        ComboBoxSetIndex(FRMPropertiesCbAccounts, 0);
         FillFTPProps();
     }
 }
@@ -2541,10 +2541,10 @@ void FillFTPProps(void)
     CStr AccountName;
     CStr DecryptedPass;
 
-    AccountName = WAControlGetText(FRMPropertiesCbAccounts);
+    AccountName = ControlGetText(FRMPropertiesCbAccounts);
     if(AccountName.Len() == 0) return;
-    WAControlSetText(FRMPropertiesTxtIP, WAIniReadKey(AccountName, "FTPIP", FtpAccountsIniFile));
-    FRMPropertiesRetVal = WAIniReadKey(AccountName, "FTPAnon", FtpAccountsIniFile);
+    ControlSetText(FRMPropertiesTxtIP, IniReadKey(AccountName, "FTPIP", FtpAccountsIniFile));
+    FRMPropertiesRetVal = IniReadKey(AccountName, "FTPAnon", FtpAccountsIniFile);
     if(FRMPropertiesRetVal.Len() != 0)
     {
         CheckBoxSetState(FRMPropertiesChkAnonymous, FRMPropertiesRetVal.Get_Long());
@@ -2554,36 +2554,36 @@ void FillFTPProps(void)
         CheckBoxSetState(FRMPropertiesChkAnonymous, 0);
     }
     SetAnonymousState(1);
-    WAControlSetText(FRMPropertiesTxtUserName, WAIniReadKey(AccountName, "FTPUserName", FtpAccountsIniFile));
-    FRMPropertiesRetVal = WAIniReadKey(AccountName, "FTPSavePass", FtpAccountsIniFile);
+    ControlSetText(FRMPropertiesTxtUserName, IniReadKey(AccountName, "FTPUserName", FtpAccountsIniFile));
+    FRMPropertiesRetVal = IniReadKey(AccountName, "FTPSavePass", FtpAccountsIniFile);
     if(FRMPropertiesRetVal.Len() != 0)
     {
-        WAComboBoxSetIndex(FRMPropertiesCbPasswordType, FRMPropertiesRetVal.Get_Long());
+        ComboBoxSetIndex(FRMPropertiesCbPasswordType, FRMPropertiesRetVal.Get_Long());
         switch(FRMPropertiesRetVal.Get_Long())
         {
             case 0:
-                WAControlSetText(FRMPropertiesTxtPassword, "");
+                ControlSetText(FRMPropertiesTxtPassword, "");
 				break;
 			case 1:
-                WAControlSetText(FRMPropertiesTxtPassword, WAIniReadKey(AccountName, "FTPUserPass", FtpAccountsIniFile));
+                ControlSetText(FRMPropertiesTxtPassword, IniReadKey(AccountName, "FTPUserPass", FtpAccountsIniFile));
 				break;
             case 2:
                 // Load password and decrypt it
-                DecryptedPass = WAIniReadKey(AccountName, "FTPUserPass", FtpAccountsIniFile);
-                WAControlSetText(FRMPropertiesTxtPassword, DecryptPassword(DecryptedPass));
+                DecryptedPass = IniReadKey(AccountName, "FTPUserPass", FtpAccountsIniFile);
+                ControlSetText(FRMPropertiesTxtPassword, DecryptPassword(DecryptedPass));
 				break;
         }
     }
     else
     {
-        WAComboBoxSetIndex(FRMPropertiesCbPasswordType, 0);
-        WAControlSetText(FRMPropertiesTxtPassword, "");
+        ComboBoxSetIndex(FRMPropertiesCbPasswordType, 0);
+        ControlSetText(FRMPropertiesTxtPassword, "");
     }
-    WAControlSetText(FRMPropertiesTxtInitialPath, WAIniReadKey(AccountName, "FTPPath", FtpAccountsIniFile));
-    WAControlSetText(FRMPropertiesTxtFTPPort, WAIniReadKey(AccountName, "FTPPort", FtpAccountsIniFile));
+    ControlSetText(FRMPropertiesTxtInitialPath, IniReadKey(AccountName, "FTPPath", FtpAccountsIniFile));
+    ControlSetText(FRMPropertiesTxtFTPPort, IniReadKey(AccountName, "FTPPort", FtpAccountsIniFile));
     
-    WAControlSetText(FRMPropertiesTxtFTPTimeOut, WAIniReadKey(AccountName, "FTPTimeOut", FtpAccountsIniFile));
-    FRMPropertiesRetVal = WAIniReadKey(AccountName, "FTPTransfersType", FtpAccountsIniFile);
+    ControlSetText(FRMPropertiesTxtFTPTimeOut, IniReadKey(AccountName, "FTPTimeOut", FtpAccountsIniFile));
+    FRMPropertiesRetVal = IniReadKey(AccountName, "FTPTransfersType", FtpAccountsIniFile);
     if(FRMPropertiesRetVal.Len() != 0)
     {
         switch(FRMPropertiesRetVal.Get_Long())
@@ -2603,7 +2603,7 @@ void FillFTPProps(void)
         RadioButtonSetState(FRMPropertiesRBASCII, 0);
         RadioButtonSetState(FRMPropertiesRBBinary, 1);
     }
-    FRMPropertiesRetVal = WAIniReadKey(AccountName, "FTPPassive", FtpAccountsIniFile);
+    FRMPropertiesRetVal = IniReadKey(AccountName, "FTPPassive", FtpAccountsIniFile);
     if(FRMPropertiesRetVal.Len() != 0)
     {
         CheckBoxSetState(FRMPropertiesChkPassive, FRMPropertiesRetVal.Get_Long());
@@ -2618,15 +2618,15 @@ void FillFTPProps(void)
 // Reset all ftp account fields
 void ResetFTPProps(void)
 {
-    WAControlSetText(FRMPropertiesTxtIP, "");
+    ControlSetText(FRMPropertiesTxtIP, "");
     CheckBoxSetState(FRMPropertiesChkAnonymous, 0);
     SetAnonymousState(0);
-    WAControlSetText(FRMPropertiesTxtUserName, "");
-    WAComboBoxSetIndex(FRMPropertiesCbPasswordType, 0);
-    WAControlSetText(FRMPropertiesTxtPassword, "");
-    WAControlSetText(FRMPropertiesTxtInitialPath, "");
-    WAControlSetText(FRMPropertiesTxtFTPPort, "");
-    WAControlSetText(FRMPropertiesTxtFTPTimeOut, "");
+    ControlSetText(FRMPropertiesTxtUserName, "");
+    ComboBoxSetIndex(FRMPropertiesCbPasswordType, 0);
+    ControlSetText(FRMPropertiesTxtPassword, "");
+    ControlSetText(FRMPropertiesTxtInitialPath, "");
+    ControlSetText(FRMPropertiesTxtFTPPort, "");
+    ControlSetText(FRMPropertiesTxtFTPTimeOut, "");
     RadioButtonSetState(FRMPropertiesRBASCII, 0);
     RadioButtonSetState(FRMPropertiesRBBinary, 1);
     CheckBoxSetState(FRMPropertiesChkPassive, 0);
@@ -2639,15 +2639,15 @@ void SetAnonymousState(long DontFocus)
     switch(CheckBoxGetState(FRMPropertiesChkAnonymous))
     {
         case 0:
-            WAControlEnable(FRMPropertiesTxtUserName, 1);
-            WAControlEnable(FRMPropertiesTxtPassword, 1);
-            WAControlEnable(FRMPropertiesCbPasswordType, 1);
+            ControlEnable(FRMPropertiesTxtUserName, 1);
+            ControlEnable(FRMPropertiesTxtPassword, 1);
+            ControlEnable(FRMPropertiesCbPasswordType, 1);
             if(DontFocus == 0) SetFocus(FRMPropertiesTxtUserName);
 			break;
         case 1:
-            WAControlEnable(FRMPropertiesTxtUserName, 0);
-            WAControlEnable(FRMPropertiesTxtPassword, 0);
-            WAControlEnable(FRMPropertiesCbPasswordType, 0);
+            ControlEnable(FRMPropertiesTxtUserName, 0);
+            ControlEnable(FRMPropertiesTxtPassword, 0);
+            ControlEnable(FRMPropertiesCbPasswordType, 0);
 			break;
 	}
 }
@@ -2660,292 +2660,292 @@ void SaveFTPProps(void)
     CStr AccountName;
     CStr BufString;
     
-	AccountName = WAControlGetText(FRMPropertiesCbAccounts);
+	AccountName = ControlGetText(FRMPropertiesCbAccounts);
     if(AccountName.Len() == 0) return;
     // Search account key
     for(i = 0; i <= 999; i++)
     {
-        FRMPropertiesRetVal = WAIniReadKey("FTPAccounts", "FTPAccount" + (CStr) StringNumberComplement(i, 3).Get_String(), FtpAccountsIniFile);
+        FRMPropertiesRetVal = IniReadKey("FTPAccounts", "FTPAccount" + (CStr) StringNumberComplement(i, 3).Get_String(), FtpAccountsIniFile);
         if(FRMPropertiesRetVal.Len() == 0) break;
         if(strcmpi(AccountName.Get_String(), FRMPropertiesRetVal.Get_String()) == 0) break;
     }
     // Add account name
-    WAIniWriteKey("FTPAccounts", "FTPAccount" + (CStr) StringNumberComplement(i, 3).Get_String(), AccountName, FtpAccountsIniFile);
+    IniWriteKey("FTPAccounts", "FTPAccount" + (CStr) StringNumberComplement(i, 3).Get_String(), AccountName, FtpAccountsIniFile);
     // Save account datas
-    WAIniWriteKey(AccountName, "FTPIP", WAControlGetText(FRMPropertiesTxtIP), FtpAccountsIniFile);
-    WAIniWriteKey(AccountName, "FTPAnon", CheckBoxGetState(FRMPropertiesChkAnonymous), FtpAccountsIniFile);
-    WAIniWriteKey(AccountName, "FTPUserName", WAControlGetText(FRMPropertiesTxtUserName), FtpAccountsIniFile);
-    switch(WAComboBoxGetIndex(FRMPropertiesCbPasswordType))
+    IniWriteKey(AccountName, "FTPIP", ControlGetText(FRMPropertiesTxtIP), FtpAccountsIniFile);
+    IniWriteKey(AccountName, "FTPAnon", CheckBoxGetState(FRMPropertiesChkAnonymous), FtpAccountsIniFile);
+    IniWriteKey(AccountName, "FTPUserName", ControlGetText(FRMPropertiesTxtUserName), FtpAccountsIniFile);
+    switch(ComboBoxGetIndex(FRMPropertiesCbPasswordType))
     {
         case 0:
-            WAIniWriteKey(AccountName, "FTPUserPass", "", FtpAccountsIniFile);
+            IniWriteKey(AccountName, "FTPUserPass", "", FtpAccountsIniFile);
 			break;
 		case 1:
-            WAIniWriteKey(AccountName, "FTPUserPass", WAControlGetText(FRMPropertiesTxtPassword), FtpAccountsIniFile);
+            IniWriteKey(AccountName, "FTPUserPass", ControlGetText(FRMPropertiesTxtPassword), FtpAccountsIniFile);
 			break;
         case 2:
-            WAIniWriteKey(AccountName, "FTPUserPass", CryptPassword(WAControlGetText(FRMPropertiesTxtPassword)), FtpAccountsIniFile);
+            IniWriteKey(AccountName, "FTPUserPass", CryptPassword(ControlGetText(FRMPropertiesTxtPassword)), FtpAccountsIniFile);
 			break;
     }
-    WAIniWriteKey(AccountName, "FTPSavePass ", WAComboBoxGetIndex(FRMPropertiesCbPasswordType), FtpAccountsIniFile);
-    WAIniWriteKey(AccountName, "FTPPath", WAControlGetText(FRMPropertiesTxtInitialPath), FtpAccountsIniFile);
-    WAIniWriteKey(AccountName, "FTPPort", WAControlGetText(FRMPropertiesTxtFTPPort), FtpAccountsIniFile);
-    WAIniWriteKey(AccountName, "FTPTimeOut", WAControlGetText(FRMPropertiesTxtFTPTimeOut), FtpAccountsIniFile);
+    IniWriteKey(AccountName, "FTPSavePass ", ComboBoxGetIndex(FRMPropertiesCbPasswordType), FtpAccountsIniFile);
+    IniWriteKey(AccountName, "FTPPath", ControlGetText(FRMPropertiesTxtInitialPath), FtpAccountsIniFile);
+    IniWriteKey(AccountName, "FTPPort", ControlGetText(FRMPropertiesTxtFTPPort), FtpAccountsIniFile);
+    IniWriteKey(AccountName, "FTPTimeOut", ControlGetText(FRMPropertiesTxtFTPTimeOut), FtpAccountsIniFile);
     switch(RadioButtonGetState(FRMPropertiesRBASCII))
     {
         case 1:
-            WAIniWriteKey(AccountName, "FTPTransfersType", "1", FtpAccountsIniFile);
+            IniWriteKey(AccountName, "FTPTransfersType", "1", FtpAccountsIniFile);
 			break;
 	}
     switch(RadioButtonGetState(FRMPropertiesRBBinary))
     {
         case 1:
-            WAIniWriteKey(AccountName, "FTPTransfersType", "2", FtpAccountsIniFile);
+            IniWriteKey(AccountName, "FTPTransfersType", "2", FtpAccountsIniFile);
 			break;
     }
-    WAIniWriteKey(AccountName, "FTPPassive", CheckBoxGetState(FRMPropertiesChkPassive), FtpAccountsIniFile);
+    IniWriteKey(AccountName, "FTPPassive", CheckBoxGetState(FRMPropertiesChkPassive), FtpAccountsIniFile);
     BufString = "FTP account '" + (CStr) AccountName + (CStr) "' updated.",
-    WAMiscMsgBox(FRMPropertieshwnd, BufString, MB_INFORMATION, Requesters);
+    MiscMsgBox(FRMPropertieshwnd, BufString, MB_INFORMATION, Requesters);
 }
 
 // -----------------------------------------------------------------------
 // Set the current tab to view
 void FRMPropertiesChangeCurrentTab(void)
 {
-    switch(WASysTabGetCurrentItem(FRMPropertiesSysTab))
+    switch(SysTabGetCurrentItem(FRMPropertiesSysTab))
     {
         case 0:
-            WAControlVisible(FRMPropertiesPageColors, 0);
-            WAControlVisible(FRMPropertiesTbColors, 0);
-            WAControlVisible(FRMPropertiesPageAPIHelp, 0);
-            WAControlVisible(FRMPropertiesCmdWindowsAPI, 0);
-            WAControlVisible(FRMPropertiesPageSDKHelp, 0);
-            WAControlVisible(FRMPropertiesCmdMSDN, 0);
-            WAControlVisible(FRMPropertiesPageCodeMax, 0);
-            WAControlVisible(FRMPropertiesPageDDKHelp, 0);
-            WAControlVisible(FRMPropertiesCmdDDK, 0);
-            WAControlVisible(FRMPropertiesPageDirectXSDKHelp, 0);
-            WAControlVisible(FRMPropertiesCmdDirectXSDK, 0);
-            WAControlVisible(FRMPropertiesPageExtrasLayouts, 0);
-            WAControlVisible(FRMPropertiesCmdRegs, 0);
-            WAControlVisible(FRMPropertiesPageFolders, 0);
-            WAControlVisible(FRMPropertiesTbROOTDIR, 0);
-            WAControlVisible(FRMPropertiesTbBINDIR, 0);
-            WAControlVisible(FRMPropertiesTbINCLUDEDIR, 0);
-            WAControlVisible(FRMPropertiesTbLIBDIR, 0);
-            WAControlVisible(FRMPropertiesTbHELPDIR, 0);
-            WAControlVisible(FRMPropertiesTbPROJECTSDIR, 0);
-            WAControlVisible(FRMPropertiesPageProjects, 0);
-            WAControlVisible(FRMPropertiesCmdDebugger, 0);
-            WAControlVisible(FRMPropertiesTbValidDebugger, 0);
-            WAControlVisible(FRMPropertiesPageProtoGen, 0);
-            WAControlVisible(FRMPropertiesCmdGenProg, 0);
-            WAControlVisible(FRMPropertiesPageFTPManage, 0);
-            WAControlVisible(FRMPropertiesTbAccounts, 0);
-            WAControlVisible(FRMPropertiesPageAccountInfos, 0);
-            WAControlVisible(FRMPropertiesPageTransfersTypes, 0);
-            WAControlVisible(FRMPropertiesPageCodingHelp, 0);
-            WAControlVisible(FRMPropertiesPageExtrasLayouts2, 0);
-            WAControlVisible(FRMPropertiesPageEditor, 1);
-            WAControlVisible(FRMPropertiesPageFileExtensions, 1);
-            WAControlVisible(FRMPropertiesTbFileExt, 1);
-            WAControlVisible(FRMPropertiesPageOther, 1);
-            WAControlVisible(FRMPropertiesPageFont, 1);
-            WAControlVisible(FRMPropertiesCmdFontChoose, 1);
-            WAControlVisible(FRMPropertiesPageAutoSave, 1);
-            WAControlVisible(FRMPropertiesPageEditor2, 1);
-            WAControlVisible(FRMPropertiesPageLineNumbering, 1);
-            WAControlVisible(FRMPropertiesPageBackup, 1);
-            WAControlVisible(FRMPropertiesTbBackup, 1);
-            WAControlBringToTop(FRMPropertiesTbBackup);
-            WAControlBringToTop(FRMPropertiesTbFileExt);
-            WAControlBringToTop(FRMPropertiesPageEditor);
+            ControlVisible(FRMPropertiesPageColors, 0);
+            ControlVisible(FRMPropertiesTbColors, 0);
+            ControlVisible(FRMPropertiesPageAPIHelp, 0);
+            ControlVisible(FRMPropertiesCmdWindowsAPI, 0);
+            ControlVisible(FRMPropertiesPageSDKHelp, 0);
+            ControlVisible(FRMPropertiesCmdMSDN, 0);
+            ControlVisible(FRMPropertiesPageCodeMax, 0);
+            ControlVisible(FRMPropertiesPageDDKHelp, 0);
+            ControlVisible(FRMPropertiesCmdDDK, 0);
+            ControlVisible(FRMPropertiesPageDirectXSDKHelp, 0);
+            ControlVisible(FRMPropertiesCmdDirectXSDK, 0);
+            ControlVisible(FRMPropertiesPageExtrasLayouts, 0);
+            ControlVisible(FRMPropertiesCmdRegs, 0);
+            ControlVisible(FRMPropertiesPageFolders, 0);
+            ControlVisible(FRMPropertiesTbROOTDIR, 0);
+            ControlVisible(FRMPropertiesTbBINDIR, 0);
+            ControlVisible(FRMPropertiesTbINCLUDEDIR, 0);
+            ControlVisible(FRMPropertiesTbLIBDIR, 0);
+            ControlVisible(FRMPropertiesTbHELPDIR, 0);
+            ControlVisible(FRMPropertiesTbPROJECTSDIR, 0);
+            ControlVisible(FRMPropertiesPageProjects, 0);
+            ControlVisible(FRMPropertiesCmdDebugger, 0);
+            ControlVisible(FRMPropertiesTbValidDebugger, 0);
+            ControlVisible(FRMPropertiesPageProtoGen, 0);
+            ControlVisible(FRMPropertiesCmdGenProg, 0);
+            ControlVisible(FRMPropertiesPageFTPManage, 0);
+            ControlVisible(FRMPropertiesTbAccounts, 0);
+            ControlVisible(FRMPropertiesPageAccountInfos, 0);
+            ControlVisible(FRMPropertiesPageTransfersTypes, 0);
+            ControlVisible(FRMPropertiesPageCodingHelp, 0);
+            ControlVisible(FRMPropertiesPageExtrasLayouts2, 0);
+            ControlVisible(FRMPropertiesPageEditor, 1);
+            ControlVisible(FRMPropertiesPageFileExtensions, 1);
+            ControlVisible(FRMPropertiesTbFileExt, 1);
+            ControlVisible(FRMPropertiesPageOther, 1);
+            ControlVisible(FRMPropertiesPageFont, 1);
+            ControlVisible(FRMPropertiesCmdFontChoose, 1);
+            ControlVisible(FRMPropertiesPageAutoSave, 1);
+            ControlVisible(FRMPropertiesPageEditor2, 1);
+            ControlVisible(FRMPropertiesPageLineNumbering, 1);
+            ControlVisible(FRMPropertiesPageBackup, 1);
+            ControlVisible(FRMPropertiesTbBackup, 1);
+            ControlBringToTop(FRMPropertiesTbBackup);
+            ControlBringToTop(FRMPropertiesTbFileExt);
+            ControlBringToTop(FRMPropertiesPageEditor);
 			break;
 		case 1:
-            WAControlVisible(FRMPropertiesPageEditor, 0);
-            WAControlVisible(FRMPropertiesPageFileExtensions, 0);
-            WAControlVisible(FRMPropertiesTbFileExt, 0);
-            WAControlVisible(FRMPropertiesPageOther, 0);
-            WAControlVisible(FRMPropertiesPageFont, 0);
-            WAControlVisible(FRMPropertiesCmdFontChoose, 0);
-            WAControlVisible(FRMPropertiesPageAutoSave, 0);
-            WAControlVisible(FRMPropertiesPageEditor2, 0);
-            WAControlVisible(FRMPropertiesPageLineNumbering, 0);
-            WAControlVisible(FRMPropertiesPageBackup, 0);
-            WAControlVisible(FRMPropertiesTbBackup, 0);
-            WAControlVisible(FRMPropertiesPageFolders, 0);
-            WAControlVisible(FRMPropertiesTbROOTDIR, 0);
-            WAControlVisible(FRMPropertiesTbBINDIR, 0);
-            WAControlVisible(FRMPropertiesTbINCLUDEDIR, 0);
-            WAControlVisible(FRMPropertiesTbLIBDIR, 0);
-            WAControlVisible(FRMPropertiesTbHELPDIR, 0);
-            WAControlVisible(FRMPropertiesTbPROJECTSDIR, 0);
-            WAControlVisible(FRMPropertiesPageProjects, 0);
-            WAControlVisible(FRMPropertiesCmdDebugger, 0);
-            WAControlVisible(FRMPropertiesTbValidDebugger, 0);
-            WAControlVisible(FRMPropertiesPageProtoGen, 0);
-            WAControlVisible(FRMPropertiesCmdGenProg, 0);
-            WAControlVisible(FRMPropertiesPageFTPManage, 0);
-            WAControlVisible(FRMPropertiesTbAccounts, 0);
-            WAControlVisible(FRMPropertiesPageAccountInfos, 0);
-            WAControlVisible(FRMPropertiesPageTransfersTypes, 0);
-            WAControlVisible(FRMPropertiesPageCodingHelp, 0);
-            WAControlVisible(FRMPropertiesPageExtrasLayouts2, 0);
+            ControlVisible(FRMPropertiesPageEditor, 0);
+            ControlVisible(FRMPropertiesPageFileExtensions, 0);
+            ControlVisible(FRMPropertiesTbFileExt, 0);
+            ControlVisible(FRMPropertiesPageOther, 0);
+            ControlVisible(FRMPropertiesPageFont, 0);
+            ControlVisible(FRMPropertiesCmdFontChoose, 0);
+            ControlVisible(FRMPropertiesPageAutoSave, 0);
+            ControlVisible(FRMPropertiesPageEditor2, 0);
+            ControlVisible(FRMPropertiesPageLineNumbering, 0);
+            ControlVisible(FRMPropertiesPageBackup, 0);
+            ControlVisible(FRMPropertiesTbBackup, 0);
+            ControlVisible(FRMPropertiesPageFolders, 0);
+            ControlVisible(FRMPropertiesTbROOTDIR, 0);
+            ControlVisible(FRMPropertiesTbBINDIR, 0);
+            ControlVisible(FRMPropertiesTbINCLUDEDIR, 0);
+            ControlVisible(FRMPropertiesTbLIBDIR, 0);
+            ControlVisible(FRMPropertiesTbHELPDIR, 0);
+            ControlVisible(FRMPropertiesTbPROJECTSDIR, 0);
+            ControlVisible(FRMPropertiesPageProjects, 0);
+            ControlVisible(FRMPropertiesCmdDebugger, 0);
+            ControlVisible(FRMPropertiesTbValidDebugger, 0);
+            ControlVisible(FRMPropertiesPageProtoGen, 0);
+            ControlVisible(FRMPropertiesCmdGenProg, 0);
+            ControlVisible(FRMPropertiesPageFTPManage, 0);
+            ControlVisible(FRMPropertiesTbAccounts, 0);
+            ControlVisible(FRMPropertiesPageAccountInfos, 0);
+            ControlVisible(FRMPropertiesPageTransfersTypes, 0);
+            ControlVisible(FRMPropertiesPageCodingHelp, 0);
+            ControlVisible(FRMPropertiesPageExtrasLayouts2, 0);
             BuildPreview(FRMPropertiesCodeMax);
-            WAControlVisible(FRMPropertiesPageColors, 1);
-            WAControlVisible(FRMPropertiesTbColors, 1);
-            WAControlVisible(FRMPropertiesPageAPIHelp, 1);
-            WAControlVisible(FRMPropertiesCmdWindowsAPI, 1);
-            WAControlVisible(FRMPropertiesPageSDKHelp, 1);
-            WAControlVisible(FRMPropertiesCmdMSDN, 1);
-            WAControlVisible(FRMPropertiesPageCodeMax, 1);
-            WAControlVisible(FRMPropertiesPageDDKHelp, 1);
-            WAControlVisible(FRMPropertiesCmdDDK, 1);
-            WAControlVisible(FRMPropertiesPageDirectXSDKHelp, 1);
-            WAControlVisible(FRMPropertiesCmdDirectXSDK, 1);
-            WAControlVisible(FRMPropertiesPageExtrasLayouts, 1);
-            WAControlVisible(FRMPropertiesCmdRegs, 1);
-            WAControlBringToTop(FRMPropertiesTbColors);
+            ControlVisible(FRMPropertiesPageColors, 1);
+            ControlVisible(FRMPropertiesTbColors, 1);
+            ControlVisible(FRMPropertiesPageAPIHelp, 1);
+            ControlVisible(FRMPropertiesCmdWindowsAPI, 1);
+            ControlVisible(FRMPropertiesPageSDKHelp, 1);
+            ControlVisible(FRMPropertiesCmdMSDN, 1);
+            ControlVisible(FRMPropertiesPageCodeMax, 1);
+            ControlVisible(FRMPropertiesPageDDKHelp, 1);
+            ControlVisible(FRMPropertiesCmdDDK, 1);
+            ControlVisible(FRMPropertiesPageDirectXSDKHelp, 1);
+            ControlVisible(FRMPropertiesCmdDirectXSDK, 1);
+            ControlVisible(FRMPropertiesPageExtrasLayouts, 1);
+            ControlVisible(FRMPropertiesCmdRegs, 1);
+            ControlBringToTop(FRMPropertiesTbColors);
 			break;
 		case 2:
-            WAControlVisible(FRMPropertiesPageEditor, 0);
-            WAControlVisible(FRMPropertiesPageFileExtensions, 0);
-            WAControlVisible(FRMPropertiesTbFileExt, 0);
-            WAControlVisible(FRMPropertiesPageOther, 0);
-            WAControlVisible(FRMPropertiesPageFont, 0);
-            WAControlVisible(FRMPropertiesCmdFontChoose, 0);
-            WAControlVisible(FRMPropertiesPageAutoSave, 0);
-            WAControlVisible(FRMPropertiesPageEditor2, 0);
-            WAControlVisible(FRMPropertiesPageLineNumbering, 0);
-            WAControlVisible(FRMPropertiesPageBackup, 0);
-            WAControlVisible(FRMPropertiesTbBackup, 0);
-            WAControlVisible(FRMPropertiesPageColors, 0);
-            WAControlVisible(FRMPropertiesTbColors, 0);
-            WAControlVisible(FRMPropertiesPageAPIHelp, 0);
-            WAControlVisible(FRMPropertiesCmdWindowsAPI, 0);
-            WAControlVisible(FRMPropertiesPageSDKHelp, 0);
-            WAControlVisible(FRMPropertiesCmdMSDN, 0);
-            WAControlVisible(FRMPropertiesPageCodeMax, 0);
-            WAControlVisible(FRMPropertiesPageDDKHelp, 0);
-            WAControlVisible(FRMPropertiesCmdDDK, 0);
-            WAControlVisible(FRMPropertiesPageDirectXSDKHelp, 0);
-            WAControlVisible(FRMPropertiesCmdDirectXSDK, 0);
-            WAControlVisible(FRMPropertiesPageExtrasLayouts, 0);
-            WAControlVisible(FRMPropertiesCmdRegs, 0);
-            WAControlVisible(FRMPropertiesPageFTPManage, 0);
-            WAControlVisible(FRMPropertiesTbAccounts, 0);
-            WAControlVisible(FRMPropertiesPageAccountInfos, 0);
-            WAControlVisible(FRMPropertiesPageTransfersTypes, 0);
-            WAControlVisible(FRMPropertiesPageCodingHelp, 0);
-            WAControlVisible(FRMPropertiesPageExtrasLayouts2, 0);
-            WAControlVisible(FRMPropertiesPageFolders, 1);
-            WAControlVisible(FRMPropertiesTbROOTDIR, 1);
-            WAControlVisible(FRMPropertiesTbBINDIR, 1);
-            WAControlVisible(FRMPropertiesTbINCLUDEDIR, 1);
-            WAControlVisible(FRMPropertiesTbLIBDIR, 1);
-            WAControlVisible(FRMPropertiesTbHELPDIR, 1);
-            WAControlVisible(FRMPropertiesTbPROJECTSDIR, 1);
-            WAControlVisible(FRMPropertiesPageProjects, 1);
-            WAControlVisible(FRMPropertiesCmdDebugger, 1);
-            WAControlVisible(FRMPropertiesTbValidDebugger, 1);
-            WAControlVisible(FRMPropertiesPageProtoGen, 1);
-            WAControlVisible(FRMPropertiesCmdGenProg, 1);
-            WAControlBringToTop(FRMPropertiesTbROOTDIR);
-            WAControlBringToTop(FRMPropertiesTbBINDIR);
-            WAControlBringToTop(FRMPropertiesTbINCLUDEDIR);
-            WAControlBringToTop(FRMPropertiesTbLIBDIR);
-            WAControlBringToTop(FRMPropertiesTbHELPDIR);
-            WAControlBringToTop(FRMPropertiesTbPROJECTSDIR);
-            WAControlBringToTop(FRMPropertiesTbValidDebugger);
+            ControlVisible(FRMPropertiesPageEditor, 0);
+            ControlVisible(FRMPropertiesPageFileExtensions, 0);
+            ControlVisible(FRMPropertiesTbFileExt, 0);
+            ControlVisible(FRMPropertiesPageOther, 0);
+            ControlVisible(FRMPropertiesPageFont, 0);
+            ControlVisible(FRMPropertiesCmdFontChoose, 0);
+            ControlVisible(FRMPropertiesPageAutoSave, 0);
+            ControlVisible(FRMPropertiesPageEditor2, 0);
+            ControlVisible(FRMPropertiesPageLineNumbering, 0);
+            ControlVisible(FRMPropertiesPageBackup, 0);
+            ControlVisible(FRMPropertiesTbBackup, 0);
+            ControlVisible(FRMPropertiesPageColors, 0);
+            ControlVisible(FRMPropertiesTbColors, 0);
+            ControlVisible(FRMPropertiesPageAPIHelp, 0);
+            ControlVisible(FRMPropertiesCmdWindowsAPI, 0);
+            ControlVisible(FRMPropertiesPageSDKHelp, 0);
+            ControlVisible(FRMPropertiesCmdMSDN, 0);
+            ControlVisible(FRMPropertiesPageCodeMax, 0);
+            ControlVisible(FRMPropertiesPageDDKHelp, 0);
+            ControlVisible(FRMPropertiesCmdDDK, 0);
+            ControlVisible(FRMPropertiesPageDirectXSDKHelp, 0);
+            ControlVisible(FRMPropertiesCmdDirectXSDK, 0);
+            ControlVisible(FRMPropertiesPageExtrasLayouts, 0);
+            ControlVisible(FRMPropertiesCmdRegs, 0);
+            ControlVisible(FRMPropertiesPageFTPManage, 0);
+            ControlVisible(FRMPropertiesTbAccounts, 0);
+            ControlVisible(FRMPropertiesPageAccountInfos, 0);
+            ControlVisible(FRMPropertiesPageTransfersTypes, 0);
+            ControlVisible(FRMPropertiesPageCodingHelp, 0);
+            ControlVisible(FRMPropertiesPageExtrasLayouts2, 0);
+            ControlVisible(FRMPropertiesPageFolders, 1);
+            ControlVisible(FRMPropertiesTbROOTDIR, 1);
+            ControlVisible(FRMPropertiesTbBINDIR, 1);
+            ControlVisible(FRMPropertiesTbINCLUDEDIR, 1);
+            ControlVisible(FRMPropertiesTbLIBDIR, 1);
+            ControlVisible(FRMPropertiesTbHELPDIR, 1);
+            ControlVisible(FRMPropertiesTbPROJECTSDIR, 1);
+            ControlVisible(FRMPropertiesPageProjects, 1);
+            ControlVisible(FRMPropertiesCmdDebugger, 1);
+            ControlVisible(FRMPropertiesTbValidDebugger, 1);
+            ControlVisible(FRMPropertiesPageProtoGen, 1);
+            ControlVisible(FRMPropertiesCmdGenProg, 1);
+            ControlBringToTop(FRMPropertiesTbROOTDIR);
+            ControlBringToTop(FRMPropertiesTbBINDIR);
+            ControlBringToTop(FRMPropertiesTbINCLUDEDIR);
+            ControlBringToTop(FRMPropertiesTbLIBDIR);
+            ControlBringToTop(FRMPropertiesTbHELPDIR);
+            ControlBringToTop(FRMPropertiesTbPROJECTSDIR);
+            ControlBringToTop(FRMPropertiesTbValidDebugger);
 			break;
 		case 3:
-            WAControlVisible(FRMPropertiesPageEditor, 0);
-            WAControlVisible(FRMPropertiesPageFileExtensions, 0);
-            WAControlVisible(FRMPropertiesTbFileExt, 0);
-            WAControlVisible(FRMPropertiesPageOther, 0);
-            WAControlVisible(FRMPropertiesPageFont, 0);
-            WAControlVisible(FRMPropertiesCmdFontChoose, 0);
-            WAControlVisible(FRMPropertiesPageAutoSave, 0);
-            WAControlVisible(FRMPropertiesPageEditor2, 0);
-            WAControlVisible(FRMPropertiesPageLineNumbering, 0);
-            WAControlVisible(FRMPropertiesPageBackup, 0);
-            WAControlVisible(FRMPropertiesTbBackup, 0);
-            WAControlVisible(FRMPropertiesPageColors, 0);
-            WAControlVisible(FRMPropertiesTbColors, 0);
-            WAControlVisible(FRMPropertiesPageAPIHelp, 0);
-            WAControlVisible(FRMPropertiesCmdWindowsAPI, 0);
-            WAControlVisible(FRMPropertiesPageSDKHelp, 0);
-            WAControlVisible(FRMPropertiesCmdMSDN, 0);
-            WAControlVisible(FRMPropertiesPageCodeMax, 0);
-            WAControlVisible(FRMPropertiesPageDDKHelp, 0);
-            WAControlVisible(FRMPropertiesCmdDDK, 0);
-            WAControlVisible(FRMPropertiesPageDirectXSDKHelp, 0);
-            WAControlVisible(FRMPropertiesCmdDirectXSDK, 0);
-            WAControlVisible(FRMPropertiesPageExtrasLayouts, 0);
-            WAControlVisible(FRMPropertiesCmdRegs, 0);
-            WAControlVisible(FRMPropertiesPageFolders, 0);
-            WAControlVisible(FRMPropertiesTbROOTDIR, 0);
-            WAControlVisible(FRMPropertiesTbBINDIR, 0);
-            WAControlVisible(FRMPropertiesTbINCLUDEDIR, 0);
-            WAControlVisible(FRMPropertiesTbLIBDIR, 0);
-            WAControlVisible(FRMPropertiesTbHELPDIR, 0);
-            WAControlVisible(FRMPropertiesTbPROJECTSDIR, 0);
-            WAControlVisible(FRMPropertiesPageProjects, 0);
-            WAControlVisible(FRMPropertiesCmdDebugger, 0);
-            WAControlVisible(FRMPropertiesTbValidDebugger, 0);
-            WAControlVisible(FRMPropertiesPageProtoGen, 0);
-            WAControlVisible(FRMPropertiesCmdGenProg, 0);
-            WAControlVisible(FRMPropertiesPageCodingHelp, 0);
-            WAControlVisible(FRMPropertiesPageExtrasLayouts2, 0);
-            WAControlVisible(FRMPropertiesPageFTPManage, 1);
-            WAControlVisible(FRMPropertiesTbAccounts, 1);
-            WAControlVisible(FRMPropertiesPageAccountInfos, 1);
-            WAControlVisible(FRMPropertiesPageTransfersTypes, 1);
-            WAControlBringToTop(FRMPropertiesTbAccounts);
+            ControlVisible(FRMPropertiesPageEditor, 0);
+            ControlVisible(FRMPropertiesPageFileExtensions, 0);
+            ControlVisible(FRMPropertiesTbFileExt, 0);
+            ControlVisible(FRMPropertiesPageOther, 0);
+            ControlVisible(FRMPropertiesPageFont, 0);
+            ControlVisible(FRMPropertiesCmdFontChoose, 0);
+            ControlVisible(FRMPropertiesPageAutoSave, 0);
+            ControlVisible(FRMPropertiesPageEditor2, 0);
+            ControlVisible(FRMPropertiesPageLineNumbering, 0);
+            ControlVisible(FRMPropertiesPageBackup, 0);
+            ControlVisible(FRMPropertiesTbBackup, 0);
+            ControlVisible(FRMPropertiesPageColors, 0);
+            ControlVisible(FRMPropertiesTbColors, 0);
+            ControlVisible(FRMPropertiesPageAPIHelp, 0);
+            ControlVisible(FRMPropertiesCmdWindowsAPI, 0);
+            ControlVisible(FRMPropertiesPageSDKHelp, 0);
+            ControlVisible(FRMPropertiesCmdMSDN, 0);
+            ControlVisible(FRMPropertiesPageCodeMax, 0);
+            ControlVisible(FRMPropertiesPageDDKHelp, 0);
+            ControlVisible(FRMPropertiesCmdDDK, 0);
+            ControlVisible(FRMPropertiesPageDirectXSDKHelp, 0);
+            ControlVisible(FRMPropertiesCmdDirectXSDK, 0);
+            ControlVisible(FRMPropertiesPageExtrasLayouts, 0);
+            ControlVisible(FRMPropertiesCmdRegs, 0);
+            ControlVisible(FRMPropertiesPageFolders, 0);
+            ControlVisible(FRMPropertiesTbROOTDIR, 0);
+            ControlVisible(FRMPropertiesTbBINDIR, 0);
+            ControlVisible(FRMPropertiesTbINCLUDEDIR, 0);
+            ControlVisible(FRMPropertiesTbLIBDIR, 0);
+            ControlVisible(FRMPropertiesTbHELPDIR, 0);
+            ControlVisible(FRMPropertiesTbPROJECTSDIR, 0);
+            ControlVisible(FRMPropertiesPageProjects, 0);
+            ControlVisible(FRMPropertiesCmdDebugger, 0);
+            ControlVisible(FRMPropertiesTbValidDebugger, 0);
+            ControlVisible(FRMPropertiesPageProtoGen, 0);
+            ControlVisible(FRMPropertiesCmdGenProg, 0);
+            ControlVisible(FRMPropertiesPageCodingHelp, 0);
+            ControlVisible(FRMPropertiesPageExtrasLayouts2, 0);
+            ControlVisible(FRMPropertiesPageFTPManage, 1);
+            ControlVisible(FRMPropertiesTbAccounts, 1);
+            ControlVisible(FRMPropertiesPageAccountInfos, 1);
+            ControlVisible(FRMPropertiesPageTransfersTypes, 1);
+            ControlBringToTop(FRMPropertiesTbAccounts);
 			break;
 		case 4:
-            WAControlVisible(FRMPropertiesPageEditor, 0);
-            WAControlVisible(FRMPropertiesPageFileExtensions, 0);
-            WAControlVisible(FRMPropertiesTbFileExt, 0);
-            WAControlVisible(FRMPropertiesPageOther, 0);
-            WAControlVisible(FRMPropertiesPageFont, 0);
-            WAControlVisible(FRMPropertiesCmdFontChoose, 0);
-            WAControlVisible(FRMPropertiesPageAutoSave, 0);
-            WAControlVisible(FRMPropertiesPageEditor2, 0);
-            WAControlVisible(FRMPropertiesPageLineNumbering, 0);
-            WAControlVisible(FRMPropertiesPageBackup, 0);
-            WAControlVisible(FRMPropertiesTbBackup, 0);
-            WAControlVisible(FRMPropertiesPageColors, 0);
-            WAControlVisible(FRMPropertiesTbColors, 0);
-            WAControlVisible(FRMPropertiesPageAPIHelp, 0);
-            WAControlVisible(FRMPropertiesCmdWindowsAPI, 0);
-            WAControlVisible(FRMPropertiesPageSDKHelp, 0);
-            WAControlVisible(FRMPropertiesCmdMSDN, 0);
-            WAControlVisible(FRMPropertiesPageCodeMax, 0);
-            WAControlVisible(FRMPropertiesPageDDKHelp, 0);
-            WAControlVisible(FRMPropertiesCmdDDK, 0);
-            WAControlVisible(FRMPropertiesPageDirectXSDKHelp, 0);
-            WAControlVisible(FRMPropertiesCmdDirectXSDK, 0);
-            WAControlVisible(FRMPropertiesPageExtrasLayouts, 0);
-            WAControlVisible(FRMPropertiesCmdRegs, 0);
-            WAControlVisible(FRMPropertiesPageFolders, 0);
-            WAControlVisible(FRMPropertiesTbROOTDIR, 0);
-            WAControlVisible(FRMPropertiesTbBINDIR, 0);
-            WAControlVisible(FRMPropertiesTbINCLUDEDIR, 0);
-            WAControlVisible(FRMPropertiesTbLIBDIR, 0);
-            WAControlVisible(FRMPropertiesTbHELPDIR, 0);
-            WAControlVisible(FRMPropertiesTbPROJECTSDIR, 0);
-            WAControlVisible(FRMPropertiesPageProjects, 0);
-            WAControlVisible(FRMPropertiesCmdDebugger, 0);
-            WAControlVisible(FRMPropertiesTbValidDebugger, 0);
-            WAControlVisible(FRMPropertiesPageProtoGen, 0);
-            WAControlVisible(FRMPropertiesCmdGenProg, 0);
-            WAControlVisible(FRMPropertiesPageFTPManage, 0);
-            WAControlVisible(FRMPropertiesTbAccounts, 0);
-            WAControlVisible(FRMPropertiesPageAccountInfos, 0);
-            WAControlVisible(FRMPropertiesPageTransfersTypes, 0);
-            WAControlVisible(FRMPropertiesPageCodingHelp, 1);
-            WAControlVisible(FRMPropertiesPageExtrasLayouts2, 1);
+            ControlVisible(FRMPropertiesPageEditor, 0);
+            ControlVisible(FRMPropertiesPageFileExtensions, 0);
+            ControlVisible(FRMPropertiesTbFileExt, 0);
+            ControlVisible(FRMPropertiesPageOther, 0);
+            ControlVisible(FRMPropertiesPageFont, 0);
+            ControlVisible(FRMPropertiesCmdFontChoose, 0);
+            ControlVisible(FRMPropertiesPageAutoSave, 0);
+            ControlVisible(FRMPropertiesPageEditor2, 0);
+            ControlVisible(FRMPropertiesPageLineNumbering, 0);
+            ControlVisible(FRMPropertiesPageBackup, 0);
+            ControlVisible(FRMPropertiesTbBackup, 0);
+            ControlVisible(FRMPropertiesPageColors, 0);
+            ControlVisible(FRMPropertiesTbColors, 0);
+            ControlVisible(FRMPropertiesPageAPIHelp, 0);
+            ControlVisible(FRMPropertiesCmdWindowsAPI, 0);
+            ControlVisible(FRMPropertiesPageSDKHelp, 0);
+            ControlVisible(FRMPropertiesCmdMSDN, 0);
+            ControlVisible(FRMPropertiesPageCodeMax, 0);
+            ControlVisible(FRMPropertiesPageDDKHelp, 0);
+            ControlVisible(FRMPropertiesCmdDDK, 0);
+            ControlVisible(FRMPropertiesPageDirectXSDKHelp, 0);
+            ControlVisible(FRMPropertiesCmdDirectXSDK, 0);
+            ControlVisible(FRMPropertiesPageExtrasLayouts, 0);
+            ControlVisible(FRMPropertiesCmdRegs, 0);
+            ControlVisible(FRMPropertiesPageFolders, 0);
+            ControlVisible(FRMPropertiesTbROOTDIR, 0);
+            ControlVisible(FRMPropertiesTbBINDIR, 0);
+            ControlVisible(FRMPropertiesTbINCLUDEDIR, 0);
+            ControlVisible(FRMPropertiesTbLIBDIR, 0);
+            ControlVisible(FRMPropertiesTbHELPDIR, 0);
+            ControlVisible(FRMPropertiesTbPROJECTSDIR, 0);
+            ControlVisible(FRMPropertiesPageProjects, 0);
+            ControlVisible(FRMPropertiesCmdDebugger, 0);
+            ControlVisible(FRMPropertiesTbValidDebugger, 0);
+            ControlVisible(FRMPropertiesPageProtoGen, 0);
+            ControlVisible(FRMPropertiesCmdGenProg, 0);
+            ControlVisible(FRMPropertiesPageFTPManage, 0);
+            ControlVisible(FRMPropertiesTbAccounts, 0);
+            ControlVisible(FRMPropertiesPageAccountInfos, 0);
+            ControlVisible(FRMPropertiesPageTransfersTypes, 0);
+            ControlVisible(FRMPropertiesPageCodingHelp, 1);
+            ControlVisible(FRMPropertiesPageExtrasLayouts2, 1);
     }
 }
 
@@ -2957,21 +2957,21 @@ void DeleteAccountFromIni(CStr AccountToDelete)
 
     for(i = 0; i <= 999; i++)
     {
-        FRMPropertiesRetVal = WAIniReadKey("FTPAccounts", "FTPAccount" + (CStr) StringNumberComplement(i, 3).Get_String(), FtpAccountsIniFile);
+        FRMPropertiesRetVal = IniReadKey("FTPAccounts", "FTPAccount" + (CStr) StringNumberComplement(i, 3).Get_String(), FtpAccountsIniFile);
         if(FRMPropertiesRetVal.Len() == 0) break;
         if(strcmpi(AccountToDelete.Get_String(), FRMPropertiesRetVal.Get_String()) == 0)
         {
-            WAIniDeleteKey("FTPAccounts", "FTPAccount" + (CStr) StringNumberComplement(i, 3).Get_String(), FtpAccountsIniFile);
-            WAIniDeleteKey(AccountToDelete, "FTPIP", FtpAccountsIniFile);
-            WAIniDeleteKey(AccountToDelete, "FTPAnon", FtpAccountsIniFile);
-            WAIniDeleteKey(AccountToDelete, "FTPUserName", FtpAccountsIniFile);
-            WAIniDeleteKey(AccountToDelete, "FTPUserPass", FtpAccountsIniFile);
-            WAIniDeleteKey(AccountToDelete, "FTPSavePass ", FtpAccountsIniFile);
-            WAIniDeleteKey(AccountToDelete, "FTPPath", FtpAccountsIniFile);
-            WAIniDeleteKey(AccountToDelete, "FTPPort", FtpAccountsIniFile);
-            WAIniDeleteKey(AccountToDelete, "FTPUseProxy", FtpAccountsIniFile);
-            WAIniDeleteKey(AccountToDelete, "FTPTransfersType", FtpAccountsIniFile);
-            WAIniDeleteKey(AccountToDelete, "FTPPassive", FtpAccountsIniFile);
+            IniDeleteKey("FTPAccounts", "FTPAccount" + (CStr) StringNumberComplement(i, 3).Get_String(), FtpAccountsIniFile);
+            IniDeleteKey(AccountToDelete, "FTPIP", FtpAccountsIniFile);
+            IniDeleteKey(AccountToDelete, "FTPAnon", FtpAccountsIniFile);
+            IniDeleteKey(AccountToDelete, "FTPUserName", FtpAccountsIniFile);
+            IniDeleteKey(AccountToDelete, "FTPUserPass", FtpAccountsIniFile);
+            IniDeleteKey(AccountToDelete, "FTPSavePass ", FtpAccountsIniFile);
+            IniDeleteKey(AccountToDelete, "FTPPath", FtpAccountsIniFile);
+            IniDeleteKey(AccountToDelete, "FTPPort", FtpAccountsIniFile);
+            IniDeleteKey(AccountToDelete, "FTPUseProxy", FtpAccountsIniFile);
+            IniDeleteKey(AccountToDelete, "FTPTransfersType", FtpAccountsIniFile);
+            IniDeleteKey(AccountToDelete, "FTPPassive", FtpAccountsIniFile);
             break;
         }
     }
@@ -2986,19 +2986,19 @@ void Fillskins(void)
     long SelectedIdx = 0;
     
 	PrgSkinArray.Erase();
-    PrfCurrentSkin = WAIniReadKey("BuildSkins", "CurrentSkin", SkinsIniFile);
+    PrfCurrentSkin = IniReadKey("BuildSkins", "CurrentSkin", SkinsIniFile);
     PrfCurrentSkin = ChangeRelativePaths(PrfCurrentSkin);
     for(i = 0; i <= 999; i++)
     {
-        SkinToAdd = WAIniReadKey("BuildSkins", "Skin" + (CStr) StringNumberComplement(i, 3).Get_String(), SkinsIniFile);
+        SkinToAdd = IniReadKey("BuildSkins", "Skin" + (CStr) StringNumberComplement(i, 3).Get_String(), SkinsIniFile);
         if(SkinToAdd.Len() == 0) break;
         SkinToAdd = ChangeRelativePaths(SkinToAdd);
         if(strcmpi(SkinToAdd.Get_String(), PrfCurrentSkin.Get_String()) == 0) SelectedIdx = i;
         PrgSkinArray.Add(SkinToAdd.Get_String());
-        SkinToAdd = WAIniReadKey("SKINFOS", "Title", SkinToAdd);
-        WAComboBoxAddItem(FRMPropertiesCbSkin, SkinToAdd, -1);
+        SkinToAdd = IniReadKey("SKINFOS", "Title", SkinToAdd);
+        ComboBoxAddItem(FRMPropertiesCbSkin, SkinToAdd, -1);
     }
-    WAComboBoxSetIndex(FRMPropertiesCbSkin, SelectedIdx);
+    ComboBoxSetIndex(FRMPropertiesCbSkin, SelectedIdx);
 }
 
 // -----------------------------------------------------------------------
@@ -3028,68 +3028,68 @@ void FillCurrentSkin(void)
     ctId = 22;               // Minimum ID
     for(i = 0; i <= 999; i++)
     {
-        Skinelement = WAIniReadKey("TEMPHEADER", "Opt" + (CStr) StringNumberComplement(i, 3).Get_String(), PrfCurrentSkin);
+        Skinelement = IniReadKey("TEMPHEADER", "Opt" + (CStr) StringNumberComplement(i, 3).Get_String(), PrfCurrentSkin);
         if(Skinelement.Len() == 0) break;
 		BufString = Skinelement.Left(5).Upper_Case();
         if(BufString == "COMBO")
         {
-            ElementName = WAIniReadKey(Skinelement, "Name", PrfCurrentSkin);
-            ElementCoords = WAIniReadKey(Skinelement, "NameDat", PrfCurrentSkin);
+            ElementName = IniReadKey(Skinelement, "Name", PrfCurrentSkin);
+            ElementCoords = IniReadKey(Skinelement, "NameDat", PrfCurrentSkin);
             if(ElementCoords.Len() != 0)
             {
                 ElementArray = StringSplit(ElementCoords, "|");
-                ElementLabel = WACreateLabel(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), FRMPropertiesPageProjects, ElementName, ctId, 0, 0, 0);
+                ElementLabel = CreateLabel(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), FRMPropertiesPageProjects, ElementName, ctId, 0, 0, 0);
                 StringReleaseSplit(ElementArray);
                 PrgSkinLabels.Add(ElementLabel);
                 ctId++;
-                ElementCoords = WAIniReadKey(Skinelement, "ComboDat", PrfCurrentSkin);
+                ElementCoords = IniReadKey(Skinelement, "ComboDat", PrfCurrentSkin);
                 if(ElementCoords.Len() != 0)
                 {
                     ElementArray = StringSplit(ElementCoords, "|");
-                    ElementhWnd = WACreateComboBox(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), FRMPropertiesPageProjects, "", ctId, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
+                    ElementhWnd = CreateComboBox(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), FRMPropertiesPageProjects, "", ctId, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
                     StringReleaseSplit(ElementArray);
                     ctId++;
                     PrgSkinControlsDest.Add(Skinelement.Get_String());
                     PrgSkinControls.Add(ElementhWnd);
                     for(j = 0; j <= 999; j++)
                     {
-                        ElementName = WAIniReadKey(Skinelement, "Resp" + (CStr) StringNumberComplement(j, 3).Get_String(), PrfCurrentSkin);
+                        ElementName = IniReadKey(Skinelement, "Resp" + (CStr) StringNumberComplement(j, 3).Get_String(), PrfCurrentSkin);
                         if(ElementName.Len() == 0) break;
-                        WAComboBoxAddItem(ElementhWnd, ElementName, -1);
+                        ComboBoxAddItem(ElementhWnd, ElementName, -1);
                     }
-                    ElementSelected = WAIniReadKey("CURRENT", Skinelement, PrfCurrentSkin);
+                    ElementSelected = IniReadKey("CURRENT", Skinelement, PrfCurrentSkin);
                     if(ElementSelected.Len() == 0) ElementSelected = "0";
-                    WAComboBoxSetIndex(ElementhWnd, ElementSelected.Get_Long());
+                    ComboBoxSetIndex(ElementhWnd, ElementSelected.Get_Long());
                 }
             }
         }
         else if(BufString == "RADIO")
         {
-            ElementName = WAIniReadKey(Skinelement, "Name", PrfCurrentSkin);
-            ElementCoords = WAIniReadKey(Skinelement, "NameDat", PrfCurrentSkin);
+            ElementName = IniReadKey(Skinelement, "Name", PrfCurrentSkin);
+            ElementCoords = IniReadKey(Skinelement, "NameDat", PrfCurrentSkin);
             if(ElementCoords.Len() != 0)
             {
                 ElementArray = StringSplit(ElementCoords, "|");
-                ElementFrame = WACreateFrame(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), FRMPropertiesPageProjects, ElementName, 0, 0, 0);
+                ElementFrame = CreateFrame(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), FRMPropertiesPageProjects, ElementName, 0, 0, 0);
                 StringReleaseSplit(ElementArray);
                 PrgSkinLabels.Add(ElementFrame);
                 ctId++;
                 FirstRadio = WS_GROUP;
                 for(j = 0; j <= 999; j++)
                 {
-                    ElementName = WAIniReadKey(Skinelement, "Resp" + (CStr) StringNumberComplement(j, 3).Get_String(), PrfCurrentSkin);
+                    ElementName = IniReadKey(Skinelement, "Resp" + (CStr) StringNumberComplement(j, 3).Get_String(), PrfCurrentSkin);
                     if(ElementName.Len() == 0) break;
-                    ElementCoords = WAIniReadKey(Skinelement, "Resp" + (CStr) StringNumberComplement(j, 3).Get_String() + (CStr) "Dat", PrfCurrentSkin);
+                    ElementCoords = IniReadKey(Skinelement, "Resp" + (CStr) StringNumberComplement(j, 3).Get_String() + (CStr) "Dat", PrfCurrentSkin);
                     if(ElementCoords.Len() != 0)
                     {
                         ElementArray = StringSplit(ElementCoords, "|");
-                        ElementhWnd = WACreateRadioButton(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), ElementFrame, ElementName, ctId, 0, WS_TABSTOP | FirstRadio);
+                        ElementhWnd = CreateRadioButton(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), ElementFrame, ElementName, ctId, 0, WS_TABSTOP | FirstRadio);
                         StringReleaseSplit(ElementArray);
                         BufString = Skinelement + (CStr) j;
 						PrgSkinControlsDest.Add(BufString.Get_String());
                         PrgSkinControls.Add(ElementhWnd);
                         ctId++;
-                        ElementSelected = WAIniReadKey("CURRENT", Skinelement, PrfCurrentSkin);
+                        ElementSelected = IniReadKey("CURRENT", Skinelement, PrfCurrentSkin);
                         if(ElementSelected.Len() == 0) ElementSelected = "0";
                         CurrentRadio = ElementSelected.Get_Long();
                         if((long) CurrentRadio == j) RadioButtonSetState(ElementhWnd, 1);
@@ -3100,62 +3100,62 @@ void FillCurrentSkin(void)
         }
         else if(BufString == "CHECK")
         {
-            ElementName = WAIniReadKey(Skinelement, "Name", PrfCurrentSkin);
-            ElementCoords = WAIniReadKey(Skinelement, "NameDat", PrfCurrentSkin);
+            ElementName = IniReadKey(Skinelement, "Name", PrfCurrentSkin);
+            ElementCoords = IniReadKey(Skinelement, "NameDat", PrfCurrentSkin);
             if(ElementCoords.Len() != 0)
             {
                 ElementArray = StringSplit(ElementCoords, "|");
-                ElementhWnd = WACreateCheckBox(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), FRMPropertiesPageProjects, ElementName, ctId, 0, WS_TABSTOP, 0);
+                ElementhWnd = CreateCheckBox(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), FRMPropertiesPageProjects, ElementName, ctId, 0, WS_TABSTOP, 0);
                 StringReleaseSplit(ElementArray);
                 ctId++;
                 PrgSkinControlsDest.Add(Skinelement.Get_String());
                 PrgSkinControls.Add(ElementhWnd);
-                ElementSelected = WAIniReadKey("CURRENT", Skinelement, PrfCurrentSkin);
+                ElementSelected = IniReadKey("CURRENT", Skinelement, PrfCurrentSkin);
                 if(ElementSelected.Len() == 0) ElementSelected = "0";
                 CheckBoxSetState(ElementhWnd, ElementSelected.Get_Long());
             }
         }
         else if(BufString == "TEXTB")
         {
-            ElementName = WAIniReadKey(Skinelement, "Name", PrfCurrentSkin);
-            ElementCoords = WAIniReadKey(Skinelement, "NameDat", PrfCurrentSkin);
+            ElementName = IniReadKey(Skinelement, "Name", PrfCurrentSkin);
+            ElementCoords = IniReadKey(Skinelement, "NameDat", PrfCurrentSkin);
             if(ElementCoords.Len() != 0)
             {
                 ElementArray = StringSplit(ElementCoords, "|");
-                ElementLabel = WACreateLabel(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), FRMPropertiesPageProjects, ElementName, ctId, 0, 0, 0);
+                ElementLabel = CreateLabel(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), FRMPropertiesPageProjects, ElementName, ctId, 0, 0, 0);
                 StringReleaseSplit(ElementArray);
                 PrgSkinLabels.Add(ElementLabel);
                 ctId++;
-                ElementCoords = WAIniReadKey(Skinelement, "TextDat", PrfCurrentSkin);
+                ElementCoords = IniReadKey(Skinelement, "TextDat", PrfCurrentSkin);
                 if(ElementCoords.Len() != 0)
                 {
                     ElementArray = StringSplit(ElementCoords, "|");
-                    ElementhWnd = WACreateTextBox(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), FRMPropertiesPageProjects, "", ctId, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+                    ElementhWnd = CreateTextBox(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), FRMPropertiesPageProjects, "", ctId, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
                     StringReleaseSplit(ElementArray);
                     ctId++;
                     PrgSkinControlsDest.Add(Skinelement.Get_String());
                     PrgSkinControls.Add(ElementhWnd);
-                    WAControlSetText(ElementhWnd, WAIniReadKey("CURRENT", Skinelement, PrfCurrentSkin));
+                    ControlSetText(ElementhWnd, IniReadKey("CURRENT", Skinelement, PrfCurrentSkin));
                 }
             }
         }
         else if(BufString == "LISTC")
         {
-            ElementName = WAIniReadKey(Skinelement, "Name", PrfCurrentSkin);
-            ElementCoords = WAIniReadKey(Skinelement, "NameDat", PrfCurrentSkin);
+            ElementName = IniReadKey(Skinelement, "Name", PrfCurrentSkin);
+            ElementCoords = IniReadKey(Skinelement, "NameDat", PrfCurrentSkin);
             if(ElementCoords.Len() != 0)
             {
                 ElementArray = StringSplit(ElementCoords, "|");
-                ElementLabel = WACreateLabel(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), FRMPropertiesPageProjects, ElementName, ctId, 0, 0, 0);
+                ElementLabel = CreateLabel(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), FRMPropertiesPageProjects, ElementName, ctId, 0, 0, 0);
                 StringReleaseSplit(ElementArray);
                 PrgSkinLabels.Add(ElementLabel);
                 ctId++;
-                ElementCoords = WAIniReadKey(Skinelement, "ListDat", PrfCurrentSkin);
+                ElementCoords = IniReadKey(Skinelement, "ListDat", PrfCurrentSkin);
                 if(ElementCoords.Len() != 0)
                 {
                     ElementArray = StringSplit(ElementCoords, "|");
-                    ElementhWnd = WACreateListView(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), FRMPropertiesPageProjects, ctId, 0, PropStepListViewProc, LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | LVS_NOCOLUMNHEADER | WS_TABSTOP, WS_EX_STATICEDGE);
-                    WAListViewAddCol(ElementhWnd, "", StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long() - 23, 0);
+                    ElementhWnd = CreateListView(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), FRMPropertiesPageProjects, ctId, 0, PropStepListViewProc, LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | LVS_NOCOLUMNHEADER | WS_TABSTOP, WS_EX_STATICEDGE);
+                    ListViewAddCol(ElementhWnd, "", StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long() - 23, 0);
                     StringReleaseSplit(ElementArray);
                     ctId++;
                     SkinListViews.Add(ElementhWnd);
@@ -3163,12 +3163,12 @@ void FillCurrentSkin(void)
                     PrgSkinControls.Add(ElementhWnd);
                     for(k = 0; k <= 999; k++)
                     {
-                        ElementName = WAIniReadKey(Skinelement, "Resp" + (CStr) StringNumberComplement(k, 3).Get_String(), PrfCurrentSkin);
+                        ElementName = IniReadKey(Skinelement, "Resp" + (CStr) StringNumberComplement(k, 3).Get_String(), PrfCurrentSkin);
                         if(ElementName.Len() == 0) break;
-                        WAListViewAddItem(ElementhWnd, ElementName, k, -1);
-                        ElementSelected = WAIniReadKey("CURRENT", Skinelement + (CStr) StringNumberComplement(k, 3).Get_String(), PrfCurrentSkin);
+                        ListViewAddItem(ElementhWnd, ElementName, k, -1);
+                        ElementSelected = IniReadKey("CURRENT", Skinelement + (CStr) StringNumberComplement(k, 3).Get_String(), PrfCurrentSkin);
                         if(ElementSelected.Len() == 0) ElementSelected = "0";
-                        WAListViewSetItemCheckbox(ElementhWnd, k, ElementSelected.Get_Long());
+                        ListViewSetItemCheckbox(ElementhWnd, k, ElementSelected.Get_Long());
                     }
                 }
             }
@@ -3188,13 +3188,13 @@ LRESULT CALLBACK FRMPropertiesFrameBuilding(HWND hWnd, UINT uMsg, WPARAM wParam,
         case WM_COMMAND:
             if((HWND) lParam == FRMPropertiesCbSkin)
             {
-                if(WAControlGetNotifiedCommand(wParam) == CBN_SELCHANGE)
+                if(ControlGetNotifiedCommand(wParam) == CBN_SELCHANGE)
                 {
-                    TempCurrentSkin = PrgSkinArray.Get(WAComboBoxGetIndex(FRMPropertiesCbSkin))->Content;
+                    TempCurrentSkin = PrgSkinArray.Get(ComboBoxGetIndex(FRMPropertiesCbSkin))->Content;
                     if(strcmpi(TempCurrentSkin.Get_String(), PrfCurrentSkin.Get_String()) != 0)
                     {
                         ClearSkincontrols();
-                        WAControlRefresh(FRMPropertiesPageProjects);
+                        ControlRefresh(FRMPropertiesPageProjects);
                         PrfCurrentSkin = TempCurrentSkin;
                         FillCurrentSkin();
                     }
@@ -3203,27 +3203,27 @@ LRESULT CALLBACK FRMPropertiesFrameBuilding(HWND hWnd, UINT uMsg, WPARAM wParam,
             }
 			break;
         case WM_NOTIFY:
-            if(WAControlGetNotifiedhWnd(lParam) == FRMStepListView)
+            if(ControlGetNotifiedhWnd(lParam) == FRMStepListView)
             {
-                switch(WAControlGetNotifiedMsg(lParam))
+                switch(ControlGetNotifiedMsg(lParam))
                 {
                     case NM_DBLCLK:
-                        WAListViewCheckBoxItemDoubleClick(FRMStepListView);
+                        ListViewCheckBoxItemDoubleClick(FRMStepListView);
                         return(0);
                 }
             }
             else
             {
-                switch(WAControlGetNotifiedMsg(lParam))
+                switch(ControlGetNotifiedMsg(lParam))
                 {
                     case NM_DBLCLK:
                         for(i = 0; i < SkinListViews.Amount(); i++)
                         {
                             if(SkinListViews.Get(i)->Content != 0)
                             {
-                                if(SkinListViews.Get(i)->Content == WAControlGetNotifiedhWnd(lParam))
+                                if(SkinListViews.Get(i)->Content == ControlGetNotifiedhWnd(lParam))
                                 {
-                                    WAListViewCheckBoxItemDoubleClick(SkinListViews.Get(i)->Content);
+                                    ListViewCheckBoxItemDoubleClick(SkinListViews.Get(i)->Content);
                                     return(0);
                                 }
                             }
@@ -3232,7 +3232,7 @@ LRESULT CALLBACK FRMPropertiesFrameBuilding(HWND hWnd, UINT uMsg, WPARAM wParam,
             }
 			break;
 		case WM_ERASEBKGND:
-            WAGDIDrawHorzSep(hWnd, 2, 129, 238);
+            GDIDrawHorzSep(hWnd, 2, 129, 238);
             return(0);
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
@@ -3262,14 +3262,14 @@ void FillDefLanguage(void)
     CStr OldDefault;
     int i = 0;
 
-    OldDefault = WAIniReadKey("RefLanguages", "DefLang", LanguagesIniFile);
-	WAComboBoxAddItem(FRMPropertiesCbDefLang, "(None)", -1);
+    OldDefault = IniReadKey("RefLanguages", "DefLang", LanguagesIniFile);
+	ComboBoxAddItem(FRMPropertiesCbDefLang, "(None)", -1);
     for(i = 0; i <= 999; i++)
     {
-        FRMPropertiesRetVal = WAIniReadKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(i, 3).Get_String(), LanguagesIniFile);
+        FRMPropertiesRetVal = IniReadKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(i, 3).Get_String(), LanguagesIniFile);
         if(FRMPropertiesRetVal.Len() == 0) break;
         FRMPropertiesRetVal = ChangeRelativePaths(FRMPropertiesRetVal);
-        FRMPropertiesRetVal = WAIniReadKey("LangSpec", "LangName", FRMPropertiesRetVal);
+        FRMPropertiesRetVal = IniReadKey("LangSpec", "LangName", FRMPropertiesRetVal);
         if(FRMPropertiesRetVal.Len() != 0)
         {
             if(OldDefault.Len() != 0)
@@ -3277,10 +3277,10 @@ void FillDefLanguage(void)
                 // Retrieve index of selected language
                 if(strcmpi(FRMPropertiesRetVal.Get_String(), OldDefault.Get_String()) == 0) AsmPos = i + 1;
             }
-            WAComboBoxAddItem(FRMPropertiesCbDefLang, FRMPropertiesRetVal, -1);
+            ComboBoxAddItem(FRMPropertiesCbDefLang, FRMPropertiesRetVal, -1);
         }
     }
-    WAComboBoxSetIndex(FRMPropertiesCbDefLang, AsmPos);
+    ComboBoxSetIndex(FRMPropertiesCbDefLang, AsmPos);
 }
 
 // -----------------------------------------------------------------------
@@ -3291,13 +3291,13 @@ void GetDebugger(HWND hWnd)
     CStr OpFilters;
 
     OpFilters = "Exe files (*.exe;*.com)|*.exe;*.com";
-    LdFile = WAComDlgGetOpenFileName(FRMPropertieshwnd, OpFilters, "", 0, CurrentDir);
+    LdFile = ComDlgGetOpenFileName(FRMPropertieshwnd, OpFilters, "", 0, CurrentDir);
     if(LdFile.Len() == 0) return;
     LdFile = ChangeAbsolutePaths(LdFile);
     // Save the old entry into the combo
-    //WAComboBoxSaveInIniFile(hWnd, LdFile, "ExtDebuggers", MainIniFile);
+    //ComboBoxSaveInIniFile(hWnd, LdFile, "ExtDebuggers", MainIniFile);
     //AddNewDebugger(hWnd, LdFile);
-    WAControlSetText(hWnd, LdFile);
+    ControlSetText(hWnd, LdFile);
 }
 
 // -----------------------------------------------------------------------
@@ -3307,8 +3307,8 @@ LRESULT CALLBACK PropStepListViewProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
     switch(uMsg)
     {
         case WM_SETFOCUS:
-            WAControlBringToTop(hWnd);
-            WAListViewSetItemFocus(hWnd, WAListViewGetFirstFocusItem(hWnd));
+            ControlBringToTop(hWnd);
+            ListViewSetItemFocus(hWnd, ListViewGetFirstFocusItem(hWnd));
             return(1);
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
@@ -3321,13 +3321,13 @@ void AddNewDebugger(HWND hCombo, CStr Debugger)
     int i;
     int Found = FALSE;
 
-    for(i = 0; i < WAComboBoxCount(hCombo); i++)
+    for(i = 0; i < ComboBoxCount(hCombo); i++)
     {
-        if(strcmpi(WAComboBoxGetItem(hCombo, i).Get_String(), Debugger.Get_String()) == 0)
+        if(strcmpi(ComboBoxGetItem(hCombo, i).Get_String(), Debugger.Get_String()) == 0)
         {
             Found = TRUE;
             break;
         }
     }
-    if(!Found) WAComboBoxAddItem(hCombo, Debugger, -1);
+    if(!Found) ComboBoxAddItem(hCombo, Debugger, -1);
 }

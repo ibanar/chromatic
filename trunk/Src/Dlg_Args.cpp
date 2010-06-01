@@ -62,14 +62,14 @@ int CALLBACK FRMArgsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         case WM_INITDIALOG:
             FRMArgshWnd = hwndDlg;
-            hFRMArgsLabel = WACreateLabel(4, 2, 268, 50, hwndDlg, "Command to run: \r\n" + (CStr) CommandToEx, 0, 0, 0, 0);
-            hFRMArgsOk = WACreateButton(118, 94, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
-            hFRMArgsCancel = WACreateButton(197, 94, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-            hFRMArgsCombo = WACreateComboBox(4, 60, 243, 150, hwndDlg, "", 3, 0, CBS_DROPDOWN | WS_TABSTOP);
-            FRMArgshTB = WACreateToolBar(248, 59, 25, 23, hwndDlg, GlobalImageList1, 4, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
-            WAToolBarAddButton(FRMArgshTB, "", ARGSCLEAR, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-            WAControlSetText(hwndDlg, "Enter command arguments");
-			WAComboBoxFillFromIniFile(hFRMArgsCombo, "Args", MainIniFile);
+            hFRMArgsLabel = CreateLabel(4, 2, 268, 50, hwndDlg, "Command to run: \r\n" + (CStr) CommandToEx, 0, 0, 0, 0);
+            hFRMArgsOk = CreateButton(118, 94, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
+            hFRMArgsCancel = CreateButton(197, 94, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+            hFRMArgsCombo = CreateComboBox(4, 60, 243, 150, hwndDlg, "", 3, 0, CBS_DROPDOWN | WS_TABSTOP);
+            FRMArgshTB = CreateToolBar(248, 59, 25, 23, hwndDlg, GlobalImageList1, 4, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+            ToolBarAddButton(FRMArgshTB, "", ARGSCLEAR, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            ControlSetText(hwndDlg, "Enter command arguments");
+			ComboBoxFillFromIniFile(hFRMArgsCombo, "Args", MainIniFile);
             EnteredArg = "";
             UserArgs = 0;
             FRMArgsEntered = 1;
@@ -78,17 +78,17 @@ int CALLBACK FRMArgsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             return(0);
         case WM_PAINT:
             BeginPaint(hwndDlg, &ArgsPs);
-            WAGDIDrawHorzSep(hwndDlg, 0, 87, 277);
+            GDIDrawHorzSep(hwndDlg, 0, 87, 277);
             EndPaint(hwndDlg, &ArgsPs);
 			break;
 		case WM_NOTIFY:
-            switch(WAControlGetNotifiedMsg(lParam))
+            switch(ControlGetNotifiedMsg(lParam))
             {
                 case TTN_NEEDTEXT:
-                    switch(WAControlGetNotifiedID(lParam))
+                    switch(ControlGetNotifiedID(lParam))
                     {
                         case ARGSCLEAR:
-                            WAToolBarDisplayToolTip("Clear arguments list", lParam);
+                            ToolBarDisplayToolTip("Clear arguments list", lParam);
                             return(0);
                     }
 					break;
@@ -102,21 +102,21 @@ int CALLBACK FRMArgsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 {
                     if(UserArgs == 1)
                     {
-                        if(WAControlGetText(hFRMArgsCombo).Len() == 0)
+                        if(ControlGetText(hFRMArgsCombo).Len() == 0)
                         {
-                            WAMiscMsgBox(hwndDlg, "Arguments are required.", MB_ERROR, Requesters);
+                            MiscMsgBox(hwndDlg, "Arguments are required.", MB_ERROR, Requesters);
                             SetFocus(hFRMArgsCombo);
                             return(0);
                         }
                     }
                 }
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 FRMArgsEntered = 0;
                 return(0);
             }
             else if((HWND) lParam == hFRMArgsCancel)
             {
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
             }
             else if((HWND) lParam == FRMArgshTB)
@@ -124,15 +124,15 @@ int CALLBACK FRMArgsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 switch(wParam)
                 {
                     case ARGSCLEAR:
-                        WAComboBoxReset(hFRMArgsCombo);
-                        WAIniDeleteKey("Args", "", MainIniFile);
+                        ComboBoxReset(hFRMArgsCombo);
+                        IniDeleteKey("Args", "", MainIniFile);
                         return(0);
                 }
             }
 			break;
         case WM_CLOSE:
-            EnteredArg = WAControlGetText(hFRMArgsCombo);
-			WAComboBoxSaveInIniFile(hFRMArgsCombo, EnteredArg, "Args", MainIniFile);
+            EnteredArg = ControlGetText(hFRMArgsCombo);
+			ComboBoxSaveInIniFile(hFRMArgsCombo, EnteredArg, "Args", MainIniFile);
             FreezeTimer = 0;
             EndDialog(hwndDlg, 0);
 			break;

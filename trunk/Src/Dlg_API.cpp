@@ -55,7 +55,7 @@ long APIYDim;
 void CALLBACK FRMAPIInitProc(HWND hWnd)
 {
     FRMAPIhwnd = hWnd;
-    APIhText = WACreateLabel(0, 0, 0, 0, hWnd, "", 0, &FRMAPIHookProc, WS_DISABLED, 0);
+    APIhText = CreateLabel(0, 0, 0, 0, hWnd, "", 0, &FRMAPIHookProc, WS_DISABLED, 0);
 }
 
 // -----------------------------------------------------------------------
@@ -274,10 +274,10 @@ EndArgs:        if(StringGetSplitElement(APIString, APIArrParse, j).Len() == 0)
                 }
                 SelectObject(APIhDC, APIOldObject);
                 // Move the window in a safe place
-                ParentTop = WAControlTop(FRMAPIhwnd);
-                ParentLeft = WAControlLeft(FRMAPIhwnd);
-                ParentWidth = WAControlWidth(FRMAPIhwnd);
-                ParentHeight = WAControlHeight(FRMAPIhwnd);
+                ParentTop = ControlTop(FRMAPIhwnd);
+                ParentLeft = ControlLeft(FRMAPIhwnd);
+                ParentWidth = ControlWidth(FRMAPIhwnd);
+                ParentHeight = ControlHeight(FRMAPIhwnd);
                 if((long) (ParentTop + (Bot)) > (long) GetSystemMetrics(SM_CYFULLSCREEN)) ParentTop = ParentTop - (Bot) - (APIOldRealPosition);
                 if((long) (ParentLeft + (Rig)) > (long) GetSystemMetrics(SM_CXFULLSCREEN)) ParentLeft = ParentLeft - (Rig);
                 if(ParentTop < 0) ParentTop = 0;

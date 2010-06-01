@@ -2,12 +2,12 @@
 ; Standard starter file for console applications
 ; ------------------------------------------
 ; buildblock RELEASE
-;       CAPT [BINDIR]\ml.exe /c /coff /I"[INCLUDEDIR]" "%2"
-;       CAPT [BINDIR]\Link.exe /LIBPATH:"[LIBDIR]" /SUBSYSTEM:CONSOLE "%1.obj"
+;   CAPT [BINDIR]\ml.exe /c /coff /I"[INCLUDEDIR]" "%2"
+;   CAPT [BINDIR]\Link.exe /LIBPATH:"[LIBDIR]" /SUBSYSTEM:CONSOLE "%1.obj"
 ; buildblockend
 ; buildblock DEBUG
-;       CAPT [BINDIR]\ml.exe /Zd /Zi /c /coff /I"[INCLUDEDIR]" "%2"
-;       CAPT [BINDIR]\Link.exe /DEBUG /INCREMENTAL:NO /DEBUGTYPE:CV /LIBPATH:"[LIBDIR]" /SUBSYSTEM:CONSOLE "%1.obj"
+;   CAPT [BINDIR]\ml.exe /Zd /Zi /c /coff /I"[INCLUDEDIR]" "%2"
+;   CAPT [BINDIR]\Link.exe /DEBUG /INCREMENTAL:NO /DEBUGTYPE:CV /LIBPATH:"[LIBDIR]" /SUBSYSTEM:CONSOLE "%1.obj"
 ; buildblockend
 
 ; --------------- File model

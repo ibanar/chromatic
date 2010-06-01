@@ -123,18 +123,18 @@ void InitReBarContent(HWND hParent)
     {
         BufString2 = "TbName";
 		BufString2 = BufString2 + StringNumberComplement(i, 3);
-		ToolBarKey = WAIniReadKey("Toolbars", BufString2, ToolbarsIniFile);
+		ToolBarKey = IniReadKey("Toolbars", BufString2, ToolbarsIniFile);
         BufString2 = "TbType";
 		BufString2 = BufString2 + StringNumberComplement(i, 3);
-        ToolBarType = WAIniReadKey("Toolbars", BufString2, ToolbarsIniFile);
+        ToolBarType = IniReadKey("Toolbars", BufString2, ToolbarsIniFile);
         BufString2 = "TbShow";
 		BufString2 = BufString2 + StringNumberComplement(i, 3);
-        ToolBarShow = WAIniReadKey("Toolbars", BufString2, ToolbarsIniFile);
+        ToolBarShow = IniReadKey("Toolbars", BufString2, ToolbarsIniFile);
         if(ToolBarKey.Len() == 0) break;
         if(ToolBarType.Len() == 0) ToolBarType = "0";
         if(ToolBarShow.Len() == 0) ToolBarShow = "1";
         // Create a new toolbar
-        hCurrentToolBar = WACreateToolBar(0, 0, 0, 23, hRebar, GlobalImageList1, 0, -1, 0, TBSTYLE_TOOLTIPS | TBSTYLE_LIST | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH, TBSTYLE_EX_MIXEDBUTTONS | TBSTYLE_EX_DRAWDDARROWS);
+        hCurrentToolBar = CreateToolBar(0, 0, 0, 23, hRebar, GlobalImageList1, 0, -1, 0, TBSTYLE_TOOLTIPS | TBSTYLE_LIST | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH, TBSTYLE_EX_MIXEDBUTTONS | TBSTYLE_EX_DRAWDDARROWS);
         //SendMessage(hCurrentToolBar, TB_SETPADDING, 0, 0x00000);
         //SendMessage(hCurrentToolBar, TB_SETBUTTONSIZE, 0, 0x170018);
         //SendMessage(hCurrentToolBar, TB_SETBUTTONWIDTH, 0, MAKELONG(2, 0x18));
@@ -146,26 +146,26 @@ void InitReBarContent(HWND hParent)
         {
 			BufString = "BtnIcon";
 			BufString = BufString + StringNumberComplement(j, 3);
-            BtnIcon = WAIniReadKey(ToolBarKey, BufString, ToolbarsIniFile);
+            BtnIcon = IniReadKey(ToolBarKey, BufString, ToolbarsIniFile);
             BufString = "BtnMenu";
 			BufString = BufString + StringNumberComplement(j, 3);
-            BtnMenu = WAIniReadKey(ToolBarKey, BufString, ToolbarsIniFile);
+            BtnMenu = IniReadKey(ToolBarKey, BufString, ToolbarsIniFile);
             BufString = "BtnTool";
 			BufString = BufString + StringNumberComplement(j, 3);
-			BtnToolTip = WAIniReadKey(ToolBarKey, BufString, ToolbarsIniFile);
+			BtnToolTip = IniReadKey(ToolBarKey, BufString, ToolbarsIniFile);
             BufString = "BtnHelp";
 			BufString = BufString + StringNumberComplement(j, 3);
-			BtnComment = WAIniReadKey(ToolBarKey, BufString, ToolbarsIniFile);
+			BtnComment = IniReadKey(ToolBarKey, BufString, ToolbarsIniFile);
             BufString = "BtnComd";
 			BufString = BufString + StringNumberComplement(j, 3);
-			BtnCommand = WAIniReadKey(ToolBarKey, BufString, ToolbarsIniFile);
+			BtnCommand = IniReadKey(ToolBarKey, BufString, ToolbarsIniFile);
             if(BtnIcon.Len() == 0) break;
             if(BtnMenu.Len() == 0) break;
             switch(BtnMenu.Get_Long())
             {
                 // Separator
                 case -2:
-                    WAToolBarAddSeparator(hCurrentToolBar, 0);
+                    ToolBarAddSeparator(hCurrentToolBar, 0);
                     // Hack it to 8 pixels
 		            OldTBSize += 8;
 					break;
@@ -173,13 +173,13 @@ void InitReBarContent(HWND hParent)
                 case -1:
                     if(BtnIcon.Is_Numeric())
                     {
-						WAToolBarAddButton(hCurrentToolBar, "", BtnID, BtnIcon.Get_Long(), TBSTYLE_BUTTON | TBSTYLE_AUTOSIZE, TBSTATE_ENABLED, 1);
-                        OldTBSize += WAToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
+						ToolBarAddButton(hCurrentToolBar, "", BtnID, BtnIcon.Get_Long(), TBSTYLE_BUTTON | TBSTYLE_AUTOSIZE, TBSTATE_ENABLED, 1);
+                        OldTBSize += ToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
                     }
                     else
                     {
-                        WAToolBarAddButton(hCurrentToolBar, BtnIcon, BtnID, 0, TBSTYLE_BUTTON | TBSTYLE_AUTOSIZE, TBSTATE_ENABLED, 1);
-                        OldTBSize += WAToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
+                        ToolBarAddButton(hCurrentToolBar, BtnIcon, BtnID, 0, TBSTYLE_BUTTON | TBSTYLE_AUTOSIZE, TBSTATE_ENABLED, 1);
+                        OldTBSize += ToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
                     }
 					break;
                 // Dropdown button
@@ -189,16 +189,16 @@ void InitReBarContent(HWND hParent)
                         switch(BtnMenu.Get_Long())
                         {
                             case 9:
-                                WAToolBarAddButton(hCurrentToolBar, "", BtnID, BtnIcon.Get_Long(), TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE | BTNS_WHOLEDROPDOWN, TBSTATE_ENABLED, 1);
-                                OldTBSize += WAToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
+                                ToolBarAddButton(hCurrentToolBar, "", BtnID, BtnIcon.Get_Long(), TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE | BTNS_WHOLEDROPDOWN, TBSTATE_ENABLED, 1);
+                                OldTBSize += ToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
 								break;
                             case 10:
-                                WAToolBarAddButton(hCurrentToolBar, "", BtnID, BtnIcon.Get_Long(), TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE | BTNS_WHOLEDROPDOWN, TBSTATE_ENABLED, 1);
-                                OldTBSize += WAToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
+                                ToolBarAddButton(hCurrentToolBar, "", BtnID, BtnIcon.Get_Long(), TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE | BTNS_WHOLEDROPDOWN, TBSTATE_ENABLED, 1);
+                                OldTBSize += ToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
 								break;
 							default:
-                                WAToolBarAddButton(hCurrentToolBar, "", BtnID, BtnIcon.Get_Long(), TBSTYLE_BUTTON | BTNS_DROPDOWN | TBSTYLE_AUTOSIZE, TBSTATE_ENABLED, 1);
-                                OldTBSize += WAToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
+                                ToolBarAddButton(hCurrentToolBar, "", BtnID, BtnIcon.Get_Long(), TBSTYLE_BUTTON | BTNS_DROPDOWN | TBSTYLE_AUTOSIZE, TBSTATE_ENABLED, 1);
+                                OldTBSize += ToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
 								break;
                         }
 					}
@@ -207,16 +207,16 @@ void InitReBarContent(HWND hParent)
                         switch(BtnMenu.Get_Long())
                         {
                             case 9:
-                                WAToolBarAddButton(hCurrentToolBar, BtnIcon, BtnID, 0, TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE | BTNS_WHOLEDROPDOWN, TBSTATE_ENABLED, 1);
-                                OldTBSize += WAToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
+                                ToolBarAddButton(hCurrentToolBar, BtnIcon, BtnID, 0, TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE | BTNS_WHOLEDROPDOWN, TBSTATE_ENABLED, 1);
+                                OldTBSize += ToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
 								break;
                             case 10:
-                                WAToolBarAddButton(hCurrentToolBar, BtnIcon, BtnID, 0, TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE | BTNS_WHOLEDROPDOWN, TBSTATE_ENABLED, 1);
-                                OldTBSize += WAToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
+                                ToolBarAddButton(hCurrentToolBar, BtnIcon, BtnID, 0, TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE | BTNS_WHOLEDROPDOWN, TBSTATE_ENABLED, 1);
+                                OldTBSize += ToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
 								break;
                             default:
-                                WAToolBarAddButton(hCurrentToolBar, BtnIcon, BtnID, 0, TBSTYLE_BUTTON | BTNS_DROPDOWN | TBSTYLE_AUTOSIZE, TBSTATE_ENABLED, 1);
-                                OldTBSize += WAToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
+                                ToolBarAddButton(hCurrentToolBar, BtnIcon, BtnID, 0, TBSTYLE_BUTTON | BTNS_DROPDOWN | TBSTYLE_AUTOSIZE, TBSTATE_ENABLED, 1);
+                                OldTBSize += ToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
 								break;
                         }
                     }
@@ -252,8 +252,8 @@ void InitReBarContent(HWND hParent)
         }
         if(CreatedBtn != 0)
         {
-            WAToolBarResize(hCurrentToolBar);
-			hCurrentPager = WACreatePager(0, 0, OldTBSize, WAToolBarGetYSize(hCurrentToolBar), hParent, hCurrentToolBar, NbrPager, PGS_HORZ);
+            ToolBarResize(hCurrentToolBar);
+			hCurrentPager = CreatePager(0, 0, OldTBSize, ToolBarGetYSize(hCurrentToolBar), hParent, hCurrentToolBar, NbrPager, PGS_HORZ);
             NbrPager++;
             RealCreated = true;
             PagersHwnd.Add(hCurrentPager);
@@ -264,17 +264,17 @@ void InitReBarContent(HWND hParent)
             switch(ToolBarType.Get_Long())
             {
                 case 1:
-                    WARebarAddBand(hRebar, hCurrentPager, "", WAToolBarGetButtonYSize(hCurrentToolBar), RBBS_BREAK | RBBS_GRIPPERALWAYS, OldTBSize + MarginWidth);
+                    RebarAddBand(hRebar, hCurrentPager, "", ToolBarGetButtonYSize(hCurrentToolBar), RBBS_BREAK | RBBS_GRIPPERALWAYS, OldTBSize + MarginWidth);
 					break;
 				case 0:
-                    WARebarAddBand(hRebar, hCurrentPager, "", WAToolBarGetButtonYSize(hCurrentToolBar), RBBS_GRIPPERALWAYS, OldTBSize + MarginWidth);
+                    RebarAddBand(hRebar, hCurrentPager, "", ToolBarGetButtonYSize(hCurrentToolBar), RBBS_GRIPPERALWAYS, OldTBSize + MarginWidth);
 					break;
 			}
-            WARebarBandVisible(hRebar, i, ToolBarShow.Get_Long());
+            RebarBandVisible(hRebar, i, ToolBarShow.Get_Long());
         }
     }
-    if(RealCreated == false) WAControlVisible(hRebar, 0);
-    WARebarResize(hRebar);
+    if(RealCreated == false) ControlVisible(hRebar, 0);
+    RebarResize(hRebar);
     ResizeMDIform();
 }
 
@@ -448,7 +448,7 @@ void InitToolBarsIcons(void)
 void RefreshToolbars(void)
 {
     DestroyWindow(hRebar);
-    hRebar = WACreateRebar(0, 0, 0, 18, hMDIform.hWnd, 0, 0, CCS_TOP | RBS_BANDBORDERS | WS_BORDER);
-	WARebarResize(hRebar);
+    hRebar = CreateRebar(0, 0, 0, 18, hMDIform.hWnd, 0, 0, CCS_TOP | RBS_BANDBORDERS | WS_BORDER);
+	RebarResize(hRebar);
     InitReBarContent(hMDIform.hWnd);
 }

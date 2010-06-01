@@ -80,7 +80,7 @@ HWND CreateCodeMax(long CMLeft, long CMTop, long CMWidth, long CMHeight, HWND hP
 {
     long CodeMaxProps = 0;
 
-    WAControlBound(hParent, CMLeft, CMTop, CMWidth, CMHeight);
+    ControlBound(hParent, CMLeft, CMTop, CMWidth, CMHeight);
     CodeMaxProps = WS_TABSTOP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VISIBLE | WS_CHILD;
     if(Maximize == 1) CodeMaxProps = CodeMaxProps | WS_MAXIMIZE;
     return(CreateWindowEx(WS_EX_STATICEDGE, "CodeMaxXX", "", CodeMaxProps, CMLeft, CMTop, CMWidth, CMHeight, hParent, NULL, hInst, NULL));

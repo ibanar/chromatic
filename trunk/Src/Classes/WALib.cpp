@@ -28,7 +28,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 // -----------------------------------------------------------------------
-// WALib.cpp: implementation of the WA library
+// ChromaticLib.cpp: implementation of the Chromatic library
 // -----------------------------------------------------------------------
 
 // -----------------------------------------------------------------------
@@ -47,7 +47,7 @@ HFONT WAArialFont8;
 HBRUSH WABgBrush;
 long WABgColor;
 long WATxtColor;
-long WAToolTipFont;
+long ToolTipFont;
 long _Btn_StaticEdge = 0;
 HWND LastDialog;
 CAppModule _Module;
@@ -122,12 +122,12 @@ int CALLBACK EnumDockChilds(HWND hWnd, long lParam);
 
 // -----------------------------------------------------------------------
 // Init all
-int CALLBACK WAWidgetInit(HINSTANCE hInst, HICON AppIcon, long vSplitCursor, long hSplitCursor)
+int CALLBACK WidgetInit(HINSTANCE hInst, HICON AppIcon, long vSplitCursor, long hSplitCursor)
 {
 	INITCOMMONCONTROLSEX MyCommonStruct;
 	int ReturnValue = 0;
 
-	int OSType = WAMiscGetOSClass();
+	int OSType = MiscGetOSClass();
 	if((OSType & 2) || (OSType & 4)) _OnWindows2K = 1;
 	if(OSType & 1) _OnOlderWindows = 1;					// NT4
 	if(OSType == 0) _OnOlderWindows = 1;				// 9X/ME
@@ -140,17 +140,17 @@ int CALLBACK WAWidgetInit(HINSTANCE hInst, HICON AppIcon, long vSplitCursor, lon
                            ICC_USEREX_CLASSES | ICC_INTERNET_CLASSES | ICC_PAGESCROLLER_CLASS | ICC_DATE_CLASSES |
                            ICC_HOTKEY_CLASS | ICC_UPDOWN_CLASS | ICC_ANIMATE_CLASS;
     // Try new commoncontrols
-    ReturnValue = WAINIT_OK;
+    ReturnValue = INIT_OK;
     if(InitCommonControlsEx(&MyCommonStruct) == 0)
     {
-        ReturnValue = ReturnValue | WAINIT_NOEXCONTROLS;
+        ReturnValue = ReturnValue | INIT_NOEXCONTROLS;
         InitCommonControls();
     }
     if(WASerifFont == 0) WASerifFont = CreateFont(-8, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, "MS Sans Serif");
     if(WASerifFont10 == 0) WASerifFont10 = CreateFont(-10, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, "MS Sans Serif");
-    if(WACourrierNewFont9 == 0) WACourrierNewFont9 = WAGDIObtainFont("Courier New", 9, 0, 0, 0);
-    if(WAMarlettFont9 == 0) WAMarlettFont9 = WAGDIObtainFont("Marlett", 9, 0, 0, 0);
-    if(WAArialFont8 == 0) WAArialFont8 = WAGDIObtainFont("Arial", 8, 0, 0, 0);
+    if(WACourrierNewFont9 == 0) WACourrierNewFont9 = GDIObtainFont("Courier New", 9, 0, 0, 0);
+    if(WAMarlettFont9 == 0) WAMarlettFont9 = GDIObtainFont("Marlett", 9, 0, 0, 0);
+    if(WAArialFont8 == 0) WAArialFont8 = GDIObtainFont("Arial", 8, 0, 0, 0);
 
     WABgBrush = GetSysColorBrush(COLOR_WINDOW);
     WABgColor = GetSysColor(COLOR_WINDOW);
@@ -179,9 +179,9 @@ int CALLBACK WAWidgetInit(HINSTANCE hInst, HICON AppIcon, long vSplitCursor, lon
         RichedClass = "RICHEDIT";
         RichEditDll = LoadLibrary("riched32.dll");
         // Mark it as 1.0
-        ReturnValue = ReturnValue | WAINIT_RICHEDCONTROL10;
+        ReturnValue = ReturnValue | INIT_RICHEDCONTROL10;
         // Can't find any richedit
-        if(RichEditDll == 0) ReturnValue = ReturnValue | WAINIT_NORICHEDCONTROL;
+        if(RichEditDll == 0) ReturnValue = ReturnValue | INIT_NORICHEDCONTROL;
     }
 
 	// Init it now so that we can use ATL/WTL classes
@@ -194,7 +194,7 @@ int CALLBACK WAWidgetInit(HINSTANCE hInst, HICON AppIcon, long vSplitCursor, lon
 
 // -----------------------------------------------------------------------
 // Reset all
-void CALLBACK WAWidgetUnInit(HINSTANCE hInst)
+void CALLBACK WidgetUnInit(HINSTANCE hInst)
 {
 	StringFlushGarbageCollector();
     if(RichEditDll != 0) FreeLibrary(RichEditDll);
@@ -203,7 +203,7 @@ void CALLBACK WAWidgetUnInit(HINSTANCE hInst)
     if(WASerifFont != 0) DeleteObject(WASerifFont);
     // Unregister the classes
     UnregisterClass("GripBoxClass", hInst);
-    UnregisterClass("WADumpBoxClass", hInst);
+    UnregisterClass("DumpBoxClass", hInst);
     UnregisterClass("ColorBoxClass", hInst);
     UnregisterClass("WAHorzSplitBarClass", hInst);
     UnregisterClass("WAVertSplitBarClass", hInst);
@@ -224,9 +224,9 @@ void CALLBACK WAWidgetUnInit(HINSTANCE hInst)
 
 // -----------------------------------------------------------------------
 // Create a splash form
-HWND CALLBACK WACreateSplashDialog(long DLeft, long DTop, long DWidth, long DHeight, CStr DTitle,
-                                   HWND hParent, HMENU hMenu, HICON hIcon, void (CALLBACK *InitProc)(HWND hwnd),
-                                   WNDPROC WindowProc, long WExStyle, long WStyle, long ShowType)
+HWND CALLBACK CreateSplashDialog(long DLeft, long DTop, long DWidth, long DHeight, CStr DTitle,
+                                 HWND hParent, HMENU hMenu, HICON hIcon, void (CALLBACK *InitProc)(HWND hwnd),
+                                 WNDPROC WindowProc, long WExStyle, long WStyle, long ShowType)
 {
     HWND ReturnValue = 0;
 
@@ -235,8 +235,8 @@ HWND CALLBACK WACreateSplashDialog(long DLeft, long DTop, long DWidth, long DHei
     WACurrentInitProc = InitProc;
     ReturnValue = CreateWindowEx(WExStyle, "WASplashDialogClass", DTitle.Get_String(), WS_POPUP | WS_CLIPSIBLINGS + WStyle, DLeft, DTop, DWidth, DHeight, hParent, hMenu, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
-    WAControlBringToBottom(ReturnValue);
+    ControlHookWin(ReturnValue, WindowProc);
+    ControlBringToBottom(ReturnValue);
     UpdateWindow(ReturnValue);
 	return(ReturnValue);
 }
@@ -247,7 +247,7 @@ HWND CALLBACK WACreateSplashDialog(long DLeft, long DTop, long DWidth, long DHei
 
 // -----------------------------------------------------------------------
 // Create a modal dialog form from a template
-long CALLBACK WACreateStockModalDialog(long TemplateNumber, long DLeft, long DTop, long DWidth, long DHeight, HWND hParent, CStr DTitle, DLGPROC WindowProc, long Centered, long ExtraDatas)
+long CALLBACK CreateStockModalDialog(long TemplateNumber, long DLeft, long DTop, long DWidth, long DHeight, HWND hParent, CStr DTitle, DLGPROC WindowProc, long Centered, long ExtraDatas)
 {
     DialogTempProc = WindowProc;
     DialogTempTitle = DTitle;
@@ -257,13 +257,13 @@ long CALLBACK WACreateStockModalDialog(long TemplateNumber, long DLeft, long DTo
 	switch(TemplateNumber)
 	{
         case MODALDLG_STOCK_EMPTY:
-            return(WACreateModalDialog(DLeft, DTop, DWidth, DHeight, hParent, &FRMStockModalDlgEmptyProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, Centered));
+            return(CreateModalDialog(DLeft, DTop, DWidth, DHeight, hParent, &FRMStockModalDlgEmptyProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, Centered));
 		case MODALDLG_STOCK_STDCLOSE:
-            return(WACreateModalDialog(DLeft, DTop, DWidth, DHeight, hParent, &FRMStockModalDlgStdCloseProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, Centered));
+            return(CreateModalDialog(DLeft, DTop, DWidth, DHeight, hParent, &FRMStockModalDlgStdCloseProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, Centered));
         case MODALDLG_STOCK_STDOKCANCEL:
-            return(WACreateModalDialog(DLeft, DTop, DWidth, DHeight, hParent, &FRMStockModalDlgStdOkCancelProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, Centered));
+            return(CreateModalDialog(DLeft, DTop, DWidth, DHeight, hParent, &FRMStockModalDlgStdOkCancelProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, Centered));
         case MODALDLG_STOCK_WIZARD:
-            return(WACreateModalDialog(DLeft, DTop, DWidth, DHeight, hParent, &FRMStockModalDlgStdWizardProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, Centered));
+            return(CreateModalDialog(DLeft, DTop, DWidth, DHeight, hParent, &FRMStockModalDlgStdWizardProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, Centered));
         default:
             return(0);
     }
@@ -271,7 +271,7 @@ long CALLBACK WACreateStockModalDialog(long TemplateNumber, long DLeft, long DTo
 
 // -----------------------------------------------------------------------
 // Create a modal dialog form
-long CALLBACK WACreateModalDialog(long DLeft, long DTop, long DWidth, long DHeight, HWND hParent, DLGPROC WindowProc, long ExtraStyle, long Centered)
+long CALLBACK CreateModalDialog(long DLeft, long DTop, long DWidth, long DHeight, HWND hParent, DLGPROC WindowProc, long ExtraStyle, long Centered)
 {
     long BaseDialogX = 0;
     long BaseDialogY = 0;
@@ -293,7 +293,7 @@ long CALLBACK WACreateModalDialog(long DLeft, long DTop, long DWidth, long DHeig
 
 // -----------------------------------------------------------------------
 // Create a dialog form
-HWND CALLBACK WACreateDialog(long DLeft, long DTop, long DWidth, long DHeight, HWND hParent, HMENU hMenu, HICON hIcon, CStr DTitle, void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WindowProc, long WExStyle, long WStyle, long ShowType)
+HWND CALLBACK CreateNonModalDialog(long DLeft, long DTop, long DWidth, long DHeight, HWND hParent, HMENU hMenu, HICON hIcon, CStr DTitle, void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WindowProc, long WExStyle, long WStyle, long ShowType)
 {
     HWND ReturnValue = 0;
 
@@ -304,7 +304,7 @@ HWND CALLBACK WACreateDialog(long DLeft, long DTop, long DWidth, long DHeight, H
     DHeight = DHeight + (GetSystemMetrics(SM_CYCAPTION) - 19);
     ReturnValue = CreateWindowEx(WExStyle, "DialogClass", DTitle.Get_String(), WS_CLIPSIBLINGS + WStyle, DLeft, DTop, DWidth, DHeight, hParent, hMenu, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
+    ControlHookWin(ReturnValue, WindowProc);
     DialogSetIcon(ReturnValue, hIcon);
     ShowWindow(ReturnValue, ShowType);
     UpdateWindow(ReturnValue);
@@ -382,15 +382,15 @@ long CALLBACK DialogYUnitToPixel(long YCoord, long YUnit)
 
 // -----------------------------------------------------------------------
 // Create a container control
-HWND CALLBACK WACreateContainer(long SPLeft, long SPTop, long SPWidth, long SPHeight, long CtrlID,
+HWND CALLBACK CreateContainer(long SPLeft, long SPTop, long SPWidth, long SPHeight, long CtrlID,
                                 HWND hParent, CStr Name, WNDPROC WindowProc)
 {
     HWND ReturnValue = 0;
 
-	WAControlBound(hParent, SPLeft, SPTop, SPWidth, SPHeight);
+	ControlBound(hParent, SPLeft, SPTop, SPWidth, SPHeight);
     ReturnValue = CreateWindowEx(0, "WAContainerClass", Name.Get_String(), WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, SPLeft, SPTop, SPWidth, SPHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-	WAControlHookWin(ReturnValue, WindowProc);
+	ControlHookWin(ReturnValue, WindowProc);
     return(ReturnValue);
 }
 
@@ -400,7 +400,7 @@ HWND CALLBACK WACreateContainer(long SPLeft, long SPTop, long SPWidth, long SPHe
 
 // -----------------------------------------------------------------------
 // Create a splitter control
-HWND CALLBACK WACreateSplitter(long SPLeft, long SPTop, long SPDim, long CtrlID,
+HWND CALLBACK CreateSplitter(long SPLeft, long SPTop, long SPDim, long CtrlID,
                                LPSPLITTERDAT SplitterStruct, WNDPROC WindowProc)
 {
     HWND ReturnValue = 0;
@@ -412,12 +412,12 @@ HWND CALLBACK WACreateSplitter(long SPLeft, long SPTop, long SPDim, long CtrlID,
         case SPLITTER_HORZ:
             SPWidth = SPDim;
             SPHeight = SplitterStruct->StartupPos;
-            WAControlBound(SplitterStruct->hParent, SPLeft, SPTop, SPWidth, SPHeight);
+            ControlBound(SplitterStruct->hParent, SPLeft, SPTop, SPWidth, SPHeight);
 			break;
 	    case SPLITTER_VERT:
             SPWidth = SplitterStruct->StartupPos;
             SPHeight = SPDim;
-            WAControlBound(SplitterStruct->hParent, SPLeft, SPTop, SPWidth, SPHeight);
+            ControlBound(SplitterStruct->hParent, SPLeft, SPTop, SPWidth, SPHeight);
 			break;
     }
     WACurrentSplitterStruct = SplitterStruct;
@@ -429,14 +429,14 @@ HWND CALLBACK WACreateSplitter(long SPLeft, long SPTop, long SPDim, long CtrlID,
 
 // -----------------------------------------------------------------------
 // Create a splitbar control
-HWND CALLBACK WACreateSplitBar(long SPLeft, long SPTop, long SPWidth, long SPHeight,
+HWND CALLBACK CreateSplitBar(long SPLeft, long SPTop, long SPWidth, long SPHeight,
                                HWND hParent, long CtrlID, LPSPLITTERDAT SplitStruct)
 {
     HWND ReturnValue = 0;
     SPLITTERDAT TmpSplitBarDatC;
 
     RtlMoveMemory(&TmpSplitBarDatC, SplitStruct, sizeof(TmpSplitBarDatC));
-    WAControlBound(hParent, SPLeft, SPTop, SPWidth, SPHeight);
+    ControlBound(hParent, SPLeft, SPTop, SPWidth, SPHeight);
     switch(TmpSplitBarDatC.Orientation)
     {
         case SPLITTER_HORZ:
@@ -457,7 +457,7 @@ HWND CALLBACK WACreateSplitBar(long SPLeft, long SPTop, long SPWidth, long SPHei
 
 // -----------------------------------------------------------------------
 // Create a MDIDialog form
-HWND CALLBACK WACreateMDIDialog(long MDILeft, long MDITop, long MDIWidth, long MDIHeight,
+HWND CALLBACK CreateMDIDialog(long MDILeft, long MDITop, long MDIWidth, long MDIHeight,
                                 HWND hParent, HMENU hMenu, HICON hIcon, CStr MDITitle, void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WindowProc, long ExtraStyle, long ShowType)
 {
     HWND ReturnValue = 0;
@@ -467,7 +467,7 @@ HWND CALLBACK WACreateMDIDialog(long MDILeft, long MDITop, long MDIWidth, long M
     WACurrentInitProc = InitProc;
     ReturnValue = CreateWindowEx(WS_EX_LEFT, "WAMDIDialogClass", MDITitle.Get_String(), WS_THICKFRAME | WS_SYSMENU | WS_MAXIMIZEBOX | WS_MINIMIZEBOX | WS_CAPTION | ExtraStyle, MDILeft, MDITop, MDIWidth, MDIHeight, 0, (HMENU) hMenu, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
+    ControlHookWin(ReturnValue, WindowProc);
     DialogSetIcon(ReturnValue, hIcon);
     ShowWindow(ReturnValue, ShowType);
     UpdateWindow(ReturnValue);
@@ -480,7 +480,7 @@ HWND CALLBACK WACreateMDIDialog(long MDILeft, long MDITop, long MDIWidth, long M
 
 // -----------------------------------------------------------------------
 // Create a MDI child dialog form
-HWND CALLBACK WACreateMDIChildDialog(HWND hParent, CStr CTitle, HICON hIcon,
+HWND CALLBACK CreateMDIChildDialog(HWND hParent, CStr CTitle, HICON hIcon,
                                      void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WindowProc, long ExtraStyle, long ZeroPos, CStr CustomClass)
 {
     HWND ReturnValue = 0;
@@ -526,7 +526,7 @@ HWND CALLBACK WACreateMDIChildDialog(HWND hParent, CStr CTitle, HICON hIcon,
 
 // -----------------------------------------------------------------------
 // Create a toolbar control
-HWND CALLBACK WACreateToolBar(long TBLeft, long TBTop, long TBWidth, long TBHeight,
+HWND CALLBACK CreateToolBar(long TBLeft, long TBTop, long TBWidth, long TBHeight,
                               HWND hParent, HIMAGELIST hImageList, long CtrlID, long StdBitmapsType,
                               WNDPROC WindowProc, long ExtraStyle, long ExtendedStyle)
 {
@@ -534,7 +534,7 @@ HWND CALLBACK WACreateToolBar(long TBLeft, long TBTop, long TBWidth, long TBHeig
     TBADDBITMAP BitmapToAdd;
 
 	memset(&BitmapToAdd, 0, sizeof(BitmapToAdd));
-    WAControlBound(hParent, TBLeft, TBTop, TBWidth, TBHeight);
+    ControlBound(hParent, TBLeft, TBTop, TBWidth, TBHeight);
     ReturnValue = CreateWindowEx(0, "ToolBarWindow32", "", WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_CHILD | WS_VISIBLE | ExtraStyle, TBLeft, TBTop, TBWidth, TBHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
     SendMessage(ReturnValue, TB_BUTTONSTRUCTSIZE, sizeof(TBBUTTON), (long) 0);
@@ -549,13 +549,13 @@ HWND CALLBACK WACreateToolBar(long TBLeft, long TBTop, long TBWidth, long TBHeig
         SendMessage(ReturnValue, TB_SETIMAGELIST, 0, (long) hImageList);
     }
     if(ExtendedStyle != 0) SendMessage(ReturnValue, TB_SETEXTENDEDSTYLE, 0, (long) ExtendedStyle);
-    WAControlHookWin(ReturnValue, WindowProc);
+    ControlHookWin(ReturnValue, WindowProc);
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Add a button to a toolbar control
-long CALLBACK WAToolBarAddButton(HWND hToolbar, CStr ButtonText, long TBButtonID, long ImgIndex,
+long CALLBACK ToolBarAddButton(HWND hToolbar, CStr ButtonText, long TBButtonID, long ImgIndex,
                                  long ButtonStyle, long ButtonState, long NoImage)
 {
     long ReturnValue = 0;
@@ -589,49 +589,49 @@ long CALLBACK WAToolBarAddButton(HWND hToolbar, CStr ButtonText, long TBButtonID
 
 // -----------------------------------------------------------------------
 // Retrieve a button from a toolbar control
-long CALLBACK WAToolBarGetButton(HWND hToolbar, long TBButtonID, LPTBBUTTON ButtonStruct)
+long CALLBACK ToolBarGetButton(HWND hToolbar, long TBButtonID, LPTBBUTTON ButtonStruct)
 {
     return(SendMessage(hToolbar, TB_GETBUTTON, TBButtonID, (long) ButtonStruct));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the X size of a button from a toolbar control
-long CALLBACK WAToolBarGetButtonXSize(HWND hToolbar)
+long CALLBACK ToolBarGetButtonXSize(HWND hToolbar)
 {
     return(SendMessage(hToolbar, TB_GETBUTTONSIZE, 0, (long) 0) & 0xFFFF);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the Y size of a button from a toolbar control
-long CALLBACK WAToolBarGetButtonYSize(HWND hToolbar)
+long CALLBACK ToolBarGetButtonYSize(HWND hToolbar)
 {
     return((short) ((SendMessage(hToolbar, TB_GETBUTTONSIZE, 0, (long) 0) & 0xFFFF0000) / 0x10000));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve number of buttons of a toolbar control
-long CALLBACK WAToolBarGetButtonsCount(HWND hToolbar)
+long CALLBACK ToolBarGetButtonsCount(HWND hToolbar)
 {
     return(SendMessage(hToolbar, TB_BUTTONCOUNT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve number of rows of a toolbar control
-long CALLBACK WAToolBarGetRowsCount(HWND hToolbar)
+long CALLBACK ToolBarGetRowsCount(HWND hToolbar)
 {
     return(SendMessage(hToolbar, TB_GETROWS, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the imagelist of a toolbar control
-HIMAGELIST CALLBACK WAToolBarGetImagelist(HWND hToolbar)
+HIMAGELIST CALLBACK ToolBarGetImagelist(HWND hToolbar)
 {
     return((HIMAGELIST) SendMessage(hToolbar, TB_GETIMAGELIST, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Add a separator button to a toolbar control
-long CALLBACK WAToolBarAddSeparator(HWND hToolbar, long TBButtonID)
+long CALLBACK ToolBarAddSeparator(HWND hToolbar, long TBButtonID)
 {
     TBBUTTON ButtonToAdd;
 
@@ -646,7 +646,7 @@ long CALLBACK WAToolBarAddSeparator(HWND hToolbar, long TBButtonID)
 
 // -----------------------------------------------------------------------
 // Retrieve button number on a tooltip demand of a toolbar control
-long CALLBACK WAToolBarGetNotifiedToolTip(long lParam)
+long CALLBACK ToolBarGetNotifiedToolTip(long lParam)
 {
     long ReturnValue = 0;
     NMHDR HeaderNotify;
@@ -659,7 +659,7 @@ long CALLBACK WAToolBarGetNotifiedToolTip(long lParam)
 
 // -----------------------------------------------------------------------
 // Retrieve button number on a dropdown demand of a toolbar control
-long CALLBACK WAToolBarGetNotifiedDropDownItem(long lParam)
+long CALLBACK ToolBarGetNotifiedDropDownItem(long lParam)
 {
     NMTOOLBAR HeaderNotify;
 
@@ -669,7 +669,7 @@ long CALLBACK WAToolBarGetNotifiedDropDownItem(long lParam)
 
 // -----------------------------------------------------------------------
 // Proceed a standard tooltip demand of a toolbar control
-void CALLBACK WAToolBarDisplayToolTip(CStr TextToShow, long lParam)
+void CALLBACK ToolBarDisplayToolTip(CStr TextToShow, long lParam)
 {
     TOOLTIPTEXT ToolTipNotify;
     long TTLen = 0;
@@ -684,49 +684,49 @@ void CALLBACK WAToolBarDisplayToolTip(CStr TextToShow, long lParam)
 
 // -----------------------------------------------------------------------
 // Resize a toolbar according to it's parent control
-long CALLBACK WAToolBarResize(HWND hToolbar)
+long CALLBACK ToolBarResize(HWND hToolbar)
 {
     return(SendMessage(hToolbar, TB_AUTOSIZE, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Set a toolbar button pressed state
-long CALLBACK WAToolBarSetButtonPressed(HWND hToolbar, long TBButtonID, long Pressed)
+long CALLBACK ToolBarSetButtonPressed(HWND hToolbar, long TBButtonID, long Pressed)
 {
     return(SendMessage(hToolbar, TB_PRESSBUTTON, TBButtonID, Pressed));
 }
 
 // -----------------------------------------------------------------------
 // Set a toolbar button checked state
-long CALLBACK WAToolBarSetButtonChecked(HWND hToolbar, long TBButtonID, long Checked)
+long CALLBACK ToolBarSetButtonChecked(HWND hToolbar, long TBButtonID, long Checked)
 {
     return(SendMessage(hToolbar, TB_CHECKBUTTON, TBButtonID, Checked));
 }
 
 // -----------------------------------------------------------------------
 // Set a toolbar button enable state
-long CALLBACK WAToolBarSetButtonEnabled(HWND hToolbar, long TBButtonID, long EnableState)
+long CALLBACK ToolBarSetButtonEnabled(HWND hToolbar, long TBButtonID, long EnableState)
 {
     return(SendMessage(hToolbar, TB_ENABLEBUTTON, TBButtonID, EnableState));
 }
 
 // -----------------------------------------------------------------------
 // Is a toolbar button pressed ?
-long CALLBACK WAToolBarIsButtonPressed(HWND hToolbar, long TBButtonID)
+long CALLBACK ToolBarIsButtonPressed(HWND hToolbar, long TBButtonID)
 {
     return(SendMessage(hToolbar, TB_ISBUTTONPRESSED, TBButtonID, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Is a toolbar button checked ?
-long CALLBACK WAToolBarIsButtonChecked(HWND hToolbar, long TBButtonID)
+long CALLBACK ToolBarIsButtonChecked(HWND hToolbar, long TBButtonID)
 {
     return(SendMessage(hToolbar, TB_ISBUTTONCHECKED, TBButtonID, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Display a menu below a toolbar button
-long CALLBACK WAToolBarDisplayPopupMenu(HWND hToolbar, long TBButtonID, HMENU hMenu, HWND hParent)
+long CALLBACK ToolBarDisplayPopupMenu(HWND hToolbar, long TBButtonID, HMENU hMenu, HWND hParent)
 {
     RECT rc;
     TPMPARAMS tpm;
@@ -748,7 +748,7 @@ long CALLBACK WAToolBarDisplayPopupMenu(HWND hToolbar, long TBButtonID, HMENU hM
 
 // -----------------------------------------------------------------------
 // Retrieve the Y size of a toolbar
-long CALLBACK WAToolBarGetYSize(HWND hToolbar)
+long CALLBACK ToolBarGetYSize(HWND hToolbar)
 {
     RECT TBRct;
 
@@ -758,7 +758,7 @@ long CALLBACK WAToolBarGetYSize(HWND hToolbar)
 
 // -----------------------------------------------------------------------
 // Retrieve the X size of a toolbar
-long CALLBACK WAToolBarGetXSize(HWND hToolbar)
+long CALLBACK ToolBarGetXSize(HWND hToolbar)
 {
     RECT TBRct;
 
@@ -768,7 +768,7 @@ long CALLBACK WAToolBarGetXSize(HWND hToolbar)
 
 // -----------------------------------------------------------------------
 // Retrieve the X position of a toolbar button
-long CALLBACK WAToolBarGetButtonXPosition(HWND hToolbar, long TBButtonID)
+long CALLBACK ToolBarGetButtonXPosition(HWND hToolbar, long TBButtonID)
 {
     RECT TBRct;
 
@@ -778,14 +778,14 @@ long CALLBACK WAToolBarGetButtonXPosition(HWND hToolbar, long TBButtonID)
 
 // -----------------------------------------------------------------------
 // Retrieve the X/Y size of a toolbar
-long CALLBACK WAToolBarGetXYSize(HWND hToolbar, LPSIZE TBSize)
+long CALLBACK ToolBarGetXYSize(HWND hToolbar, LPSIZE TBSize)
 {
     return(SendMessage(hToolbar, TB_GETMAXSIZE, 0, (long) TBSize));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the real position of a toolbar button
-long CALLBACK WAToolBarGetRealPos(HWND hToolbar, LPPOINT TBPosition)
+long CALLBACK ToolBarGetRealPos(HWND hToolbar, LPPOINT TBPosition)
 {
     long ReturnValue = 0;
 	RECT TBRct;
@@ -798,7 +798,7 @@ long CALLBACK WAToolBarGetRealPos(HWND hToolbar, LPPOINT TBPosition)
 
 // -----------------------------------------------------------------------
 // Retrieve the X/Y position of a toolbar button (relative to toolbar)
-long CALLBACK WAToolBarGetButtonXYPos(HWND hToolbar, long TBButtonID, LPPOINT TBPosition)
+long CALLBACK ToolBarGetButtonXYPos(HWND hToolbar, long TBButtonID, LPPOINT TBPosition)
 {
     long ReturnValue = 0;
 	RECT TBRct;
@@ -811,7 +811,7 @@ long CALLBACK WAToolBarGetButtonXYPos(HWND hToolbar, long TBButtonID, LPPOINT TB
 
 // -----------------------------------------------------------------------
 // Retrieve the X size of a toolbar button by button id
-long CALLBACK WAToolBarGetButtonIndexXSize(HWND hToolbar, long TBButtonID)
+long CALLBACK ToolBarGetButtonIndexXSize(HWND hToolbar, long TBButtonID)
 {
     RECT TBRct;
     SendMessage(hToolbar, TB_GETRECT, TBButtonID, (long) &TBRct);
@@ -820,21 +820,21 @@ long CALLBACK WAToolBarGetButtonIndexXSize(HWND hToolbar, long TBButtonID)
 
 // -----------------------------------------------------------------------
 // Retrieve the X padding of a toolbar
-long CALLBACK WAToolBarGetXPadding(HWND hToolbar)
+long CALLBACK ToolBarGetXPadding(HWND hToolbar)
 {
     return((short) ((SendMessage(hToolbar, TB_GETPADDING, 0, (long) 0) & 0xFFFF0000) / 0x10000));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the Y padding of a toolbar
-long CALLBACK WAToolBarGetYPadding(HWND hToolbar)
+long CALLBACK ToolBarGetYPadding(HWND hToolbar)
 {
     return(SendMessage(hToolbar, TB_GETPADDING, 0, (long) 0) & 0xFFFF);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve button number on a dropdown demand of a toolbar control
-long CALLBACK WAToolBarGetNotifiedHotItem(long lParam)
+long CALLBACK ToolBarGetNotifiedHotItem(long lParam)
 {
     long ReturnValue = 0;
     NMTBHOTITEM HeaderNotify;
@@ -847,14 +847,14 @@ long CALLBACK WAToolBarGetNotifiedHotItem(long lParam)
 
 // -----------------------------------------------------------------------
 // Remove a button from a toolbar control
-long CALLBACK WAToolBarRemoveButton(HWND hToolbar, long ButtonID)
+long CALLBACK ToolBarRemoveButton(HWND hToolbar, long ButtonID)
 {
     return(SendMessage(hToolbar, TB_DELETEBUTTON, (WPARAM) ButtonID, 0));
 }
 
 // -----------------------------------------------------------------------
 // Set the bitmap used for a button of a toolbar control
-long CALLBACK WAToolBarSetButtonBitmap(HWND hToolbar, long TBButtonID, long BtnIndex)
+long CALLBACK ToolBarSetButtonBitmap(HWND hToolbar, long TBButtonID, long BtnIndex)
 {
     return(SendMessage(hToolbar, TB_CHANGEBITMAP, TBButtonID, BtnIndex));
 }
@@ -865,7 +865,7 @@ long CALLBACK WAToolBarSetButtonBitmap(HWND hToolbar, long TBButtonID, long BtnI
 
 // -----------------------------------------------------------------------
 // Create an imagelist control
-HIMAGELIST CALLBACK WACreateImageList(long IconWidth, long IconHeight, long MaxIcon)
+HIMAGELIST CALLBACK CreateImageList(long IconWidth, long IconHeight, long MaxIcon)
 {
     return(ImageList_Create(IconWidth, IconHeight, ILC_MASK | ILC_COLOR16, 0, MaxIcon));
 }
@@ -904,23 +904,23 @@ HICON CALLBACK ImageListGetIcon(HIMAGELIST hImageList, long IconIdx)
 
 // -----------------------------------------------------------------------
 // Create a systab control
-HWND CALLBACK WACreateSysTab(long FLeft, long FTop, long FWidth, long FHeight,
+HWND CALLBACK CreateSysTab(long FLeft, long FTop, long FWidth, long FHeight,
                              HWND hParent, long CtrlID, WNDPROC WindowProc, HIMAGELIST hImageList, long ExtraStyle)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, FLeft, FTop, FWidth, FHeight);
+    ControlBound(hParent, FLeft, FTop, FWidth, FHeight);
     ReturnValue = CreateWindowEx(0, "SysTabControl32", "", WS_VISIBLE | WS_CHILD | ExtraStyle, FLeft, FTop, FWidth, FHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
     if(hImageList != 0) SendMessage(ReturnValue, TCM_SETIMAGELIST, 0, (long) hImageList);
-    WAControlHookWin(ReturnValue, WindowProc);
-    WAControlSetSerif8(ReturnValue);
+    ControlHookWin(ReturnValue, WindowProc);
+    ControlSetSerif8(ReturnValue);
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Add a tab to a systab control
-long CALLBACK WASysTabAddItem(HWND htab, CStr TabText, long TabIndex, long ImgIndex)
+long CALLBACK SysTabAddItem(HWND htab, CStr TabText, long TabIndex, long ImgIndex)
 {
     TC_ITEM TabItem;
 
@@ -938,56 +938,56 @@ long CALLBACK WASysTabAddItem(HWND htab, CStr TabText, long TabIndex, long ImgIn
 
 // -----------------------------------------------------------------------
 // Retrieve the current selection of a tab control
-long CALLBACK WASysTabGetCurrentItem(HWND htab)
+long CALLBACK SysTabGetCurrentItem(HWND htab)
 {
     return(SendMessage(htab, TCM_GETCURSEL, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the current imagelist associated of a tab control
-HIMAGELIST CALLBACK WASysTabGetImagelist(HWND htab)
+HIMAGELIST CALLBACK SysTabGetImagelist(HWND htab)
 {
     return((HIMAGELIST) SendMessage(htab, TCM_GETIMAGELIST, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Set the current selection of a tab control
-long CALLBACK WASysTabSetCurrentItem(HWND htab, long TabItem)
+long CALLBACK SysTabSetCurrentItem(HWND htab, long TabItem)
 {
     return(SendMessage(htab, TCM_SETCURSEL, TabItem, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Set the current focus of a tab control
-long CALLBACK WASysTabSetFocusItem(HWND htab, long TabItem)
+long CALLBACK SysTabSetFocusItem(HWND htab, long TabItem)
 {
     return(SendMessage(htab, TCM_SETCURFOCUS, TabItem, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Set the current selection of a tab control
-long CALLBACK WASysTabHighLightItem(HWND htab, long TabItem, long HighState)
+long CALLBACK SysTabHighLightItem(HWND htab, long TabItem, long HighState)
 {
     return(SendMessage(htab, TCM_HIGHLIGHTITEM, TabItem, HighState));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the number of items of a tab control
-long CALLBACK WASysTabItemsCount(HWND htab)
+long CALLBACK SysTabItemsCount(HWND htab)
 {
     return(SendMessage(htab, TCM_GETITEMCOUNT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the number of rows of a tab control
-long CALLBACK WASysTabGetRowsCount(HWND htab)
+long CALLBACK SysTabGetRowsCount(HWND htab)
 {
     return(SendMessage(htab, TCM_GETROWCOUNT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Enable/Disable rows separators of a tab control
-long CALLBACK WASysTabSetSeparators(HWND htab, long Enable)
+long CALLBACK SysTabSetSeparators(HWND htab, long Enable)
 {
     if(Enable != 0) return(SendMessage(htab, TCM_SETEXTENDEDSTYLE, TCS_EX_FLATSEPARATORS, TCS_EX_FLATSEPARATORS));
     else return(SendMessage(htab, TCM_SETEXTENDEDSTYLE, TCS_EX_FLATSEPARATORS, (long) 0));
@@ -995,28 +995,28 @@ long CALLBACK WASysTabSetSeparators(HWND htab, long Enable)
 
 // -----------------------------------------------------------------------
 // Set the size of the items of a tab control
-long CALLBACK WASysTabSetItemsSize(HWND htab,long Width,long Height)
+long CALLBACK SysTabSetItemsSize(HWND htab,long Width,long Height)
 {
 	return(SendMessage(htab, TCM_SETITEMSIZE, 0, MAKELPARAM(Width,Height)));
 }
 
 // -----------------------------------------------------------------------
 // Delete an item in a tab control
-long CALLBACK WASysTabRemoveItem(HWND htab,long ItemIndex)
+long CALLBACK SysTabRemoveItem(HWND htab,long ItemIndex)
 {
 	return(SendMessage(htab, TCM_DELETEITEM, (WPARAM) ItemIndex, 0));
 }
 
 // -----------------------------------------------------------------------
 // Set the minimum width of items in a tab control
-long CALLBACK WASysTabSetMinWidth(HWND htab,long Width)
+long CALLBACK SysTabSetMinWidth(HWND htab,long Width)
 {
 	return(SendMessage(htab, TCM_SETMINTABWIDTH, 0, (LPARAM) Width));
 }
 
 // -----------------------------------------------------------------------
 // Set the size of the items of a tab control
-long CALLBACK WASysTabSetPadding(HWND htab,long Width,long Height)
+long CALLBACK SysTabSetPadding(HWND htab,long Width,long Height)
 {
 	return(SendMessage(htab, TCM_SETPADDING, 0, MAKELPARAM(Width,Height)));
 }
@@ -1027,50 +1027,50 @@ long CALLBACK WASysTabSetPadding(HWND htab,long Width,long Height)
 
 // -----------------------------------------------------------------------
 // Create a trackbar control
-HWND CALLBACK WACreateTrackBar(long PBLeft, long PBTop, long PBWidth, long PBHeight, HWND hParent,
+HWND CALLBACK CreateTrackBar(long PBLeft, long PBTop, long PBWidth, long PBHeight, HWND hParent,
                                long CtrlID, WNDPROC WindowProc, long TBMin, long TBMax, long ExtraStyle)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, PBLeft, PBTop, PBWidth, PBHeight);
+    ControlBound(hParent, PBLeft, PBTop, PBWidth, PBHeight);
     ReturnValue = CreateWindowEx(0, "msctls_trackbar32", "", WS_VISIBLE | WS_CHILD | TBS_AUTOTICKS | ExtraStyle, PBLeft, PBTop, PBWidth, PBHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WATrackBarSetRange(ReturnValue, TBMin, TBMax, 1);
-    WAControlHookWin(ReturnValue, WindowProc);
+    TrackBarSetRange(ReturnValue, TBMin, TBMax, 1);
+    ControlHookWin(ReturnValue, WindowProc);
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Set a trackbar range
-long CALLBACK WATrackBarSetRange(HWND hTrackBar, long TBMin, long TBMax, long Redraw)
+long CALLBACK TrackBarSetRange(HWND hTrackBar, long TBMin, long TBMax, long Redraw)
 {
     return(SendMessage(hTrackBar, TBM_SETRANGE, Redraw, ((TBMax * 0x10000) + TBMin)));
 }
 
 // -----------------------------------------------------------------------
 // Set a new position in a trackbar
-long CALLBACK WATrackBarSetPos(HWND hTrackBar, long TBNewPos)
+long CALLBACK TrackBarSetPos(HWND hTrackBar, long TBNewPos)
 {
     return(SendMessage(hTrackBar, TBM_SETPOS, 1, TBNewPos));
 }
 
 // -----------------------------------------------------------------------
 // Get position in a trackbar
-long CALLBACK WATrackBarGetPos(HWND hTrackBar)
+long CALLBACK TrackBarGetPos(HWND hTrackBar)
 {
     return(SendMessage(hTrackBar, TBM_GETPOS, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Set trackbar's ticks
-long CALLBACK WATrackBarSetTicks(HWND hTrackBar, long TicksFreq)
+long CALLBACK TrackBarSetTicks(HWND hTrackBar, long TicksFreq)
 {
     return(SendMessage(hTrackBar, TBM_SETTICFREQ, TicksFreq, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the handle of the tooltip associated with the trackbar
-HWND CALLBACK WATrackBarGetToolTips(HWND hTrackBar)
+HWND CALLBACK TrackBarGetToolTips(HWND hTrackBar)
 {
     return((HWND) SendMessage(hTrackBar, TBM_GETTOOLTIPS, (WPARAM) 0, (LPARAM) 0));
 }
@@ -1081,7 +1081,7 @@ HWND CALLBACK WATrackBarGetToolTips(HWND hTrackBar)
 
 // -----------------------------------------------------------------------
 // Create a tooltip control
-HWND CALLBACK WACreateToolTip(HWND hParent, long CtrlID, long ExtraStyle)
+HWND CALLBACK CreateToolTip(HWND hParent, long CtrlID, long ExtraStyle)
 {
     HWND ReturnValue = 0;
 
@@ -1093,7 +1093,7 @@ HWND CALLBACK WACreateToolTip(HWND hParent, long CtrlID, long ExtraStyle)
 
 // -----------------------------------------------------------------------
 // Add a tool to a tooltip control
-long CALLBACK WAToolTipAddTool(HWND hToolTip, HWND hWndOwner, long ID, long ExtraStyle)
+long CALLBACK ToolTipAddTool(HWND hToolTip, HWND hWndOwner, long ID, long ExtraStyle)
 {
 	TOOLINFO TTip_Info;
 	
@@ -1114,15 +1114,15 @@ long CALLBACK WAToolTipAddTool(HWND hToolTip, HWND hWndOwner, long ID, long Extr
 
 // -----------------------------------------------------------------------
 // Create an updown control
-HWND CALLBACK WACreateUpDown(long PBLeft, long PBTop, long PBWidth, long PBHeight,
+HWND CALLBACK CreateUpDown(long PBLeft, long PBTop, long PBWidth, long PBHeight,
                              HWND hParent, long CtrlID, WNDPROC WindowProc, long ExtraStyle)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, PBLeft, PBTop, PBWidth, PBHeight);
+    ControlBound(hParent, PBLeft, PBTop, PBWidth, PBHeight);
     ReturnValue = CreateWindowEx(0, "msctls_updown32", "", WS_VISIBLE | WS_CHILD | ExtraStyle, PBLeft, PBTop, PBWidth, PBHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
+    ControlHookWin(ReturnValue, WindowProc);
     return(ReturnValue);
 }
 
@@ -1132,16 +1132,16 @@ HWND CALLBACK WACreateUpDown(long PBLeft, long PBTop, long PBWidth, long PBHeigh
 
 // -----------------------------------------------------------------------
 // Create a progressbar control
-HWND CALLBACK WACreateProgressBar(long PBLeft, long PBTop, long PBWidth, long PBHeight,
+HWND CALLBACK CreateProgressBar(long PBLeft, long PBTop, long PBWidth, long PBHeight,
                                   HWND hParent, long CtrlID, WNDPROC WindowProc, long PBMin, long PBMax, long ExtraStyle)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, PBLeft, PBTop, PBWidth, PBHeight);
+    ControlBound(hParent, PBLeft, PBTop, PBWidth, PBHeight);
     ReturnValue = CreateWindowEx(0, "msctls_progress32", "", WS_VISIBLE | WS_CHILD | ExtraStyle, PBLeft, PBTop, PBWidth, PBHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
     SendMessage(ReturnValue, PBM_SETRANGE, 0, ((PBMax * 0x10000) + PBMin));
-    WAControlHookWin(ReturnValue, WindowProc);
+    ControlHookWin(ReturnValue, WindowProc);
     return(ReturnValue);
 }
 
@@ -1165,16 +1165,16 @@ long CALLBACK ProgressBarSetRelPos(HWND hProgressBar, long PBNewPos)
 
 // -----------------------------------------------------------------------
 // Create a statusbar control
-HWND CALLBACK WACreateStatusBar(CStr SBText, long RaiseType, HWND hParent, long CtrlID,
+HWND CALLBACK CreateStatusBar(CStr SBText, long RaiseType, HWND hParent, long CtrlID,
                                 WNDPROC WindowProc, long ExtraStyle)
 {
     HWND ReturnValue = 0;
 
     ReturnValue = CreateStatusWindow(WS_CHILD | WS_VISIBLE | ExtraStyle, "", hParent, CtrlID);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
-    WAToolTipFont = SendMessage(ReturnValue, WM_GETFONT, 0, (long) 0);
-    WAControlSetSerif8(ReturnValue);
+    ControlHookWin(ReturnValue, WindowProc);
+    ToolTipFont = SendMessage(ReturnValue, WM_GETFONT, 0, (long) 0);
+    ControlSetSerif8(ReturnValue);
     StatusBarSetText(ReturnValue, 0, RaiseType, SBText, 0);
     return(ReturnValue);
 }
@@ -1216,15 +1216,15 @@ long CALLBACK StatusBarGetYSize(HWND hStatusBar)
 
 // -----------------------------------------------------------------------
 // Create a colorbox control
-HWND CALLBACK WACreateColorBox(long LLeft, long LTop, long LWidth, long LHeight, HWND hParent, long CtrlID, COLORREF Color, long ExtraStyle)
+HWND CALLBACK CreateColorBox(long LLeft, long LTop, long LWidth, long LHeight, HWND hParent, long CtrlID, COLORREF Color, long ExtraStyle)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, LLeft, LTop, LWidth, LHeight);
+    ControlBound(hParent, LLeft, LTop, LWidth, LHeight);
     ReturnValue = CreateWindowEx(0, "ColorBoxClass", "", WS_VISIBLE | WS_CHILD | ExtraStyle, LLeft, LTop, LWidth, LHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
     SetWindowLong(ReturnValue, GWL_USERDATA, Color);
-    WAControlSetSerif8(ReturnValue);
+    ControlSetSerif8(ReturnValue);
     return(ReturnValue);
 }
 
@@ -1249,44 +1249,44 @@ long CALLBACK ColorBoxSetColor(HWND hWnd, COLORREF Color)
 
 // -----------------------------------------------------------------------
 // Create a dumpbox control
-HWND CALLBACK WACreateDumpBox(long LLeft, long LTop, long LWidth, long LHeight, HWND hParent,
+HWND CALLBACK CreateDumpBox(long LLeft, long LTop, long LWidth, long LHeight, HWND hParent,
                               long CtrlID, HFONT hFont, long MaxX, long MaxY, long PageValueX,
                               long PageValueY, WNDPROC WindowProc, long ExtraStyle, long ExtraExStyle)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, LLeft, LTop, LWidth, LHeight);
-    ReturnValue = CreateWindowEx(ExtraExStyle, "WADumpBoxClass", "", WS_VISIBLE | WS_CHILD | ExtraStyle, LLeft, LTop, LWidth, LHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
+    ControlBound(hParent, LLeft, LTop, LWidth, LHeight);
+    ReturnValue = CreateWindowEx(ExtraExStyle, "DumpBoxClass", "", WS_VISIBLE | WS_CHILD | ExtraStyle, LLeft, LTop, LWidth, LHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
-    WAControlSetFont(ReturnValue, hFont);
-    WAScrollBarSetPageRange(ReturnValue, SB_HORZ, PageValueX);
-    WAScrollBarSetPageRange(ReturnValue, SB_VERT, PageValueY);
+    ControlHookWin(ReturnValue, WindowProc);
+    ControlSetFont(ReturnValue, hFont);
+    ScrollBarSetPageRange(ReturnValue, SB_HORZ, PageValueX);
+    ScrollBarSetPageRange(ReturnValue, SB_VERT, PageValueY);
     if(MaxX == 0) MaxX = 1;
     if(MaxY == 0) MaxY = 1;
-    WAScrollBarSetMinMaxRange(ReturnValue, SB_HORZ, 0, MaxX);
-    WAScrollBarSetMinMaxRange(ReturnValue, SB_VERT, 0, MaxY);
+    ScrollBarSetMinMaxRange(ReturnValue, SB_HORZ, 0, MaxX);
+    ScrollBarSetMinMaxRange(ReturnValue, SB_VERT, 0, MaxY);
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Resize a dumpbox
-void CALLBACK WADumpBoxResize(HWND hWnd, long left, long top, long Width, long Height)
+void CALLBACK DumpBoxResize(HWND hWnd, long left, long top, long Width, long Height)
 {
-    WAControlResize(hWnd, left, top, Width, Height);
+    ControlResize(hWnd, left, top, Width, Height);
 }
 
 // -----------------------------------------------------------------------
 // Scroll down a dumpbox
-long CALLBACK WADumpBoxScrollDown(HWND hWnd, long Lines, long Factor, long Integral)
+long CALLBACK DumpBoxScrollDown(HWND hWnd, long Lines, long Factor, long Integral)
 {
     RECT DumpRect;
     long ReturnValue = 0;
 
     DumpRect.left = 0;
     DumpRect.top = 0;
-    DumpRect.right = WAControlClientWidth(hWnd);
-    DumpRect.bottom = WADumpBoxGetVisibleLines(hWnd, Factor, Integral) + 1;
+    DumpRect.right = ControlClientWidth(hWnd);
+    DumpRect.bottom = DumpBoxGetVisibleLines(hWnd, Factor, Integral) + 1;
     ReturnValue = 0;
     if(DumpRect.bottom != 0)
     {
@@ -1298,7 +1298,7 @@ long CALLBACK WADumpBoxScrollDown(HWND hWnd, long Lines, long Factor, long Integ
 
 // -----------------------------------------------------------------------
 // Scroll up a dumpbox
-long CALLBACK WADumpBoxScrollUp(HWND hWnd, long Lines, long Factor, long Integral)
+long CALLBACK DumpBoxScrollUp(HWND hWnd, long Lines, long Factor, long Integral)
 {
     RECT DumpRect;
     RECT DumpRectClip;
@@ -1308,15 +1308,15 @@ long CALLBACK WADumpBoxScrollUp(HWND hWnd, long Lines, long Factor, long Integra
     DumpRect.top = 0;
     DumpRectClip.left = 0;
     DumpRectClip.top = 0;
-    DumpRect.right = WAControlClientWidth(hWnd);
+    DumpRect.right = ControlClientWidth(hWnd);
     DumpRectClip.right = DumpRect.right;
-    DumpRect.bottom = WADumpBoxGetVisibleLines(hWnd, Factor, Integral);
+    DumpRect.bottom = DumpBoxGetVisibleLines(hWnd, Factor, Integral);
     ReturnValue = 0;
     if(DumpRect.bottom != 0)
     {
         DumpRect.bottom = DumpRect.bottom * Factor;
         DumpRectClip.bottom = DumpRect.bottom + Factor;
-		if((long) WAControlClientHeight(hWnd) < (long) DumpRectClip.bottom) DumpRectClip.bottom = DumpRect.bottom;
+		if((long) ControlClientHeight(hWnd) < (long) DumpRectClip.bottom) DumpRectClip.bottom = DumpRect.bottom;
         ReturnValue = ScrollWindow(hWnd, 0, (Factor * Lines), 0, &DumpRectClip);
     }
     return(ReturnValue);
@@ -1324,23 +1324,23 @@ long CALLBACK WADumpBoxScrollUp(HWND hWnd, long Lines, long Factor, long Integra
 
 // -----------------------------------------------------------------------
 // Retrieve the number of lines of a dumpbox
-long CALLBACK WADumpBoxGetVisibleLines(HWND hWnd, long Factor, long Integral)
+long CALLBACK DumpBoxGetVisibleLines(HWND hWnd, long Factor, long Integral)
 {
 	long Returnvalue = 0;
 
-    Returnvalue = WAControlClientHeight(hWnd) / Factor;
-    if(Integral == 1) if((WAControlClientHeight(hWnd) % Factor) != 0) Returnvalue = Returnvalue - 1;
+    Returnvalue = ControlClientHeight(hWnd) / Factor;
+    if(Integral == 1) if((ControlClientHeight(hWnd) % Factor) != 0) Returnvalue = Returnvalue - 1;
 	return(Returnvalue);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the number of columns of a dumpbox
-long CALLBACK WADumpBoxGetVisibleColumns(HWND hWnd, long Factor, long Integral)
+long CALLBACK DumpBoxGetVisibleColumns(HWND hWnd, long Factor, long Integral)
 {
 	long Returnvalue = 0;
 
-    Returnvalue = WAControlClientWidth(hWnd) / Factor;
-    if(Integral == 1) if((WAControlClientWidth(hWnd) % Factor) != 0) Returnvalue--;
+    Returnvalue = ControlClientWidth(hWnd) / Factor;
+    if(Integral == 1) if((ControlClientWidth(hWnd) % Factor) != 0) Returnvalue--;
 	return(Returnvalue);
 }
 
@@ -1350,13 +1350,13 @@ long CALLBACK WADumpBoxGetVisibleColumns(HWND hWnd, long Factor, long Integral)
 
 // -----------------------------------------------------------------------
 // Create a colorbox control
-LPGRIPBOXDAT CALLBACK WACreateGripBox(long LLeft, long LTop, long LWidth, long LHeight, HWND hParent,
+LPGRIPBOXDAT CALLBACK CreateGripBox(long LLeft, long LTop, long LWidth, long LHeight, HWND hParent,
                                       long CtrlID, COLORREF Color, long ExtraStyle)
 {
 	LPGRIPBOXDAT NewGripDats;
 	LPGRIPBOXSQRBOXDAT NewGripSquare;
 
-    WAControlBound(hParent, LLeft, LTop, LWidth, LHeight);
+    ControlBound(hParent, LLeft, LTop, LWidth, LHeight);
 
 	// Create the datas slot
 	NewGripDats = (LPGRIPBOXDAT) AllocMem(sizeof(GRIPBOXDAT));
@@ -1508,14 +1508,14 @@ void CALLBACK GripBoxClose(LPGRIPBOXDAT GripDats)
 	if(GripSquareDats)
     {
 		GripDats_Container = GripSquareDats->Container;
-		WAControlClose(GripDats->TopLeftBox);
-		WAControlClose(GripDats->TopBox);
-		WAControlClose(GripDats->TopRightBox);
-		WAControlClose(GripDats->LeftBox);
-		WAControlClose(GripDats->RightBox);
-		WAControlClose(GripDats->BottomLeftBox);
-		WAControlClose(GripDats->BottomBox);
-		WAControlClose(GripDats->BottomRightBox);
+		ControlClose(GripDats->TopLeftBox);
+		ControlClose(GripDats->TopBox);
+		ControlClose(GripDats->TopRightBox);
+		ControlClose(GripDats->LeftBox);
+		ControlClose(GripDats->RightBox);
+		ControlClose(GripDats->BottomLeftBox);
+		ControlClose(GripDats->BottomBox);
+		ControlClose(GripDats->BottomRightBox);
 		// Free it now
 		FreeMem((long) GripDats_Container);
 	}
@@ -1525,14 +1525,14 @@ void CALLBACK GripBoxClose(LPGRIPBOXDAT GripDats)
 // Close a gripbox control
 void CALLBACK GripBoxVisible(LPGRIPBOXDAT GripDats, long CState)
 {
-	WAControlVisible(GripDats->TopLeftBox, CState);
-	WAControlVisible(GripDats->TopBox, CState);
-	WAControlVisible(GripDats->TopRightBox, CState);
-	WAControlVisible(GripDats->LeftBox, CState);
-	WAControlVisible(GripDats->RightBox, CState);
-	WAControlVisible(GripDats->BottomLeftBox, CState);
-	WAControlVisible(GripDats->BottomBox, CState);
-	WAControlVisible(GripDats->BottomRightBox, CState);
+	ControlVisible(GripDats->TopLeftBox, CState);
+	ControlVisible(GripDats->TopBox, CState);
+	ControlVisible(GripDats->TopRightBox, CState);
+	ControlVisible(GripDats->LeftBox, CState);
+	ControlVisible(GripDats->RightBox, CState);
+	ControlVisible(GripDats->BottomLeftBox, CState);
+	ControlVisible(GripDats->BottomBox, CState);
+	ControlVisible(GripDats->BottomRightBox, CState);
 }
 
 // -----------------------------------------------------------------------
@@ -1564,16 +1564,16 @@ void CALLBACK GripBoxResize(LPGRIPBOXDAT GripDats, LPRECT NewSizeRect)
 
 // -----------------------------------------------------------------------
 // Create a label control
-HWND CALLBACK WACreateLabel(long LLeft, long LTop, long LWidth, long LHeight, HWND hParent,
+HWND CALLBACK CreateLabel(long LLeft, long LTop, long LWidth, long LHeight, HWND hParent,
                             CStr LText, long CtrlID, WNDPROC WindowProc, long ExtraStyle, HFONT hFont)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, LLeft, LTop, LWidth, LHeight);
+    ControlBound(hParent, LLeft, LTop, LWidth, LHeight);
     ReturnValue = CreateWindowEx(0, "STATIC", LText.Get_String(), WS_VISIBLE | WS_CHILD | SS_LEFT | ExtraStyle, LLeft, LTop, LWidth, LHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
-    if(hFont == 0) WAControlSetSerif8(ReturnValue);
+    ControlHookWin(ReturnValue, WindowProc);
+    if(hFont == 0) ControlSetSerif8(ReturnValue);
     else SendMessage(ReturnValue, WM_SETFONT, (UINT) hFont, (long) 0);
     return(ReturnValue);
 }
@@ -1591,13 +1591,13 @@ HGDIOBJ CALLBACK LabelGetImage(HWND hLabel, long ImageType)
 
 // -----------------------------------------------------------------------
 // Create an imagebox control
-HWND CALLBACK WACreatePictureBox(long LLeft, long LTop, long LWidth, long LHeight, HWND hParent, HGDIOBJ hPicture,
+HWND CALLBACK CreatePictureBox(long LLeft, long LTop, long LWidth, long LHeight, HWND hParent, HGDIOBJ hPicture,
                                  long PictureType, long CtrlID, WNDPROC WindowProc, long ExtraStyle)
 {
     HWND ReturnValue = 0;
     long PType = 0;
 
-    WAControlBound(hParent, LLeft, LTop, LWidth, LHeight);
+    ControlBound(hParent, LLeft, LTop, LWidth, LHeight);
     switch(PictureType)
     {
         case IMAGE_BITMAP:
@@ -1618,7 +1618,7 @@ HWND CALLBACK WACreatePictureBox(long LLeft, long LTop, long LWidth, long LHeigh
             SendMessage(ReturnValue, STM_SETICON, (UINT) hPicture, (long) 0);
 			break;
 	}
-    WAControlHookWin(ReturnValue, WindowProc);
+    ControlHookWin(ReturnValue, WindowProc);
     return(ReturnValue);
 }
 
@@ -1644,16 +1644,16 @@ long CALLBACK PictureBoxChangeImage(HWND hPictureBox, HANDLE ImageHandle)
 
 // -----------------------------------------------------------------------
 // Create a frame control
-HWND CALLBACK WACreateFrame(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent,
+HWND CALLBACK CreateFrame(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent,
                             CStr BText, long CtrlID, WNDPROC WindowProc, long ExtraStyle)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, BLeft, BTop, BWidth, BHeight);
+    ControlBound(hParent, BLeft, BTop, BWidth, BHeight);
     ReturnValue = CreateWindowEx(WS_EX_CONTROLPARENT, "BUTTON", BText.Get_String(), WS_VISIBLE | WS_CHILD | BS_GROUPBOX | ExtraStyle, BLeft, BTop, BWidth, BHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
-    WAControlSetSerif8(ReturnValue);
+    ControlHookWin(ReturnValue, WindowProc);
+    ControlSetSerif8(ReturnValue);
     return(ReturnValue);
 }
 
@@ -1676,19 +1676,19 @@ long CALLBACK FrameRefreshToolbar(HWND hToolbar)
 
 // -----------------------------------------------------------------------
 // Create a button control
-HWND CALLBACK WACreateButton(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent, CStr BText, long CtrlID, long ImgType, HICON hImage, WNDPROC WindowProc, long ExtraStyle, long ExtraExStyle)
+HWND CALLBACK CreateButton(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent, CStr BText, long CtrlID, long ImgType, HICON hImage, WNDPROC WindowProc, long ExtraStyle, long ExtraExStyle)
 {
     HWND ReturnValue = 0;
     long BtStyle = 0;
 
-    WAControlBound(hParent, BLeft, BTop, BWidth, BHeight);
+    ControlBound(hParent, BLeft, BTop, BWidth, BHeight);
     BtStyle = WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON | ExtraStyle;
     if(hImage != 0) BtStyle = BtStyle | BS_ICON;
     ReturnValue = CreateWindowEx(ExtraExStyle | WS_EX_NOPARENTNOTIFY, "BUTTON", BText.Get_String(), BtStyle, BLeft, BTop, BWidth, BHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
     ButtonSetIcon(ReturnValue, ImgType, hImage);
-    WAControlHookWin(ReturnValue, WindowProc);
-    WAControlSetSerif8(ReturnValue);
+    ControlHookWin(ReturnValue, WindowProc);
+    ControlSetSerif8(ReturnValue);
     return(ReturnValue);
 }
 
@@ -1719,20 +1719,20 @@ long CALLBACK ButtonGetState(HWND hbutton)
 
 // -----------------------------------------------------------------------
 // Create an IPbox control
-HWND CALLBACK WACreateIPBox(long IPBLeft, long IPBTop, long IPBWidth, long IPBHeight, HWND hParent,
+HWND CALLBACK CreateIPBox(long IPBLeft, long IPBTop, long IPBWidth, long IPBHeight, HWND hParent,
                             long IPAddress, long CtrlID, WNDPROC WindowProc, long ExtraStyle, long SetBorder,
                             HFONT hFont)
 {
     long ExStyle = 0;
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, IPBLeft, IPBTop, IPBWidth, IPBHeight);
+    ControlBound(hParent, IPBLeft, IPBTop, IPBWidth, IPBHeight);
     ExStyle = WS_EX_NOPARENTNOTIFY;
     if(SetBorder) ExStyle = ExStyle | WS_EX_CLIENTEDGE;
     ReturnValue = CreateWindowEx(ExStyle, "SysIPAddress32", "", WS_VISIBLE | WS_CHILD | ExtraStyle, IPBLeft, IPBTop, IPBWidth, IPBHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
     IPBoxSetIP(ReturnValue, IPAddress);
-    WAControlSetFont(ReturnValue, hFont);
+    ControlSetFont(ReturnValue, hFont);
     return(ReturnValue);
 }
 
@@ -1787,19 +1787,19 @@ long CALLBACK IPBoxIsBlank(HWND hIPBox)
 
 // -----------------------------------------------------------------------
 // Create a richtextbox control
-HWND CALLBACK WACreateRichTextBox(long EDLeft, long EDTop, long EDWidth, long EDHeight, HWND hParent,
+HWND CALLBACK CreateRichTextBox(long EDLeft, long EDTop, long EDWidth, long EDHeight, HWND hParent,
                                   CStr EDText, long CtrlID, WNDPROC WindowProc, long ExtraStyle, long SetBorder)
 {
     long ExStyle = 0;
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, EDLeft, EDTop, EDWidth, EDHeight);
+    ControlBound(hParent, EDLeft, EDTop, EDWidth, EDHeight);
     ExStyle = WS_EX_NOPARENTNOTIFY;
     if(SetBorder != 0) ExStyle = ExStyle | WS_EX_CLIENTEDGE;
     ReturnValue = CreateWindowEx(ExStyle, RichedClass.Get_String(), EDText.Get_String(), WS_VISIBLE | WS_CHILD | ExtraStyle, EDLeft, EDTop, EDWidth, EDHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
-    WAControlSetSerif8(ReturnValue);
+    ControlHookWin(ReturnValue, WindowProc);
+    ControlSetSerif8(ReturnValue);
     return(ReturnValue);
 }
 
@@ -1809,12 +1809,12 @@ HWND CALLBACK WACreateRichTextBox(long EDLeft, long EDTop, long EDWidth, long ED
 
 // -----------------------------------------------------------------------
 // Create a textbox control
-HWND CALLBACK WACreateTextBox(long EDLeft, long EDTop, long EDWidth, long EDHeight, HWND hParent,
+HWND CALLBACK CreateTextBox(long EDLeft, long EDTop, long EDWidth, long EDHeight, HWND hParent,
                               CStr EDText, long CtrlID, WNDPROC WindowProc, long ExtraStyle, long ExtraExStyle)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, EDLeft, EDTop, EDWidth, EDHeight);
+    ControlBound(hParent, EDLeft, EDTop, EDWidth, EDHeight);
     if((ExtraExStyle & WS_EX_STATICEDGE) != 0)
     {
         EDTop = EDTop + 2;
@@ -1822,79 +1822,79 @@ HWND CALLBACK WACreateTextBox(long EDLeft, long EDTop, long EDWidth, long EDHeig
     }
     ReturnValue = CreateWindowEx(WS_EX_NOPARENTNOTIFY | ExtraExStyle, "EDIT", EDText.Get_String(), WS_VISIBLE | WS_CHILD | ES_LEFT | ExtraStyle, EDLeft, EDTop, EDWidth, EDHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-	if(ExtraStyle & ES_PASSWORD) WATextBoxSetPasswordChar(ReturnValue, "*");
-	WAControlHookWin(ReturnValue, WindowProc);
-    WAControlSetSerif8(ReturnValue);
+	if(ExtraStyle & ES_PASSWORD) TextBoxSetPasswordChar(ReturnValue, "*");
+	ControlHookWin(ReturnValue, WindowProc);
+    ControlSetSerif8(ReturnValue);
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the number of chars in a textbox control
-long CALLBACK WATextBoxGetLen(HWND hTextBox)
+long CALLBACK TextBoxGetLen(HWND hTextBox)
 {
     return(GetWindowTextLength(hTextBox));
 }
 
 // -----------------------------------------------------------------------
 // Set the chars maximum in a textbox control
-long CALLBACK WATextBoxSetMaxLen(HWND hTextBox, long TBMaxLen)
+long CALLBACK TextBoxSetMaxLen(HWND hTextBox, long TBMaxLen)
 {
     return(SendMessage(hTextBox, EM_LIMITTEXT, TBMaxLen, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the maximum chars in a textbox control
-long CALLBACK WATextBoxGetMaxLen(HWND hTextBox)
+long CALLBACK TextBoxGetMaxLen(HWND hTextBox)
 {
     return(SendMessage(hTextBox, EM_GETLIMITTEXT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the current memory position of the text contained by a textbox
-long CALLBACK WATextBoxGetTextHandle(HWND hTextBox)
+long CALLBACK TextBoxGetTextHandle(HWND hTextBox)
 {
     return(SendMessage(hTextBox, EM_GETHANDLE, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Add a text at the end of a textbox
-void CALLBACK WATextBoxAddText(HWND hTextBox, CStr TbText)
+void CALLBACK TextBoxAddText(HWND hTextBox, CStr TbText)
 {
     CStr Txt;
 
-    Txt = WAControlGetText(hTextBox);
+    Txt = ControlGetText(hTextBox);
 	Txt = Txt + TbText;
-    WAControlSetText(hTextBox, Txt);
+    ControlSetText(hTextBox, Txt);
 }
 
 // -----------------------------------------------------------------------
 // Select the content of a textbox control
-long CALLBACK WATextBoxSelText(HWND hTextBox, long NbrToSel)
+long CALLBACK TextBoxSelText(HWND hTextBox, long NbrToSel)
 {
 	long ReturnValue = 0;
 
-    if(NbrToSel == -1) ReturnValue = SendMessage(hTextBox, EM_SETSEL, 0, WAControlGetTextLen(hTextBox));
+    if(NbrToSel == -1) ReturnValue = SendMessage(hTextBox, EM_SETSEL, 0, ControlGetTextLen(hTextBox));
     else ReturnValue = SendMessage(hTextBox, EM_SETSEL, 0, NbrToSel);
 	return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Unselect text in a textbox control
-long CALLBACK WATextBoxRemoveSel(HWND hTextBox)
+long CALLBACK TextBoxRemoveSel(HWND hTextBox)
 {
     return(SendMessage(hTextBox, EM_SETSEL, -1, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Set the caret position in a textbox control
-long CALLBACK WATextBoxSetCaretPos(HWND hTextBox, long PosToSel)
+long CALLBACK TextBoxSetCaretPos(HWND hTextBox, long PosToSel)
 {
     long ReturnValue = 0;
 	long NCaretPos = 0;
 
     if(PosToSel == -1)
     {
-        NCaretPos = WAControlGetTextLen(hTextBox);
+        NCaretPos = ControlGetTextLen(hTextBox);
         ReturnValue = SendMessage(hTextBox, EM_SETSEL, NCaretPos, NCaretPos);
     }
     else
@@ -1906,42 +1906,42 @@ long CALLBACK WATextBoxSetCaretPos(HWND hTextBox, long PosToSel)
 
 // -----------------------------------------------------------------------
 // Retrieve the number of lines of a textbox control
-long CALLBACK WATextBoxLinesCount(HWND hTextBox)
+long CALLBACK TextBoxLinesCount(HWND hTextBox)
 {
     return(SendMessage(hTextBox, EM_GETLINECOUNT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the number of lines of a textbox control
-long CALLBACK WATextBoxGetMarginWidth(HWND hTextBox)
+long CALLBACK TextBoxGetMarginWidth(HWND hTextBox)
 {
     return(SendMessage(hTextBox, EM_GETMARGINS, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the number of the first visible line of a textbox control
-long CALLBACK WATextBoxGetFirstVisibleLine(HWND hTextBox)
+long CALLBACK TextBoxGetFirstVisibleLine(HWND hTextBox)
 {
     return(SendMessage(hTextBox, EM_GETFIRSTVISIBLELINE, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the modified state of a textbox control
-long CALLBACK WATextBoxIsModified(HWND hTextBox)
+long CALLBACK TextBoxIsModified(HWND hTextBox)
 {
     return(SendMessage(hTextBox, EM_GETMODIFY, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the options of a textbox control
-long CALLBACK WATextBoxGetCurrentOptions(HWND hTextBox)
+long CALLBACK TextBoxGetCurrentOptions(HWND hTextBox)
 {
     return(SendMessage(hTextBox, EM_GETOPTIONS, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the password char of a textbox control
-CStr CALLBACK WATextBoxGetPasswordChar(HWND hTextBox)
+CStr CALLBACK TextBoxGetPasswordChar(HWND hTextBox)
 {
     CStr ReturnValue;
     long Pchar = 0;
@@ -1953,42 +1953,42 @@ CStr CALLBACK WATextBoxGetPasswordChar(HWND hTextBox)
 
 // -----------------------------------------------------------------------
 // Set the password char of a textbox control
-long CALLBACK WATextBoxSetPasswordChar(HWND hTextBox, CStr PassChar)
+long CALLBACK TextBoxSetPasswordChar(HWND hTextBox, CStr PassChar)
 {
 	return(SendMessage(hTextBox, EM_SETPASSWORDCHAR, (WPARAM) PassChar.Get_String()[0], (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the current selection bounds of a textbox control
-long CALLBACK WATextBoxGetSelection(HWND hTextBox)
+long CALLBACK TextBoxGetSelection(HWND hTextBox)
 {
     return(SendMessage(hTextBox, EM_GETSEL, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the current scrolling position of a textbox control
-long CALLBACK WATextBoxGetScrollPos(HWND hTextBox)
+long CALLBACK TextBoxGetScrollPos(HWND hTextBox)
 {
     return(SendMessage(hTextBox, EM_GETTHUMB, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the current selection bounds of a textbox control
-long CALLBACK WATextBoxGetBreakProcAddress(HWND hTextBox)
+long CALLBACK TextBoxGetBreakProcAddress(HWND hTextBox)
 {
     return(SendMessage(hTextBox, EM_GETWORDBREAKPROC, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Check if datas stored in clipboard can be pasted in a textbox control
-long CALLBACK WATextBoxCanPaste(HWND hTextBox)
+long CALLBACK TextBoxCanPaste(HWND hTextBox)
 {
     return(SendMessage(hTextBox, EM_CANPASTE, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Check if current can be undone in a textbox control
-long CALLBACK WATextBoxCanUndo(HWND hTextBox)
+long CALLBACK TextBoxCanUndo(HWND hTextBox)
 {
     return(SendMessage(hTextBox, EM_CANUNDO, 0, (long) 0));
 }
@@ -1999,12 +1999,12 @@ long CALLBACK WATextBoxCanUndo(HWND hTextBox)
 
 // -----------------------------------------------------------------------
 // Create a hexbox control
-HWND CALLBACK WACreateHexBox(long EDLeft, long EDTop, long EDWidth, long EDHeight, HWND hParent,
+HWND CALLBACK CreateHexBox(long EDLeft, long EDTop, long EDWidth, long EDHeight, HWND hParent,
                              CStr EDText, long CtrlID, long MaxDigits, long ExtraStyle, long ExtraExStyle)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, EDLeft, EDTop, EDWidth, EDHeight);
+    ControlBound(hParent, EDLeft, EDTop, EDWidth, EDHeight);
     if((ExtraExStyle & WS_EX_STATICEDGE) != 0)
     {
         EDTop = EDTop + 2;
@@ -2025,17 +2025,17 @@ HWND CALLBACK WACreateHexBox(long EDLeft, long EDTop, long EDWidth, long EDHeigh
 
 // -----------------------------------------------------------------------
 // Create a checkbox control
-HWND CALLBACK WACreateCheckBox(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent,
+HWND CALLBACK CreateCheckBox(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent,
                                CStr BText, long CtrlID, WNDPROC WindowProc, long ExtraStyle, long UndefState)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, BLeft, BTop, BWidth, BHeight);
+    ControlBound(hParent, BLeft, BTop, BWidth, BHeight);
     if(UndefState == 1) ReturnValue = CreateWindowEx(WS_EX_TRANSPARENT, "BUTTON", BText.Get_String(), WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_LEFT | BS_VCENTER | BS_AUTO3STATE | ExtraStyle, BLeft, BTop, BWidth, BHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     else ReturnValue = CreateWindowEx(WS_EX_TRANSPARENT, "BUTTON", BText.Get_String(), WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_LEFT | BS_VCENTER | BS_AUTOCHECKBOX | ExtraStyle, BLeft, BTop, BWidth, BHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
-    WAControlSetSerif8(ReturnValue);
+    ControlHookWin(ReturnValue, WindowProc);
+    ControlSetSerif8(ReturnValue);
     return(ReturnValue);
 }
 
@@ -2059,7 +2059,7 @@ long CALLBACK CheckBoxSetState(HWND hCB, long CheckedState)
 
 // -----------------------------------------------------------------------
 // Create a Rebar control
-HWND CALLBACK WACreateRebar(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent, WNDPROC WindowProc,
+HWND CALLBACK CreateRebar(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent, WNDPROC WindowProc,
                             long CtrlID, long ExtraStyle)
 {
     HWND ReturnValue = 0;
@@ -2067,7 +2067,7 @@ HWND CALLBACK WACreateRebar(long BLeft, long BTop, long BWidth, long BHeight, HW
 
     ReturnValue = CreateWindowEx(0, "ReBarWindow32", "", WS_CLIPSIBLINGS | WS_VISIBLE | WS_CHILD | WS_CLIPCHILDREN | RBS_DBLCLKTOGGLE | RBS_VARHEIGHT | CCS_NODIVIDER | CCS_NOPARENTALIGN | ExtraStyle, 0, 0, 0, 0, hParent, 0, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
+    ControlHookWin(ReturnValue, WindowProc);
     Rbi.cbSize = sizeof(Rbi);
     Rbi.fMask = 0;
     Rbi.himl = 0;
@@ -2077,7 +2077,7 @@ HWND CALLBACK WACreateRebar(long BLeft, long BTop, long BWidth, long BHeight, HW
 
 // -----------------------------------------------------------------------
 // Create a band to a rebar control
-long CALLBACK WARebarAddBand(HWND hRebar, HWND hChild, CStr RBText, long RBYSize, long ExtraStyle, long MinSize)
+long CALLBACK RebarAddBand(HWND hRebar, HWND hChild, CStr RBText, long RBYSize, long ExtraStyle, long MinSize)
 {
     REBARBANDINFO RBand;
 
@@ -2103,19 +2103,19 @@ long CALLBACK WARebarAddBand(HWND hRebar, HWND hChild, CStr RBText, long RBYSize
 
 // -----------------------------------------------------------------------
 // Create a band to a rebar control
-long CALLBACK WARebarRemoveBand(HWND hRebar, long BandNumber)
+long CALLBACK RebarRemoveBand(HWND hRebar, long BandNumber)
 {
     return(SendMessage(hRebar, RB_DELETEBAND, BandNumber, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the X size of a rebar control
-long CALLBACK WARebarGetXSize(HWND hRebar)
+long CALLBACK RebarGetXSize(HWND hRebar)
 {
     long ReturnValue = 0;
     RECT BBRct;
 
-    if(WAControlIsVisible(hRebar) != 0)
+    if(ControlIsVisible(hRebar) != 0)
     {
         GetWindowRect(hRebar, &BBRct);
         ReturnValue = BBRct.right - BBRct.left;
@@ -2125,12 +2125,12 @@ long CALLBACK WARebarGetXSize(HWND hRebar)
 
 // -----------------------------------------------------------------------
 // Retrieve the Y size of a rebar control
-long CALLBACK WARebarGetYSize(HWND hRebar)
+long CALLBACK RebarGetYSize(HWND hRebar)
 {
     long ReturnValue = 0;
     RECT BBRct;
 
-    if(WAControlIsVisible(hRebar) != 0)
+    if(ControlIsVisible(hRebar) != 0)
     {
         GetWindowRect(hRebar, &BBRct);
         ReturnValue = BBRct.bottom - BBRct.top;
@@ -2140,14 +2140,14 @@ long CALLBACK WARebarGetYSize(HWND hRebar)
 
 // -----------------------------------------------------------------------
 // Resize a rebar control
-long CALLBACK WARebarResize(HWND hRebar)
+long CALLBACK RebarResize(HWND hRebar)
 {
     RECT RBRct;
     RECT PRBRct;
     HWND hParent = 0;
     long ReturnValue = 0;
 
-    if(WAControlIsVisible(hRebar) != 0)
+    if(ControlIsVisible(hRebar) != 0)
     {
         hParent = GetParent(hRebar);
         GetClientRect(hRebar, &RBRct);
@@ -2159,77 +2159,77 @@ long CALLBACK WARebarResize(HWND hRebar)
 
 // -----------------------------------------------------------------------
 // Change the background color of a rebar control
-long CALLBACK WARebarSetBackColor(HWND hRebar, COLORREF RBColor)
+long CALLBACK RebarSetBackColor(HWND hRebar, COLORREF RBColor)
 {
     return(SendMessage(hRebar, RB_SETBKCOLOR, 0, RBColor));
 }
 
 // -----------------------------------------------------------------------
 // Change the text color of a rebar control
-long CALLBACK WARebarSetTextColor(HWND hRebar, COLORREF RBColor)
+long CALLBACK RebarSetTextColor(HWND hRebar, COLORREF RBColor)
 {
     return(SendMessage(hRebar, RB_SETTEXTCOLOR, 0, RBColor));
 }
 
 // -----------------------------------------------------------------------
 // Change the visible state of a rebar band
-long CALLBACK WARebarBandVisible(HWND hRebar, long RBBand, long RBVisible)
+long CALLBACK RebarBandVisible(HWND hRebar, long RBBand, long RBVisible)
 {
     return(SendMessage(hRebar, RB_SHOWBAND, RBBand, RBVisible));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the number of bands of a rebar
-long CALLBACK WARebarGetBandsCount(HWND hRebar)
+long CALLBACK RebarGetBandsCount(HWND hRebar)
 {
     return(SendMessage(hRebar, RB_GETBANDCOUNT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the height of a rebar
-long CALLBACK WARebarGetHeight(HWND hRebar)
+long CALLBACK RebarGetHeight(HWND hRebar)
 {
     return(SendMessage(hRebar, RB_GETBARHEIGHT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the used default background color of a rebar
-COLORREF CALLBACK WARebarGetBackGroundColor(HWND hRebar)
+COLORREF CALLBACK RebarGetBackGroundColor(HWND hRebar)
 {
     return(SendMessage(hRebar, RB_GETBKCOLOR, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the number of rows of a rebar
-long CALLBACK WARebarGetRowsCount(HWND hRebar)
+long CALLBACK RebarGetRowsCount(HWND hRebar)
 {
     return(SendMessage(hRebar, RB_GETROWCOUNT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the handle of the tooltips control associated with a rebar
-long CALLBACK WARebarGetToolTips(HWND hRebar)
+long CALLBACK RebarGetToolTips(HWND hRebar)
 {
     return(SendMessage(hRebar, RB_GETTOOLTIPS, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve used text color of a rebar
-COLORREF CALLBACK WARebarGetTextColor(HWND hRebar)
+COLORREF CALLBACK RebarGetTextColor(HWND hRebar)
 {
     return(SendMessage(hRebar, RB_GETTEXTCOLOR, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the handle of the palette used in a rebar
-long CALLBACK WARebarGetPalette(HWND hRebar)
+long CALLBACK RebarGetPalette(HWND hRebar)
 {
     return(SendMessage(hRebar, RB_GETPALETTE, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve used image in a rebar
-HIMAGELIST CALLBACK WARebarGetImageList(HWND hRebar)
+HIMAGELIST CALLBACK RebarGetImageList(HWND hRebar)
 {
     REBARINFO RbInfo;
 
@@ -2245,13 +2245,13 @@ HIMAGELIST CALLBACK WARebarGetImageList(HWND hRebar)
 
 // -----------------------------------------------------------------------
 // Create a Pager control
-HWND CALLBACK WACreatePager(long PLeft, long PTop, long PWidth, long PHeight, HWND hParent, HWND hChild,
+HWND CALLBACK CreatePager(long PLeft, long PTop, long PWidth, long PHeight, HWND hParent, HWND hChild,
                             long CtrlID, long ExtraStyle)
 {
     HWND ReturnValue = 0;
     long Extra = 0;
 
-    WAControlBound(hParent, PLeft, PTop, PWidth, PHeight);
+    ControlBound(hParent, PLeft, PTop, PWidth, PHeight);
     if((ExtraStyle & WS_BORDER) != 0) Extra = WS_EX_CLIENTEDGE;
     ReturnValue = CreateWindowEx(Extra, "SysPager", "", WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VISIBLE | WS_CHILD | PGS_VERT | CCS_NORESIZE | ExtraStyle, PLeft, PTop, PWidth, PHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
@@ -2264,7 +2264,7 @@ HWND CALLBACK WACreatePager(long PLeft, long PTop, long PWidth, long PHeight, HW
 
 // -----------------------------------------------------------------------
 // Proceed a pagesize demand from a pager control
-void CALLBACK WAPagerDisplaySetSize(LPNMPGCALCSIZE CalcSizeNotify, LPSIZE PGNewSize)
+void CALLBACK PagerDisplaySetSize(LPNMPGCALCSIZE CalcSizeNotify, LPSIZE PGNewSize)
 {
     switch(CalcSizeNotify->dwFlag)
     {
@@ -2281,7 +2281,7 @@ void CALLBACK WAPagerDisplaySetSize(LPNMPGCALCSIZE CalcSizeNotify, LPSIZE PGNewS
 
 // -----------------------------------------------------------------------
 // Maximize a pager on X axis according to it's parent control
-long CALLBACK WAPagerMaximizeX(HWND hPager, long ChildYSize)
+long CALLBACK PagerMaximizeX(HWND hPager, long ChildYSize)
 {
     RECT Rct;
     HWND hParent = 0;
@@ -2293,7 +2293,7 @@ long CALLBACK WAPagerMaximizeX(HWND hPager, long ChildYSize)
 
 // -----------------------------------------------------------------------
 // Maximize a pager on Y axis according to it's parent control
-long CALLBACK WAPagerMaximizeY(HWND hPager, long ChildXSize)
+long CALLBACK PagerMaximizeY(HWND hPager, long ChildXSize)
 {
     RECT Rct;
     HWND hParent = 0;
@@ -2305,56 +2305,56 @@ long CALLBACK WAPagerMaximizeY(HWND hPager, long ChildXSize)
 
 // -----------------------------------------------------------------------
 // Retrieve the child of a notified pager
-HWND CALLBACK WAPagerGetNotifiedChild(long lParam)
+HWND CALLBACK PagerGetNotifiedChild(long lParam)
 {
-    return((HWND) GetWindowLong(WAControlGetNotifiedhWnd(lParam), GWL_USERDATA));
+    return((HWND) GetWindowLong(ControlGetNotifiedhWnd(lParam), GWL_USERDATA));
 }
 
 // -----------------------------------------------------------------------
 // Set the background color of a pager control
-long CALLBACK WAPagerSetBackColor(HWND hPager, COLORREF Color)
+long CALLBACK PagerSetBackColor(HWND hPager, COLORREF Color)
 {
     return(SendMessage(hPager, PGM_SETBKCOLOR, 0, Color));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the background color of a pager control
-COLORREF CALLBACK WAPagerGetBackColor(HWND hPager)
+COLORREF CALLBACK PagerGetBackColor(HWND hPager)
 {
     return(SendMessage(hPager, PGM_GETBKCOLOR, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the used border size of a pager control
-long CALLBACK WAPagerGetBorderSize(HWND hPager)
+long CALLBACK PagerGetBorderSize(HWND hPager)
 {
     return(SendMessage(hPager, PGM_GETBORDER, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the used button size of a pager control
-long CALLBACK WAPagerGetButtonSize(HWND hPager)
+long CALLBACK PagerGetButtonSize(HWND hPager)
 {
     return(SendMessage(hPager, PGM_GETBUTTONSIZE, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the scroll position in a pager control
-long CALLBACK WAPagerGetScrollPos(HWND hPager)
+long CALLBACK PagerGetScrollPos(HWND hPager)
 {
     return(SendMessage(hPager, PGM_GETPOS, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the orientation of a pager control
-long CALLBACK WAPagerGetOrientation(HWND hPager)
+long CALLBACK PagerGetOrientation(HWND hPager)
 {
 	return(GetWindowLong(hPager, GWL_STYLE) & PGS_HORZ);
 }
 
 // -----------------------------------------------------------------------
 // Set the orientation of a pager control
-long CALLBACK WAPagerSetOrientation(HWND hPager, long Orientation)
+long CALLBACK PagerSetOrientation(HWND hPager, long Orientation)
 {
 	if(Orientation != PGS_HORZ) return(SetWindowLong(hPager, GWL_STYLE, GetWindowLong(hPager, GWL_STYLE) & ~PGS_HORZ));
 	else return(SetWindowLong(hPager, GWL_STYLE, GetWindowLong(hPager, GWL_STYLE) | PGS_HORZ));
@@ -2362,12 +2362,12 @@ long CALLBACK WAPagerSetOrientation(HWND hPager, long Orientation)
 
 // -----------------------------------------------------------------------
 // Set a new orientation for a pager control
-long CALLBACK WAPagerChangeOrientation(HWND hPager, LPNMPGCALCSIZE CalcSizeNotify,
+long CALLBACK PagerChangeOrientation(HWND hPager, LPNMPGCALCSIZE CalcSizeNotify,
                                        long NewOrientation, LPSIZE NewSize)
 {
 	long OldOrientation;
 
-	OldOrientation = WAPagerGetOrientation(hPager);
+	OldOrientation = PagerGetOrientation(hPager);
 	if(NewOrientation == PGS_VERT)
     {
 		if(OldOrientation != PGS_VERT)
@@ -2384,7 +2384,7 @@ long CALLBACK WAPagerChangeOrientation(HWND hPager, LPNMPGCALCSIZE CalcSizeNotif
 			OldOrientation = SetWindowLong(hPager, GWL_STYLE, GetWindowLong(hPager, GWL_STYLE) | PGS_HORZ);
 		}
 	}
-	WAPagerDisplaySetSize(CalcSizeNotify, NewSize);
+	PagerDisplaySetSize(CalcSizeNotify, NewSize);
 	return(OldOrientation);
 }
 
@@ -2394,7 +2394,7 @@ long CALLBACK WAPagerChangeOrientation(HWND hPager, LPNMPGCALCSIZE CalcSizeNotif
 
 // -----------------------------------------------------------------------
 // Create a MDI client
-HWND CALLBACK WACreateClient(HWND hParent, HMENU hMenuWindowList, HICON hIcon)
+HWND CALLBACK CreateClient(HWND hParent, HMENU hMenuWindowList, HICON hIcon)
 {
     HWND ReturnValue = 0;
     CLIENTCREATESTRUCT MyClient;
@@ -2403,7 +2403,7 @@ HWND CALLBACK WACreateClient(HWND hParent, HMENU hMenuWindowList, HICON hIcon)
     MyClient.idFirstChild = 0;
     ReturnValue = CreateWindowEx(WS_EX_RIGHTSCROLLBAR | WS_EX_CLIENTEDGE | WS_EX_LTRREADING, "MDICLIENT", "", WS_CLIPCHILDREN | WS_CHILD | WS_HSCROLL | WS_VSCROLL, 0, 0, 0, 0, hParent, 0, WALocalhInst, &MyClient);
     if(ReturnValue == 0) return(0);
-    WAControlSetSerif8(ReturnValue);
+    ControlSetSerif8(ReturnValue);
     DialogSetIcon(ReturnValue, hIcon);
     ShowWindow(ReturnValue, SW_SHOW);
     return(ReturnValue);
@@ -2411,7 +2411,7 @@ HWND CALLBACK WACreateClient(HWND hParent, HMENU hMenuWindowList, HICON hIcon)
 
 // -----------------------------------------------------------------------
 // Resize the client array of a window
-long CALLBACK WAClientResize(HWND hClient, long AddX, long AddY, long SubX, long SubY)
+long CALLBACK ClientResize(HWND hClient, long AddX, long AddY, long SubX, long SubY)
 {
     RECT Rct;
     HWND hParent = 0;
@@ -2423,49 +2423,49 @@ long CALLBACK WAClientResize(HWND hClient, long AddX, long AddY, long SubX, long
 
 // -----------------------------------------------------------------------
 // Retrieve active child of a MDI client
-HWND CALLBACK WAClientGetActiveChild(HWND hClient)
+HWND CALLBACK ClientGetActiveChild(HWND hClient)
 {
     return((HWND) SendMessage(hClient, WM_MDIGETACTIVE, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Focus on next child of a MDI client 
-HWND CALLBACK WAClientSetNextChild(HWND hClient)
+HWND CALLBACK ClientSetNextChild(HWND hClient)
 {
     return((HWND) SendMessage(hClient, WM_MDINEXT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Focus on previous child of a MDI client
-HWND CALLBACK WAClientSetPreviousChild(HWND hClient)
+HWND CALLBACK ClientSetPreviousChild(HWND hClient)
 {
     return((HWND) SendMessage(hClient, WM_MDINEXT, 0, (long) 1));
 }
 
 // -----------------------------------------------------------------------
 // Tile childs windows of a MDI client horizontally
-long CALLBACK WAClientTileHorizontal(HWND hClient)
+long CALLBACK ClientTileHorizontal(HWND hClient)
 {
     return(SendMessage(hClient, WM_MDITILE, MDITILE_HORIZONTAL, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Tile childs windows of a MDI client vertically
-long CALLBACK WAClientTileVertical(HWND hClient)
+long CALLBACK ClientTileVertical(HWND hClient)
 {
     return(SendMessage(hClient, WM_MDITILE, MDITILE_VERTICAL, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Cascade childs windows of a MDI client
-long CALLBACK WAClientTileCascade(HWND hClient)
+long CALLBACK ClientTileCascade(HWND hClient)
 {
     return(SendMessage(hClient, WM_MDICASCADE, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Arrange iconic childs windows of a MDI client
-long CALLBACK WAClientTileArrangeIconic(HWND hClient)
+long CALLBACK ClientTileArrangeIconic(HWND hClient)
 {
     return(SendMessage(hClient, WM_MDIICONARRANGE, 0, (long) 0));
 }
@@ -2476,16 +2476,16 @@ long CALLBACK WAClientTileArrangeIconic(HWND hClient)
 
 // -----------------------------------------------------------------------
 // Create a radio button control
-HWND CALLBACK WACreateRadioButton(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent,
+HWND CALLBACK CreateRadioButton(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent,
                                   CStr BText, long CtrlID, WNDPROC WindowProc, long ExtraStyle)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, BLeft, BTop, BWidth, BHeight);
+    ControlBound(hParent, BLeft, BTop, BWidth, BHeight);
     ReturnValue = CreateWindowEx(WS_EX_TRANSPARENT, "BUTTON", BText.Get_String(), WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_LEFT | BS_VCENTER | BS_AUTORADIOBUTTON | BS_MULTILINE | ExtraStyle, BLeft, BTop, BWidth, BHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
-    WAControlSetSerif8(ReturnValue);
+    ControlHookWin(ReturnValue, WindowProc);
+    ControlSetSerif8(ReturnValue);
     return(ReturnValue);
 }
 
@@ -2509,25 +2509,25 @@ long CALLBACK RadioButtonSetState(HWND hRB, long CheckedState)
 
 // -----------------------------------------------------------------------
 // Create a listview control
-HWND CALLBACK WACreateListView(long LVLeft, long LVTop, long LVWidth, long LVHeight, HWND hParent,
+HWND CALLBACK CreateListView(long LVLeft, long LVTop, long LVWidth, long LVHeight, HWND hParent,
                                long CtrlID, HIMAGELIST hImageList, WNDPROC WindowProc, long ExtraStyle,
                                long WStyle, long ExtraExStyle)
 {
     HWND ReturnValue = 0;
 
-	WAControlBound(hParent, LVLeft, LVTop, LVWidth, LVHeight);
+	ControlBound(hParent, LVLeft, LVTop, LVWidth, LVHeight);
     ReturnValue = CreateWindowEx(WS_EX_NOPARENTNOTIFY | ExtraExStyle, "SysListView32", "", WS_HSCROLL | WS_VSCROLL | WS_VISIBLE | WS_CHILD | LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | WStyle, LVLeft, LVTop, LVWidth, LVHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlSetSerif8(ReturnValue);
+    ControlSetSerif8(ReturnValue);
     if(hImageList != 0) SendMessage(ReturnValue, LVM_SETIMAGELIST, LVSIL_SMALL, (long) hImageList);
     if(ExtraStyle != 0) SendMessage(ReturnValue, LVM_SETEXTENDEDLISTVIEWSTYLE, ExtraStyle, ExtraStyle);
-    WAControlHookWin(ReturnValue, WindowProc);
+    ControlHookWin(ReturnValue, WindowProc);
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Add a column to a listview control
-long CALLBACK WAListViewAddCol(HWND hListview, CStr LVColText, long LVWidth, long ColPosition)
+long CALLBACK ListViewAddCol(HWND hListview, CStr LVColText, long LVWidth, long ColPosition)
 {
     RECT CRect;
     LV_COLUMN ListViewColumn;
@@ -2545,42 +2545,42 @@ long CALLBACK WAListViewAddCol(HWND hListview, CStr LVColText, long LVWidth, lon
 
 // -----------------------------------------------------------------------
 // Set a column width of a listview control
-long CALLBACK WAListViewSetColWidth(HWND hListview, long LVColNumber, long LVWidth)
+long CALLBACK ListViewSetColWidth(HWND hListview, long LVColNumber, long LVWidth)
 {
     return(SendMessage(hListview, LVM_SETCOLUMNWIDTH, LVColNumber, LVWidth));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve a column width of a listview control
-long CALLBACK WAListViewGetColWidth(HWND hListview, long LVColNumber)
+long CALLBACK ListViewGetColWidth(HWND hListview, long LVColNumber)
 {
     return(SendMessage(hListview, LVM_GETCOLUMNWIDTH, LVColNumber, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Set a position in a listview
-long CALLBACK WAListViewSetScroll(HWND hLV, long DeltaX, long DeltaY)
+long CALLBACK ListViewSetScroll(HWND hLV, long DeltaX, long DeltaY)
 {
     return(SendMessage(hLV, LVM_SCROLL, DeltaX, DeltaY));
 }
 
 // -----------------------------------------------------------------------
 // Clear a listview
-long CALLBACK WAListViewClear(HWND hLV)
+long CALLBACK ListViewClear(HWND hLV)
 {
     return(SendMessage(hLV, LVM_DELETEALLITEMS, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Detach an imagelist from a listview
-long CALLBACK WAListViewDetachImageList(HWND hLV)
+long CALLBACK ListViewDetachImageList(HWND hLV)
 {
     return(SendMessage(hLV, LVM_SETIMAGELIST, LVSIL_SMALL, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Add an item to a listview control
-long CALLBACK WAListViewAddItem(HWND hListview, CStr LVItemText, long LVItemPos, long LVImage)
+long CALLBACK ListViewAddItem(HWND hListview, CStr LVItemText, long LVItemPos, long LVImage)
 {
     LV_ITEM ListViewItem;
 
@@ -2601,14 +2601,14 @@ long CALLBACK WAListViewAddItem(HWND hListview, CStr LVItemText, long LVItemPos,
 
 // -----------------------------------------------------------------------
 // Delete an item from a listview control
-long CALLBACK WAListViewDeleteItem(HWND hListview, long LVItemPos)
+long CALLBACK ListViewDeleteItem(HWND hListview, long LVItemPos)
 {
     return(SendMessage(hListview, LVM_DELETEITEM, LVItemPos, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Add a subitem to a listview control
-long CALLBACK WAListViewSetSubItem(HWND hListview, CStr LVItemText, long LVItemPos, long LVSubItemPos)
+long CALLBACK ListViewSetSubItem(HWND hListview, CStr LVItemText, long LVItemPos, long LVSubItemPos)
 {
     LV_ITEM ListViewItem;
 
@@ -2624,7 +2624,7 @@ long CALLBACK WAListViewSetSubItem(HWND hListview, CStr LVItemText, long LVItemP
 
 // -----------------------------------------------------------------------
 // Add a subitem icon to a listview control
-long CALLBACK WAListViewSetSubItemImage(HWND hListview, long LVItemImage, long LVItemPos, long LVSubItemPos)
+long CALLBACK ListViewSetSubItemImage(HWND hListview, long LVItemImage, long LVItemPos, long LVSubItemPos)
 {
     LV_ITEM ListViewItem;
 
@@ -2638,7 +2638,7 @@ long CALLBACK WAListViewSetSubItemImage(HWND hListview, long LVItemImage, long L
 
 // -----------------------------------------------------------------------
 // Retrieve subitem icon to a listview control
-long CALLBACK WAListViewGetSubItemImage(HWND hListview, long LVItemPos, long LVSubItemPos)
+long CALLBACK ListViewGetSubItemImage(HWND hListview, long LVItemPos, long LVSubItemPos)
 {
     LV_ITEM ListViewItem;
     long LVItemImage = 0;
@@ -2654,7 +2654,7 @@ long CALLBACK WAListViewGetSubItemImage(HWND hListview, long LVItemPos, long LVS
 
 // -----------------------------------------------------------------------
 // Retrieve the editing result state of a listview control
-long CALLBACK WAListViewEditValidated(long lParam)
+long CALLBACK ListViewEditValidated(long lParam)
 {
     long ReturnValue = 0;
     LV_DISPINFO HeaderNotify;
@@ -2666,7 +2666,7 @@ long CALLBACK WAListViewEditValidated(long lParam)
 
 // -----------------------------------------------------------------------
 // Retrieve the editing result of a listview control
-CStr CALLBACK WAListViewGetEditResult(long lParam)
+CStr CALLBACK ListViewGetEditResult(long lParam)
 {
     CStr ReturnValue;
     LV_DISPINFO HeaderNotify;
@@ -2681,43 +2681,43 @@ CStr CALLBACK WAListViewGetEditResult(long lParam)
 
 // -----------------------------------------------------------------------
 // Retrieve the number of items of a listview control
-long CALLBACK WAListViewItemCount(HWND hListview)
+long CALLBACK ListViewItemCount(HWND hListview)
 {
     return(SendMessage(hListview, LVM_GETITEMCOUNT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the number of selected items of a listview control
-long CALLBACK WAListViewSelItemCount(HWND hListview)
+long CALLBACK ListViewSelItemCount(HWND hListview)
 {
     return(SendMessage(hListview, LVM_GETSELECTEDCOUNT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve first selected item of a listview control
-long CALLBACK WAListViewMultiSelFirstItem(HWND hListview)
+long CALLBACK ListViewMultiSelFirstItem(HWND hListview)
 {
     return(SendMessage(hListview, LVM_GETSELECTIONMARK, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve selection state of a listview item
-long CALLBACK WAListViewGetItemSelState(HWND hListview, long LVItemIndex)
+long CALLBACK ListViewGetItemSelState(HWND hListview, long LVItemIndex)
 {
     return(SendMessage(hListview, LVM_GETITEMSTATE, LVItemIndex, LVIS_FOCUSED));
 }
 
 // -----------------------------------------------------------------------
 // Display the edit control a listview and return the handle of the text control
-HWND CALLBACK WAListViewSetEditModeOn(HWND hListview, long LVItemIndex, long ExtraEditStyle)
+HWND CALLBACK ListViewSetEditModeOn(HWND hListview, long LVItemIndex, long ExtraEditStyle)
 {
     SendMessage(hListview, LVM_EDITLABELA, LVItemIndex, (long) 0);
-    return(WAListViewGetEditControl(hListview));
+    return(ListViewGetEditControl(hListview));
 }
 
 // -----------------------------------------------------------------------
 // Set the selection state of a listview item
-long CALLBACK WAListViewSetItemSel(HWND hListview, long LVItemIndex)
+long CALLBACK ListViewSetItemSel(HWND hListview, long LVItemIndex)
 {
     LV_ITEM GetListViewItem;
 
@@ -2733,7 +2733,7 @@ long CALLBACK WAListViewSetItemSel(HWND hListview, long LVItemIndex)
 
 // -----------------------------------------------------------------------
 // Set the highlight state of a listview item
-long CALLBACK WAListViewSetItemHighlight(HWND hListview, long LVItemIndex, long Enable)
+long CALLBACK ListViewSetItemHighlight(HWND hListview, long LVItemIndex, long Enable)
 {
     LV_ITEM GetListViewItem;
 
@@ -2756,7 +2756,7 @@ long CALLBACK WAListViewSetItemHighlight(HWND hListview, long LVItemIndex, long 
 
 // -----------------------------------------------------------------------
 // Set the focus state of a listview item
-long CALLBACK WAListViewSetItemFocus(HWND hListview, long LVItemIndex)
+long CALLBACK ListViewSetItemFocus(HWND hListview, long LVItemIndex)
 {
     LV_ITEM GetListViewItem;
 
@@ -2772,63 +2772,63 @@ long CALLBACK WAListViewSetItemFocus(HWND hListview, long LVItemIndex)
 
 // -----------------------------------------------------------------------
 // Retrieve the item number currently under the cursor
-long CALLBACK WAListViewGetItemUnderCursor(HWND hListview)
+long CALLBACK ListViewGetItemUnderCursor(HWND hListview)
 {
     LV_HITTESTINFO MyTest;
 
 	memset(&MyTest, 0, sizeof(MyTest));
     GetCursorPos(&MyTest.pt);
-    MyTest.pt.x = MyTest.pt.x - WAControlLeft(hListview);
-    MyTest.pt.y = MyTest.pt.y - WAControlTop(hListview);
+    MyTest.pt.x = MyTest.pt.x - ControlLeft(hListview);
+    MyTest.pt.y = MyTest.pt.y - ControlTop(hListview);
     SendMessage(hListview, LVM_HITTEST, 0, (long) &MyTest);
     return(MyTest.iItem);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve selection state of the first selected item in a listview
-long CALLBACK WAListViewGetFirstFocusItem(HWND hListview)
+long CALLBACK ListViewGetFirstFocusItem(HWND hListview)
 {
     return(SendMessage(hListview, LVM_GETNEXTITEM, -1, LVNI_FOCUSED));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve selection state of the next selected item in a listview
-long CALLBACK WAListViewGetSelItem(HWND hListview, long LVIndex)
+long CALLBACK ListViewGetSelItem(HWND hListview, long LVIndex)
 {
     return(SendMessage(hListview, LVM_GETNEXTITEM, LVIndex, LVNI_SELECTED));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve selection state of the listview selected item
-CStr CALLBACK WAListViewGetSelItemText(HWND hListview, long LVSubItemNumber)
+CStr CALLBACK ListViewGetSelItemText(HWND hListview, long LVSubItemNumber)
 {
-	return(WAListViewGetItemText(hListview, WAListViewGetFirstFocusItem(hListview), LVSubItemNumber));
+	return(ListViewGetItemText(hListview, ListViewGetFirstFocusItem(hListview), LVSubItemNumber));
 }
 
 // -----------------------------------------------------------------------
 // Set the text of a selected item
-long CALLBACK WAListViewSetSelItemText(HWND hListview, CStr LVItemText, long LVSubItemNumber)
+long CALLBACK ListViewSetSelItemText(HWND hListview, CStr LVItemText, long LVSubItemNumber)
 {
-    return(WAListViewSetSubItem(hListview, LVItemText, WAListViewGetSelItem(hListview, -1), LVSubItemNumber));
+    return(ListViewSetSubItem(hListview, LVItemText, ListViewGetSelItem(hListview, -1), LVSubItemNumber));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve selection state of a listview item
-long CALLBACK WAListViewCheckBoxItemDoubleClick(HWND hListview)
+long CALLBACK ListViewCheckBoxItemDoubleClick(HWND hListview)
 {
     long CurrentLvItem = 0;
 
-    CurrentLvItem = WAListViewGetItemUnderCursor(hListview);
+    CurrentLvItem = ListViewGetItemUnderCursor(hListview);
     if(CurrentLvItem != -1)
     {
-        WAListViewSetItemSel(hListview, CurrentLvItem);
-        switch(WAListViewGetItemCheckbox(hListview, CurrentLvItem))
+        ListViewSetItemSel(hListview, CurrentLvItem);
+        switch(ListViewGetItemCheckbox(hListview, CurrentLvItem))
         {
             case 0:
-                WAListViewSetItemCheckbox(hListview, CurrentLvItem, 1);
+                ListViewSetItemCheckbox(hListview, CurrentLvItem, 1);
 				break;
 			case 1:
-                WAListViewSetItemCheckbox(hListview, CurrentLvItem, 0);
+                ListViewSetItemCheckbox(hListview, CurrentLvItem, 0);
 				break;
         }
     }
@@ -2837,7 +2837,7 @@ long CALLBACK WAListViewCheckBoxItemDoubleClick(HWND hListview)
 
 // -----------------------------------------------------------------------
 // Retrieve selection state of a listview item
-CStr CALLBACK WAListViewGetItemText(HWND hListview, long LVItemIndex, long LVSubItemNumber)
+CStr CALLBACK ListViewGetItemText(HWND hListview, long LVItemIndex, long LVSubItemNumber)
 {
     CStr ReturnValue;
     LV_ITEM GetListViewItem;
@@ -2857,7 +2857,7 @@ CStr CALLBACK WAListViewGetItemText(HWND hListview, long LVItemIndex, long LVSub
 
 // -----------------------------------------------------------------------
 // Retrieve the icon associated with an item of a listview item
-HICON CALLBACK WAListViewGetItemIcon(HWND hListview, long LVItemIndex, long LVSubItemNumber)
+HICON CALLBACK ListViewGetItemIcon(HWND hListview, long LVItemIndex, long LVSubItemNumber)
 {
     LV_ITEM GetListViewItem;
 
@@ -2873,7 +2873,7 @@ HICON CALLBACK WAListViewGetItemIcon(HWND hListview, long LVItemIndex, long LVSu
 
 // -----------------------------------------------------------------------
 // Retrieve the column number of a notified listview event
-long CALLBACK WAListViewGetNotifiedColumnIndex(long lParam)
+long CALLBACK ListViewGetNotifiedColumnIndex(long lParam)
 {
     NM_LISTVIEW SubItemNotify;
 
@@ -2883,14 +2883,14 @@ long CALLBACK WAListViewGetNotifiedColumnIndex(long lParam)
 
 // -----------------------------------------------------------------------
 // Sort a listview by item
-long CALLBACK WAListViewSort(HWND hListview, long LVSubItemNumber, PFNLVCOMPARE SortProc)
+long CALLBACK ListViewSort(HWND hListview, long LVSubItemNumber, PFNLVCOMPARE SortProc)
 {
     return(SendMessage(hListview, LVM_SORTITEMS, LVSubItemNumber, (long) SortProc));
 }
 
 // -----------------------------------------------------------------------
 // Reorder a listview by lparam
-long CALLBACK WAListViewReOrder(HWND hListview)
+long CALLBACK ListViewReOrder(HWND hListview)
 {
     LV_ITEM ReordItem;
     long i;
@@ -2899,7 +2899,7 @@ long CALLBACK WAListViewReOrder(HWND hListview)
     ReordItem.mask = LVIF_PARAM;
     ReordItem.iItem = 0;
     ReordItem.iSubItem = 0;
-    for(i = 0; (i <= WAListViewItemCount(hListview) - 1) ; i++)
+    for(i = 0; (i <= ListViewItemCount(hListview) - 1) ; i++)
     {
         ReordItem.lParam = ReordItem.iItem;
         ReturnValue = SendMessage(hListview, LVM_SETITEM, 0, (long) &ReordItem);
@@ -2911,7 +2911,7 @@ long CALLBACK WAListViewReOrder(HWND hListview)
 
 // -----------------------------------------------------------------------
 // Retrieve listview column label
-CStr CALLBACK WAListViewGetHeaderLabel(HWND hListview, long LVColNumber)
+CStr CALLBACK ListViewGetHeaderLabel(HWND hListview, long LVColNumber)
 {
     CStr ReturnValue;
     LV_COLUMN MyColHead;
@@ -2932,7 +2932,7 @@ CStr CALLBACK WAListViewGetHeaderLabel(HWND hListview, long LVColNumber)
 
 // -----------------------------------------------------------------------
 // Retrieve listview column position
-long CALLBACK WAListViewGetHeaderPosition(HWND hListview, long LVColNumber)
+long CALLBACK ListViewGetHeaderPosition(HWND hListview, long LVColNumber)
 {
     LV_COLUMN MyColHead;
     
@@ -2949,7 +2949,7 @@ long CALLBACK WAListViewGetHeaderPosition(HWND hListview, long LVColNumber)
 
 // -----------------------------------------------------------------------
 // Set listview column position
-long CALLBACK WAListViewSetHeaderPosition(HWND hListview, long LVColNumber, long NewPosition)
+long CALLBACK ListViewSetHeaderPosition(HWND hListview, long LVColNumber, long NewPosition)
 {
     LV_COLUMN MyColHead;
     
@@ -2965,89 +2965,89 @@ long CALLBACK WAListViewSetHeaderPosition(HWND hListview, long LVColNumber, long
 
 // -----------------------------------------------------------------------
 // Change the background color of a listview
-long CALLBACK WAListViewSetBackColor(HWND hListview, COLORREF LVColor)
+long CALLBACK ListViewSetBackColor(HWND hListview, COLORREF LVColor)
 {
     return(SendMessage(hListview, LVM_SETBKCOLOR, 0, (long) LVColor));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the background color of a listview
-COLORREF CALLBACK WAListViewGetBackColor(HWND hListview)
+COLORREF CALLBACK ListViewGetBackColor(HWND hListview)
 {
     return(SendMessage(hListview, LVM_GETBKCOLOR, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the text background color of a listview
-COLORREF CALLBACK WAListViewGetTextBackColor(HWND hListview)
+COLORREF CALLBACK ListViewGetTextBackColor(HWND hListview)
 {
     return(SendMessage(hListview, LVM_GETTEXTBKCOLOR, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the text color of a listview
-COLORREF CALLBACK WAListViewGetTextColor(HWND hListview) {
+COLORREF CALLBACK ListViewGetTextColor(HWND hListview) {
     return(SendMessage(hListview, LVM_GETTEXTCOLOR, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the tooltips control associated with a listview
-long CALLBACK WAListViewGetToolTips(HWND hListview)
+long CALLBACK ListViewGetToolTips(HWND hListview)
 {
     return(SendMessage(hListview, LVM_GETTOOLTIPS, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the top index item of a listview
-long CALLBACK WAListViewGetTopIndex(HWND hListview)
+long CALLBACK ListViewGetTopIndex(HWND hListview)
 {
     return(SendMessage(hListview, LVM_GETTOPINDEX, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the number of items that can fit vertically in a listview
-long CALLBACK WAListViewGetCountPerPage(HWND hListview) {
+long CALLBACK ListViewGetCountPerPage(HWND hListview) {
     return(SendMessage(hListview, LVM_GETCOUNTPERPAGE, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the handle of the edit control of a listview
-HWND CALLBACK WAListViewGetEditControl(HWND hListview)
+HWND CALLBACK ListViewGetEditControl(HWND hListview)
 {
     return((HWND) SendMessage(hListview, LVM_GETEDITCONTROL, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the extended styles of a listview
-long CALLBACK WAListViewGetExStyle(HWND hListview)
+long CALLBACK ListViewGetExStyle(HWND hListview)
 {
     return(SendMessage(hListview, LVM_GETEXTENDEDLISTVIEWSTYLE, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the sysheader of a listview
-HWND CALLBACK WAListViewGetSysHeader(HWND hListview)
+HWND CALLBACK ListViewGetSysHeader(HWND hListview)
 {
     return((HWND) SendMessage(hListview, LVM_GETHEADER, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the hot cursor of a listview
-long CALLBACK WAListViewGetHotCursor(HWND hListview)
+long CALLBACK ListViewGetHotCursor(HWND hListview)
 {
     return(SendMessage(hListview, LVM_GETHOTCURSOR, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the imagelist associated with a listview
-HIMAGELIST CALLBACK WAListViewGetImageList(HWND hListview, long ListType)
+HIMAGELIST CALLBACK ListViewGetImageList(HWND hListview, long ListType)
 {
     return((HIMAGELIST) SendMessage(hListview, LVM_GETIMAGELIST, ListType, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Set the checkbox state of an item in a listview control
-long CALLBACK WAListViewSetItemCheckbox(HWND hListview, long LVItemIndex, long LVCheckState)
+long CALLBACK ListViewSetItemCheckbox(HWND hListview, long LVItemIndex, long LVCheckState)
 {
     LV_ITEM GetListViewItem;
  
@@ -3071,7 +3071,7 @@ long CALLBACK WAListViewSetItemCheckbox(HWND hListview, long LVItemIndex, long L
 
 // -----------------------------------------------------------------------
 // Retrieve the checkbox state of an item in a listview control
-long CALLBACK WAListViewGetItemCheckbox(HWND hListview, long LVItemIndex)
+long CALLBACK ListViewGetItemCheckbox(HWND hListview, long LVItemIndex)
 {
     long ReturnValue = 0;
 
@@ -3089,7 +3089,7 @@ long CALLBACK WAListViewGetItemCheckbox(HWND hListview, long LVItemIndex)
 
 // -----------------------------------------------------------------------
 // Check if the notification message is a checkbox changes
-long CALLBACK WAListViewIsCheckboxNotify(HWND hListview, long LVItemIndex)
+long CALLBACK ListViewIsCheckboxNotify(HWND hListview, long LVItemIndex)
 {
     long ReturnValue = 0;
 
@@ -3110,7 +3110,7 @@ long CALLBACK WAListViewIsCheckboxNotify(HWND hListview, long LVItemIndex)
 
 // -----------------------------------------------------------------------
 // Search an item in a listview control
-long CALLBACK WAListViewFindItem(HWND hListview, CStr LVItemText)
+long CALLBACK ListViewFindItem(HWND hListview, CStr LVItemText)
 {
     LV_FINDINFO ListViewFind;
 
@@ -3125,7 +3125,7 @@ long CALLBACK WAListViewFindItem(HWND hListview, CStr LVItemText)
 
 // -----------------------------------------------------------------------
 // Search a subitem in a listview control
-long CALLBACK WAListViewFindSubItem(HWND hListview, CStr TextToFind, long SubItemNbr, long SearchCase)
+long CALLBACK ListViewFindSubItem(HWND hListview, CStr TextToFind, long SubItemNbr, long SearchCase)
 {
     long ReturnValue = 0;
 	long i = 0;
@@ -3133,9 +3133,9 @@ long CALLBACK WAListViewFindSubItem(HWND hListview, CStr TextToFind, long SubIte
     ReturnValue = -1;
     if(SearchCase == CASE_SENSITIVE)
     {
-        for(i = 0 ; (i <= WAListViewItemCount(hListview) - 1) ; i++)
+        for(i = 0 ; (i <= ListViewItemCount(hListview) - 1) ; i++)
         {
-            if(WAListViewGetItemText(hListview, i, SubItemNbr) == TextToFind)
+            if(ListViewGetItemText(hListview, i, SubItemNbr) == TextToFind)
             {
                 ReturnValue = i;
                 break;
@@ -3145,9 +3145,9 @@ long CALLBACK WAListViewFindSubItem(HWND hListview, CStr TextToFind, long SubIte
     else
     {
         TextToFind = TextToFind.Upper_Case();
-        for(i = 0 ; i <= WAListViewItemCount(hListview) - 1 ; i++)
+        for(i = 0 ; i <= ListViewItemCount(hListview) - 1 ; i++)
         {
-            if((WAListViewGetItemText(hListview, i, SubItemNbr)).Upper_Case() == TextToFind)
+            if((ListViewGetItemText(hListview, i, SubItemNbr)).Upper_Case() == TextToFind)
             {
                 ReturnValue = i;
                 break;
@@ -3159,7 +3159,7 @@ long CALLBACK WAListViewFindSubItem(HWND hListview, CStr TextToFind, long SubIte
 
 // -----------------------------------------------------------------------
 // Begin a dragging operation in a listview 
-long CALLBACK WAListViewBeginDrag(long lParam, HWND hParent, LPPOINT DragRect)
+long CALLBACK ListViewBeginDrag(long lParam, HWND hParent, LPPOINT DragRect)
 {
     long ReturnValue = 0;
     NM_LISTVIEW NmList;
@@ -3173,10 +3173,10 @@ long CALLBACK WAListViewBeginDrag(long lParam, HWND hParent, LPPOINT DragRect)
     {
         SetCapture(hParent);
         GetCursorPos(&CursLVPos);
-        CursLVPos.x = CursLVPos.x - WAControlLeft(NmList.hdr.hwndFrom);
-        CursLVPos.y = CursLVPos.y - WAControlTop(NmList.hdr.hwndFrom);
+        CursLVPos.x = CursLVPos.x - ControlLeft(NmList.hdr.hwndFrom);
+        CursLVPos.y = CursLVPos.y - ControlTop(NmList.hdr.hwndFrom);
         ImageList_BeginDrag(LVImageList, 0, CursLVPos.x, CursLVPos.y);
-        ImageList_DragEnter(0, WAControlLeft(NmList.hdr.hwndFrom) + CursLVPos.x, WAControlTop(NmList.hdr.hwndFrom) + CursLVPos.y + NmList.ptAction.y);
+        ImageList_DragEnter(0, ControlLeft(NmList.hdr.hwndFrom) + CursLVPos.x, ControlTop(NmList.hdr.hwndFrom) + CursLVPos.y + NmList.ptAction.y);
         DragRect->y = NmList.ptAction.y;
         ReturnValue = 1;
     }
@@ -3185,7 +3185,7 @@ long CALLBACK WAListViewBeginDrag(long lParam, HWND hParent, LPPOINT DragRect)
 
 // -----------------------------------------------------------------------
 // Perform a dragging move operation in a listview
-long CALLBACK WAListViewMoveDrag(LPPOINT DragRect)
+long CALLBACK ListViewMoveDrag(LPPOINT DragRect)
 {
     POINT CursLVPos;
 
@@ -3195,7 +3195,7 @@ long CALLBACK WAListViewMoveDrag(LPPOINT DragRect)
 
 // -----------------------------------------------------------------------
 // Terminate a dragging operation in a listview
-void CALLBACK WAListViewEndDrag(HWND hParent)
+void CALLBACK ListViewEndDrag(HWND hParent)
 {
     ImageList_EndDrag();
     ImageList_DragLeave(hParent);
@@ -3204,7 +3204,7 @@ void CALLBACK WAListViewEndDrag(HWND hParent)
 
 // -----------------------------------------------------------------------
 // Create and paste listview edit control
-long CALLBACK WAListViewPasteAutoEdit(HWND hListview, long wParam, long ExtraEditStyle)
+long CALLBACK ListViewPasteAutoEdit(HWND hListview, long wParam, long ExtraEditStyle)
 {
     long ReturnValue = 0;
     HWND LVEdithwnd = 0;
@@ -3217,24 +3217,24 @@ long CALLBACK WAListViewPasteAutoEdit(HWND hListview, long wParam, long ExtraEdi
         case 8:
 			break;
         default:
-            CurrentSelected = WAListViewGetFirstFocusItem(hListview);
+            CurrentSelected = ListViewGetFirstFocusItem(hListview);
             if(CurrentSelected != -1)
             {
-                WAListViewSetItemSel(hListview, CurrentSelected);
+                ListViewSetItemSel(hListview, CurrentSelected);
                 ChartoSend = ChartoSend.Chr(wParam);
                 ChartoSend = ChartoSend.Lower_Case();
                 if((GetKeyState(VK_LSHIFT) & 0x80) != 0) ChartoSend = ChartoSend.Upper_Case();
                 if((GetKeyState(VK_RSHIFT) & 0x80) != 0) ChartoSend = ChartoSend.Upper_Case();
                 if((GetKeyState(VK_CAPITAL) & 1) != 0) ChartoSend = ChartoSend.Upper_Case();
-                LVEdithwnd = WAListViewSetEditModeOn(hListview, CurrentSelected, ExtraEditStyle);
+                LVEdithwnd = ListViewSetEditModeOn(hListview, CurrentSelected, ExtraEditStyle);
                 LV_TextbStyle = GetWindowLong(LVEdithwnd, GWL_STYLE);
                 if((LV_TextbStyle & ES_NUMBER) != 0)
                 {
                     if(StringIsDigitChar(ChartoSend) == 0) goto NumberRestricted;
                 }
-                WAControlSetText(LVEdithwnd, ChartoSend);
+                ControlSetText(LVEdithwnd, ChartoSend);
 NumberRestricted:;
-                WATextBoxSetCaretPos(LVEdithwnd, -1);
+                TextBoxSetCaretPos(LVEdithwnd, -1);
                 ReturnValue = 1;
             }
     }
@@ -3247,24 +3247,24 @@ NumberRestricted:;
 
 // -----------------------------------------------------------------------
 // Create a treeview control 
-HWND CALLBACK WACreateTreeView(long TVLeft, long TVTop, long TVWidth, long TVHeight, HWND hParent, long CtrlID,
+HWND CALLBACK CreateTreeView(long TVLeft, long TVTop, long TVWidth, long TVHeight, HWND hParent, long CtrlID,
                                HIMAGELIST hImageList, WNDPROC WindowProc, long ExtraStyle, long ExtraExStyle)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, TVLeft, TVTop, TVWidth, TVHeight);
+    ControlBound(hParent, TVLeft, TVTop, TVWidth, TVHeight);
     ReturnValue = CreateWindowEx(ExtraExStyle, "SysTreeView32", "", WS_VISIBLE | WS_CHILD | TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | ExtraStyle, TVLeft, TVTop, TVWidth, TVHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
 	SendMessage(ReturnValue, TVM_SETIMAGELIST, TVSIL_NORMAL, (long) hImageList);
-	WAControlHookWin(ReturnValue, WindowProc);
-    WAControlSetSerif8(ReturnValue);
+	ControlHookWin(ReturnValue, WindowProc);
+    ControlSetSerif8(ReturnValue);
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Add an item to a treeview control
-HTREEITEM CALLBACK WATreeViewAddItem(HWND hTreeView, CStr TVItemText, HTREEITEM TVParent, HTREEITEM TVChildPos,
-                                     long TVImage, long TVSelImage, long ExtraStyle, long RefreshParentAfterAdd)
+HTREEITEM CALLBACK TreeViewAddItem(HWND hTreeView, CStr TVItemText, HTREEITEM TVParent, HTREEITEM TVChildPos,
+                                   long TVImage, long TVSelImage, long ExtraStyle, long RefreshParentAfterAdd)
 {
     HTREEITEM ReturnValue = 0;
 	HTREEITEM ParentToCheck = 0;
@@ -3284,50 +3284,50 @@ HTREEITEM CALLBACK WATreeViewAddItem(HWND hTreeView, CStr TVItemText, HTREEITEM 
     ReturnValue = (HTREEITEM) SendMessage(hTreeView, TVM_INSERTITEM, 0, (long) &TreeViewItem);
     if(RefreshParentAfterAdd != 0)
     {
-        ParentToCheck = WATreeViewGetItemParent(hTreeView, ReturnValue);
-        if(WATreeViewGetChildItemsCount(hTreeView, ParentToCheck) == 1) WAControlRefreshLocal(hTreeView);
+        ParentToCheck = TreeViewGetItemParent(hTreeView, ReturnValue);
+        if(TreeViewGetChildItemsCount(hTreeView, ParentToCheck) == 1) ControlRefreshLocal(hTreeView);
     }
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Set the treeview tooltips
-long CALLBACK WATreeViewSetToolTips(HWND hTreeView, long hToolTips)
+long CALLBACK TreeViewSetToolTips(HWND hTreeView, long hToolTips)
 {
     return(SendMessage(hTreeView, TVM_SETTOOLTIPS, hToolTips, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the treeview tooltips
-long CALLBACK WATreeViewGetToolTips(HWND hTreeView)
+long CALLBACK TreeViewGetToolTips(HWND hTreeView)
 {
     return(SendMessage(hTreeView, TVM_GETTOOLTIPS, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Set the treeview members indentation
-long CALLBACK WATreeViewSetIndent(HWND hTreeView, long TVIndent)
+long CALLBACK TreeViewSetIndent(HWND hTreeView, long TVIndent)
 {
     return(SendMessage(hTreeView, TVM_SETINDENT, TVIndent, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Remove treeview items
-long CALLBACK WATreeViewRemoveItem(HWND hTreeView, HTREEITEM hItem)
+long CALLBACK TreeViewRemoveItem(HWND hTreeView, HTREEITEM hItem)
 {
     return(SendMessage(hTreeView, TVM_DELETEITEM, 0, (long) hItem));
 }
 
 // -----------------------------------------------------------------------
 // Set treeview background color
-long CALLBACK WATreeViewSetBackColor(HWND hTreeView, COLORREF TVColor)
+long CALLBACK TreeViewSetBackColor(HWND hTreeView, COLORREF TVColor)
 {
     return(SendMessage(hTreeView, TVM_SETBKCOLOR, 0, TVColor));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve treeview expanding node state
-long CALLBACK WATreeViewGetExpandingState(long lParam)
+long CALLBACK TreeViewGetExpandingState(long lParam)
 {
     NM_TREEVIEWEXPAND NmTree;
 
@@ -3337,7 +3337,7 @@ long CALLBACK WATreeViewGetExpandingState(long lParam)
 
 // -----------------------------------------------------------------------
 // Retrieve treeview expanding node handle
-HTREEITEM CALLBACK WATreeViewGetExpandingItem(long lParam)
+HTREEITEM CALLBACK TreeViewGetExpandingItem(long lParam)
 {
     NM_TREEVIEWEXPAND NmTree;
 
@@ -3347,7 +3347,7 @@ HTREEITEM CALLBACK WATreeViewGetExpandingItem(long lParam)
 
 // -----------------------------------------------------------------------
 // Retrieve treeview deleted node handle
-HTREEITEM CALLBACK WATreeViewGetDeletedItem(long lParam)
+HTREEITEM CALLBACK TreeViewGetDeletedItem(long lParam)
 {
     NM_TREEVIEWEXPAND NmTree;
 
@@ -3357,7 +3357,7 @@ HTREEITEM CALLBACK WATreeViewGetDeletedItem(long lParam)
 
 // -----------------------------------------------------------------------
 // Set the image displayed with a treeview entry
-long CALLBACK WATreeViewSetItemIcon(HWND hTreeView, HTREEITEM hItem, long IconNumber)
+long CALLBACK TreeViewSetItemIcon(HWND hTreeView, HTREEITEM hItem, long IconNumber)
 {
     TV_ITEM TreeViewItem;
 
@@ -3371,7 +3371,7 @@ long CALLBACK WATreeViewSetItemIcon(HWND hTreeView, HTREEITEM hItem, long IconNu
 
 // -----------------------------------------------------------------------
 // Set the expanding state of a treeview entry
-long CALLBACK WATreeViewSetItemExpandedState(HWND hTreeView, HTREEITEM hItem, long ExpandState)
+long CALLBACK TreeViewSetItemExpandedState(HWND hTreeView, HTREEITEM hItem, long ExpandState)
 {
     TV_ITEM TreeViewItem;
 
@@ -3386,7 +3386,7 @@ long CALLBACK WATreeViewSetItemExpandedState(HWND hTreeView, HTREEITEM hItem, lo
 
 // -----------------------------------------------------------------------
 // Retrieve the current expanded state of a treeview entry
-long CALLBACK WATreeViewGetItemExpandedState(HWND hTreeView, HTREEITEM hItem)
+long CALLBACK TreeViewGetItemExpandedState(HWND hTreeView, HTREEITEM hItem)
 {
     TV_ITEM TreeViewItem;
 
@@ -3401,7 +3401,7 @@ long CALLBACK WATreeViewGetItemExpandedState(HWND hTreeView, HTREEITEM hItem)
 
 // -----------------------------------------------------------------------
 // Set the expanding type of a treeview control
-long CALLBACK WATreeViewSetSingleExpandState(HWND hTreeView, long ExpandState)
+long CALLBACK TreeViewSetSingleExpandState(HWND hTreeView, long ExpandState)
 {
     if(ExpandState != 0) return(SetWindowLong(hTreeView, GWL_STYLE, GetWindowLong(hTreeView, GWL_STYLE) | TVS_SINGLEEXPAND));
     else return(SetWindowLong(hTreeView, GWL_STYLE, GetWindowLong(hTreeView, GWL_STYLE) & (~TVS_SINGLEEXPAND)));
@@ -3409,14 +3409,14 @@ long CALLBACK WATreeViewSetSingleExpandState(HWND hTreeView, long ExpandState)
 
 // -----------------------------------------------------------------------
 // Retrieve the handle of a selected treeview entry
-HTREEITEM CALLBACK WATreeViewGetSelectedItem(HWND hTreeView)
+HTREEITEM CALLBACK TreeViewGetSelectedItem(HWND hTreeView)
 {
     return((HTREEITEM) SendMessage(hTreeView, TVM_GETNEXTITEM, TVGN_CARET, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the handle of a treeview entry under cursor
-HTREEITEM CALLBACK WATreeViewGetItemFromPos(HWND hTreeView, long XPos, long YPos)
+HTREEITEM CALLBACK TreeViewGetItemFromPos(HWND hTreeView, long XPos, long YPos)
 {
     TV_HITTESTINFO THit;
 
@@ -3428,14 +3428,14 @@ HTREEITEM CALLBACK WATreeViewGetItemFromPos(HWND hTreeView, long XPos, long YPos
 
 // -----------------------------------------------------------------------
 // Select an item in a treeview control
-long CALLBACK WATreeViewSetSelectedItem(HWND hTreeView, HTREEITEM hItem)
+long CALLBACK TreeViewSetSelectedItem(HWND hTreeView, HTREEITEM hItem)
 {
     return(SendMessage(hTreeView, TVM_SELECTITEM, TVGN_CARET, (long) hItem));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the text of an item of a treeview control
-CStr CALLBACK WATreeViewGetItemText(HWND hTreeView, HTREEITEM hItem)
+CStr CALLBACK TreeViewGetItemText(HWND hTreeView, HTREEITEM hItem)
 {
     CStr ReturnValue;
     TV_ITEM TreeViewItem;
@@ -3455,7 +3455,7 @@ CStr CALLBACK WATreeViewGetItemText(HWND hTreeView, HTREEITEM hItem)
 
 // -----------------------------------------------------------------------
 // Set the text of an item of a treeview control
-long CALLBACK WATreeViewSetItemText(HWND hTreeView, HTREEITEM hItem, CStr ItemText)
+long CALLBACK TreeViewSetItemText(HWND hTreeView, HTREEITEM hItem, CStr ItemText)
 {
     CStr ReturnValue;
     TV_ITEM TreeViewItem;
@@ -3470,72 +3470,72 @@ long CALLBACK WATreeViewSetItemText(HWND hTreeView, HTREEITEM hItem, CStr ItemTe
 
 // -----------------------------------------------------------------------
 // Retrieve the parent handle of a treeview entry
-HTREEITEM CALLBACK WATreeViewGetItemParent(HWND hTreeView, HTREEITEM hItem)
+HTREEITEM CALLBACK TreeViewGetItemParent(HWND hTreeView, HTREEITEM hItem)
 {
     return((HTREEITEM) SendMessage(hTreeView, TVM_GETNEXTITEM, TVGN_PARENT, (long) hItem));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the parent handle of a treeview entry
-HTREEITEM CALLBACK WATreeViewGetRoot(HWND hTreeView)
+HTREEITEM CALLBACK TreeViewGetRoot(HWND hTreeView)
 {
     return((HTREEITEM) SendMessage(hTreeView, TVM_GETNEXTITEM, TVGN_ROOT, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the number of treeview entries
-long CALLBACK WATreeViewGetItemCount(HWND hTreeView)
+long CALLBACK TreeViewGetItemCount(HWND hTreeView)
 {
     return(SendMessage(hTreeView, TVM_GETCOUNT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the number visible of treeview entries
-long CALLBACK WATreeViewGetVisibleCount(HWND hTreeView)
+long CALLBACK TreeViewGetVisibleCount(HWND hTreeView)
 {
     return(SendMessage(hTreeView, TVM_GETVISIBLECOUNT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the first child handle of a treeview entry
-HTREEITEM CALLBACK WATreeViewGetFirstItemChild(HWND hTreeView, HTREEITEM hItem)
+HTREEITEM CALLBACK TreeViewGetFirstItemChild(HWND hTreeView, HTREEITEM hItem)
 {
     return((HTREEITEM) SendMessage(hTreeView, TVM_GETNEXTITEM, TVGN_CHILD, (long) hItem));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the next item of a treeview entry
-HTREEITEM CALLBACK WATreeViewGetNextItem(HWND hTreeView, HTREEITEM hItem)
+HTREEITEM CALLBACK TreeViewGetNextItem(HWND hTreeView, HTREEITEM hItem)
 {
     return((HTREEITEM) SendMessage(hTreeView, TVM_GETNEXTITEM, TVGN_NEXT, (long) hItem));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the previous item of a treeview entry
-HTREEITEM CALLBACK WATreeViewGetPreviousItem(HWND hTreeView, HTREEITEM hItem)
+HTREEITEM CALLBACK TreeViewGetPreviousItem(HWND hTreeView, HTREEITEM hItem)
 {
     return((HTREEITEM) SendMessage(hTreeView, TVM_GETNEXTITEM, TVGN_PREVIOUS, (long) hItem));
 }
 
 // -----------------------------------------------------------------------
 // Search an item text in a treeview node
-long CALLBACK WATreeViewSearchItemText(HWND hTreeView, HTREEITEM hNode, CStr ItemText)
+long CALLBACK TreeViewSearchItemText(HWND hTreeView, HTREEITEM hNode, CStr ItemText)
 {
     long ReturnValue = -1;
     HTREEITEM TmpChild = 0;
     CStr TmpChildText;
     long i = 0;
 
-    TmpChild = WATreeViewGetFirstItemChild(hTreeView, hNode);
+    TmpChild = TreeViewGetFirstItemChild(hTreeView, hNode);
     while(TmpChild != 0)
     {
-        TmpChildText = WATreeViewGetItemText(hTreeView, TmpChild);
+        TmpChildText = TreeViewGetItemText(hTreeView, TmpChild);
         if(strcmpi(TmpChildText.Get_String(), ItemText.Get_String()) == 0)
         {
             ReturnValue = i;
             break;
         }
-        TmpChild = WATreeViewGetNextItem(hTreeView, TmpChild);
+        TmpChild = TreeViewGetNextItem(hTreeView, TmpChild);
         i++;
     }
     return(ReturnValue);
@@ -3543,23 +3543,23 @@ long CALLBACK WATreeViewSearchItemText(HWND hTreeView, HTREEITEM hNode, CStr Ite
 
 // -----------------------------------------------------------------------
 // Search a partial text in a treeview node
-long CALLBACK WATreeViewSearchChildPartialText(HWND hTreeView, HTREEITEM hNode, CStr ItemText)
+long CALLBACK TreeViewSearchChildPartialText(HWND hTreeView, HTREEITEM hNode, CStr ItemText)
 {
     long ReturnValue = -1;
     HTREEITEM TmpChild = 0;
     CStr TmpChildText;
     long i = 0;
 
-    TmpChild = WATreeViewGetFirstItemChild(hTreeView, hNode);
+    TmpChild = TreeViewGetFirstItemChild(hTreeView, hNode);
     while(TmpChild != 0)
     {
-        TmpChildText = WATreeViewGetItemText(hTreeView, TmpChild);
+        TmpChildText = TreeViewGetItemText(hTreeView, TmpChild);
         if(TmpChildText.In_Str(1,ItemText,Text_Compare) != 0)
         {
             ReturnValue = i;
             break;
         }
-        TmpChild = WATreeViewGetNextItem(hTreeView, TmpChild);
+        TmpChild = TreeViewGetNextItem(hTreeView, TmpChild);
         i++;
     }
     return(ReturnValue);
@@ -3567,63 +3567,63 @@ long CALLBACK WATreeViewSearchChildPartialText(HWND hTreeView, HTREEITEM hNode, 
 
 // -----------------------------------------------------------------------
 // Return the number of childs of a treeview node
-long CALLBACK WATreeViewGetChildItemsCount(HWND hTreeView, HTREEITEM hNode)
+long CALLBACK TreeViewGetChildItemsCount(HWND hTreeView, HTREEITEM hNode)
 {
     HTREEITEM TmpChild = 0;
     long i = 0;
 
-    TmpChild = WATreeViewGetFirstItemChild(hTreeView, hNode);
+    TmpChild = TreeViewGetFirstItemChild(hTreeView, hNode);
     while(TmpChild != 0)
     {
         i++;
-        TmpChild = WATreeViewGetNextItem(hTreeView, TmpChild);
+        TmpChild = TreeViewGetNextItem(hTreeView, TmpChild);
     }
     return(i);
 }
 
 // -----------------------------------------------------------------------
 // Return the position of the selected child of a treeview node
-long CALLBACK WATreeViewGetSelChildItemPos(HWND hTreeView, HTREEITEM hNode, HTREEITEM hParent)
+long CALLBACK TreeViewGetSelChildItemPos(HWND hTreeView, HTREEITEM hNode, HTREEITEM hParent)
 {
     HTREEITEM TmpChild;
     long i = 0;
 
-    TmpChild = WATreeViewGetFirstItemChild(hTreeView, hParent);
+    TmpChild = TreeViewGetFirstItemChild(hTreeView, hParent);
     while(TmpChild != 0)
     {
         if(hNode == TmpChild) break;
         i++;
-        TmpChild = WATreeViewGetNextItem(hTreeView, TmpChild);
+        TmpChild = TreeViewGetNextItem(hTreeView, TmpChild);
     }
     return(i);
 }
 
 // -----------------------------------------------------------------------
 // Return the level of a treeview node from the root entry (root=0)
-long CALLBACK WATreeViewGetItemLevel(HWND hTreeView, HTREEITEM hNode)
+long CALLBACK TreeViewGetItemLevel(HWND hTreeView, HTREEITEM hNode)
 {
     HTREEITEM TmpChild = 0;
     long i = 0;
 
-    TmpChild = WATreeViewGetItemParent(hTreeView, hNode);
+    TmpChild = TreeViewGetItemParent(hTreeView, hNode);
     while(TmpChild != 0)
     {
         i++;
-        TmpChild = WATreeViewGetItemParent(hTreeView, TmpChild);
+        TmpChild = TreeViewGetItemParent(hTreeView, TmpChild);
     }
     return(i);
 }
 
 // -----------------------------------------------------------------------
 // Get the used backcolor of a treeview
-COLORREF CALLBACK WATreeViewGetBackColor(HWND hTreeView)
+COLORREF CALLBACK TreeViewGetBackColor(HWND hTreeView)
 {
     return(SendMessage(hTreeView, TVM_GETBKCOLOR, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Get the coords of the text of a treeview item
-long CALLBACK WATreeViewGetItemTextRect(HWND hTreeView, HTREEITEM hItem, LPRECT ItemRect)
+long CALLBACK TreeViewGetItemTextRect(HWND hTreeView, HTREEITEM hItem, LPRECT ItemRect)
 {
     ItemRect->left = (long) hItem;
     return(SendMessage(hTreeView, TVM_GETITEMRECT, 1, (long) ItemRect));
@@ -3631,7 +3631,7 @@ long CALLBACK WATreeViewGetItemTextRect(HWND hTreeView, HTREEITEM hItem, LPRECT 
 
 // -----------------------------------------------------------------------
 // Get the coords of a complete treeview item
-long CALLBACK WATreeViewGetItemRect(HWND hTreeView, HTREEITEM hItem, LPRECT ItemRect)
+long CALLBACK TreeViewGetItemRect(HWND hTreeView, HTREEITEM hItem, LPRECT ItemRect)
 {
     ItemRect->left = (long) hItem;
     return(SendMessage(hTreeView, TVM_GETITEMRECT, 0, (long) ItemRect));
@@ -3639,56 +3639,56 @@ long CALLBACK WATreeViewGetItemRect(HWND hTreeView, HTREEITEM hItem, LPRECT Item
 
 // -----------------------------------------------------------------------
 // Retrieve the handle of the edit control of a treeview
-HWND CALLBACK WATreeViewGetEditControl(HWND hTreeView)
+HWND CALLBACK TreeViewGetEditControl(HWND hTreeView)
 {
     return((HWND) SendMessage(hTreeView, TVM_GETEDITCONTROL, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the imagelist associated with a treeview
-HIMAGELIST CALLBACK WATreeViewGetImageList(HWND hTreeView, long ListType)
+HIMAGELIST CALLBACK TreeViewGetImageList(HWND hTreeView, long ListType)
 {
     return((HIMAGELIST) SendMessage(hTreeView, TVM_GETIMAGELIST, ListType, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve pixels indent of child nodes of a treeview
-long CALLBACK WATreeViewGetIndent(HWND hTreeView)
+long CALLBACK TreeViewGetIndent(HWND hTreeView)
 {
     return(SendMessage(hTreeView, TVM_GETINDENT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the color of the insertion mark of a treeview
-COLORREF CALLBACK WATreeViewGetInsertMarkColor(HWND hTreeView)
+COLORREF CALLBACK TreeViewGetInsertMarkColor(HWND hTreeView)
 {
     return(SendMessage(hTreeView, TVM_GETINSERTMARKCOLOR, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the color of lines of a treeview
-COLORREF CALLBACK WATreeViewGetLineColor(HWND hTreeView)
+COLORREF CALLBACK TreeViewGetLineColor(HWND hTreeView)
 {
     return(SendMessage(hTreeView, TVM_GETLINECOLOR, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the color of the texts of a treeview
-COLORREF CALLBACK WATreeViewGetTextColor(HWND hTreeView)
+COLORREF CALLBACK TreeViewGetTextColor(HWND hTreeView)
 {
     return(SendMessage(hTreeView, TVM_GETTEXTCOLOR, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the height of an element of a treeview
-long CALLBACK WATreeViewGetItemHeight(HWND hTreeView)
+long CALLBACK TreeViewGetItemHeight(HWND hTreeView)
 {
     return(SendMessage(hTreeView, TVM_GETITEMHEIGHT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the scrolltime of a treeview
-long CALLBACK WATreeViewGetScrollTime(HWND hTreeView)
+long CALLBACK TreeViewGetScrollTime(HWND hTreeView)
 {
     return(SendMessage(hTreeView, TVM_GETSCROLLTIME, 0, (long) 0));
 }
@@ -3698,12 +3698,12 @@ long CALLBACK WATreeViewGetScrollTime(HWND hTreeView)
 // -----------------------------------------------------------------------
 
 // Create a fictive control
-HWND CALLBACK WACreateFictive(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent,
+HWND CALLBACK CreateFictive(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent,
                               long CtrlID, WNDPROC WindowProc, HICON hImage)
 {
     HWND ReturnValue = 0;
 
-    ReturnValue = WACreateButton(BLeft, BTop, BWidth, BHeight, hParent, "", CtrlID, IMAGE_ICON, hImage, WindowProc, BS_CENTER | BS_VCENTER, 0);
+    ReturnValue = CreateButton(BLeft, BTop, BWidth, BHeight, hParent, "", CtrlID, IMAGE_ICON, hImage, WindowProc, BS_CENTER | BS_VCENTER, 0);
     if(ReturnValue == 0) return(0);
     return(ReturnValue);
 }
@@ -3714,16 +3714,16 @@ HWND CALLBACK WACreateFictive(long BLeft, long BTop, long BWidth, long BHeight, 
 
 // -----------------------------------------------------------------------
 // Create a tooltip control
-HWND CALLBACK WACreateToolTip(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent, long CtrlID,
+HWND CALLBACK CreateToolTip(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent, long CtrlID,
                               WNDPROC WindowProc, long ExtraStyle)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, BLeft, BTop, BWidth, BHeight);
+    ControlBound(hParent, BLeft, BTop, BWidth, BHeight);
     ReturnValue = CreateWindowEx(0, "tooltips_class32", "", WS_TABSTOP | WS_VISIBLE | WS_CHILD | TTS_NOPREFIX | TTS_ALWAYSTIP | ExtraStyle, BLeft, BTop, BWidth, BHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
-    WAControlSetSerif8(ReturnValue);
+    ControlHookWin(ReturnValue, WindowProc);
+    ControlSetSerif8(ReturnValue);
     SetWindowPos(ReturnValue, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
     return(ReturnValue);
 }
@@ -3734,15 +3734,15 @@ HWND CALLBACK WACreateToolTip(long BLeft, long BTop, long BWidth, long BHeight, 
 
 // -----------------------------------------------------------------------
 // Create an animation control
-HWND CALLBACK WACreateAnimation(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent,
+HWND CALLBACK CreateAnimation(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent,
                                 long CtrlID, WNDPROC WindowProc, long ExtraStyle)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, BLeft, BTop, BWidth, BHeight);
+    ControlBound(hParent, BLeft, BTop, BWidth, BHeight);
     ReturnValue = CreateWindowEx(0, "SysAnimate32", "", WS_TABSTOP | WS_VISIBLE | WS_CHILD | ExtraStyle, BLeft, BTop, BWidth, BHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
+    ControlHookWin(ReturnValue, WindowProc);
     return(ReturnValue);
 }
 
@@ -3752,32 +3752,32 @@ HWND CALLBACK WACreateAnimation(long BLeft, long BTop, long BWidth, long BHeight
 
 // -----------------------------------------------------------------------
 // Create a Hotkey control
-HWND CALLBACK WACreateHotkey(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent, long CtrlID,
+HWND CALLBACK CreateHotkey(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent, long CtrlID,
                              WNDPROC WindowProc, long InvalidCombination, long ValidCombination, long VirtualKey,
                              long Modifiers, long ExtraStyle)
 {
 	HWND ReturnValue = 0;
 
-    WAControlBound(hParent, BLeft, BTop, BWidth, BHeight);
+    ControlBound(hParent, BLeft, BTop, BWidth, BHeight);
     ReturnValue = CreateWindowEx(WS_EX_CLIENTEDGE, "msctls_hotkey32", "", WS_TABSTOP | WS_VISIBLE | WS_CHILD | WS_BORDER | ExtraStyle, BLeft, BTop, BWidth, BHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
-    WAControlSetSerif8(ReturnValue);
-    WAHotkeySetRules(ReturnValue, InvalidCombination, ValidCombination);
-    WAHotkeySetKey(ReturnValue, VirtualKey, Modifiers);
+    ControlHookWin(ReturnValue, WindowProc);
+    ControlSetSerif8(ReturnValue);
+    HotkeySetRules(ReturnValue, InvalidCombination, ValidCombination);
+    HotkeySetKey(ReturnValue, VirtualKey, Modifiers);
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Set the rules of a Hotkey control
-long CALLBACK WAHotkeySetRules(HWND hHotkey, long InvalidCombination, long ValidCombination)
+long CALLBACK HotkeySetRules(HWND hHotkey, long InvalidCombination, long ValidCombination)
 {
     return(SendMessage(hHotkey, HKM_SETRULES, InvalidCombination, ValidCombination));
 }
 
 // -----------------------------------------------------------------------
 // Set the key combination of a Hotkey control
-long CALLBACK WAHotkeySetKey(HWND hHotkey, long VirtualKey, long Modifiers)
+long CALLBACK HotkeySetKey(HWND hHotkey, long VirtualKey, long Modifiers)
 {
     return(SendMessage(hHotkey, HKM_SETHOTKEY, ((VirtualKey * 0x100) + Modifiers), (long) 0));
 }
@@ -3787,16 +3787,16 @@ long CALLBACK WAHotkeySetKey(HWND hHotkey, long VirtualKey, long Modifiers)
 // -----------------------------------------------------------------------
 
 // Create a date/time picker control
-HWND CALLBACK WACreateDateTimePicker(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent,
+HWND CALLBACK CreateDateTimePicker(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent,
                                      long CtrlID, WNDPROC WindowProc, long ExtraStyle)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, BLeft, BTop, BWidth, BHeight);
+    ControlBound(hParent, BLeft, BTop, BWidth, BHeight);
     ReturnValue = CreateWindowEx(WS_EX_CLIENTEDGE, "SysDateTimePick32", "", WS_TABSTOP | WS_VISIBLE | WS_CHILD | WS_BORDER | ExtraStyle, BLeft, BTop, BWidth, BHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
-    WAControlSetSerif8(ReturnValue);
+    ControlHookWin(ReturnValue, WindowProc);
+    ControlSetSerif8(ReturnValue);
     return(ReturnValue);
 }
 
@@ -3806,16 +3806,16 @@ HWND CALLBACK WACreateDateTimePicker(long BLeft, long BTop, long BWidth, long BH
 
 // -----------------------------------------------------------------------
 // Create a month calendar control
-HWND CALLBACK WACreateMonthCalendar(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent, long CtrlID,
+HWND CALLBACK CreateMonthCalendar(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent, long CtrlID,
                                     WNDPROC WindowProc, long ExtraStyle)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, BLeft, BTop, BWidth, BHeight);
+    ControlBound(hParent, BLeft, BTop, BWidth, BHeight);
     ReturnValue = CreateWindowEx(WS_EX_CLIENTEDGE, "SysMonthCal32", "", WS_TABSTOP | WS_VISIBLE | WS_CHILD | WS_BORDER | ExtraStyle, BLeft, BTop, BWidth, BHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
-    WAControlSetSerif8(ReturnValue);
+    ControlHookWin(ReturnValue, WindowProc);
+    ControlSetSerif8(ReturnValue);
     return(ReturnValue);
 }
 
@@ -3825,17 +3825,17 @@ HWND CALLBACK WACreateMonthCalendar(long BLeft, long BTop, long BWidth, long BHe
 
 // -----------------------------------------------------------------------
 // Create a Header control
-HWND CALLBACK WACreateHeader(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent, CStr BText,
+HWND CALLBACK CreateHeader(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent, CStr BText,
                              long CtrlID, WNDPROC WindowProc, long ExtraStyle)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, BLeft, BTop, BWidth, BHeight);
+    ControlBound(hParent, BLeft, BTop, BWidth, BHeight);
     ReturnValue = CreateWindowEx(0, "SysHeader32", "", WS_TABSTOP | WS_VISIBLE | WS_CHILD | ExtraStyle, BLeft, BTop, BWidth, BHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
-    WAControlSetSerif8(ReturnValue);
-    WAControlSetText(ReturnValue, BText);
+    ControlHookWin(ReturnValue, WindowProc);
+    ControlSetSerif8(ReturnValue);
+    ControlSetText(ReturnValue, BText);
     return(ReturnValue);
 }
 
@@ -3860,17 +3860,17 @@ long CALLBACK WAHeaderAddItem(HWND hHeader, CStr HeaderText, long Headerwidth, l
 
 // -----------------------------------------------------------------------
 // Create an extended combobox control
-HWND CALLBACK WACreateExComboBox(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent, CStr BText,
+HWND CALLBACK CreateExComboBox(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent, CStr BText,
                                  long CtrlID, WNDPROC WindowProc, HIMAGELIST hImageList, long ExtraStyle)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, BLeft, BTop, BWidth, BHeight);
+    ControlBound(hParent, BLeft, BTop, BWidth, BHeight);
     ReturnValue = CreateWindowEx(0, "ComboBoxEx32", "", WS_TABSTOP | WS_VSCROLL | WS_VISIBLE | WS_CHILD | ExtraStyle, BLeft, BTop, BWidth, BHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
-    WAControlSetSerif8(ReturnValue);
-    WAControlSetText(ReturnValue, BText);
+    ControlHookWin(ReturnValue, WindowProc);
+    ControlSetSerif8(ReturnValue);
+    ControlSetText(ReturnValue, BText);
     WAExCBSetImageList(ReturnValue, hImageList);
     return(ReturnValue);
 }
@@ -3888,18 +3888,18 @@ long CALLBACK WAExCBSetImageList(HWND hExCB, HIMAGELIST hImageList)
 
 // -----------------------------------------------------------------------
 // Create a combobox control
-HWND CALLBACK WACreateComboBox(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent, CStr BText,
+HWND CALLBACK CreateComboBox(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent, CStr BText,
                                long CtrlID, WNDPROC WindowProc, long ExtraStyle)
 {
     HWND ReturnValue = 0;
     long Test = 0;
 
-    WAControlBound(hParent, BLeft, BTop, BWidth, BHeight);
+    ControlBound(hParent, BLeft, BTop, BWidth, BHeight);
     ReturnValue = CreateWindowEx(0, "COMBOBOX", "", WS_TABSTOP | WS_VSCROLL | WS_VISIBLE | WS_CHILD | CBS_NOINTEGRALHEIGHT | CBS_AUTOHSCROLL | ExtraStyle, BLeft, BTop, BWidth, BHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
-    WAControlSetSerif8(ReturnValue);
-    WAControlSetText(ReturnValue, BText);
+    ControlHookWin(ReturnValue, WindowProc);
+    ControlSetSerif8(ReturnValue);
+    ControlSetText(ReturnValue, BText);
     Test = GetWindowLong(ReturnValue, GWL_EXSTYLE);
     Test = Test & (~ WS_EX_CLIENTEDGE);
     SetWindowLong(ReturnValue, GWL_EXSTYLE, Test);
@@ -3911,56 +3911,56 @@ HWND CALLBACK WACreateComboBox(long BLeft, long BTop, long BWidth, long BHeight,
 
 // -----------------------------------------------------------------------
 // Add an item to a combobox control
-long CALLBACK WAComboBoxAddItem(HWND hCB, CStr CBItemText, long CBItemIndex)
+long CALLBACK ComboBoxAddItem(HWND hCB, CStr CBItemText, long CBItemIndex)
 {
     return(SendMessage(hCB, CB_INSERTSTRING, CBItemIndex, (long) CBItemText.Get_String()));
 }
 
 // -----------------------------------------------------------------------
 // Delete an item from a combobox control
-long CALLBACK WAComboBoxDeleteItem(HWND hCB, long CBItemIndex)
+long CALLBACK ComboBoxDeleteItem(HWND hCB, long CBItemIndex)
 {
     return(SendMessage(hCB, CB_DELETESTRING, CBItemIndex, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Add an item to a combobox control
-long CALLBACK WAComboBoxReset(HWND hCB)
+long CALLBACK ComboBoxReset(HWND hCB)
 {
     return(SendMessage(hCB, CB_RESETCONTENT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Set the chars maximum in a combobox control
-long CALLBACK WAComboBoxSetMaxLen(HWND hCB, long TBMaxLen)
+long CALLBACK ComboBoxSetMaxLen(HWND hCB, long TBMaxLen)
 {
     return(SendMessage(hCB, CB_LIMITTEXT, TBMaxLen, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the number of items of a combobox control
-long CALLBACK WAComboBoxCount(HWND hCB)
+long CALLBACK ComboBoxCount(HWND hCB)
 {
     return(SendMessage(hCB, CB_GETCOUNT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the current selected index of a combobox control
-long CALLBACK WAComboBoxGetIndex(HWND hCB)
+long CALLBACK ComboBoxGetIndex(HWND hCB)
 {
     return(SendMessage(hCB, CB_GETCURSEL, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Set the current selected index of a combobox control
-long CALLBACK WAComboBoxSetIndex(HWND hCB, long CBIndex)
+long CALLBACK ComboBoxSetIndex(HWND hCB, long CBIndex)
 {
     return(SendMessage(hCB, CB_SETCURSEL, CBIndex, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve an item from a combobox control
-CStr CALLBACK WAComboBoxGetItem(HWND hCB, long CBIndex)
+CStr CALLBACK ComboBoxGetItem(HWND hCB, long CBIndex)
 {
     CStr ReturnValue;
     
@@ -3974,12 +3974,12 @@ CStr CALLBACK WAComboBoxGetItem(HWND hCB, long CBIndex)
 
 // -----------------------------------------------------------------------
 // Retrieve current item from a combobox control
-CStr CALLBACK WAComboBoxGetCurrentItem(HWND hCB)
+CStr CALLBACK ComboBoxGetCurrentItem(HWND hCB)
 {
     CStr ReturnValue;
     long CBIdx = 0;
     
-	CBIdx = WAComboBoxGetIndex(hCB);
+	CBIdx = ComboBoxGetIndex(hCB);
     ReturnValue = ReturnValue.String(SendMessage(hCB, CB_GETLBTEXTLEN, CBIdx, (long) 0), 1);
     SendMessage(hCB, CB_GETLBTEXT, CBIdx, (long) ReturnValue.Get_String());
     return(ReturnValue);
@@ -3987,21 +3987,21 @@ CStr CALLBACK WAComboBoxGetCurrentItem(HWND hCB)
 
 // -----------------------------------------------------------------------
 // Check if an item exists in a combobox control
-long CALLBACK WAComboBoxItemExist(HWND hCB, CStr CBItem)
+long CALLBACK ComboBoxItemExist(HWND hCB, CStr CBItem)
 {
     return(SendMessage(hCB, CB_FINDSTRINGEXACT, -1, (long) CBItem.Get_String()));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the associated 32 bits value from an item of a combobox
-long CALLBACK WAComboBoxGetItemData(HWND hLB, long CBIndex)
+long CALLBACK ComboBoxGetItemData(HWND hLB, long CBIndex)
 {
     return(SendMessage(hLB, CB_GETITEMDATA, CBIndex, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Save combobox entries in an ini file
-void WAComboBoxSaveInIniFile(HWND hCombo, CStr EntryToAdd, CStr IniKey, CStr IniFile)
+void ComboBoxSaveInIniFile(HWND hCombo, CStr EntryToAdd, CStr IniKey, CStr IniFile)
 {
     int i = 0;
     int j = 0;
@@ -4009,36 +4009,36 @@ void WAComboBoxSaveInIniFile(HWND hCombo, CStr EntryToAdd, CStr IniKey, CStr Ini
 
 	if(EntryToAdd.Len() != 0)
     {
-		WAIniDeleteKey(IniKey, "", IniFile);
-        for(i = 0; i <= WAComboBoxCount(hCombo) - 1; i++)
+		IniDeleteKey(IniKey, "", IniFile);
+        for(i = 0; i <= ComboBoxCount(hCombo) - 1; i++)
         {
-            WAIniWriteKey(IniKey, (CStr) "Entry" + (CStr) StringNumberComplement(i, 3).Get_String(), WAComboBoxGetItem(hCombo, i), IniFile);
+            IniWriteKey(IniKey, (CStr) "Entry" + (CStr) StringNumberComplement(i, 3).Get_String(), ComboBoxGetItem(hCombo, i), IniFile);
         }
         SearchArg = 0;
-        for(j = 0; j <= WAComboBoxCount(hCombo) - 1; j++)
+        for(j = 0; j <= ComboBoxCount(hCombo) - 1; j++)
         {
-            if(strcmpi(WAComboBoxGetItem(hCombo, j).Get_String(), EntryToAdd.Get_String()) == 0)
+            if(strcmpi(ComboBoxGetItem(hCombo, j).Get_String(), EntryToAdd.Get_String()) == 0)
             {
                 SearchArg = 1;
                 break;
             }
         }
-        if(SearchArg == 0) WAIniWriteKey(IniKey, (CStr) "Entry" + (CStr) StringNumberComplement(i, 3).Get_String(), EntryToAdd, IniFile);
+        if(SearchArg == 0) IniWriteKey(IniKey, (CStr) "Entry" + (CStr) StringNumberComplement(i, 3).Get_String(), EntryToAdd, IniFile);
     }
 }
 
 // -----------------------------------------------------------------------
 // Load a combobox with ini file entries
-void WAComboBoxFillFromIniFile(HWND hCombo, CStr IniKey, CStr IniFile)
+void ComboBoxFillFromIniFile(HWND hCombo, CStr IniKey, CStr IniFile)
 {
 	int i;
 	CStr ArgToAdd;
 
     for(i = 0; i <= 999; i++)
     {
-        ArgToAdd = WAIniReadKey(IniKey, (CStr) "Entry" + (CStr) StringNumberComplement(i, 3).Get_String(), IniFile);
+        ArgToAdd = IniReadKey(IniKey, (CStr) "Entry" + (CStr) StringNumberComplement(i, 3).Get_String(), IniFile);
         if(ArgToAdd.Len() == 0) break;
-        WAComboBoxAddItem(hCombo, ArgToAdd, -1);
+        ComboBoxAddItem(hCombo, ArgToAdd, -1);
     }
 }
 
@@ -4048,12 +4048,12 @@ void WAComboBoxFillFromIniFile(HWND hCombo, CStr IniKey, CStr IniFile)
 
 // -----------------------------------------------------------------------
 // Create a listbox control
-HWND CALLBACK WACreateListBox(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent,
+HWND CALLBACK CreateListBox(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent,
                               long CtrlID, WNDPROC WindowProc, long DragOn, long ExtraStyle, long ExtraExStyle)
 {
     HWND ReturnValue = 0;
     
-	WAControlBound(hParent, BLeft, BTop, BWidth, BHeight);
+	ControlBound(hParent, BLeft, BTop, BWidth, BHeight);
     if((ExtraExStyle & WS_EX_STATICEDGE) != 0)
     {
         BLeft++;
@@ -4064,32 +4064,32 @@ HWND CALLBACK WACreateListBox(long BLeft, long BTop, long BWidth, long BHeight, 
     ReturnValue = CreateWindowEx(ExtraExStyle, "LISTBOX", "", WS_TABSTOP | WS_VSCROLL | WS_VISIBLE | WS_CHILD | LBS_NOINTEGRALHEIGHT | LBS_NOTIFY | LBS_HASSTRINGS | ExtraStyle, BLeft, BTop, BWidth, BHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
     if(DragOn != 0) MakeDragList(ReturnValue);
-    WAControlHookWin(ReturnValue, WindowProc);
-    WAControlSetSerif8(ReturnValue);
-    WAListBoxSetHorzScrollWidth(ReturnValue, 0);
+    ControlHookWin(ReturnValue, WindowProc);
+    ControlSetSerif8(ReturnValue);
+    ListBoxSetHorzScrollWidth(ReturnValue, 0);
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Add an item to a listbox control
-long CALLBACK WAListBoxAddItem(HWND hLB, CStr LBItemText, long LBItemIndex)
+long CALLBACK ListBoxAddItem(HWND hLB, CStr LBItemText, long LBItemIndex)
 {
     return(SendMessage(hLB, LB_INSERTSTRING, LBItemIndex, (long) LBItemText.Get_String()));
 }
 
 // -----------------------------------------------------------------------
 // Clear the entries of a listbox control
-long CALLBACK WAListBoxReset(HWND hLB)
+long CALLBACK ListBoxReset(HWND hLB)
 {
     return(SendMessage(hLB, LB_RESETCONTENT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Set the horizontal internal width of a listbox control
-long CALLBACK WAListBoxSetHorzScrollWidth(HWND hLB, long LBWidth)
+long CALLBACK ListBoxSetHorzScrollWidth(HWND hLB, long LBWidth)
 {
     long HSize = LBWidth;
-	if(HSize < WAControlClientWidth(hLB)) HSize = 0;
+	if(HSize < ControlClientWidth(hLB)) HSize = 0;
 	if(HSize == 0)
 	{
 		SetWindowLong(hLB, GWL_STYLE, GetWindowLong(hLB, GWL_STYLE) & ~WM_HSCROLL);
@@ -4107,77 +4107,77 @@ long CALLBACK WAListBoxSetHorzScrollWidth(HWND hLB, long LBWidth)
 
 // -----------------------------------------------------------------------
 // Set the width of a listbox control column
-long CALLBACK WAListBoxSetColumnsWidth(HWND hLB, long LBWidth)
+long CALLBACK ListBoxSetColumnsWidth(HWND hLB, long LBWidth)
 {
     return(SendMessage(hLB, LB_SETCOLUMNWIDTH, LBWidth, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve number of items in a listbox control
-long CALLBACK WAListBoxCount(HWND hLB)
+long CALLBACK ListBoxCount(HWND hLB)
 {
     return(SendMessage(hLB, LB_GETCOUNT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the top index of a listbox
-long CALLBACK WAListBoxGetTopIndex(HWND hLB)
+long CALLBACK ListBoxGetTopIndex(HWND hLB)
 {
     return(SendMessage(hLB, LB_GETTOPINDEX, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Set the top index of a listbox
-long CALLBACK WAListBoxSetTopIndex(HWND hLB, long LBIndex)
+long CALLBACK ListBoxSetTopIndex(HWND hLB, long LBIndex)
 {
     return(SendMessage(hLB, LB_SETTOPINDEX, LBIndex, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Associate a 32 bits value to an item of a listbox
-long CALLBACK WAListBoxSetItemData(HWND hLB, long LBIndex, long LBDat)
+long CALLBACK ListBoxSetItemData(HWND hLB, long LBIndex, long LBDat)
 {
     return(SendMessage(hLB, LB_SETITEMDATA, LBIndex, LBDat));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the associated 32 bits value from an item of a listbox
-long CALLBACK WAListBoxGetItemData(HWND hLB, long LBIndex)
+long CALLBACK ListBoxGetItemData(HWND hLB, long LBIndex)
 {
     return(SendMessage(hLB, LB_GETITEMDATA, LBIndex, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Check if an item is selected of a listbox
-long CALLBACK WAListBoxIsItemSelected(HWND hLB, long LBIndex)
+long CALLBACK ListBoxIsItemSelected(HWND hLB, long LBIndex)
 {
     return(SendMessage(hLB, LB_GETSEL, LBIndex, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the current selected index of a listbox
-long CALLBACK WAListBoxGetSelItemIndex(HWND hLB)
+long CALLBACK ListBoxGetSelItemIndex(HWND hLB)
 {
     return(SendMessage(hLB, LB_GETCURSEL, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Set the current selected index of a listbox
-long CALLBACK WAListBoxSetIndex(HWND hLB, long LBIndex)
+long CALLBACK ListBoxSetIndex(HWND hLB, long LBIndex)
 {
     return(SendMessage(hLB, LB_SETCURSEL, LBIndex, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the current item from a listbox
-CStr CALLBACK WAListBoxGetCurrentItem(HWND hLB)
+CStr CALLBACK ListBoxGetCurrentItem(HWND hLB)
 {
-    return(WAListBoxGetItem(hLB, WAListBoxGetSelItemIndex(hLB)));
+    return(ListBoxGetItem(hLB, ListBoxGetSelItemIndex(hLB)));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve an item from a listbox
-CStr CALLBACK WAListBoxGetItem(HWND hLB, long LBIndex)
+CStr CALLBACK ListBoxGetItem(HWND hLB, long LBIndex)
 {
     CStr ReturnValue;
     long ItemLen = 0;
@@ -4193,14 +4193,14 @@ CStr CALLBACK WAListBoxGetItem(HWND hLB, long LBIndex)
 
 // -----------------------------------------------------------------------
 // Delete an item from a listbox
-long CALLBACK WAListBoxDeleteItem(HWND hLB, long LBIndex)
+long CALLBACK ListBoxDeleteItem(HWND hLB, long LBIndex)
 {
     return(SendMessage(hLB, LB_DELETESTRING, LBIndex, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Replace an item from a listbox
-long CALLBACK WAListBoxReplaceItem(HWND hLB, long LBIndex, CStr LBNewItemText)
+long CALLBACK ListBoxReplaceItem(HWND hLB, long LBIndex, CStr LBNewItemText)
 {
     SendMessage(hLB, LB_DELETESTRING, LBIndex, (long) 0);
     return(SendMessage(hLB, LB_INSERTSTRING, LBIndex, (long) LBNewItemText.Get_String()));
@@ -4208,18 +4208,18 @@ long CALLBACK WAListBoxReplaceItem(HWND hLB, long LBIndex, CStr LBNewItemText)
 
 // -----------------------------------------------------------------------
 // Replace current item from a listbox
-long CALLBACK WAListBoxReplaceSelItem(HWND hLB, CStr LBNewItemText)
+long CALLBACK ListBoxReplaceSelItem(HWND hLB, CStr LBNewItemText)
 {
     long LbCurIdx = 0;
 
-    LbCurIdx = WAListBoxGetSelItemIndex(hLB);
+    LbCurIdx = ListBoxGetSelItemIndex(hLB);
     SendMessage(hLB, LB_DELETESTRING, LbCurIdx, (long) 0);
     return(SendMessage(hLB, LB_INSERTSTRING, LbCurIdx, (long) LBNewItemText.Get_String()));
 }
 
 // -----------------------------------------------------------------------
 // Process drag listbox message
-void CALLBACK WAListBoxProcessDrag(HWND hLB, long Message, long lParam, long DragCursor)
+void CALLBACK ListBoxProcessDrag(HWND hLB, long Message, long lParam, long DragCursor)
 {
     DRAGLISTINFO DragMsg;
     long NewIdx = 0;
@@ -4235,18 +4235,18 @@ void CALLBACK WAListBoxProcessDrag(HWND hLB, long Message, long lParam, long Dra
     {
         // Begin the dragging
         case DL_BEGINDRAG:
-            if(WAListBoxCount(hLB) <= 1) return;
+            if(ListBoxCount(hLB) <= 1) return;
             FirstDraggingIndex = LBItemFromPt(DragMsg.hWnd, DragMsg.ptCursor, 0);
 //            FirstDraggingIndex = LBItemFromPt(DragMsg.hWnd, DragMsg.ptCursor.x, DragMsg.ptCursor.y, 0);
             OldDragCursor = SetCursor(LoadCursor(WALocalhInst, MAKEINTRESOURCE(DragCursor)));
             return;
         // Cancel the dragging
         case DL_CANCELDRAG:
-            if(WAListBoxCount(hLB) <= 1) return;
+            if(ListBoxCount(hLB) <= 1) return;
             SetCursor(OldDragCursor);
             return;
         case DL_DROPPED:
-            if(WAListBoxCount(hLB) <= 1) return;
+            if(ListBoxCount(hLB) <= 1) return;
             SetCursor(OldDragCursor);
             // Check if new index is same as old one
             NewIdx = LBItemFromPt(DragMsg.hWnd, DragMsg.ptCursor, 0);
@@ -4257,7 +4257,7 @@ void CALLBACK WAListBoxProcessDrag(HWND hLB, long Message, long lParam, long Dra
                 {
                     NbrCopy = FirstDraggingIndex - NewIdx;
                     // Save old entry
-                    OldListEntry = WAListBoxGetItem(hLB, FirstDraggingIndex);
+                    OldListEntry = ListBoxGetItem(hLB, FirstDraggingIndex);
                     if(NbrCopy > 0)
                     {
                         // Entry up
@@ -4265,13 +4265,13 @@ void CALLBACK WAListBoxProcessDrag(HWND hLB, long Message, long lParam, long Dra
                         j = 0;
                         while(j != NbrCopy)
                         {
-                            WAListBoxDeleteItem(hLB, i);
-                            WAListBoxAddItem(hLB, WAListBoxGetItem(hLB, i - 1), i);
+                            ListBoxDeleteItem(hLB, i);
+                            ListBoxAddItem(hLB, ListBoxGetItem(hLB, i - 1), i);
                             i--;
                             j++;
                         }
-                        WAListBoxDeleteItem(hLB, NewIdx);
-                        WAListBoxAddItem(hLB, OldListEntry, NewIdx);
+                        ListBoxDeleteItem(hLB, NewIdx);
+                        ListBoxAddItem(hLB, OldListEntry, NewIdx);
                     }
                     else
                     {
@@ -4281,15 +4281,15 @@ void CALLBACK WAListBoxProcessDrag(HWND hLB, long Message, long lParam, long Dra
                         j = 0;
                         while(j != NbrCopy)
                         {
-                            WAListBoxDeleteItem(hLB, i);
-                            WAListBoxAddItem(hLB, WAListBoxGetItem(hLB, i), i);
+                            ListBoxDeleteItem(hLB, i);
+                            ListBoxAddItem(hLB, ListBoxGetItem(hLB, i), i);
                             i++;
                             j++;
                         }
-                        WAListBoxDeleteItem(hLB, NewIdx);
-                        WAListBoxAddItem(hLB, OldListEntry, NewIdx);
+                        ListBoxDeleteItem(hLB, NewIdx);
+                        ListBoxAddItem(hLB, OldListEntry, NewIdx);
                     }
-                    WAListBoxSetIndex(hLB, NewIdx);
+                    ListBoxSetIndex(hLB, NewIdx);
                 }
             }
             return;
@@ -4298,21 +4298,21 @@ void CALLBACK WAListBoxProcessDrag(HWND hLB, long Message, long lParam, long Dra
 
 // -----------------------------------------------------------------------
 // Push an item down in a listbox
-long CALLBACK WAListBoxSelItemDown(HWND hLB)
+long CALLBACK ListBoxSelItemDown(HWND hLB)
 {
     CStr OldItem;
     long CurrentIdx = 0;
     long ReturnValue = 0;
 
-    if(WAListBoxGetSelItemIndex(hLB) != -1)
+    if(ListBoxGetSelItemIndex(hLB) != -1)
     {
 		// Max down
-        if(WAListBoxGetSelItemIndex(hLB) == (WAListBoxCount(hLB) - 1)) return(ReturnValue);
-        OldItem = WAListBoxGetCurrentItem(hLB);
-        CurrentIdx = WAListBoxGetSelItemIndex(hLB);
-        WAListBoxReplaceItem(hLB, CurrentIdx, WAListBoxGetItem(hLB, CurrentIdx + 1));
-        WAListBoxReplaceItem(hLB, CurrentIdx + 1, OldItem);
-        WAListBoxSetIndex(hLB, CurrentIdx + 1);
+        if(ListBoxGetSelItemIndex(hLB) == (ListBoxCount(hLB) - 1)) return(ReturnValue);
+        OldItem = ListBoxGetCurrentItem(hLB);
+        CurrentIdx = ListBoxGetSelItemIndex(hLB);
+        ListBoxReplaceItem(hLB, CurrentIdx, ListBoxGetItem(hLB, CurrentIdx + 1));
+        ListBoxReplaceItem(hLB, CurrentIdx + 1, OldItem);
+        ListBoxSetIndex(hLB, CurrentIdx + 1);
         ReturnValue = 1;
     }
     return(ReturnValue);
@@ -4320,21 +4320,21 @@ long CALLBACK WAListBoxSelItemDown(HWND hLB)
 
 // -----------------------------------------------------------------------
 // Push an item up in a listbox
-long CALLBACK WAListBoxSelItemUp(HWND hLB)
+long CALLBACK ListBoxSelItemUp(HWND hLB)
 {
     CStr OldItem;
     long CurrentIdx = 0;
     long ReturnValue = 0;
 
-    if(WAListBoxGetSelItemIndex(hLB) > 0)
+    if(ListBoxGetSelItemIndex(hLB) > 0)
     {
         // Max up
-        if(WAListBoxCount(hLB) == 0) return(ReturnValue);
-        OldItem = WAListBoxGetItem(hLB, WAListBoxGetSelItemIndex(hLB) - 1);
-        CurrentIdx = WAListBoxGetSelItemIndex(hLB);
-        WAListBoxReplaceItem(hLB, CurrentIdx - 1, WAListBoxGetItem(hLB, CurrentIdx));
-        WAListBoxReplaceItem(hLB, CurrentIdx, OldItem);
-        WAListBoxSetIndex(hLB, CurrentIdx - 1);
+        if(ListBoxCount(hLB) == 0) return(ReturnValue);
+        OldItem = ListBoxGetItem(hLB, ListBoxGetSelItemIndex(hLB) - 1);
+        CurrentIdx = ListBoxGetSelItemIndex(hLB);
+        ListBoxReplaceItem(hLB, CurrentIdx - 1, ListBoxGetItem(hLB, CurrentIdx));
+        ListBoxReplaceItem(hLB, CurrentIdx, OldItem);
+        ListBoxSetIndex(hLB, CurrentIdx - 1);
         ReturnValue = 1;
     }
     return(ReturnValue);
@@ -4342,39 +4342,39 @@ long CALLBACK WAListBoxSelItemUp(HWND hLB)
 
 // -----------------------------------------------------------------------
 // Remove an item in a listbox
-long CALLBACK WAListBoxSelItemRemove(HWND hLB)
+long CALLBACK ListBoxSelItemRemove(HWND hLB)
 {
     long CurrentIdx = 0;
     long NewLBCount = 0;
 	long ReturnValue = 0;
 
-	if(WAListBoxGetSelItemIndex(hLB) != -1)
+	if(ListBoxGetSelItemIndex(hLB) != -1)
 	{
-        if(WAListBoxCount(hLB) == 0) return(ReturnValue);
-        CurrentIdx = WAListBoxGetSelItemIndex(hLB);
-        ReturnValue = WAListBoxDeleteItem(hLB, CurrentIdx);
-        NewLBCount = WAListBoxCount(hLB);
+        if(ListBoxCount(hLB) == 0) return(ReturnValue);
+        CurrentIdx = ListBoxGetSelItemIndex(hLB);
+        ReturnValue = ListBoxDeleteItem(hLB, CurrentIdx);
+        NewLBCount = ListBoxCount(hLB);
         if(NewLBCount == 0)
         {
-            WAListBoxSetIndex(hLB, 0);
+            ListBoxSetIndex(hLB, 0);
             return(ReturnValue);
         }
 		if(CurrentIdx >= NewLBCount) CurrentIdx--;
-        WAListBoxSetIndex(hLB, CurrentIdx);
+        ListBoxSetIndex(hLB, CurrentIdx);
     }
 	return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Check if an item exists
-long CALLBACK WAListBoxItemExist(HWND hListBox, CStr CBItem)
+long CALLBACK ListBoxItemExist(HWND hListBox, CStr CBItem)
 {
     return(SendMessage(hListBox, LB_FINDSTRINGEXACT, -1, (long) CBItem.Get_String()));
 }
 
 // -----------------------------------------------------------------------
 // Return the index of the item under the cursor
-long CALLBACK WAListBoxItemUnderCursor(HWND hListBox)
+long CALLBACK ListBoxItemUnderCursor(HWND hListBox)
 {
     POINT ItemPoint;
 
@@ -4389,21 +4389,21 @@ long CALLBACK WAListBoxItemUnderCursor(HWND hListBox)
 
 // -----------------------------------------------------------------------
 // Create a Scrollbar control
-HWND CALLBACK WACreateScrollBar(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent,
+HWND CALLBACK CreateScrollBar(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent,
                                 long CtrlID, WNDPROC WindowProc, long ExtraStyle)
 {
     HWND ReturnValue = 0;
 
-    WAControlBound(hParent, BLeft, BTop, BWidth, BHeight);
+    ControlBound(hParent, BLeft, BTop, BWidth, BHeight);
     ReturnValue = CreateWindowEx(0, "SCROLLBAR", "", WS_TABSTOP | WS_VISIBLE | WS_CHILD | ExtraStyle, BLeft, BTop, BWidth, BHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == NULL) return(0);
-    WAControlHookWin(ReturnValue, WindowProc);
+    ControlHookWin(ReturnValue, WindowProc);
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the maximum value of a scrollbar
-long CALLBACK WAScrollBarGetMinRange(HWND hWnd, long ScrollBarType)
+long CALLBACK ScrollBarGetMinRange(HWND hWnd, long ScrollBarType)
 {
     SCROLLINFO ScrollInf;
 
@@ -4415,7 +4415,7 @@ long CALLBACK WAScrollBarGetMinRange(HWND hWnd, long ScrollBarType)
 
 // -----------------------------------------------------------------------
 // Retrieve the maximum value of a scrollbar
-long CALLBACK WAScrollBarGetMaxRange(HWND hWnd, long ScrollBarType) {
+long CALLBACK ScrollBarGetMaxRange(HWND hWnd, long ScrollBarType) {
     SCROLLINFO ScrollInf;
 
     ScrollInf.cbSize = sizeof(ScrollInf);
@@ -4426,7 +4426,7 @@ long CALLBACK WAScrollBarGetMaxRange(HWND hWnd, long ScrollBarType) {
 
 // -----------------------------------------------------------------------
 // Retrieve the value of page scrolling in a scrollbar
-long CALLBACK WAScrollBarGetPageRange(HWND hWnd, long ScrollBarType)
+long CALLBACK ScrollBarGetPageRange(HWND hWnd, long ScrollBarType)
 {
     SCROLLINFO ScrollInf;
 
@@ -4438,7 +4438,7 @@ long CALLBACK WAScrollBarGetPageRange(HWND hWnd, long ScrollBarType)
 
 // -----------------------------------------------------------------------
 // Set the value of page scrolling in a scrollbar
-long CALLBACK WAScrollBarSetPageRange(HWND hWnd, long ScrollBarType, long PageValue)
+long CALLBACK ScrollBarSetPageRange(HWND hWnd, long ScrollBarType, long PageValue)
 {
     SCROLLINFO ScrollInf;
 
@@ -4450,7 +4450,7 @@ long CALLBACK WAScrollBarSetPageRange(HWND hWnd, long ScrollBarType, long PageVa
 
 // -----------------------------------------------------------------------
 // Set the minimun and maximum values of a scrollbar
-long CALLBACK WAScrollBarSetMinMaxRange(HWND hWnd, long ScrollBarType, long nMin, long nMax)
+long CALLBACK ScrollBarSetMinMaxRange(HWND hWnd, long ScrollBarType, long nMin, long nMax)
 {
     if(nMax == nMin) nMax = nMin + 1;
     return(SetScrollRange(hWnd, ScrollBarType, nMin, nMax, 1));
@@ -4458,7 +4458,7 @@ long CALLBACK WAScrollBarSetMinMaxRange(HWND hWnd, long ScrollBarType, long nMin
 
 // -----------------------------------------------------------------------
 // Show or hide scrollbars
-void CALLBACK WAScrollBarShowHide(HWND hWnd, long ObjWidth, long ObjHeight, long Useclient)
+void CALLBACK ScrollBarShowHide(HWND hWnd, long ObjWidth, long ObjHeight, long Useclient)
 {
     long XLarg = 0;
     long YLong = 0;
@@ -4508,11 +4508,11 @@ void CALLBACK WAScrollBarShowHide(HWND hWnd, long ObjWidth, long ObjHeight, long
 
 // -----------------------------------------------------------------------
 // Create a new docking box
-HWND CALLBACK WACreateDockingBox(CStr Title, WNDPROC WindowProc, HWND hRoot, char *IniFile)
+HWND CALLBACK CreateDockingBox(CStr Title, WNDPROC WindowProc, HWND hRoot, char *IniFile)
 {
 	HWND ReturnValue;
 
-	ReturnValue = WACreateContainer(0, 0, 1, 1, 1, hRoot, Title, &DefaultDockingProc);
+	ReturnValue = CreateContainer(0, 0, 1, 1, 1, hRoot, Title, &DefaultDockingProc);
     if(ReturnValue == NULL) return(NULL);
 	// Set it in allocated extra bytes (defined in the class)
 	SetWindowLong(ReturnValue, 0, (long) WindowProc);
@@ -4549,7 +4549,7 @@ void CALLBACK DockingBoxShow(HWND hDock, int MaxXSize, int MaxYSize,
 
 	if(!cDock->IsDockPane(hDock))
 	{
-		DockingBoxReadState(WAControlGetText(hDock), DockState, DockRect, DockSize, DefaultState, DefaultSizeX, DefaultSizeY, (char *) GetWindowLong(hDock, 4));
+		DockingBoxReadState(ControlGetText(hDock), DockState, DockRect, DockSize, DefaultState, DefaultSizeX, DefaultSizeY, (char *) GetWindowLong(hDock, 4));
 		DefaultSizeX = DockRect.right - DockRect.left;
 		DefaultSizeY = DockRect.bottom - DockRect.top;
 		cDock->AddWindow(hDock, MaxXSize, MaxYSize, DefaultSizeX, DefaultSizeY);
@@ -4565,7 +4565,7 @@ long CALLBACK DockingBoxWasVisible(CStr DockName, CStr IniFile)
 {
 	CStr InitValue;
 
-	InitValue = WAIniReadKey("Layout", "Dock" + DockName + "Visible", IniFile);
+	InitValue = IniReadKey("Layout", "Dock" + DockName + "Visible", IniFile);
     if(InitValue.Len() == 0) return(FALSE);
 	else return(InitValue.Get_Long());
 }
@@ -4574,13 +4574,13 @@ long CALLBACK DockingBoxWasVisible(CStr DockName, CStr IniFile)
 // Repaint a docking box and all it's childs
 void CALLBACK DockingBoxRepaint(HWND hWnd)
 {
-	WAControlRefreshLocal(hWnd);
+	ControlRefreshLocal(hWnd);
 	EnumChildWindows(hWnd, &EnumDockChilds, 0);
 }
                     
 int CALLBACK EnumDockChilds(HWND hWnd, long lParam)
 {
-	WAControlRefreshLocal(hWnd);
+	ControlRefreshLocal(hWnd);
     return(TRUE);
 }
 
@@ -4594,11 +4594,11 @@ void CALLBACK DockingBoxReadState(CStr DockName, int &State, RECT &Rect, int &Si
 	if(!DefaultSizeX) DefaultSizeX = 160;
 	if(!DefaultSizeY) DefaultSizeY = 120;
 
-	InitValue = WAIniReadKey("Layout", "Dock" + DockName + "State", IniFile);
+	InitValue = IniReadKey("Layout", "Dock" + DockName + "State", IniFile);
     if(InitValue.Len() == 0) State = DefaultState;
 	else State = InitValue.Get_Long();
 
-	InitValue = WAIniReadKey("Layout", "Dock" + DockName + "Left", IniFile);
+	InitValue = IniReadKey("Layout", "Dock" + DockName + "Left", IniFile);
     if(InitValue.Len() == 0)
     {
 		Rect.left = 0;
@@ -4610,7 +4610,7 @@ void CALLBACK DockingBoxReadState(CStr DockName, int &State, RECT &Rect, int &Si
 	}
 	if(Rect.left < 0) Rect.left = 0;
 
-	InitValue = WAIniReadKey("Layout", "Dock" + DockName + "Top", IniFile);
+	InitValue = IniReadKey("Layout", "Dock" + DockName + "Top", IniFile);
     if(InitValue.Len() == 0)
     {
 		Rect.top = 0;
@@ -4622,7 +4622,7 @@ void CALLBACK DockingBoxReadState(CStr DockName, int &State, RECT &Rect, int &Si
 	}
 	if(Rect.top < 0) Rect.top = 0;
 
-	InitValue = WAIniReadKey("Layout", "Dock" + DockName + "Width", IniFile);
+	InitValue = IniReadKey("Layout", "Dock" + DockName + "Width", IniFile);
     if(InitValue.Len() == 0)
     {
 		Rect.left = 0;
@@ -4635,7 +4635,7 @@ void CALLBACK DockingBoxReadState(CStr DockName, int &State, RECT &Rect, int &Si
 	}
 	if(Rect.right < 0) Rect.right = 0;
 
-	InitValue = WAIniReadKey("Layout", "Dock" + DockName + "Height", IniFile);
+	InitValue = IniReadKey("Layout", "Dock" + DockName + "Height", IniFile);
     if(InitValue.Len() == 0)
     {
 		Rect.top = 0;
@@ -4683,12 +4683,12 @@ void CALLBACK DockingBoxSaveState(HWND hDock, CStr DockName, int Visible, CStr I
 		if(DockRect.top < 0) DockRect.top = 0;
 		if(DockRect.right < 0) DockRect.right = 0;
 		if(DockRect.bottom < 0) DockRect.bottom = 0;
-		WAIniWriteKey("Layout", "Dock" + DockName + "Visible", Visible, IniFile);
-		WAIniWriteKey("Layout", "Dock" + DockName + "State", DockState, IniFile);
-		WAIniWriteKey("Layout", "Dock" + DockName + "Left", DockRect.left, IniFile);
-		WAIniWriteKey("Layout", "Dock" + DockName + "Top", DockRect.top, IniFile);
-		WAIniWriteKey("Layout", "Dock" + DockName + "Width", DockRect.right - DockRect.left, IniFile);
-		WAIniWriteKey("Layout", "Dock" + DockName + "Height", DockRect.bottom - DockRect.top, IniFile);
+		IniWriteKey("Layout", "Dock" + DockName + "Visible", Visible, IniFile);
+		IniWriteKey("Layout", "Dock" + DockName + "State", DockState, IniFile);
+		IniWriteKey("Layout", "Dock" + DockName + "Left", DockRect.left, IniFile);
+		IniWriteKey("Layout", "Dock" + DockName + "Top", DockRect.top, IniFile);
+		IniWriteKey("Layout", "Dock" + DockName + "Width", DockRect.right - DockRect.left, IniFile);
+		IniWriteKey("Layout", "Dock" + DockName + "Height", DockRect.bottom - DockRect.top, IniFile);
 	}
 }
 
@@ -4708,11 +4708,11 @@ LRESULT CALLBACK DefaultDockingProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
 			{
 				if(IsBadCodePtr((FARPROC) UserHook) == 0) CallWindowProc(UserHook, hWnd, uMsg, wParam, lParam);
 			}
-			DockingBoxSaveState(hWnd, WAControlGetText(hWnd), SendMessage(hWnd, DOCKINGBOX_MSG_QUERY_STATE, 0, 0), (char *) GetWindowLong(hWnd, 4));
+			DockingBoxSaveState(hWnd, ControlGetText(hWnd), SendMessage(hWnd, DOCKINGBOX_MSG_QUERY_STATE, 0, 0), (char *) GetWindowLong(hWnd, 4));
 			return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
         case WM_DESTROY:
 			// Note: send a message DOCKINGBOX_MSG_QUERY_STATE to ourself
-			DockingBoxSaveState(hWnd, WAControlGetText(hWnd), SendMessage(hWnd, DOCKINGBOX_MSG_QUERY_STATE, 0, 0), (char *) GetWindowLong(hWnd, 4));
+			DockingBoxSaveState(hWnd, ControlGetText(hWnd), SendMessage(hWnd, DOCKINGBOX_MSG_QUERY_STATE, 0, 0), (char *) GetWindowLong(hWnd, 4));
 			return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
     }
 	UserHook = (WNDPROC) GetWindowLong(hWnd, 0);
@@ -4730,7 +4730,7 @@ LRESULT CALLBACK DefaultDockingProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
 
 // -----------------------------------------------------------------------
 // Retrieve menu text
-CStr CALLBACK WAMenuGetString(HMENU hMenu, long ItemID)
+CStr CALLBACK MenuGetString(HMENU hMenu, long ItemID)
 {
     CStr ReturnValue;
     long MenuTxtLen = 0;
@@ -4744,7 +4744,7 @@ CStr CALLBACK WAMenuGetString(HMENU hMenu, long ItemID)
 
 // -----------------------------------------------------------------------
 // Enable/Disable a menu or menu item
-long CALLBACK WAMenuEnable(HMENU hMenu, long ItemPosition, long Enable)
+long CALLBACK MenuEnable(HMENU hMenu, long ItemPosition, long Enable)
 {
     if(Enable == 0) return(EnableMenuItem(hMenu, ItemPosition, MF_BYPOSITION | MF_DISABLED | MF_GRAYED));
     else return(EnableMenuItem(hMenu, ItemPosition, MF_BYPOSITION | MF_ENABLED));
@@ -4752,7 +4752,7 @@ long CALLBACK WAMenuEnable(HMENU hMenu, long ItemPosition, long Enable)
 
 // -----------------------------------------------------------------------
 // Set a menu item to bold (default)
-long CALLBACK WAMenuSetDefaultItem(HMENU hMenu, long ItemPosition)
+long CALLBACK MenuSetDefaultItem(HMENU hMenu, long ItemPosition)
 {
     MENUITEMINFO InfosToChange;
 
@@ -4765,7 +4765,7 @@ long CALLBACK WAMenuSetDefaultItem(HMENU hMenu, long ItemPosition)
 
 // -----------------------------------------------------------------------
 // Set a menu item state
-long CALLBACK WAMenuSetItemState(HMENU hMenu, long ItemState, long ItemID)
+long CALLBACK MenuSetItemState(HMENU hMenu, long ItemState, long ItemID)
 {
     MENUITEMINFO InfosToChange;
 
@@ -4778,7 +4778,7 @@ long CALLBACK WAMenuSetItemState(HMENU hMenu, long ItemState, long ItemID)
 
 // -----------------------------------------------------------------------
 // Set a menu item type
-long CALLBACK WAMenuSetItemType(HMENU hMenu, long ItemType, long ItemID)
+long CALLBACK MenuSetItemType(HMENU hMenu, long ItemType, long ItemID)
 {
     MENUITEMINFO InfosToChange;
 
@@ -4791,7 +4791,7 @@ long CALLBACK WAMenuSetItemType(HMENU hMenu, long ItemType, long ItemID)
 
 // -----------------------------------------------------------------------
 // Set a menu item text
-long CALLBACK WAMenuSetItemText(HMENU hMenu, CStr ItemText, long ItemID)
+long CALLBACK MenuSetItemText(HMENU hMenu, CStr ItemText, long ItemID)
 {
     MENUITEMINFO InfosToChange;
 
@@ -4803,6 +4803,19 @@ long CALLBACK WAMenuSetItemText(HMENU hMenu, CStr ItemText, long ItemID)
     return(SetMenuItemInfo(hMenu, ItemID, 0, &InfosToChange));
 }
 
+// -----------------------------------------------------------------------
+// Add a separator entry into a menu bar
+long CALLBACK MenuAddSeparator(HMENU hMenu)
+{
+    return(AppendMenu(hMenu, MF_SEPARATOR, -1, "-"));
+}
+
+// -----------------------------------------------------------------------
+// Add a string entry into a menu bar
+long CALLBACK MenuAddString(HMENU hMenu, CStr ItemText, long ItemID, long Enabled)
+{
+    return(AppendMenu(hMenu, MF_STRING | (Enabled ? 0 : MF_GRAYED), ItemID, ItemText.Get_String()));
+}
 
 // -----------------------------------------------------------------------
 // Screen functions
@@ -4847,42 +4860,42 @@ void CALLBACK ScreenRectToClient(HWND hWnd, LPRECT RectToFill)
 
 // -----------------------------------------------------------------------
 // Display hourglass cursor
-HCURSOR CALLBACK WACursorSetWait(void)
+HCURSOR CALLBACK CursorSetWait(void)
 {
     return(SetCursor(LoadCursor(0, IDC_WAIT)));
 }
 
 // -----------------------------------------------------------------------
 // Display no cursor
-HCURSOR CALLBACK WACursorSetNo(void)
+HCURSOR CALLBACK CursorSetNo(void)
 {
     return(SetCursor(LoadCursor(0, IDC_NO)));
 }
 
 // -----------------------------------------------------------------------
 // Display cross cursor
-HCURSOR CALLBACK WACursorSetCross(void)
+HCURSOR CALLBACK CursorSetCross(void)
 {
     return(SetCursor(LoadCursor(0, IDC_CROSS)));
 }
 
 // -----------------------------------------------------------------------
 // Display normal arrow cursor
-HCURSOR CALLBACK WACursorSetNormal(void)
+HCURSOR CALLBACK CursorSetNormal(void)
 {
     return(SetCursor(LoadCursor(0, IDC_ARROW)));
 }
 
 // -----------------------------------------------------------------------
 // Set mouse pointer off
-long CALLBACK WACursorDisable(void)
+long CALLBACK CursorDisable(void)
 {
     return((long) SetCursor(0));
 }
 
 // -----------------------------------------------------------------------
 // Set mouse pointer on
-long CALLBACK WACursorEnable(long OldCursorState)
+long CALLBACK CursorEnable(long OldCursorState)
 {
     long ReturnValue = 0;
 
@@ -4901,7 +4914,7 @@ long CALLBACK WACursorEnable(long OldCursorState)
 
 // -----------------------------------------------------------------------
 // Read .ini value
-CStr CALLBACK WAIniReadKey(CStr Section, CStr Key, CStr File)
+CStr CALLBACK IniReadKey(CStr Section, CStr Key, CStr File)
 {
     CStr RetSec;
     long CheckNull = 0;
@@ -4915,11 +4928,11 @@ CStr CALLBACK WAIniReadKey(CStr Section, CStr Key, CStr File)
 
 // -----------------------------------------------------------------------
 // Read a boolean .ini value
-long CALLBACK WAIniReadBoolKey(CStr Section, CStr Key, CStr File)
+long CALLBACK IniReadBoolKey(CStr Section, CStr Key, CStr File)
 {
 	CStr BufString;
 
-	BufString = WAIniReadKey(Section, Key, File);
+	BufString = IniReadKey(Section, Key, File);
 	if(BufString.Len() == 0) return(0);
 	if(strcmp(BufString.Get_String(), "0") == 0) return(0);
 	// True on alien value
@@ -4928,14 +4941,14 @@ long CALLBACK WAIniReadBoolKey(CStr Section, CStr Key, CStr File)
 
 // -----------------------------------------------------------------------
 // Write .ini section
-long CALLBACK WAIniWriteSection(CStr Section, CStr Key, CStr File)
+long CALLBACK IniWriteSection(CStr Section, CStr Key, CStr File)
 {
     return(WritePrivateProfileSection(Section.Get_String(), Key.Get_String(), File.Get_String()));
 }
 
 // -----------------------------------------------------------------------
 // Delete .ini value
-long CALLBACK WAIniDeleteKey(CStr Section, CStr Key, CStr File)
+long CALLBACK IniDeleteKey(CStr Section, CStr Key, CStr File)
 {
     if(Key.Len() == 0) return(WritePrivateProfileStruct(Section.Get_String(), (char *) 0, 0, 0, File.Get_String()));
     else return(WritePrivateProfileStruct(Section.Get_String(), Key.Get_String(), 0, 0, File.Get_String()));
@@ -4943,7 +4956,7 @@ long CALLBACK WAIniDeleteKey(CStr Section, CStr Key, CStr File)
 
 // -----------------------------------------------------------------------
 // Write .ini value
-long CALLBACK WAIniWriteKey(CStr Section, CStr Key, CStr Value, CStr File)
+long CALLBACK IniWriteKey(CStr Section, CStr Key, CStr Value, CStr File)
 {
     return(WritePrivateProfileString(Section.Get_String(), Key.Get_String(), Value.Get_String(), File.Get_String()));
 }
@@ -4969,7 +4982,7 @@ long CALLBACK MathGenerateRandomNumber(long MaxNumber)
 
 // -----------------------------------------------------------------------
 // Copy a text into the clipboard
-long CALLBACK WAMiscClipBoardCopyText(CStr Txt)
+long CALLBACK MiscClipBoardCopyText(CStr Txt)
 {
     long ReturnValue = 0;
     HANDLE hClip = 0;
@@ -4996,7 +5009,7 @@ long CALLBACK WAMiscClipBoardCopyText(CStr Txt)
 
 // -----------------------------------------------------------------------
 // Retrieve a text from the clipboard
-CStr CALLBACK WAMiscClipBoardPasteText(void)
+CStr CALLBACK MiscClipBoardPasteText(void)
 {
     CStr ReturnValue;
     HANDLE hClip = 0;
@@ -5021,7 +5034,7 @@ CStr CALLBACK WAMiscClipBoardPasteText(void)
 
 // -----------------------------------------------------------------------
 // Check if the clipboard is empty or not
-long CALLBACK WAMiscClipBoardIsEmpty(void)
+long CALLBACK MiscClipBoardIsEmpty(void)
 {
     long ReturnValue =1;
     HANDLE hClip = 0;
@@ -5043,14 +5056,14 @@ long CALLBACK WAMiscClipBoardIsEmpty(void)
 
 // -----------------------------------------------------------------------
 // Add a filename into recents documents list
-void CALLBACK WAMiscShellAddFileToRecents(CStr FileName)
+void CALLBACK MiscShellAddFileToRecents(CStr FileName)
 {
     SHAddToRecentDocs(SHARD_PATH, FileName.Get_String());
 }
 
 // -----------------------------------------------------------------------
 // Wait for events
-long CALLBACK WAMiscWaitEvents(HWND hClient, HACCEL hAccelerator, HWND hWndAccelerators)
+long CALLBACK MiscWaitEvents(HWND hClient, HACCEL hAccelerator, HWND hWndAccelerators)
 {
     MSG WAMsg;
 
@@ -5108,7 +5121,7 @@ long CALLBACK WAMiscWaitEvents(HWND hClient, HACCEL hAccelerator, HWND hWndAccel
 
 // -----------------------------------------------------------------------
 // Display a standard messagebox
-long CALLBACK WAMiscMsgBox(HWND hParent, CStr MBText, long MBType, CStr MBTitle)
+long CALLBACK MiscMsgBox(HWND hParent, CStr MBText, long MBType, CStr MBTitle)
 {
     if(hParent == 0) hParent = GetActiveWindow();
     return(MessageBox(hParent, MBText.Get_String(), MBTitle.Get_String(), MBType));
@@ -5116,14 +5129,14 @@ long CALLBACK WAMiscMsgBox(HWND hParent, CStr MBText, long MBType, CStr MBTitle)
 
 // -----------------------------------------------------------------------
 // Send a broadcasted message
-long CALLBACK WAMiscSendBroadCastMsg(long BDMessage)
+long CALLBACK MiscSendBroadCastMsg(long BDMessage)
 {
     return(SendMessage(HWND_BROADCAST, BDMessage, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Wait for time slice
-void CALLBACK WAMiscDoEvents(HWND hClient, HACCEL hAccelerator, HWND hWndAccelerators)
+void CALLBACK MiscDoEvents(HWND hClient, HACCEL hAccelerator, HWND hWndAccelerators)
 {
     MSG WAMsg;
 
@@ -5180,7 +5193,7 @@ void CALLBACK WAMiscDoEvents(HWND hClient, HACCEL hAccelerator, HWND hWndAcceler
 
 // -----------------------------------------------------------------------
 // Obtain a GUID from the system
-HRESULT CALLBACK WAMiscObtainGUID(LPGUID GUIDToObtain)
+HRESULT CALLBACK MiscObtainGUID(LPGUID GUIDToObtain)
 {
     HRESULT ReturnValue = 0;
 	CoInitialize(0);
@@ -5192,7 +5205,7 @@ HRESULT CALLBACK WAMiscObtainGUID(LPGUID GUIDToObtain)
 // -----------------------------------------------------------------------
 // Obtain a block of memory from the system
 // + garbage collector
-HGLOBAL CALLBACK WAMiscAllocMem(long Amount)
+HGLOBAL CALLBACK MiscAllocMem(long Amount)
 {
 	HGLOBAL Allocated_Mem;
 
@@ -5208,7 +5221,7 @@ HGLOBAL CALLBACK WAMiscAllocMem(long Amount)
 // -----------------------------------------------------------------------
 // Frees a block of memory from the system
 // + garbage collector
-long CALLBACK WAMiscFreeMem(void *MemHandle)
+long CALLBACK MiscFreeMem(void *MemHandle)
 {
 	int i;
 
@@ -5229,21 +5242,21 @@ long CALLBACK WAMiscFreeMem(void *MemHandle)
 
 // -----------------------------------------------------------------------
 // Copy a memory block several times
-void CALLBACK WAMiscCopyMemLoop(void *MemSource, void *MemDest, long Length, long MemLeftOffset, long RepeatCount)
+void CALLBACK MiscCopyMemLoop(void *MemSource, void *MemDest, long Length, long MemLeftOffset, long RepeatCount)
 {
 	CopyMem((char *) MemSource, (char *) MemDest, Length, MemLeftOffset, RepeatCount);
 }
 
 // -----------------------------------------------------------------------
 // Copy a memory block several times
-void CALLBACK WAMiscCopyMemWithOffsets(void *MemSource, void *MemDest, long Length, long SourceOffset, long DestOffset)
+void CALLBACK MiscCopyMemWithOffsets(void *MemSource, void *MemDest, long Length, long SourceOffset, long DestOffset)
 {
 	CopyMem2((char *) MemSource,(char *)  MemDest, Length, SourceOffset, DestOffset);
 }
 
 // -----------------------------------------------------------------------
 // Return the class of the operating system
-long CALLBACK WAMiscGetOSClass(void)
+long CALLBACK MiscGetOSClass(void)
 {
 	int Cl = 0;			// Default is Windows 9x
 	OSVERSIONINFO MyOsVersion;
@@ -5278,7 +5291,7 @@ long CALLBACK WAMiscGetOSClass(void)
 
 // -----------------------------------------------------------------------
 // Get current date
-CStr CALLBACK WADateGetNow(long ReportsSeconds)
+CStr CALLBACK DateGetNow(long ReportsSeconds)
 {
     CStr ReturnedDate;
     CStr ReturnedTime;
@@ -5324,49 +5337,49 @@ CStr CALLBACK WADateGetNow(long ReportsSeconds)
 
 // -----------------------------------------------------------------------
 // Get current year
-CStr CALLBACK WADateGetYear(void)
+CStr CALLBACK DateGetYear(void)
 {
-	return(WADateGetFormat("yyyy"));
+	return(DateGetFormat("yyyy"));
 }
 
 // -----------------------------------------------------------------------
 // Get current month
-CStr CALLBACK WADateGetMonth(void)
+CStr CALLBACK DateGetMonth(void)
 {
-    return(WADateGetFormat("M"));
+    return(DateGetFormat("M"));
 }
 
 // -----------------------------------------------------------------------
 // Get current day
-CStr CALLBACK WADateGetDay(void)
+CStr CALLBACK DateGetDay(void)
 {
-    return(WADateGetFormat("d"));
+    return(DateGetFormat("d"));
 }
 
 // -----------------------------------------------------------------------
 // Get current hour
-CStr CALLBACK WADateGetHour(void)
+CStr CALLBACK DateGetHour(void)
 {
-    return(WADateGetTimeFormat("H"));
+    return(DateGetTimeFormat("H"));
 }
 
 // -----------------------------------------------------------------------
 // Get current minutes
-CStr CALLBACK WADateGetMinutes(void)
+CStr CALLBACK DateGetMinutes(void)
 {
-    return(WADateGetTimeFormat("m"));
+    return(DateGetTimeFormat("m"));
 }
 
 // -----------------------------------------------------------------------
 // Get current seconds
-CStr CALLBACK WADateGetSeconds(void)
+CStr CALLBACK DateGetSeconds(void)
 {
-    return(WADateGetTimeFormat("s"));
+    return(DateGetTimeFormat("s"));
 }
 
 // -----------------------------------------------------------------------
 // Get a formatted date --- '
-CStr CALLBACK WADateGetFormat(CStr DateFormat)
+CStr CALLBACK DateGetFormat(CStr DateFormat)
 {
     CStr ReturnedDate;
     CStr ReturnValue;
@@ -5393,7 +5406,7 @@ CStr CALLBACK WADateGetFormat(CStr DateFormat)
 
 // -----------------------------------------------------------------------
 // Get a formatted time
-CStr CALLBACK WADateGetTimeFormat(CStr DateFormat)
+CStr CALLBACK DateGetTimeFormat(CStr DateFormat)
 {
     CStr ReturnedDate;
     CStr ReturnValue;
@@ -5420,7 +5433,7 @@ CStr CALLBACK WADateGetTimeFormat(CStr DateFormat)
 
 // -----------------------------------------------------------------------
 // Retrieve a date from a string
-long CALLBACK WADateStringToDate(CStr StrDate, FILETIME *DestDate)
+long CALLBACK DateStringToDate(CStr StrDate, FILETIME *DestDate)
 {
 	char *DateToConvert;
 	char ReadChar;
@@ -6243,7 +6256,7 @@ void CALLBACK StringFileNameToLabel(char *FileName)
 
 // -----------------------------------------------------------------------
 // Retrieve last write date of a file
-long CALLBACK WAFileGetWriteTime(CStr FileName, LPFILETIME FileWriteTime)
+long CALLBACK FileGetWriteTime(CStr FileName, LPFILETIME FileWriteTime)
 {
     FILETIME FileCTime;
     FILETIME FileATime;
@@ -6254,14 +6267,14 @@ long CALLBACK WAFileGetWriteTime(CStr FileName, LPFILETIME FileWriteTime)
     if(FileHandle != INVALID_HANDLE_VALUE)
     {
         ReturnValue = GetFileTime(FileHandle, &FileCTime, &FileATime, FileWriteTime);
-        WAFileClose(FileHandle);
+        FileClose(FileHandle);
     }
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve creation date of a file
-long CALLBACK WAFileGetCreationTime(CStr FileName, LPFILETIME FileCreationTime)
+long CALLBACK FileGetCreationTime(CStr FileName, LPFILETIME FileCreationTime)
 {
     FILETIME FileATime;
     FILETIME FileWTime;
@@ -6272,14 +6285,14 @@ long CALLBACK WAFileGetCreationTime(CStr FileName, LPFILETIME FileCreationTime)
     if(FileHandle != INVALID_HANDLE_VALUE)
     {
         ReturnValue = GetFileTime(FileHandle, FileCreationTime, &FileATime, &FileWTime);
-        WAFileClose(FileHandle);
+        FileClose(FileHandle);
     }
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve last accessed time of a file
-long CALLBACK WAFileGetAccessedTime(CStr FileName, LPFILETIME FileAccessedTime)
+long CALLBACK FileGetAccessedTime(CStr FileName, LPFILETIME FileAccessedTime)
 {
     FILETIME FileCTime; 
     FILETIME FileWTime;
@@ -6290,14 +6303,14 @@ long CALLBACK WAFileGetAccessedTime(CStr FileName, LPFILETIME FileAccessedTime)
     if(FileHandle != INVALID_HANDLE_VALUE)
     {
         ReturnValue = GetFileTime(FileHandle, &FileCTime, FileAccessedTime, &FileWTime);
-        WAFileClose(FileHandle);
+        FileClose(FileHandle);
     }
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the extension of a filename
-CStr CALLBACK WAFileGetExtension(CStr FileName)
+CStr CALLBACK FileGetExtension(CStr FileName)
 {
     CStr ReturnValue;
 
@@ -6307,7 +6320,7 @@ CStr CALLBACK WAFileGetExtension(CStr FileName)
 
 // -----------------------------------------------------------------------
 // Retrieve the extension of a filename
-CStr CALLBACK WAFileRemoveExtension(CStr FileName)
+CStr CALLBACK FileRemoveExtension(CStr FileName)
 {
     CStr ReturnValue;
 
@@ -6317,7 +6330,7 @@ CStr CALLBACK WAFileRemoveExtension(CStr FileName)
 
 // -----------------------------------------------------------------------
 // Replace the extension in a filename
-CStr CALLBACK WAFileReplaceExtension(CStr FileName, CStr NewExtension)
+CStr CALLBACK FileReplaceExtension(CStr FileName, CStr NewExtension)
 {
     CStr ReturnValue;
 
@@ -6327,7 +6340,7 @@ CStr CALLBACK WAFileReplaceExtension(CStr FileName, CStr NewExtension)
 
 // -----------------------------------------------------------------------
 // Extract a directory from a filename
-CStr CALLBACK WAFileGetDirectory(CStr FileName)
+CStr CALLBACK FileGetDirectory(CStr FileName)
 {
     CStr ReturnValue;
 
@@ -6337,7 +6350,7 @@ CStr CALLBACK WAFileGetDirectory(CStr FileName)
 
 // -----------------------------------------------------------------------
 // Extract a filename
-CStr CALLBACK WAFileGetFileName(CStr FileName)
+CStr CALLBACK FileGetFileName(CStr FileName)
 {
     CStr ReturnValue;
 
@@ -6347,14 +6360,14 @@ CStr CALLBACK WAFileGetFileName(CStr FileName)
 
 // -----------------------------------------------------------------------
 // Open a file for reading
-HANDLE CALLBACK WAFileOpenR(CStr FileName)
+HANDLE CALLBACK FileOpenR(CStr FileName)
 {
     return(CreateFile(FileName.Get_String(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0));
 }
 
 // -----------------------------------------------------------------------
 // Open a file for writing
-HANDLE CALLBACK WAFileOpenW(CStr FileName, long FilePos)
+HANDLE CALLBACK FileOpenW(CStr FileName, long FilePos)
 {
     HANDLE ReturnValue = 0;
 
@@ -6365,7 +6378,7 @@ HANDLE CALLBACK WAFileOpenW(CStr FileName, long FilePos)
 
 // -----------------------------------------------------------------------
 // Open a file for appending
-HANDLE CALLBACK WAFileOpenWAppend(CStr FileName)
+HANDLE CALLBACK FileOpenWAppend(CStr FileName)
 {
     HANDLE ReturnValue = 0;
 
@@ -6376,7 +6389,7 @@ HANDLE CALLBACK WAFileOpenWAppend(CStr FileName)
 
 // -----------------------------------------------------------------------
 // Close an opened file
-long CALLBACK WAFileClose(HANDLE hFile)
+long CALLBACK FileClose(HANDLE hFile)
 {
     long ReturnValue = 0;
 
@@ -6386,7 +6399,7 @@ long CALLBACK WAFileClose(HANDLE hFile)
 
 // -----------------------------------------------------------------------
 // Create a new file
-HANDLE CALLBACK WAFileCreateEmpty(CStr FileName, long Security)
+HANDLE CALLBACK FileCreateEmpty(CStr FileName, long Security)
 {
     HANDLE ReturnValue = 0;
     SECURITY_ATTRIBUTES SecAt;
@@ -6409,7 +6422,7 @@ HANDLE CALLBACK WAFileCreateEmpty(CStr FileName, long Security)
 
 // -----------------------------------------------------------------------
 // Write a buffer into a file
-long CALLBACK WAFileWriteBuffer(HANDLE FileHandle, LPCVOID BufferToWrite, long LenToWrite)
+long CALLBACK FileWriteBuffer(HANDLE FileHandle, LPCVOID BufferToWrite, long LenToWrite)
 {
     long ReturnValue = 0;
     DWORD BytesWritten = 0;
@@ -6421,7 +6434,7 @@ long CALLBACK WAFileWriteBuffer(HANDLE FileHandle, LPCVOID BufferToWrite, long L
 
 // -----------------------------------------------------------------------
 // Write a buffer into a file (String version)
-long CALLBACK WAFileWriteBufferVB(HANDLE FileHandle, CStr BufferToWrite, long LenToWrite)
+long CALLBACK FileWriteBufferVB(HANDLE FileHandle, CStr BufferToWrite, long LenToWrite)
 {
     long ReturnValue = 0;
     DWORD BytesWritten = 0;
@@ -6433,7 +6446,7 @@ long CALLBACK WAFileWriteBufferVB(HANDLE FileHandle, CStr BufferToWrite, long Le
 
 // -----------------------------------------------------------------------
 // Write a string line into a file
-long CALLBACK WAFileWriteLine(HANDLE FileHandle, CStr LineToWrite)
+long CALLBACK FileWriteLine(HANDLE FileHandle, CStr LineToWrite)
 {
     long ReturnValue = 0;
     CStr RealLineToWrite;
@@ -6448,7 +6461,7 @@ long CALLBACK WAFileWriteLine(HANDLE FileHandle, CStr LineToWrite)
 
 // -----------------------------------------------------------------------
 // Check if a filename is only a directory
-long CALLBACK WAFileIsDirectory(CStr FileToSearch)
+long CALLBACK FileIsDirectory(CStr FileToSearch)
 {
     long ReturnValue = 0;
     WIN32_FIND_DATA FindDat;
@@ -6469,7 +6482,7 @@ long CALLBACK WAFileIsDirectory(CStr FileToSearch)
 
 // -----------------------------------------------------------------------
 // Return the length of a file
-long CALLBACK WAFileGetSize(CStr FileName)
+long CALLBACK FileGetSize(CStr FileName)
 {
     HANDLE hFileSize = 0;
     long ReturnValue = 0;
@@ -6483,14 +6496,14 @@ long CALLBACK WAFileGetSize(CStr FileName)
     if(hFileSize != INVALID_HANDLE_VALUE)
     {
         ReturnValue = GetFileSize(hFileSize, NULL);
-        WAFileClose(hFileSize);
+        FileClose(hFileSize);
     }
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Search a given file or directory
-long CALLBACK WAFileExist(CStr FileToSearch)
+long CALLBACK FileExist(CStr FileToSearch)
 {
     long ReturnValue = 0;
     WIN32_FIND_DATA FindDat;
@@ -6511,7 +6524,7 @@ long CALLBACK WAFileExist(CStr FileToSearch)
 // -----------------------------------------------------------------------
 // Return writing state of a file
 // Return FILE_ATTRIBUTE_READONLY or 0
-long CALLBACK WAFileIsReadOnly(CStr FileToCheck)
+long CALLBACK FileIsReadOnly(CStr FileToCheck)
 {
     CStr RealFileToCheck;
 
@@ -6522,7 +6535,7 @@ long CALLBACK WAFileIsReadOnly(CStr FileToCheck)
 
 // -----------------------------------------------------------------------
 // Check if a file is a possible unix file or not
-long CALLBACK WAFileIsUnix(CStr FileToCheck)
+long CALLBACK FileIsUnix(CStr FileToCheck)
 {
     long ReturnValue = 0;
     HANDLE hUnixFile = 0;
@@ -6533,7 +6546,7 @@ long CALLBACK WAFileIsUnix(CStr FileToCheck)
     BYTE *hUnixMemPtr;
 
     BufString = "\n";
-	hUnixFile = WAFileOpenR(FileToCheck);
+	hUnixFile = FileOpenR(FileToCheck);
     if(hUnixFile != INVALID_HANDLE_VALUE)
     {
         // Get 512 bytes of the file ("should be enough for everyone")
@@ -6555,21 +6568,21 @@ NextCheck:
 		    if(hUnixMemPtr[PosInFile - 2] != 13) ReturnValue = 1;
         }
         FreeMem((long) hUnixMem);
-        WAFileClose(hUnixFile);
+        FileClose(hUnixFile);
     }
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Load a file into memory
-HGLOBAL CALLBACK WAFileLoadIntoMem(CStr FileName, long *BytesRead)
+HGLOBAL CALLBACK FileLoadIntoMem(CStr FileName, long *BytesRead)
 {
     return((HGLOBAL) MLoadFile(FileName.Get_String(), BytesRead));
 }
 
 // -----------------------------------------------------------------------
 // Save a file from memory
-long CALLBACK WAFileSaveFromMem(CStr FileName, long MemToSave, long LenToSave)
+long CALLBACK FileSaveFromMem(CStr FileName, long MemToSave, long LenToSave)
 {
     return(MSaveFile(FileName.Get_String(), MemToSave, LenToSave));
 }
@@ -6577,7 +6590,7 @@ long CALLBACK WAFileSaveFromMem(CStr FileName, long MemToSave, long LenToSave)
 // -----------------------------------------------------------------------
 // Return files from a directory
 // (Function accept no argument to return next file)
-CStr CALLBACK WAFileDir(CStr *PathName, int Attributes)
+CStr CALLBACK FileDir(CStr *PathName, int Attributes)
 {
 	CStr ReturnValue;
 	static WIN32_FIND_DATA DirDat;
@@ -6634,7 +6647,7 @@ CantFoundFirst:
 
 // -----------------------------------------------------------------------
 // Update a registry key
-long CALLBACK WARegistryUpdateKey(HKEY KeyRoot, CStr KeyName, CStr SubKeyName, CStr SubKeyValue, long KeyType)
+long CALLBACK RegistryUpdateKey(HKEY KeyRoot, CStr KeyName, CStr SubKeyName, CStr SubKeyValue, long KeyType)
 {
     long rc = 0;
     HKEY hKey = 0;
@@ -6711,7 +6724,7 @@ CreateKeyError:
 
 // -----------------------------------------------------------------------
 // Delete a registry key
-long CALLBACK WARegistryDeleteKey(HKEY KeyRoot, CStr KeyName, CStr SubKeyName, long KeyType)
+long CALLBACK RegistryDeleteKey(HKEY KeyRoot, CStr KeyName, CStr SubKeyName, long KeyType)
 {
     long rc = 0;
     HKEY hKey = 0;
@@ -6738,7 +6751,7 @@ DeleteKeyError:
 
 // -----------------------------------------------------------------------
 // Retrieve a registry key
-CStr CALLBACK WARegistryGetKeyValue(HKEY KeyRoot, CStr KeyName, CStr SubKeyRef)
+CStr CALLBACK RegistryGetKeyValue(HKEY KeyRoot, CStr KeyName, CStr SubKeyRef)
 {
     long i = 0;
     long rc = 0;
@@ -6792,7 +6805,7 @@ GetKeyError:
 
 // -----------------------------------------------------------------------
 // Erase a windows backbround
-void CALLBACK WAGDIFillWindow(HWND hWnd, COLORREF Color)
+void CALLBACK GDIFillWindow(HWND hWnd, COLORREF Color)
 {
     LOGBRUSH CleanBrush;
     RECT CleanRect;
@@ -6812,7 +6825,7 @@ void CALLBACK WAGDIFillWindow(HWND hWnd, COLORREF Color)
 
 // -----------------------------------------------------------------------
 // Fill a window with a given brush
-void CALLBACK WAGDIFillWindowFromBrush(HWND hWnd, HBRUSH EraseBrush)
+void CALLBACK GDIFillWindowFromBrush(HWND hWnd, HBRUSH EraseBrush)
 {
     RECT CleanRect;
     HDC hDCClean = 0;
@@ -6825,7 +6838,7 @@ void CALLBACK WAGDIFillWindowFromBrush(HWND hWnd, HBRUSH EraseBrush)
 
 // -----------------------------------------------------------------------
 // Fill a window with a given brush and a given device context
-void CALLBACK WAGDIFillWindowFromBrushAndhDC(HWND hWnd, HDC hDC, HBRUSH EraseBrush)
+void CALLBACK GDIFillWindowFromBrushAndhDC(HWND hWnd, HDC hDC, HBRUSH EraseBrush)
 {
     RECT CleanRect;
 
@@ -6835,7 +6848,7 @@ void CALLBACK WAGDIFillWindowFromBrushAndhDC(HWND hWnd, HDC hDC, HBRUSH EraseBru
 
 // -----------------------------------------------------------------------
 // Create a colored brush
-HBRUSH CALLBACK WAGDICreateColorBrush(COLORREF Color)
+HBRUSH CALLBACK GDICreateColorBrush(COLORREF Color)
 {
     LOGBRUSH SubEditBrush;
 
@@ -6847,7 +6860,7 @@ HBRUSH CALLBACK WAGDICreateColorBrush(COLORREF Color)
 
 // -----------------------------------------------------------------------
 // Create a font
-HFONT CALLBACK WAGDIObtainFont(CStr FontNameToObtain, long FontSizeToObtain, HWND hWnd, long Bold, long Italic)
+HFONT CALLBACK GDIObtainFont(CStr FontNameToObtain, long FontSizeToObtain, HWND hWnd, long Bold, long Italic)
 {
     HFONT ReturnValue = 0;
     LOGFONT WACMFont;
@@ -6884,7 +6897,7 @@ HFONT CALLBACK WAGDIObtainFont(CStr FontNameToObtain, long FontSizeToObtain, HWN
 
 // -----------------------------------------------------------------------
 // Retrieve the width of a font
-long CALLBACK WAGDIGetFontWidth(HWND hWnd, HFONT hFont)
+long CALLBACK GDIGetFontWidth(HWND hWnd, HFONT hFont)
 {
     HDC FonthDC = 0;
     HGDIOBJ hOldFont = 0;
@@ -6900,7 +6913,7 @@ long CALLBACK WAGDIGetFontWidth(HWND hWnd, HFONT hFont)
 
 // -----------------------------------------------------------------------
 // Retrieve the height of a font
-long CALLBACK WAGDIGetFontHeight(HWND hWnd, HFONT hFont)
+long CALLBACK GDIGetFontHeight(HWND hWnd, HFONT hFont)
 {
     HDC FonthDC = 0;
     HGDIOBJ hOldFont = 0;
@@ -6916,23 +6929,23 @@ long CALLBACK WAGDIGetFontHeight(HWND hWnd, HFONT hFont)
 
 // -----------------------------------------------------------------------
 // Draw a horizontal separation
-void CALLBACK WAGDIDrawHorzSep(HWND hWnd, long X, long Y, long Width)
+void CALLBACK GDIDrawHorzSep(HWND hWnd, long X, long Y, long Width)
 {
-    WAGDIDrawLine(hWnd, X, Y, X + Width, Y, GetSysColor(COLOR_BTNSHADOW));
-    WAGDIDrawLine(hWnd, X, Y + 1, X + Width, Y + 1, GetSysColor(COLOR_BTNHILIGHT));
+    GDIDrawLine(hWnd, X, Y, X + Width, Y, GetSysColor(COLOR_BTNSHADOW));
+    GDIDrawLine(hWnd, X, Y + 1, X + Width, Y + 1, GetSysColor(COLOR_BTNHILIGHT));
 }
 
 // -----------------------------------------------------------------------
 // Draw a vertical separation
-void CALLBACK WAGDIDrawVertSep(HWND hWnd, long X, long Y, long Height)
+void CALLBACK GDIDrawVertSep(HWND hWnd, long X, long Y, long Height)
 {
-    WAGDIDrawLine(hWnd, X, Y, X, Y + Height, GetSysColor(COLOR_BTNSHADOW));
-    WAGDIDrawLine(hWnd, X + 1, Y, X + 1, Y + Height, GetSysColor(COLOR_BTNHILIGHT));
+    GDIDrawLine(hWnd, X, Y, X, Y + Height, GetSysColor(COLOR_BTNSHADOW));
+    GDIDrawLine(hWnd, X + 1, Y, X + 1, Y + Height, GetSysColor(COLOR_BTNHILIGHT));
 }
 
 // -----------------------------------------------------------------------
 // Draw a line
-void CALLBACK WAGDIDrawLine(HWND hWnd, long X1, long Y1, long X2, long Y2, COLORREF LineColor)
+void CALLBACK GDIDrawLine(HWND hWnd, long X1, long Y1, long X2, long Y2, COLORREF LineColor)
 {
     POINT WALinePT;
     HPEN WAhPen = 0;
@@ -6951,7 +6964,7 @@ void CALLBACK WAGDIDrawLine(HWND hWnd, long X1, long Y1, long X2, long Y2, COLOR
 
 // -----------------------------------------------------------------------
 // Draw a line with XOR combination
-void CALLBACK WAGDIDrawLineXOR(HWND hWnd, long X1, long Y1, long X2, long Y2, COLORREF LineColor)
+void CALLBACK GDIDrawLineXOR(HWND hWnd, long X1, long Y1, long X2, long Y2, COLORREF LineColor)
 {
     POINT WALinePT;
     HPEN WAhPen = 0;
@@ -6973,7 +6986,7 @@ void CALLBACK WAGDIDrawLineXOR(HWND hWnd, long X1, long Y1, long X2, long Y2, CO
 
 // -----------------------------------------------------------------------
 // Draw a pixel
-long CALLBACK WAGDIDrawPixel(HWND hWnd, long X, long Y, long PixelColor)
+long CALLBACK GDIDrawPixel(HWND hWnd, long X, long Y, long PixelColor)
 {
     HDC hDC = 0;
 	long ReturnValue = 0;
@@ -6986,7 +6999,7 @@ long CALLBACK WAGDIDrawPixel(HWND hWnd, long X, long Y, long PixelColor)
 
 // -----------------------------------------------------------------------
 // Draw a text on screen
-void CALLBACK WAGDIWriteText(HDC hDC, long X, long Y, CStr Text, long TextColor,
+void CALLBACK GDIWriteText(HDC hDC, long X, long Y, CStr Text, long TextColor,
                              HFONT hTextFont, long TextTransparent, long BackGroundColor)
 {
     HGDIOBJ OldhObj = 0;
@@ -7014,7 +7027,7 @@ void CALLBACK WAGDIWriteText(HDC hDC, long X, long Y, CStr Text, long TextColor,
 
 // -----------------------------------------------------------------------
 // Draw a clipped text on screen
-void CALLBACK WAGDIWriteClippedText(HDC hDC, long X, long Y, long Width, long Height, CStr Text,
+void CALLBACK GDIWriteClippedText(HDC hDC, long X, long Y, long Width, long Height, CStr Text,
                                     long TextColor, HFONT hTextFont, long TextTransparent, long BackGroundColor)
 {
     RECT ClipRect;
@@ -7048,7 +7061,7 @@ void CALLBACK WAGDIWriteClippedText(HDC hDC, long X, long Y, long Width, long He
 
 // -----------------------------------------------------------------------
 // Retrieve text width
-long CALLBACK WAGDIGetTextWidth(HWND hWnd, HFONT hFont, CStr Txt)
+long CALLBACK GDIGetTextWidth(HWND hWnd, HFONT hFont, CStr Txt)
 {
     long ReturnValue = 0;
     HDC TWHdc = 0;
@@ -7067,7 +7080,7 @@ long CALLBACK WAGDIGetTextWidth(HWND hWnd, HFONT hFont, CStr Txt)
 
 // -----------------------------------------------------------------------
 // Retrieve text height
-long CALLBACK WAGDIGetTextHeight(HWND hWnd, HFONT hFont, CStr Txt)
+long CALLBACK GDIGetTextHeight(HWND hWnd, HFONT hFont, CStr Txt)
 {
     long ReturnValue = 0;
     HDC TWHdc = 0;
@@ -7086,7 +7099,7 @@ long CALLBACK WAGDIGetTextHeight(HWND hWnd, HFONT hFont, CStr Txt)
 
 // -----------------------------------------------------------------------
 // Create a back DC for double buffering purposes
-HDC CALLBACK WAGDICreateBackDC(LPBACKDC BackStruct)
+HDC CALLBACK GDICreateBackDC(LPBACKDC BackStruct)
 {
     RECT GridRect;
     RECT WinRect;
@@ -7123,7 +7136,7 @@ HDC CALLBACK WAGDICreateBackDC(LPBACKDC BackStruct)
         {
             OldObject = SelectObject(BackDC, BackhBitmap);
             BackStruct->OldObject = OldObject;
-            hBrush = WAGDICreateColorBrush(BackStruct->Color);
+            hBrush = GDICreateColorBrush(BackStruct->Color);
             FillRect(BackDC, &GridRect, hBrush);
         }
     }
@@ -7132,7 +7145,7 @@ HDC CALLBACK WAGDICreateBackDC(LPBACKDC BackStruct)
 
 // -----------------------------------------------------------------------
 // Destroy a back DC for double buffering
-void CALLBACK WAGDIDestroyBackDC(LPBACKDC BackStruct)
+void CALLBACK GDIDestroyBackDC(LPBACKDC BackStruct)
 {
     if(BackStruct->hDC != 0)
     {
@@ -7144,7 +7157,7 @@ void CALLBACK WAGDIDestroyBackDC(LPBACKDC BackStruct)
 
 // -----------------------------------------------------------------------
 // Display a back DC
-long CALLBACK WAGDIBlitBackDC(LPRECT Dimensions, LPBACKDC BackStruct)
+long CALLBACK GDIBlitBackDC(LPRECT Dimensions, LPBACKDC BackStruct)
 {
     long ReturnValue = 0;
 	HDC DesthDC = 0;
@@ -7158,7 +7171,7 @@ long CALLBACK WAGDIBlitBackDC(LPRECT Dimensions, LPBACKDC BackStruct)
 // -----------------------------------------------------------------------
 // Calc the luminosity of a color
 // 0 <= LuminosityFactor <= x
-long CALLBACK WAGDIColorCalcLuminosity(COLORREF Color, long LuminosityFactor)
+long CALLBACK GDIColorCalcLuminosity(COLORREF Color, long LuminosityFactor)
 {
 	COLORREF Light_Color;
 	COLORREF Light_ColorR;
@@ -7184,17 +7197,17 @@ long CALLBACK WAGDIColorCalcLuminosity(COLORREF Color, long LuminosityFactor)
 
 // -----------------------------------------------------------------------
 // Retrieve stock fonts
-HFONT CALLBACK WAGDIGetSerif(void)
+HFONT CALLBACK GDIGetSerif(void)
 {
 	return(WASerifFont);
 }
 
-HFONT CALLBACK WAGDIGetSerif10(void)
+HFONT CALLBACK GDIGetSerif10(void)
 {
 	return(WASerifFont10);
 }
 
-HFONT CALLBACK WAGDIGetCourierNew9(void)
+HFONT CALLBACK GDIGetCourierNew9(void)
 {
 	return(WACourrierNewFont9);
 }
@@ -7205,144 +7218,144 @@ HFONT CALLBACK WAGDIGetCourierNew9(void)
 
 // -----------------------------------------------------------------------
 // Terminate a window hook
-long CALLBACK WAControlNextHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+long CALLBACK ControlNextHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
 
 // -----------------------------------------------------------------------
 // Send a command to a control
-long CALLBACK WAControlSendMessage(HWND hWnd, long Command, long lParam)
+long CALLBACK ControlSendMessage(HWND hWnd, long Command, long lParam)
 {
     return(SendMessage(hWnd, WM_COMMAND, Command, lParam));
 }
 
 // -----------------------------------------------------------------------
 // Get control height
-long CALLBACK WAControlHeight(HWND hWnd)
+long CALLBACK ControlHeight(HWND hWnd)
 {
     long ReturnValue = 0;
     RECT CRct;
     
 	GetWindowRect(hWnd, &CRct);
-    if(WAControlIsVisible(hWnd) == 0) ReturnValue = 0;
+    if(ControlIsVisible(hWnd) == 0) ReturnValue = 0;
     else ReturnValue = CRct.bottom - CRct.top;
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Get control client top
-long CALLBACK WAControlClientTop(HWND hWnd)
+long CALLBACK ControlClientTop(HWND hWnd)
 {
     long ReturnValue = 0;
     RECT CRct;
 
     GetClientRect(hWnd, &CRct);
-    if(WAControlIsVisible(hWnd) == 0) ReturnValue = 0;
+    if(ControlIsVisible(hWnd) == 0) ReturnValue = 0;
     else ReturnValue = CRct.top;
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Get control client left
-long CALLBACK WAControlClientLeft(HWND hWnd)
+long CALLBACK ControlClientLeft(HWND hWnd)
 {
     long ReturnValue = 0;
     RECT CRct;
 
     GetClientRect(hWnd, &CRct);
-    if(WAControlIsVisible(hWnd) == 0) ReturnValue = 0;
+    if(ControlIsVisible(hWnd) == 0) ReturnValue = 0;
     else ReturnValue = CRct.left;
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Get control client width
-long CALLBACK WAControlClientWidth(HWND hWnd)
+long CALLBACK ControlClientWidth(HWND hWnd)
 {
     long ReturnValue = 0;
     RECT CRct;
 
     GetClientRect(hWnd, &CRct);
-    if(WAControlIsVisible(hWnd) == 0) ReturnValue = 0;
+    if(ControlIsVisible(hWnd) == 0) ReturnValue = 0;
     else ReturnValue = CRct.right - CRct.left;
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Get control client height
-long CALLBACK WAControlClientHeight(HWND hWnd)
+long CALLBACK ControlClientHeight(HWND hWnd)
 {
     long ReturnValue = 0;
     RECT CRct;
 
     GetClientRect(hWnd, &CRct);
-    if(WAControlIsVisible(hWnd) == 0) ReturnValue = 0;
+    if(ControlIsVisible(hWnd) == 0) ReturnValue = 0;
     else ReturnValue = CRct.bottom - CRct.top;
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Bring a control to top
-long CALLBACK WAControlBringToTop(HWND hWnd)
+long CALLBACK ControlBringToTop(HWND hWnd)
 {
     return(SetWindowPos(hWnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_DEFERERASE | SWP_SHOWWINDOW));
 }
 
 // -----------------------------------------------------------------------
 // Bring a control to bottom
-long CALLBACK WAControlBringToBottom(HWND hWnd)
+long CALLBACK ControlBringToBottom(HWND hWnd)
 {
     return(SetWindowPos(hWnd, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_DEFERERASE | SWP_SHOWWINDOW));
 }
 
 // -----------------------------------------------------------------------
 // Set a control on top of all others
-long CALLBACK WAControlSetTopMost(HWND hWnd)
+long CALLBACK ControlSetTopMost(HWND hWnd)
 {
     return(SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE));
 }
 
 // -----------------------------------------------------------------------
 // Remove TOPMOST status of a control
-long CALLBACK WAControlRemTopMost(HWND hWnd)
+long CALLBACK ControlRemTopMost(HWND hWnd)
 {
     return(SetWindowPos(hWnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE));
 }
 
 // -----------------------------------------------------------------------
 // Refresh a control
-void CALLBACK WAControlRefresh(HWND hWnd)
+void CALLBACK ControlRefresh(HWND hWnd)
 {
     RECT RRect;
     HWND CParent = 0;
 
     CParent = GetParent(hWnd);
-    RRect.left = WAControlLeft(hWnd) - WAControlLeft(CParent) - GetSystemMetrics(SM_CXDLGFRAME);
-    RRect.top = WAControlTop(hWnd) - WAControlTop(CParent) - GetSystemMetrics(SM_CYCAPTION) - GetSystemMetrics(SM_CYDLGFRAME);
-    RRect.right = WAControlClientWidth(hWnd) + RRect.left;
-    RRect.bottom = WAControlClientHeight(hWnd) + RRect.top;
+    RRect.left = ControlLeft(hWnd) - ControlLeft(CParent) - GetSystemMetrics(SM_CXDLGFRAME);
+    RRect.top = ControlTop(hWnd) - ControlTop(CParent) - GetSystemMetrics(SM_CYCAPTION) - GetSystemMetrics(SM_CYDLGFRAME);
+    RRect.right = ControlClientWidth(hWnd) + RRect.left;
+    RRect.bottom = ControlClientHeight(hWnd) + RRect.top;
     InvalidateRect(CParent, &RRect, 1);
     UpdateWindow(CParent);
 }
 
 // -----------------------------------------------------------------------
 // Refresh a control (local to a control)
-void CALLBACK WAControlRefreshLocal(HWND hWnd)
+void CALLBACK ControlRefreshLocal(HWND hWnd)
 {
     RECT RRect;
     
 	RRect.left = 0;
     RRect.top = 0;
-    RRect.right = WAControlClientWidth(hWnd);
-    RRect.bottom = WAControlClientHeight(hWnd);
+    RRect.right = ControlClientWidth(hWnd);
+    RRect.bottom = ControlClientHeight(hWnd);
     InvalidateRect(hWnd, &RRect, 1);
     UpdateWindow(hWnd);
 }
 
 // -----------------------------------------------------------------------
 // Trigger a WM_PAINT event for a given control
-void CALLBACK WAControlRepaint(HWND hWnd)
+void CALLBACK ControlRepaint(HWND hWnd)
 {
     RECT RRect;
     
@@ -7353,15 +7366,15 @@ void CALLBACK WAControlRepaint(HWND hWnd)
 
 // -----------------------------------------------------------------------
 // Resize a control
-long CALLBACK WAControlResize(HWND hControl, long CtlLeft, long CtlTop, long CtlWidth, long CtlHeight)
+long CALLBACK ControlResize(HWND hControl, long CtlLeft, long CtlTop, long CtlWidth, long CtlHeight)
 {
-    WAControlBound(GetParent(hControl), CtlLeft, CtlTop, CtlWidth, CtlHeight);
+    ControlBound(GetParent(hControl), CtlLeft, CtlTop, CtlWidth, CtlHeight);
     return(MoveWindow(hControl, CtlLeft, CtlTop, CtlWidth, CtlHeight, 1));
 }
 
 // -----------------------------------------------------------------------
 // Bound the dimensions of a control
-long CALLBACK WAControlFreeze(HWND hControl, long FreezeState)
+long CALLBACK ControlFreeze(HWND hControl, long FreezeState)
 {
     long ReturnValue = 0;
     
@@ -7379,7 +7392,7 @@ long CALLBACK WAControlFreeze(HWND hControl, long FreezeState)
 
 // -----------------------------------------------------------------------
 // Bound the dimensions of a control
-void CALLBACK WAControlBound(HWND hParentControl, long &CtlLeft, long &CtlTop, long &CtlWidth, long &CtlHeight)
+void CALLBACK ControlBound(HWND hParentControl, long &CtlLeft, long &CtlTop, long &CtlWidth, long &CtlHeight)
 {
     RECT WRect;
 
@@ -7392,14 +7405,14 @@ void CALLBACK WAControlBound(HWND hParentControl, long &CtlLeft, long &CtlTop, l
 
 // -----------------------------------------------------------------------
 // Enable/Disable a control
-long CALLBACK WAControlEnable(HWND hWnd, long CState)
+long CALLBACK ControlEnable(HWND hWnd, long CState)
 {
     return(EnableWindow(hWnd, CState));
 }
 
 // -----------------------------------------------------------------------
 // Show/Hide a control
-long CALLBACK WAControlVisible(HWND hWnd, long CState)
+long CALLBACK ControlVisible(HWND hWnd, long CState)
 {
     long ReturnValue = 0;
     
@@ -7417,21 +7430,21 @@ long CALLBACK WAControlVisible(HWND hWnd, long CState)
 
 // -----------------------------------------------------------------------
 // Retrieve visible state of a control
-long CALLBACK WAControlIsVisible(HWND hWnd)
+long CALLBACK ControlIsVisible(HWND hWnd)
 {
     return(IsWindowVisible(hWnd));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve enable state of a control
-long CALLBACK WAControlIsEnabled(HWND hWnd)
+long CALLBACK ControlIsEnabled(HWND hWnd)
 {
     return(IsWindowEnabled(hWnd));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve a text from a control
-CStr CALLBACK WAControlGetText(HWND hWnd)
+CStr CALLBACK ControlGetText(HWND hWnd)
 {
     CStr ReturnValue;
     long TxtSize = 0;
@@ -7447,28 +7460,28 @@ CStr CALLBACK WAControlGetText(HWND hWnd)
 
 // -----------------------------------------------------------------------
 // Retrieve the length of a text control
-long CALLBACK WAControlGetTextLen(HWND hWnd)
+long CALLBACK ControlGetTextLen(HWND hWnd)
 {
     return(SendMessage(hWnd, WM_GETTEXTLENGTH, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Set the text of a control
-long CALLBACK WAControlSetText(HWND hWnd, CStr TextToSet)
+long CALLBACK ControlSetText(HWND hWnd, CStr TextToSet)
 {
     return(SendMessage(hWnd, WM_SETTEXT, 0, (long) TextToSet.Get_String()));
 }
 
 // -----------------------------------------------------------------------
 // Set a text to a control by passing it's address
-long CALLBACK WAControlSetTextByAddr(HWND hWnd, long TextToSet)
+long CALLBACK ControlSetTextByAddr(HWND hWnd, long TextToSet)
 {
     return(SendMessage(hWnd, WM_SETTEXT, 0, TextToSet));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve type of a notified message
-long CALLBACK WAControlGetNotifiedMsg(long lParam)
+long CALLBACK ControlGetNotifiedMsg(long lParam)
 {
     NMHDR HeaderNotify;
 
@@ -7478,7 +7491,7 @@ long CALLBACK WAControlGetNotifiedMsg(long lParam)
 
 // -----------------------------------------------------------------------
 // Retrieve window handle of a notified message
-HWND CALLBACK WAControlGetNotifiedhWnd(long lParam)
+HWND CALLBACK ControlGetNotifiedhWnd(long lParam)
 {
     NMHDR HeaderNotify;
     
@@ -7488,7 +7501,7 @@ HWND CALLBACK WAControlGetNotifiedhWnd(long lParam)
 
 // -----------------------------------------------------------------------
 // Retrieve window handle of a notified message
-long CALLBACK WAControlGetNotifiedID(long lParam)
+long CALLBACK ControlGetNotifiedID(long lParam)
 {
     NMHDR HeaderNotify;
 
@@ -7498,46 +7511,46 @@ long CALLBACK WAControlGetNotifiedID(long lParam)
 
 // -----------------------------------------------------------------------
 // Get control top
-long CALLBACK WAControlTop(HWND hWnd)
+long CALLBACK ControlTop(HWND hWnd)
 {
     long ReturnValue = 0;
     RECT CRct;
     
 	GetWindowRect(hWnd, &CRct);
-    if(WAControlIsVisible(hWnd) == 0) ReturnValue = 0;
+    if(ControlIsVisible(hWnd) == 0) ReturnValue = 0;
     else ReturnValue = CRct.top;
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Get control left
-long CALLBACK WAControlLeft(HWND hWnd)
+long CALLBACK ControlLeft(HWND hWnd)
 {
     long ReturnValue = 0;
     RECT CRct;
 
     GetWindowRect(hWnd, &CRct);
-    if(WAControlIsVisible(hWnd) == 0) ReturnValue = 0;
+    if(ControlIsVisible(hWnd) == 0) ReturnValue = 0;
     else ReturnValue = CRct.left;
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Get control width
-long CALLBACK WAControlWidth(HWND hWnd)
+long CALLBACK ControlWidth(HWND hWnd)
 {
     long ReturnValue = 0;
     RECT CRct;
 
     GetWindowRect(hWnd, &CRct);
-    if(WAControlIsVisible(hWnd) == 0) ReturnValue = 0;
+    if(ControlIsVisible(hWnd) == 0) ReturnValue = 0;
     else ReturnValue = CRct.right - CRct.left;
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve window handle under cursor
-HWND CALLBACK WAControlGetHwndFromPoint(void)
+HWND CALLBACK ControlGetHwndFromPoint(void)
 {
     POINT DragPoint;
     GetCursorPos(&DragPoint);
@@ -7547,14 +7560,14 @@ HWND CALLBACK WAControlGetHwndFromPoint(void)
 
 // -----------------------------------------------------------------------
 // Retrieve the notified command of a control
-long CALLBACK WAControlGetNotifiedCommand(long wParam)
+long CALLBACK ControlGetNotifiedCommand(long wParam)
 {
     return((short) ((wParam & 0xFFF0000) / 0x10000));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the X position of a passed mouse position
-long CALLBACK WAControlGetXMousePos(long lParam)
+long CALLBACK ControlGetXMousePos(long lParam)
 {
     long ReturnValue = 0;
 
@@ -7565,7 +7578,7 @@ long CALLBACK WAControlGetXMousePos(long lParam)
 
 // -----------------------------------------------------------------------
 // Retrieve the Y position of a passed mouse position
-long CALLBACK WAControlGetYMousePos(long lParam)
+long CALLBACK ControlGetYMousePos(long lParam)
 {
     long ReturnValue = 0;
 
@@ -7576,49 +7589,49 @@ long CALLBACK WAControlGetYMousePos(long lParam)
 
 // -----------------------------------------------------------------------
 // Set MS Sans Serif size 8 font for a control
-long CALLBACK WAControlSetSerif8(HWND hWnd)
+long CALLBACK ControlSetSerif8(HWND hWnd)
 {
     return(SendMessage(hWnd, WM_SETFONT, (UINT) WASerifFont, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retieve the font used by a control
-HFONT CALLBACK WAControlGetFont(HWND hWnd)
+HFONT CALLBACK ControlGetFont(HWND hWnd)
 {
     return((HFONT) SendMessage(hWnd, WM_GETFONT, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retieve an icon associated with a control
-HICON CALLBACK WAControlGetIcon(HWND hWnd, long IconType)
+HICON CALLBACK ControlGetIcon(HWND hWnd, long IconType)
 {
     return((HICON) SendMessage(hWnd, WM_GETICON, IconType, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Retieve the hotkey used by a control
-long CALLBACK WAControlGetHotKey(HWND hWnd)
+long CALLBACK ControlGetHotKey(HWND hWnd)
 {
     return(SendMessage(hWnd, WM_GETHOTKEY, 0, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Set a font for a control
-long CALLBACK WAControlSetFont(HWND hWnd, HFONT hFont)
+long CALLBACK ControlSetFont(HWND hWnd, HFONT hFont)
 {
     return(SendMessage(hWnd, WM_SETFONT, (long) hFont, (long) 1));
 }
 
 // -----------------------------------------------------------------------
 // Set a font for a control without redrawing it
-long CALLBACK WAControlSetFontNoRedraw(HWND hWnd, HFONT hFont)
+long CALLBACK ControlSetFontNoRedraw(HWND hWnd, HFONT hFont)
 {
     return(SendMessage(hWnd, WM_SETFONT, (long) hFont, (long) 0));
 }
 
 // -----------------------------------------------------------------------
 // Check if window is a correct child window
-long CALLBACK WAControlIsWindowChild(HWND hWnd)
+long CALLBACK ControlIsWindowChild(HWND hWnd)
 {
     long ReturnValue = 0;
     CStr ClassNameToRetrieve;
@@ -7631,7 +7644,7 @@ long CALLBACK WAControlIsWindowChild(HWND hWnd)
 
 // -----------------------------------------------------------------------
 // Retrieve the class name of a window
-CStr CALLBACK WAControlGetClassName(HWND hWnd)
+CStr CALLBACK ControlGetClassName(HWND hWnd)
 {
     CStr ReturnValue;
 
@@ -7642,14 +7655,14 @@ CStr CALLBACK WAControlGetClassName(HWND hWnd)
 
 // -----------------------------------------------------------------------
 // Set mouse pointer of a control class
-long CALLBACK WAControlSetClassCursor(HWND hWnd, HCURSOR hCursor)
+long CALLBACK ControlSetClassCursor(HWND hWnd, HCURSOR hCursor)
 {
     return(SetClassLong(hWnd, GCL_HCURSOR, (long) hCursor));
 }
 
 // -----------------------------------------------------------------------
 // Hook a window
-long CALLBACK WAControlHookWin(HWND hWnd, WNDPROC WindowProc)
+long CALLBACK ControlHookWin(HWND hWnd, WNDPROC WindowProc)
 {
     long ReturnValue = 0;
 
@@ -7671,14 +7684,14 @@ long CALLBACK WAControlHookWin(HWND hWnd, WNDPROC WindowProc)
 
 // -----------------------------------------------------------------------
 // UnHook a window
-long CALLBACK WAControlUnHookWin(HWND hWnd)
+long CALLBACK ControlUnHookWin(HWND hWnd)
 {
     return(SetWindowLong(hWnd, GWL_WNDPROC, GetWindowLong(hWnd, GWL_USERDATA)));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve window show state
-long CALLBACK WAControlGetWindowState(HWND hWnd)
+long CALLBACK ControlGetWindowState(HWND hWnd)
 {
     WINDOWPLACEMENT GetWinPlacement;
 
@@ -7689,7 +7702,7 @@ long CALLBACK WAControlGetWindowState(HWND hWnd)
 
 // -----------------------------------------------------------------------
 // Close a windows object
-long CALLBACK WAControlClose(HWND hWnd)
+long CALLBACK ControlClose(HWND hWnd)
 {
     long ReturnValue = 0;
 
@@ -7699,7 +7712,7 @@ long CALLBACK WAControlClose(HWND hWnd)
 
 // -----------------------------------------------------------------------
 // Call a dialog window proc
-LRESULT CALLBACK WAControlCallwindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK ControlCallwindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
@@ -7710,7 +7723,7 @@ LRESULT CALLBACK WAControlCallwindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LP
 
 // -----------------------------------------------------------------------
 // Choose a color from the palette
-long WAComDlgChooseColor(HWND hWnd, long DefaultCol)
+long ComDlgChooseColor(HWND hWnd, long DefaultCol)
 {
 	memset(&MyColor, 0, sizeof(MyColor));
     MyColor.hInstance = (HWND) ApphInstance;
@@ -7726,7 +7739,7 @@ long WAComDlgChooseColor(HWND hWnd, long DefaultCol)
 
 // -----------------------------------------------------------------------
 // Choose a file to open
-CStr WAComDlgGetOpenFileName(HWND hWnd, CStr OFilters, CStr InitDir, long MultiSelect, CStr DefaultDir)
+CStr ComDlgGetOpenFileName(HWND hWnd, CStr OFilters, CStr InitDir, long MultiSelect, CStr DefaultDir)
 {
     CStr TmpOp;
     CStr ReturnValue;
@@ -7836,7 +7849,7 @@ CStr WAComDlgGetOpenFileName(HWND hWnd, CStr OFilters, CStr InitDir, long MultiS
 
 // -----------------------------------------------------------------------
 // Choose a file to save
-CStr WAComDlgGetSaveFileName(HWND hWnd, CStr OFilters, CStr InitDir, CStr DefaultDir)
+CStr ComDlgGetSaveFileName(HWND hWnd, CStr OFilters, CStr InitDir, CStr DefaultDir)
 {
     CStr TmpSv;
     CStr BufString;
@@ -7882,7 +7895,7 @@ CStr WAComDlgGetSaveFileName(HWND hWnd, CStr OFilters, CStr InitDir, CStr Defaul
 
 // -----------------------------------------------------------------------
 // Choose a font
-long WAComDlgChooseFont(HWND hWnd, CStr FntName, long FntSize, long FixedOnly)
+long ComDlgChooseFont(HWND hWnd, CStr FntName, long FntSize, long FixedOnly)
 {
     int i = 0;
     HDC FhDC = 0;
@@ -7936,7 +7949,7 @@ long WAComDlgChooseFont(HWND hWnd, CStr FntName, long FntSize, long FixedOnly)
 
 // -----------------------------------------------------------------------
 // Display a browse dialog
-CStr WAComDlgBrowseForFolder(HWND hWnd, CStr Title)
+CStr ComDlgBrowseForFolder(HWND hWnd, CStr Title)
 {
     CStr ReturnValue;
     BROWSEINFO MyBrowse;
@@ -7975,7 +7988,7 @@ CStr WAComDlgBrowseForFolder(HWND hWnd, CStr Title)
 // -----------------------------------------------------------------------
 // Parse a multi files selection
 // Return directory of selected files (if any)
-CStr WAComDlgParseMultiFilesSelection(CStr SelectedFiles, long (CALLBACK *EnumProc)(char *, long), long EnumDirection, long UserValue)
+CStr ComDlgParseMultiFilesSelection(CStr SelectedFiles, long (CALLBACK *EnumProc)(char *, long), long EnumDirection, long UserValue)
 {
     CStr BufString;
     CStr ReturnValue;
@@ -8011,7 +8024,7 @@ CStr WAComDlgParseMultiFilesSelection(CStr SelectedFiles, long (CALLBACK *EnumPr
 				}
 				break;
 		}
-		BufString = WAFileGetDirectory(StringGetSplitElement(SelectedFiles, SelArray, 0));
+		BufString = FileGetDirectory(StringGetSplitElement(SelectedFiles, SelArray, 0));
         ReturnValue = BufString;
         StringReleaseSplit(SelArray);
     }
@@ -8214,7 +8227,7 @@ long CALLBACK WASetDumpBoxClass(HINSTANCE hInst)
     WAMyClass.hInstance = hInst;
     WAMyClass.hbrBackground = 0;
     WAMyClass.lpszMenuName = "";
-    WAMyClass.lpszClassName = "WADumpBoxClass";
+    WAMyClass.lpszClassName = "DumpBoxClass";
     WAMyClass.hIcon = WALocalhIcon;
     WAMyClass.hCursor = LoadCursor(0, IDC_ARROW);
     WAMyClass.hIconSm = WALocalhIcon;
@@ -8345,21 +8358,21 @@ LRESULT CALLBACK WADefSplitterClassHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
         case WM_CREATE:
             // Create a splitbar and store the new handle
             CopyMemory(&TmpSplitterDat, &WACurrentSplitterStruct, sizeof(TmpSplitterDat));
-            if(TmpSplitterDat.Orientation == SPLITTER_HORZ) SetWindowLong(hWnd, GWL_USERDATA, (long) WACreateSplitBar(0, 0, -1, TmpSplitterDat.SplitBarSize, hWnd, 0, WACurrentSplitterStruct));
-            else SetWindowLong(hWnd, GWL_USERDATA, (long) WACreateSplitBar(WAControlWidth(hWnd) - TmpSplitterDat.SplitBarSize, -1, TmpSplitterDat.SplitBarSize, -1, hWnd, 0, WACurrentSplitterStruct));
+            if(TmpSplitterDat.Orientation == SPLITTER_HORZ) SetWindowLong(hWnd, GWL_USERDATA, (long) CreateSplitBar(0, 0, -1, TmpSplitterDat.SplitBarSize, hWnd, 0, WACurrentSplitterStruct));
+            else SetWindowLong(hWnd, GWL_USERDATA, (long) CreateSplitBar(ControlWidth(hWnd) - TmpSplitterDat.SplitBarSize, -1, TmpSplitterDat.SplitBarSize, -1, hWnd, 0, WACurrentSplitterStruct));
             return(0);
         case WM_SIZE:
             hChild = (HWND) GetWindowLong(hWnd, GWL_USERDATA);
             CopyMemory(&TmpSplitterDat, (void *) GetWindowLong(hChild, GWL_USERDATA), sizeof(TmpSplitterDat));
-            if(TmpSplitterDat.Orientation == SPLITTER_HORZ) MoveWindow(hChild, 0, 0, WAControlWidth(hWnd), TmpSplitterDat.SplitBarSize + 1, 1);
-            else MoveWindow(hChild, WAControlWidth(hWnd) - TmpSplitterDat.SplitBarSize, 0, TmpSplitterDat.SplitBarSize, WAControlHeight(hWnd), 1);
+            if(TmpSplitterDat.Orientation == SPLITTER_HORZ) MoveWindow(hChild, 0, 0, ControlWidth(hWnd), TmpSplitterDat.SplitBarSize + 1, 1);
+            else MoveWindow(hChild, ControlWidth(hWnd) - TmpSplitterDat.SplitBarSize, 0, TmpSplitterDat.SplitBarSize, ControlHeight(hWnd), 1);
             return(0);
         case WM_PAINT:
             BeginPaint(hWnd, &SplitPs);
             hChild = (HWND) GetWindowLong(hWnd, GWL_USERDATA);
             CopyMemory(&TmpSplitterDat, (void *) GetWindowLong(hChild, GWL_USERDATA), sizeof(TmpSplitterDat));
-            if(TmpSplitterDat.Orientation == SPLITTER_HORZ) MoveWindow(hChild, 0, 0, WAControlWidth(hWnd), TmpSplitterDat.SplitBarSize + 1, 1);
-            else MoveWindow(hChild, WAControlWidth(hWnd) - TmpSplitterDat.SplitBarSize, 0, TmpSplitterDat.SplitBarSize, WAControlHeight(hWnd), 1);
+            if(TmpSplitterDat.Orientation == SPLITTER_HORZ) MoveWindow(hChild, 0, 0, ControlWidth(hWnd), TmpSplitterDat.SplitBarSize + 1, 1);
+            else MoveWindow(hChild, ControlWidth(hWnd) - TmpSplitterDat.SplitBarSize, 0, TmpSplitterDat.SplitBarSize, ControlHeight(hWnd), 1);
             EndPaint(hWnd, &SplitPs);
             return(0);
         case WM_CLOSE:
@@ -8392,9 +8405,9 @@ LRESULT CALLBACK WADefVertSplitBarClassHook(HWND hWnd, UINT uMsg, WPARAM wParam,
             hScreenDC = GetDC(0);
             GetWindowRect(TmpSplitBarDat.hClient, &MaxRect);
             GetCursorPos(&CursScrPos);
-            ParentLeft = WAControlLeft(TmpSplitBarDat.hParent);
-            ParentWidth = WAControlWidth(TmpSplitBarDat.hParent);
-            RealLeft = WAControlLeft(hWnd);
+            ParentLeft = ControlLeft(TmpSplitBarDat.hParent);
+            ParentWidth = ControlWidth(TmpSplitBarDat.hParent);
+            RealLeft = ControlLeft(hWnd);
             if(CursScrPos.x < (ParentLeft + (TmpSplitBarDat.MinLeftTop + 5))) CursScrPos.x = (ParentLeft + (TmpSplitBarDat.MinLeftTop + 5));
             if(CursScrPos.x > ((ParentLeft + ParentWidth) - (TmpSplitBarDat.MinLeftTop + 8))) CursScrPos.x = (ParentLeft + ParentWidth) - (TmpSplitBarDat.MinLeftTop + 8);
             if(TmpSplitBarDat.OldXPos != CursScrPos.x)
@@ -8434,8 +8447,8 @@ LRESULT CALLBACK WADefVertSplitBarClassHook(HWND hWnd, UINT uMsg, WPARAM wParam,
                 hScreenDC = GetDC(0);
                 GetWindowRect(TmpSplitBarDat.hClient, &MaxRect);
                 GetCursorPos(&CursScrPos);
-                ParentLeft = WAControlLeft(TmpSplitBarDat.hParent);
-                ParentWidth = WAControlWidth(TmpSplitBarDat.hParent);
+                ParentLeft = ControlLeft(TmpSplitBarDat.hParent);
+                ParentWidth = ControlWidth(TmpSplitBarDat.hParent);
                 if(CursScrPos.x < (ParentLeft + (TmpSplitBarDat.MinLeftTop + 5))) CursScrPos.x = (ParentLeft + (TmpSplitBarDat.MinLeftTop + 5));
                 if(CursScrPos.x > ((ParentLeft + ParentWidth) - (TmpSplitBarDat.MinLeftTop + 8))) CursScrPos.x = (ParentLeft + ParentWidth) - (TmpSplitBarDat.MinLeftTop + 8);
                 if(TmpSplitBarDat.OldXPos != CursScrPos.x)
@@ -8482,7 +8495,7 @@ LRESULT CALLBACK WADefVertSplitBarClassHook(HWND hWnd, UINT uMsg, WPARAM wParam,
                     PosRect.left = PosRect.left + 1;
                     PosRect.right = PosRect.right - 1;
                     DrawFocusRect(hScreenDC, &PosRect);
-                    TmpSplitBarDat.OldXPos = TmpSplitBarDat.OldXPos - WAControlLeft(TmpSplitBarDat.hParent);
+                    TmpSplitBarDat.OldXPos = TmpSplitBarDat.OldXPos - ControlLeft(TmpSplitBarDat.hParent);
                 }
                 TmpSplitBarDat.Sizing = SPLITTER_NORESIZING;
                 RtlCopyMemory((void *) GetWindowLong(hWnd, GWL_USERDATA), &TmpSplitBarDat, sizeof(TmpSplitBarDat));
@@ -8528,13 +8541,13 @@ LRESULT CALLBACK WADefHorzSplitBarClassHook(HWND hWnd, UINT uMsg, WPARAM wParam,
             hScreenDC = GetDC(0);
             GetWindowRect(TmpSplitBarDat.hClient, &MaxRect);
             GetCursorPos(&CursScrPos);
-            ParentLeft = WAControlLeft(TmpSplitBarDat.hParent);
-            ParentTop = WAControlTop(TmpSplitBarDat.hParent);
-            ParentHeight = WAControlHeight(TmpSplitBarDat.hParent);
-            ParentWidth = WAControlWidth(TmpSplitBarDat.hParent);
-            RealTop = WAControlTop(hWnd);
+            ParentLeft = ControlLeft(TmpSplitBarDat.hParent);
+            ParentTop = ControlTop(TmpSplitBarDat.hParent);
+            ParentHeight = ControlHeight(TmpSplitBarDat.hParent);
+            ParentWidth = ControlWidth(TmpSplitBarDat.hParent);
+            RealTop = ControlTop(hWnd);
             if(CursScrPos.y < (MaxRect.top + (TmpSplitBarDat.MaxRightBottom + 2))) CursScrPos.y = (MaxRect.top + (TmpSplitBarDat.MaxRightBottom + 2));
-            if(CursScrPos.y > ((MaxRect.bottom + WAControlHeight(GetParent(hWnd))) - (TmpSplitBarDat.MaxRightBottom + 5))) CursScrPos.y = (MaxRect.bottom + WAControlHeight(GetParent(hWnd))) - (TmpSplitBarDat.MaxRightBottom + 5);
+            if(CursScrPos.y > ((MaxRect.bottom + ControlHeight(GetParent(hWnd))) - (TmpSplitBarDat.MaxRightBottom + 5))) CursScrPos.y = (MaxRect.bottom + ControlHeight(GetParent(hWnd))) - (TmpSplitBarDat.MaxRightBottom + 5);
             if(TmpSplitBarDat.OldYPos != CursScrPos.y)
             {
                 if(TmpSplitBarDat.OldYPos != -1)
@@ -8571,12 +8584,12 @@ LRESULT CALLBACK WADefHorzSplitBarClassHook(HWND hWnd, UINT uMsg, WPARAM wParam,
                 hScreenDC = GetDC(0);
                 GetWindowRect(TmpSplitBarDat.hClient, &MaxRect);
                 GetCursorPos(&CursScrPos);
-                ParentLeft = WAControlLeft(TmpSplitBarDat.hParent);
-                ParentTop = WAControlTop(TmpSplitBarDat.hParent);
-                ParentHeight = WAControlHeight(TmpSplitBarDat.hParent);
-                ParentWidth = WAControlWidth(TmpSplitBarDat.hParent);
+                ParentLeft = ControlLeft(TmpSplitBarDat.hParent);
+                ParentTop = ControlTop(TmpSplitBarDat.hParent);
+                ParentHeight = ControlHeight(TmpSplitBarDat.hParent);
+                ParentWidth = ControlWidth(TmpSplitBarDat.hParent);
                 if(CursScrPos.y < (MaxRect.top + (TmpSplitBarDat.MaxRightBottom + 2))) CursScrPos.y = (MaxRect.top + (TmpSplitBarDat.MaxRightBottom + 2));
-                if(CursScrPos.y > ((MaxRect.bottom + WAControlHeight(GetParent(hWnd))) - (TmpSplitBarDat.MaxRightBottom + 5))) CursScrPos.y = (MaxRect.bottom + WAControlHeight(GetParent(hWnd))) - (TmpSplitBarDat.MaxRightBottom + 5);
+                if(CursScrPos.y > ((MaxRect.bottom + ControlHeight(GetParent(hWnd))) - (TmpSplitBarDat.MaxRightBottom + 5))) CursScrPos.y = (MaxRect.bottom + ControlHeight(GetParent(hWnd))) - (TmpSplitBarDat.MaxRightBottom + 5);
                 if(TmpSplitBarDat.OldYPos != CursScrPos.y)
                 {
                     if(TmpSplitBarDat.OldYPos != -1)
@@ -8613,8 +8626,8 @@ LRESULT CALLBACK WADefHorzSplitBarClassHook(HWND hWnd, UINT uMsg, WPARAM wParam,
                 GetWindowRect(TmpSplitBarDat.hClient, &MaxRect);
                 if(TmpSplitBarDat.OldYPos != -1)
                 {
-                    ParentLeft = WAControlLeft(TmpSplitBarDat.hParent);
-                    ParentWidth = WAControlWidth(TmpSplitBarDat.hParent);
+                    ParentLeft = ControlLeft(TmpSplitBarDat.hParent);
+                    ParentWidth = ControlWidth(TmpSplitBarDat.hParent);
                     PosRect.left = ParentLeft + 2;
                     PosRect.right = ParentWidth + ParentLeft - 2;
                     PosRect.top = TmpSplitBarDat.OldYPos;
@@ -8623,7 +8636,7 @@ LRESULT CALLBACK WADefHorzSplitBarClassHook(HWND hWnd, UINT uMsg, WPARAM wParam,
                     PosRect.top = PosRect.top + 1;
                     PosRect.bottom = PosRect.bottom - 1;
                     DrawFocusRect(hScreenDC, &PosRect);
-                    TmpSplitBarDat.OldYPos = TmpSplitBarDat.OldYPos - WAControlTop(TmpSplitBarDat.hClient) + TmpSplitBarDat.DisplacementY;
+                    TmpSplitBarDat.OldYPos = TmpSplitBarDat.OldYPos - ControlTop(TmpSplitBarDat.hClient) + TmpSplitBarDat.DisplacementY;
                 }
                 TmpSplitBarDat.Sizing = SPLITTER_NORESIZING;
                 RtlCopyMemory((void *) GetWindowLong(hWnd, GWL_USERDATA), &TmpSplitBarDat, sizeof(TmpSplitBarDat));
@@ -8689,10 +8702,10 @@ LRESULT CALLBACK WADefColorBoxClassHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
             if((long) LoColorB < (long) 0) LoColorB = 0;
             Hicolor = (HicolorR << 16) | (HicolorG << 8) | HicolorB;
             LoColor = (LoColorR << 16) | (LoColorG << 8) | LoColorB;
-            WAGDIDrawLine(hWnd, 0, 0, 0, (PaintRect.bottom - PaintRect.top) - 1, Hicolor);
-            WAGDIDrawLine(hWnd, 0, 0, (PaintRect.right - PaintRect.left) - 1, 0, Hicolor);
-            WAGDIDrawLine(hWnd, 1, (PaintRect.bottom - PaintRect.top) - 1, (PaintRect.right - PaintRect.left), (PaintRect.bottom - PaintRect.top) - 1, LoColor);
-            WAGDIDrawLine(hWnd, (PaintRect.right - PaintRect.left) - 1, 1, (PaintRect.right - PaintRect.left) - 1, (PaintRect.bottom - PaintRect.top) - 1, LoColor);
+            GDIDrawLine(hWnd, 0, 0, 0, (PaintRect.bottom - PaintRect.top) - 1, Hicolor);
+            GDIDrawLine(hWnd, 0, 0, (PaintRect.right - PaintRect.left) - 1, 0, Hicolor);
+            GDIDrawLine(hWnd, 1, (PaintRect.bottom - PaintRect.top) - 1, (PaintRect.right - PaintRect.left), (PaintRect.bottom - PaintRect.top) - 1, LoColor);
+            GDIDrawLine(hWnd, (PaintRect.right - PaintRect.left) - 1, 1, (PaintRect.right - PaintRect.left) - 1, (PaintRect.bottom - PaintRect.top) - 1, LoColor);
             DeleteObject(hBlackBrush);
 			return(1);
         case WM_CLOSE:
@@ -8725,11 +8738,11 @@ LRESULT CALLBACK WADefDumpBoxClassHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
                     SetScrollPos(hWnd, SB_HORZ, ReturnScrollValue, 1);
 					break;
                 case SB_PAGELEFT:
-                    ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_PAGELEFT, GetScrollPos(hWnd, SB_HORZ), WAControlClientWidth(hWnd));
+                    ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_PAGELEFT, GetScrollPos(hWnd, SB_HORZ), ControlClientWidth(hWnd));
                     SetScrollPos(hWnd, SB_HORZ, ReturnScrollValue, 1);
 					break;
                 case SB_PAGERIGHT:
-                    ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_PAGERIGHT, GetScrollPos(hWnd, SB_HORZ), WAControlClientWidth(hWnd));
+                    ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_PAGERIGHT, GetScrollPos(hWnd, SB_HORZ), ControlClientWidth(hWnd));
                     SetScrollPos(hWnd, SB_HORZ, ReturnScrollValue, 1);
 					break;
                 case SB_THUMBTRACK:
@@ -8762,11 +8775,11 @@ LRESULT CALLBACK WADefDumpBoxClassHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
                     SetScrollPos(hWnd, SB_VERT, ReturnScrollValue, 1);
 					break;
                 case SB_PAGEUP:
-                    ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_PAGEUP, GetScrollPos(hWnd, SB_VERT), WAControlClientHeight(hWnd));
+                    ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_PAGEUP, GetScrollPos(hWnd, SB_VERT), ControlClientHeight(hWnd));
                     SetScrollPos(hWnd, SB_VERT, ReturnScrollValue, 1);
 					break;
                 case SB_PAGEDOWN:
-                    ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_PAGEDOWN, GetScrollPos(hWnd, SB_VERT), WAControlClientHeight(hWnd));
+                    ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_PAGEDOWN, GetScrollPos(hWnd, SB_VERT), ControlClientHeight(hWnd));
                     SetScrollPos(hWnd, SB_VERT, ReturnScrollValue, 1);
 					break;
                 case SB_THUMBTRACK:
@@ -9131,7 +9144,7 @@ int CALLBACK FRMStockModalDlgEmptyProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, L
 	switch(uMsg)
 	{
         case WM_INITDIALOG:
-            WAControlSetText(hwndDlg, DialogTempTitle);
+            ControlSetText(hwndDlg, DialogTempTitle);
 			LastDialog = hwndDlg;
 			break;
         case WM_PAINT:
@@ -9157,13 +9170,13 @@ int CALLBACK FRMStockModalDlgStdCloseProc(HWND hwndDlg, UINT uMsg, WPARAM wParam
     switch(uMsg)
     {
         case WM_INITDIALOG:
-            WAControlSetText(hwndDlg, DialogTempTitle);
-			WACreateButton(DialogTempWidth - 80, DialogTempHeight - 26, 77, 23, hwndDlg, "Close", BUTTON_STOCK_OK_ID, 0, 0, 0, BS_DEFPUSHBUTTON | WS_TABSTOP, _Btn_StaticEdge);
+            ControlSetText(hwndDlg, DialogTempTitle);
+			CreateButton(DialogTempWidth - 80, DialogTempHeight - 26, 77, 23, hwndDlg, "Close", BUTTON_STOCK_OK_ID, 0, 0, 0, BS_DEFPUSHBUTTON | WS_TABSTOP, _Btn_StaticEdge);
 			LastDialog = hwndDlg;
 			break;
         case WM_PAINT:
             BeginPaint(hwndDlg, &Ps);
-            WAGDIDrawHorzSep(hwndDlg, 0, WAControlClientHeight(hwndDlg) - 33, WAControlClientWidth(hwndDlg));
+            GDIDrawHorzSep(hwndDlg, 0, ControlClientHeight(hwndDlg) - 33, ControlClientWidth(hwndDlg));
 			if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
             EndPaint(hwndDlg, &Ps);
 			return(0);
@@ -9185,14 +9198,14 @@ int CALLBACK FRMStockModalDlgStdOkCancelProc(HWND hwndDlg, UINT uMsg, WPARAM wPa
     switch(uMsg)
     {
         case WM_INITDIALOG:
-            WAControlSetText(hwndDlg, DialogTempTitle);
-            WACreateButton(DialogTempWidth - 159, DialogTempHeight - 26, 77, 23, hwndDlg, "Ok", BUTTON_STOCK_OK_ID, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, _Btn_StaticEdge);
-            WACreateButton(DialogTempWidth - 80, DialogTempHeight - 26, 77, 23, hwndDlg, "Cancel", BUTTON_STOCK_CANCEL_ID, 0, 0, 0, WS_TABSTOP, _Btn_StaticEdge);
+            ControlSetText(hwndDlg, DialogTempTitle);
+            CreateButton(DialogTempWidth - 159, DialogTempHeight - 26, 77, 23, hwndDlg, "Ok", BUTTON_STOCK_OK_ID, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, _Btn_StaticEdge);
+            CreateButton(DialogTempWidth - 80, DialogTempHeight - 26, 77, 23, hwndDlg, "Cancel", BUTTON_STOCK_CANCEL_ID, 0, 0, 0, WS_TABSTOP, _Btn_StaticEdge);
 			LastDialog = hwndDlg;
 			break;
 		case WM_PAINT:
             BeginPaint(hwndDlg, &Ps);
-            WAGDIDrawHorzSep(hwndDlg, 0, WAControlClientHeight(hwndDlg) - 33, WAControlClientWidth(hwndDlg));
+            GDIDrawHorzSep(hwndDlg, 0, ControlClientHeight(hwndDlg) - 33, ControlClientWidth(hwndDlg));
 			if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
             EndPaint(hwndDlg, &Ps);
 			return(0);
@@ -9215,19 +9228,19 @@ int CALLBACK FRMStockModalDlgStdWizardProc(HWND hwndDlg, UINT uMsg, WPARAM wPara
     switch(uMsg)
     {
         case WM_INITDIALOG:
-            WAControlSetText(hwndDlg, DialogTempTitle);
-			WACreateButton(DialogTempWidth - (159 + 5), DialogTempHeight - 26, 77, 23, hwndDlg, "Finish", BUTTON_STOCK_FINISH_ID, 0, 0, 0, WS_GROUP | BS_DEFPUSHBUTTON | WS_TABSTOP, _Btn_StaticEdge);
-            WACreateButton(DialogTempWidth - 80, DialogTempHeight - 26, 77, 23, hwndDlg, "Cancel", BUTTON_STOCK_CANCEL_ID, 0, 0, 0, WS_TABSTOP, _Btn_StaticEdge);
-            WACreateButton(DialogTempWidth - (159 + 10 + (79 * 2)), DialogTempHeight - 26, 77, 23, hwndDlg, "Previous", BUTTON_STOCK_PREVIOUS_ID, 0, 0, 0, WS_TABSTOP, _Btn_StaticEdge);
-			WACreateButton(DialogTempWidth - (159 + 10 + 79), DialogTempHeight - 26, 77, 23, hwndDlg, "Next", BUTTON_STOCK_NEXT_ID, 0, 0, 0, WS_TABSTOP, _Btn_StaticEdge);
-            WAControlEnable(GetDlgItem(hwndDlg, BUTTON_STOCK_PREVIOUS_ID), 0);
-            WAControlEnable(GetDlgItem(hwndDlg, BUTTON_STOCK_NEXT_ID), 0);
-			WACreatePictureBox(0, 0, 200, DialogTempHeight - 34, hwndDlg, LoadBitmap(ApphInstance, (char *) DialogTempExtra), IMAGE_BITMAP, 0, 0, SS_CENTERIMAGE);
+            ControlSetText(hwndDlg, DialogTempTitle);
+			CreateButton(DialogTempWidth - (159 + 5), DialogTempHeight - 26, 77, 23, hwndDlg, "Finish", BUTTON_STOCK_FINISH_ID, 0, 0, 0, WS_GROUP | BS_DEFPUSHBUTTON | WS_TABSTOP, _Btn_StaticEdge);
+            CreateButton(DialogTempWidth - 80, DialogTempHeight - 26, 77, 23, hwndDlg, "Cancel", BUTTON_STOCK_CANCEL_ID, 0, 0, 0, WS_TABSTOP, _Btn_StaticEdge);
+            CreateButton(DialogTempWidth - (159 + 10 + (79 * 2)), DialogTempHeight - 26, 77, 23, hwndDlg, "Previous", BUTTON_STOCK_PREVIOUS_ID, 0, 0, 0, WS_TABSTOP, _Btn_StaticEdge);
+			CreateButton(DialogTempWidth - (159 + 10 + 79), DialogTempHeight - 26, 77, 23, hwndDlg, "Next", BUTTON_STOCK_NEXT_ID, 0, 0, 0, WS_TABSTOP, _Btn_StaticEdge);
+            ControlEnable(GetDlgItem(hwndDlg, BUTTON_STOCK_PREVIOUS_ID), 0);
+            ControlEnable(GetDlgItem(hwndDlg, BUTTON_STOCK_NEXT_ID), 0);
+			CreatePictureBox(0, 0, 200, DialogTempHeight - 34, hwndDlg, LoadBitmap(ApphInstance, (char *) DialogTempExtra), IMAGE_BITMAP, 0, 0, SS_CENTERIMAGE);
 			LastDialog = hwndDlg;
 			break;
         case WM_PAINT:
             BeginPaint(hwndDlg, &Ps);
-            WAGDIDrawHorzSep(hwndDlg, 0, WAControlClientHeight(hwndDlg) - 33, WAControlClientWidth(hwndDlg));
+            GDIDrawHorzSep(hwndDlg, 0, ControlClientHeight(hwndDlg) - 33, ControlClientWidth(hwndDlg));
 			if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
             EndPaint(hwndDlg, &Ps);
 			return(0);

@@ -91,7 +91,7 @@ void CALLBACK MDIChildInitProc(HWND hWnd)
 	NewChildMem->hChildCodeMax = CreateCodeMax(-1, -1, -1, -1, hWnd, ApphInstance, 1);
     InitMinimumCodeMax(NewChildMem->hChildCodeMax);
 	NewChildMem->RFile->Set_String(FileToOpen.Get_String());
-	WAControlSetText(hWnd, NewChildMem->RFile);
+	ControlSetText(hWnd, NewChildMem->RFile);
     SetCodeMaxFont(NewChildMem->hChildCodeMax);
 	// (StoreLanguage() uses ChildStruct)
     ChildStruct = NewChildMem;
@@ -104,7 +104,7 @@ void CALLBACK MDIChildInitProc(HWND hWnd)
     SetCodeMaxLanguage(NewChildMem->hChildCodeMax);
     NbForms++;
     LoadCurrentSel(NewChildMem->hChildCodeMax);
-    if(WAControlIsVisible(hStatusBar) != 0) SetStatusBarParts();
+    if(ControlIsVisible(hStatusBar) != 0) SetStatusBarParts();
     RefreshSBStat = 1;
     WritePositionInStatus(NewChildMem->hChildCodeMax);
     DragAcceptFiles(NewChildMem->hChildCodeMax, AcceptFiles);
@@ -156,11 +156,11 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 //        CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_FINDMARKALL, 0);
 
         case WM_URGENTKILLCLIST:
-            WAControlClose(FRMAPIListhWnd);
+            ControlClose(FRMAPIListhWnd);
 			break;
 
 		case WM_NOTIFY:
-            switch(WAControlGetNotifiedMsg(lParam))
+            switch(ControlGetNotifiedMsg(lParam))
             {
 				case CMN_MARKALL:
                     ChildStruct = LoadStructure(hWnd);
@@ -175,11 +175,11 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                     if(ChildStruct->ModifFlag == 1)
                     {
                         TempRfile = ChildStruct->RFile + (CStr) " *";
-                        WAControlSetText(hWnd, TempRfile);
+                        ControlSetText(hWnd, TempRfile);
                     }
                     else
                     {
-                        WAControlSetText(hWnd, ChildStruct->RFile);
+                        ControlSetText(hWnd, ChildStruct->RFile);
                     }
                     RefreshChildTitle(hWnd);
 					break;
@@ -217,14 +217,14 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                         // Change line
                         if(ChildStruct->oldAPILine != GetCurrentLineNumber(ChildStruct->hChildCodeMax))
                         {
-                            WAControlClose(FRMAPIListhWnd);
+                            ControlClose(FRMAPIListhWnd);
                         }
                         else
                         {
                             // Change column
                             if(ChildStruct->oldAPICol != GetCurrentColNumber(ChildStruct->hChildCodeMax))
                             {
-                                WAControlClose(FRMAPIListhWnd);
+                                ControlClose(FRMAPIListhWnd);
                             }
                         }
                     }
@@ -236,7 +236,7 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                             // Change line
                             if(ChildStruct->oldAPILine != GetCurrentLineNumber(ChildStruct->hChildCodeMax))
                             {
-                                WAControlClose(FRMAPIhwnd);
+                                ControlClose(FRMAPIhwnd);
                             }
                             else
                             {
@@ -362,8 +362,8 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
             CurrentForm = hWnd;
 			break;
         case WM_WINDOWPOSCHANGED:
-            CurrentForm = WAClientGetActiveChild(hMDIform.hClient);
-            if(WAControlIsVisible(CurrentForm) != 0)
+            CurrentForm = ClientGetActiveChild(hMDIform.hClient);
+            if(ControlIsVisible(CurrentForm) != 0)
             {
                 ChildStruct = LoadStructure(CurrentForm);
                 SetFocus(ChildStruct->hChildCodeMax);
@@ -372,20 +372,20 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
         case WM_ERASEBKGND:
             return(0);
         case WM_NCACTIVATE:
-            if(APITTip == 1) if(APIMode == 1) WAControlClose(FRMAPIhwnd);
-            if(APIListMode == 1) WAControlClose(FRMAPIListhWnd);
+            if(APITTip == 1) if(APIMode == 1) ControlClose(FRMAPIhwnd);
+            if(APIListMode == 1) ControlClose(FRMAPIListhWnd);
 			break;
 		case WM_MOVE:
-            if(APITTip == 1) if(APIMode == 1) WAControlClose(FRMAPIhwnd);
-            if(APIListMode == 1) WAControlClose(FRMAPIListhWnd);
+            if(APITTip == 1) if(APIMode == 1) ControlClose(FRMAPIhwnd);
+            if(APIListMode == 1) ControlClose(FRMAPIListhWnd);
 			break;
         case WM_SIZE:
-            if(APITTip == 1) if(APIMode == 1) WAControlClose(FRMAPIhwnd);
-            if(APIListMode == 1) WAControlClose(FRMAPIListhWnd);
+            if(APITTip == 1) if(APIMode == 1) ControlClose(FRMAPIhwnd);
+            if(APIListMode == 1) ControlClose(FRMAPIListhWnd);
             CurrentForm = hWnd;
 			break;
         case WM_MOUSEACTIVATE:
-            if(WAClientGetActiveChild(hMDIform.hClient) != hWnd)
+            if(ClientGetActiveChild(hMDIform.hClient) != hWnd)
             {
                 CurrentForm = hWnd;
                 SetFocus(CurrentForm);
@@ -396,7 +396,7 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
             BeginPaint(hWnd, &ChildPs);
             ResizeChildCodeMax(hWnd);
             EndPaint(hWnd, &ChildPs);
-            CurrentForm = WAClientGetActiveChild(hMDIform.hClient);
+            CurrentForm = ClientGetActiveChild(hMDIform.hClient);
             ChildStruct = LoadStructure(CurrentForm);
             LoadCurrentSel(ChildStruct->hChildCodeMax);
             RefreshSBStat = 1;
@@ -411,7 +411,7 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
             if(ChildStruct->ModifFlag == 1)
             {
                 BufString = "File '" + (CStr) CMGetRealFile(ChildStruct->RFile).Get_String() + (CStr) "' modified. Save it now ?";
-                switch(WAMiscMsgBox(hMDIform.hWnd, BufString, MB_QUESTIONCANCEL, Requesters)) {
+                switch(MiscMsgBox(hMDIform.hWnd, BufString, MB_QUESTIONCANCEL, Requesters)) {
                     case IDYES:
                         SaveIt(hWnd);
 						break;
@@ -440,7 +440,7 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 //                If IsInProject(CMGetRealFile(ChildStruct->RFile), True) = -1 Then GoTo NotInProject
 //                SavedHwnd = hwnd
 //                MCMD_PreviousWindow
-//                WAControlVisible SavedHwnd, False
+//                ControlVisible SavedHwnd, False
 //                SendMessage hMDIform.hClient, WM_MDIREFRESHMENU, 0, ByVal 0
 //                DrawMenuBar hMDIform.hwnd
 //                MDIChildForm1Proc = 0
@@ -551,7 +551,7 @@ void StoreLanguage(CStr LngToStore)
 // Load a font into codemax
 void SetCodeMaxFont(HWND hWnd)
 {
-    WAControlSetFontNoRedraw(hWnd, CurFontHandle);
+    ControlSetFontNoRedraw(hWnd, CurFontHandle);
 }
 
 // -----------------------------------------------------------------------
@@ -685,7 +685,7 @@ void WritePositionInStatus(HWND hWnd)
     long RealLine = 0;
     long RealCol = 0;
 
-    if(WAControlIsVisible(hStatusBar) != 0)
+    if(ControlIsVisible(hStatusBar) != 0)
     {
         LnCount = CM_GetLineCount(hWnd);
         if(LnCount == 0) LnCount = 1;
@@ -887,7 +887,7 @@ void ClearFile(HWND hWnd)
 {
     if(NbForms == 0) return;
     ChildStruct = LoadStructure(hWnd);
-    WAControlSetText(hWnd, ChildStruct->RFile);
+    ControlSetText(hWnd, ChildStruct->RFile);
     ChildStruct->FileLoaded = 0;
     CM_SetText(ChildStruct->hChildCodeMax, "");
     LoadCurrentSel(ChildStruct->hChildCodeMax);
@@ -909,10 +909,10 @@ long LoadFile(HWND hWnd)
     //long UnixModified = 0;
 
     ChildStruct = LoadStructure(hWnd);
-    if(WAFileIsUnix(CMGetRealFile(ChildStruct->RFile)) == 1)
+    if(FileIsUnix(CMGetRealFile(ChildStruct->RFile)) == 1)
     {
         // Read value in ini file
-        DirectUnix = WAIniReadKey("Layout", "AutoConvUNIX", MainIniFile);
+        DirectUnix = IniReadKey("Layout", "AutoConvUNIX", MainIniFile);
         if(DirectUnix.Len() != 0)
         {
             if(strcmpi(DirectUnix.Get_String(), "1") == 0)
@@ -921,7 +921,7 @@ long LoadFile(HWND hWnd)
                 goto DirectConvertUnix;
             }
         }
-        if(WAMiscMsgBox(hMDIform.hWnd, "File '" + (CStr) CMGetRealFile(ChildStruct->RFile).Get_String() + 
+        if(MiscMsgBox(hMDIform.hWnd, "File '" + (CStr) CMGetRealFile(ChildStruct->RFile).Get_String() + 
                         (CStr) "' is probably an Unix file.\rWant to convert it ?",
                         MB_QUESTION,
                         Requesters) == IDYES)
@@ -944,16 +944,16 @@ DirectConvertUnix:
     // Set title
     FileTitle = CMGetRealFile(ChildStruct->RFile);
     //if(UnixModified == 1) {
-        //WAControlSetText(hWnd, FileTitle + (CStr) " *");
+        //ControlSetText(hWnd, FileTitle + (CStr) " *");
         //ChildStruct->ModifFlag = 1;
     //} else {
-        WAControlSetText(hWnd, FileTitle);
+        ControlSetText(hWnd, FileTitle);
         ChildStruct->ModifFlag = 0;
     //}
     // Fill with last write time
-    WAFileGetWriteTime(FileTitle, ChildStruct->FileDateOpen);
+    FileGetWriteTime(FileTitle, ChildStruct->FileDateOpen);
     ChildStruct->FileLoaded = 1;
-    if(WAFileIsReadOnly(FileTitle))
+    if(FileIsReadOnly(FileTitle))
     {
 		SetChildReadOnly(hWnd, TRUE);
     }
@@ -982,10 +982,10 @@ long IncludeFile(HWND hWnd, CStr FName)
 
     ChildStruct = LoadStructure(hWnd);
     LoadCurrentSel(ChildStruct->hChildCodeMax);
-    if(WAFileIsUnix(FName) == 1)
+    if(FileIsUnix(FName) == 1)
     {
         // Read value in ini file
-        DirectUnix = WAIniReadKey("Layout", "AutoConvUNIX", MainIniFile);
+        DirectUnix = IniReadKey("Layout", "AutoConvUNIX", MainIniFile);
         if(DirectUnix.Len() != 0)
         {
             if(strcmpi(DirectUnix.Get_String(), "1") == 0)
@@ -994,7 +994,7 @@ long IncludeFile(HWND hWnd, CStr FName)
                 goto DirectConvertUnix;
             }
         }
-        if(WAMiscMsgBox(hMDIform.hWnd, "File '" + (CStr) FName.Get_String() + (CStr) "' is probably an Unix file.\rWant to convert it ?", 
+        if(MiscMsgBox(hMDIform.hWnd, "File '" + (CStr) FName.Get_String() + (CStr) "' is probably an Unix file.\rWant to convert it ?", 
                         MB_QUESTION, Requesters) == IDYES)
         {
 DirectConvertUnix:
@@ -1034,12 +1034,12 @@ long SaveCodeMax(HWND hWnd, CStr FName)
     {
         WriteComment("Creating backup file...");
         // Retrieve the backup dir
-        BakDirToSave = WAIniReadKey("Layout", "BackupDir", MainIniFile);
+        BakDirToSave = IniReadKey("Layout", "BackupDir", MainIniFile);
         if(BakDirToSave.Len() != 0)
         {
             if(strcmp(BakDirToSave.Right(1).Get_String(), "\\") != 0) BakDirToSave = BakDirToSave + "\\";
             BakDirToSave = ChangeRelativePaths(BakDirToSave);
-            BakDirToSave = BakDirToSave + (CStr) WAFileGetFileName(CMGetRealFile(FName)).Get_String();
+            BakDirToSave = BakDirToSave + (CStr) FileGetFileName(CMGetRealFile(FName)).Get_String();
         }
         else
         {
@@ -1048,7 +1048,7 @@ long SaveCodeMax(HWND hWnd, CStr FName)
 		// Add decoration
 		if(DecorateBak == 1)
 		{
-			NameDeco = WADateGetDay() + (CStr) WADateGetMonth() + (CStr) WADateGetYear() + (CStr) WADateGetHour();
+			NameDeco = DateGetDay() + (CStr) DateGetMonth() + (CStr) DateGetYear() + (CStr) DateGetHour();
 			NameDeco = StringReplace(NameDeco, ":", "", 1, -1, Binary_Compare);
 			NameDeco = StringReplace(NameDeco, " ", "", 1, -1, Binary_Compare);
 			BakDirToSave = BakDirToSave + "." + (CStr) NameDeco;
@@ -1060,9 +1060,9 @@ long SaveCodeMax(HWND hWnd, CStr FName)
     }
     SaveBookmarks(hWnd, FName, 0, -1);
     ChildStruct->RFile->Set_String(FName.Get_String());
-    WAControlSetText(hWnd, CMGetRealFile(ChildStruct->RFile));
+    ControlSetText(hWnd, CMGetRealFile(ChildStruct->RFile));
     // Store new modified date
-    WAFileGetWriteTime(CMGetRealFile(ChildStruct->RFile), ChildStruct->FileDateOpen);
+    FileGetWriteTime(CMGetRealFile(ChildStruct->RFile), ChildStruct->FileDateOpen);
     ChildStruct->FileLoaded = 1;
     ChildStruct->ModifFlag = 0;
     UpdateLanguage(hWnd, FName);
@@ -1070,7 +1070,7 @@ long SaveCodeMax(HWND hWnd, CStr FName)
     ReturnValue = 1;
     return(ReturnValue);
 ErrSave:
-    WAMiscMsgBox(hMDIform.hWnd, "File '" + (CStr) CMGetRealFile(FName).Get_String() + (CStr) "' seems to be locked: can't save.",
+    MiscMsgBox(hMDIform.hWnd, "File '" + (CStr) CMGetRealFile(FName).Get_String() + (CStr) "' seems to be locked: can't save.",
                  MB_ERROR, Requesters);
     ReturnValue = 0;
     return(ReturnValue);
@@ -1093,13 +1093,13 @@ void SaveBookmarks(HWND hWnd, CStr FileName, long BaseLine, long Lines)
 	if(strcmpi(FileName.Get_String(), "<untitled document") != 0)
 	{
         // Save the bookmarks
-        SaveBook = WAIniReadKey("Layout", "SaveBookmarks", MainIniFile);
+        SaveBook = IniReadKey("Layout", "SaveBookmarks", MainIniFile);
         if(SaveBook.Len() != 0)
         {
             if(strcmp(SaveBook.Get_String(), "1") == 0)
             {
                 // Retrieve the number of bookmarks
-                BookName = WAFileReplaceExtension(FileName, "mbk");
+                BookName = FileReplaceExtension(FileName, "mbk");
 				ChildStruct = LoadStructure(hWnd);
                 BkNumber = CM_GetAllBookmarks(ChildStruct->hChildCodeMax, 0);
                 if(BkNumber != 0)
@@ -1108,14 +1108,14 @@ void SaveBookmarks(HWND hWnd, CStr FileName, long BaseLine, long Lines)
                     BkBlock = AllocMem(BkNumber * 4);
                     CM_GetAllBookmarks(ChildStruct->hChildCodeMax, BkBlock);
                     // Create the file
-                    BookFile = WAFileCreateEmpty(BookName, NO_SECURITY_DESCRIPTOR);
-                    WAFileWriteLine(BookFile, "; Chromatic bookmarks file");
-                    WAFileWriteLine(BookFile, "; Do NOT edit this file manually");
-                    WAFileWriteLine(BookFile, "; unless you know what you're doing !!!");
-                    WAFileWriteLine(BookFile, "; (C) 2001-2010 Franck Charlet.");
-                    WAFileWriteLine(BookFile, "");
-                    WAFileWriteLine(BookFile, "[BOOKMARKDAT]");
-                    WAFileClose(BookFile);
+                    BookFile = FileCreateEmpty(BookName, NO_SECURITY_DESCRIPTOR);
+                    FileWriteLine(BookFile, "; Chromatic bookmarks file");
+                    FileWriteLine(BookFile, "; Do NOT edit this file manually");
+                    FileWriteLine(BookFile, "; unless you know what you're doing !!!");
+                    FileWriteLine(BookFile, "; (C) 2001-2010 Franck Charlet.");
+                    FileWriteLine(BookFile, "");
+                    FileWriteLine(BookFile, "[BOOKMARKDAT]");
+                    FileClose(BookFile);
                     // Save number of bookmarks
                     BkRealNumber = 0;
                     // Store bookmarks datas
@@ -1127,12 +1127,12 @@ void SaveBookmarks(HWND hWnd, CStr FileName, long BaseLine, long Lines)
                         {
                             // Was in a block ?
                             if(Lines != -1) if(BkLineNumber > Lines) goto NoWriteBookmark;
-                            WAIniWriteKey("BOOKMARKDAT", "BOOK" + (CStr) StringNumberComplement(BkRealNumber, 6).Get_String(),
+                            IniWriteKey("BOOKMARKDAT", "BOOK" + (CStr) StringNumberComplement(BkRealNumber, 6).Get_String(),
                                           BkLineNumber, BookName);
                             BkRealNumber++;
 NoWriteBookmark:;       }
                     }
-                    WAIniWriteKey("BOOKMARKDAT", "BOOKNBR", BkRealNumber, BookName);
+                    IniWriteKey("BOOKMARKDAT", "BOOKNBR", BkRealNumber, BookName);
                     FreeMem(BkBlock);
                 }
                 else
@@ -1159,20 +1159,20 @@ void LoadBookmarks(HWND hWnd, CStr BkFName, long BaseLine)
     FILETIME BookfileTime;
     int i = 0;
     
-	LoadBook = WAIniReadKey("Layout", "SaveBookmarks", MainIniFile);
+	LoadBook = IniReadKey("Layout", "SaveBookmarks", MainIniFile);
     if(LoadBook.Len() != 0)
     {
         if(strcmp(LoadBook.Get_String(), "1") == 0)
         {
             // Load the associated bookmarks of the file
-            BkNameToLoad = WAFileReplaceExtension(BkFName, "mbk");
-            if(WAFileExist(BkNameToLoad) == 1)
+            BkNameToLoad = FileReplaceExtension(BkFName, "mbk");
+            if(FileExist(BkNameToLoad) == 1)
             {
-                WAFileGetWriteTime(BkFName, &RootfileTime);
-                WAFileGetWriteTime(BkNameToLoad, &BookfileTime);
+                FileGetWriteTime(BkFName, &RootfileTime);
+                FileGetWriteTime(BkNameToLoad, &BookfileTime);
                 // Check if bookmark file is obsolete
                 if(CompareFileTime(&RootfileTime, &BookfileTime) == 1) return;
-                NbBooks = WAIniReadKey("BOOKMARKDAT", "BOOKNBR", BkNameToLoad);
+                NbBooks = IniReadKey("BOOKMARKDAT", "BOOKNBR", BkNameToLoad);
                 if(NbBooks.Len() != 0)
                 {
                     if(NbBooks.Is_Numeric())
@@ -1182,7 +1182,7 @@ void LoadBookmarks(HWND hWnd, CStr BkFName, long BaseLine)
                         ChildStruct = LoadStructure(hWnd);
                 		for(i = 0; i <= NbBooksLng - 1; i++)
                 		{
-                            BookToStore = WAIniReadKey("BOOKMARKDAT", "BOOK" + (CStr) StringNumberComplement(i, 6).Get_String(), BkNameToLoad);
+                            BookToStore = IniReadKey("BOOKMARKDAT", "BOOK" + (CStr) StringNumberComplement(i, 6).Get_String(), BkNameToLoad);
                             if(BookToStore.Len() != 0)
                             {
                                 if(BookToStore.Is_Numeric())
@@ -1244,10 +1244,10 @@ void PrintFile(HWND hWnd, long Selection)
     return;
 ErrPrint:
 	BufString =	"Can't print file '" + (CStr) ChildStruct->RFile->Left(ChildStruct->RFile->Len()).Get_String() + (CStr) "'.";
-    WAMiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
+    MiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
     return;
 ErrEmptyPrint:
-    WAMiscMsgBox(hMDIform.hWnd, "No text selected.", MB_ERROR, Requesters);
+    MiscMsgBox(hMDIform.hWnd, "No text selected.", MB_ERROR, Requesters);
 }
 
 // -----------------------------------------------------------------------
@@ -1527,134 +1527,134 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             {
 				if(CursorDisabled) DisplayCursor();
                 hPop = CreatePopupMenu();
-                AppendMenu(hPop, MF_STRING, MENU_CONTEXT_CONTEXTHELP_ID + MENU_CONTEXT_IDBASE, "Context help\tF1");
-                AppendMenu(hPop, MF_STRING, MENU_CONTEXT_MSDNHELP_ID + MENU_CONTEXT_IDBASE, "MSDN/Platform SDK help\tCtrl+F1");
-                AppendMenu(hPop, MF_STRING, MENU_CONTEXT_DDKHELP_ID + MENU_CONTEXT_IDBASE, "Windows DDK help\tCtrl+Shift+F1");
-                AppendMenu(hPop, MF_STRING, MENU_CONTEXT_DIRECTXSDKHELP_ID + MENU_CONTEXT_IDBASE, "DirectX SDK help\tAlt+Shift+F1");
-                AppendMenu(hPop, MF_SEPARATOR, (UINT) -1, "-");
+                MenuAddString(hPop, "Context help\tF1", MENU_CONTEXT_CONTEXTHELP_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPop, "MSDN/Platform SDK help\tCtrl+F1", MENU_CONTEXT_MSDNHELP_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPop, "Windows DDK help\tCtrl+Shift+F1", MENU_CONTEXT_DDKHELP_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPop, "DirectX SDK help\tAlt+Shift+F1", MENU_CONTEXT_DIRECTXSDKHELP_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddSeparator(hPop);
                 hPopSub = CreatePopupMenu();
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_OPENFILEUNDERCURSOR_ID + MENU_CONTEXT_IDBASE, "Open file under caret\tCtrl+Enter");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_EXECFILEUNDERCURSOR_ID + MENU_CONTEXT_IDBASE, "Execute file under caret\tCtrl+Shift+Enter");
-                AppendMenu(hPopSub, MF_SEPARATOR, (UINT) -1, "-");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_DECTOHEX_ID + MENU_CONTEXT_IDBASE, "Convert dec to hex\tCtrl+1");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_DECTOBIN_ID + MENU_CONTEXT_IDBASE, "Convert dec to bin\tCtrl+2");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_HEXTODEC_ID + MENU_CONTEXT_IDBASE, "Convert hex to dec\tCtrl+3");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_HEXTOBIN_ID + MENU_CONTEXT_IDBASE, "Convert hex to bin\tCtrl+4");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BINTODEC_ID + MENU_CONTEXT_IDBASE, "Convert bin to dec\tCtrl+5");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BINTOHEX_ID + MENU_CONTEXT_IDBASE, "Convert bin to hex\tCtrl+6");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_HEXTOFLT_ID + MENU_CONTEXT_IDBASE, "Convert hex to float\tCtrl+7");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_FLTTOHEX_ID + MENU_CONTEXT_IDBASE, "Convert float to hex\tCtrl+8");
-                WAMenuSetDefaultItem(hPopSub, 0);
+                MenuAddString(hPopSub, "Open file under caret\tCtrl+Enter", MENU_CONTEXT_OPENFILEUNDERCURSOR_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Execute file under caret\tCtrl+Shift+Enter", MENU_CONTEXT_EXECFILEUNDERCURSOR_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddSeparator(hPopSub);
+                MenuAddString(hPopSub, "Convert dec to hex\tCtrl+1", MENU_CONTEXT_DECTOHEX_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Convert dec to bin\tCtrl+2", MENU_CONTEXT_DECTOBIN_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Convert hex to dec\tCtrl+3", MENU_CONTEXT_HEXTODEC_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Convert hex to bin\tCtrl+4", MENU_CONTEXT_HEXTOBIN_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Convert bin to dec\tCtrl+5", MENU_CONTEXT_BINTODEC_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Convert bin to hex\tCtrl+6", MENU_CONTEXT_BINTOHEX_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Convert hex to float\tCtrl+7", MENU_CONTEXT_HEXTOFLT_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Convert float to hex\tCtrl+8", MENU_CONTEXT_FLTTOHEX_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuSetDefaultItem(hPopSub, 0);
                 AppendMenu(hPop, MF_POPUP, (UINT) hPopSub, "Target");
                 hPopSub = CreatePopupMenu();
                 CreateSnippetMenu(hPopSub, hWnd);
                 if(SnipArray.Amount() != 0) AppendMenu(hPop, MF_POPUP, (UINT) hPopSub, "Insert snippet (Ctrl+Alt+Space)");
                 hPopSub = CreatePopupMenu();
                 if(CreateLangScripts(hPopSub)) AppendMenu(hPop, MF_POPUP, (UINT) hPopSub, "Scripts (Ctrl+Shift+Space)");
-                AppendMenu(hPop, MF_SEPARATOR, (UINT) -1, "-");
-                AppendMenu(hPop, MF_STRING, MENU_CONTEXT_UNDO_ID + MENU_CONTEXT_IDBASE, "Undo\tCtrl+Z");
-                AppendMenu(hPop, MF_STRING, MENU_CONTEXT_REDO_ID + MENU_CONTEXT_IDBASE, "Redo\tCtrl+Y");
-                AppendMenu(hPop, MF_SEPARATOR, (UINT) -1, "-");
-                AppendMenu(hPop, MF_STRING, MENU_CONTEXT_CUT_ID + MENU_CONTEXT_IDBASE, "Cut\tCtrl+X");
+                MenuAddSeparator(hPop);
+                MenuAddString(hPop, "Undo\tCtrl+Z", MENU_CONTEXT_UNDO_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPop, "Redo\tCtrl+Y", MENU_CONTEXT_REDO_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddSeparator(hPop);
+                MenuAddString(hPop, "Cut\tCtrl+X", MENU_CONTEXT_CUT_ID + MENU_CONTEXT_IDBASE, TRUE);
                 hPopSub = CreatePopupMenu();
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_COPY_ID + MENU_CONTEXT_IDBASE, "Copy selection\tCtrl+C");
-                WAMenuSetDefaultItem(hPopSub, 0);
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_COPYFILEPATHNAME_ID + MENU_CONTEXT_IDBASE, "Copy file path/name");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_COPYENTIRETEXT_ID + MENU_CONTEXT_IDBASE, "Copy entire text");
+                MenuAddString(hPopSub, "Copy selection\tCtrl+C", MENU_CONTEXT_COPY_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuSetDefaultItem(hPopSub, 0);
+                MenuAddString(hPopSub, "Copy file path/name", MENU_CONTEXT_COPYFILEPATHNAME_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Copy entire text", MENU_CONTEXT_COPYENTIRETEXT_ID + MENU_CONTEXT_IDBASE, TRUE);
                 AppendMenu(hPop, MF_POPUP, (UINT) hPopSub, "Copy");
                 hPopSub = CreatePopupMenu();
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_PASTE_ID + MENU_CONTEXT_IDBASE, "To current window\tCtrl+V");
-                WAMenuSetDefaultItem(hPopSub, 0);
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_PASTENEWWINDOW_ID + MENU_CONTEXT_IDBASE, "To new window\tCtrl+Shift+V");
+                MenuAddString(hPopSub, "To current window\tCtrl+V", MENU_CONTEXT_PASTE_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuSetDefaultItem(hPopSub, 0);
+                MenuAddString(hPopSub, "To new window\tCtrl+Shift+V", MENU_CONTEXT_PASTENEWWINDOW_ID + MENU_CONTEXT_IDBASE, TRUE);
                 AppendMenu(hPop, MF_POPUP, (UINT) hPopSub, "Paste");
-                AppendMenu(hPop, MF_SEPARATOR, (UINT) -1, "-");
-                AppendMenu(hPop, MF_STRING, MENU_CONTEXT_SELECTLINE_ID + MENU_CONTEXT_IDBASE, "Select line\tCtrl+Alt+F8");
-                AppendMenu(hPop, MF_STRING, MENU_CONTEXT_SELECTALL_ID + MENU_CONTEXT_IDBASE, "Select all\tCtrl+A");
+                MenuAddSeparator(hPop);
+                MenuAddString(hPop, "Select line\tCtrl+Alt+F8", MENU_CONTEXT_SELECTLINE_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPop, "Select all\tCtrl+A", MENU_CONTEXT_SELECTALL_ID + MENU_CONTEXT_IDBASE, TRUE);
                 hPopSub = CreatePopupMenu();
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_SELECTPROCEDURE_ID + MENU_CONTEXT_IDBASE, "Select\tCtrl+Shift+A");
-                WAMenuSetDefaultItem(hPopSub, 0);
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_SELECTPROCEDUREANDCOLLAPSE_ID + MENU_CONTEXT_IDBASE, "Select and collapse\tCtrl+Shift+Q");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_UNCOLLAPSEPROCEDURE_ID + MENU_CONTEXT_IDBASE, "Expand\tCtrl+Shift+W");
+                MenuAddString(hPopSub, "Select\tCtrl+Shift+A", MENU_CONTEXT_SELECTPROCEDURE_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuSetDefaultItem(hPopSub, 0);
+                MenuAddString(hPopSub, "Select and collapse\tCtrl+Shift+Q", MENU_CONTEXT_SELECTPROCEDUREANDCOLLAPSE_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Expand\tCtrl+Shift+W", MENU_CONTEXT_UNCOLLAPSEPROCEDURE_ID + MENU_CONTEXT_IDBASE, TRUE);
                 AppendMenu(hPop, MF_POPUP, (UINT) hPopSub, "Procedure");
-                AppendMenu(hPop, MF_SEPARATOR, (UINT) -1, "-");
-                AppendMenu(hPop, MF_STRING, MENU_CONTEXT_FIND_ID + MENU_CONTEXT_IDBASE, "Find...\tCtrl+F");
-                AppendMenu(hPop, MF_STRING, MENU_CONTEXT_REPLACE_ID + MENU_CONTEXT_IDBASE, "Replace...\tF4");
-                AppendMenu(hPop, MF_SEPARATOR, (UINT) -1, "-");
+                MenuAddSeparator(hPop);
+                MenuAddString(hPop, "Find...\tCtrl+F", MENU_CONTEXT_FIND_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPop, "Replace...\tF4", MENU_CONTEXT_REPLACE_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddSeparator(hPop);
                 hPopSub = CreatePopupMenu();
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BOOKMARKS_TOGGLE_ID + MENU_CONTEXT_IDBASE, "Toggle\tF2");
-                WAMenuSetDefaultItem(hPopSub, 0);
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BOOKMARKS_FIRST_ID + MENU_CONTEXT_IDBASE, "First\tCtrl+F7");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BOOKMARKS_PREVIOUS_ID + MENU_CONTEXT_IDBASE, "Previous\tShift+F2");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BOOKMARKS_NEXT_ID + MENU_CONTEXT_IDBASE, "Next\tCtrl+F2");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BOOKMARKS_LAST_ID + MENU_CONTEXT_IDBASE, "Last\tCtrl+Shift+F7");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BOOKMARKS_CLEARALL_ID + MENU_CONTEXT_IDBASE, "Clear all\tCtrl+Shift+F2");
+                MenuAddString(hPopSub, "Toggle\tF2", MENU_CONTEXT_BOOKMARKS_TOGGLE_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuSetDefaultItem(hPopSub, 0);
+                MenuAddString(hPopSub, "First\tCtrl+F7", MENU_CONTEXT_BOOKMARKS_FIRST_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Previous\tShift+F2", MENU_CONTEXT_BOOKMARKS_PREVIOUS_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Next\tCtrl+F2", MENU_CONTEXT_BOOKMARKS_NEXT_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Last\tCtrl+Shift+F7", MENU_CONTEXT_BOOKMARKS_LAST_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Clear all\tCtrl+Shift+F2", MENU_CONTEXT_BOOKMARKS_CLEARALL_ID + MENU_CONTEXT_IDBASE, TRUE);
                 AppendMenu(hPop, MF_POPUP, (UINT) hPopSub, "Bookmarks");
                 hPopSub = CreatePopupMenu();
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BREAKPOINTS_TOGGLE_ID + MENU_CONTEXT_IDBASE, "Toggle\tF10");
-                WAMenuSetDefaultItem(hPopSub, 0);
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BREAKPOINTS_FIRST_ID + MENU_CONTEXT_IDBASE, "First\tCtrl+F7");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BREAKPOINTS_PREVIOUS_ID + MENU_CONTEXT_IDBASE, "Previous\tShift+F10");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BREAKPOINTS_NEXT_ID + MENU_CONTEXT_IDBASE, "Next\tCtrl+F10");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BREAKPOINTS_LAST_ID + MENU_CONTEXT_IDBASE, "Last\tCtrl+Shift+F7");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BREAKPOINTS_CLEARALL_ID + MENU_CONTEXT_IDBASE, "Clear all\tCtrl+Shift+F10");
+                MenuAddString(hPopSub, "Toggle\tF10", MENU_CONTEXT_BREAKPOINTS_TOGGLE_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuSetDefaultItem(hPopSub, 0);
+                MenuAddString(hPopSub, "First\tCtrl+F7", MENU_CONTEXT_BREAKPOINTS_FIRST_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Previous\tShift+F10", MENU_CONTEXT_BREAKPOINTS_PREVIOUS_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Next\tCtrl+F10", MENU_CONTEXT_BREAKPOINTS_NEXT_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Last\tCtrl+Shift+F7", MENU_CONTEXT_BREAKPOINTS_LAST_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Clear all\tCtrl+Shift+F10", MENU_CONTEXT_BREAKPOINTS_CLEARALL_ID + MENU_CONTEXT_IDBASE, TRUE);
                 AppendMenu(hPop, MF_POPUP, (UINT) hPopSub, "Code breakpoints");
-                AppendMenu(hPop, MF_SEPARATOR, (UINT) -1, "-");
+                MenuAddSeparator(hPop);
                 hPopSub = CreatePopupMenu();
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_GOTO_TOP_ID + MENU_CONTEXT_IDBASE, "Top\tCtrl+Home");
-                WAMenuSetDefaultItem(hPopSub, 0);
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_GOTO_BOTTOM_ID + MENU_CONTEXT_IDBASE, "Bottom\tCtrl+End");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_GOTO_LINE_ID + MENU_CONTEXT_IDBASE, "Line\tCtrl+G");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_GOTO_MATCHINGBRACKET_ID + MENU_CONTEXT_IDBASE, "Matching bracket\tCtrl+[");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_GOTO_PREVIOUSWORD_ID + MENU_CONTEXT_IDBASE, "Previous word\tCtrl+Left");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_GOTO_NEXTWORD_ID + MENU_CONTEXT_IDBASE, "Next word\tCtrl+Right");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_GOTO_PREVIOUSPROCEDURE_ID + MENU_CONTEXT_IDBASE, "Previous procedure\tAlt+Up");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_GOTO_NEXTPROCEDURE_ID + MENU_CONTEXT_IDBASE, "Next procedure\tAlt+Down");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_GOTO_PREVIOUSPARAGRAPH_ID + MENU_CONTEXT_IDBASE, "Previous paragraph\tCtrl+Alt+Left");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_GOTO_NEXTPARAGRAPH_ID + MENU_CONTEXT_IDBASE, "Next paragraph\tCtrl+Alt+Right");
-                AppendMenu(hPopSub, MF_SEPARATOR, (UINT) -1, "-");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_GOTO_VARIABLEDECLARATION_ID + MENU_CONTEXT_IDBASE, "Variable declaration\tCtrl+Alt+S");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_GOTO_VARIABLENEXTUSE_ID + MENU_CONTEXT_IDBASE, "Variable next use");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_GOTO_PROCEDUREPROTOTYPE_ID + MENU_CONTEXT_IDBASE, "Procedure prototype");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_GOTO_PROCEDUREENTRYPOINT_ID + MENU_CONTEXT_IDBASE, "Procedure entry point\tCtrl+Alt+F");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_GOTO_PROCEDURENEXTUSE_ID + MENU_CONTEXT_IDBASE, "Procedure next use");
+                MenuAddString(hPopSub, "Top\tCtrl+Home", MENU_CONTEXT_GOTO_TOP_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuSetDefaultItem(hPopSub, 0);
+                MenuAddString(hPopSub, "Bottom\tCtrl+End", MENU_CONTEXT_GOTO_BOTTOM_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Line\tCtrl+G", MENU_CONTEXT_GOTO_LINE_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Matching bracket\tCtrl+[", MENU_CONTEXT_GOTO_MATCHINGBRACKET_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Previous word\tCtrl+Left", MENU_CONTEXT_GOTO_PREVIOUSWORD_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Next word\tCtrl+Right", MENU_CONTEXT_GOTO_NEXTWORD_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Previous procedure\tAlt+Up", MENU_CONTEXT_GOTO_PREVIOUSPROCEDURE_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Next procedure\tAlt+Down", MENU_CONTEXT_GOTO_NEXTPROCEDURE_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Previous paragraph\tCtrl+Alt+Left", MENU_CONTEXT_GOTO_PREVIOUSPARAGRAPH_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Next paragraph\tCtrl+Alt+Right", MENU_CONTEXT_GOTO_NEXTPARAGRAPH_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddSeparator(hPopSub);
+                MenuAddString(hPopSub, "Variable declaration\tCtrl+Alt+S", MENU_CONTEXT_GOTO_VARIABLEDECLARATION_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Variable next use", MENU_CONTEXT_GOTO_VARIABLENEXTUSE_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Procedure prototype", MENU_CONTEXT_GOTO_PROCEDUREPROTOTYPE_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Procedure entry point\tCtrl+Alt+F", MENU_CONTEXT_GOTO_PROCEDUREENTRYPOINT_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Procedure next use", MENU_CONTEXT_GOTO_PROCEDURENEXTUSE_ID + MENU_CONTEXT_IDBASE, TRUE);
                 AppendMenu(hPop, MF_POPUP, (UINT) hPopSub, "Goto");
                 hPopSub = CreatePopupMenu();
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BLOCK_INDENT_ID + MENU_CONTEXT_IDBASE, "Indent\tTab");
-                WAMenuSetDefaultItem(hPopSub, 0);
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BLOCK_UNINDENT_ID + MENU_CONTEXT_IDBASE, "Unindent\tShift+Tab");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BLOCK_UPPERCASE_ID + MENU_CONTEXT_IDBASE, "Upper case\tCtrl+U");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BLOCK_LOWERCASE_ID + MENU_CONTEXT_IDBASE, "Lower case\tCtrl+L");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BLOCK_TOGGLECASE_ID + MENU_CONTEXT_IDBASE, "Toggle case\tCtrl+Shift+U");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BLOCK_COMMENT_ID + MENU_CONTEXT_IDBASE, "Comment\tCtrl+K");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BLOCK_UNCOMMENT_ID + MENU_CONTEXT_IDBASE, "Uncomment\tCtrl+M");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BLOCK_TABIFY_ID + MENU_CONTEXT_IDBASE, "Tabify\tCtrl+Shift+T");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BLOCK_UNTABIFY_ID + MENU_CONTEXT_IDBASE, "Untabify\tCtrl+Alt+T");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BLOCK_SPACESTOTABS_ID + MENU_CONTEXT_IDBASE, "Spaces to tabs\tCtrl+Alt+R");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BLOCK_REGISTERS_ID + MENU_CONTEXT_IDBASE, "Registers\tCtrl+R");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BLOCK_BLKCOMMENT_ID + MENU_CONTEXT_IDBASE, "Comment (multi lines)\tCtrl+Shift+K");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BLOCK_CUSTOMCOMMENT_ID + MENU_CONTEXT_IDBASE, "Custom comment...\tCtrl+Shift+F8");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BLOCK_TRIMSPACES_ID + MENU_CONTEXT_IDBASE, "Trim trailing spaces\tCtrl+Alt+G");
-                AppendMenu(hPopSub, MF_SEPARATOR, (UINT) -1, "-");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BLOCK_CONVERTTOINCLUDE_ID + MENU_CONTEXT_IDBASE, "Convert to include...\tCtrl+Shift+L");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BLOCK_SAVEAS_ID + MENU_CONTEXT_IDBASE, "Save as...\tCtrl+W");
-                AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_BLOCK_PRINT_ID + MENU_CONTEXT_IDBASE, "Print...\tCtrl+Shift+P");
+                MenuAddString(hPopSub, "Indent\tTab", MENU_CONTEXT_BLOCK_INDENT_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuSetDefaultItem(hPopSub, 0);
+                MenuAddString(hPopSub, "Unindent\tShift+Tab", MENU_CONTEXT_BLOCK_UNINDENT_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Upper case\tCtrl+U", MENU_CONTEXT_BLOCK_UPPERCASE_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Lower case\tCtrl+L", MENU_CONTEXT_BLOCK_LOWERCASE_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Toggle case\tCtrl+Shift+U", MENU_CONTEXT_BLOCK_TOGGLECASE_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Comment\tCtrl+K", MENU_CONTEXT_BLOCK_COMMENT_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Uncomment\tCtrl+M", MENU_CONTEXT_BLOCK_UNCOMMENT_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Tabify\tCtrl+Shift+T", MENU_CONTEXT_BLOCK_TABIFY_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Untabify\tCtrl+Alt+T", MENU_CONTEXT_BLOCK_UNTABIFY_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Spaces to tabs\tCtrl+Alt+R", MENU_CONTEXT_BLOCK_SPACESTOTABS_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Registers\tCtrl+R", MENU_CONTEXT_BLOCK_REGISTERS_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Comment (multi lines)\tCtrl+Shift+K", MENU_CONTEXT_BLOCK_BLKCOMMENT_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Custom comment...\tCtrl+Shift+F8", MENU_CONTEXT_BLOCK_CUSTOMCOMMENT_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Trim trailing spaces\tCtrl+Alt+G", MENU_CONTEXT_BLOCK_TRIMSPACES_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddSeparator(hPopSub);
+                MenuAddString(hPopSub, "Convert to include...\tCtrl+Shift+L", MENU_CONTEXT_BLOCK_CONVERTTOINCLUDE_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Save as...\tCtrl+W", MENU_CONTEXT_BLOCK_SAVEAS_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPopSub, "Print...\tCtrl+Shift+P", MENU_CONTEXT_BLOCK_PRINT_ID + MENU_CONTEXT_IDBASE, TRUE);
                 AppendMenu(hPop, MF_POPUP, (UINT) hPopSub, "Block");
-                AppendMenu(hPop, MF_SEPARATOR, (UINT) -1, "-");
-                AppendMenu(hPop, MF_STRING, MENU_CONTEXT_NEW_ID + MENU_CONTEXT_IDBASE, "New\tCtrl+N");
+                MenuAddSeparator(hPop);
+                MenuAddString(hPop, "New\tCtrl+N", MENU_CONTEXT_NEW_ID + MENU_CONTEXT_IDBASE, TRUE);
                 
 				hPopSub = CreatePopupMenu();
-				AppendMenu(hPopSub, MF_STRING, MENU_CONTEXT_INCLUDEFILE_ID + MENU_CONTEXT_IDBASE, "Source file(s)...\tCtrl+I");
-				WAMenuSetDefaultItem(hPopSub, 0);
+                MenuAddString(hPopSub, "Source file(s)...\tCtrl+I", MENU_CONTEXT_INCLUDEFILE_ID + MENU_CONTEXT_IDBASE, TRUE);
+				MenuSetDefaultItem(hPopSub, 0);
 				hPopSubSub = CreatePopupMenu();
 				// 0 to avoid global menu registering
 				CreateFiltersMenu(hPopSubSub, 0, MENU_CONTEXT_INCLUDEFILTERS_ID + MENU_CONTEXT_IDBASE, "Laboratory...\tCtrl+Shift+I", 1);
 				AppendMenu(hPopSub, MF_POPUP, (UINT) hPopSubSub, "Filters");
 				AppendMenu(hPop, MF_POPUP, (UINT) hPopSub, "Include");
                 
-				AppendMenu(hPop, MF_STRING, MENU_CONTEXT_DUPLICATEFILE_ID + MENU_CONTEXT_IDBASE, "Duplicate file");
-                AppendMenu(hPop, MF_STRING, MENU_CONTEXT_RELOADFILE_ID + MENU_CONTEXT_IDBASE, "Reload file\tCtrl+Shift+N");
-                AppendMenu(hPop, MF_SEPARATOR, (UINT) -1, "-");
-                AppendMenu(hPop, MF_STRING, MENU_CONTEXT_PROPERTIES_ID + MENU_CONTEXT_IDBASE, "Properties...\tF8");
+                MenuAddString(hPop, "Duplicate file", MENU_CONTEXT_DUPLICATEFILE_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddString(hPop, "Reload file\tCtrl+Shift+N", MENU_CONTEXT_RELOADFILE_ID + MENU_CONTEXT_IDBASE, TRUE);
+                MenuAddSeparator(hPop);
+                MenuAddString(hPop, "Properties...\tF8", MENU_CONTEXT_PROPERTIES_ID + MENU_CONTEXT_IDBASE, TRUE);
                 if(lParam == -1) lParam = (WAMMGetCaretRealYCoordinate(hWnd) * 0x10000) | (WAMMGetCaretRealXCoordinate(hWnd) & 0xFFFF);
                 TrackPopupMenu(hPop, TPM_LEFTALIGN | TPM_LEFTBUTTON, lParam & 0xFFFF, ((lParam & 0xFFFF0000) >> 16), 0, hWnd, NULL);
                 return(0);
@@ -1670,7 +1670,7 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             {
                 if(wParam != 0)
                 {
-					if(WAIniReadBoolKey("Layout", "NewWindowOnDrop", MainIniFile))
+					if(IniReadBoolKey("Layout", "NewWindowOnDrop", MainIniFile))
 					{
 						// Retrieve the number of droped files
 						NbrDroped = DragQueryFile((HDROP) wParam, 0xFFFFFFFF, 0, 0);
@@ -1732,7 +1732,7 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 									{
 										CM_SetModified(hWnd, 0);
 										ChildStruct->RFile->Set_String(DropedFileName.Get_String());
-										WAControlSetText(CurrentForm, ChildStruct->RFile);
+										ControlSetText(CurrentForm, ChildStruct->RFile);
 										UpdateLanguage(CurrentForm, DropedFileName);
 									}
 								}
@@ -2061,14 +2061,14 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 								return(0);
 							}
 							// Get the size
-							ScriptFile_Size = WAFileGetSize(Script_FileName);
+							ScriptFile_Size = FileGetSize(Script_FileName);
 							if(ScriptFile_Size == 0)
 							{
 								WriteToStatus("Empty script file.");
 								return(0);
 							}
 							// Read the file
-							Script_File = WAFileLoadIntoMem(Script_FileName, &ScriptFile_Size_Out);
+							Script_File = FileLoadIntoMem(Script_FileName, &ScriptFile_Size_Out);
 							if(Script_File == NULL)
 							{
 								WriteToStatus("Error while reading script file.");
@@ -2129,7 +2129,7 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                                 }
                                 else
                                 {
-                                    WAControlClose(FRMAPIhwnd);
+                                    ControlClose(FRMAPIhwnd);
                                 }
                             }
                         }
@@ -2155,7 +2155,7 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                                     }
                                     else
                                     {
-                                        WAControlClose(FRMAPIhwnd);
+                                        ControlClose(FRMAPIhwnd);
                                     }
                                 }
                             }
@@ -2216,12 +2216,12 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             }
 			break;
 		case WM_KEYDOWN:
-            if(APITTip == 1) if(APIMode == 1) if(wParam == 27) WAControlClose(FRMAPIhwnd);
-            if(APIListMode == 1) if(wParam == 27) WAControlClose(FRMAPIListhWnd);
+            if(APITTip == 1) if(APIMode == 1) if(wParam == 27) ControlClose(FRMAPIhwnd);
+            if(APIListMode == 1) if(wParam == 27) ControlClose(FRMAPIListhWnd);
             if(CursorDisabled == 0)
             {
 				// Only disable it within codemax region
-				if(WAControlGetHwndFromPoint() == hWnd)
+				if(ControlGetHwndFromPoint() == hWnd)
 				{
 					// Store the coordinates
 					GetCursorPos(&Mouse_Coords);
@@ -2364,9 +2364,9 @@ void ForceChildFile(HWND hWnd)
 	ChildStruct = LoadStructure(hWnd);
     ChildStruct->ModifFlag = 1;
     ChildStruct->FileLoaded = 1;
-	BufString = WAControlGetText(hWnd);
+	BufString = ControlGetText(hWnd);
 	BufString = BufString + " *";
-    WAControlSetText(hWnd, BufString);
+    ControlSetText(hWnd, BufString);
 }
 
 // -----------------------------------------------------------------------
@@ -2378,9 +2378,9 @@ void ForceChildModified(HWND hWnd)
     ChildStruct = LoadStructure(hWnd);
     if(ChildStruct->ModifFlag == 1) return;
     ChildStruct->ModifFlag = 1;
-	BufString = WAControlGetText(hWnd);
+	BufString = ControlGetText(hWnd);
 	BufString = BufString + " *";
-    WAControlSetText(hWnd, BufString);
+    ControlSetText(hWnd, BufString);
 }
 
 // -----------------------------------------------------------------------
@@ -2480,13 +2480,13 @@ void CreateSnippetMenu(HMENU hsMenu, HWND hWnd)
     k = 0;
     for(i = 0; i <= 999; i++)
     {
-        ChildRetVal = WAIniReadKey("Snippets", "SnippetName" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-        RetVal2 = WAIniReadKey("Snippets", "SnippetFile" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        ChildRetVal = IniReadKey("Snippets", "SnippetName" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        RetVal2 = IniReadKey("Snippets", "SnippetFile" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         if(ChildRetVal.Len() == 0) break;
         if(RetVal2.Len() == 0) break;
         RetVal2 = ChangeRelativePaths(RetVal2);
         // Check the file
-        if(WAFileExist(RetVal2) != 0)
+        if(FileExist(RetVal2) != 0)
         {
             // Get the language
             TempLang = GetLanguageToOpen(RetVal2);
@@ -2504,7 +2504,7 @@ void CreateSnippetMenu(HMENU hsMenu, HWND hWnd)
 			if(lstrcmpi(CurrentLanguage.Get_String(), TempLang2.Get_String()) == 0)
 			{
 				BufString = ChildRetVal;
-				AppendMenu(hsMenu, MF_STRING, k + MENU_SNIPPET_IDBASE, BufString.Get_String());
+                MenuAddString(hsMenu, BufString, k + MENU_SNIPPET_IDBASE, TRUE);
 				SnipArray.Add(RetVal2.Get_String());
 				k++;
 			}
@@ -2527,23 +2527,23 @@ void CreateTemplateMenu(HMENU hsMenu)
     k = 0;
     for(i = 0; i <= 999; i++)
     {
-        ChildRetVal = WAIniReadKey("Templates", "TemplateName" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-        RetVal2 = WAIniReadKey("Templates", "TemplateFile" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        ChildRetVal = IniReadKey("Templates", "TemplateName" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+        RetVal2 = IniReadKey("Templates", "TemplateFile" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         if(ChildRetVal.Len() == 0) break;
         if(RetVal2.Len() == 0) break;
         RetVal2 = ChangeRelativePaths(RetVal2);
         // Check the file
-        if(WAFileExist(RetVal2) != 0)
+        if(FileExist(RetVal2) != 0)
         {
             // Add a separator at first place
-            if(SnippetNumber == 0) AppendMenu(hsMenu, MF_SEPARATOR, (UINT) -1, "-");
+            if(SnippetNumber == 0) MenuAddSeparator(hsMenu);
             SnippetNumber = 1;
             // Get the language
             TempLang = GetLanguageToOpen(RetVal2);
             if(TempLang.Len() == 0) TempLang = "Unknown";
             // Add it in menu
             BufString = ChildRetVal + (CStr) " (" + (CStr) TempLang + (CStr) ")";
-			AppendMenu(hsMenu, MF_STRING, k + MENU_TEMPLATES_IDBASE, BufString.Get_String());
+            MenuAddString(hsMenu, BufString, k + MENU_TEMPLATES_IDBASE, TRUE);
 			TemplatesArray.Add(RetVal2.Get_String());
             k++;
         }
@@ -2593,21 +2593,21 @@ long CreateLangScripts(HMENU hsMenu)
     {
         for(i = 0; i <= 999; i++)
         {
-            ChildRetVal = WAIniReadKey("Scripts", "ScriptName" + (CStr) StringNumberComplement(i, 3).Get_String(), LUALanguageToOpen);
+            ChildRetVal = IniReadKey("Scripts", "ScriptName" + (CStr) StringNumberComplement(i, 3).Get_String(), LUALanguageToOpen);
             if(ChildRetVal == "-")
             {
-				AppendMenu(hsMenu, MF_SEPARATOR, (UINT) -1, "-");
+                MenuAddSeparator(hsMenu);
 				ReturnValue = FALSE;
             }
             else
             {
-				RetVal2 = WAIniReadKey("Scripts", "ScriptData" + (CStr) StringNumberComplement(i, 3).Get_String(), LUALanguageToOpen);
+				RetVal2 = IniReadKey("Scripts", "ScriptData" + (CStr) StringNumberComplement(i, 3).Get_String(), LUALanguageToOpen);
 				// Script filename
 				if(RetVal2.Len() == 0) break;
 				// Script label
 				if(ChildRetVal.Len() == 0) break;
 				RetVal2 = ChangeRelativePaths(RetVal2);
-				AppendMenu(hsMenu, MF_STRING, k + MENU_SCRIPTINSERT_IDBASE, ChildRetVal.Get_String());
+                MenuAddString(hsMenu, ChildRetVal, k + MENU_SCRIPTINSERT_IDBASE, TRUE);
 				ReturnValue = TRUE;
 				LUAArray.Add(RetVal2.Get_String());
 				k++;
@@ -2615,12 +2615,12 @@ long CreateLangScripts(HMENU hsMenu)
 		}
     }
 	// draw the separator bar
-	if(ReturnValue) AppendMenu(hsMenu, MF_SEPARATOR, (UINT) -1, "-");
+	if(ReturnValue) MenuAddSeparator(hsMenu);
 	// Add the editor entry
-	AppendMenu(hsMenu, MF_STRING, k + MENU_SCRIPTINSERT_IDBASE, "Edit scripts list");
+    MenuAddString(hsMenu, "Edit scripts list", k + MENU_SCRIPTINSERT_IDBASE, TRUE);
 	if(ReturnValue) i++;
-	WAMenuSetDefaultItem(hsMenu, i);
-    WAMenuEnable(hsMenu, i, FALSE);
+	MenuSetDefaultItem(hsMenu, i);
+    MenuEnable(hsMenu, i, FALSE);
 	return(TRUE);
 }
 
@@ -2806,7 +2806,7 @@ void DispFnc(HWND hWnd, CStr FnctoShow, CStr CompleteLine, long SetHighLight, lo
     // Don't display it again
     if(APIMode == 1) if(ChildStruct->oldAPILine == GetCurrentLineNumber(hWnd)) if(strcmpi(CMGetRealFile(ChildStruct->oldAPIFnc).Get_String(), FnctoShow.Get_String()) == 0) return;
     APICurHiglight = 0;
-    if(APIMode == 1) WAControlClose(FRMAPIhwnd);
+    if(APIMode == 1) ControlClose(FRMAPIhwnd);
     APIFnc = FnctoShow.Get_String();
     GetWindowRect(hWnd, &APIRect);
     APIOldRealPosition = (GetRealYposition(hWnd));
@@ -2832,7 +2832,7 @@ void DispFnc(HWND hWnd, CStr FnctoShow, CStr CompleteLine, long SetHighLight, lo
     ChildStruct->oldAPILine = OldLn;
     ChildStruct->oldAPICol = OldCol;
     // Remove the selection list if it is opened
-    if(APIListMode == 1) WAControlClose(FRMAPIListhWnd);
+    if(APIListMode == 1) ControlClose(FRMAPIListhWnd);
     // We need to use a temporary var for APIMode
     // to avoid WM_NCACTIVATE message (after setfocus)
     TmpAPIMode = 0;
@@ -2845,7 +2845,7 @@ void DispFnc(HWND hWnd, CStr FnctoShow, CStr CompleteLine, long SetHighLight, lo
         TmpAPIMode = 1;
     }
     HighOn = SetHighLight;
-    if(WAControlIsVisible(hWnd) != 0) SetFocus(hWnd);
+    if(ControlIsVisible(hWnd) != 0) SetFocus(hWnd);
     // Pass into API mode now
     APIMode = TmpAPIMode;
 }
@@ -2870,7 +2870,7 @@ long GetRealYposition(HWND hWnd)
     HDC hDC = 0;
 
     TestString = "|gHq";
-    PosFont = WAGDIObtainFont(CurFontName, CurFontSize, hWnd, 0, 0);
+    PosFont = GDIObtainFont(CurFontName, CurFontSize, hWnd, 0, 0);
     hDC = GetDC(hWnd);
     PosOldObject = SelectObject(hDC, PosFont);
     GetTextExtentPoint32(hDC, TestString.Get_String(), TestString.Len(), &PosSize);
@@ -2925,21 +2925,21 @@ void MoveFncX(HWND hWnd, HWND DesthWnd)
     APILeft = APILeft + APIRect2.left;
     if(APILeft < APIRect.left)
     {
-        WAControlClose(DesthWnd);
+        ControlClose(DesthWnd);
         return;
     }
     if(APILeft > APIRect.right)
     {
-        WAControlClose(DesthWnd);
+        ControlClose(DesthWnd);
         return;
     }
     if((APILeft + APIXDim) > GetSystemMetrics(SM_CXFULLSCREEN)) APILeft = APILeft - APIXDim;
     if(APILeft < 0) APILeft = 0;
     ParLeft = APILeft;
-    ParTop = WAControlTop(DesthWnd);
-    ParWidth = WAControlWidth(DesthWnd);
-    ParHeight = WAControlHeight(DesthWnd);
-    WAControlRefresh(DesthWnd);
+    ParTop = ControlTop(DesthWnd);
+    ParWidth = ControlWidth(DesthWnd);
+    ParHeight = ControlHeight(DesthWnd);
+    ControlRefresh(DesthWnd);
     MoveWindow(DesthWnd, ParLeft, ParTop, ParWidth, ParHeight, 1);
 }
 
@@ -2962,14 +2962,14 @@ void MoveFncY(HWND hWnd, HWND DesthWnd)
     // Min Y
     if(GetCurrentTopIndex(ChildStruct->hChildCodeMax) > GetCurrentLineNumber(ChildStruct->hChildCodeMax))
     {
-        WAControlClose(DesthWnd);
+        ControlClose(DesthWnd);
         return;
     }
     // Max Y
     if(GetCurrentTopIndex(ChildStruct->hChildCodeMax) + CM_GetVisibleLineCount(ChildStruct->hChildCodeMax,
                           CM_GetCurrentView(ChildStruct->hChildCodeMax), 1) <= GetCurrentLineNumber(ChildStruct->hChildCodeMax))
     {
-        WAControlClose(DesthWnd);
+        ControlClose(DesthWnd);
         return;
     }
     GetWindowRect(ChildStruct->hChildCodeMax, &APIRect);
@@ -2982,11 +2982,11 @@ void MoveFncY(HWND hWnd, HWND DesthWnd)
     APITop = APITop + APIPoint.y;
     if((APITop + APIYDim) > GetSystemMetrics(SM_CYFULLSCREEN)) APITop = APITop - APIYDim - RealY;
     if(APITop < 0) APITop = 0;
-    ParLeft = WAControlLeft(DesthWnd);
+    ParLeft = ControlLeft(DesthWnd);
     ParTop = APITop;
-    ParWidth = WAControlWidth(DesthWnd);
-    ParHeight = WAControlHeight(DesthWnd);
-    WAControlRefresh(DesthWnd);
+    ParWidth = ControlWidth(DesthWnd);
+    ParHeight = ControlHeight(DesthWnd);
+    ControlRefresh(DesthWnd);
     MoveWindow(DesthWnd, ParLeft, ParTop, ParWidth, ParHeight, 1);
 }
 
@@ -3010,14 +3010,14 @@ void MoveFncXY(HWND hWnd, HWND DesthWnd)
     // Min Y
     if(GetCurrentTopIndex(ChildStruct->hChildCodeMax) > GetCurrentLineNumber(ChildStruct->hChildCodeMax))
     {
-        WAControlClose(DesthWnd);
+        ControlClose(DesthWnd);
         return;
     }
     // Max Y
     if(GetCurrentTopIndex(ChildStruct->hChildCodeMax) + CM_GetVisibleLineCount(ChildStruct->hChildCodeMax,
                           CM_GetCurrentView(ChildStruct->hChildCodeMax), 1) <= GetCurrentLineNumber(ChildStruct->hChildCodeMax))
     {
-        WAControlClose(DesthWnd);
+        ControlClose(DesthWnd);
         return;
     }
     GetWindowRect(ChildStruct->hChildCodeMax, &APIRect);
@@ -3032,12 +3032,12 @@ void MoveFncXY(HWND hWnd, HWND DesthWnd)
     APITop = APITop + APIPoint.y;
     if(APILeft < APIRect.left)
     {
-        WAControlClose(DesthWnd);
+        ControlClose(DesthWnd);
         return;
     }
     if(APILeft > APIRect.right)
     {
-        WAControlClose(DesthWnd);
+        ControlClose(DesthWnd);
         return;
     }
     if((APILeft + APIXDim) > GetSystemMetrics(SM_CXFULLSCREEN)) APILeft = APILeft - APIXDim;
@@ -3046,9 +3046,9 @@ void MoveFncXY(HWND hWnd, HWND DesthWnd)
     if(APITop < 0) APITop = 0;
     ParLeft = APILeft;
     ParTop = APITop;
-    ParWidth = WAControlWidth(DesthWnd);
-    ParHeight = WAControlHeight(DesthWnd);
-    WAControlRefresh(DesthWnd);
+    ParWidth = ControlWidth(DesthWnd);
+    ParHeight = ControlHeight(DesthWnd);
+    ControlRefresh(DesthWnd);
     MoveWindow(DesthWnd, ParLeft, ParTop, ParWidth, ParHeight, 1);
 }
 
@@ -3182,9 +3182,9 @@ void DisplayAPIList(HWND hWnd)
     LineToDisplay = GetLeftWord(ChildStruct->hChildCodeMax, LineToDisplay);
     // Can be complete/incomplete or empty name
     // Don't display it again
-    if(APIMode == 1) WAControlClose(FRMAPIhwnd);
+    if(APIMode == 1) ControlClose(FRMAPIhwnd);
     if(APIListMode == 1) if(ChildStruct->oldAPILineLine = GetCurrentLineNumber(ChildStruct->hChildCodeMax)) if(strcmpi(CMGetRealFile(ChildStruct->oldAPILineFnc).Get_String(), LineToDisplay.Get_String()) == 0) return;
-    if(APIListMode == 1) WAControlClose(FRMAPIListhWnd);
+    if(APIListMode == 1) ControlClose(FRMAPIListhWnd);
 	if(CursorDisabled) DisplayCursor();
     APILineFnc = LineToDisplay;
     GetWindowRect(ChildStruct->hChildCodeMax, &APIRect);

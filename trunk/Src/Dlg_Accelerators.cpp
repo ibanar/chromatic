@@ -70,15 +70,15 @@ void CreateAccelerators(void)
     long EntryAccCount = 0;
 
     EditAccelerators = 0;
-    EntryAccCount = WATreeViewGetChildItemsCount(hTreeView, hTreeViewAccelerators);
+    EntryAccCount = TreeViewGetChildItemsCount(hTreeView, hTreeViewAccelerators);
     // Check if entry already exists
-    while(WATreeViewSearchChildPartialText(hTreeView, hTreeViewAccelerators, "ACCELERATORS_" + (CStr) EntryAccCount) != -1)
+    while(TreeViewSearchChildPartialText(hTreeView, hTreeViewAccelerators, "ACCELERATORS_" + (CStr) EntryAccCount) != -1)
     {
         EntryAccCount++;
     }
     AccelBase = EntryAccCount;
     AcceleratorsTitle = "Create new accelerators resource";
-    WACreateModalDialog(-1, -1, 410, 313, hMDIform.hWnd, &FRMAcceleratorsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    CreateModalDialog(-1, -1, 410, 313, hMDIform.hWnd, &FRMAcceleratorsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
 }
 
 // -----------------------------------------------------------------------
@@ -89,7 +89,7 @@ void EditAcceleratorsTable(CStr AcceleratorsEditBase, CStr AcceleratorsFile)
     AcceleratorsBaseToEdit = AcceleratorsEditBase;
     AcceleratorsFileToEdit = AcceleratorsFile;
     AcceleratorsTitle = "Edit accelerators resource";
-    WACreateModalDialog(-1, -1, 410, 313, hMDIform.hWnd, &FRMAcceleratorsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    CreateModalDialog(-1, -1, 410, 313, hMDIform.hWnd, &FRMAcceleratorsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
 }
 
 // -----------------------------------------------------------------------
@@ -118,44 +118,44 @@ int CALLBACK FRMAcceleratorsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
     switch(uMsg)
     {
         case WM_SYSCOLORCHANGE:
-            WAListViewSetBackColor(FRMAcceleratorsListview, GetSysColor(COLOR_WINDOW));
+            ListViewSetBackColor(FRMAcceleratorsListview, GetSysColor(COLOR_WINDOW));
 			break;
 		case WM_INITDIALOG:
             FRMAcceleratorshwnd = hwndDlg;
-            WAControlSetText(hwndDlg, AcceleratorsTitle);
-            WACreateLabel(4, 39, 33, 17, hwndDlg, "Key :", 0, 0, 0, 0);
-            FRMAcceleratorsOk = WACreateButton(251, 287, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
-            FRMAcceleratorsCancel = WACreateButton(330, 287, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-            FRMAcceleratorsCombo = WACreateComboBox(33, 36, 132, 150, hwndDlg, "", 4, 0, WS_TABSTOP | CBS_DROPDOWN);
-            FRMAcceleratorsGetKey = WACreateButton(170, 35, 70, 23, hwndDlg, "Input key", 10, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-            WAControlEnable(FRMAcceleratorsGetKey, 0);
-            FRMAcceleratorsFrame = WACreateFrame(247, 27, 162, 35, hwndDlg, "Modifiers", 5, 0, 0);
-            FRMAcceleratorsChkCtrl = WACreateCheckBox(10, 12, 45, 19, FRMAcceleratorsFrame, "Ctrl", 6, 0, WS_TABSTOP, 0);
-            FRMAcceleratorsChkAlt = WACreateCheckBox(62, 12, 45, 19, FRMAcceleratorsFrame, "Alt", 7, 0, WS_TABSTOP, 0);
-            FRMAcceleratorsChkShift = WACreateCheckBox(110, 12, 45, 19, FRMAcceleratorsFrame, "Shift", 8, 0, WS_TABSTOP, 0);
-            FRMAcceleratorsListview = WACreateListView(2, 65, 406, 209, hwndDlg, 9, GlobalImageList3, &LVAcceleratorsHook, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_NOSORTHEADER | LVS_EDITLABELS | LVS_SINGLESEL | WS_TABSTOP, WS_EX_STATICEDGE);
-            WAListViewAddCol(FRMAcceleratorsListview, "Accelerator", 283, 1);
-            WAListViewAddCol(FRMAcceleratorsListview, "Command number", 102, 0);
-            WAListViewSetHeaderPosition(FRMAcceleratorsListview, 0, 1);
-            WAListViewSetHeaderPosition(FRMAcceleratorsListview, 1, 0);
-            FRMAcceleratorsToolbar = WACreateToolBar(1, 1, 410, 23, hwndDlg, GlobalImageList1, 3, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
-            WAToolBarAddButton(FRMAcceleratorsToolbar, "", ACCELCREATE, ICON_KEY, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-            WAToolBarAddButton(FRMAcceleratorsToolbar, "", ACCELREPLACE, ICON_KEYREPLACE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-            WAToolBarAddSeparator(FRMAcceleratorsToolbar, 0);
-            WAToolBarAddButton(FRMAcceleratorsToolbar, "", ACCELDELETE, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            ControlSetText(hwndDlg, AcceleratorsTitle);
+            CreateLabel(4, 39, 33, 17, hwndDlg, "Key :", 0, 0, 0, 0);
+            FRMAcceleratorsOk = CreateButton(251, 287, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
+            FRMAcceleratorsCancel = CreateButton(330, 287, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+            FRMAcceleratorsCombo = CreateComboBox(33, 36, 132, 150, hwndDlg, "", 4, 0, WS_TABSTOP | CBS_DROPDOWN);
+            FRMAcceleratorsGetKey = CreateButton(170, 35, 70, 23, hwndDlg, "Input key", 10, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+            ControlEnable(FRMAcceleratorsGetKey, 0);
+            FRMAcceleratorsFrame = CreateFrame(247, 27, 162, 35, hwndDlg, "Modifiers", 5, 0, 0);
+            FRMAcceleratorsChkCtrl = CreateCheckBox(10, 12, 45, 19, FRMAcceleratorsFrame, "Ctrl", 6, 0, WS_TABSTOP, 0);
+            FRMAcceleratorsChkAlt = CreateCheckBox(62, 12, 45, 19, FRMAcceleratorsFrame, "Alt", 7, 0, WS_TABSTOP, 0);
+            FRMAcceleratorsChkShift = CreateCheckBox(110, 12, 45, 19, FRMAcceleratorsFrame, "Shift", 8, 0, WS_TABSTOP, 0);
+            FRMAcceleratorsListview = CreateListView(2, 65, 406, 209, hwndDlg, 9, GlobalImageList3, &LVAcceleratorsHook, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_NOSORTHEADER | LVS_EDITLABELS | LVS_SINGLESEL | WS_TABSTOP, WS_EX_STATICEDGE);
+            ListViewAddCol(FRMAcceleratorsListview, "Accelerator", 283, 1);
+            ListViewAddCol(FRMAcceleratorsListview, "Command number", 102, 0);
+            ListViewSetHeaderPosition(FRMAcceleratorsListview, 0, 1);
+            ListViewSetHeaderPosition(FRMAcceleratorsListview, 1, 0);
+            FRMAcceleratorsToolbar = CreateToolBar(1, 1, 410, 23, hwndDlg, GlobalImageList1, 3, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+            ToolBarAddButton(FRMAcceleratorsToolbar, "", ACCELCREATE, ICON_KEY, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            ToolBarAddButton(FRMAcceleratorsToolbar, "", ACCELREPLACE, ICON_KEYREPLACE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            ToolBarAddSeparator(FRMAcceleratorsToolbar, 0);
+            ToolBarAddButton(FRMAcceleratorsToolbar, "", ACCELDELETE, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
             for(i = 0; i <= 84; i++)
             {
-                WAComboBoxAddItem(FRMAcceleratorsCombo, TabAccelerators[i], -1);
+                ComboBoxAddItem(FRMAcceleratorsCombo, TabAccelerators[i], -1);
             }
             if(EditAccelerators == 1)
             {
                 for(i = 0; i <= 999; i++)
                 {
-                    CurrentAccelFromIni = WAIniReadKey("ACCELDAT", "ACCEL" + (CStr) StringNumberComplement(i, 3).Get_String(), AcceleratorsFileToEdit);
-                    CurrentAccelCmdFromIni = WAIniReadKey("ACCELDAT", "COMMAND" + (CStr) StringNumberComplement(i, 3).Get_String(), AcceleratorsFileToEdit);
+                    CurrentAccelFromIni = IniReadKey("ACCELDAT", "ACCEL" + (CStr) StringNumberComplement(i, 3).Get_String(), AcceleratorsFileToEdit);
+                    CurrentAccelCmdFromIni = IniReadKey("ACCELDAT", "COMMAND" + (CStr) StringNumberComplement(i, 3).Get_String(), AcceleratorsFileToEdit);
                     if(CurrentAccelFromIni.Len() == 0) break;
-                    WAListViewAddItem(FRMAcceleratorsListview, CurrentAccelCmdFromIni, i, -1);
-                    WAListViewSetSubItem(FRMAcceleratorsListview, CurrentAccelFromIni, i, 1);
+                    ListViewAddItem(FRMAcceleratorsListview, CurrentAccelCmdFromIni, i, -1);
+                    ListViewSetSubItem(FRMAcceleratorsListview, CurrentAccelFromIni, i, 1);
                 }
             }
             FreezeTimer = 1;
@@ -163,37 +163,37 @@ int CALLBACK FRMAcceleratorsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
             return(0);
         case WM_PAINT:
             BeginPaint(hwndDlg, &EnterValuePs);
-            WAGDIDrawHorzSep(hwndDlg, 0, 25, 410);
-            WAGDIDrawHorzSep(hwndDlg, 0, 280, 410);
+            GDIDrawHorzSep(hwndDlg, 0, 25, 410);
+            GDIDrawHorzSep(hwndDlg, 0, 280, 410);
             EndPaint(hwndDlg, &EnterValuePs);
 			break;
 		case WM_NOTIFY:
-            if(WAControlGetNotifiedhWnd(lParam) == FRMAcceleratorsListview)
+            if(ControlGetNotifiedhWnd(lParam) == FRMAcceleratorsListview)
             {
-                switch(WAControlGetNotifiedMsg(lParam))
+                switch(ControlGetNotifiedMsg(lParam))
                 {
                     case NM_DBLCLK:
-                        CurrentSelected = WAListViewGetSelItem(FRMAcceleratorsListview, -1);
+                        CurrentSelected = ListViewGetSelItem(FRMAcceleratorsListview, -1);
                         if(CurrentSelected != -1)
                         {
-                            WAListViewSetEditModeOn(FRMAcceleratorsListview, CurrentSelected, ES_NUMBER);
+                            ListViewSetEditModeOn(FRMAcceleratorsListview, CurrentSelected, ES_NUMBER);
                             LVAcceleratorsInEdit = 1;
                         }
                         return(0);
                     case LVN_BEGINLABELEDIT:
-                        LvEdit = WAListViewGetEditControl(FRMAcceleratorsListview);
+                        LvEdit = ListViewGetEditControl(FRMAcceleratorsListview);
                         LV_TextbStyle = GetWindowLong(LvEdit, GWL_STYLE);
                         LV_TextbStyle = LV_TextbStyle | ES_NUMBER;
                         SetWindowLong(LvEdit, GWL_STYLE, LV_TextbStyle);
-                        WATextBoxSetMaxLen(LvEdit, 5);
+                        TextBoxSetMaxLen(LvEdit, 5);
                         return(0);
                     case LVN_ENDLABELEDIT:
-                        CurrentSelected = WAListViewGetSelItem(FRMAcceleratorsListview, -1);
+                        CurrentSelected = ListViewGetSelItem(FRMAcceleratorsListview, -1);
                         if(CurrentSelected != -1)
                         {
-                            if(WAListViewEditValidated(lParam) == 1)
+                            if(ListViewEditValidated(lParam) == 1)
                             {
-                                WAListViewSetSubItem(FRMAcceleratorsListview, WAListViewGetEditResult(lParam), CurrentSelected, 0);
+                                ListViewSetSubItem(FRMAcceleratorsListview, ListViewGetEditResult(lParam), CurrentSelected, 0);
                             }
                         }
                         LVAcceleratorsInEdit = 0;
@@ -202,11 +202,11 @@ int CALLBACK FRMAcceleratorsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
                         CopyMemory(&SelLV, (void *) lParam, sizeof(SelLV));
                         if((SelLV.uNewState & LVIS_SELECTED) != 0)
                         {
-                            CurrentSelectedAccel = WAListViewGetSelItem(FRMAcceleratorsListview, -1);
+                            CurrentSelectedAccel = ListViewGetSelItem(FRMAcceleratorsListview, -1);
                             if(CurrentSelectedAccel != -1)
                             {
                                 PosInKey = 1;
-                                CurrentKe = WAListViewGetSelItemText(FRMAcceleratorsListview, 1);
+                                CurrentKe = ListViewGetSelItemText(FRMAcceleratorsListview, 1);
 GetCurrentAccel:                BufString = CurrentKe.Mid(PosInKey, 5);
 								if(BufString == "CTRL ")
 								{
@@ -229,7 +229,7 @@ GetCurrentAccel:                BufString = CurrentKe.Mid(PosInKey, 5);
 								else
 								{
                                     BufString =  CurrentKe.Mid(PosInKey).Trim();
-									WAControlSetText(FRMAcceleratorsCombo, BufString);
+									ControlSetText(FRMAcceleratorsCombo, BufString);
                                 }
                                 CheckBoxSetState(FRMAcceleratorsChkCtrl, CurCtrlState);
                                 CheckBoxSetState(FRMAcceleratorsChkAlt, CurAltState);
@@ -239,19 +239,19 @@ GetCurrentAccel:                BufString = CurrentKe.Mid(PosInKey, 5);
                         return(0);
                 }
 			}				
-            switch(WAControlGetNotifiedMsg(lParam))
+            switch(ControlGetNotifiedMsg(lParam))
             {
                 case TTN_NEEDTEXT:
-                    switch(WAControlGetNotifiedID(lParam))
+                    switch(ControlGetNotifiedID(lParam))
                     {
                         case ACCELCREATE:
-                            WAToolBarDisplayToolTip("Create new accelerator", lParam);
+                            ToolBarDisplayToolTip("Create new accelerator", lParam);
                             return(0);
                         case ACCELREPLACE:
-                            WAToolBarDisplayToolTip("Replace accelerator", lParam);
+                            ToolBarDisplayToolTip("Replace accelerator", lParam);
                             return(0);
                         case ACCELDELETE:
-                            WAToolBarDisplayToolTip("Delete accelerator", lParam);
+                            ToolBarDisplayToolTip("Delete accelerator", lParam);
                             return(0);
                     }
 			}
@@ -262,10 +262,10 @@ GetCurrentAccel:                BufString = CurrentKe.Mid(PosInKey, 5);
                 switch(wParam)
                 {
                     case ACCELCREATE:
-                        AccelText = WAControlGetText(FRMAcceleratorsCombo).Trim();
+                        AccelText = ControlGetText(FRMAcceleratorsCombo).Trim();
                         if(CheckAcceleratorValidity(AccelText) == 0)
                         {
-                            WAMiscMsgBox(hwndDlg, "Invalid accelerator.", MB_ERROR, Requesters);
+                            MiscMsgBox(hwndDlg, "Invalid accelerator.", MB_ERROR, Requesters);
                             SetFocus(FRMAcceleratorsCombo);
                             return(0);
                         }
@@ -283,25 +283,25 @@ GetCurrentAccel:                BufString = CurrentKe.Mid(PosInKey, 5);
                         }
                         if(AccelToPut.Len() != 0) AccelToPut = AccelToPut + (CStr) " + ";
                         AccelToPut = AccelToPut + (CStr) AccelText;
-                        WAListViewAddItem(FRMAcceleratorsListview, "", WAListViewItemCount(FRMAcceleratorsListview), -1);
-                        WAListViewSetSubItem(FRMAcceleratorsListview, AccelToPut, WAListViewItemCount(FRMAcceleratorsListview) - 1, 1);
-                        WAListViewSetItemSel(FRMAcceleratorsListview, WAListViewItemCount(FRMAcceleratorsListview) - 1);
+                        ListViewAddItem(FRMAcceleratorsListview, "", ListViewItemCount(FRMAcceleratorsListview), -1);
+                        ListViewSetSubItem(FRMAcceleratorsListview, AccelToPut, ListViewItemCount(FRMAcceleratorsListview) - 1, 1);
+                        ListViewSetItemSel(FRMAcceleratorsListview, ListViewItemCount(FRMAcceleratorsListview) - 1);
                         SetFocus(FRMAcceleratorsListview);
                         return(0);
                     case ACCELREPLACE:
-                        if(WAListViewItemCount(FRMAcceleratorsListview) != 0)
+                        if(ListViewItemCount(FRMAcceleratorsListview) != 0)
                         {
-                            CurrentSelectedAccel = WAListViewGetSelItem(FRMAcceleratorsListview, -1);
+                            CurrentSelectedAccel = ListViewGetSelItem(FRMAcceleratorsListview, -1);
                             if(CurrentSelectedAccel == -1)
                             {
-                                WAMiscMsgBox(hwndDlg, "No accelerator selected.", MB_ERROR, Requesters);
+                                MiscMsgBox(hwndDlg, "No accelerator selected.", MB_ERROR, Requesters);
                                 SetFocus(FRMAcceleratorsListview);
                                 return(0);
                             }
-                            AccelText = WAControlGetText(FRMAcceleratorsCombo).Trim();
+                            AccelText = ControlGetText(FRMAcceleratorsCombo).Trim();
                             if(CheckAcceleratorValidity(AccelText) == 0)
                             {
-                                WAMiscMsgBox(hwndDlg, "Invalid accelerator.", MB_ERROR, Requesters);
+                                MiscMsgBox(hwndDlg, "Invalid accelerator.", MB_ERROR, Requesters);
                                 SetFocus(FRMAcceleratorsCombo);
                                 return(0);
                             }
@@ -322,17 +322,17 @@ GetCurrentAccel:                BufString = CurrentKe.Mid(PosInKey, 5);
                                 AccelToPut = AccelToPut + (CStr) " + ";
                             }
                             AccelToPut = AccelToPut + (CStr) AccelText;
-                            WAListViewSetSubItem(FRMAcceleratorsListview, AccelToPut, CurrentSelectedAccel, 1);
-                            WAListViewSetItemSel(FRMAcceleratorsListview, CurrentSelectedAccel);
+                            ListViewSetSubItem(FRMAcceleratorsListview, AccelToPut, CurrentSelectedAccel, 1);
+                            ListViewSetItemSel(FRMAcceleratorsListview, CurrentSelectedAccel);
                             SetFocus(FRMAcceleratorsListview);
                         }
                         return(0);
                     case ACCELDELETE:
-                        OldSelected = WAListViewGetSelItem(FRMAcceleratorsListview, -1);
-                        WAListViewDeleteItem(FRMAcceleratorsListview, WAListViewGetSelItem(FRMAcceleratorsListview, -1));
-                        if((long) OldSelected > (long) (WAListViewItemCount(FRMAcceleratorsListview) - 1)) OldSelected = WAListViewItemCount(FRMAcceleratorsListview) - 1;
-                        WAListViewSetItemSel(FRMAcceleratorsListview, OldSelected);
-                        if(WAListViewItemCount(FRMAcceleratorsListview) != 0)
+                        OldSelected = ListViewGetSelItem(FRMAcceleratorsListview, -1);
+                        ListViewDeleteItem(FRMAcceleratorsListview, ListViewGetSelItem(FRMAcceleratorsListview, -1));
+                        if((long) OldSelected > (long) (ListViewItemCount(FRMAcceleratorsListview) - 1)) OldSelected = ListViewItemCount(FRMAcceleratorsListview) - 1;
+                        ListViewSetItemSel(FRMAcceleratorsListview, OldSelected);
+                        if(ListViewItemCount(FRMAcceleratorsListview) != 0)
                         {
                             SetFocus(FRMAcceleratorsListview);
                         }
@@ -347,7 +347,7 @@ GetCurrentAccel:                BufString = CurrentKe.Mid(PosInKey, 5);
             {
                 if(CheckAcceCList() == 0)
                 {
-                    WAMiscMsgBox(hwndDlg, "Found invalid entries in accelerators list.", MB_ERROR, Requesters);
+                    MiscMsgBox(hwndDlg, "Found invalid entries in accelerators list.", MB_ERROR, Requesters);
                     SetFocus(FRMAcceleratorsListview);
                     return(0);
                 }
@@ -360,12 +360,12 @@ GetCurrentAccel:                BufString = CurrentKe.Mid(PosInKey, 5);
                 {
                     SaveAcceleratorsFile();
                 }
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
             }
             else if((HWND) lParam == FRMAcceleratorsCancel)
             {
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
 			}
 			break;
@@ -386,7 +386,7 @@ LRESULT CALLBACK LVAcceleratorsHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
         switch(uMsg)
         {
             case WM_CHAR:
-                if(WAListViewPasteAutoEdit(FRMAcceleratorsListview, wParam, ES_NUMBER) == 1)
+                if(ListViewPasteAutoEdit(FRMAcceleratorsListview, wParam, ES_NUMBER) == 1)
                 {
                     LVAcceleratorsInEdit = 1;
                     return(0);
@@ -408,7 +408,7 @@ long CheckAcceleratorValidity(CStr AccelToCheck)
     FoundVirtualKey = 0;
     for(i = 0; i <= 84; i++)
     {
-        if(strcmpi(WAComboBoxGetItem(FRMAcceleratorsCombo, i).Get_String(), AccelToCheck.Get_String()) == 0)
+        if(strcmpi(ComboBoxGetItem(FRMAcceleratorsCombo, i).Get_String(), AccelToCheck.Get_String()) == 0)
         {
             FoundVirtualKey = 1;
             break;
@@ -426,9 +426,9 @@ long CheckAcceCList(void)
     CStr AccelToCheck;
     int i = 0;
     
-	for(i = 0; i <= (long) (WAListViewItemCount(FRMAcceleratorsListview) - 1); i++)
+	for(i = 0; i <= (long) (ListViewItemCount(FRMAcceleratorsListview) - 1); i++)
 	{
-        AccelToCheck = WAListViewGetItemText(FRMAcceleratorsListview, i, 0);
+        AccelToCheck = ListViewGetItemText(FRMAcceleratorsListview, i, 0);
         if(AccelToCheck.Len() == 0)
         {
             ReturnValue = 0;
@@ -454,25 +454,25 @@ void CreateNewAcceleratorsFile(void)
     CStr EntryToAdd;
     
 	AccelName = "ACCELERATORS_" + (CStr) AccelBase;
-    AccelFileName = WAFileGetDirectory(ProjectFName) + (CStr) AccelName + (CStr) ".acr";
-    AccelFileHandle = WAFileCreateEmpty(AccelFileName, NO_SECURITY_DESCRIPTOR);
-    WAFileWriteLine(AccelFileHandle, "; Chromatic resource accelerators file");
-    WAFileWriteLine(AccelFileHandle, "; Do NOT edit this file manually");
-    WAFileWriteLine(AccelFileHandle, "; unless you know what you're doing !!!");
-    WAFileWriteLine(AccelFileHandle, "; (C) 2001-2010 Franck Charlet.");
-    WAFileWriteLine(AccelFileHandle, "");
-    WAFileWriteLine(AccelFileHandle, "[ACCELDAT]");
-    WAFileClose(AccelFileHandle);
+    AccelFileName = FileGetDirectory(ProjectFName) + (CStr) AccelName + (CStr) ".acr";
+    AccelFileHandle = FileCreateEmpty(AccelFileName, NO_SECURITY_DESCRIPTOR);
+    FileWriteLine(AccelFileHandle, "; Chromatic resource accelerators file");
+    FileWriteLine(AccelFileHandle, "; Do NOT edit this file manually");
+    FileWriteLine(AccelFileHandle, "; unless you know what you're doing !!!");
+    FileWriteLine(AccelFileHandle, "; (C) 2001-2010 Franck Charlet.");
+    FileWriteLine(AccelFileHandle, "");
+    FileWriteLine(AccelFileHandle, "[ACCELDAT]");
+    FileClose(AccelFileHandle);
     EntryToAdd = AccelName + (CStr) " (" + (CStr) AccelFileName + (CStr) ")";
-    for(i = 0; i <= (long) (WAListViewItemCount(FRMAcceleratorsListview) - 1); i++)
+    for(i = 0; i <= (long) (ListViewItemCount(FRMAcceleratorsListview) - 1); i++)
     {
-        WAIniWriteKey("ACCELDAT", "ACCEL" + (CStr) StringNumberComplement(i, 3).Get_String(),
-                      WAListViewGetItemText(FRMAcceleratorsListview, i, 1), AccelFileName);
-        WAIniWriteKey("ACCELDAT", "COMMAND" + (CStr) StringNumberComplement(i, 3).Get_String(),
-                      WAListViewGetItemText(FRMAcceleratorsListview, i, 0), AccelFileName);
+        IniWriteKey("ACCELDAT", "ACCEL" + (CStr) StringNumberComplement(i, 3).Get_String(),
+                      ListViewGetItemText(FRMAcceleratorsListview, i, 1), AccelFileName);
+        IniWriteKey("ACCELDAT", "COMMAND" + (CStr) StringNumberComplement(i, 3).Get_String(),
+                      ListViewGetItemText(FRMAcceleratorsListview, i, 0), AccelFileName);
     }
     AddAcceleratorInArray(RESPROPS_DEFAULT, 0);
-    WATreeViewAddItem(hTreeView, EntryToAdd, hTreeViewAccelerators, 0, ICON_RES, ICON_RES, 0, 1);
+    TreeViewAddItem(hTreeView, EntryToAdd, hTreeViewAccelerators, 0, ICON_RES, ICON_RES, 0, 1);
 }
 
 // -----------------------------------------------------------------------
@@ -482,24 +482,24 @@ void SaveAcceleratorsFile(void)
     int i = 0;
     HANDLE AccelFileHandle;
 
-    AccelFileHandle = WAFileCreateEmpty(AcceleratorsFileToEdit, NO_SECURITY_DESCRIPTOR);
+    AccelFileHandle = FileCreateEmpty(AcceleratorsFileToEdit, NO_SECURITY_DESCRIPTOR);
     if(AccelFileHandle != INVALID_HANDLE_VALUE)
     {
-        WAFileWriteLine(AccelFileHandle, "; Chromatic resource accelerators file");
-        WAFileWriteLine(AccelFileHandle, "; Do NOT edit this file manually");
-        WAFileWriteLine(AccelFileHandle, "; unless you know what you're doing !!!");
-        WAFileWriteLine(AccelFileHandle, "; (C) 2001-2010 Franck Charlet.");
-        WAFileWriteLine(AccelFileHandle, "");
-        WAFileWriteLine(AccelFileHandle, "[ACCELDAT]");
-        WAFileClose(AccelFileHandle);
-        for(i = 0; i <= (long) WAListViewItemCount(FRMAcceleratorsListview) - 1; i++)
+        FileWriteLine(AccelFileHandle, "; Chromatic resource accelerators file");
+        FileWriteLine(AccelFileHandle, "; Do NOT edit this file manually");
+        FileWriteLine(AccelFileHandle, "; unless you know what you're doing !!!");
+        FileWriteLine(AccelFileHandle, "; (C) 2001-2010 Franck Charlet.");
+        FileWriteLine(AccelFileHandle, "");
+        FileWriteLine(AccelFileHandle, "[ACCELDAT]");
+        FileClose(AccelFileHandle);
+        for(i = 0; i <= (long) ListViewItemCount(FRMAcceleratorsListview) - 1; i++)
         {
-            WAIniWriteKey("ACCELDAT", "ACCEL" + (CStr) StringNumberComplement(i, 3).Get_String(), WAListViewGetItemText(FRMAcceleratorsListview, i, 1), AcceleratorsFileToEdit);
-            WAIniWriteKey("ACCELDAT", "COMMAND" + (CStr) StringNumberComplement(i, 3).Get_String(), WAListViewGetItemText(FRMAcceleratorsListview, i, 0), AcceleratorsFileToEdit);
+            IniWriteKey("ACCELDAT", "ACCEL" + (CStr) StringNumberComplement(i, 3).Get_String(), ListViewGetItemText(FRMAcceleratorsListview, i, 1), AcceleratorsFileToEdit);
+            IniWriteKey("ACCELDAT", "COMMAND" + (CStr) StringNumberComplement(i, 3).Get_String(), ListViewGetItemText(FRMAcceleratorsListview, i, 0), AcceleratorsFileToEdit);
         }
     }
     else
     {
-        WAMiscMsgBox(FRMAcceleratorshwnd, "Can't save accelerators file.", MB_ERROR, Requesters);
+        MiscMsgBox(FRMAcceleratorshwnd, "Can't save accelerators file.", MB_ERROR, Requesters);
     }
 }

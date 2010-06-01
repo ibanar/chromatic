@@ -66,7 +66,7 @@ void DisplayResProp(long Idx, long ResTp, CStr ResN, HTREEITEM hResTree)
     ResName = ResN;
     ResIndex = Idx;
     ResType = ResTp;
-    WACreateModalDialog(-1, -1, 230, 113, hMDIform.hWnd, &FRMResProps, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    CreateModalDialog(-1, -1, 230, 113, hMDIform.hWnd, &FRMResProps, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
 }
 
 // -----------------------------------------------------------------------
@@ -85,16 +85,16 @@ int CALLBACK FRMResProps(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     switch(uMsg)
     {
         case WM_INITDIALOG:
-            WAControlSetText(hwndDlg, "Change resource properties");
+            ControlSetText(hwndDlg, "Change resource properties");
             FRMResPropshWnd = hwndDlg;
-            FRMResPropsOk = WACreateButton(71, 87, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
-            FRMResPropsCancel = WACreateButton(150, 87, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-            FRMResPropsName = WACreateTextBox(2, 2, 225, 20, hwndDlg, ResName, 3, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-            FRMResPropsLoad = WACreateCheckBox(3, 25, 80, 15, hwndDlg, "Load on call", 4, 0, WS_TABSTOP | WS_GROUP, 0);
-            FRMResPropsMoveable = WACreateCheckBox(3, 43, 80, 15, hwndDlg, "Moveable", 5, 0, WS_TABSTOP, 0);
-            FRMResPropsDiscardable = WACreateCheckBox(3, 61, 80, 15, hwndDlg, "Discardable", 6, 0, WS_TABSTOP, 0);
-            FRMResPropsPure = WACreateCheckBox(110, 25, 80, 15, hwndDlg, "Pure", 7, 0, WS_TABSTOP, 0);
-            FRMResPropsLanguage = WACreateComboBox(110, 48, 108, 90, hwndDlg, "", 8, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
+            FRMResPropsOk = CreateButton(71, 87, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
+            FRMResPropsCancel = CreateButton(150, 87, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+            FRMResPropsName = CreateTextBox(2, 2, 225, 20, hwndDlg, ResName, 3, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+            FRMResPropsLoad = CreateCheckBox(3, 25, 80, 15, hwndDlg, "Load on call", 4, 0, WS_TABSTOP | WS_GROUP, 0);
+            FRMResPropsMoveable = CreateCheckBox(3, 43, 80, 15, hwndDlg, "Moveable", 5, 0, WS_TABSTOP, 0);
+            FRMResPropsDiscardable = CreateCheckBox(3, 61, 80, 15, hwndDlg, "Discardable", 6, 0, WS_TABSTOP, 0);
+            FRMResPropsPure = CreateCheckBox(110, 25, 80, 15, hwndDlg, "Pure", 7, 0, WS_TABSTOP, 0);
+            FRMResPropsLanguage = CreateComboBox(110, 48, 108, 90, hwndDlg, "", 8, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
             switch(ResType)
             {
                 case RESPROP_ICON:
@@ -125,7 +125,7 @@ int CALLBACK FRMResProps(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 if((long) TmpLang == i) TmpLang2 = j;
                 if(strlen(TabLangRc[i].Get_String()) != 0)
                 {
-                    WAComboBoxAddItem(FRMResPropsLanguage, TabLangRc[i], -1);
+                    ComboBoxAddItem(FRMResPropsLanguage, TabLangRc[i], -1);
                     j++;
                 }
             }
@@ -133,31 +133,31 @@ int CALLBACK FRMResProps(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             {
                 case RESPROP_ICON:
                     TmpProp = GetIconProps(ResIndex);
-                    WAComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
+                    ComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
 					break;
                 case RESPROP_CURSOR:
                     TmpProp = GetCursorProps(ResIndex);
-                    WAComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
+                    ComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
 					break;
                 case RESPROP_BITMAP:
                     TmpProp = GetBitmapProps(ResIndex);
-                    WAComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
+                    ComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
 					break;
                 case RESPROP_STRINGS:
                     TmpProp = Get_StringProps(ResIndex);
-                    WAComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
+                    ComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
 					break;
                 case RESPROP_ACCELERATORS:
                     TmpProp = GetAcceleratorProps(ResIndex);
-                    WAComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
+                    ComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
 					break;
                 case RESPROP_MENUS:
                     TmpProp = GetMenuProps(ResIndex);
-                    WAComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
+                    ComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
 					break;
                 case RESPROP_RAWDATA:
                     TmpProp = GetRawdataProps(ResIndex);
-                    WAComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
+                    ComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
 					break;
             }
             if((TmpProp & RESPROPDAT_LOAD) != 0) CheckBoxSetState(FRMResPropsLoad, 1);
@@ -165,18 +165,18 @@ int CALLBACK FRMResProps(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             if((TmpProp & RESPROPDAT_DISCARD) != 0) CheckBoxSetState(FRMResPropsDiscardable, 1);
             if((TmpProp & RESPROPDAT_PURE) != 0) CheckBoxSetState(FRMResPropsPure, 1);
             FreezeTimer = 1;
-            WAControlSendMessage(hwndDlg, (EN_CHANGE << 16), (long) FRMResPropsName);
+            ControlSendMessage(hwndDlg, (EN_CHANGE << 16), (long) FRMResPropsName);
             SetFocus(FRMResPropsName);
             return(0);
         case WM_PAINT:
             BeginPaint(hwndDlg, &EnterValuePerms);
-            WAGDIDrawHorzSep(hwndDlg, 0, 80, 240);
+            GDIDrawHorzSep(hwndDlg, 0, 80, 240);
             EndPaint(hwndDlg, &EnterValuePerms);
 			break;
 		case WM_COMMAND:
             if((HWND) lParam == FRMResPropsOk)
             {
-                NewResName = WAControlGetText(FRMResPropsName);
+                NewResName = ControlGetText(FRMResPropsName);
                 if(strcmpi(ResName.Get_String(), NewResName.Get_String()) != 0)
                 {
                     // Check first char
@@ -184,68 +184,68 @@ int CALLBACK FRMResProps(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     {
                         if(StringIsUnderLineChar(NewResName.Mid(1, 1)) == 0)
                         {
-                            WAMiscMsgBox(hwndDlg, "Illegal resource name.\rMust begin with an alphanumeric char or underline.", MB_ERROR, Requesters);
+                            MiscMsgBox(hwndDlg, "Illegal resource name.\rMust begin with an alphanumeric char or underline.", MB_ERROR, Requesters);
                             SetFocus(FRMResPropsName);
                             return(0);
                         }
                     }
                     if(StringIsLabel(NewResName) == 0)
                     {
-                        WAMiscMsgBox(hwndDlg, "Illegal resource name.\rAllowed chars are: A-Z a-z 0-9 _", MB_ERROR, Requesters);
+                        MiscMsgBox(hwndDlg, "Illegal resource name.\rAllowed chars are: A-Z a-z 0-9 _", MB_ERROR, Requesters);
                         SetFocus(FRMResPropsName);
                         return(0);
                     }
-                    if(WATreeViewSearchChildPartialText(hTreeView, hTreeViewIcons, NewResName + (CStr) " (") != -1)
+                    if(TreeViewSearchChildPartialText(hTreeView, hTreeViewIcons, NewResName + (CStr) " (") != -1)
                     {
-                        WAMiscMsgBox(hwndDlg, "Resource name already exists.", MB_ERROR, Requesters);
+                        MiscMsgBox(hwndDlg, "Resource name already exists.", MB_ERROR, Requesters);
                         SetFocus(FRMResPropsName);
                         return(0);
                     }
-                    if(WATreeViewSearchChildPartialText(hTreeView, hTreeViewCursors, NewResName + (CStr) " (") != -1)
+                    if(TreeViewSearchChildPartialText(hTreeView, hTreeViewCursors, NewResName + (CStr) " (") != -1)
                     {
-                        WAMiscMsgBox(hwndDlg, "Resource name already exists.", MB_ERROR, Requesters);
+                        MiscMsgBox(hwndDlg, "Resource name already exists.", MB_ERROR, Requesters);
                         SetFocus(FRMResPropsName);
                         return(0);
                     }
-                    if(WATreeViewSearchChildPartialText(hTreeView, hTreeViewBitmaps, NewResName + (CStr) " (") != -1)
+                    if(TreeViewSearchChildPartialText(hTreeView, hTreeViewBitmaps, NewResName + (CStr) " (") != -1)
                     {
-                        WAMiscMsgBox(hwndDlg, "Resource name already exists.", MB_ERROR, Requesters);
+                        MiscMsgBox(hwndDlg, "Resource name already exists.", MB_ERROR, Requesters);
                         SetFocus(FRMResPropsName);
                         return(0);
                     }
-                    if(WATreeViewSearchChildPartialText(hTreeView, hTreeViewStrings, NewResName + (CStr) " (") != -1)
+                    if(TreeViewSearchChildPartialText(hTreeView, hTreeViewStrings, NewResName + (CStr) " (") != -1)
                     {
-                        WAMiscMsgBox(hwndDlg, "Resource name already exists.", MB_ERROR, Requesters);
+                        MiscMsgBox(hwndDlg, "Resource name already exists.", MB_ERROR, Requesters);
                         SetFocus(FRMResPropsName);
                         return(0);
                     }
-                    if(WATreeViewSearchChildPartialText(hTreeView, hTreeViewAccelerators, NewResName + (CStr) " (") != -1)
+                    if(TreeViewSearchChildPartialText(hTreeView, hTreeViewAccelerators, NewResName + (CStr) " (") != -1)
                     {
-                        WAMiscMsgBox(hwndDlg, "Resource name already exists.", MB_ERROR, Requesters);
+                        MiscMsgBox(hwndDlg, "Resource name already exists.", MB_ERROR, Requesters);
                         SetFocus(FRMResPropsName);
                         return(0);
                     }
-                    if(WATreeViewSearchChildPartialText(hTreeView, hTreeViewMenus, NewResName + (CStr) " (") != -1)
+                    if(TreeViewSearchChildPartialText(hTreeView, hTreeViewMenus, NewResName + (CStr) " (") != -1)
                     {
-                        WAMiscMsgBox(hwndDlg, "Resource name already exists.", MB_ERROR, Requesters);
+                        MiscMsgBox(hwndDlg, "Resource name already exists.", MB_ERROR, Requesters);
                         SetFocus(FRMResPropsName);
                         return(0);
                     }
-                    if(WATreeViewSearchChildPartialText(hTreeView, hTreeViewDialogs, NewResName + (CStr) " (") != -1)
+                    if(TreeViewSearchChildPartialText(hTreeView, hTreeViewDialogs, NewResName + (CStr) " (") != -1)
                     {
-                        WAMiscMsgBox(hwndDlg, "Resource name already exists.", MB_ERROR, Requesters);
+                        MiscMsgBox(hwndDlg, "Resource name already exists.", MB_ERROR, Requesters);
                         SetFocus(FRMResPropsName);
                         return(0);
                     }
-                    if(WATreeViewSearchChildPartialText(hTreeView, hTreeViewRawdatas, NewResName + (CStr) " (") != -1)
+                    if(TreeViewSearchChildPartialText(hTreeView, hTreeViewRawdatas, NewResName + (CStr) " (") != -1)
                     {
-                        WAMiscMsgBox(hwndDlg, "Resource name already exists.", MB_ERROR, Requesters);
+                        MiscMsgBox(hwndDlg, "Resource name already exists.", MB_ERROR, Requesters);
                         SetFocus(FRMResPropsName);
                         return(0);
                     }
                 }
                 NewResName = NewResName + (CStr) " (" + (CStr) GetFileNameFromTreeView(ResTree) + (CStr) ")";
-                WATreeViewSetItemText(hTreeView, ResTree, NewResName);
+                TreeViewSetItemText(hTreeView, ResTree, NewResName);
                 TmpProp = 0;
                 if(CheckBoxGetState(FRMResPropsLoad) == 1) TmpProp = TmpProp | RESPROPDAT_LOAD;
                 if(CheckBoxGetState(FRMResPropsMoveable) == 1) TmpProp = TmpProp | RESPROPDAT_MOVE;
@@ -255,8 +255,8 @@ int CALLBACK FRMResProps(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 {
                     if(strlen(TabLangRc[i].Get_String()) != 0)
                     {
-                        if(strcmpi(TabLangRc[i].Get_String(), WAComboBoxGetItem(FRMResPropsLanguage,
-                                   WAComboBoxGetIndex(FRMResPropsLanguage)).Get_String()) == 0) break;
+                        if(strcmpi(TabLangRc[i].Get_String(), ComboBoxGetItem(FRMResPropsLanguage,
+                                   ComboBoxGetIndex(FRMResPropsLanguage)).Get_String()) == 0) break;
                     }
                 }
                 switch(ResType)
@@ -291,26 +291,26 @@ int CALLBACK FRMResProps(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 						break;
                 }
                 ProjectModified = TRUE;
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
             }
             else if((HWND) lParam == FRMResPropsCancel)
             {
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
             }
             else if((HWND) lParam == FRMResPropsName)
             {
-                switch(WAControlGetNotifiedCommand(wParam))
+                switch(ControlGetNotifiedCommand(wParam))
                 {
                     case EN_CHANGE:
-                        if(WATextBoxGetLen(FRMResPropsName) > 0)
+                        if(TextBoxGetLen(FRMResPropsName) > 0)
                         {
-                            WAControlEnable(FRMResPropsOk, 1);
+                            ControlEnable(FRMResPropsOk, 1);
                         }
                         else
                         {
-                            WAControlEnable(FRMResPropsOk, 0);
+                            ControlEnable(FRMResPropsOk, 0);
                         }
 						break;
 				}

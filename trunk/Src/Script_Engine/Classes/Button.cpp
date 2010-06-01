@@ -88,20 +88,20 @@ int Allocate(lua_State *L)
 
     Value = (int *) lua_newuserdata(L, sizeof(void *));
 
-/*    HWND CALLBACK Wrapper_WACreateButton(long Wrapper_WABLeft, long Wrapper_WABTop,
+/*    HWND CALLBACK Wrapper_CreateButton(long Wrapper_WABLeft, long Wrapper_WABTop,
                                          long Wrapper_WABWidth, long Wrapper_WABHeight,
                                          HWND Wrapper_WAhParent, char *Wrapper_WABText,
                                          long Wrapper_WACtrlID, long Wrapper_WAImgType,
                                          HICON Wrapper_WAhImage, WNDPROC Wrapper_WAWinProc,
                                          long Wrapper_WAExtraStyle, long Wrapper_WAExtraExStyle)
 */
-    *Value = (int) Wrapper_WACreateButton(luaL_checkint(L, 1), luaL_checkint(L, 2),
-                                          luaL_checkint(L, 3), luaL_checkint(L, 4),
-                                          (HWND) luaL_checkint(L, 5), (char *) luaL_checkstring(L, 6),
-                                          luaL_checkint(L, 7), luaL_checkint(L, 8),
-                                          (HICON) luaL_checkint(L, 9), &Object_WindowProc,
-                                          luaL_checkint(L, 10), luaL_checkint(L, 11)
-                                         );
+    *Value = (int) Wrapper_CreateButton(luaL_checkint(L, 1), luaL_checkint(L, 2),
+                                        luaL_checkint(L, 3), luaL_checkint(L, 4),
+                                        (HWND) luaL_checkint(L, 5), (char *) luaL_checkstring(L, 6),
+                                        luaL_checkint(L, 7), luaL_checkint(L, 8),
+                                        (HICON) luaL_checkint(L, 9), &Object_WindowProc,
+                                        luaL_checkint(L, 10), luaL_checkint(L, 11)
+                                       );
     if(*Value)
     {
         luaL_getmetatable(L, CLASS_NAME);
@@ -127,7 +127,7 @@ int Release(lua_State *L)
     // I know it's ugly but lua was fucking with the windows messages
     SetWindowLong((HWND) *Value, 8, (long) 0);
     DockingBoxRemove((HWND) *Value);
-    WAControlClose((HWND) *Value);
+    ControlClose((HWND) *Value);
     DestroyWindow((HWND) *Value);
     luaL_unref(L, LUA_REGISTRYINDEX, Func);
 

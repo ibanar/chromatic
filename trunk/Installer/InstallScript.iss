@@ -34,7 +34,7 @@
 
 [Setup]
 AppName=Chromatic IDE
-AppVerName=Chromatic IDE v1.30
+AppVerName=Chromatic IDE v1.31
 AppPublisher=hitchhikr SoftWorks
 AppPublisherURL=http://perso.wanadoo.fr/franck.charlet/index.htm
 AppSupportURL=http://perso.wanadoo.fr/franck.charlet/index.htm
@@ -46,9 +46,9 @@ LicenseFile=..\Debug\LicenseInstall.txt
 Compression=lzma
 SolidCompression=yes
 VersionInfoCompany=hitchhikr SoftWorks
-VersionInfoTextVersion=Chromatic IDE v1.30
+VersionInfoTextVersion=Chromatic IDE v1.31
 VersionInfoVersion=1.3.0.0
-OutputBaseFilename=ChromaticInstall
+OutputBaseFilename=Chromatic_svn
 OutputDir=.\
 
 [Tasks]

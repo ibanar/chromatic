@@ -63,15 +63,15 @@ void CreateStrings(void)
     long EntryStrCount = 0;
 
     EditStrings = 0;
-    EntryStrCount = WATreeViewGetChildItemsCount(hTreeView, hTreeViewStrings);
+    EntryStrCount = TreeViewGetChildItemsCount(hTreeView, hTreeViewStrings);
     // Check if entry already exists
-    while(WATreeViewSearchChildPartialText(hTreeView, hTreeViewStrings, "STRINGS_" + (CStr) EntryStrCount) != -1)
+    while(TreeViewSearchChildPartialText(hTreeView, hTreeViewStrings, "STRINGS_" + (CStr) EntryStrCount) != -1)
     {
         EntryStrCount++;
     }
     StringBase = EntryStrCount;
     StringsTitle = "Create new strings resource";
-    WACreateModalDialog(-1, -1, 410, 289, hMDIform.hWnd, &FRMStringsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    CreateModalDialog(-1, -1, 410, 289, hMDIform.hWnd, &FRMStringsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
 }
 
 // -----------------------------------------------------------------------
@@ -83,7 +83,7 @@ void EditStringsTable(CStr StringEditBase, CStr StringsFile, long Base)
     StringBaseToEdit = StringEditBase;
     StringsFileToEdit = StringsFile;
     StringBase = Base;
-    WACreateModalDialog(-1, -1, 410, 289, hMDIform.hWnd, &FRMStringsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    CreateModalDialog(-1, -1, 410, 289, hMDIform.hWnd, &FRMStringsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
 }
 
 // -----------------------------------------------------------------------
@@ -98,70 +98,70 @@ int CALLBACK FRMStringsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 	switch(uMsg)
 	{
         case WM_SYSCOLORCHANGE:
-            WAListViewSetBackColor(FRMStringsListview, GetSysColor(COLOR_WINDOW));
+            ListViewSetBackColor(FRMStringsListview, GetSysColor(COLOR_WINDOW));
 			break;
 		case WM_INITDIALOG:
-            WAControlSetText(hwndDlg, StringsTitle);
+            ControlSetText(hwndDlg, StringsTitle);
             FRMStringshwnd = hwndDlg;
-            hFRMStringsOk = WACreateButton(251, 263, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
-            hFRMStringsCancel = WACreateButton(330, 263, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-            FRMStringsListview = WACreateListView(2, 1, 406, 250, hwndDlg, 3, GlobalImageList3, &LVStringsHook, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_NOSORTHEADER | LVS_EDITLABELS | LVS_SINGLESEL | WS_TABSTOP, WS_EX_STATICEDGE);
-            WAListViewAddCol(FRMStringsListview, "String ID", 80, 1);
-            WAListViewAddCol(FRMStringsListview, "Value", 303, 0);
+            hFRMStringsOk = CreateButton(251, 263, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
+            hFRMStringsCancel = CreateButton(330, 263, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+            FRMStringsListview = CreateListView(2, 1, 406, 250, hwndDlg, 3, GlobalImageList3, &LVStringsHook, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_NOSORTHEADER | LVS_EDITLABELS | LVS_SINGLESEL | WS_TABSTOP, WS_EX_STATICEDGE);
+            ListViewAddCol(FRMStringsListview, "String ID", 80, 1);
+            ListViewAddCol(FRMStringsListview, "Value", 303, 0);
             if(EditStrings == 0)
             {
                 for(i = 0; i <= 15; i++)
                 {
-                    WAListViewAddItem(FRMStringsListview, "", i, -1);
+                    ListViewAddItem(FRMStringsListview, "", i, -1);
                 }
                 for(i = 0; i <= 15; i++)
                 {
-                    WAListViewSetSubItem(FRMStringsListview, (i + (StringBase * 16)), i, 1);
+                    ListViewSetSubItem(FRMStringsListview, (i + (StringBase * 16)), i, 1);
                 }
             }
             else
             {
                 for(i = 0; i <= 15; i++)
                 {
-                    CurrentStringFromStrings = WAIniReadKey("STRDAT", "STR" + (CStr) StringNumberComplement(i, 3).Get_String(), StringsFileToEdit);
-                    WAListViewAddItem(FRMStringsListview, CurrentStringFromStrings, i, -1);
+                    CurrentStringFromStrings = IniReadKey("STRDAT", "STR" + (CStr) StringNumberComplement(i, 3).Get_String(), StringsFileToEdit);
+                    ListViewAddItem(FRMStringsListview, CurrentStringFromStrings, i, -1);
                 }
                 for(i = 0; i <= 15; i++)
                 {
-                    WAListViewSetSubItem(FRMStringsListview, (i + (StringBase * 16)), i, 1);
+                    ListViewSetSubItem(FRMStringsListview, (i + (StringBase * 16)), i, 1);
                 }
             }
-            WAListViewSetHeaderPosition(FRMStringsListview, 0, 1);
-            WAListViewSetHeaderPosition(FRMStringsListview, 1, 0);
-            WAListViewSetItemSel(FRMStringsListview, 0);
+            ListViewSetHeaderPosition(FRMStringsListview, 0, 1);
+            ListViewSetHeaderPosition(FRMStringsListview, 1, 0);
+            ListViewSetItemSel(FRMStringsListview, 0);
             SetFocus(FRMStringsListview);
             FreezeTimer = 1;
             return(0);
         case WM_PAINT:
             BeginPaint(hwndDlg, &EnterValuePs);
-            WAGDIDrawHorzSep(hwndDlg, 0, 256, 410);
+            GDIDrawHorzSep(hwndDlg, 0, 256, 410);
             EndPaint(hwndDlg, &EnterValuePs);
 			break;
         case WM_NOTIFY:
-            if(WAControlGetNotifiedhWnd(lParam) == FRMStringsListview)
+            if(ControlGetNotifiedhWnd(lParam) == FRMStringsListview)
             {
-                switch(WAControlGetNotifiedMsg(lParam))
+                switch(ControlGetNotifiedMsg(lParam))
                 {
                     case NM_DBLCLK:
-                        CurrentSelected = WAListViewGetSelItem(FRMStringsListview, -1);
+                        CurrentSelected = ListViewGetSelItem(FRMStringsListview, -1);
                         if(CurrentSelected != -1)
                         {
-                            WAListViewSetEditModeOn(FRMStringsListview, CurrentSelected, 0);
+                            ListViewSetEditModeOn(FRMStringsListview, CurrentSelected, 0);
                             LVStringsInEdit = 1;
                         }
                         return(0);
                     case LVN_ENDLABELEDIT:
-                        CurrentSelected = WAListViewGetSelItem(FRMStringsListview, -1);
+                        CurrentSelected = ListViewGetSelItem(FRMStringsListview, -1);
                         if(CurrentSelected != -1)
                         {
-                            if(WAListViewEditValidated(lParam) == 1)
+                            if(ListViewEditValidated(lParam) == 1)
                             {
-                                WAListViewSetSubItem(FRMStringsListview, WAListViewGetEditResult(lParam), CurrentSelected, 0);
+                                ListViewSetSubItem(FRMStringsListview, ListViewGetEditResult(lParam), CurrentSelected, 0);
                             }
                         }
                         LVStringsInEdit = 0;
@@ -181,12 +181,12 @@ int CALLBACK FRMStringsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
                 {
                     SaveStringsFile();
                 }
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
             }
             else if((HWND) lParam == hFRMStringsCancel)
             {
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
 			}
 			break;
@@ -208,23 +208,23 @@ void CreateNewStringsFile(void)
     CStr EntryToAdd;
 
     StrName = "STRINGS_" + (CStr) StringBase;
-    StrFileName = WAFileGetDirectory(ProjectFName) + (CStr) StrName + (CStr) ".str";
-    StrFileHandle = WAFileCreateEmpty(StrFileName, NO_SECURITY_DESCRIPTOR);
-    WAFileWriteLine(StrFileHandle, "; Chromatic resource strings file");
-    WAFileWriteLine(StrFileHandle, "; Do NOT edit this file manually");
-    WAFileWriteLine(StrFileHandle, "; unless you know what you're doing !!!");
-    WAFileWriteLine(StrFileHandle, "; (C) 2001-2010 Franck Charlet.");
-    WAFileWriteLine(StrFileHandle, "");
-    WAFileWriteLine(StrFileHandle, "[STRDAT]");
-    WAFileClose(StrFileHandle);
+    StrFileName = FileGetDirectory(ProjectFName) + (CStr) StrName + (CStr) ".str";
+    StrFileHandle = FileCreateEmpty(StrFileName, NO_SECURITY_DESCRIPTOR);
+    FileWriteLine(StrFileHandle, "; Chromatic resource strings file");
+    FileWriteLine(StrFileHandle, "; Do NOT edit this file manually");
+    FileWriteLine(StrFileHandle, "; unless you know what you're doing !!!");
+    FileWriteLine(StrFileHandle, "; (C) 2001-2010 Franck Charlet.");
+    FileWriteLine(StrFileHandle, "");
+    FileWriteLine(StrFileHandle, "[STRDAT]");
+    FileClose(StrFileHandle);
     EntryToAdd = StrName + (CStr) " (" + (CStr) StrFileName + (CStr) ")";
     for(i = 0; i <= 15; i++)
     {
-        WAIniWriteKey("STRDAT", "STR" + (CStr) StringNumberComplement(i, 3).Get_String(),
-                      WAListViewGetItemText(FRMStringsListview, i, 0), StrFileName);
+        IniWriteKey("STRDAT", "STR" + (CStr) StringNumberComplement(i, 3).Get_String(),
+                      ListViewGetItemText(FRMStringsListview, i, 0), StrFileName);
     }
     AddStringInArray(RESPROPS_DEFAULT, 0);
-    WATreeViewAddItem(hTreeView, EntryToAdd, hTreeViewStrings, 0, ICON_RES, ICON_RES, 0, 1);
+    TreeViewAddItem(hTreeView, EntryToAdd, hTreeViewStrings, 0, ICON_RES, ICON_RES, 0, 1);
 }
 
 // -----------------------------------------------------------------------
@@ -234,24 +234,24 @@ void SaveStringsFile(void)
     int i = 0;
     HANDLE StrFileHandle = 0;
 
-    StrFileHandle = WAFileCreateEmpty(StringsFileToEdit, NO_SECURITY_DESCRIPTOR);
+    StrFileHandle = FileCreateEmpty(StringsFileToEdit, NO_SECURITY_DESCRIPTOR);
     if(StrFileHandle != INVALID_HANDLE_VALUE)
     {
-        WAFileWriteLine(StrFileHandle, "; Chromatic resource strings file");
-        WAFileWriteLine(StrFileHandle, "; Do NOT edit this file manually");
-        WAFileWriteLine(StrFileHandle, "; unless you know what you're doing !!!");
-        WAFileWriteLine(StrFileHandle, "; (C) 2001-2010 Franck Charlet.");
-        WAFileWriteLine(StrFileHandle, "");
-        WAFileWriteLine(StrFileHandle, "[STRDAT]");
-        WAFileClose(StrFileHandle);
+        FileWriteLine(StrFileHandle, "; Chromatic resource strings file");
+        FileWriteLine(StrFileHandle, "; Do NOT edit this file manually");
+        FileWriteLine(StrFileHandle, "; unless you know what you're doing !!!");
+        FileWriteLine(StrFileHandle, "; (C) 2001-2010 Franck Charlet.");
+        FileWriteLine(StrFileHandle, "");
+        FileWriteLine(StrFileHandle, "[STRDAT]");
+        FileClose(StrFileHandle);
         for(i = 0; i <= 15; i++)
         {
-            WAIniWriteKey("STRDAT", "STR" + (CStr) StringNumberComplement(i, 3).Get_String(), WAListViewGetItemText(FRMStringsListview, i, 0), StringsFileToEdit);
+            IniWriteKey("STRDAT", "STR" + (CStr) StringNumberComplement(i, 3).Get_String(), ListViewGetItemText(FRMStringsListview, i, 0), StringsFileToEdit);
         }
     }
     else
     {
-        WAMiscMsgBox(FRMStringshwnd, "Can't save strings file.", MB_ERROR, Requesters);
+        MiscMsgBox(FRMStringshwnd, "Can't save strings file.", MB_ERROR, Requesters);
     }
 }
 
@@ -264,7 +264,7 @@ LRESULT CALLBACK LVStringsHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
         switch(uMsg)
         {
             case WM_CHAR:
-                if(WAListViewPasteAutoEdit(FRMStringsListview, wParam, 0) == 1)
+                if(ListViewPasteAutoEdit(FRMStringsListview, wParam, 0) == 1)
                 {
                     LVStringsInEdit = 1;
                     return(0);

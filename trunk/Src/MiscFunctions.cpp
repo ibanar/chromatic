@@ -249,14 +249,14 @@ void SetCurDir(HWND hWnd)
 {
     CStr TmpCurDir;
 
-    TmpCurDir = WAComDlgBrowseForFolder(hWnd, "Select the working directory...");
+    TmpCurDir = ComDlgBrowseForFolder(hWnd, "Select the working directory...");
     if(TmpCurDir.Len() != 0)
     {
         if(strcmp(TmpCurDir.Right(1).Get_String(), "\\") == 0) TmpCurDir = TmpCurDir.Left(TmpCurDir.Len() - 1);
         CurrentDir = TmpCurDir;
         ChDrive(CurrentDir);
         ChDir(CurrentDir);
-        WAIniWriteKey("Dirs", "WORKDIR", CurrentDir, MainIniFile);
+        IniWriteKey("Dirs", "WORKDIR", CurrentDir, MainIniFile);
     }
 }
 
@@ -378,9 +378,9 @@ ParseSpaces:
             TempReArgs = StringReplace(StringGetSplitElement(LocalCmdName, CmdParsed, 0), BufString.Chr(2), " ", 1, -1, Binary_Compare);
             LUA_Args = LocalCmdName;
             // Check if it's a correct filename
-            if(WAFileExist(StringReplace(TempReArgs, "\"", "", 1, -1, Binary_Compare)) == 1) goto ReAssembleArg;
+            if(FileExist(StringReplace(TempReArgs, "\"", "", 1, -1, Binary_Compare)) == 1) goto ReAssembleArg;
             // Check if it's a directory
-            if(WAFileIsDirectory(StringReplace(TempReArgs, "\"", "", 1, -1, Binary_Compare)) == 0)
+            if(FileIsDirectory(StringReplace(TempReArgs, "\"", "", 1, -1, Binary_Compare)) == 0)
             {
                 // Check if element can be found
                 if(StringGetSplitUBound(CmdParsed) <= 0) goto ReAssembleArg;
@@ -674,16 +674,16 @@ CStr TranslateCommands(CStr Comd, CStr Cm)
 	BufString = Comd;
     BufString = StringReplace(BufString, "\t", " ", 1, -1, Text_Compare);
     // %1 = Filename with directory / without extension
-    BufString = StringReplace(BufString, "%1", WAFileRemoveExtension(Cm), 1, -1, Text_Compare);
+    BufString = StringReplace(BufString, "%1", FileRemoveExtension(Cm), 1, -1, Text_Compare);
     // %2 = Filename with directory / with extension
     BufString = StringReplace(BufString, "%2", Cm, 1, -1, Text_Compare);
     // %3 = Filename without directory / without extension
-    BufString = StringReplace(BufString, "%3", WAFileRemoveExtension(WAFileGetFileName(Cm)), 1, -1, Text_Compare);
+    BufString = StringReplace(BufString, "%3", FileRemoveExtension(FileGetFileName(Cm)), 1, -1, Text_Compare);
     // %4 = Filename without directory / with extension
-    BufString = StringReplace(BufString, "%4", WAFileGetFileName(Cm), 1, -1, Text_Compare);
-    BufString = StringReplace(BufString, "%7", WAFileGetExtension(WAFileGetFileName(Cm)), 1, -1, Text_Compare);
+    BufString = StringReplace(BufString, "%4", FileGetFileName(Cm), 1, -1, Text_Compare);
+    BufString = StringReplace(BufString, "%7", FileGetExtension(FileGetFileName(Cm)), 1, -1, Text_Compare);
     // %5 = Directory without filename
-    CDir = WAFileGetDirectory(Cm);
+    CDir = FileGetDirectory(Cm);
 	if(strcmp(CDir.Right(1).Get_String(), "\\") == 0) CDir = CDir.Left(CDir.Len() - 1);
     if(BufString.In_Str(1, "%5") != 0) BufString = StringReplace(BufString, "%5", CDir, 1, -1, Text_Compare);
     CommandToEx = StringReplace(BufString, "$", " ", 1, -1, Binary_Compare);
@@ -709,7 +709,7 @@ CStr TranslateCommands(CStr Comd, CStr Cm)
         DefaultFilters = GetCommandArg(&BufString, PosOpenFileDlg + 2);
         Select_File = AffSelFile(&StartupDir, &DefaultFilters);
         if(Select_File.Len() == 0) return("NULL");
-        BufString = StringReplace(BufString, "%8", WAFileRemoveExtension(WAFileGetFileName(Select_File)), 1, -1, Text_Compare);
+        BufString = StringReplace(BufString, "%8", FileRemoveExtension(FileGetFileName(Select_File)), 1, -1, Text_Compare);
     }
     // %9 = prompt user with a file selection dialog and return %4
     PosOpenFileDlg = BufString.In_Str(1, "%9");
@@ -719,7 +719,7 @@ CStr TranslateCommands(CStr Comd, CStr Cm)
         DefaultFilters = GetCommandArg(&BufString, PosOpenFileDlg + 2);
         Select_File = AffSelFile(&StartupDir, &DefaultFilters);
         if(Select_File.Len() == 0) return("NULL");
-		BufString = StringReplace(BufString, "%9", WAFileGetFileName(Select_File), 1, -1, Text_Compare);
+		BufString = StringReplace(BufString, "%9", FileGetFileName(Select_File), 1, -1, Text_Compare);
     }
     // %C = prompt user with a color dialog (result as decimal)
     if(BufString.In_Str(1, "%C") != 0) BufString = StringReplace(BufString, "%C", AffSelColor(), 1, -1, Text_Compare);
@@ -738,7 +738,7 @@ CStr TranslateCommands(CStr Comd, CStr Cm)
     // %* = prompt user with a directory selection dialog
     if(BufString.In_Str(1, "%*") != 0)
     {
-		Select_File = WAComDlgBrowseForFolder(hMDIform.hWnd, "Select a directory...");
+		Select_File = ComDlgBrowseForFolder(hMDIform.hWnd, "Select a directory...");
      	BufString = StringReplace(BufString, "%*", Select_File, 1, -1, Text_Compare);
         if(Select_File.Len() == 0) return("NULL");
     }
@@ -847,7 +847,7 @@ CStr AffSelFile(CStr *SpecifiedDir, CStr *SpecifiedFilters)
     if(SpecifiedFilters != 0) OpFilters = StringReplace(SpecifiedFilters, ":", "|", 1, -1, Text_Compare);
     if(SpecifiedDir != 0)
     {
-        BufString = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, SpecifiedDir, 0, CurrentDir);
+        BufString = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, SpecifiedDir, 0, CurrentDir);
     }
     else
     {
@@ -856,21 +856,21 @@ CStr AffSelFile(CStr *SpecifiedDir, CStr *SpecifiedFilters)
 			if(NbForms != 0)
 			{
 				ChildStruct = LoadStructure(CurrentForm);
-				BufString = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, WAFileGetDirectory(ChildStruct->RFile), 0, CurrentDir);
+				BufString = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, FileGetDirectory(ChildStruct->RFile), 0, CurrentDir);
 			}
 			else
 			{
-				BufString = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastUserLoadDir, 0, CurrentDir);
+				BufString = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastUserLoadDir, 0, CurrentDir);
 			}
         }
         else
         {
-            BufString = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastUserLoadDir, 0, CurrentDir);
+            BufString = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastUserLoadDir, 0, CurrentDir);
         }
     }
 	ReturnValue = BufString;
     if(BufString.Len() == 0) return(ReturnValue);
-    LastUserLoadDir = WAFileGetDirectory(ReturnValue);
+    LastUserLoadDir = FileGetDirectory(ReturnValue);
     return(ReturnValue);
 }
 
@@ -886,7 +886,7 @@ CStr AffSelFileSave(CStr *SpecifiedDir, CStr *SpecifiedFilters)
     if(SpecifiedFilters != 0) OpFilters = StringReplace(SpecifiedFilters, ":", "|", 1, -1, Text_Compare);
     if(SpecifiedDir != 0)
     {
-        BufString = WAComDlgGetSaveFileName(hMDIform.hWnd, OpFilters, SpecifiedDir, CurrentDir);
+        BufString = ComDlgGetSaveFileName(hMDIform.hWnd, OpFilters, SpecifiedDir, CurrentDir);
     }
     else
     {
@@ -895,21 +895,21 @@ CStr AffSelFileSave(CStr *SpecifiedDir, CStr *SpecifiedFilters)
 			if(NbForms != 0)
 			{
 				ChildStruct = LoadStructure(CurrentForm);
-				BufString = WAComDlgGetSaveFileName(hMDIform.hWnd, OpFilters, WAFileGetDirectory(ChildStruct->RFile), CurrentDir);
+				BufString = ComDlgGetSaveFileName(hMDIform.hWnd, OpFilters, FileGetDirectory(ChildStruct->RFile), CurrentDir);
 			}
 			else
 			{
-				BufString = WAComDlgGetSaveFileName(hMDIform.hWnd, OpFilters, LastUserSaveDir, CurrentDir);
+				BufString = ComDlgGetSaveFileName(hMDIform.hWnd, OpFilters, LastUserSaveDir, CurrentDir);
 			}
         }
         else
         {
-            BufString = WAComDlgGetSaveFileName(hMDIform.hWnd, OpFilters, LastUserSaveDir, CurrentDir);
+            BufString = ComDlgGetSaveFileName(hMDIform.hWnd, OpFilters, LastUserSaveDir, CurrentDir);
         }
     }
 	ReturnValue = BufString;
     if(BufString.Len() == 0) return(ReturnValue);
-    LastUserSaveDir = WAFileGetDirectory(ReturnValue);
+    LastUserSaveDir = FileGetDirectory(ReturnValue);
     return(ReturnValue);
 }
 
@@ -920,7 +920,7 @@ CStr AffSelColor(void)
     CStr ReturnValue;
 	CStr BufString;
 
-    if(WAComDlgChooseColor(hMDIform.hWnd, 0) != 0) BufString = MyColor.rgbResult;
+    if(ComDlgChooseColor(hMDIform.hWnd, 0) != 0) BufString = MyColor.rgbResult;
 	ReturnValue = BufString;
 	return(ReturnValue);
 }
@@ -932,7 +932,7 @@ CStr AffSelColorHex(void)
     CStr ReturnValue;
 	CStr BufString;
 
-    if(WAComDlgChooseColor(hMDIform.hWnd, 0) != 0) BufString = BufString.Hex_To_String(MyColor.rgbResult);
+    if(ComDlgChooseColor(hMDIform.hWnd, 0) != 0) BufString = BufString.Hex_To_String(MyColor.rgbResult);
 	ReturnValue = BufString;
 	return(ReturnValue);
 }
@@ -953,7 +953,7 @@ CStr Argument(void)
 {
     CStr ReturnValue;
 
-    WACreateModalDialog(-1, -1, 277, 120, hMDIform.hWnd, &FRMArgsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    CreateModalDialog(-1, -1, 277, 120, hMDIform.hWnd, &FRMArgsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
 	ReturnValue = EnteredArg;
 	return(ReturnValue);
 }
@@ -992,18 +992,18 @@ long RunDOSCmd(CStr DOSCmdName, CStr DOSCmdArgs, CStr DOSCmdDir, CStr OutputFile
     MyProcStartup.hStdOutput = 0;
     if(OutputFile.Len() != 0)
     {
-        hTempDosFile = WAFileCreateEmpty(OutputFile, USE_SECURITY_DESCRIPTOR);
+        hTempDosFile = FileCreateEmpty(OutputFile, USE_SECURITY_DESCRIPTOR);
         MyProcStartup.dwFlags = MyProcStartup.dwFlags | STARTF_USESTDHANDLES;
         MyProcStartup.hStdInput = 0;
         MyProcStartup.hStdError = hTempDosFile;
         MyProcStartup.hStdOutput = hTempDosFile;
     }
     BufStringCmdDir = DOSCmdDir;
-    if(BufStringCmdDir.Len() == 0) BufStringCmdDir = WAFileGetDirectory(DOSCmdName);
+    if(BufStringCmdDir.Len() == 0) BufStringCmdDir = FileGetDirectory(DOSCmdName);
     if(BufStringCmdDir.Len() == 0) BufStringCmdDir = CurDir();
 	if(strcmp(BufStringCmdDir.Right(1).Get_String(), "\\") == 0) BufStringCmdDir = BufStringCmdDir.Mid(1, BufStringCmdDir.Len() - 1);
     // Create the process
-    WACursorSetWait();
+    CursorSetWait();
     BufStringCmdName = StringReplace(DOSCmdName, "\"", "", 1, -1, Binary_Compare);
     if(OutputFile.Len() == 0)
     {
@@ -1022,17 +1022,17 @@ long RunDOSCmd(CStr DOSCmdName, CStr DOSCmdArgs, CStr DOSCmdDir, CStr OutputFile
         WaitForSingleObject(MyProcInfos.hProcess, -1);
         CloseHandle(MyProcInfos.hThread);
         CloseHandle(MyProcInfos.hProcess);
-        if(hTempDosFile != 0) WAFileClose(hTempDosFile);
+        if(hTempDosFile != 0) FileClose(hTempDosFile);
         ReturnValue = 1;
     }
     else
     {
         WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "Unable to run command : '" + (CStr) DOSCmdName.Get_String() + (CStr) "'");
-        if(hTempDosFile != 0) WAFileClose(hTempDosFile);
+        if(hTempDosFile != 0) FileClose(hTempDosFile);
         DeleteFile(OutputFile.Get_String());
         ReturnValue = 0;
     }
-    WACursorSetNormal();
+    CursorSetNormal();
     return(ReturnValue);
 }
 
@@ -1069,12 +1069,12 @@ void CaptureDOSOutput(CStr DOSCmdName, CStr DOSCmdArgs, CStr DOSCmdDir)
     MyProcStartup.hStdError = PipeOut;
     MyProcStartup.wShowWindow = SW_HIDE;
     BufStringCmdDir = DOSCmdDir;
-	if(BufStringCmdDir.Len() == 0) BufStringCmdDir = WAFileGetDirectory(DOSCmdName);
+	if(BufStringCmdDir.Len() == 0) BufStringCmdDir = FileGetDirectory(DOSCmdName);
     if(BufStringCmdDir.Len() == 0) BufStringCmdDir = CurDir();
     if(strcmp(BufStringCmdDir.Right(1).Get_String(), "\\") == 0) BufStringCmdDir = BufStringCmdDir.Mid(1, BufStringCmdDir.Len() - 1);
     // Create the process
     WriteComment("Executing process...");
-    WACursorSetWait();
+    CursorSetWait();
     BufStringCmdName = StringReplace(DOSCmdName, "\"", "", 1, 2, Binary_Compare);
     BufStringCmdDir = StringReplace(BufStringCmdDir, "\"", "", 1, 2, Binary_Compare);
     BufString = CorrectFileName(BufStringCmdName).Get_String() + (CStr) " " + (CStr) DOSCmdArgs.Get_String();
@@ -1100,7 +1100,7 @@ void CaptureDOSOutput(CStr DOSCmdName, CStr DOSCmdArgs, CStr DOSCmdDir)
         CloseHandle(PipeIn);
         CloseHandle(MyProcInfos.hThread);
         CloseHandle(MyProcInfos.hProcess);
-        WACursorSetNormal();
+        CursorSetNormal();
         WriteComment("");
         return;
     }
@@ -1110,7 +1110,7 @@ void CaptureDOSOutput(CStr DOSCmdName, CStr DOSCmdArgs, CStr DOSCmdDir)
         CloseHandle(PipeOut);
         CloseHandle(PipeIn);
     }
-    WACursorSetNormal();
+    CursorSetNormal();
     WriteComment("");
 }
 
@@ -1417,12 +1417,12 @@ long CheckWorkSpaceFile(CStr FileName)
     CStr WorkHeader;
     CStr BufString;
 
-    WorkFileHandle = WAFileOpenR(FileName);
+    WorkFileHandle = FileOpenR(FileName);
     if(WorkFileHandle != INVALID_HANDLE_VALUE)
     {
         WorkHeader = WorkHeader.String(15,1);
 		ReadFile(WorkFileHandle, WorkHeader.Get_String(), 15, &WorkFileRead, 0);
-        WAFileClose(WorkFileHandle);
+        FileClose(WorkFileHandle);
     }
 	BufString = "[" + (CStr) AppTitle + (CStr) "workspc]";
     if(strcmpi(WorkHeader.Get_String(), BufString.Get_String()) == 0) ReturnValue = 1;
@@ -1434,7 +1434,7 @@ long CheckWorkSpaceFile(CStr FileName)
 long GetChildState(void)
 {
     if(NbForms == 0) return(0);
-    return(WAControlGetWindowState(CurrentForm));
+    return(ControlGetWindowState(CurrentForm));
 }
 
 // -----------------------------------------------------------------------
@@ -1650,8 +1650,8 @@ FuturBalancing:
 FoundEndp:
     if(EndpPos == -1)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "Can't find end of procedure.", MB_ERROR, Requesters);
-        if(WAControlIsVisible(ChildStruct->hChildCodeMax) != 0) SetFocus(ChildStruct->hChildCodeMax);
+        MiscMsgBox(hMDIform.hWnd, "Can't find end of procedure.", MB_ERROR, Requesters);
+        if(ControlIsVisible(ChildStruct->hChildCodeMax) != 0) SetFocus(ChildStruct->hChildCodeMax);
         goto FreeSplits;
     }
     // Check if we were already inside a procedure
@@ -1739,8 +1739,8 @@ FoundEndp:
 FoundEndpEnd:
         if(ProcPos == -1)
         {
-            WAMiscMsgBox(hMDIform.hWnd, "Can't find procedure entry point.", MB_ERROR, Requesters);
-            if(WAControlIsVisible(ChildStruct->hChildCodeMax) != 0) SetFocus(ChildStruct->hChildCodeMax);
+            MiscMsgBox(hMDIform.hWnd, "Can't find procedure entry point.", MB_ERROR, Requesters);
+            if(ControlIsVisible(ChildStruct->hChildCodeMax) != 0) SetFocus(ChildStruct->hChildCodeMax);
             goto FreeSplits;
         }
     }
@@ -1790,8 +1790,8 @@ StopCheckCloseBalance:
                     EndpPos++;
                     if((long) EndpPos > (long) BalanceMaxLines)
                     {
-StopBalanceCheck:       WAMiscMsgBox(hMDIform.hWnd, "Unmatched block in procedure.", MB_ERROR, Requesters);
-                        if(WAControlIsVisible(ChildStruct->hChildCodeMax) != 0) SetFocus(ChildStruct->hChildCodeMax);
+StopBalanceCheck:       MiscMsgBox(hMDIform.hWnd, "Unmatched block in procedure.", MB_ERROR, Requesters);
+                        if(ControlIsVisible(ChildStruct->hChildCodeMax) != 0) SetFocus(ChildStruct->hChildCodeMax);
                         goto FreeSplits;
                     }
                     goto CheckOpenCloseBalance;
@@ -2041,8 +2041,8 @@ NoGo:
     if(FileToInclude == 1) goto GoForITLastChance;
 Includeterminus:
     // Perform a test in current file directory if anything else fails
-    WAMiscMsgBox(hMDIform.hWnd, "Can't find specified file.", MB_ERROR, Requesters);
-    if(WAControlIsVisible(ChildStruct->hChildCodeMax) != 0) SetFocus(ChildStruct->hChildCodeMax);
+    MiscMsgBox(hMDIform.hWnd, "Can't find specified file.", MB_ERROR, Requesters);
+    if(ControlIsVisible(ChildStruct->hChildCodeMax) != 0) SetFocus(ChildStruct->hChildCodeMax);
     return(ReturnValue);
 GoForITLastChance:
     // No file found ? Check for a collapsed procedure
@@ -2054,7 +2054,7 @@ ForceInInclude:
         CollapsedInclude = GetCMLangInclude(CurrentForm);
         if(CollapsedInclude.Len() == 0)
         {
-            WAMiscMsgBox(hMDIform.hWnd, "No include definition found for current file.", MB_ERROR, Requesters);
+            MiscMsgBox(hMDIform.hWnd, "No include definition found for current file.", MB_ERROR, Requesters);
             FileUnderCursor = "";
             return(0);
         }
@@ -2062,7 +2062,7 @@ ForceInInclude:
         PosCollapsedInclude = BegCollapsedInclude.In_Str(1, "%1", Text_Compare);
         if(PosCollapsedInclude == 0)
         {
-            WAMiscMsgBox(hMDIform.hWnd, "Error in include definition.", MB_ERROR, Requesters);
+            MiscMsgBox(hMDIform.hWnd, "Error in include definition.", MB_ERROR, Requesters);
             FileUnderCursor = "";
             return(0);
         }
@@ -2075,9 +2075,9 @@ ForceInInclude:
             FileUnderCursor = CollapsedLine;
             FileUnderCursor = StringReplace(FileUnderCursor, "\r\n", "", 1, -1, Binary_Compare);
             FileUnderCursor = FileUnderCursor.Mid(1, FileUnderCursor.Len() - EndCollapsedInclude.Len());
-            if(WAFileExist(FileUnderCursor) == 0)
+            if(FileExist(FileUnderCursor) == 0)
             {
-                CollapsedDir = WAFileGetDirectory(CMGetRealFile(ChildStruct->RFile));
+                CollapsedDir = FileGetDirectory(CMGetRealFile(ChildStruct->RFile));
                 if(strcmp(CollapsedDir.Right(1).Get_String(), "\\") == 0) CollapsedDir = CollapsedDir.Left(CollapsedDir.Len() - 1);
                 FileUnderCursor = CollapsedDir + (CStr) "\\" + (CStr) FileUnderCursor;
             }
@@ -2092,7 +2092,7 @@ ForceInInclude:
     {
         if(FileToInclude == 1)
         {
-            if(WAFileExist(FileUnderCursor) != 0)
+            if(FileExist(FileUnderCursor) != 0)
             {
                 MCMD_DeleteLine();
                 if(IncludeFile(CurrentForm, FileUnderCursor) == 0) goto Includeterminus;
@@ -2105,13 +2105,13 @@ ForceInInclude:
         }
         else
         {
-            if(WAFileIsDirectory(FileUnderCursor) == 1)
+            if(FileIsDirectory(FileUnderCursor) == 1)
             {
                 OpFilters = "All files (*.*)|*.*";
-                FileFromDirectory = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, FileUnderCursor, 0, CurrentDir);
+                FileFromDirectory = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, FileUnderCursor, 0, CurrentDir);
                 if(FileFromDirectory.Len() == 0) return(0);
                 if(ExecFile == 0) OpenFileNorm(FileFromDirectory, 0, 0, 0, 1);
-                else ShellExecute(hMDIform.hWnd, "open", FileFromDirectory.Get_String(), "", WAFileGetDirectory(FileFromDirectory).Get_String(), SW_SHOW);
+                else ShellExecute(hMDIform.hWnd, "open", FileFromDirectory.Get_String(), "", FileGetDirectory(FileFromDirectory).Get_String(), SW_SHOW);
             }
             else
             {
@@ -2119,7 +2119,7 @@ ForceInInclude:
                 {
                     // Check if there's a directory in filename
                     OpenFileNorm(FileUnderCursor, 0, 0, 0, 1);
-                } else ShellExecute(hMDIform.hWnd, "open", FileUnderCursor.Get_String(), "", WAFileGetDirectory(FileUnderCursor).Get_String(), SW_SHOW);
+                } else ShellExecute(hMDIform.hWnd, "open", FileUnderCursor.Get_String(), "", FileGetDirectory(FileUnderCursor).Get_String(), SW_SHOW);
             }
             return(1);
         }
@@ -2140,20 +2140,20 @@ long TestUnderFile(CStr FileName)
     int i;
 
     FileUnderCursor = FileName;
-    if(WAFileExist(FileName) != 0) goto FileOk;
+    if(FileExist(FileName) != 0) goto FileOk;
     ChildStruct = LoadStructure(CurrentForm);
-    FDirec = WAFileGetDirectory(CMGetRealFile(ChildStruct->RFile));
+    FDirec = FileGetDirectory(CMGetRealFile(ChildStruct->RFile));
     if(strcmp(FDirec.Right(1).Get_String(), "\\") != 0) FDirec = FDirec + "\\";
     RepDir = FDirec;
     if(strcmp(FileName.Left(1).Get_String(), "\\") == 0) if(strcmp(FDirec.Right(1).Get_String(), "\\") == 0) FDirec = FDirec.Left(FDirec.Len() - 1);
     FDirec = FDirec + FileName;
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
 
     FDirec2 = FDirec;
 
     // use the internal extensions to search for the file
-    Extensions = WAIniReadKey("ExtrasExt", "AddInclude", MainIniFile);
+    Extensions = IniReadKey("ExtrasExt", "AddInclude", MainIniFile);
     MainSplit = StringSplit(Extensions, "|");
     if(MainSplit)
     {
@@ -2166,7 +2166,7 @@ long TestUnderFile(CStr FileName)
             {
                 FDirec = FDirec2 + StringGetSplitElement(Extensions, ExtSplit, i).Mid(2);
                 FileUnderCursor = FDirec;
-                if(WAFileExist(FDirec) != 0) goto FileOk;
+                if(FileExist(FDirec) != 0) goto FileOk;
             }
         }
     }
@@ -2176,79 +2176,79 @@ long TestUnderFile(CStr FileName)
     // Then search registered directories
     FDirec = Dirs[DIR_ROOT] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_BIN] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_INCLUDE] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_LIB] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_HELP] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_MAIN] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_WIN] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_WINSYS] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_TEMP] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_TEMPLATES] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_PROJECTS] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_MAINHELP] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_SNIPPETS] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_DATABASES] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_SKINS] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_LANGSCRIPTS] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_LANGUAGES] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_DOWNLOADS] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_ADDINS] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_CONFIG] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_MENUS] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_WIZARDS] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_FILTERS] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_EXTRACODE] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
     FDirec = Dirs[DIR_SCRIPTS] + (CStr) "\\" + (CStr) FileName.Get_String();
     FileUnderCursor = FDirec;
-    if(WAFileExist(FDirec) != 0) goto FileOk;
+    if(FileExist(FDirec) != 0) goto FileOk;
 
     return(0);
 FileOk:
@@ -2375,7 +2375,7 @@ ReCheckFileName:
     if(FoundOpened == 1)
     {
 Undecorated_Found:
-        if(WAControlIsVisible(FoundOpenedhWnd) == 0) WAControlVisible(FoundOpenedhWnd, 1);
+        if(ControlIsVisible(FoundOpenedhWnd) == 0) ControlVisible(FoundOpenedhWnd, 1);
         SetFocus(FoundOpenedhWnd);
         ChildStruct = LoadStructure(FoundOpenedhWnd);
         // Check if the line is empty
@@ -2404,9 +2404,9 @@ Undecorated_Found:
             // Check if a file has been loaded
             if(ChildStruct->FileLoaded)
             {
-                ExtraCurrentDir = WAFileGetDirectory(CMGetRealFile(ChildStruct->RFile)).Get_String() + (CStr) BufString;
+                ExtraCurrentDir = FileGetDirectory(CMGetRealFile(ChildStruct->RFile)).Get_String() + (CStr) BufString;
                 // Check if file exists
-                if(WAFileExist(ExtraCurrentDir))
+                if(FileExist(ExtraCurrentDir))
                 {
                     BufString = ExtraCurrentDir;
                     goto ReCheckFileName;
@@ -2447,7 +2447,7 @@ HWND FocusFile(CStr FileName, long FNoAddRecent)
     // Opened file ?
     if(FoundOpened == 1)
     {
-        if(WAControlIsVisible(FoundOpenedhWnd) == 0) WAControlVisible(FoundOpenedhWnd, 1);
+        if(ControlIsVisible(FoundOpenedhWnd) == 0) ControlVisible(FoundOpenedhWnd, 1);
         SetFocus(FoundOpenedhWnd);
         ChildStruct = LoadStructure(FoundOpenedhWnd);
         SetFocus(FoundOpenedhWnd);
@@ -2476,7 +2476,7 @@ CStr GetFileNameFromTreeView(HTREEITEM hItem)
     CStr BufString;
 	long PosRefFile = 0;
 
-    BufString = WATreeViewGetItemText(hTreeView, hItem);
+    BufString = TreeViewGetItemText(hTreeView, hItem);
     if(BufString.Len() != 0)
     {
         PosRefFile = BufString.In_Str(1, "(");
@@ -2503,7 +2503,7 @@ CStr GetLabelFromTreeView(HTREEITEM hItem)
     CStr BufString;
     long PosRefFile = 0;
 
-    BufString = WATreeViewGetItemText(hTreeView, hItem);
+    BufString = TreeViewGetItemText(hTreeView, hItem);
     if(BufString.Len() != 0)
     {
         PosRefFile = BufString.In_Str(1, "(");
@@ -2526,7 +2526,7 @@ CStr GetLabelFromTreeView(HTREEITEM hItem)
 void RemFile(CStr FileKey)
 {
     ProcLines--;
-    WAListViewDeleteItem(FrmResultsListView, ProcLines);
+    ListViewDeleteItem(FrmResultsListView, ProcLines);
 }
 
 // -----------------------------------------------------------------------
@@ -2536,10 +2536,10 @@ void AddFile(CStr FileKey, long j, CStr Info, CStr Comment)
     CStr jStr;
 
     jStr = j + 1;
-    WAListViewAddItem(FrmResultsListView, FileKey, ProcLines, 0);
-    WAListViewSetSubItem(FrmResultsListView, jStr, ProcLines, 1);
-    WAListViewSetSubItem(FrmResultsListView, Info, ProcLines, 2);
-    WAListViewSetSubItem(FrmResultsListView, StringReplace(Comment, "\t", " ", 1, -1, Binary_Compare).Trim(), ProcLines, 3);
+    ListViewAddItem(FrmResultsListView, FileKey, ProcLines, 0);
+    ListViewSetSubItem(FrmResultsListView, jStr, ProcLines, 1);
+    ListViewSetSubItem(FrmResultsListView, Info, ProcLines, 2);
+    ListViewSetSubItem(FrmResultsListView, StringReplace(Comment, "\t", " ", 1, -1, Binary_Compare).Trim(), ProcLines, 3);
     ProcLines++;
 }
 
@@ -2743,14 +2743,14 @@ void FillVarCheckTable(void)
 
     if(cGrepIniFile.Len() != 0)
     {
-        GrepSep = WAIniReadKey("ListSep", "Separator", cGrepIniFile);
+        GrepSep = IniReadKey("ListSep", "Separator", cGrepIniFile);
         if(GrepSep.Len() == 0) goto ErrInGrep;
         TabCheckVars.Erase();
         TabCheckVarsPos.Erase();
         TabCheckVarsComment.Erase();
         for(i = 0; i <= 999; i++)
         {
-            GrepLine = WAIniReadKey("VarResults", "Var" + (CStr) StringNumberComplement(i, 3).Get_String(), cGrepIniFile);
+            GrepLine = IniReadKey("VarResults", "Var" + (CStr) StringNumberComplement(i, 3).Get_String(), cGrepIniFile);
             if(GrepLine.Len() == 0) break;
             GrepLineArray = StringSplit(GrepLine, GrepSep);
             if(StringGetSplitUBound(GrepLineArray) != 2) goto ErrInGrepParse;
@@ -2865,7 +2865,7 @@ void FillFuncCheckTable(void)
 
     if(cGrepIniFile.Len() != 0)
     {
-        GrepSep = WAIniReadKey("ListSep", "Separator", cGrepIniFile);
+        GrepSep = IniReadKey("ListSep", "Separator", cGrepIniFile);
         if(GrepSep.Len() == 0) goto ErrInGrep;
         TabCheckFunc.Erase();
         TabCheckFuncPos.Erase();
@@ -2873,7 +2873,7 @@ void FillFuncCheckTable(void)
 
         for(i = 0; i <= 999; i++)
         {
-            GrepLine = WAIniReadKey("FncResults", "Fnc" + (CStr) StringNumberComplement(i, 3).Get_String(), cGrepIniFile);
+            GrepLine = IniReadKey("FncResults", "Fnc" + (CStr) StringNumberComplement(i, 3).Get_String(), cGrepIniFile);
             if(GrepLine.Len() == 0) break;
             GrepLineArray = StringSplit(GrepLine, GrepSep);
             if(StringGetSplitUBound(GrepLineArray) != 2) goto ErrInGrepParse;
@@ -2939,7 +2939,7 @@ int CALLBACK EnumSearchVarEntry(HWND hWnd, long lParam)
 	{
         VarProcFound = 0;
         VarProcFoundLine = 0;
-        if(WAControlIsWindowChild(hWnd) == 1)
+        if(ControlIsWindowChild(hWnd) == 1)
         {
             if(GetWindowLong(hWnd, GWL_USERDATA) != 0)
             {
@@ -3068,7 +3068,7 @@ int CALLBACK EnumSearchVarNextUse(HWND hWnd, long lParam)
     {
         VarProcFound = 0;
         VarProcFoundLine = 0;
-        if(WAControlIsWindowChild(hWnd) == 1)
+        if(ControlIsWindowChild(hWnd) == 1)
         {
             if(GetWindowLong(hWnd, GWL_USERDATA) != 0)
             {
@@ -3144,7 +3144,7 @@ int CALLBACK EnumSearchProcProto(HWND hWnd, long lParam)
     {
         VarProcFound = 0;
         VarProcFoundLine = 0;
-        if(WAControlIsWindowChild(hWnd) == 1)
+        if(ControlIsWindowChild(hWnd) == 1)
         {
             if(GetWindowLong(hWnd, GWL_USERDATA) != 0)
             {
@@ -3211,7 +3211,7 @@ int CALLBACK EnumSearchProcDeclare(HWND hWnd, long lParam)
     {
         VarProcFound = 0;
         VarProcFoundLine = 0;
-        if(WAControlIsWindowChild(hWnd) == 1)
+        if(ControlIsWindowChild(hWnd) == 1)
         {
             if(GetWindowLong(hWnd, GWL_USERDATA) != 0)
             {
@@ -3285,7 +3285,7 @@ int CALLBACK EnumSearchProcNextUse(HWND hWnd, long lParam)
     {
         VarProcFound = 0;
         VarProcFoundLine = 0;
-        if(WAControlIsWindowChild(hWnd) == 1)
+        if(ControlIsWindowChild(hWnd) == 1)
         {
             if(GetWindowLong(hWnd, GWL_USERDATA) != 0)
             {
@@ -3388,9 +3388,9 @@ long OpenUnknownFile(CStr FileName, int AddInRecent)
 	int SkipPrjLoadRecent;
 
 	// Open passed file
-    if(WAFileExist(FileName) == 1)
+    if(FileExist(FileName) == 1)
     {
-        if(WAFileIsDirectory(FileName) == 0)
+        if(FileIsDirectory(FileName) == 0)
         {
             if(FileName.Len() != 0) {
                 if(CheckProjectFile(FileName) == 0)
@@ -3399,11 +3399,11 @@ long OpenUnknownFile(CStr FileName, int AddInRecent)
                     {
                         if(AddInRecent)
                         {
-							if(OpenFileNorm(FileName, 0, 0, 0, FALSE) != 0) LastLoadDir = WAFileGetDirectory(FileName);
+							if(OpenFileNorm(FileName, 0, 0, 0, FALSE) != 0) LastLoadDir = FileGetDirectory(FileName);
                         }
                         else
                         {
-							if(OpenFileNorm(FileName, 0, 0, 0, TRUE) != 0) LastLoadDir = WAFileGetDirectory(FileName);
+							if(OpenFileNorm(FileName, 0, 0, 0, TRUE) != 0) LastLoadDir = FileGetDirectory(FileName);
 						}
 						return(TRUE);
                     }
@@ -3423,8 +3423,8 @@ long OpenUnknownFile(CStr FileName, int AddInRecent)
         }
         else
         {
-			SelUnknownFiles = WAComDlgGetOpenFileName(GetActiveWindow(),"All files (*.*)|*.*", FileName, 1, CurrentDir);
-			if(WAComDlgParseMultiFilesSelection(SelUnknownFiles, &EnumUnknownFiles, MULTIFILESENUM_FORWARD, AddInRecent).Len() != 0)
+			SelUnknownFiles = ComDlgGetOpenFileName(GetActiveWindow(),"All files (*.*)|*.*", FileName, 1, CurrentDir);
+			if(ComDlgParseMultiFilesSelection(SelUnknownFiles, &EnumUnknownFiles, MULTIFILESENUM_FORWARD, AddInRecent).Len() != 0)
 			{
 				return(TRUE);
 			}
@@ -3445,9 +3445,9 @@ void FillFTPCombo(HWND hGlobComboBox)
 {
     for(int i = 0; i <= 999; i++)
     {
-        GlobalRetVal = WAIniReadKey("FTPAccounts", "FTPAccount" + (CStr) StringNumberComplement(i, 3).Get_String(), FtpAccountsIniFile);
+        GlobalRetVal = IniReadKey("FTPAccounts", "FTPAccount" + (CStr) StringNumberComplement(i, 3).Get_String(), FtpAccountsIniFile);
         if(GlobalRetVal.Len() == 0) break;
-        WAComboBoxAddItem(hGlobComboBox, GlobalRetVal, -1);
+        ComboBoxAddItem(hGlobComboBox, GlobalRetVal, -1);
     }
 }
 
@@ -3902,12 +3902,12 @@ CStr GetModulesProc(void)
 	CStr BufString;
 
 	// Add user modules to header
-    TreeViewChildEntryProc = WATreeViewGetFirstItemChild(hTreeView, hTreeViewModules);
+    TreeViewChildEntryProc = TreeViewGetFirstItemChild(hTreeView, hTreeViewModules);
     while(TreeViewChildEntryProc != 0)
     {
         TVEntryFName = GetFileNameFromTreeView(TreeViewChildEntryProc);
         BufString = BufString + GetProcedureList(TVEntryFName);
-        TreeViewChildEntryProc = WATreeViewGetNextItem(hTreeView, TreeViewChildEntryProc);
+        TreeViewChildEntryProc = TreeViewGetNextItem(hTreeView, TreeViewChildEntryProc);
     }
 	ReturnValue = BufString;
     return(ReturnValue);
@@ -4267,7 +4267,7 @@ long OpenContextHelpFile(CStr HelpFileName, CStr HelpKeyWord)
         TmpHelpFile = HelpFileName;
         TmpHelpFile = ChangeRelativePaths(TmpHelpFile);
         MSDNWord = HelpKeyWord;
-        BufString = WAFileGetExtension(TmpHelpFile).Upper_Case();
+        BufString = FileGetExtension(TmpHelpFile).Upper_Case();
 		if(BufString == "CHM" || BufString == "COL")
 		{
             ReturnValue = -1;
@@ -4309,21 +4309,21 @@ int IsFileInProject(char *FileName)
     if(ProjectOn == 1)
     {
         // Includes
-        TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewIncludes);
+        TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewIncludes);
         while(TreeViewChildEntry != 0)
         {
             if(strcmpi(GetFileNameFromTreeView(TreeViewChildEntry).Get_String(), FileName) == 0) return(TRUE);
-			TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+			TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         }
         // Modules
-        TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewModules);
+        TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewModules);
         while(TreeViewChildEntry != 0)
         {
             if(strcmpi(GetFileNameFromTreeView(TreeViewChildEntry).Get_String(), FileName) == 0) return(TRUE);
-            TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+            TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         }
         // Resources
-        TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewResources);
+        TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewResources);
         while(TreeViewChildEntry != 0)
         {
 			// Avoid these folders
@@ -4340,7 +4340,7 @@ int IsFileInProject(char *FileName)
 				if(strcmpi(GetFileNameFromTreeView(TreeViewChildEntry).Get_String(), FileName) == 0) return(TRUE);
             }
 AvoidTreeFolders:
-            TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+            TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         }
     }
 	return(FALSE);
@@ -4357,23 +4357,23 @@ void GetAllFiles(void)
     if(ProjectOn == 1)
     {
         // Includes
-        TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewIncludes);
+        TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewIncludes);
         while(TreeViewChildEntry != 0)
         {
             FilesList.Add(GetFileNameFromTreeView(TreeViewChildEntry).Get_String());
             FilesListhWnd.Add(0L);
-			TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+			TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         }
         // Modules
-        TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewModules);
+        TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewModules);
         while(TreeViewChildEntry != 0)
         {
             FilesList.Add(GetFileNameFromTreeView(TreeViewChildEntry).Get_String());
             FilesListhWnd.Add(0L);
-            TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+            TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         }
         // Resources
-        TreeViewChildEntry = WATreeViewGetFirstItemChild(hTreeView, hTreeViewResources);
+        TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewResources);
         while(TreeViewChildEntry != 0)
         {
 			// Avoid these folders
@@ -4391,7 +4391,7 @@ void GetAllFiles(void)
                 FilesListhWnd.Add(0L);
             }
 AvoidTreeFolders:
-            TreeViewChildEntry = WATreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+            TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         }
     }
     SearchAllFiles(hMDIform.hWnd);
@@ -4416,7 +4416,7 @@ int CALLBACK EnumFillFilesProc(HWND hWnd, long lParam)
     }
     else
     {
-        if(WAControlIsWindowChild(hWnd) == 0) goto NoSearchFileProc;
+        if(ControlIsWindowChild(hWnd) == 0) goto NoSearchFileProc;
         if(GetWindowLong(hWnd, GWL_USERDATA) == 0) goto NoSearchFileProc;
         ChildStruct = LoadStructure(hWnd);
         ChildFile = ChildStruct->RFile;
@@ -4454,7 +4454,7 @@ long SearchNextTreeViewEntry(HWND hTree, HTREEITEM hChild, CStr Prefix)
     long EntryCount = 0;
     CStr BufString;
 	
-	EntryCount = WATreeViewGetChildItemsCount(hTree, hChild);
+	EntryCount = TreeViewGetChildItemsCount(hTree, hChild);
     if(EntryCount != 0)
     {
         CurToAdd = -1;
@@ -4462,7 +4462,7 @@ long SearchNextTreeViewEntry(HWND hTree, HTREEITEM hChild, CStr Prefix)
         {
             CurToAdd++;
             BufString = (CStr) Prefix.Get_String() + (CStr) CurToAdd;
-			if(WATreeViewSearchChildPartialText(hTree, hChild, BufString) == -1) break;
+			if(TreeViewSearchChildPartialText(hTree, hChild, BufString) == -1) break;
         }
         EntryCount = CurToAdd;
     }
@@ -4478,7 +4478,7 @@ long GetUseFileDir(void)
 
     if(NbForms != 0)
     {
-        KeyValue = WAIniReadKey("Layout", "UseFileDir", MainIniFile);
+        KeyValue = IniReadKey("Layout", "UseFileDir", MainIniFile);
         if(strlen(KeyValue.Get_String()) != 0)
         {
             if(strcmpi(KeyValue.Get_String(), "1") == 0)
@@ -4497,28 +4497,28 @@ void SaveState(CStr WorkSpaceName)
 {
 	WINDOWPLACEMENT Mdi_Datas;
 
-    if(WAIniReadBoolKey("Layout", "RememberState", MainIniFile))
+    if(IniReadBoolKey("Layout", "RememberState", MainIniFile))
     {
         // Delete the file first
         DeleteFile(WorkSpaceName.Get_String());
-        WAIniWriteKey(AppTitle.Upper_Case().Get_String() + (CStr) "WORKSPC", "Version", AppVersion + (CStr) AppRevision, WorkSpaceName);
+        IniWriteKey(AppTitle.Upper_Case().Get_String() + (CStr) "WORKSPC", "Version", AppVersion + (CStr) AppRevision, WorkSpaceName);
         WorkSpaceFileName = WorkSpaceName;
         SaveAllChildsInWorkSpace(hMDIform.hClient);
         // Include project file into the list
-        if(ProjectOn == 1) WAIniWriteKey("Files", "File" + (CStr) StringNumberComplement(WorkSpaceNumber, 3).Get_String(), ProjectFName, WorkSpaceName);
+        if(ProjectOn == 1) IniWriteKey("Files", "File" + (CStr) StringNumberComplement(WorkSpaceNumber, 3).Get_String(), ProjectFName, WorkSpaceName);
     }
 	Mdi_Datas.length = sizeof(WINDOWPLACEMENT);
 	GetWindowPlacement(hMDIform.hWnd, &Mdi_Datas);
-	WAIniWriteKey("Layout", "MDI_Flags", Mdi_Datas.flags, MainIniFile);
-	WAIniWriteKey("Layout", "MDI_MinPosX", Mdi_Datas.ptMinPosition.x, MainIniFile);
-	WAIniWriteKey("Layout", "MDI_MinPosY", Mdi_Datas.ptMinPosition.y, MainIniFile);
-	WAIniWriteKey("Layout", "MDI_MaxPosX", Mdi_Datas.ptMaxPosition.x, MainIniFile);
-	WAIniWriteKey("Layout", "MDI_MaxPosY", Mdi_Datas.ptMaxPosition.y, MainIniFile);
-	WAIniWriteKey("Layout", "MDI_PosL", Mdi_Datas.rcNormalPosition.left, MainIniFile);
-	WAIniWriteKey("Layout", "MDI_PosT", Mdi_Datas.rcNormalPosition.top, MainIniFile);
-	WAIniWriteKey("Layout", "MDI_PosR", Mdi_Datas.rcNormalPosition.right, MainIniFile);
-	WAIniWriteKey("Layout", "MDI_PosB", Mdi_Datas.rcNormalPosition.bottom, MainIniFile);
-	WAIniWriteKey("Layout", "MDI_Show", Mdi_Datas.showCmd, MainIniFile);
+	IniWriteKey("Layout", "MDI_Flags", Mdi_Datas.flags, MainIniFile);
+	IniWriteKey("Layout", "MDI_MinPosX", Mdi_Datas.ptMinPosition.x, MainIniFile);
+	IniWriteKey("Layout", "MDI_MinPosY", Mdi_Datas.ptMinPosition.y, MainIniFile);
+	IniWriteKey("Layout", "MDI_MaxPosX", Mdi_Datas.ptMaxPosition.x, MainIniFile);
+	IniWriteKey("Layout", "MDI_MaxPosY", Mdi_Datas.ptMaxPosition.y, MainIniFile);
+	IniWriteKey("Layout", "MDI_PosL", Mdi_Datas.rcNormalPosition.left, MainIniFile);
+	IniWriteKey("Layout", "MDI_PosT", Mdi_Datas.rcNormalPosition.top, MainIniFile);
+	IniWriteKey("Layout", "MDI_PosR", Mdi_Datas.rcNormalPosition.right, MainIniFile);
+	IniWriteKey("Layout", "MDI_PosB", Mdi_Datas.rcNormalPosition.bottom, MainIniFile);
+	IniWriteKey("Layout", "MDI_Show", Mdi_Datas.showCmd, MainIniFile);
 }
 
 // -----------------------------------------------------------------------
@@ -4527,7 +4527,7 @@ void RestoreState(CStr WorkSpaceName)
 {
     CStr ResState;
 
-    ResState = WAIniReadKey("Layout", "RememberState", MainIniFile);
+    ResState = IniReadKey("Layout", "RememberState", MainIniFile);
     if(ResState.Len() != 0)
     {
         if(strcmpi(ResState.Get_String(), "1") == 0)
@@ -4536,7 +4536,7 @@ void RestoreState(CStr WorkSpaceName)
             return;
         }
     }
-    ResState = WAIniReadKey("Layout", "ShowProjects", MainIniFile);
+    ResState = IniReadKey("Layout", "ShowProjects", MainIniFile);
     if(ResState.Len() != 0)
     {
         if(strcmpi(ResState.Get_String(), "1") == 0)
@@ -4660,7 +4660,7 @@ CStr PutStatusDatePrefix(void)
 	CStr ReturnValue;
 	CStr BufString;
     
-	if(OutputDates == 1) BufString = "[" + (CStr) WADateGetNow(DATE_NO_SECONDS).Get_String() + (CStr) "] ";
+	if(OutputDates == 1) BufString = "[" + (CStr) DateGetNow(DATE_NO_SECONDS).Get_String() + (CStr) "] ";
 	ReturnValue = BufString;
 	return(ReturnValue);
 }
@@ -4672,8 +4672,8 @@ void RunExtProg(CStr ProgToRun)
     if(ProgToRun.Len() != 0)
     {
         Exec(ProgToRun, ProgToRun, 0);
-        LastExeDir = WAFileGetDirectory(ProgToRun);
-        if(WAFileExist(ProgToRun) == 0)
+        LastExeDir = FileGetDirectory(ProgToRun);
+        if(FileExist(ProgToRun) == 0)
         {
             AddRecentRunProg(ProgToRun, 0, 0);
         }
@@ -4736,7 +4736,7 @@ NoJumpToAddrArg:
 // Retrieve the real height of the MDI
 int GetMDIWidth(void)
 {
-//    return(WAControlWidth(hMDIform.hWnd));
+//    return(ControlWidth(hMDIform.hWnd));
 	return(GetSystemMetrics(SM_CXMAXIMIZED));
 }
 

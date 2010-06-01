@@ -116,9 +116,9 @@ void ReadLangSpec(void)
     LanguageToRegister.Erase();
     for(i = 0; i <= 999; i++)
     {
-        LangFileToRead = WAIniReadKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(i, 3).Get_String(), LanguagesIniFile);
+        LangFileToRead = IniReadKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(i, 3).Get_String(), LanguagesIniFile);
         if(LangFileToRead.Len() == 0) break;
-        LangExtensions = WAIniReadKey("RefLanguages", "Ext" + (CStr) StringNumberComplement(i, 3).Get_String(), LanguagesIniFile);
+        LangExtensions = IniReadKey("RefLanguages", "Ext" + (CStr) StringNumberComplement(i, 3).Get_String(), LanguagesIniFile);
         LangFileToRead = ChangeRelativePaths(LangFileToRead);
         LoadLanguageDef();
         RegisterCodeMaxLanguage(-1);
@@ -129,10 +129,10 @@ void ReadLangSpec(void)
     Nbr_Languages = i;
     for(i = 0; i <= 999; i++)
     {
-        LangFileToRead = WAIniReadKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(i, 3).Get_String(), LanguagesIniFile);
+        LangFileToRead = IniReadKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(i, 3).Get_String(), LanguagesIniFile);
         if(LangFileToRead.Len() == 0) break;
         LangFileToRead = ChangeRelativePaths(LangFileToRead);
-		WAFileGetWriteTime(LangFileToRead, &Language_Dates[i]);
+		FileGetWriteTime(LangFileToRead, &Language_Dates[i]);
     }
 }
 
@@ -146,10 +146,10 @@ void Check_Update_Language(void)
 
     for(i = 0; i <= Nbr_Languages; i++)
     {
-        Language_Name_From_Ini = WAIniReadKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(i, 3).Get_String(), LanguagesIniFile);
+        Language_Name_From_Ini = IniReadKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(i, 3).Get_String(), LanguagesIniFile);
         if(Language_Name_From_Ini.Len() == 0) break;
         Language_Name_From_Ini = ChangeRelativePaths(Language_Name_From_Ini);
-		if(WAFileGetWriteTime(Language_Name_From_Ini, &TmpLanguageFDate))
+		if(FileGetWriteTime(Language_Name_From_Ini, &TmpLanguageFDate))
 		{
 		    if(CompareFileTime(&TmpLanguageFDate, &Language_Dates[i]) > 0)
 		    {
@@ -171,7 +171,7 @@ void Update_Language(CStr Language_FileName)
 
     for(i = 0; i <= 999; i++)
     {
-        Language_Name_From_Ini = WAIniReadKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(i, 3).Get_String(), LanguagesIniFile);
+        Language_Name_From_Ini = IniReadKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(i, 3).Get_String(), LanguagesIniFile);
         if(Language_Name_From_Ini.Len() == 0) break;
         Language_Name_From_Ini = ChangeRelativePaths(Language_Name_From_Ini);
         if(Language_FileName == Language_Name_From_Ini)
@@ -184,7 +184,7 @@ void Update_Language(CStr Language_FileName)
     }
     if(Found_Language)
     {
-        New_LangName = WAIniReadKey("LangSpec", "LangName", Language_FileName);
+        New_LangName = IniReadKey("LangSpec", "LangName", Language_FileName);
 
         // This is not a language file
         if(New_LangName != "")
@@ -197,15 +197,15 @@ void Update_Language(CStr Language_FileName)
             hCodeMaxCMUnRegisterLanguage(Old_LangName.Get_String());
 
             // Name
-            LangFileToRead = WAIniReadKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(Old_Entry_Pos, 3).Get_String(), LanguagesIniFile);
+            LangFileToRead = IniReadKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(Old_Entry_Pos, 3).Get_String(), LanguagesIniFile);
             if(LangFileToRead.Len() == 0) return;
             // Extensions
-            LangExtensions = WAIniReadKey("RefLanguages", "Ext" + (CStr) StringNumberComplement(Old_Entry_Pos, 3).Get_String(), LanguagesIniFile);
+            LangExtensions = IniReadKey("RefLanguages", "Ext" + (CStr) StringNumberComplement(Old_Entry_Pos, 3).Get_String(), LanguagesIniFile);
             LangFileToRead = ChangeRelativePaths(LangFileToRead);
             LoadLanguageDef();
             RegisterCodeMaxLanguage(Old_Entry_Pos);
 
-    		WAFileGetWriteTime(Language_FileName, &Language_Dates[Old_Entry_Pos]);
+    		FileGetWriteTime(Language_FileName, &Language_Dates[Old_Entry_Pos]);
         
             // Update the languages in the opened windows
 		    WAMMEnumSourceWindows((long) &Update_Languages_Proc);           
@@ -245,16 +245,16 @@ void LoadLanguageDef(void)
     CStr SaveMultiLineComment2;
 
     if(LangFileToRead.Len() == 0) return;
-    LangName = WAIniReadKey("LangSpec", "LangName", LangFileToRead);
-    LangCopyRight = WAIniReadKey("LangSpec", "LangCopyright", LangFileToRead);
-    LangComment = WAIniReadKey("LangSpec", "LangComment", LangFileToRead);
-    LangCaseSensitive = WAIniReadKey("LangSpec", "CaseSensitive", LangFileToRead).Get_Long();
-    LangSingleComment = WAIniReadKey("LangSpec", "SingleComment", LangFileToRead);
+    LangName = IniReadKey("LangSpec", "LangName", LangFileToRead);
+    LangCopyRight = IniReadKey("LangSpec", "LangCopyright", LangFileToRead);
+    LangComment = IniReadKey("LangSpec", "LangComment", LangFileToRead);
+    LangCaseSensitive = IniReadKey("LangSpec", "CaseSensitive", LangFileToRead).Get_Long();
+    LangSingleComment = IniReadKey("LangSpec", "SingleComment", LangFileToRead);
     // Parse single line comments
     LangSingleComment = StringReplace(LangSingleComment.Trim(), " ", "\n", 1, -1, Binary_Compare);
-    LangMultiPrefix = WAIniReadKey("LangSpec", "MultiLinePrefix", LangFileToRead).Trim();
-    LangMultiLineComment1 = WAIniReadKey("LangSpec", "MultiLineComment1", LangFileToRead);
-    LangMultiLineComment2 = WAIniReadKey("LangSpec", "MultiLineComment2", LangFileToRead);
+    LangMultiPrefix = IniReadKey("LangSpec", "MultiLinePrefix", LangFileToRead).Trim();
+    LangMultiLineComment1 = IniReadKey("LangSpec", "MultiLineComment1", LangFileToRead);
+    LangMultiLineComment2 = IniReadKey("LangSpec", "MultiLineComment2", LangFileToRead);
     // Parse asm comments blocks
     LangMultiLineComment1 = StringReplace(LangMultiLineComment1.Trim(), " ", "\n", 1, -1, Binary_Compare);
     LangMultiLineComment2 = StringReplace(LangMultiLineComment2.Trim(), " ", "\n", 1, -1, Binary_Compare);
@@ -305,35 +305,35 @@ void LoadLanguageDef(void)
         }
         StringReleaseSplit(TabMulti);
     }
-    LangScopeKeyWord1 = WAIniReadKey("LangSpec", "ScopeKeyWords1", LangFileToRead);
-    LangScopeKeyWord2 = WAIniReadKey("LangSpec", "ScopeKeyWords2", LangFileToRead);
+    LangScopeKeyWord1 = IniReadKey("LangSpec", "ScopeKeyWords1", LangFileToRead);
+    LangScopeKeyWord2 = IniReadKey("LangSpec", "ScopeKeyWords2", LangFileToRead);
     LangScopeKeyWord1 = StringReplace(LangScopeKeyWord1.Trim(), " ", "\n", 1, -1, Binary_Compare);
     LangScopeKeyWord2 = StringReplace(LangScopeKeyWord2.Trim(), " ", "\n", 1, -1, Binary_Compare);
-    LangStringsDelimiters = StringReplace(WAIniReadKey("LangSpec", "StringsDelimiters", LangFileToRead), " ", "\n", 1, -1, Binary_Compare);
-    LangEscapeChar = WAIniReadKey("LangSpec", "EscapeChar", LangFileToRead);
-    LangTerminatorChar = WAIniReadKey("LangSpec", "TerminatorChar", LangFileToRead);
-    LangStyle = WAIniReadKey("LangSpec", "Style", LangFileToRead).Get_Long();
-    LangProc = WAIniReadKey("LangSpec", "ProcWords", LangFileToRead);
-    LangEndp = WAIniReadKey("LangSpec", "EndpWords", LangFileToRead);
-    LangGUID = WAIniReadKey("LangSpec", "GUIDStyle", LangFileToRead);
-    LangInclude = WAIniReadKey("LangSpec", "IncludeStyle", LangFileToRead);
-    LangIncludeName = WAIniReadKey("LangSpec", "IncludeName", LangFileToRead);
-    LangIncludeNameFoot = WAIniReadKey("LangSpec", "IncludeNameFoot", LangFileToRead);
-    LangDoubleSlash = WAIniReadKey("LangSpec", "DoubleSlash", LangFileToRead);
-    LangInterlaceProc = WAIniReadKey("LangSpec", "InterlacedProc", LangFileToRead);
-    LangOpenBlockProc = WAIniReadKey("LangSpec", "OpenBlockProc", LangFileToRead);
-    LangCloseBlockProc = WAIniReadKey("LangSpec", "CloseBlockProc", LangFileToRead);
-    LangOphanBlock = WAIniReadKey("LangSpec", "AllowOrphanBlock", LangFileToRead);
-    LangHighLightNbr = WAIniReadKey("LangSpec", "HighlightNbrs", LangFileToRead);
-    LangHexType = WAIniReadKey("LangSpec", "HexType", LangFileToRead);
-    LangBinType = WAIniReadKey("LangSpec", "BinType", LangFileToRead);
+    LangStringsDelimiters = StringReplace(IniReadKey("LangSpec", "StringsDelimiters", LangFileToRead), " ", "\n", 1, -1, Binary_Compare);
+    LangEscapeChar = IniReadKey("LangSpec", "EscapeChar", LangFileToRead);
+    LangTerminatorChar = IniReadKey("LangSpec", "TerminatorChar", LangFileToRead);
+    LangStyle = IniReadKey("LangSpec", "Style", LangFileToRead).Get_Long();
+    LangProc = IniReadKey("LangSpec", "ProcWords", LangFileToRead);
+    LangEndp = IniReadKey("LangSpec", "EndpWords", LangFileToRead);
+    LangGUID = IniReadKey("LangSpec", "GUIDStyle", LangFileToRead);
+    LangInclude = IniReadKey("LangSpec", "IncludeStyle", LangFileToRead);
+    LangIncludeName = IniReadKey("LangSpec", "IncludeName", LangFileToRead);
+    LangIncludeNameFoot = IniReadKey("LangSpec", "IncludeNameFoot", LangFileToRead);
+    LangDoubleSlash = IniReadKey("LangSpec", "DoubleSlash", LangFileToRead);
+    LangInterlaceProc = IniReadKey("LangSpec", "InterlacedProc", LangFileToRead);
+    LangOpenBlockProc = IniReadKey("LangSpec", "OpenBlockProc", LangFileToRead);
+    LangCloseBlockProc = IniReadKey("LangSpec", "CloseBlockProc", LangFileToRead);
+    LangOphanBlock = IniReadKey("LangSpec", "AllowOrphanBlock", LangFileToRead);
+    LangHighLightNbr = IniReadKey("LangSpec", "HighlightNbrs", LangFileToRead);
+    LangHexType = IniReadKey("LangSpec", "HexType", LangFileToRead);
+    LangBinType = IniReadKey("LangSpec", "BinType", LangFileToRead);
     
     LangFileName = LangFileToRead;
     LangColorA = "";
-    LangHelpA = WAIniReadKey("LangSpec", "ColorAHelp", LangFileToRead);
+    LangHelpA = IniReadKey("LangSpec", "ColorAHelp", LangFileToRead);
     for(j = 0; j <= 999; j++)
     {
-        LangRetVal = WAIniReadKey("LangSpec", "ColorA" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
+        LangRetVal = IniReadKey("LangSpec", "ColorA" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
         LangLen = LangRetVal.Len();
 		if(LangLen == 0) break;
 		SpaceToNewLine(LangRetVal.Get_String(),LangLen);
@@ -341,10 +341,10 @@ void LoadLanguageDef(void)
         LangColorA = LangColorA + (CStr) LangRetVal;
     }
     LangColorB = "";
-    LangHelpB = WAIniReadKey("LangSpec", "ColorBHelp", LangFileToRead);
+    LangHelpB = IniReadKey("LangSpec", "ColorBHelp", LangFileToRead);
     for(j = 0; j <= 999; j++)
     {
-        LangRetVal = WAIniReadKey("LangSpec", "ColorB" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
+        LangRetVal = IniReadKey("LangSpec", "ColorB" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
         LangLen = LangRetVal.Len();
 		if(LangLen == 0) break;
 		SpaceToNewLine(LangRetVal.Get_String(),LangLen);
@@ -352,10 +352,10 @@ void LoadLanguageDef(void)
         LangColorB = LangColorB + (CStr) LangRetVal;
     }
     LangColorC = "";
-    LangHelpC = WAIniReadKey("LangSpec", "ColorCHelp", LangFileToRead);
+    LangHelpC = IniReadKey("LangSpec", "ColorCHelp", LangFileToRead);
     for(j = 0; j <= 999; j++)
     {
-        LangRetVal = WAIniReadKey("LangSpec", "ColorC" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
+        LangRetVal = IniReadKey("LangSpec", "ColorC" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
         LangLen = LangRetVal.Len();
 		if(LangLen == 0) break;
 		SpaceToNewLine(LangRetVal.Get_String(),LangLen);
@@ -363,10 +363,10 @@ void LoadLanguageDef(void)
         LangColorC = LangColorC + (CStr) LangRetVal;
     }
     LangColorD = "";
-    LangHelpD = WAIniReadKey("LangSpec", "ColorDHelp", LangFileToRead);
+    LangHelpD = IniReadKey("LangSpec", "ColorDHelp", LangFileToRead);
     for(j = 0; j <= 999; j++)
     {
-        LangRetVal = WAIniReadKey("LangSpec", "ColorD" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
+        LangRetVal = IniReadKey("LangSpec", "ColorD" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
         LangLen = LangRetVal.Len();
 		if(LangLen == 0) break;
 		SpaceToNewLine(LangRetVal.Get_String(),LangLen);
@@ -374,10 +374,10 @@ void LoadLanguageDef(void)
         LangColorD = LangColorD + (CStr) LangRetVal;
     }
     LangColorE = "";
-    LangHelpE = WAIniReadKey("LangSpec", "ColorEHelp", LangFileToRead);
+    LangHelpE = IniReadKey("LangSpec", "ColorEHelp", LangFileToRead);
     for(j = 0; j <= 999; j++)
     {
-        LangRetVal = WAIniReadKey("LangSpec", "ColorE" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
+        LangRetVal = IniReadKey("LangSpec", "ColorE" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
         LangLen = LangRetVal.Len();
 		if(LangLen == 0) break;
 		SpaceToNewLine(LangRetVal.Get_String(),LangLen);
@@ -385,10 +385,10 @@ void LoadLanguageDef(void)
         LangColorE = LangColorE + (CStr) LangRetVal;
     }
     LangColorF = "";
-    LangHelpF = WAIniReadKey("LangSpec", "ColorFHelp", LangFileToRead);
+    LangHelpF = IniReadKey("LangSpec", "ColorFHelp", LangFileToRead);
     for(j = 0; j <= 999; j++)
     {
-        LangRetVal = WAIniReadKey("LangSpec", "ColorF" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
+        LangRetVal = IniReadKey("LangSpec", "ColorF" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
         LangLen = LangRetVal.Len();
 		if(LangLen == 0) break;
 		SpaceToNewLine(LangRetVal.Get_String(),LangLen);
@@ -396,10 +396,10 @@ void LoadLanguageDef(void)
         LangColorF = LangColorF + (CStr) LangRetVal;
     }
     LangColorG = "";
-    LangHelpG = WAIniReadKey("LangSpec", "ColorGHelp", LangFileToRead);
+    LangHelpG = IniReadKey("LangSpec", "ColorGHelp", LangFileToRead);
     for(j = 0; j <= 999; j++)
     {
-        LangRetVal = WAIniReadKey("LangSpec", "ColorG" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
+        LangRetVal = IniReadKey("LangSpec", "ColorG" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
         LangLen = LangRetVal.Len();
 		if(LangLen == 0) break;
 		SpaceToNewLine(LangRetVal.Get_String(),LangLen);
@@ -407,10 +407,10 @@ void LoadLanguageDef(void)
         LangColorG = LangColorG + (CStr) LangRetVal;
     }
     LangColorH = "";
-    LangHelpH = WAIniReadKey("LangSpec", "ColorHHelp", LangFileToRead);
+    LangHelpH = IniReadKey("LangSpec", "ColorHHelp", LangFileToRead);
     for(j = 0; j <= 999; j++)
     {
-        LangRetVal = WAIniReadKey("LangSpec", "ColorH" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
+        LangRetVal = IniReadKey("LangSpec", "ColorH" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
         LangLen = LangRetVal.Len();
 		if(LangLen == 0) break;
 		SpaceToNewLine(LangRetVal.Get_String(),LangLen);
@@ -537,7 +537,7 @@ CStr GetLanguageToOpen(CStr LFileName)
     long *ExtensionsArray = 0;
     CStr BufString;
 	
-	ExtToSearch = WAFileGetExtension(LFileName);
+	ExtToSearch = FileGetExtension(LFileName);
 	if(ExtToSearch.Len() != 0)
 	{
         for(o = 0; o < LanguageToRegister.Amount(); o++)

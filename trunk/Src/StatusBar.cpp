@@ -52,16 +52,16 @@ void SetStatusBarParts(void)
 {
 	if(NbForms != 0)
 	{
-        SBParts[0] = WAControlWidth(hStatusBar) / 2;
-        SBParts[1] = WAControlWidth(hStatusBar) - (14 * 9) - 4 - 1 - 3;
-        SBParts[2] = WAControlWidth(hStatusBar) - (14 * 8) - 4 - 3;
-        SBParts[3] = WAControlWidth(hStatusBar) - (14 * 7) - 4 - 3;
-        SBParts[4] = WAControlWidth(hStatusBar) - (14 * 6) - 3;
-        SBParts[5] = WAControlWidth(hStatusBar) - (14 * 5) - 3;
-        SBParts[6] = WAControlWidth(hStatusBar) - (14 * 4) - 3;
-        SBParts[7] = WAControlWidth(hStatusBar) - (14 * 3) - 3;
-        SBParts[8] = WAControlWidth(hStatusBar) - (14 * 2) - 3;
-        SBParts[9] = WAControlWidth(hStatusBar) - 14 - 3;
+        SBParts[0] = ControlWidth(hStatusBar) / 2;
+        SBParts[1] = ControlWidth(hStatusBar) - (14 * 9) - 4 - 1 - 3;
+        SBParts[2] = ControlWidth(hStatusBar) - (14 * 8) - 4 - 3;
+        SBParts[3] = ControlWidth(hStatusBar) - (14 * 7) - 4 - 3;
+        SBParts[4] = ControlWidth(hStatusBar) - (14 * 6) - 3;
+        SBParts[5] = ControlWidth(hStatusBar) - (14 * 5) - 3;
+        SBParts[6] = ControlWidth(hStatusBar) - (14 * 4) - 3;
+        SBParts[7] = ControlWidth(hStatusBar) - (14 * 3) - 3;
+        SBParts[8] = ControlWidth(hStatusBar) - (14 * 2) - 3;
+        SBParts[9] = ControlWidth(hStatusBar) - 14 - 3;
         StatusBarSetParts(hStatusBar, 10, (long *) SBParts);
         ChildStruct = LoadStructure(CurrentForm);
         if(CM_IsOvertypeEnabled(ChildStruct->hChildCodeMax) == 1)
@@ -140,7 +140,7 @@ void SetStatusBarParts(void)
 // Clear the status bar
 void ClearStatusBarParts(void)
 {
-    if(WAControlIsVisible(hStatusBar) != 0)
+    if(ControlIsVisible(hStatusBar) != 0)
     {
         SBParts[0] = -1;
         StatusBarSetParts(hStatusBar, 1, (long *) SBParts);
@@ -155,14 +155,14 @@ void ShowHideStatusBar(long bShow)
 	{
         case 0:
             CheckMenuItem(hViewMenu, MENU_VIEW_STATUSBAR_ID, MF_BYPOSITION | MF_UNCHECKED);
-            WAIniWriteKey("Layout", "StatusBar", "0", MainIniFile);
-            WAControlVisible(hStatusBar, 0);
+            IniWriteKey("Layout", "StatusBar", "0", MainIniFile);
+            ControlVisible(hStatusBar, 0);
             ResizeMDIform();
 			break;
 	    case 1:
             CheckMenuItem(hViewMenu, MENU_VIEW_STATUSBAR_ID, MF_BYPOSITION | MF_CHECKED);
-            WAIniWriteKey("Layout", "StatusBar", "1", MainIniFile);
-            WAControlVisible(hStatusBar, 1);
+            IniWriteKey("Layout", "StatusBar", "1", MainIniFile);
+            ControlVisible(hStatusBar, 1);
             SetStatusBarParts();
             ResizeMDIform();
             if(NbForms != 0) RefreshStatusBar(CurrentForm);

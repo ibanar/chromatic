@@ -1265,7 +1265,7 @@ CHROMATICLIB                    STRUCT
 ; Standard functions
 LIBPROTO                        CreateSplashDialog,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD
 LIBPROTO                        CreateModalDialog,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD
-LIBPROTO                        CreateDialog,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD
+LIBPROTO                        CreateNonModalDialog,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD
 LIBPROTO                        CreateSplitter,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD
 LIBPROTO                        CreateMDIDialog,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD
 LIBPROTO                        CreateMDIChildDialog,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD,:DWORD
@@ -1597,6 +1597,8 @@ LIBPROTO                        MenuSetDefaultItem,:DWORD,:DWORD
 LIBPROTO                        MenuSetItemState,:DWORD,:DWORD,:DWORD
 LIBPROTO                        MenuSetItemType,:DWORD,:DWORD,:DWORD
 LIBPROTO                        MenuSetItemText,:DWORD,:DWORD,:DWORD
+LIBPROTO                        MenuAddSeparator,:DWORD
+LIBPROTO                        MenuAddString,:DWORD,:DWORD,:DWORD,:DWORD
 LIBPROTO                        ScreenWidth
 LIBPROTO                        ScreenHeight
 LIBPROTO                        ScreenRectToClient,:DWORD,:DWORD

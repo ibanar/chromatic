@@ -77,7 +77,7 @@ CStr Last_Include_File;
 
 // -----------------------------------------------------------------------
 // Functions
-int Flush_Filter(char *FileName, LPWAFILTERFILE File_Struct);
+int Flush_Filter(char *FileName, LPFILTERFILE File_Struct);
 
 // -----------------------------------------------------------------------
 // File/New
@@ -85,7 +85,7 @@ HWND MCMD_New(void)
 {
     CStr OpenedLanguage;
 
-    OpenedLanguage = WAIniReadKey("RefLanguages", "DefLang", LanguagesIniFile);
+    OpenedLanguage = IniReadKey("RefLanguages", "DefLang", LanguagesIniFile);
     if(OpenedLanguage.Len() == 0) OpenedLanguage = "Assembler";
     StoreLanguageToOpen(OpenedLanguage);
     return(CreateNewFile((CStr) "<Untitled document " + (CStr) (NbForms + 1) + (CStr) ">"));
@@ -103,7 +103,7 @@ void MCMD_Clear(void)
     if(ChildStruct->ModifFlag == 1)
     {
         BufString = "File '" + (CStr) ChildStruct->RFile->Left(ChildStruct->RFile->Len()).Get_String() + (CStr) "' is not saved. Save it now ?";
-        switch(WAMiscMsgBox(hMDIform.hWnd, BufString, MB_QUESTIONCANCEL, Requesters))
+        switch(MiscMsgBox(hMDIform.hWnd, BufString, MB_QUESTIONCANCEL, Requesters))
         {
             case IDYES:
 				SaveIt(CurrentForm);
@@ -159,18 +159,18 @@ void MCMD_OpenFile(void)
 		if(NbForms != 0)
 		{
     		ChildStruct = LoadStructure(CurrentForm);
-    		LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, WAFileGetDirectory(ChildStruct->RFile), 1, CurrentDir);
+    		LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, FileGetDirectory(ChildStruct->RFile), 1, CurrentDir);
 		}
 		else
 		{
-			LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastLoadDir, 1, CurrentDir);
+			LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastLoadDir, 1, CurrentDir);
 		}
     }
     else 
     {    
-		LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastLoadDir, 1, CurrentDir);
+		LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastLoadDir, 1, CurrentDir);
 	}
-	LastLoadDir = WAComDlgParseMultiFilesSelection(LdFile, &EnumOpenFiles, MULTIFILESENUM_FORWARD, 0);
+	LastLoadDir = ComDlgParseMultiFilesSelection(LdFile, &EnumOpenFiles, MULTIFILESENUM_FORWARD, 0);
 }
 
 long CALLBACK EnumOpenFiles(char *FileToAdd, long UserValue)
@@ -180,11 +180,10 @@ long CALLBACK EnumOpenFiles(char *FileToAdd, long UserValue)
 }
 
 // -----------------------------------------------------------------------
-// File/Open file as Db
+// File/Open filters laboratory
 void MCMD_OpenFileAsDB(void)
 {
-	Filter_Allow_Window = 1;
-	WACreateModalDialog(-1, -1, 546, 268, hMDIform.hWnd, &FRMFiltersProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+	CreateModalDialog(-1, -1, 546, 268, hMDIform.hWnd, &FRMFiltersProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
 	// Cancel hit
 	if(Filter_Cancel) return;
 	OpenFileAsDB();
@@ -200,16 +199,16 @@ void OpenFileAsDB(void)
 		if(NbForms != 0)
 		{
     		ChildStruct = LoadStructure(CurrentForm);
-			LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, "All files (*.*)|*.*", WAFileGetDirectory(ChildStruct->RFile), 1, CurrentDir);
+			LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, "All files (*.*)|*.*", FileGetDirectory(ChildStruct->RFile), 1, CurrentDir);
 		}
 		else
 		{
-			LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, "All files (*.*)|*.*", LastLoadAsDBDir, 1, CurrentDir);
+			LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, "All files (*.*)|*.*", LastLoadAsDBDir, 1, CurrentDir);
 		}
     }
     else
     {
-		LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, "All files (*.*)|*.*", LastLoadAsDBDir, 1, CurrentDir);
+		LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, "All files (*.*)|*.*", LastLoadAsDBDir, 1, CurrentDir);
     }
 	Filter_Include = FILTER_OPEN_MODE;
 	Filter_Cancel_Process = 0;
@@ -217,7 +216,7 @@ void OpenFileAsDB(void)
 	Last_Include_File = "";
 	if(LdFile.Len() != 0)
 	{
-		WAComDlgParseMultiFilesSelection(LdFile, &EnumOpenAsDBFiles, MULTIFILESENUM_FORWARD, 0);
+		ComDlgParseMultiFilesSelection(LdFile, &EnumOpenAsDBFiles, MULTIFILESENUM_FORWARD, 0);
 	}
 	// Clear the list of chosen filters now
 	Chosen_Filters.Erase();
@@ -225,19 +224,19 @@ void OpenFileAsDB(void)
 
 long CALLBACK EnumOpenAsDBFiles(char *FileToAdd, long UserValue)
 {
-	WAFILTERFILE File_Struct;
-	WAFILTERFILE File_Struct_Bak;
-	LPWAFILTERFILE Return_File_Struct;
+	FILTERFILE File_Struct;
+	FILTERFILE File_Struct_Bak;
+	LPFILTERFILE Return_File_Struct;
     HMODULE FilterLib = 0;
     FARPROC FilterDesc = 0;
     FARPROC FilterAuth = 0;
-	LPWAFILTERFILE (__stdcall *FilterProc)(char *FileName, LPWAFILTERFILE File, LPWALIB WALIBStruct);
+	LPFILTERFILE (__stdcall *FilterProc)(char *FileName, LPFILTERFILE File, LPCHROMATICLIB WALIBStruct);
 	int i;
 	int Flushed = 0;
 	CStr Current_Filter_Name;
 
 	WriteToStatus("Filering file: " + (CStr) FileToAdd + (CStr) "...");
-	File_Struct.FileMem = WAFileLoadIntoMem(FileToAdd, &File_Struct.FileLength);
+	File_Struct.FileMem = FileLoadIntoMem(FileToAdd, &File_Struct.FileLength);
 	if(File_Struct.FileMem == NULL)
 	{
 		WriteToStatus("Can't load file '" + (CStr) FileToAdd + (CStr) "'.");
@@ -246,12 +245,12 @@ long CALLBACK EnumOpenAsDBFiles(char *FileToAdd, long UserValue)
 	}
 	for(i = 0; i < Chosen_Filters.Amount(); i++)
 	{
-		WAMiscDoEvents(hMDIform.hClient, hGlobAccelerators, hMDIform.hWnd);
+		MiscDoEvents(hMDIform.hClient, hGlobAccelerators, hMDIform.hWnd);
 		Current_Filter_Name = Dirs[DIR_FILTERS] + (CStr) "\\" + (CStr) Chosen_Filters.Get(i)->Content + (CStr) ".dll";
 		FilterLib = LoadLibrary(Current_Filter_Name.Get_String());
         if(FilterLib != 0)
         {
-            FilterProc = (LPWAFILTERFILE (__stdcall *)(char *, LPWAFILTERFILE, LPWALIB)) GetProcAddress(FilterLib, "FilterProc");
+            FilterProc = (LPFILTERFILE (__stdcall *)(char *, LPFILTERFILE, LPCHROMATICLIB)) GetProcAddress(FilterLib, "FilterProc");
 			if(FilterProc == NULL)
 			{
 				WriteToStatus("File '" + (CStr) + Chosen_Filters.Get(i)->Content + (CStr) "' is an invalid Chromatic filter");
@@ -288,7 +287,7 @@ long CALLBACK EnumOpenAsDBFiles(char *FileToAdd, long UserValue)
 				// Free old file then reload a clean copy
 				// for further processing
 				if(File_Struct_Bak.FileMem != NULL) FreeMem((long) File_Struct_Bak.FileMem);
-				File_Struct.FileMem = WAFileLoadIntoMem(FileToAdd, &File_Struct.FileLength);
+				File_Struct.FileMem = FileLoadIntoMem(FileToAdd, &File_Struct.FileLength);
 			}
 			else
 			{
@@ -330,7 +329,7 @@ long CALLBACK EnumOpenAsDBFiles(char *FileToAdd, long UserValue)
 
 // Flush filtered datas into a window or a file
 // (Called / file)
-int Flush_Filter(char *FileName, LPWAFILTERFILE File_Struct)
+int Flush_Filter(char *FileName, LPFILTERFILE File_Struct)
 {
 	HWND NewhWnd;
 	CStr LdFile;
@@ -353,10 +352,10 @@ int Flush_Filter(char *FileName, LPWAFILTERFILE File_Struct)
 						// Set modified state on
 						ChildStruct->ModifFlag = 1;
 						// Set window referenced file
-						ChildStruct->RFile->Set_String(StringCopyAppendZero(ChildStruct->RFile, WAFileRemoveExtension(FileName).Get_String()).Get_String());
+						ChildStruct->RFile->Set_String(StringCopyAppendZero(ChildStruct->RFile, FileRemoveExtension(FileName).Get_String()).Get_String());
 						// Set window title
-						WAControlSetText(NewhWnd, WAFileRemoveExtension(FileName).Get_String() + (CStr) " *");
-						LastLoadAsDBDir = WAFileGetDirectory(FileName);
+						ControlSetText(NewhWnd, FileRemoveExtension(FileName).Get_String() + (CStr) " *");
+						LastLoadAsDBDir = FileGetDirectory(FileName);
 						LoadCurrentSel(ChildStruct->hChildCodeMax);
 						RefreshSBStat = 1;
 						WritePositionInStatus(ChildStruct->hChildCodeMax);
@@ -377,7 +376,7 @@ int Flush_Filter(char *FileName, LPWAFILTERFILE File_Struct)
 						LoadCurrentSel(ChildStruct->hChildCodeMax);
 						// Insert text
 						CM_InsertText(ChildStruct->hChildCodeMax, (char *) File_Struct->FileMem, &CodeMaxCurRange);
-						LastIncludeDBDir = WAFileGetDirectory(FileName);
+						LastIncludeDBDir = FileGetDirectory(FileName);
 					}
 					else
 					{
@@ -393,13 +392,13 @@ int Flush_Filter(char *FileName, LPWAFILTERFILE File_Struct)
 			{
 				// Open mode
 				case FILTER_OPEN_MODE:
-					LdFile = WAComDlgGetSaveFileName(hMDIform.hWnd, "All files (*.*)|*.*", LastLoadAsDBDir, CurrentDir);
+					LdFile = ComDlgGetSaveFileName(hMDIform.hWnd, "All files (*.*)|*.*", LastLoadAsDBDir, CurrentDir);
 					if(LdFile.Len() == 0)
 					{
 						// Should we cancel operation silently ?
 						if(Filter_Cancel_Process == 0)
 						{
-							switch(WAMiscMsgBox(hMDIform.hWnd, "Do you want to cancel the whole process ?",
+							switch(MiscMsgBox(hMDIform.hWnd, "Do you want to cancel the whole process ?",
 							       MB_ICONQUESTION | MB_YESNO, Requesters))
 							{
 								case IDYES:
@@ -408,7 +407,7 @@ int Flush_Filter(char *FileName, LPWAFILTERFILE File_Struct)
 									break;
 							}
 							// Ask the user about the messages
-							switch(WAMiscMsgBox(hMDIform.hWnd, "Do you want to see any further messages ?",
+							switch(MiscMsgBox(hMDIform.hWnd, "Do you want to see any further messages ?",
 							       MB_ICONQUESTION | MB_YESNO, Requesters))
 							{
 								case IDYES:
@@ -422,16 +421,16 @@ int Flush_Filter(char *FileName, LPWAFILTERFILE File_Struct)
 						break;
 					}
 					// Save directory
-					LastLoadAsDBDir = WAFileGetDirectory(FileName);
+					LastLoadAsDBDir = FileGetDirectory(FileName);
 					// And save the file (file by file)
-					WAFileSaveFromMem(LdFile.Get_String(), (long) File_Struct->FileMem, File_Struct->FileLength);
+					FileSaveFromMem(LdFile.Get_String(), (long) File_Struct->FileMem, File_Struct->FileLength);
 					WriteToStatus("Output written to file '" + (CStr) LdFile + (CStr) "'.");
 					break;
 				// Include mode
 				case FILTER_INCLUDE_MODE:
 					if(First_Filter_Include == 0)
 					{
-						LdFile = WAComDlgGetSaveFileName(hMDIform.hWnd, "All files (*.*)|*.*", LastIncludeDBDir, CurrentDir);
+						LdFile = ComDlgGetSaveFileName(hMDIform.hWnd, "All files (*.*)|*.*", LastIncludeDBDir, CurrentDir);
 						// Save first chosen file
 						Last_Include_File = LdFile;
 					}
@@ -440,7 +439,7 @@ int Flush_Filter(char *FileName, LPWAFILTERFILE File_Struct)
 						// Ask user if we should cancel operation silently...
 						if(Filter_Cancel_Process == 0)
 						{
-							switch(WAMiscMsgBox(hMDIform.hWnd, "Do you want to cancel the whole process ?",
+							switch(MiscMsgBox(hMDIform.hWnd, "Do you want to cancel the whole process ?",
 							       MB_ICONQUESTION | MB_YESNO, Requesters))
 							{
 								case IDYES:
@@ -449,7 +448,7 @@ int Flush_Filter(char *FileName, LPWAFILTERFILE File_Struct)
 									break;
 							}
 							// Ask the user about the messages
-							switch(WAMiscMsgBox(hMDIform.hWnd, "Do you want to see any further messages ?",
+							switch(MiscMsgBox(hMDIform.hWnd, "Do you want to see any further messages ?",
 							       MB_ICONQUESTION | MB_YESNO, Requesters))
 							{
 								case IDYES:
@@ -462,11 +461,11 @@ int Flush_Filter(char *FileName, LPWAFILTERFILE File_Struct)
 						// User cancelled operation
 						break;
 					}
-					LastIncludeDBDir = WAFileGetDirectory(FileName);
+					LastIncludeDBDir = FileGetDirectory(FileName);
 					if(First_Filter_Include == 0)
 					{
 						// Create it
-						hFile = WAFileCreateEmpty(Last_Include_File, NO_SECURITY_DESCRIPTOR);
+						hFile = FileCreateEmpty(Last_Include_File, NO_SECURITY_DESCRIPTOR);
 						if(hFile == INVALID_HANDLE_VALUE)
 						{
 							WriteToStatus("Can't open output file.");
@@ -475,7 +474,7 @@ int Flush_Filter(char *FileName, LPWAFILTERFILE File_Struct)
 						else
 						{
 							// Save it
-							WAFileWriteBuffer(hFile, File_Struct->FileMem, File_Struct->FileLength);
+							FileWriteBuffer(hFile, File_Struct->FileMem, File_Struct->FileLength);
 							// Close it
 							CloseHandle(hFile);
 						}
@@ -483,7 +482,7 @@ int Flush_Filter(char *FileName, LPWAFILTERFILE File_Struct)
 						// or create a new one for each input file given
 						if(First_Filter_Include == 0)
 						{
-							switch(WAMiscMsgBox(hMDIform.hWnd, "Do you want to gather all output to this file ?",
+							switch(MiscMsgBox(hMDIform.hWnd, "Do you want to gather all output to this file ?",
 							       MB_ICONQUESTION | MB_YESNO, Requesters))
 							{
 								case IDYES:
@@ -497,7 +496,7 @@ int Flush_Filter(char *FileName, LPWAFILTERFILE File_Struct)
 					else
 					{
 						// Open it for append
-						hFile = WAFileOpenWAppend(Last_Include_File);
+						hFile = FileOpenWAppend(Last_Include_File);
 						if(hFile == INVALID_HANDLE_VALUE)
 						{
 							WriteToStatus("Can't open output file.");
@@ -506,7 +505,7 @@ int Flush_Filter(char *FileName, LPWAFILTERFILE File_Struct)
 						else
 						{
 							// Save it
-							WAFileWriteBuffer(hFile, File_Struct->FileMem, File_Struct->FileLength);
+							FileWriteBuffer(hFile, File_Struct->FileMem, File_Struct->FileLength);
 							// Close it
 							CloseHandle(hFile);
 						}
@@ -534,16 +533,16 @@ void MCMD_OpenWorkSpace(void)
 		if(NbForms != 0)
 		{
     		ChildStruct = LoadStructure(CurrentForm);
-			LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, WAFileGetDirectory(ChildStruct->RFile), 0, CurrentDir);
+			LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, FileGetDirectory(ChildStruct->RFile), 0, CurrentDir);
 		}
 		else
 		{
-			LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastWorkSpaceDir, 0, CurrentDir);
+			LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastWorkSpaceDir, 0, CurrentDir);
 		}
     }
     else
     {
-		LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastWorkSpaceDir, 0, CurrentDir);
+		LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastWorkSpaceDir, 0, CurrentDir);
     }
 	if(LdFile.Len() != 0) OpenWorkSpc(LdFile);
 }
@@ -569,18 +568,18 @@ void MCMD_IncludeFile(void)
 		if(NbForms != 0)
 		{
     		ChildStruct = LoadStructure(CurrentForm);
-			LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, WAFileGetDirectory(ChildStruct->RFile), 1, CurrentDir);
+			LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, FileGetDirectory(ChildStruct->RFile), 1, CurrentDir);
 		}
 		else
 		{
-			LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastIncludeDir, 1, CurrentDir);
+			LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastIncludeDir, 1, CurrentDir);
 		}
     }
     else
     {
-		LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastIncludeDir, 1, CurrentDir);
+		LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastIncludeDir, 1, CurrentDir);
 	}
-	LastIncludeDir = WAComDlgParseMultiFilesSelection(LdFile, EnumIncludeFiles, MULTIFILESENUM_BACKWARD, 0);
+	LastIncludeDir = ComDlgParseMultiFilesSelection(LdFile, EnumIncludeFiles, MULTIFILESENUM_BACKWARD, 0);
 }
 
 long CALLBACK EnumIncludeFiles(char *FileToAdd, long UserValue)
@@ -598,9 +597,7 @@ void MCMD_IncludeFilters(void)
 {
 	if(NbForms != 0 && IsChildReadOnly(CurrentForm) == 1) return;
 	// Define filtering mode allowed
-    if(NbForms == 0) Filter_Allow_Window = 0;
-	else Filter_Allow_Window = 1;
-	WACreateModalDialog(-1, -1, 546, 268, hMDIform.hWnd, &FRMFiltersProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+	CreateModalDialog(-1, -1, 546, 268, hMDIform.hWnd, &FRMFiltersProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
 	// Cancel hit
 	if(Filter_Cancel) return;
 	IncludeFileAsDB();
@@ -615,16 +612,16 @@ void IncludeFileAsDB(void)
 		if(NbForms != 0)
 		{
     		ChildStruct = LoadStructure(CurrentForm);
-			LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, "All files (*.*)|*.*", WAFileGetDirectory(ChildStruct->RFile), 1, CurrentDir);
+			LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, "All files (*.*)|*.*", FileGetDirectory(ChildStruct->RFile), 1, CurrentDir);
 		}
 		else
 		{
-			LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, "All files (*.*)|*.*", LastIncludeDBDir, 1, CurrentDir);
+			LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, "All files (*.*)|*.*", LastIncludeDBDir, 1, CurrentDir);
 		}
     }
     else
     {
-		LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, "All files (*.*)|*.*", LastIncludeDBDir, 1, CurrentDir);
+		LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, "All files (*.*)|*.*", LastIncludeDBDir, 1, CurrentDir);
     }
 	Filter_Include = FILTER_INCLUDE_MODE;
 	Filter_Cancel_Process = 0;
@@ -633,7 +630,7 @@ void IncludeFileAsDB(void)
     if(LdFile.Len() != 0)
     {
 		// Enum them in INCLUDE mode
-		WAComDlgParseMultiFilesSelection(LdFile, &EnumOpenAsDBFiles, MULTIFILESENUM_BACKWARD, 0);
+		ComDlgParseMultiFilesSelection(LdFile, &EnumOpenAsDBFiles, MULTIFILESENUM_BACKWARD, 0);
 	}
 	// Clear the list of chosen filters now
 	Chosen_Filters.Erase();
@@ -649,13 +646,13 @@ void MCMD_FTPManager(void)
 
     for(i = 0; i <= 999; i++)
     {
-        MenusRetVal = WAIniReadKey("FTPAccounts", "FTPAccount" + (CStr) StringNumberComplement(i, 3).Get_String(), FtpAccountsIniFile);
+        MenusRetVal = IniReadKey("FTPAccounts", "FTPAccount" + (CStr) StringNumberComplement(i, 3).Get_String(), FtpAccountsIniFile);
         if(MenusRetVal.Len() == 0) break;
         FoundFtpAccounts++;
     }
     if(FoundFtpAccounts == 0)
     {
-        switch(WAMiscMsgBox(hMDIform.hWnd, "Can't find any FTP accounts.\rDo you want to create some now ?", MB_QUESTION, Requesters))
+        switch(MiscMsgBox(hMDIform.hWnd, "Can't find any FTP accounts.\rDo you want to create some now ?", MB_QUESTION, Requesters))
         {
             case IDNO:
                 return;
@@ -666,7 +663,7 @@ void MCMD_FTPManager(void)
                 return;
         }
     }
-    WACreateModalDialog(-1, -1, 560, 362, hMDIform.hWnd, &FRMFTPProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    CreateModalDialog(-1, -1, 560, 362, hMDIform.hWnd, &FRMFTPProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
 }
 
 // -----------------------------------------------------------------------
@@ -678,21 +675,21 @@ void MCMD_SaveWorkSpace(void)
     CStr OpFilters;
 
     OpFilters = AppTitle + (CStr) " workspace files (*.Mws)|*.Mws";
-    LdFile = WAComDlgGetSaveFileName(hMDIform.hWnd, OpFilters, LastWorkSpaceDir, CurrentDir);
+    LdFile = ComDlgGetSaveFileName(hMDIform.hWnd, OpFilters, LastWorkSpaceDir, CurrentDir);
     if(LdFile.Len() != 0)
     {
         WorkSpaceFileName = LdFile;
         // Delete the file first
         DeleteFile(WorkSpaceFileName.Get_String());
-        WAIniWriteKey(AppTitle.Upper_Case().Get_String() + (CStr) "WORKSPC", "Version", AppVersion + (CStr) AppRevision, WorkSpaceFileName);
+        IniWriteKey(AppTitle.Upper_Case().Get_String() + (CStr) "WORKSPC", "Version", AppVersion + (CStr) AppRevision, WorkSpaceFileName);
         SaveAllChildsInWorkSpace(hMDIform.hClient);
         // Include project file into the list
         if(ProjectOn == 1)
         {
-            WAIniWriteKey("Files", "File" + (CStr) StringNumberComplement(WorkSpaceNumber, 3).Get_String(),
+            IniWriteKey("Files", "File" + (CStr) StringNumberComplement(WorkSpaceNumber, 3).Get_String(),
                           ProjectFName, WorkSpaceFileName);
         }
-        LastWorkSpaceDir = WAFileGetDirectory(WorkSpaceFileName);
+        LastWorkSpaceDir = FileGetDirectory(WorkSpaceFileName);
         AddRecentFile(WorkSpaceFileName, 1, 0);
     }
 }
@@ -701,8 +698,8 @@ void MCMD_SaveWorkSpace(void)
 // File/Close file
 void MCMD_CloseFile(void)
 {
-    if(NbForms != 0) WAControlClose(CurrentForm);
-    if(NbForms != 0) WAClientSetPreviousChild(hMDIform.hClient);
+    if(NbForms != 0) ControlClose(CurrentForm);
+    if(NbForms != 0) ClientSetPreviousChild(hMDIform.hClient);
 }
 
 // -----------------------------------------------------------------------
@@ -744,7 +741,7 @@ void MCMD_RegSnippet(void)
     ChildStruct = LoadStructure(CurrentForm);
     if(CM_GetTextLengthAll(ChildStruct->hChildCodeMax, 1) == 0)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "Text is empty.", MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, "Text is empty.", MB_ERROR, Requesters);
         return;
     }
     if(strcmpi(ChildStruct->RFile->Left(18).Get_String(), "<untitled document") == 0) if(SaveItAs(CurrentForm, 0, "", "").Len() == 0) return;
@@ -760,7 +757,7 @@ void MCMD_RegSnippet(void)
         // Search the key
         for(i = 0; i <= 999; i++)
         {
-            MenusRetVal = WAIniReadKey("Snippets", "SnippetName" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+            MenusRetVal = IniReadKey("Snippets", "SnippetName" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
             if(MenusRetVal.Len() == 0) break;
             if(strcmpi(MenusRetVal.Get_String(), PassValueSnippet.Get_String()) == 0)
             {
@@ -772,7 +769,7 @@ void MCMD_RegSnippet(void)
         FoundOcc2 = 0;
         for(j = 0; j <= 999; j++)
         {
-            MenusRetVal = WAIniReadKey("Snippets", "SnippetFile" + (CStr) StringNumberComplement(j, 3).Get_String(), MainIniFile);
+            MenusRetVal = IniReadKey("Snippets", "SnippetFile" + (CStr) StringNumberComplement(j, 3).Get_String(), MainIniFile);
             if(MenusRetVal.Len() == 0) break;
             MenusRetVal = ChangeRelativePaths(MenusRetVal);
 			if(strcmpi(MenusRetVal.Get_String(), FileToSnippet.Get_String()) == 0)
@@ -802,7 +799,7 @@ void MCMD_RegSnippet(void)
             {
                 for(i = 0; i <= 999; i++)
                 {
-                    MenusRetVal = WAIniReadKey("Snippets", "SnippetName" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+                    MenusRetVal = IniReadKey("Snippets", "SnippetName" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
                     if(MenusRetVal.Len() == 0) break;
                 }
             }
@@ -811,15 +808,15 @@ RegSlot:
         // Save the bookmark of the snippet
         SaveBookmarks(CurrentForm, FileToSnippet, 0, -1);
         // Write the datas in the slot
-        WAIniWriteKey("Snippets", "SnippetName" + (CStr) StringNumberComplement(i, 3).Get_String(), PassValueSnippet, MainIniFile);
+        IniWriteKey("Snippets", "SnippetName" + (CStr) StringNumberComplement(i, 3).Get_String(), PassValueSnippet, MainIniFile);
         FileToSnippet2 = FileToSnippet;
         FileToSnippet2 = ChangeAbsolutePaths(FileToSnippet2);
-        WAIniWriteKey("Snippets", "SnippetFile" + (CStr) StringNumberComplement(i, 3).Get_String(), FileToSnippet2, MainIniFile);
+        IniWriteKey("Snippets", "SnippetFile" + (CStr) StringNumberComplement(i, 3).Get_String(), FileToSnippet2, MainIniFile);
     }
     return;
 NoSlot:
-    BufString = "Snippet key/file conflict.\rThis file is aleady registered under key '" + (CStr) WAIniReadKey("Snippets", "SnippetName" + (CStr) StringNumberComplement(j, 3).Get_String(), MainIniFile).Get_String() + (CStr) "'";
-    WAMiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
+    BufString = "Snippet key/file conflict.\rThis file is aleady registered under key '" + (CStr) IniReadKey("Snippets", "SnippetName" + (CStr) StringNumberComplement(j, 3).Get_String(), MainIniFile).Get_String() + (CStr) "'";
+    MiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
 }
 
 // -----------------------------------------------------------------------
@@ -840,7 +837,7 @@ void MCMD_RegTemplate(void)
     ChildStruct = LoadStructure(CurrentForm);
     if(CM_GetTextLengthAll(ChildStruct->hChildCodeMax, 1) == 0)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "Text is empty.", MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, "Text is empty.", MB_ERROR, Requesters);
         return;
     }
     if(strcmpi(ChildStruct->RFile->Left(18).Get_String(), "<untitled document") == 0) if(SaveItAs(CurrentForm, 0, "", "").Len() == 0) return;
@@ -857,7 +854,7 @@ void MCMD_RegTemplate(void)
         // Search the key
         for(i = 0; i <= 999; i++)
         {
-            MenusRetVal = WAIniReadKey("Templates", "TemplateName" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+            MenusRetVal = IniReadKey("Templates", "TemplateName" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
             if(MenusRetVal.Len() == 0) break;
             if(strcmpi(MenusRetVal.Get_String(), PassValueTemplate.Get_String()) == 0)
             {
@@ -869,7 +866,7 @@ void MCMD_RegTemplate(void)
         FoundOcc2 = 0;
         for(j = 0; j <= 999; j++)
         {
-            MenusRetVal = WAIniReadKey("Templates", "TemplateFile" + (CStr) StringNumberComplement(j, 3).Get_String(), MainIniFile);
+            MenusRetVal = IniReadKey("Templates", "TemplateFile" + (CStr) StringNumberComplement(j, 3).Get_String(), MainIniFile);
             if(MenusRetVal.Len() == 0) break;
             MenusRetVal = ChangeRelativePaths(MenusRetVal);
             if(strcmpi(MenusRetVal.Get_String(), FileToSnippet.Get_String()) == 0)
@@ -899,7 +896,7 @@ void MCMD_RegTemplate(void)
             {
                 for(i = 0; i <= 999; i++)
                 {
-                    MenusRetVal = WAIniReadKey("Templates", "TemplateName" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+                    MenusRetVal = IniReadKey("Templates", "TemplateName" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
                     if(MenusRetVal.Len() == 0) break;
                 }
             }
@@ -908,10 +905,10 @@ RegSlot:
         // Save the bookmark of the snippet
         SaveBookmarks(CurrentForm, FileToSnippet, 0, -1);
         // Write the datas in the slot
-        WAIniWriteKey("Templates", "TemplateName" + (CStr) StringNumberComplement(i, 3).Get_String(), PassValueTemplate, MainIniFile);
+        IniWriteKey("Templates", "TemplateName" + (CStr) StringNumberComplement(i, 3).Get_String(), PassValueTemplate, MainIniFile);
         FileToSnippet2 = FileToSnippet;
         FileToSnippet2 = ChangeAbsolutePaths(FileToSnippet2);
-        WAIniWriteKey("Templates", "TemplateFile" + (CStr) StringNumberComplement(i, 3).Get_String(), FileToSnippet2, MainIniFile);
+        IniWriteKey("Templates", "TemplateFile" + (CStr) StringNumberComplement(i, 3).Get_String(), FileToSnippet2, MainIniFile);
         // Refresh "New" menu
         DeleteMenu(hFileMenu, 0, MF_BYPOSITION);
         DestroyMenu(hFileMenuNew);
@@ -920,8 +917,8 @@ RegSlot:
     }
     return;
 NoSlot:
-    BufString = "Template key/file conflict.\rThis file is aleady registered under key '" + (CStr) WAIniReadKey("Templates", "TemplateName" + (CStr) StringNumberComplement(j, 3).Get_String(), MainIniFile).Get_String() + (CStr) "'";
-    WAMiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
+    BufString = "Template key/file conflict.\rThis file is aleady registered under key '" + (CStr) IniReadKey("Templates", "TemplateName" + (CStr) StringNumberComplement(j, 3).Get_String(), MainIniFile).Get_String() + (CStr) "'";
+    MiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
 }
 
 // -----------------------------------------------------------------------
@@ -942,7 +939,7 @@ void MCMD_PrintFile(void)
 // File/Console/Run
 void MCMD_RunConsole(void)
 {
-    ShellExecute(0, "open", WAIniReadKey("Layout", "MSDOS", MainIniFile).Get_String(), "", "", SW_SHOW);
+    ShellExecute(0, "open", IniReadKey("Layout", "MSDOS", MainIniFile).Get_String(), "", "", SW_SHOW);
 }
 
 // -----------------------------------------------------------------------
@@ -951,10 +948,10 @@ void MCMD_ChangeConsole(void)
 {
 	CStr PassValueDOS;
     
-	PassValueDOS = WAIniReadKey("Layout", "MSDOS", MainIniFile);
+	PassValueDOS = IniReadKey("Layout", "MSDOS", MainIniFile);
     PassValueDOS = MiscInputBox(hMDIform.hWnd, "Enter console prompt command", ICON_MSDOS, PassValueDOS, 0, INPUTBOX_COMBO, "Shells");
     if(PassValueDOS.Len() == 0) PassValueDOS = "command.com";
-    WAIniWriteKey("Layout", "MSDOS", PassValueDOS, MainIniFile);
+    IniWriteKey("Layout", "MSDOS", PassValueDOS, MainIniFile);
 }
 
 // -----------------------------------------------------------------------
@@ -970,16 +967,16 @@ void MCMD_RunExtProg(void)
 		if(NbForms != 0)
 		{
     		ChildStruct = LoadStructure(CurrentForm);
-			CmdToOpen = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, WAFileGetDirectory(ChildStruct->RFile), 0, CurrentDir);
+			CmdToOpen = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, FileGetDirectory(ChildStruct->RFile), 0, CurrentDir);
 		}
 		else
 		{
-			CmdToOpen = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastExeDir, 0, CurrentDir);
+			CmdToOpen = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastExeDir, 0, CurrentDir);
 		}
     }
     else
     {
-        CmdToOpen = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastExeDir, 0, CurrentDir);
+        CmdToOpen = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastExeDir, 0, CurrentDir);
     }
     RunExtProg(CmdToOpen);
 }
@@ -995,7 +992,7 @@ void MCMD_PurgeRunProgAll(void)
         RunProgArray.Set(i, "");
     }
     AddRecentRunProg("", 0, 1);
-	WAIniDeleteKey("RunProg", "", MainIniFile);
+	IniDeleteKey("RunProg", "", MainIniFile);
 }
 
 // -----------------------------------------------------------------------
@@ -1006,7 +1003,7 @@ void MCMD_PurgeRecent(void)
 
     for(i = 0; i < Recents.Amount(); i++)
     {
-        if(strlen(Recents.Get(i)->Content) != 0) if(WAFileExist(Recents.Get(i)->Content) == 0) Recents.Set(i, "");
+        if(strlen(Recents.Get(i)->Content) != 0) if(FileExist(Recents.Get(i)->Content) == 0) Recents.Set(i, "");
     }
     AddRecentFile("", 0, 1);
 }
@@ -1032,7 +1029,7 @@ void MCMD_PurgeRecentPrj(void)
 
     for(i = 0; i < RecentsPrj.Amount(); i++)
     {
-        if(strlen(RecentsPrj.Get(i)->Content) != 0) if(WAFileExist(RecentsPrj.Get(i)->Content) == 0) RecentsPrj.Set(i, "");
+        if(strlen(RecentsPrj.Get(i)->Content) != 0) if(FileExist(RecentsPrj.Get(i)->Content) == 0) RecentsPrj.Set(i, "");
     }
     AddRecentPrj("", 0, 1);
 }
@@ -1054,7 +1051,7 @@ void MCMD_PurgeRecentPrjAll(void)
 // File/Organize favorites
 void MCMD_Favorites(void)
 {
-    WACreateModalDialog(-1, -1, 486, 318, hMDIform.hWnd, &FRMFavoritesProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    CreateModalDialog(-1, -1, 486, 318, hMDIform.hWnd, &FRMFavoritesProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
 }
 
 // -----------------------------------------------------------------------
@@ -1074,7 +1071,7 @@ void MCMD_AddToFavorites(void)
 			// Look for file in list
 			for(i = 0; i <= 999; i++)
 			{
-				NameFromList = WAIniReadKey("Favorites", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+				NameFromList = IniReadKey("Favorites", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
 				if(NameFromList.Len() == 0) break;
 				if(strcmpi(NameToAdd.Get_String(), NameFromList.Get_String()) == 0)
 				{
@@ -1082,7 +1079,7 @@ void MCMD_AddToFavorites(void)
 				}
 			}
 			// Write it in the list
-			WAIniWriteKey("Favorites", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), NameToAdd, MainIniFile);
+			IniWriteKey("Favorites", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), NameToAdd, MainIniFile);
 			// Reconstruct the menu
 			CreateFavoritesMenu();
 		}
@@ -1154,7 +1151,7 @@ void MCMD_CopyFileNamePath(void)
     if(NbForms == 0) return;
     ChildStruct = LoadStructure(CurrentForm);
     if(ChildStruct->FileLoaded == 0) return;
-    WAMiscClipBoardCopyText(CMGetRealFile(ChildStruct->RFile));
+    MiscClipBoardCopyText(CMGetRealFile(ChildStruct->RFile));
 }
 
 // -----------------------------------------------------------------------
@@ -1167,7 +1164,7 @@ void MCMD_CopyEntireText(void)
     ChildStruct = LoadStructure(CurrentForm);
     EntText = EntText.String(CM_GetTextLengthAll(ChildStruct->hChildCodeMax, 1), 1);
     CM_GetTextAll(ChildStruct->hChildCodeMax, EntText.Get_String());
-    WAMiscClipBoardCopyText(EntText);
+    MiscClipBoardCopyText(EntText);
 }
 
 // -----------------------------------------------------------------------
@@ -1187,9 +1184,9 @@ void MCMD_PasteNewWindow(void)
     CStr OpenedLanguage;
     HWND PasteForm = 0;
 
-    if(WAMiscClipBoardIsEmpty() == 0)
+    if(MiscClipBoardIsEmpty() == 0)
     {
-        OpenedLanguage = WAIniReadKey("RefLanguages", "DefLang", LanguagesIniFile);
+        OpenedLanguage = IniReadKey("RefLanguages", "DefLang", LanguagesIniFile);
         if(OpenedLanguage.Len() == 0) OpenedLanguage = "Assembler";
         StoreLanguageToOpen(OpenedLanguage);
         PasteForm = CreateNewFile("<Untitled document " + (CStr) (NbForms + 1) + (CStr) ">");
@@ -1298,13 +1295,13 @@ void MCMD_SelectProcCollapse(void)
 		ProcToSave = GetProcName(CMGetCurrentLine(ChildStruct->hChildCodeMax, GetCurrentLineNumber(ChildStruct->hChildCodeMax)), LastProcTypeKeyword);
         if(ProcToSave.Len() == 0)
         {
-            WAMiscMsgBox(hMDIform.hWnd, "Error in procedure structure.\rCan't collapse.", MB_ERROR, Requesters);
-            if(WAControlIsVisible(ChildStruct->hChildCodeMax) != 0) SetFocus(ChildStruct->hChildCodeMax);
+            MiscMsgBox(hMDIform.hWnd, "Error in procedure structure.\rCan't collapse.", MB_ERROR, Requesters);
+            if(ControlIsVisible(ChildStruct->hChildCodeMax) != 0) SetFocus(ChildStruct->hChildCodeMax);
             return;
         }
-        CurDirC = WAFileGetDirectory(ChildStruct->RFile->Left(ChildStruct->RFile->Len()));
+        CurDirC = FileGetDirectory(ChildStruct->RFile->Left(ChildStruct->RFile->Len()));
         if(strcmp(CurDirC.Right(1).Get_String(), "\\") == 0) CurDirC = CurDirC.Left(CurDirC.Len() - 1);
-        CollapsedExtension = WAFileGetExtension(CMGetRealFile(ChildStruct->RFile));
+        CollapsedExtension = FileGetExtension(CMGetRealFile(ChildStruct->RFile));
         BufString = CurDirC + (CStr) "\\" + (CStr) ProcToSave + (CStr) "." + (CStr) CollapsedExtension;
 		DeleteFile(BufString.Get_String());
         // Save the procedure into a file
@@ -1314,7 +1311,7 @@ void MCMD_SelectProcCollapse(void)
         CollapsedInclude = GetCMLangInclude(CurrentForm);
         if(CollapsedInclude.Len() == 0)
         {
-            WAMiscMsgBox(hMDIform.hWnd, "No include definition found for current file.", MB_ERROR, Requesters);
+            MiscMsgBox(hMDIform.hWnd, "No include definition found for current file.", MB_ERROR, Requesters);
             return;
         }
         CollapsedInclude = StringReplace(CollapsedInclude, "%1", ProcToSave + (CStr) "." + (CStr) CollapsedExtension, 1, -1, Binary_Compare);
@@ -1322,7 +1319,7 @@ void MCMD_SelectProcCollapse(void)
         CollapsedFile = CurDirC + (CStr) "\\" + (CStr) ProcToSave + (CStr) "." + (CStr) CollapsedExtension;
         if(MSaveFile(CollapsedFile.Get_String(), (long) SelToSave.Get_String(), SelToSave.Len()) == 0)
         {
-            WAMiscMsgBox(hMDIform.hWnd, "Error while saving procedure\rCan't collapse.", MB_ERROR, Requesters);
+            MiscMsgBox(hMDIform.hWnd, "Error while saving procedure\rCan't collapse.", MB_ERROR, Requesters);
             return;
         }
         MCMD_DeleteSelection();
@@ -1408,12 +1405,12 @@ void MCMD_ProcVarSearch(void)
     CStr BufString;
 
 	if(NbForms == 0) if(ProjectOn == 0) return;
-    WACreateModalDialog(-1, -1, 347, 139, hMDIform.hWnd, &FRMProcVarSearchProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    CreateModalDialog(-1, -1, 347, 139, hMDIform.hWnd, &FRMProcVarSearchProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
     if(OkSearch == 1)
     {
-        if(WAListViewItemCount(FrmResultsListView) == 0)
+        if(ListViewItemCount(FrmResultsListView) == 0)
         {
-            if(hFRMResults != 0) WAControlClose(hFRMResults);
+            if(hFRMResults != 0) ControlClose(hFRMResults);
             if(FRMProcVarSearchChkRawValue == 1)
             {
 				BufString = "0 entry found.\rKeyword was: '" + (CStr) LastSearch + (CStr) "'\r";
@@ -1424,11 +1421,11 @@ void MCMD_ProcVarSearch(void)
 			}
             BufString = BufString + (CStr) "Passed through: " + (CStr) LastSearchFiles + (CStr) " file(s) ";
             BufString = BufString + (CStr) "and " + (CStr) LastSearchLines + (CStr) " line(s).";
-            WAMiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
+            MiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
             return;
         }
-        if(WAControlIsVisible(hFRMResults) == 0) ShowWindow(hFRMResults, SW_SHOW);
-        WAListViewSetItemSel(FrmResultsListView, 0);
+        if(ControlIsVisible(hFRMResults) == 0) ShowWindow(hFRMResults, SW_SHOW);
+        ListViewSetItemSel(FrmResultsListView, 0);
     }
 }
 
@@ -1438,12 +1435,12 @@ void MCMD_SearchInFiles(void)
 {
     CStr BufString;
 
-    WACreateModalDialog(-1, -1, 347, 213, hMDIform.hWnd, &FRMFileSearchProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    CreateModalDialog(-1, -1, 347, 213, hMDIform.hWnd, &FRMFileSearchProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
     if(OkSearch == 1)
     {
-        if(WAListViewItemCount(FrmResultsListView) == 0)
+        if(ListViewItemCount(FrmResultsListView) == 0)
         {
-            if(hFRMResults != 0) WAControlClose(hFRMResults);
+            if(hFRMResults != 0) ControlClose(hFRMResults);
 			if(FRMFileSearchChkRawValue == 1)
 			{
 				BufString = "0 entry found.\rKeyword was: '" + (CStr) LastSearch + (CStr) "'\rWildcard was: '" + (CStr) LastWild + (CStr) "'\r";
@@ -1454,11 +1451,11 @@ void MCMD_SearchInFiles(void)
             }
 			BufString = BufString + (CStr) "Passed through: " + (CStr) LastSearchFiles + (CStr) " file(s) ";
             BufString = BufString + (CStr) "and " + (CStr) LastSearchLines + (CStr) " line(s).";
-            WAMiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
+            MiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
             return;
         }
-        if(WAControlIsVisible(hFRMResults) == 0) ShowWindow(hFRMResults, SW_SHOW);
-        WAListViewSetItemSel(FrmResultsListView, 0);
+        if(ControlIsVisible(hFRMResults) == 0) ShowWindow(hFRMResults, SW_SHOW);
+        ListViewSetItemSel(FrmResultsListView, 0);
     }
 }
 
@@ -1868,7 +1865,7 @@ void MCMD_VarDeclaration(void)
     if(SearchVarEntry(hMDIform.hClient, GetCurrentWord(ChildStruct->hChildCodeMax)) == 0)
     {
         BufString = "No declaration found for variable '" + (CStr) VarProcToSearchReal + (CStr) "'.";
-        WAMiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
     }
     else
     {
@@ -1891,7 +1888,7 @@ void MCMD_VarNextUse(void)
     if(SearchVarNextUse(hMDIform.hClient, GetCurrentWord(ChildStruct->hChildCodeMax), GetCurrentLineNumber(ChildStruct->hChildCodeMax)) == 0)
     {
         BufString = "No other use found for variable '" + (CStr) VarProcToSearchReal + (CStr) "'.";
-        WAMiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
     }
     else
     {
@@ -1914,7 +1911,7 @@ void MCMD_ProcProto(void)
     if(SearchProcProto(hMDIform.hClient, GetCurrentWord(ChildStruct->hChildCodeMax)) == 0)
     {
         BufString = "No declaration found for procedure '" + (CStr) VarProcToSearchReal + (CStr) "'.";
-        WAMiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
     }
     else
     {
@@ -1937,7 +1934,7 @@ void MCMD_ProcDeclare(void)
     if(SearchProcDeclare(hMDIform.hClient, GetCurrentWord(ChildStruct->hChildCodeMax)) == 0)
     {
         BufString = "No entry point found for procedure '" + (CStr) VarProcToSearchReal + (CStr) "'.";
-        WAMiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
     }
     else
     {
@@ -1960,7 +1957,7 @@ void MCMD_ProcNextUse(void)
     if(SearchProcNextUse(hMDIform.hClient, GetCurrentWord(ChildStruct->hChildCodeMax), GetCurrentLineNumber(ChildStruct->hChildCodeMax)) == 0)
     {
         BufString = "No other use found for procedure '" + (CStr) VarProcToSearchReal + (CStr) "'.";
-        WAMiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
     }
     else
     {
@@ -2220,18 +2217,18 @@ void MCMD_Registers(void)
 	if(NbForms == 0) return;
     ChildStruct = LoadStructure(CurrentForm);
     WriteComment("Searching...");
-    WACursorSetWait();
+    CursorSetWait();
     if(CM_GetTextLengthAll(ChildStruct->hChildCodeMax, 1) == 0) return;
     if(CM_GetTextLengthAll(ChildStruct->hChildCodeMax, 1) != 0)
     {
-        if(FrmRegsOn == 1) WAControlClose(FrmRegshWnd);
+        if(FrmRegsOn == 1) ControlClose(FrmRegshWnd);
         FrmRegsFoundFile = CMGetRealFile(ChildStruct->RFile);
         LangRegisters = GetCMLangC(CurrentForm);
         if(LangRegisters.Len() == 0)
         {
-            WACursorSetNormal();
+            CursorSetNormal();
             WriteComment("");
-            WAMiscMsgBox(hMDIform.hWnd, "Can't find registers datas for current document.", MB_INFORMATION, Requesters);
+            MiscMsgBox(hMDIform.hWnd, "Can't find registers datas for current document.", MB_INFORMATION, Requesters);
             return;
         }
 		// --- 1.Remove comments
@@ -2274,7 +2271,7 @@ void MCMD_Registers(void)
         FoundPos.Erase();
         FoundLines.Erase();
         FoundReg.Erase();
-		WAMiscDoEvents(hMDIform.hClient, hGlobAccelerators, hMDIform.hWnd);
+		MiscDoEvents(hMDIform.hClient, hGlobAccelerators, hMDIform.hWnd);
         
         CurComment = GetCMLangComment(CurrentForm);
         LnToStart = 0;
@@ -2283,7 +2280,7 @@ void MCMD_Registers(void)
             LineToCheck = StringGetSplitElement(FrmRegsCmTextReg, SelLines, j);
             if(strcmpi(LineToCheck.Trim().Left(CurComment.Len()).Get_String(), CurComment.Get_String()) == 0) LnToStart++;
         }
-		WAMiscDoEvents(hMDIform.hClient, hGlobAccelerators, hMDIform.hWnd);
+		MiscDoEvents(hMDIform.hClient, hGlobAccelerators, hMDIform.hWnd);
         for(i = 0; i <= StringGetSplitUBound(RegsArray); i++)
         {
             for(j = LnToStart; j <= StringGetSplitUBound(SelLines); j++)
@@ -2403,7 +2400,7 @@ void MCMD_Registers(void)
         StringReleaseSplit(RegsArray);
         if(FoundAny == 0)
         {
-            WAMiscMsgBox(hMDIform.hWnd, "No registers found in selection.", MB_INFORMATION, Requesters);
+            MiscMsgBox(hMDIform.hWnd, "No registers found in selection.", MB_INFORMATION, Requesters);
             return;
         }
         else
@@ -2414,11 +2411,11 @@ void MCMD_Registers(void)
             NormRange.posStart.nLine = CodeMaxCurRange.posStart.nLine;
             NormRange.posEnd.nLine = CodeMaxCurRange.posStart.nLine;
             CM_SetSel(ChildStruct->hChildCodeMax, &NormRange, 1);
-            FrmRegshWnd = WACreateDialog(-1, -1, 552, 215, hMDIform.hWnd, 0, LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_FIND + ICON_BASE)),
-                                         "Used registers", &FrmRegsInitProc, &FrmRegsWinHook, 0, WS_SYSMENU | WS_SIZEBOX | WS_MINIMIZEBOX, SW_SHOW);
+            FrmRegshWnd = CreateNonModalDialog(-1, -1, 552, 215, hMDIform.hWnd, 0, LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_FIND + ICON_BASE)),
+                                               "Used registers", &FrmRegsInitProc, &FrmRegsWinHook, 0, WS_SYSMENU | WS_SIZEBOX | WS_MINIMIZEBOX, SW_SHOW);
         }
     }
-    WACursorSetNormal();
+    CursorSetNormal();
     WriteComment("");
 }
 
@@ -2570,7 +2567,7 @@ void MCMD_BlockConvertToInclude(void)
     IncludeSkew = GetCMLangInclude(CurrentForm);
     if(IncludeSkew.Len() == 0)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "No Include definitions found for current language.", MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, "No Include definitions found for current language.", MB_ERROR, Requesters);
         return;
     }
     Filters = "";
@@ -2581,14 +2578,14 @@ void MCMD_BlockConvertToInclude(void)
 	if(Filters.Len() == 0) Filters = "All files (*.*)|*.*";
     if(GetUseFileDir() == 1)
     {
-        FNameBlock = WAComDlgGetSaveFileName(hMDIform.hWnd, Filters, WAFileGetDirectory(ChildStruct->RFile), CurrentDir);
+        FNameBlock = ComDlgGetSaveFileName(hMDIform.hWnd, Filters, FileGetDirectory(ChildStruct->RFile), CurrentDir);
     }
     else
     {
-        FNameBlock = WAComDlgGetSaveFileName(hMDIform.hWnd, Filters, LastConvertBlockDir, CurrentDir);
+        FNameBlock = ComDlgGetSaveFileName(hMDIform.hWnd, Filters, LastConvertBlockDir, CurrentDir);
     }
     if(FNameBlock.Len() == 0) return;
-    LastConvertBlockDir = WAFileGetDirectory(FNameBlock);
+    LastConvertBlockDir = FileGetDirectory(FNameBlock);
     DeleteFile(FNameBlock.Get_String());
     if(strcmpi(GetCMLangDoubleSlash(CurrentForm).Get_String(), "1") == 0) FNameBlock = StringReplace(FNameBlock, "\\", "\\\\", 1, -1, Binary_Compare);
     IncludeSkew = StringReplace(IncludeSkew, "%1", FNameBlock, 1, -1, Binary_Compare);
@@ -2596,12 +2593,12 @@ void MCMD_BlockConvertToInclude(void)
     CM_GetText(ChildStruct->hChildCodeMax, SelToSave.Get_String(), &CodeMaxCurRange);
     if(MSaveFile(FNameBlock.Get_String(), (long) SelToSave.Get_String(), (long) SelToSave.Len()) == 0)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "Can't save selection.", MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, "Can't save selection.", MB_ERROR, Requesters);
     }
     else
     {
-        FileNametoCompare = WAFileGetDirectory(CMGetRealFile(ChildStruct->RFile));
-        FileNametoCompare2 = WAFileGetDirectory(FNameBlock);
+        FileNametoCompare = FileGetDirectory(CMGetRealFile(ChildStruct->RFile));
+        FileNametoCompare2 = FileGetDirectory(FNameBlock);
         // Remove directory if equal
         if(strcmpi(FileNametoCompare.Get_String(), FileNametoCompare2.Get_String()) == 0)
         {
@@ -2635,20 +2632,20 @@ void MCMD_BlockSave(void)
 	if(Filters.Len() == 0) Filters = "All files (*.*)|*.*";
     if(GetUseFileDir() == 1)
     {
-        FNameBlock = WAComDlgGetSaveFileName(hMDIform.hWnd, Filters, WAFileGetDirectory(ChildStruct->RFile), CurrentDir);
+        FNameBlock = ComDlgGetSaveFileName(hMDIform.hWnd, Filters, FileGetDirectory(ChildStruct->RFile), CurrentDir);
     }
     else
     {
-        FNameBlock = WAComDlgGetSaveFileName(hMDIform.hWnd, Filters, LastSaveBlockDir, CurrentDir);
+        FNameBlock = ComDlgGetSaveFileName(hMDIform.hWnd, Filters, LastSaveBlockDir, CurrentDir);
     }
     if(FNameBlock.Len() == 0) return;
-    LastSaveBlockDir = WAFileGetDirectory(FNameBlock);
+    LastSaveBlockDir = FileGetDirectory(FNameBlock);
     DeleteFile(FNameBlock.Get_String());
     SelToSave = SelToSave.String(CM_GetTextLength(ChildStruct->hChildCodeMax, &CodeMaxCurRange, 1), 1);
     CM_GetText(ChildStruct->hChildCodeMax, SelToSave.Get_String(), &CodeMaxCurRange);
     if(MSaveFile(FNameBlock.Get_String(), (long) SelToSave.Get_String(), SelToSave.Len()) == 0)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "Can't save selection.", MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, "Can't save selection.", MB_ERROR, Requesters);
     }
     else
     {
@@ -2725,15 +2722,15 @@ void SetFullScreenMode(void)
     
 	if(FullScreenMode == 0)
 	{
-        WAIniWriteKey("Layout", "FullScreen", "0", MainIniFile);
+        IniWriteKey("Layout", "FullScreen", "0", MainIniFile);
         CheckMenuItem(hViewMenu, 2, MF_BYPOSITION | MF_UNCHECKED);
         CurrentWindowStyle = GetWindowLong(hMDIform.hWnd, GWL_STYLE);
         CurrentWindowStyle = CurrentWindowStyle | WS_CAPTION | WS_SYSMENU | WS_SIZEBOX | WS_BORDER;
         SetWindowLong(hMDIform.hWnd, GWL_STYLE, CurrentWindowStyle);
-        WAMenuEnable(hViewMenu, MENU_VIEW_STATUSBAR_ID, 1);
-        WAMenuEnable(hViewMenu, 7, 1);
-        WAControlVisible(hRebar, 1);
-        WARebarResize(hRebar);
+        MenuEnable(hViewMenu, MENU_VIEW_STATUSBAR_ID, 1);
+        MenuEnable(hViewMenu, 7, 1);
+        ControlVisible(hRebar, 1);
+        RebarResize(hRebar);
         ShowHideStatusBar(ShowStatusbar);
         MoveWindow(hMDIform.hWnd, XPosToRestore, YPosToRestore, XToRestore, YToRestore, 1);
 	}
@@ -2748,12 +2745,12 @@ void SetFullScreenMode(void)
         }
         else
         {
-            XPosToRestore = WAControlLeft(hMDIform.hWnd);
-            YPosToRestore = WAControlTop(hMDIform.hWnd);
-            XToRestore = WAControlWidth(hMDIform.hWnd);
-            YToRestore = WAControlHeight(hMDIform.hWnd);
+            XPosToRestore = ControlLeft(hMDIform.hWnd);
+            YPosToRestore = ControlTop(hMDIform.hWnd);
+            XToRestore = ControlWidth(hMDIform.hWnd);
+            YToRestore = ControlHeight(hMDIform.hWnd);
         }
-        WAIniWriteKey("Layout", "FullScreen", "1", MainIniFile);
+        IniWriteKey("Layout", "FullScreen", "1", MainIniFile);
         CheckMenuItem(hViewMenu, 2, MF_BYPOSITION | MF_CHECKED);
         CurrentWindowStyle = GetWindowLong(hMDIform.hWnd, GWL_STYLE);
         CurrentWindowStyle = CurrentWindowStyle & ~(WS_CAPTION);
@@ -2761,11 +2758,11 @@ void SetFullScreenMode(void)
         CurrentWindowStyle = CurrentWindowStyle & ~(WS_SIZEBOX);
         CurrentWindowStyle = CurrentWindowStyle & ~(WS_BORDER);
         SetWindowLong(hMDIform.hWnd, GWL_STYLE, CurrentWindowStyle);
-        WAMenuEnable(hViewMenu, MENU_VIEW_STATUSBAR_ID, 0);
-        WAMenuEnable(hViewMenu, 7, 0);
-        WAControlVisible(hRebar, 0);
-        WARebarResize(hRebar);
-        WAControlVisible(hStatusBar, 0);
+        MenuEnable(hViewMenu, MENU_VIEW_STATUSBAR_ID, 0);
+        MenuEnable(hViewMenu, 7, 0);
+        ControlVisible(hRebar, 0);
+        RebarResize(hRebar);
+        ControlVisible(hStatusBar, 0);
         ResizeMDIform();
         MoveWindow(hMDIform.hWnd, 0, 0, ScreenWidth(), ScreenHeight(), 1);
     }
@@ -2784,21 +2781,21 @@ void MCMD_Properties(void)
 // View/User menus editor
 void MCMD_UserMenusEd(void)
 {
-    WACreateModalDialog(-1, -1, 530, 366, hMDIform.hWnd, &FRMUserMenusProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    CreateModalDialog(-1, -1, 530, 366, hMDIform.hWnd, &FRMUserMenusProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
 }
 
 // -----------------------------------------------------------------------
 // View/Tolbars manager
 void MCMD_ToolbarsManager(void)
 {
-    WACreateModalDialog(-1, -1, 359, 301, hMDIform.hWnd, &FRMToolbarsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    CreateModalDialog(-1, -1, 359, 301, hMDIform.hWnd, &FRMToolbarsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
 }
 
 // -----------------------------------------------------------------------
 // Project/Create new project
 void MCMD_CreateProject(void)
 {
-    WACreateModalDialog(-1, -1, 490, 326, hMDIform.hWnd, &FRMCreateProjectProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    CreateModalDialog(-1, -1, 490, 326, hMDIform.hWnd, &FRMCreateProjectProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
     switch(ProjectCreate)
     {
         case 1:
@@ -2818,7 +2815,7 @@ void MCMD_OpenProject(void)
     CStr LdFile;
     
 	OpFilters = AppTitle + (CStr) " project files (*.Med)|*.Med";
-    LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, Dirs[DIR_PROJECTS], 0, CurrentDir);
+    LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, Dirs[DIR_PROJECTS], 0, CurrentDir);
     if(LdFile.Len() != 0) OpenProjectAuto(LdFile);
 }
 
@@ -2838,21 +2835,21 @@ void MCMD_AddInclude(void)
     CStr OpFilters;
     
     if(ProjectOn == 0) return;
-    OpFilters = WAIniReadKey("ExtrasExt", "AddInclude", MainIniFile);
+    OpFilters = IniReadKey("ExtrasExt", "AddInclude", MainIniFile);
     if(OpFilters.Len() == 0)
     {
         OpFilters = "Source files|*.inc;*.a;*.asm;*.ash;*.asi;*.s;*.a86;*.c;*.cc;*.cpp;*.i;*.h;*.mac;*.hpp;*.pp;*.pas;*.bas|All files|*.*";
     }
-    LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, Dirs[DIR_INCLUDE], 1, CurrentDir);
+    LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, Dirs[DIR_INCLUDE], 1, CurrentDir);
 	if(LdFile.Len() != 0)
 	{
-		if(WAMiscMsgBox(hMDIform.hWnd, "Add the corresponding libraries file ?", MB_QUESTION, Requesters) == IDNO)
+		if(MiscMsgBox(hMDIform.hWnd, "Add the corresponding libraries file ?", MB_QUESTION, Requesters) == IDNO)
 		{
-	 		WAComDlgParseMultiFilesSelection(LdFile, &EnumAddInclude, MULTIFILESENUM_FORWARD, 0);
+	 		ComDlgParseMultiFilesSelection(LdFile, &EnumAddInclude, MULTIFILESENUM_FORWARD, 0);
 		}
 		else
 		{
-	 		WAComDlgParseMultiFilesSelection(LdFile, &EnumAddInclude, MULTIFILESENUM_FORWARD, 1);
+	 		ComDlgParseMultiFilesSelection(LdFile, &EnumAddInclude, MULTIFILESENUM_FORWARD, 1);
 		}
 	}
 }
@@ -2862,48 +2859,48 @@ long CALLBACK EnumAddInclude(char *FileToAdd, long UserValue) {
     CStr LbFileExt;
 
 	// Add it to the treeview
-    if(WATreeViewSearchItemText(hTreeView, hTreeViewIncludes, WAFileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")") != -1)
+    if(TreeViewSearchItemText(hTreeView, hTreeViewIncludes, FileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")") != -1)
     {
         WriteToStatus("File '" + (CStr) FileToAdd + (CStr) "' already referenced in project.");
         return(1);
     }
 	if(UserValue == 0)
 	{
-        WATreeViewAddItem(hTreeView, WAFileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewIncludes, 0, ICON_NEW, ICON_NEW, 0, 1);
+        TreeViewAddItem(hTreeView, FileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewIncludes, 0, ICON_NEW, ICON_NEW, 0, 1);
 	}
 	else
 	{
-        WATreeViewAddItem(hTreeView, WAFileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewIncludes, 0, ICON_NEW, ICON_NEW, 0, 1);
-        LbFile = Dirs[DIR_LIB] + (CStr) "\\" + (CStr) WAFileGetFileName(FileToAdd).Get_String();
+        TreeViewAddItem(hTreeView, FileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewIncludes, 0, ICON_NEW, ICON_NEW, 0, 1);
+        LbFile = Dirs[DIR_LIB] + (CStr) "\\" + (CStr) FileGetFileName(FileToAdd).Get_String();
         // Test with a .lib
-		LbFileExt = WAFileReplaceExtension(LbFile, "lib");
-        if(WAFileExist(LbFileExt) == 0)
+		LbFileExt = FileReplaceExtension(LbFile, "lib");
+        if(FileExist(LbFileExt) == 0)
         {
 			// Test with a *32.lib
-			LbFileExt = WAFileRemoveExtension(LbFile) + "32.lib";
-			if(WAFileExist(LbFileExt) == 0)
+			LbFileExt = FileRemoveExtension(LbFile) + "32.lib";
+			if(FileExist(LbFileExt) == 0)
 			{
 				// Test with a lib*.a
-				LbFileExt = "lib" + WAFileReplaceExtension(LbFile, "a");
+				LbFileExt = "lib" + FileReplaceExtension(LbFile, "a");
 				// Test with a lib*32.a
-				if(WAFileExist(LbFileExt) == 0)
+				if(FileExist(LbFileExt) == 0)
 				{
-					LbFileExt = "lib" + WAFileRemoveExtension(LbFile) + "32.a";
+					LbFileExt = "lib" + FileRemoveExtension(LbFile) + "32.a";
 				}
 			}
 		}
-        if(WAFileExist(LbFileExt) != 0)
+        if(FileExist(LbFileExt) != 0)
         {
-			if(WATreeViewSearchItemText(hTreeView, hTreeViewLibs, WAFileGetFileName(LbFileExt).Get_String() + (CStr) " (" + (CStr) LbFileExt + (CStr) ")") != -1)
+			if(TreeViewSearchItemText(hTreeView, hTreeViewLibs, FileGetFileName(LbFileExt).Get_String() + (CStr) " (" + (CStr) LbFileExt + (CStr) ")") != -1)
 			{
 				WriteToStatus("File '" + (CStr) LbFileExt + (CStr) "' already referenced in project.");
 				return(1);
 			}
-            WATreeViewAddItem(hTreeView, WAFileGetFileName(LbFileExt).Get_String() + (CStr) " (" + (CStr) LbFileExt + (CStr) ")", hTreeViewLibs, 0, ICON_STATIC, ICON_STATIC, 0, 1);
+            TreeViewAddItem(hTreeView, FileGetFileName(LbFileExt).Get_String() + (CStr) " (" + (CStr) LbFileExt + (CStr) ")", hTreeViewLibs, 0, ICON_STATIC, ICON_STATIC, 0, 1);
         }
         else
         {
-            WriteToStatus("Library for file '" + (CStr) WAFileGetFileName(FileToAdd).Get_String() + (CStr) "' not found.");
+            WriteToStatus("Library for file '" + (CStr) FileGetFileName(FileToAdd).Get_String() + (CStr) "' not found.");
         }
     }
     ProjectModified = TRUE;
@@ -2921,17 +2918,17 @@ void MCMD_AddCurrentInclude(void)
     LdFile = SaveIt(CurrentForm);
     if(LdFile.Len() == 0) return;
     // Add it to the treeview
-    if(WATreeViewSearchItemText(hTreeView, hTreeViewIncludes, WAFileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")") != -1)
+    if(TreeViewSearchItemText(hTreeView, hTreeViewIncludes, FileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")") != -1)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "File '" + (CStr) LdFile + (CStr) "' already referenced in project.", MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, "File '" + (CStr) LdFile + (CStr) "' already referenced in project.", MB_ERROR, Requesters);
         return;
     }
-    if(WATreeViewSearchItemText(hTreeView, hTreeViewModules, WAFileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")") != -1)
+    if(TreeViewSearchItemText(hTreeView, hTreeViewModules, FileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")") != -1)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "File '" + (CStr) LdFile + (CStr) "' already referenced in project.", MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, "File '" + (CStr) LdFile + (CStr) "' already referenced in project.", MB_ERROR, Requesters);
         return;
     }
-    WATreeViewAddItem(hTreeView, WAFileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")", hTreeViewIncludes, 0, ICON_NEW, ICON_NEW, 0, 1);
+    TreeViewAddItem(hTreeView, FileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")", hTreeViewIncludes, 0, ICON_NEW, ICON_NEW, 0, 1);
     ProjectModified = TRUE;
 }
 
@@ -2943,21 +2940,21 @@ void MCMD_AddLibrary(void)
     CStr OpFilters;
 
     if(ProjectOn == 0) return;
-    OpFilters = WAIniReadKey("ExtrasExt", "AddLibrary", MainIniFile);
+    OpFilters = IniReadKey("ExtrasExt", "AddLibrary", MainIniFile);
     if(OpFilters.Len() == 0) OpFilters = "Library files|*.lib;*.a;*.ppw;*.ow|All files|*.*";
-    LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, Dirs[DIR_LIB], 1, CurrentDir);
-	WAComDlgParseMultiFilesSelection(LdFile, &EnumAddLibrary, MULTIFILESENUM_FORWARD, 0);
+    LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, Dirs[DIR_LIB], 1, CurrentDir);
+	ComDlgParseMultiFilesSelection(LdFile, &EnumAddLibrary, MULTIFILESENUM_FORWARD, 0);
 }
 
 long CALLBACK EnumAddLibrary(char *FileToAdd, long UserValue)
 {
     // Add it to the treeview
-    if(WATreeViewSearchItemText(hTreeView, hTreeViewLibs, WAFileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")") != -1)
+    if(TreeViewSearchItemText(hTreeView, hTreeViewLibs, FileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")") != -1)
     {
         WriteToStatus("File '" + (CStr) FileToAdd + (CStr) "' already referenced in project.");
         return(1);
     }
-    WATreeViewAddItem(hTreeView, WAFileGetFileName(FileToAdd) + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewLibs, 0, ICON_STATIC, ICON_STATIC, 0, 1);
+    TreeViewAddItem(hTreeView, FileGetFileName(FileToAdd) + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewLibs, 0, ICON_STATIC, ICON_STATIC, 0, 1);
     ProjectModified = TRUE;
 	return(1);
 }
@@ -2970,21 +2967,21 @@ void MCMD_AddModule(void)
     CStr OpFilters;
 
     if(ProjectOn == 0) return;
-    OpFilters = WAIniReadKey("ExtrasExt", "AddModule", MainIniFile);
+    OpFilters = IniReadKey("ExtrasExt", "AddModule", MainIniFile);
     if(OpFilters.Len() == 0) OpFilters = "Source files|*.a;*.asm;*.s;*.a86;*.c;*.cc;*.cpp;*.pas;*.pp;*.bas|All files|*.*";
-    LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, CurrentDir, 1, CurrentDir);
-	WAComDlgParseMultiFilesSelection(LdFile, &EnumAddModule, MULTIFILESENUM_FORWARD, 0);
+    LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, CurrentDir, 1, CurrentDir);
+	ComDlgParseMultiFilesSelection(LdFile, &EnumAddModule, MULTIFILESENUM_FORWARD, 0);
 }
 
 long CALLBACK EnumAddModule(char *FileToAdd, long UserValue)
 {
     // Add it to the treeview
-    if(WATreeViewSearchItemText(hTreeView, hTreeViewModules, WAFileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")") != -1)
+    if(TreeViewSearchItemText(hTreeView, hTreeViewModules, FileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")") != -1)
     {
         WriteToStatus("File '" + (CStr) FileToAdd + (CStr) "' already referenced in project.");
         return(1);
     }
-    WATreeViewAddItem(hTreeView, WAFileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewModules, 0, ICON_NEW, ICON_NEW, 0, 1);
+    TreeViewAddItem(hTreeView, FileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewModules, 0, ICON_NEW, ICON_NEW, 0, 1);
     ProjectModified = TRUE;
 	return(1);
 }
@@ -3000,17 +2997,17 @@ void MCMD_AddCurrentModule(void)
     LdFile = SaveIt(CurrentForm);
     if(LdFile.Len() == 0) return;
     // Add it to the treeview
-    if(WATreeViewSearchItemText(hTreeView, hTreeViewModules, WAFileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")") != -1)
+    if(TreeViewSearchItemText(hTreeView, hTreeViewModules, FileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")") != -1)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "File '" + (CStr) LdFile + (CStr) "' already referenced in project.", MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, "File '" + (CStr) LdFile + (CStr) "' already referenced in project.", MB_ERROR, Requesters);
         return;
     }
-    if(WATreeViewSearchItemText(hTreeView, hTreeViewIncludes, WAFileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")") != -1)
+    if(TreeViewSearchItemText(hTreeView, hTreeViewIncludes, FileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")") != -1)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "File '" + (CStr) LdFile + (CStr) "' already referenced in project.", MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, "File '" + (CStr) LdFile + (CStr) "' already referenced in project.", MB_ERROR, Requesters);
         return;
     }
-    WATreeViewAddItem(hTreeView, WAFileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")", hTreeViewModules, 0, ICON_NEW, ICON_NEW, 0, 1);
+    TreeViewAddItem(hTreeView, FileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")", hTreeViewModules, 0, ICON_NEW, ICON_NEW, 0, 1);
     ProjectModified = TRUE;
 }
 
@@ -3022,21 +3019,21 @@ void MCMD_AddObject(void)
     CStr OpFilters;
     
 	if(ProjectOn == 0) return;
-    OpFilters = WAIniReadKey("ExtrasExt", "AddObject", MainIniFile);
+    OpFilters = IniReadKey("ExtrasExt", "AddObject", MainIniFile);
     if(OpFilters.Len() == 0) OpFilters = "Object files|*.obj;*.o|All files|*.*";
-    LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, Dirs[DIR_LIB], 1, CurrentDir);
-	WAComDlgParseMultiFilesSelection(LdFile, &EnumAddObject, MULTIFILESENUM_FORWARD, 0);
+    LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, Dirs[DIR_LIB], 1, CurrentDir);
+	ComDlgParseMultiFilesSelection(LdFile, &EnumAddObject, MULTIFILESENUM_FORWARD, 0);
 }
 
 long CALLBACK EnumAddObject(char *FileToAdd, long UserValue)
 {
     // Add it to the treeview
-    if(WATreeViewSearchItemText(hTreeView, hTreeViewObjects, WAFileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")") != -1)
+    if(TreeViewSearchItemText(hTreeView, hTreeViewObjects, FileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")") != -1)
     {
         WriteToStatus("File '" + (CStr) FileToAdd + (CStr) "' already referenced in project.");
         return(1);
     }
-    WATreeViewAddItem(hTreeView, WAFileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewObjects, 0, ICON_OBJECT, ICON_OBJECT, 0, 1);
+    TreeViewAddItem(hTreeView, FileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewObjects, 0, ICON_OBJECT, ICON_OBJECT, 0, 1);
     ProjectModified = TRUE;
 	return(1);
 }
@@ -3049,21 +3046,21 @@ void MCMD_AddResource(void)
     CStr OpFilters;
 
     if(ProjectOn == 0) return;
-    OpFilters = WAIniReadKey("ExtrasExt", "AddResource", MainIniFile);
+    OpFilters = IniReadKey("ExtrasExt", "AddResource", MainIniFile);
     if(OpFilters.Len() == 0) OpFilters = "Resources files|*.rc|All files|*.*";
-    LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, CurrentDir, 1, CurrentDir);
-	WAComDlgParseMultiFilesSelection(LdFile, &EnumAddResource, MULTIFILESENUM_FORWARD, 0);
+    LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, CurrentDir, 1, CurrentDir);
+	ComDlgParseMultiFilesSelection(LdFile, &EnumAddResource, MULTIFILESENUM_FORWARD, 0);
 }
 
 long CALLBACK EnumAddResource(char *FileToAdd, long UserValue)
 {
     // Add it to the treeview
-    if(WATreeViewSearchItemText(hTreeView, hTreeViewResources, WAFileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")") != -1)
+    if(TreeViewSearchItemText(hTreeView, hTreeViewResources, FileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")") != -1)
     {
         WriteToStatus("File '" + (CStr) FileToAdd + (CStr) "' already referenced in project.");
         return(1);
     }
-    WATreeViewAddItem(hTreeView, WAFileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewResources, 0, ICON_RES, ICON_RES, 0, 1);
+    TreeViewAddItem(hTreeView, FileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewResources, 0, ICON_RES, ICON_RES, 0, 1);
     ProjectModified = TRUE;
 	return(1);
 }
@@ -3079,12 +3076,12 @@ void MCMD_AddCurrentRc(void)
     LdFile = SaveIt(CurrentForm);
     if(LdFile.Len() == 0) return;
     // Add it to the treeview
-    if(WATreeViewSearchItemText(hTreeView, hTreeViewResources, WAFileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")") != -1)
+    if(TreeViewSearchItemText(hTreeView, hTreeViewResources, FileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")") != -1)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "File '" + (CStr) LdFile + (CStr) "' already referenced in project.", MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, "File '" + (CStr) LdFile + (CStr) "' already referenced in project.", MB_ERROR, Requesters);
         return;
     }
-    WATreeViewAddItem(hTreeView, WAFileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")", hTreeViewResources, 0, ICON_RES, ICON_RES, 0, 1);
+    TreeViewAddItem(hTreeView, FileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")", hTreeViewResources, 0, ICON_RES, ICON_RES, 0, 1);
     ProjectModified = TRUE;
 }
 
@@ -3096,21 +3093,21 @@ void MCMD_AddText(void)
     CStr OpFilters;
 
     if(ProjectOn == 0) return;
-    OpFilters = WAIniReadKey("ExtrasExt", "AddText", MainIniFile);
+    OpFilters = IniReadKey("ExtrasExt", "AddText", MainIniFile);
     if(OpFilters.Len() == 0) OpFilters = "Text files|*.txt|Ini files|*.ini|Batch files|*.bat|Log files|*.log|Registry files|*.reg|All files|*.*";
-    LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, CurrentDir, 1, CurrentDir);
-	WAComDlgParseMultiFilesSelection(LdFile, &EnumAddText, MULTIFILESENUM_FORWARD, 0);
+    LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, CurrentDir, 1, CurrentDir);
+	ComDlgParseMultiFilesSelection(LdFile, &EnumAddText, MULTIFILESENUM_FORWARD, 0);
 }
 
 long CALLBACK EnumAddText(char *FileToAdd, long UserValue)
 {
     // Add it to the treeview
-    if(WATreeViewSearchItemText(hTreeView, hTreeViewTexts, WAFileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")") != -1)
+    if(TreeViewSearchItemText(hTreeView, hTreeViewTexts, FileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")") != -1)
     {
         WriteToStatus("File '" + (CStr) FileToAdd + (CStr) "' already referenced in project.");
         return(1);
     }
-    WATreeViewAddItem(hTreeView, WAFileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewTexts, 0, ICON_NEW, ICON_NEW, 0, 1);
+    TreeViewAddItem(hTreeView, FileGetFileName(FileToAdd).Get_String() + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewTexts, 0, ICON_NEW, ICON_NEW, 0, 1);
     ProjectModified = TRUE;
 	return(1);
 }
@@ -3127,12 +3124,12 @@ void MCMD_AddCurrentText(void)
     LdFile = SaveIt(CurrentForm);
     if(LdFile.Len() == 0) return;
     // Add it to the treeview
-    if(WATreeViewSearchItemText(hTreeView, hTreeViewTexts, WAFileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")") != -1)
+    if(TreeViewSearchItemText(hTreeView, hTreeViewTexts, FileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")") != -1)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "File '" + (CStr) LdFile + (CStr) "' already referenced in project.", MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, "File '" + (CStr) LdFile + (CStr) "' already referenced in project.", MB_ERROR, Requesters);
         return;
     }
-    WATreeViewAddItem(hTreeView, WAFileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")", hTreeViewTexts, 0, ICON_NEW, ICON_NEW, 0, 1);
+    TreeViewAddItem(hTreeView, FileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")", hTreeViewTexts, 0, ICON_NEW, ICON_NEW, 0, 1);
     ProjectModified = TRUE;
 }
 
@@ -3145,8 +3142,8 @@ void MCMD_AddIcon(void)
 
     if(ProjectOn == 0) return;
     OpFilters = "Icon files|*.ico";
-    LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastIconsDir, 1, CurrentDir);
-	LastIconsDir = WAComDlgParseMultiFilesSelection(LdFile, &EnumAddIcon, MULTIFILESENUM_FORWARD, 0);
+    LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastIconsDir, 1, CurrentDir);
+	LastIconsDir = ComDlgParseMultiFilesSelection(LdFile, &EnumAddIcon, MULTIFILESENUM_FORWARD, 0);
 }
 
 long CALLBACK EnumAddIcon(char *FileToAdd, long UserValue)
@@ -3154,18 +3151,18 @@ long CALLBACK EnumAddIcon(char *FileToAdd, long UserValue)
     long EntryCount = 0;
 
     // Add it to the treeview
-    if(WATreeViewSearchChildPartialText(hTreeView, hTreeViewIcons, "(" + (CStr) FileToAdd + (CStr) ")") != -1)
+    if(TreeViewSearchChildPartialText(hTreeView, hTreeViewIcons, "(" + (CStr) FileToAdd + (CStr) ")") != -1)
     {
         WriteToStatus("File '" + (CStr) FileToAdd + (CStr) "' already referenced in project.");
         return(1);
     }
-    EntryCount = WATreeViewGetChildItemsCount(hTreeView, hTreeViewIcons);
+    EntryCount = TreeViewGetChildItemsCount(hTreeView, hTreeViewIcons);
     AddIconInArray(15, 0);
-    while(WATreeViewSearchChildPartialText(hTreeView, hTreeViewIcons, "ICON_" + (CStr) EntryCount) != -1)
+    while(TreeViewSearchChildPartialText(hTreeView, hTreeViewIcons, "ICON_" + (CStr) EntryCount) != -1)
     {
         EntryCount++;
     }
-    WATreeViewAddItem(hTreeView, "ICON_" + (CStr) EntryCount + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewIcons, 0, ICON_RES, ICON_RES, 0, 1);
+    TreeViewAddItem(hTreeView, "ICON_" + (CStr) EntryCount + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewIcons, 0, ICON_RES, ICON_RES, 0, 1);
     ProjectModified = TRUE;
 	return(1);
 }
@@ -3179,8 +3176,8 @@ void MCMD_AddCursor(void)
 
     if(ProjectOn == 0) return;
     OpFilters = "Cursor files|*.cur";
-    LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastCursorsDir, 1, CurrentDir);
-	LastCursorsDir = WAComDlgParseMultiFilesSelection(LdFile, &EnumAddCursor, MULTIFILESENUM_FORWARD, 0);
+    LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastCursorsDir, 1, CurrentDir);
+	LastCursorsDir = ComDlgParseMultiFilesSelection(LdFile, &EnumAddCursor, MULTIFILESENUM_FORWARD, 0);
 }
 
 long CALLBACK EnumAddCursor(char *FileToAdd, long UserValue)
@@ -3188,18 +3185,18 @@ long CALLBACK EnumAddCursor(char *FileToAdd, long UserValue)
     long EntryCount = 0;
 
     // Add it to the treeview
-    if(WATreeViewSearchChildPartialText(hTreeView, hTreeViewCursors, "(" + (CStr) FileToAdd + (CStr) ")") != -1)
+    if(TreeViewSearchChildPartialText(hTreeView, hTreeViewCursors, "(" + (CStr) FileToAdd + (CStr) ")") != -1)
     {
         WriteToStatus("File '" + (CStr) FileToAdd + (CStr) "' already referenced in project.");
         return(1);
     }
-    EntryCount = WATreeViewGetChildItemsCount(hTreeView, hTreeViewCursors);
+    EntryCount = TreeViewGetChildItemsCount(hTreeView, hTreeViewCursors);
     AddCursorInArray(15, 0);
-    while(WATreeViewSearchChildPartialText(hTreeView, hTreeViewCursors, "CURSOR_" + (CStr) EntryCount) != -1)
+    while(TreeViewSearchChildPartialText(hTreeView, hTreeViewCursors, "CURSOR_" + (CStr) EntryCount) != -1)
     {
         EntryCount++;
     }
-    WATreeViewAddItem(hTreeView, "CURSOR_" + (CStr) EntryCount + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewCursors, 0, ICON_RES, ICON_RES, 0, 1);
+    TreeViewAddItem(hTreeView, "CURSOR_" + (CStr) EntryCount + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewCursors, 0, ICON_RES, ICON_RES, 0, 1);
     ProjectModified = TRUE;
 	return(1);
 }
@@ -3213,8 +3210,8 @@ void MCMD_AddBitmap(void)
 
     if(ProjectOn == 0) return;
     OpFilters = "Bitmap files|*.bmp";
-    LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastBitmapsDir, 1, CurrentDir);
-	LastBitmapsDir = WAComDlgParseMultiFilesSelection(LdFile, &EnumAddBitmap, MULTIFILESENUM_FORWARD, 0);
+    LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastBitmapsDir, 1, CurrentDir);
+	LastBitmapsDir = ComDlgParseMultiFilesSelection(LdFile, &EnumAddBitmap, MULTIFILESENUM_FORWARD, 0);
 }
 
 long CALLBACK EnumAddBitmap(char *FileToAdd, long UserValue)
@@ -3222,18 +3219,18 @@ long CALLBACK EnumAddBitmap(char *FileToAdd, long UserValue)
     long EntryCount = 0;
 
     // Add it to the treeview
-    if(WATreeViewSearchChildPartialText(hTreeView, hTreeViewBitmaps, "(" + (CStr) FileToAdd + (CStr) ")") != -1)
+    if(TreeViewSearchChildPartialText(hTreeView, hTreeViewBitmaps, "(" + (CStr) FileToAdd + (CStr) ")") != -1)
     {
         WriteToStatus("File '" + (CStr) FileToAdd + (CStr) "' already referenced in project.");
         return(1);
     }
-    EntryCount = WATreeViewGetChildItemsCount(hTreeView, hTreeViewBitmaps);
+    EntryCount = TreeViewGetChildItemsCount(hTreeView, hTreeViewBitmaps);
     AddBitmapInArray(15, 0);
-    while(WATreeViewSearchChildPartialText(hTreeView, hTreeViewBitmaps, "BITMAP_" + (CStr) EntryCount) != -1)
+    while(TreeViewSearchChildPartialText(hTreeView, hTreeViewBitmaps, "BITMAP_" + (CStr) EntryCount) != -1)
     {
         EntryCount++;
     }
-    WATreeViewAddItem(hTreeView, "BITMAP_" + (CStr) EntryCount + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewBitmaps, 0, ICON_RES, ICON_RES, 0, 1);
+    TreeViewAddItem(hTreeView, "BITMAP_" + (CStr) EntryCount + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewBitmaps, 0, ICON_RES, ICON_RES, 0, 1);
     ProjectModified = TRUE;
 	return(1);
 }
@@ -3248,8 +3245,8 @@ void MCMD_AddStrings(void)
 
     if(ProjectOn == 0) return;
     OpFilters = "String resource files|*.str";
-    LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastStringsDir, 1, CurrentDir);
-	LastStringsDir = WAComDlgParseMultiFilesSelection(LdFile, &EnumAddStrings, MULTIFILESENUM_FORWARD, 0);
+    LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastStringsDir, 1, CurrentDir);
+	LastStringsDir = ComDlgParseMultiFilesSelection(LdFile, &EnumAddStrings, MULTIFILESENUM_FORWARD, 0);
 }
 
 long CALLBACK EnumAddStrings(char *FileToAdd, long UserValue)
@@ -3257,18 +3254,18 @@ long CALLBACK EnumAddStrings(char *FileToAdd, long UserValue)
     long EntryCount = 0;
 
     // Add it to the treeview
-    if(WATreeViewSearchChildPartialText(hTreeView, hTreeViewStrings, "(" + (CStr) FileToAdd + (CStr) ")") != -1)
+    if(TreeViewSearchChildPartialText(hTreeView, hTreeViewStrings, "(" + (CStr) FileToAdd + (CStr) ")") != -1)
     {
         WriteToStatus("File '" + (CStr) FileToAdd + (CStr) "' already referenced in project.");
         return(1);
     }
-    EntryCount = WATreeViewGetChildItemsCount(hTreeView, hTreeViewStrings);
+    EntryCount = TreeViewGetChildItemsCount(hTreeView, hTreeViewStrings);
     AddStringInArray(15, 0);
-    while(WATreeViewSearchChildPartialText(hTreeView, hTreeViewStrings, "STRINGS_" + (CStr) EntryCount) != -1)
+    while(TreeViewSearchChildPartialText(hTreeView, hTreeViewStrings, "STRINGS_" + (CStr) EntryCount) != -1)
     {
         EntryCount++;
     }
-    WATreeViewAddItem(hTreeView, "STRINGS_" + (CStr) EntryCount + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewStrings, 0, ICON_RES, ICON_RES, 0, 1);
+    TreeViewAddItem(hTreeView, "STRINGS_" + (CStr) EntryCount + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewStrings, 0, ICON_RES, ICON_RES, 0, 1);
     ProjectModified = TRUE;
 	return(1);
 }
@@ -3282,8 +3279,8 @@ void MCMD_AddAccelerators(void)
 
     if(ProjectOn == 0) return;
     OpFilters = "Accelerators resource files|*.acr";
-    LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastAcceleratorsDir, 1, CurrentDir);
-	LastAcceleratorsDir = WAComDlgParseMultiFilesSelection(LdFile, &EnumAddAccelerators, MULTIFILESENUM_FORWARD, 0);
+    LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastAcceleratorsDir, 1, CurrentDir);
+	LastAcceleratorsDir = ComDlgParseMultiFilesSelection(LdFile, &EnumAddAccelerators, MULTIFILESENUM_FORWARD, 0);
 }
 
 long CALLBACK EnumAddAccelerators(char *FileToAdd, long UserValue)
@@ -3291,18 +3288,18 @@ long CALLBACK EnumAddAccelerators(char *FileToAdd, long UserValue)
     long EntryCount = 0;
 
     // Add it to the treeview
-    if(WATreeViewSearchChildPartialText(hTreeView, hTreeViewAccelerators, "(" + (CStr) FileToAdd + (CStr) ")") != -1)
+    if(TreeViewSearchChildPartialText(hTreeView, hTreeViewAccelerators, "(" + (CStr) FileToAdd + (CStr) ")") != -1)
     {
         WriteToStatus("File '" + (CStr) FileToAdd + (CStr) "' already referenced in project.");
         return(1);
     }
-    EntryCount = WATreeViewGetChildItemsCount(hTreeView, hTreeViewAccelerators);
+    EntryCount = TreeViewGetChildItemsCount(hTreeView, hTreeViewAccelerators);
     AddAcceleratorInArray(15, 0);
-    while(WATreeViewSearchChildPartialText(hTreeView, hTreeViewAccelerators, "ACCELERATORS_" + (CStr) EntryCount) != -1)
+    while(TreeViewSearchChildPartialText(hTreeView, hTreeViewAccelerators, "ACCELERATORS_" + (CStr) EntryCount) != -1)
     {
         EntryCount++;
     }
-    WATreeViewAddItem(hTreeView, "ACCELERATORS_" + (CStr) EntryCount + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewAccelerators, 0, ICON_RES, ICON_RES, 0, 1);
+    TreeViewAddItem(hTreeView, "ACCELERATORS_" + (CStr) EntryCount + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewAccelerators, 0, ICON_RES, ICON_RES, 0, 1);
     ProjectModified = TRUE;
 	return(1);
 }
@@ -3316,8 +3313,8 @@ void MCMD_AddMenus(void)
 
     if(ProjectOn == 0) return;
     OpFilters = "Menus resource files|*.mnr";
-    LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastMenusDir, 1, CurrentDir);
-	LastMenusDir = WAComDlgParseMultiFilesSelection(LdFile, &EnumAddMenus, MULTIFILESENUM_FORWARD, 0);
+    LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastMenusDir, 1, CurrentDir);
+	LastMenusDir = ComDlgParseMultiFilesSelection(LdFile, &EnumAddMenus, MULTIFILESENUM_FORWARD, 0);
 }
 
 long CALLBACK EnumAddMenus(char *FileToAdd, long UserValue)
@@ -3325,18 +3322,18 @@ long CALLBACK EnumAddMenus(char *FileToAdd, long UserValue)
     long EntryCount = 0;
 
     // Add it to the treeview
-    if(WATreeViewSearchChildPartialText(hTreeView, hTreeViewMenus, "(" + (CStr) FileToAdd + (CStr) ")") != -1)
+    if(TreeViewSearchChildPartialText(hTreeView, hTreeViewMenus, "(" + (CStr) FileToAdd + (CStr) ")") != -1)
     {
         WriteToStatus("File '" + (CStr) FileToAdd + (CStr) "' already referenced in project.");
 		return(1);
     }
-    EntryCount = WATreeViewGetChildItemsCount(hTreeView, hTreeViewMenus);
+    EntryCount = TreeViewGetChildItemsCount(hTreeView, hTreeViewMenus);
     AddMenuInArray(RESPROPS_DEFAULT, 0);
-    while(WATreeViewSearchChildPartialText(hTreeView, hTreeViewMenus, "MENUS_" + (CStr) EntryCount) != -1)
+    while(TreeViewSearchChildPartialText(hTreeView, hTreeViewMenus, "MENUS_" + (CStr) EntryCount) != -1)
     {
         EntryCount++;
     }
-    WATreeViewAddItem(hTreeView, "MENUS_" + (CStr) EntryCount + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewMenus, 0, ICON_RES, ICON_RES, 0, 1);
+    TreeViewAddItem(hTreeView, "MENUS_" + (CStr) EntryCount + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewMenus, 0, ICON_RES, ICON_RES, 0, 1);
     ProjectModified = TRUE;
 	return(1);
 }
@@ -3350,8 +3347,8 @@ void MCMD_AddDialog(void)
 
     if(ProjectOn == 0) return;
     OpFilters = "Dialog resource files|*.dia";
-    LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastDialogsDir, 1, CurrentDir);
-	LastDialogsDir = WAComDlgParseMultiFilesSelection(LdFile, &EnumAddDialog, MULTIFILESENUM_FORWARD, 0);
+    LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastDialogsDir, 1, CurrentDir);
+	LastDialogsDir = ComDlgParseMultiFilesSelection(LdFile, &EnumAddDialog, MULTIFILESENUM_FORWARD, 0);
 }
 
 long CALLBACK EnumAddDialog(char *FileToAdd, long UserValue)
@@ -3359,18 +3356,18 @@ long CALLBACK EnumAddDialog(char *FileToAdd, long UserValue)
     long EntryCount = 0;
 
     // Add it to the treeview
-    if(WATreeViewSearchChildPartialText(hTreeView, hTreeViewDialogs, "(" + (CStr) FileToAdd + (CStr) ")") != -1)
+    if(TreeViewSearchChildPartialText(hTreeView, hTreeViewDialogs, "(" + (CStr) FileToAdd + (CStr) ")") != -1)
     {
         WriteToStatus("File '" + (CStr) FileToAdd + (CStr) "' already referenced in project.");
 		return(1);
     }
-    EntryCount = WATreeViewGetChildItemsCount(hTreeView, hTreeViewDialogs);
+    EntryCount = TreeViewGetChildItemsCount(hTreeView, hTreeViewDialogs);
     AddDialogInArray(RESPROPS_DEFAULT, 0);
-    while(WATreeViewSearchChildPartialText(hTreeView, hTreeViewDialogs, "DIALOG_" + (CStr) EntryCount) != -1)
+    while(TreeViewSearchChildPartialText(hTreeView, hTreeViewDialogs, "DIALOG_" + (CStr) EntryCount) != -1)
     {
         EntryCount++;
     }
-    WATreeViewAddItem(hTreeView, "DIALOG_" + (CStr) EntryCount + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewDialogs, 0, ICON_RES, ICON_RES, 0, 1);
+    TreeViewAddItem(hTreeView, "DIALOG_" + (CStr) EntryCount + (CStr) " (" + (CStr) FileToAdd + (CStr) ")", hTreeViewDialogs, 0, ICON_RES, ICON_RES, 0, 1);
     ProjectModified = TRUE;
 	return(1);
 }
@@ -3384,24 +3381,24 @@ void MCMD_AddRawDatas(void)
     long EntryCount = 0;
 
     if(ProjectOn == 0) return;
-    OpFilters = WAIniReadKey("ExtrasExt", "AddRawDatas", MainIniFile);
+    OpFilters = IniReadKey("ExtrasExt", "AddRawDatas", MainIniFile);
     if(OpFilters.Len() == 0) OpFilters = "All files|*.*";
-    LdFile = WAComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastRawsDir, 0, CurrentDir);
+    LdFile = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastRawsDir, 0, CurrentDir);
     if(LdFile.Len() == 0) return;
-    LastRawsDir = WAFileGetDirectory(LdFile);
+    LastRawsDir = FileGetDirectory(LdFile);
     // Add it to the treeview
-    if(WATreeViewSearchChildPartialText(hTreeView, hTreeViewRawdatas, "(" + (CStr) LdFile + (CStr) ")") != -1)
+    if(TreeViewSearchChildPartialText(hTreeView, hTreeViewRawdatas, "(" + (CStr) LdFile + (CStr) ")") != -1)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "File '" + (CStr) LdFile + (CStr) "' already referenced in project.", MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, "File '" + (CStr) LdFile + (CStr) "' already referenced in project.", MB_ERROR, Requesters);
         return;
     }
-    EntryCount = WATreeViewGetChildItemsCount(hTreeView, hTreeViewRawdatas);
+    EntryCount = TreeViewGetChildItemsCount(hTreeView, hTreeViewRawdatas);
     AddRawDatasInArray(RESPROPS_DEFAULT, 0);
-    while(WATreeViewSearchChildPartialText(hTreeView, hTreeViewRawdatas, "RAWDATAS_" + (CStr) EntryCount) != -1)
+    while(TreeViewSearchChildPartialText(hTreeView, hTreeViewRawdatas, "RAWDATAS_" + (CStr) EntryCount) != -1)
     {
         EntryCount++;
     }
-    WATreeViewAddItem(hTreeView, "RAWDATAS_" + (CStr) EntryCount + (CStr) " (" + (CStr) LdFile + (CStr) ")", hTreeViewRawdatas, 0, ICON_RES, ICON_RES, 0, 1);
+    TreeViewAddItem(hTreeView, "RAWDATAS_" + (CStr) EntryCount + (CStr) " (" + (CStr) LdFile + (CStr) ")", hTreeViewRawdatas, 0, ICON_RES, ICON_RES, 0, 1);
     ProjectModified = TRUE;
 }
 
@@ -3414,15 +3411,15 @@ void MCMD_SaveProjectAs(void)
 
     if(ProjectOn == 0) return;
 	Filters = AppTitle + (CStr) " project files (*.Med)|*.Med";
-    FName = WAComDlgGetSaveFileName(hMDIform.hWnd, Filters, Dirs[DIR_PROJECTS], CurrentDir);
+    FName = ComDlgGetSaveFileName(hMDIform.hWnd, Filters, Dirs[DIR_PROJECTS], CurrentDir);
     if(FName.Len() != 0)
     {
         if(FName.Len() < 4) FName = FName + (CStr) ".med";
         if(strcmpi(FName.Right(4).Get_String(), ".med") != 0) FName = FName + (CStr) ".med";
         ProjectFName = FName;
-        ProjectTitle = WAFileGetFileName(ProjectFName);
+        ProjectTitle = FileGetFileName(ProjectFName);
         ProjectTitle = ProjectTitle.Left(ProjectTitle.Len() - 4);
-        WATreeViewSetItemText(hTreeView, hTreeViewRoot, ProjectTypeName + (CStr) " (" + (CStr) ProjectFName + (CStr) ")");
+        TreeViewSetItemText(hTreeView, hTreeViewRoot, ProjectTypeName + (CStr) " (" + (CStr) ProjectFName + (CStr) ")");
         SaveProject();
     }
 }
@@ -3432,7 +3429,7 @@ void MCMD_SaveProjectAs(void)
 void MCMD_ProjectProperties(void)
 {
     if(ProjectOn == 0) return;
-	WACreateModalDialog(-1, -1, 402, 240, hMDIform.hWnd, &FRMPrjPropsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+	CreateModalDialog(-1, -1, 402, 240, hMDIform.hWnd, &FRMPrjPropsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
 }
 
 // -----------------------------------------------------------------------
@@ -3463,7 +3460,7 @@ void MCMD_DebugProject(void)
 // AddIns/AddIns manager
 void MCMD_AddInsManager(void)
 {
-    WACreateModalDialog(-1, -1, 486, 318, hMDIform.hWnd, &FRMAddInsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    CreateModalDialog(-1, -1, 486, 318, hMDIform.hWnd, &FRMAddInsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
 }
 
 // -----------------------------------------------------------------------
@@ -3487,7 +3484,7 @@ void MCMD_ContextHelp(void)
         HelpOffset = GetLanguageOffset(HelpLanguage);
         if(HelpOffset == -1)
         {
-            WAMiscMsgBox(hMDIform.hWnd, "Unknown language.", MB_ERROR, Requesters);
+            MiscMsgBox(hMDIform.hWnd, "Unknown language.", MB_ERROR, Requesters);
             return;
         }
         
@@ -3500,7 +3497,7 @@ void MCMD_ContextHelp(void)
             }
             else
             {
-                WAMiscMsgBox(hMDIform.hWnd, "No help file associated with '" + (CStr) CurWord + (CStr) "'.", MB_ERROR, Requesters);
+                MiscMsgBox(hMDIform.hWnd, "No help file associated with '" + (CStr) CurWord + (CStr) "'.", MB_ERROR, Requesters);
                 return;
             }
             goto HelpResult;
@@ -3516,7 +3513,7 @@ void MCMD_ContextHelp(void)
             }
             else
             {
-                WAMiscMsgBox(hMDIform.hWnd, "No help file associated with '" + (CStr) CurWord + (CStr) "'.", MB_ERROR, Requesters);
+                MiscMsgBox(hMDIform.hWnd, "No help file associated with '" + (CStr) CurWord + (CStr) "'.", MB_ERROR, Requesters);
                 return;
             }
             goto HelpResult;
@@ -3532,7 +3529,7 @@ void MCMD_ContextHelp(void)
             }
             else
             {
-                WAMiscMsgBox(hMDIform.hWnd, "No help file associated with '" + (CStr) CurWord + (CStr) "'.", MB_ERROR, Requesters);
+                MiscMsgBox(hMDIform.hWnd, "No help file associated with '" + (CStr) CurWord + (CStr) "'.", MB_ERROR, Requesters);
                 return;
             }
             goto HelpResult;
@@ -3548,7 +3545,7 @@ void MCMD_ContextHelp(void)
             }
             else
             {
-                WAMiscMsgBox(hMDIform.hWnd, "No help file associated with '" + (CStr) CurWord + (CStr) "'.", MB_ERROR, Requesters);
+                MiscMsgBox(hMDIform.hWnd, "No help file associated with '" + (CStr) CurWord + (CStr) "'.", MB_ERROR, Requesters);
                 return;
             }
             goto HelpResult;
@@ -3564,7 +3561,7 @@ void MCMD_ContextHelp(void)
             }
             else
             {
-                WAMiscMsgBox(hMDIform.hWnd, "No help file associated with '" + (CStr) CurWord + (CStr) "'.", MB_ERROR, Requesters);
+                MiscMsgBox(hMDIform.hWnd, "No help file associated with '" + (CStr) CurWord + (CStr) "'.", MB_ERROR, Requesters);
                 return;
             }
             goto HelpResult;
@@ -3580,7 +3577,7 @@ void MCMD_ContextHelp(void)
             }
             else
             {
-                WAMiscMsgBox(hMDIform.hWnd, "No help file associated with '" + (CStr) CurWord + (CStr) "'.", MB_ERROR, Requesters);
+                MiscMsgBox(hMDIform.hWnd, "No help file associated with '" + (CStr) CurWord + (CStr) "'.", MB_ERROR, Requesters);
                 return;
             }
             goto HelpResult;
@@ -3596,7 +3593,7 @@ void MCMD_ContextHelp(void)
             }
             else
             {
-                WAMiscMsgBox(hMDIform.hWnd, "No help file associated with '" + (CStr) CurWord + (CStr) "'.", MB_ERROR, Requesters);
+                MiscMsgBox(hMDIform.hWnd, "No help file associated with '" + (CStr) CurWord + (CStr) "'.", MB_ERROR, Requesters);
                 return;
             }
             goto HelpResult;
@@ -3612,23 +3609,23 @@ void MCMD_ContextHelp(void)
             }
             else
             {
-                WAMiscMsgBox(hMDIform.hWnd, "No help file associated with '" + (CStr) CurWord + (CStr) "'.", MB_ERROR, Requesters);
+                MiscMsgBox(hMDIform.hWnd, "No help file associated with '" + (CStr) CurWord + (CStr) "'.", MB_ERROR, Requesters);
                 return;
             }
             goto HelpResult;
         }
     }
 	// Launch win32api help file if nothing can be found
-	BufString = WAIniReadKey("Layout", "WinHelp", MainIniFile);
+	BufString = IniReadKey("Layout", "WinHelp", MainIniFile);
 	if(BufString.Len() == 0)
 	{
-        switch(WAMiscMsgBox(hMDIform.hWnd, "Windows API help directory not specified.\rDo you want to set it now ?", MB_ICONQUESTION | MB_YESNO, Requesters)) {
+        switch(MiscMsgBox(hMDIform.hWnd, "Windows API help directory not specified.\rDo you want to set it now ?", MB_ICONQUESTION | MB_YESNO, Requesters)) {
 			case IDYES:
                 FRMPropertiesFirstTab = 1;
                 DisplayProperties();
                 return;
 			case IDNO:
-				if(NbForms != 0) if(WAControlIsVisible(CurrentForm) != 0) SetFocus(CurrentForm);
+				if(NbForms != 0) if(ControlIsVisible(CurrentForm) != 0) SetFocus(CurrentForm);
 				return;
 		}
 	}
@@ -3636,8 +3633,8 @@ void MCMD_ContextHelp(void)
 HelpResult:
     if(UserCmdNbr == 0)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "Error while opening help file.", MB_ERROR, Requesters);
-        if(NbForms != 0) if(WAControlIsVisible(CurrentForm) != 0) SetFocus(CurrentForm);
+        MiscMsgBox(hMDIform.hWnd, "Error while opening help file.", MB_ERROR, Requesters);
+        if(NbForms != 0) if(ControlIsVisible(CurrentForm) != 0) SetFocus(CurrentForm);
     }
 }
 
@@ -3645,11 +3642,11 @@ HelpResult:
 // Window/MSDN Help
 void MCMD_MSDNHelp(void)
 {
-    MSDNDir = WAIniReadKey("Layout", "MSDNHelp", MainIniFile);
+    MSDNDir = IniReadKey("Layout", "MSDNHelp", MainIniFile);
     MSDNWord = "";
     if(MSDNDir.Len() == 0)
     {
-        switch(WAMiscMsgBox(hMDIform.hWnd, "MSDN/Platform SDK directory not specified.\rDo you want to set it now ?", MB_ICONQUESTION | MB_YESNO, Requesters))
+        switch(MiscMsgBox(hMDIform.hWnd, "MSDN/Platform SDK directory not specified.\rDo you want to set it now ?", MB_ICONQUESTION | MB_YESNO, Requesters))
         {
 			case IDYES:
                 FRMPropertiesFirstTab = 1;
@@ -3658,7 +3655,7 @@ void MCMD_MSDNHelp(void)
 			case IDNO:
 				break;
 		}
-        if(NbForms != 0) if(WAControlIsVisible(CurrentForm) != 0) SetFocus(CurrentForm);
+        if(NbForms != 0) if(ControlIsVisible(CurrentForm) != 0) SetFocus(CurrentForm);
         return;
     }
     if(NbForms == 0)
@@ -3677,11 +3674,11 @@ void MCMD_MSDNHelp(void)
 // Window/DDK Help
 void MCMD_DDKHelp(void)
 {
-    MSDNDir = WAIniReadKey("Layout", "DDKHelp", MainIniFile);
+    MSDNDir = IniReadKey("Layout", "DDKHelp", MainIniFile);
     MSDNWord = "";
     if(MSDNDir.Len() == 0)
     {
-        switch(WAMiscMsgBox(hMDIform.hWnd, "Windows DDK directory not specified.\rDo you want to set it now ?", MB_ICONQUESTION | MB_YESNO, Requesters))
+        switch(MiscMsgBox(hMDIform.hWnd, "Windows DDK directory not specified.\rDo you want to set it now ?", MB_ICONQUESTION | MB_YESNO, Requesters))
         {
 			case IDYES:
                 FRMPropertiesFirstTab = 1;
@@ -3690,7 +3687,7 @@ void MCMD_DDKHelp(void)
 			case IDNO:
 				break;
 		}
-        if(NbForms != 0) if(WAControlIsVisible(CurrentForm) != 0) SetFocus(CurrentForm);
+        if(NbForms != 0) if(ControlIsVisible(CurrentForm) != 0) SetFocus(CurrentForm);
         return;
     }
     if(NbForms == 0)
@@ -3709,11 +3706,11 @@ void MCMD_DDKHelp(void)
 // Window/DirectX SDK Help
 void MCMD_DirectXSDKHelp(void)
 {
-    MSDNDir = WAIniReadKey("Layout", "DirectXSDKHelp", MainIniFile);
+    MSDNDir = IniReadKey("Layout", "DirectXSDKHelp", MainIniFile);
     MSDNWord = "";
     if(MSDNDir.Len() == 0)
     {
-        switch(WAMiscMsgBox(hMDIform.hWnd, "DirectX SDK directory not specified.\rDo you want to set it now ?", MB_ICONQUESTION | MB_YESNO, Requesters))
+        switch(MiscMsgBox(hMDIform.hWnd, "DirectX SDK directory not specified.\rDo you want to set it now ?", MB_ICONQUESTION | MB_YESNO, Requesters))
         {
 			case IDYES:
                 FRMPropertiesFirstTab = 1;
@@ -3722,7 +3719,7 @@ void MCMD_DirectXSDKHelp(void)
 			case IDNO:
 				break;
 		}
-        if(NbForms != 0) if(WAControlIsVisible(CurrentForm) != 0) SetFocus(CurrentForm);
+        if(NbForms != 0) if(ControlIsVisible(CurrentForm) != 0) SetFocus(CurrentForm);
         return;
     }
     if(NbForms == 0)
@@ -3740,7 +3737,7 @@ void MCMD_DirectXSDKHelp(void)
 // -----------------------------------------------------------------------
 // Window/About
 void MCMD_About(void) {
-    WACreateModalDialog(-1, -1, 500, 318, hMDIform.hWnd, &FRMAboutProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    CreateModalDialog(-1, -1, 500, 318, hMDIform.hWnd, &FRMAboutProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
 }
 
 // -----------------------------------------------------------------------
@@ -3748,10 +3745,10 @@ void MCMD_About(void) {
 void MCMD_Split(void)
 {
     if(NbForms == 0) return;
-    ChildStruct = LoadStructure(WAClientGetActiveChild(hMDIform.hClient));
+    ChildStruct = LoadStructure(ClientGetActiveChild(hMDIform.hClient));
     if(CM_GetSplitterPos(ChildStruct->hChildCodeMax, 0) == 0)
     {
-        CM_SetSplitterPos(ChildStruct->hChildCodeMax, 0, WAControlHeight(ChildStruct->hChildCodeMax) / 2);
+        CM_SetSplitterPos(ChildStruct->hChildCodeMax, 0, ControlHeight(ChildStruct->hChildCodeMax) / 2);
     }
     else
     {
@@ -3763,7 +3760,7 @@ void MCMD_Split(void)
 // Window/Tile horizontally
 void MCMD_TileHorizontally(void)
 {
-    WAClientTileHorizontal(hMDIform.hClient);
+    ClientTileHorizontal(hMDIform.hClient);
     FocusOnActiveChild();
 }
 
@@ -3771,7 +3768,7 @@ void MCMD_TileHorizontally(void)
 // Window/Tile vertically
 void MCMD_TileVertically(void)
 {
-    WAClientTileVertical(hMDIform.hClient);
+    ClientTileVertical(hMDIform.hClient);
     FocusOnActiveChild();
 }
 
@@ -3779,7 +3776,7 @@ void MCMD_TileVertically(void)
 // Window/Cascade
 void MCMD_Cascade(void)
 {
-    WAClientTileCascade(hMDIform.hClient);
+    ClientTileCascade(hMDIform.hClient);
     FocusOnActiveChild();
 }
 
@@ -3787,7 +3784,7 @@ void MCMD_Cascade(void)
 // Window/Arrange icons
 void MCMD_ArrangeIcons(void)
 {
-    WAClientTileArrangeIconic(hMDIform.hClient);
+    ClientTileArrangeIconic(hMDIform.hClient);
     FocusOnActiveChild();
 }
 
@@ -3795,12 +3792,12 @@ void MCMD_ArrangeIcons(void)
 // Window/Next window
 void MCMD_NextWindow(void)
 {
-    WAClientSetNextChild(hMDIform.hClient);
+    ClientSetNextChild(hMDIform.hClient);
 }
 
 // -----------------------------------------------------------------------
 // Window/Previous window
 void MCMD_PreviousWindow(void)
 {
-    WAClientSetPreviousChild(hMDIform.hClient);
+    ClientSetPreviousChild(hMDIform.hClient);
 }

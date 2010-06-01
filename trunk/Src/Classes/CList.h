@@ -45,6 +45,8 @@ template <typename T> class CList
 {
     public:
 
+        #define ERASE_CALLBACK void (*CallBack)(T Content)
+
         struct CList_Entry
         {
 	        struct CList_Entry *Next;
@@ -66,7 +68,7 @@ template <typename T> class CList
 	        this->Erase();
         }
 
-        void Erase()
+        void Erase(ERASE_CALLBACK = NULL)
         {
 	        CList_Entry *Entry_To_Free;
 
@@ -76,7 +78,11 @@ template <typename T> class CList
 	        while(Entry_To_Free)
 	        {
 		        First_Entry = Entry_To_Free->Next;
-		        Del(Entry_To_Free);
+		        if(CallBack)
+                {
+                    CallBack(Entry_To_Free->Content);
+                }
+                Del(Entry_To_Free);
 		        Entry_To_Free = First_Entry;
 	        }
         }
@@ -195,7 +201,10 @@ template <typename T> class CList
 	        // Get next/previous entries
 	        Previous_Entry = Entry_To_Delete->Previous;
 	        Next_Entry = Entry_To_Delete->Next;
-	        if(Free_Content) free((void *) Entry_To_Delete->Content);
+	        if(Free_Content)
+            {
+                free((void *) Entry_To_Delete->Content);
+            }
             free(Entry_To_Delete);
 	        // Update previous/next entries
 	        if(Next_Entry) Next_Entry->Previous = Previous_Entry;

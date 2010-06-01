@@ -61,14 +61,16 @@ LRESULT CALLBACK FrmSplashLabelInfoHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 // Initialize splash window
 void CALLBACK FrmSplashInitProc(HWND hWnd)
 {
-    WACreatePictureBox(0, 0, 500, 194, hWnd, LoadBitmap(ApphInstance, MAKEINTRESOURCE(MBMP_BASE + MBMP_TITLE)),
-                       IMAGE_BITMAP, 0, 0, SS_CENTERIMAGE);
+    CreatePictureBox(0, 0, 500, 194, hWnd,
+                     LoadBitmap(ApphInstance,
+                     MAKEINTRESOURCE(MBMP_BASE + MBMP_TITLE)),
+                     IMAGE_BITMAP, 0, 0, SS_CENTERIMAGE);
     //441
-	FRMSplashVersionLabel = WACreateLabel(436, 198, 58, 16, hWnd, "", 2, &FrmSplashLabelVersionHook, 0, 0);
-    FRMSplashStatusLabel = WACreateLabel(6, 198, 264, 16, hWnd, "", 3, &FrmSplashLabelInfoHook, 0, 0);
+	FRMSplashVersionLabel = CreateLabel(436, 198, 58, 16, hWnd, "", 2, &FrmSplashLabelVersionHook, 0, 0);
+    FRMSplashStatusLabel = CreateLabel(6, 198, 264, 16, hWnd, "", 3, &FrmSplashLabelInfoHook, 0, 0);
 	FrmSplashSetState("");
-	hBandBrush = WAGDICreateColorBrush(SPLASH_BANDCOLOR);
-    WACursorSetWait();
+	hBandBrush = GDICreateColorBrush(SPLASH_BANDCOLOR);
+    CursorSetWait();
 }
 
 // -----------------------------------------------------------------------
@@ -93,11 +95,11 @@ LRESULT CALLBACK FrmSplashWinHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 			EndPaint(hWnd, &SplashPS);
             return(0);
 		case WM_DESTROY:
-            WACursorSetNormal();
+            CursorSetNormal();
 			if(hBandBrush != 0) DeleteObject(hBandBrush);
             return(0);
     }
-    return(WAControlCallwindowProc(hWnd, uMsg, wParam, lParam));
+    return(ControlCallwindowProc(hWnd, uMsg, wParam, lParam));
 }
 
 // -----------------------------------------------------------------------
@@ -116,7 +118,7 @@ LRESULT CALLBACK FrmSplashLabelVersionHook(HWND hWnd, UINT uMsg, WPARAM wParam, 
         case WM_ERASEBKGND:
 			GetClientRect(hWnd, &ClearRect);
 			FillRect((HDC) wParam, &ClearRect, hBandBrush);
-			WAGDIWriteText((HDC) wParam, 0, 0, &VersionString, SPLASH_LABELSCOLOR, WASerifFont, 0, SPLASH_BANDCOLOR);
+			GDIWriteText((HDC) wParam, 0, 0, &VersionString, SPLASH_LABELSCOLOR, WASerifFont, 0, SPLASH_BANDCOLOR);
 	        return(1);
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
@@ -138,7 +140,7 @@ LRESULT CALLBACK FrmSplashLabelInfoHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
         case WM_ERASEBKGND:
 			GetClientRect(hWnd, &ClearRect);
 			FillRect((HDC) wParam, &ClearRect, hBandBrush);
-			WAGDIWriteText((HDC) wParam, 0, 0, &LoadingState, SPLASH_LABELSCOLOR, WASerifFont, 0, SPLASH_BANDCOLOR);
+			GDIWriteText((HDC) wParam, 0, 0, &LoadingState, SPLASH_LABELSCOLOR, WASerifFont, 0, SPLASH_BANDCOLOR);
             return(1);
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
@@ -153,6 +155,6 @@ void FrmSplashSetState(CStr TxtToSet)
         LoadingState = TxtToSet;
         RedrawWindow(FRMSplashStatusLabel, 0, 0, RDW_ERASE | RDW_INVALIDATE | RDW_ERASENOW);
         RedrawWindow(FRMSplashVersionLabel, 0, 0, RDW_ERASE | RDW_INVALIDATE | RDW_ERASENOW);
-		WAMiscDoEvents(0, 0, 0);
+		MiscDoEvents(0, 0, 0);
     }
 }

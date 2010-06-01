@@ -58,25 +58,25 @@ void DisplayImageView(long ImageType, CStr ImageFileName)
     HWND hFRMImageView = 0;
     
 	FileToDisplay = ImageFileName;
-    if(WAFileExist(FileToDisplay) == 0)
+    if(FileExist(FileToDisplay) == 0)
     {
-        WAMiscMsgBox(hMDIform.hWnd, "Can't find file '" + (CStr) FileToDisplay + (CStr) "'.", MB_ERROR, Requesters);
+        MiscMsgBox(hMDIform.hWnd, "Can't find file '" + (CStr) FileToDisplay + (CStr) "'.", MB_ERROR, Requesters);
         return;
     }
     DisplayType = ImageType;
     switch(DisplayType)
     {
         case VIEW_BITMAP:
-            hFRMImageView = WACreateDialog(-1, -1, 400, 250, hMDIform.hWnd, 0,
-                                           LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_STACK + ICON_BASE)), FileToDisplay,
-                                           &FrmImageViewInitProc, (WNDPROC) -1, 0,
-                                           WS_MAXIMIZEBOX | WS_SYSMENU | WS_SIZEBOX | WS_HSCROLL | WS_VSCROLL, SW_SHOW);
+            hFRMImageView = CreateNonModalDialog(-1, -1, 400, 250, hMDIform.hWnd, 0,
+                                                 LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_STACK + ICON_BASE)), FileToDisplay,
+                                                 &FrmImageViewInitProc, (WNDPROC) -1, 0,
+                                                 WS_MAXIMIZEBOX | WS_SYSMENU | WS_SIZEBOX | WS_HSCROLL | WS_VSCROLL, SW_SHOW);
 			break;
 		default:
-            hFRMImageView = WACreateDialog(-1, -1, 150, 150, hMDIform.hWnd, 0,
-                                           LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_STACK + ICON_BASE)), FileToDisplay,
-                                           &FrmImageViewInitProc, (WNDPROC) -1, 0,
-                                           WS_MAXIMIZEBOX | WS_SYSMENU | WS_SIZEBOX | WS_HSCROLL | WS_VSCROLL, SW_SHOW);
+            hFRMImageView = CreateNonModalDialog(-1, -1, 150, 150, hMDIform.hWnd, 0,
+                                                 LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_STACK + ICON_BASE)), FileToDisplay,
+                                                 &FrmImageViewInitProc, (WNDPROC) -1, 0,
+                                                 WS_MAXIMIZEBOX | WS_SYSMENU | WS_SIZEBOX | WS_HSCROLL | WS_VSCROLL, SW_SHOW);
 			break;
     }
     NewViewMem = AllocMem(sizeof(ViewStruct));
@@ -113,19 +113,19 @@ void CALLBACK FrmImageViewInitProc(HWND hwnd)
     {
         case VIEW_ICON:
             ImgHandle = LoadImage(0, FileToDisplay.Get_String(), IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
-            if(ImgHandle != 0) WAScrollBarShowHide(hwnd, 64, 64, 1);
+            if(ImgHandle != 0) ScrollBarShowHide(hwnd, 64, 64, 1);
 			break;
 		case VIEW_CURSOR:
             ImgHandle = LoadImage(0, FileToDisplay.Get_String(), IMAGE_CURSOR, 0, 0, LR_LOADFROMFILE);
-            if(ImgHandle != 0) WAScrollBarShowHide(hwnd, 64, 64, 1);
+            if(ImgHandle != 0) ScrollBarShowHide(hwnd, 64, 64, 1);
 			break;
         case VIEW_BITMAP:
             ImgHandle = LoadImage(0, FileToDisplay.Get_String(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
             if(ImgHandle != 0)
             {
                 GetObject(ImgHandle, sizeof(BitmapInfos), &BitmapInfos);
-                WACreatePictureBox(0, 0, BitmapInfos.bmWidth, BitmapInfos.bmHeight, hwnd, ImgHandle, IMAGE_BITMAP, 0, 0, SS_CENTERIMAGE);
-                WAScrollBarShowHide(hwnd, BitmapInfos.bmWidth, BitmapInfos.bmHeight, 1);
+                CreatePictureBox(0, 0, BitmapInfos.bmWidth, BitmapInfos.bmHeight, hwnd, ImgHandle, IMAGE_BITMAP, 0, 0, SS_CENTERIMAGE);
+                ScrollBarShowHide(hwnd, BitmapInfos.bmWidth, BitmapInfos.bmHeight, 1);
             }
 			break;
     }
@@ -172,16 +172,16 @@ LRESULT CALLBACK FrmImageViewWinHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
                     if(GetScrollPos(hWnd, SB_HORZ) > 0) ScrollPicHorz(hWnd, 1, 1);
 					break;
                 case SB_LINERIGHT:
-                    if(GetScrollPos(hWnd, SB_HORZ) < (long) (ObjSizeX - WAControlClientWidth(hWnd))) ScrollPicHorz(hWnd, -1, 1);
+                    if(GetScrollPos(hWnd, SB_HORZ) < (long) (ObjSizeX - ControlClientWidth(hWnd))) ScrollPicHorz(hWnd, -1, 1);
 					break;
                 case SB_PAGELEFT:
-                    PagetoScroll = WAControlClientWidth(hWnd);
+                    PagetoScroll = ControlClientWidth(hWnd);
                     if(GetScrollPos(hWnd, SB_HORZ) - PagetoScroll < 0) PagetoScroll = GetScrollPos(hWnd, SB_HORZ);
                     ScrollPicHorz(hWnd, PagetoScroll, 1);
 					break;
                 case SB_PAGERIGHT:
-                    PagetoScroll = WAControlClientWidth(hWnd);
-                    if(GetScrollPos(hWnd, SB_HORZ) + PagetoScroll > WAScrollBarGetMaxRange(hWnd, SB_HORZ)) PagetoScroll = (ObjSizeX - WAControlClientWidth(hWnd)) - GetScrollPos(hWnd, SB_HORZ);
+                    PagetoScroll = ControlClientWidth(hWnd);
+                    if(GetScrollPos(hWnd, SB_HORZ) + PagetoScroll > ScrollBarGetMaxRange(hWnd, SB_HORZ)) PagetoScroll = (ObjSizeX - ControlClientWidth(hWnd)) - GetScrollPos(hWnd, SB_HORZ);
                     ScrollPicHorz(hWnd, -(long) PagetoScroll, 1);
 					break;
                 case SB_THUMBTRACK:
@@ -213,16 +213,16 @@ LRESULT CALLBACK FrmImageViewWinHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
                     if(GetScrollPos(hWnd, SB_VERT) > 0) ScrollPicVert(hWnd, 1, 1);
 					break;
 				case SB_LINEDOWN:
-                    if(GetScrollPos(hWnd, SB_VERT) < (long) (ObjSizeY - WAControlClientHeight(hWnd))) ScrollPicVert(hWnd, -1, 1);
+                    if(GetScrollPos(hWnd, SB_VERT) < (long) (ObjSizeY - ControlClientHeight(hWnd))) ScrollPicVert(hWnd, -1, 1);
 					break;
                 case SB_PAGEUP:
-                    PagetoScroll = WAControlClientHeight(hWnd);
+                    PagetoScroll = ControlClientHeight(hWnd);
                     if(GetScrollPos(hWnd, SB_VERT) - PagetoScroll < 0) PagetoScroll = GetScrollPos(hWnd, SB_VERT);
                     ScrollPicVert(hWnd, PagetoScroll, 1);
 					break;
                 case SB_PAGEDOWN:
-                    PagetoScroll = WAControlClientHeight(hWnd);
-                    if(GetScrollPos(hWnd, SB_VERT) + PagetoScroll > WAScrollBarGetMaxRange(hWnd, SB_VERT)) PagetoScroll = (ObjSizeY - WAControlClientHeight(hWnd)) - GetScrollPos(hWnd, SB_VERT);
+                    PagetoScroll = ControlClientHeight(hWnd);
+                    if(GetScrollPos(hWnd, SB_VERT) + PagetoScroll > ScrollBarGetMaxRange(hWnd, SB_VERT)) PagetoScroll = (ObjSizeY - ControlClientHeight(hWnd)) - GetScrollPos(hWnd, SB_VERT);
                     ScrollPicVert(hWnd, -(long) PagetoScroll, 1);
 					break;
                 case SB_THUMBTRACK:
@@ -344,5 +344,5 @@ void ResizeImgView(HWND hWnd)
             ObjSizeY = BitmapInfos.bmHeight;
 			break;
     }
-    WAScrollBarShowHide(hWnd, ObjSizeX, ObjSizeY, 1);
+    ScrollBarShowHide(hWnd, ObjSizeX, ObjSizeY, 1);
 }

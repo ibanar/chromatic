@@ -209,16 +209,16 @@ StoreArgs:      MaxAPIArgs = StringGetSplitUBound(APIArgs);
                 if(APIhText == 0)
                 {
                     ChildStruct = LoadStructure(CurrentForm);
-                    WACreateSplashDialog(dx, dy, 1, 1, "", ChildStruct->hChildCodeMax, 0, 0, &FRMAPIInitProc, &FRMAPIWinHook, 0, WS_DISABLED, SW_HIDE);
+                    CreateSplashDialog(dx, dy, 1, 1, "", ChildStruct->hChildCodeMax, 0, 0, &FRMAPIInitProc, &FRMAPIWinHook, 0, WS_DISABLED, SW_HIDE);
                 }
                 if(APIhText != 0)
                 {
                     APIArrParse = StringSplit(APIString, "\r\n");
                     if(APIhFont != 0) DeleteObject(APIhFont);
-                    APIhFont = WAGDIObtainFont(CurFontName, CurFontSize, hMDIform.hWnd, 0, 0);
+                    APIhFont = GDIObtainFont(CurFontName, CurFontSize, hMDIform.hWnd, 0, 0);
                     if(APIhFontBold == 0) DeleteObject(APIhFontBold);
-                    APIhFontBold = WAGDIObtainFont(CurFontName, CurFontSize, hMDIform.hWnd, 1, 0);
-                    WAControlVisible(APIhText, 1);
+                    APIhFontBold = GDIObtainFont(CurFontName, CurFontSize, hMDIform.hWnd, 1, 0);
+                    ControlVisible(APIhText, 1);
                     SendMessage(APIhText, WM_PAINT, 0, 0);
                 }
                 // Save API name
@@ -271,43 +271,43 @@ void DisplayAPIWindow(long dx, long dy, HWND hWnd, CStr APIFncN)
     ChildStruct = LoadStructure(CurrentForm);
     APIListWidth = 0;
     APIListHeight = 1;
-    WACreateSplashDialog(dx, dy, APIListWidth, APIListHeight, "", ChildStruct->hChildCodeMax, NULL, NULL, &FRMAPIListInitProc, &FRMAPIListWinHook, 0, 0, SW_HIDE);
-	WAListBoxReset(APIhListBox);
+    CreateSplashDialog(dx, dy, APIListWidth, APIListHeight, "", ChildStruct->hChildCodeMax, NULL, NULL, &FRMAPIListInitProc, &FRMAPIListWinHook, 0, 0, SW_HIDE);
+	ListBoxReset(APIhListBox);
     if(FncBase != 0) if(UseDbFnc == 1) MaxName = FillAPIListBox(APIhListBox, FncBase);
     if(ConstBase != 0) if(UseDbConst == 1) MaxName2 = FillAPIListBox(APIhListBox, ConstBase);
     if(MaxName2 > MaxName) MaxName = MaxName2;
     if(MaxName != 0)
     {
         // Set sizes
-        APIListWidth = (WAGDIGetFontWidth(FRMAPIListhWnd, APIListhFont) * MaxName) + 2 + 1 + GetSystemMetrics(SM_CXVSCROLL);
-        APIListHeight = (WAGDIGetTextHeight(FRMAPIListhWnd, APIListhFont, "hg") * DbLinesNumbers) + 2 + 1;
+        APIListWidth = (GDIGetFontWidth(FRMAPIListhWnd, APIListhFont) * MaxName) + 2 + 1 + GetSystemMetrics(SM_CXVSCROLL);
+        APIListHeight = (GDIGetTextHeight(FRMAPIListhWnd, APIListhFont, "hg") * DbLinesNumbers) + 2 + 1;
         if(dx < 0) dx = 0;
         if(dy < 0) dy = 0;
         if((dx + APIListWidth) > GetSystemMetrics(SM_CXFULLSCREEN)) dx = GetSystemMetrics(SM_CXFULLSCREEN) - APIListWidth;
         if((dy + APIListHeight) > GetSystemMetrics(SM_CYFULLSCREEN)) dy = GetSystemMetrics(SM_CYFULLSCREEN) - APIListHeight;
         // Resize and display API list now
-        WAControlResize(FRMAPIListhWnd, dx, dy, APIListWidth, APIListHeight);
-        WAControlResize(APIhListBox, 1, 1, APIListWidth - 2, APIListHeight - 2);
+        ControlResize(FRMAPIListhWnd, dx, dy, APIListWidth, APIListHeight);
+        ControlResize(APIhListBox, 1, 1, APIListWidth - 2, APIListHeight - 2);
         APIXDim = APIListWidth;
         APIYDim = APIListHeight;
         // Modify index of the listbox if necessary
         if(APIFncN.Len() != 0)
         {
             EntryIndex = SendMessage(APIhListBox, LB_FINDSTRING, -1, (long) APIFncN.Get_String());
-            WAListBoxSetIndex(APIhListBox, EntryIndex);
-            WAListBoxSetTopIndex(APIhListBox, EntryIndex);
+            ListBoxSetIndex(APIhListBox, EntryIndex);
+            ListBoxSetTopIndex(APIhListBox, EntryIndex);
         }
         else
         {
-            WAListBoxSetIndex(APIhListBox, -1);
-            WAListBoxSetTopIndex(APIhListBox, -1);
+            ListBoxSetIndex(APIhListBox, -1);
+            ListBoxSetTopIndex(APIhListBox, -1);
         }
-        WAControlVisible(FRMAPIListhWnd, 1);
+        ControlVisible(FRMAPIListhWnd, 1);
         SetFocus(APIhListBox);
     }
     else
     {
         // Remove it
-        WAControlClose(FRMAPIListhWnd);
+        ControlClose(FRMAPIListhWnd);
     }
 }

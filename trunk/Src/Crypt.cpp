@@ -50,8 +50,8 @@ CStr CryptPassword(CStr PasswordToCrypt)
     CStr BufString;
 
 	CryptArray.MAdd(PasswordToCrypt.Len(), 0L);
-    InKey = WARegistryGetKeyValue(HKEY_LOCAL_MACHINE, "SYSTEM\\CurrentControlSet\\Control\\ComputerName\\ComputerName", "ComputerName");
-    InKey2 = WARegistryGetKeyValue(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer", "Logon User Name");
+    InKey = RegistryGetKeyValue(HKEY_LOCAL_MACHINE, "SYSTEM\\CurrentControlSet\\Control\\ComputerName\\ComputerName", "ComputerName");
+    InKey2 = RegistryGetKeyValue(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer", "Logon User Name");
     if((InKey.Len() == 0) || (InKey2.Len() == 0))
     {
         InKey = "Build project";
@@ -103,8 +103,8 @@ CStr DecryptPassword(CStr PasswordToDeCrypt)
 	CStr BufString;
 
 	CryptArray.MAdd(PasswordToDeCrypt.Len(), 0L);
-    OutKey = WARegistryGetKeyValue(HKEY_LOCAL_MACHINE, "SYSTEM\\CurrentControlSet\\Control\\ComputerName\\ComputerName", "ComputerName");
-    OutKey2 = WARegistryGetKeyValue(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer", "Logon User Name");
+    OutKey = RegistryGetKeyValue(HKEY_LOCAL_MACHINE, "SYSTEM\\CurrentControlSet\\Control\\ComputerName\\ComputerName", "ComputerName");
+    OutKey2 = RegistryGetKeyValue(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer", "Logon User Name");
     if((OutKey.Len() == 0) || (OutKey2.Len() == 0))
     {
         OutKey = "Build project";

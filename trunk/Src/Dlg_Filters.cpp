@@ -31,7 +31,7 @@
 // Dlg_Filters.cpp: Filters form
 // -----------------------------------------------------------------------
 // Send output to: window/file...
-// if a filter return 0 then output previous LPWAFILTERFILE to selected target
+// if a filter return 0 then output previous LPFILTERFILE to selected target
 // and input 0 to possible next filter (so that it start from the FileName)
 // Filters manager must handle the the child window (open/include text).
 // The include really appends datas when output to file is selected.
@@ -71,7 +71,6 @@ HWND FRMFiltersToolbar;
 int Filter_Cancel;
 int Filter_Output_Type;
 CList <char *> Chosen_Filters;
-int Filter_Allow_Window;
 
 // -----------------------------------------------------------------------
 // Functions Declarations
@@ -96,44 +95,32 @@ int CALLBACK FRMFiltersProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 	switch(uMsg)
 	{
         case WM_SYSCOLORCHANGE:
-            WAListViewSetBackColor(FRMFiltersListView, GetSysColor(COLOR_WINDOW));
-            WAListViewSetBackColor(FRMFiltersSelectedListView, GetSysColor(COLOR_WINDOW));
+            ListViewSetBackColor(FRMFiltersListView, GetSysColor(COLOR_WINDOW));
+            ListViewSetBackColor(FRMFiltersSelectedListView, GetSysColor(COLOR_WINDOW));
             break;
         case WM_INITDIALOG:
             Filter_Cancel = 1;
 			FRMFiltershWnd = hwndDlg;
 
-			WAControlSetText(hwndDlg, "Filters laboratory");
-            FRMFiltersCmdOk = WACreateButton(546 - 159, 268 - 26, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
-            FRMFiltersCmdCancel = WACreateButton(546 - 80, 268 - 26, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+			ControlSetText(hwndDlg, "Filters laboratory");
+            FRMFiltersCmdOk = CreateButton(546 - 159, 268 - 26, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
+            FRMFiltersCmdCancel = CreateButton(546 - 80, 268 - 26, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
 
-            FRMFiltersCombo = WACreateComboBox(2, 2, 152, 150, hwndDlg, "", 0, 0, CBS_DROPDOWN | WS_TABSTOP);
-			FRMFiltersToolbar = WACreateToolBar(155, 1, 300, 23, hwndDlg, GlobalImageList1, 3, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
-			WAToolBarAddButton(FRMFiltersToolbar, "", OPEN_FILTER_PROFILE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-			WAToolBarAddButton(FRMFiltersToolbar, "", SAVE_FILTER_PROFILE, ICON_SAVE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-            WAToolBarAddSeparator(FRMFiltersToolbar, 0);
-            WAToolBarAddButton(FRMFiltersToolbar, "", ADD_FILTERS, ICON_ADDFILTER, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-            WAToolBarAddButton(FRMFiltersToolbar, "", REM_FILTERS, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-            WAToolBarAddSeparator(FRMFiltersToolbar, 0);
-			WAToolBarAddButton(FRMFiltersToolbar, "", OUTPUT_WINDOW, ICON_TOWINDOW, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-            WAToolBarAddButton(FRMFiltersToolbar, "", OUTPUT_FILE, ICON_EDITDOC, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
-			if(Filter_Allow_Window)
-			{
-				WAToolBarSetButtonChecked(FRMFiltersToolbar, OUTPUT_WINDOW, 1);
-			}
-			else
-			{
-				WAToolBarSetButtonEnabled(FRMFiltersToolbar, OUTPUT_WINDOW, 0);
-				WAToolBarSetButtonChecked(FRMFiltersToolbar, OUTPUT_FILE, 1);
-			}
-            FRMFiltersListView = WACreateListView(2, 26, 403, 203, hwndDlg, 4, 0, 0, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | WS_TABSTOP | LVS_NOSORTHEADER, WS_EX_STATICEDGE);
-            WAListViewAddCol(FRMFiltersListView, "Author", 100, 0);
-            WAListViewAddCol(FRMFiltersListView, "Description", 170, 1);
-            WAListViewAddCol(FRMFiltersListView, "Name", 110, 2);
+            FRMFiltersCombo = CreateComboBox(2, 2, 202, 150, hwndDlg, "", 0, 0, CBS_DROPDOWN | WS_TABSTOP);
+			FRMFiltersToolbar = CreateToolBar(205, 1, 300, 23, hwndDlg, GlobalImageList1, 3, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+			ToolBarAddButton(FRMFiltersToolbar, "", OPEN_FILTER_PROFILE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+			ToolBarAddButton(FRMFiltersToolbar, "", SAVE_FILTER_PROFILE, ICON_SAVE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            ToolBarAddSeparator(FRMFiltersToolbar, 0);
+            ToolBarAddButton(FRMFiltersToolbar, "", ADD_FILTERS, ICON_ADDFILTER, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            ToolBarAddButton(FRMFiltersToolbar, "", REM_FILTERS, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            FRMFiltersListView = CreateListView(2, 26, 403, 203, hwndDlg, 4, 0, 0, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | WS_TABSTOP | LVS_NOSORTHEADER, WS_EX_STATICEDGE);
+            ListViewAddCol(FRMFiltersListView, "Author", 100, 0);
+            ListViewAddCol(FRMFiltersListView, "Description", 170, 1);
+            ListViewAddCol(FRMFiltersListView, "Name", 110, 2);
 			// Fill the list
 			FillFiltersList();
-            FRMFiltersSelectedListView = WACreateListView(408, 26, 136, 203, hwndDlg, 5, 0, 0, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_NOCOLUMNHEADER | WS_TABSTOP, WS_EX_STATICEDGE);
-			WAListViewAddCol(FRMFiltersSelectedListView, "", 130, 0);
+            FRMFiltersSelectedListView = CreateListView(408, 26, 136, 203, hwndDlg, 5, 0, 0, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_NOCOLUMNHEADER | WS_TABSTOP, WS_EX_STATICEDGE);
+			ListViewAddCol(FRMFiltersSelectedListView, "", 130, 0);
             Filter_Output_Type = FILTER_OUTPUT_WINDOW;
 			// Fill the combo	
 			Fill_Filter_Profils();
@@ -142,13 +129,13 @@ int CALLBACK FRMFiltersProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
         case WM_COMMAND:
             if((HWND) lParam == FRMFiltersCmdOk)
             {
-				if(WAListViewItemCount(FRMFiltersSelectedListView) == 0)
+				if(ListViewItemCount(FRMFiltersSelectedListView) == 0)
 				{
-					WAMiscMsgBox(FRMFiltershWnd, "No filters selected.", MB_ERROR, Requesters);
+					MiscMsgBox(FRMFiltershWnd, "No filters selected.", MB_ERROR, Requesters);
 					return(0);
 				}
 				Fill_Filters_List();
-				if(WAToolBarIsButtonChecked(FRMFiltersToolbar, OUTPUT_WINDOW))
+				if(ToolBarIsButtonChecked(FRMFiltersToolbar, OUTPUT_WINDOW))
 				{
 					Filter_Output_Type = FILTER_OUTPUT_WINDOW;
 				}
@@ -157,12 +144,12 @@ int CALLBACK FRMFiltersProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 					Filter_Output_Type = FILTER_OUTPUT_FILE;
 				}
 				Filter_Cancel = 0;
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
             }
             else if((HWND) lParam == FRMFiltersCmdCancel)
             {
-                WAControlClose(hwndDlg);
+                ControlClose(hwndDlg);
                 return(0);
             }
             else if((HWND) lParam == FRMFiltersToolbar)
@@ -170,20 +157,20 @@ int CALLBACK FRMFiltersProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
                 switch(wParam)
                 {
 					case OPEN_FILTER_PROFILE:
-						if(WAControlGetText(FRMFiltersCombo).Len() == 0)
+						if(ControlGetText(FRMFiltersCombo).Len() == 0)
 						{
-							WAMiscMsgBox(FRMFiltershWnd, "Select a profile name.", MB_ERROR, Requesters);
+							MiscMsgBox(FRMFiltershWnd, "Select a profile name.", MB_ERROR, Requesters);
 							SetFocus(FRMFiltersCombo);
 						}
 						else
 						{
-							Load_Filter_Profil(WAControlGetText(FRMFiltersCombo));
+							Load_Filter_Profil(ControlGetText(FRMFiltersCombo));
 						}
 						return(0);
 					case SAVE_FILTER_PROFILE:
-                        if(Save_Filter_Profil(WAControlGetText(FRMFiltersCombo)) == 0)
+                        if(Save_Filter_Profil(ControlGetText(FRMFiltersCombo)) == 0)
                         {
-                            WAMiscMsgBox(FRMFiltershWnd, "Enter a profile name.", MB_ERROR, Requesters);
+                            MiscMsgBox(FRMFiltershWnd, "Enter a profile name.", MB_ERROR, Requesters);
                             SetFocus(FRMFiltersCombo);
                         }
                         return(0);
@@ -197,9 +184,9 @@ int CALLBACK FRMFiltersProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 			}
 			break;
 		case WM_NOTIFY:
-            if(WAControlGetNotifiedhWnd(lParam) == FRMFiltersListView)
+            if(ControlGetNotifiedhWnd(lParam) == FRMFiltersListView)
             {
-                switch(WAControlGetNotifiedMsg(lParam))
+                switch(ControlGetNotifiedMsg(lParam))
                 {
 					case LVN_KEYDOWN:
 						lParamKey = (LV_KEYDOWN *) lParam;
@@ -212,9 +199,9 @@ int CALLBACK FRMFiltersProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
             }
             else
             {
-				if(WAControlGetNotifiedhWnd(lParam) == FRMFiltersSelectedListView)
+				if(ControlGetNotifiedhWnd(lParam) == FRMFiltersSelectedListView)
 				{
-					switch(WAControlGetNotifiedMsg(lParam))
+					switch(ControlGetNotifiedMsg(lParam))
 					{
 						case LVN_KEYDOWN:
 							lParamKey = (LV_KEYDOWN *) lParam;
@@ -227,28 +214,28 @@ int CALLBACK FRMFiltersProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 				}
 				else
 				{
-					switch(WAControlGetNotifiedMsg(lParam))
+					switch(ControlGetNotifiedMsg(lParam))
 					{
 						case TTN_NEEDTEXT:
-							switch(WAControlGetNotifiedID(lParam))
+							switch(ControlGetNotifiedID(lParam))
 							{
 								case OPEN_FILTER_PROFILE:
-									WAToolBarDisplayToolTip("Load selected filters profile", lParam);
+									ToolBarDisplayToolTip("Load selected filters profile", lParam);
 									return(0);
 								case SAVE_FILTER_PROFILE:
-									WAToolBarDisplayToolTip("Save filters profile", lParam);
+									ToolBarDisplayToolTip("Save filters profile", lParam);
 									return(0);
 								case ADD_FILTERS:
-									WAToolBarDisplayToolTip("Add selected filters(s) into profile list", lParam);
+									ToolBarDisplayToolTip("Add selected filters(s) into profile list", lParam);
 									return(0);
 								case REM_FILTERS:
-									WAToolBarDisplayToolTip("Remove selected filter(s) from profile list", lParam);
+									ToolBarDisplayToolTip("Remove selected filter(s) from profile list", lParam);
 									return(0);
 								case OUTPUT_WINDOW:
-									WAToolBarDisplayToolTip("Sent output to window", lParam);
+									ToolBarDisplayToolTip("Sent output to window", lParam);
 									return(0);
 								case OUTPUT_FILE:
-									WAToolBarDisplayToolTip("Sent output to file", lParam);
+									ToolBarDisplayToolTip("Sent output to file", lParam);
 									return(0);
 							}
 							break;
@@ -258,7 +245,7 @@ int CALLBACK FRMFiltersProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 			break;
         case WM_PAINT:
             BeginPaint(hwndDlg, &Ps);
-            WAGDIDrawHorzSep(hwndDlg, 0, WAControlClientHeight(hwndDlg) - 33, 546);
+            GDIDrawHorzSep(hwndDlg, 0, ControlClientHeight(hwndDlg) - 33, 546);
             EndPaint(hwndDlg, &Ps);
 			break;
         case WM_CLOSE:
@@ -273,7 +260,7 @@ int CALLBACK FRMFiltersProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 }
 
 // -----------------------------------------------------------------------
-// The the listview with found filters
+// Fill the listview with found filters
 void FillFiltersList(void)
 {
     int i = 0;
@@ -286,7 +273,7 @@ void FillFiltersList(void)
     CStr Auth;
     CStr BufString;
 
-    FilterName = WAFileDir(&((CStr) Dirs[DIR_FILTERS] + (CStr) "\\*.dll"));
+    FilterName = FileDir(&((CStr) Dirs[DIR_FILTERS] + (CStr) "\\*.dll"));
     while(FilterName.Len() != 0)
     {
         BufString = Dirs[DIR_FILTERS] + (CStr) "\\" + (CStr) FilterName;
@@ -301,9 +288,9 @@ void FillFiltersList(void)
             {
                 Description = GetDLLDescription(FilterName, FilterDesc);
                 Auth = GetDLLAuthor(FilterAuth);
-                WAListViewAddItem(FRMFiltersListView, WAFileRemoveExtension(WAFileGetFileName(FilterName)), i, -1);
-                WAListViewSetSubItem(FRMFiltersListView, Description, i, 1);
-                WAListViewSetSubItem(FRMFiltersListView, Auth, i, 2);
+                ListViewAddItem(FRMFiltersListView, FileRemoveExtension(FileGetFileName(FilterName)), i, -1);
+                ListViewSetSubItem(FRMFiltersListView, Description, i, 1);
+                ListViewSetSubItem(FRMFiltersListView, Auth, i, 2);
                 i++;
             }
             FreeLibrary(FilterLib);
@@ -314,7 +301,7 @@ void FillFiltersList(void)
 				CloseHandle(FilterLib);
 			#endif
 		}
-        FilterName = WAFileDir();
+        FilterName = FileDir();
     }
 }
 
@@ -325,15 +312,15 @@ void Add_Filters(void)
 	long CurrentSelected;
 	CStr Current_Item_Text;
 
-	CurrentSelected = WAListViewGetSelItem(FRMFiltersListView, -1);
+	CurrentSelected = ListViewGetSelItem(FRMFiltersListView, -1);
 	while(CurrentSelected != -1)
 	{
-		Current_Item_Text = WAListViewGetItemText(FRMFiltersListView, CurrentSelected, 0);
+		Current_Item_Text = ListViewGetItemText(FRMFiltersListView, CurrentSelected, 0);
 		if(!Check_Filter(Current_Item_Text.Get_String()))
 		{
-			WAListViewAddItem(FRMFiltersSelectedListView, Current_Item_Text, WAListViewItemCount(FRMFiltersSelectedListView), -1);
+			ListViewAddItem(FRMFiltersSelectedListView, Current_Item_Text, ListViewItemCount(FRMFiltersSelectedListView), -1);
 		}
-		CurrentSelected = WAListViewGetSelItem(FRMFiltersListView, CurrentSelected);
+		CurrentSelected = ListViewGetSelItem(FRMFiltersListView, CurrentSelected);
 	}
 }
 
@@ -343,11 +330,11 @@ void Rem_Filters(void)
 {
 	long CurrentSelected;
 
-	CurrentSelected = WAListViewGetSelItem(FRMFiltersSelectedListView, -1);
+	CurrentSelected = ListViewGetSelItem(FRMFiltersSelectedListView, -1);
 	while(CurrentSelected != -1)
 	{
-		WAListViewDeleteItem(FRMFiltersSelectedListView, CurrentSelected);
-		CurrentSelected = WAListViewGetSelItem(FRMFiltersSelectedListView, -1);
+		ListViewDeleteItem(FRMFiltersSelectedListView, CurrentSelected);
+		CurrentSelected = ListViewGetSelItem(FRMFiltersSelectedListView, -1);
 	}
 }
 
@@ -357,9 +344,9 @@ int Check_Filter(char *FilterName)
 {
 	int i;
 
-	for(i = 0; i < WAListViewItemCount(FRMFiltersSelectedListView); i++)
+	for(i = 0; i < ListViewItemCount(FRMFiltersSelectedListView); i++)
 	{
-		if(lstrcmpi(FilterName, WAListViewGetItemText(FRMFiltersSelectedListView, i, 0).Get_String()) == 0)
+		if(lstrcmpi(FilterName, ListViewGetItemText(FRMFiltersSelectedListView, i, 0).Get_String()) == 0)
 		{
 			return(1);
 		}
@@ -373,9 +360,9 @@ void Fill_Filters_List(void)
 {
 	int i;
 
-	for(i = 0; i < WAListViewItemCount(FRMFiltersSelectedListView); i++)
+	for(i = 0; i < ListViewItemCount(FRMFiltersSelectedListView); i++)
 	{
-		Chosen_Filters.Add(WAListViewGetItemText(FRMFiltersSelectedListView, i, 0).Get_String());
+		Chosen_Filters.Add(ListViewGetItemText(FRMFiltersSelectedListView, i, 0).Get_String());
 	}
 }
 
@@ -386,12 +373,12 @@ void Fill_Filter_Profils(void)
     int i = 0;
 	CStr Filter_Name;
     
-	WAComboBoxReset(FRMFiltersCombo);
+	ComboBoxReset(FRMFiltersCombo);
     for(i = 0; i <= 999; i++)
     {
-        Filter_Name = WAIniReadKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), FiltersIniFile);
+        Filter_Name = IniReadKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), FiltersIniFile);
         if(Filter_Name.Len() == 0) break;
-        WAComboBoxAddItem(FRMFiltersCombo, Filter_Name, -1);
+        ComboBoxAddItem(FRMFiltersCombo, Filter_Name, -1);
     }
 }
 
@@ -406,21 +393,21 @@ int Save_Filter_Profil(CStr Profile_Name)
 
     Profile_Name_To_Register = StringReplace(Profile_Name.Trim(), "\t", "", 1, -1, Binary_Compare);
     if(Profile_Name_To_Register.Len() == 0) return(0);
-    if(WAListViewItemCount(FRMFiltersSelectedListView) == 0)
+    if(ListViewItemCount(FRMFiltersSelectedListView) == 0)
     {
-		WAMiscMsgBox(FRMFiltershWnd, "No selected filters.", MB_ERROR, Requesters);
+		MiscMsgBox(FRMFiltershWnd, "No selected filters.", MB_ERROR, Requesters);
 		SetFocus(FRMFiltersListView);
 		return(1);
     }
 	NoReg = 0;
     for(i = 0; i <= 999; i++)
     {
-        BufString = WAIniReadKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), FiltersIniFile);
+        BufString = IniReadKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), FiltersIniFile);
         if(BufString.Len() == 0) break;
         if(strcmpi(BufString.Get_String(), Profile_Name_To_Register.Get_String()) == 0)
         {
             NoReg = 1;
-            if(WAMiscMsgBox(FRMFiltershWnd, "Profile already exists. Overwrite it ?", MB_QUESTION, Requesters) == IDNO)
+            if(MiscMsgBox(FRMFiltershWnd, "Profile already exists. Overwrite it ?", MB_QUESTION, Requesters) == IDNO)
             {
                 NoReg = 2;
                 break;
@@ -436,29 +423,29 @@ int Save_Filter_Profil(CStr Profile_Name)
         // New profil
         case 0:
             // Register name
-            WAIniWriteKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), Profile_Name_To_Register, FiltersIniFile);
+            IniWriteKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), Profile_Name_To_Register, FiltersIniFile);
 			break;
 		case 2:
             return(1);
 			break;
     }
 	// Save output type
-	if(WAToolBarIsButtonChecked(FRMFiltersToolbar, OUTPUT_WINDOW) == 1)
+	if(ToolBarIsButtonChecked(FRMFiltersToolbar, OUTPUT_WINDOW) == 1)
 	{
-		WAIniWriteKey(Profile_Name, "OutputType", 0, FiltersIniFile);
+		IniWriteKey(Profile_Name, "OutputType", 0, FiltersIniFile);
 	}
 	else
 	{
-		WAIniWriteKey(Profile_Name, "OutputType", 1, FiltersIniFile);
+		IniWriteKey(Profile_Name, "OutputType", 1, FiltersIniFile);
 	}
 	// Write selected filters
-	for(i = 0; i < WAListViewItemCount(FRMFiltersSelectedListView); i++)
+	for(i = 0; i < ListViewItemCount(FRMFiltersSelectedListView); i++)
 	{
-		WAIniWriteKey(Profile_Name, "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), WAListViewGetItemText(FRMFiltersSelectedListView, i, 0), FiltersIniFile);
+		IniWriteKey(Profile_Name, "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), ListViewGetItemText(FRMFiltersSelectedListView, i, 0), FiltersIniFile);
 	}
 	Fill_Filter_Profils();
-    WAControlSetText(FRMFiltersCombo, Profile_Name);
-    WAMiscMsgBox(FRMFiltershWnd, "Profile '" + (CStr) Profile_Name + (CStr) "' saved.", MB_INFORMATION, Requesters);
+    ControlSetText(FRMFiltersCombo, Profile_Name);
+    MiscMsgBox(FRMFiltershWnd, "Profile '" + (CStr) Profile_Name + (CStr) "' saved.", MB_INFORMATION, Requesters);
 	return(1);
 }
 
@@ -469,32 +456,15 @@ void Load_Filter_Profil(CStr Profile_Name)
 	CStr Filter_Name;
 	int i;
 
-	// Load output type
-	if(WAIniReadBoolKey(Profile_Name, "OutputType", FiltersIniFile) == 0)
-	{
-		// (Locked in include mode)
-		if(Filter_Allow_Window)
-		{
-			WAToolBarSetButtonChecked(FRMFiltersToolbar, OUTPUT_WINDOW, 1);
-		}
-		else
-		{
-			WAToolBarSetButtonChecked(FRMFiltersToolbar, OUTPUT_FILE, 1);
-		}
-	}
-	else
-	{
-		WAToolBarSetButtonChecked(FRMFiltersToolbar, OUTPUT_FILE, 1);
-	}
 	// Remove previous entries from the list
-	WAListViewClear(FRMFiltersSelectedListView);
+	ListViewClear(FRMFiltersSelectedListView);
 	for(i = 0; i <= 999; i++)
 	{
 		// Read the datas
-		Filter_Name = WAIniReadKey(Profile_Name, "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), FiltersIniFile);
+		Filter_Name = IniReadKey(Profile_Name, "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), FiltersIniFile);
         if(Filter_Name.Len() == 0) break;
 		// Fill the list
-        WAListViewAddItem(FRMFiltersSelectedListView, Filter_Name, i, -1);
+        ListViewAddItem(FRMFiltersSelectedListView, Filter_Name, i, -1);
 	}	
 }
 
@@ -503,20 +473,20 @@ void Load_Filter_Profil(CStr Profile_Name)
 void Run_Filter_Profile(long Filter_Index, long Open_Mode)
 {
 	CStr Profile_Name;
-	CStr Profile_Name_To_Check;
+	LPFILTER_ENTRY Filter_Profile;
 	int i;
 
-	Profile_Name_To_Check = FiltersArray.Get(Filter_Index)->Content;
+	Filter_Profile = FiltersArray.Get(Filter_Index)->Content;
 	Chosen_Filters.Erase();
 	// Fill the list of filters with the entries found in the ini file
 	for(i = 0; i <= 999; i++)
 	{
-        Profile_Name = WAIniReadKey(Profile_Name_To_Check, "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), FiltersIniFile);
+        Profile_Name = IniReadKey(Filter_Profile->Name, "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), FiltersIniFile);
         if(Profile_Name.Len() == 0) break;
 		Chosen_Filters.Add(Profile_Name.Get_String());
 	}
 	// Get output type
-	Filter_Output_Type = WAIniReadBoolKey(Profile_Name_To_Check, "OutputType", FiltersIniFile);
+	Filter_Output_Type = Filter_Profile->Type;
 	switch(Open_Mode)
 	{
 		case FILTER_OPEN_MODE:
@@ -531,7 +501,7 @@ void Run_Filter_Profile(long Filter_Index, long Open_Mode)
 			{
 				if(NbForms == 0 || IsChildReadOnly(CurrentForm) == 1)
 				{
-					switch(WAMiscMsgBox(hMDIform.hWnd, "No suitable windows found.\rRedirect output to file ?",
+					switch(MiscMsgBox(hMDIform.hWnd, "No suitable windows found.\rRedirect output to file ?",
 					       MB_ICONQUESTION | MB_YESNO, Requesters))
 				    {
 						case IDYES:

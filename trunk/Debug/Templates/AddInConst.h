@@ -1264,7 +1264,7 @@ typedef struct _CHROMATICLIB
 /* Standard Functions */
 HWND (CALLBACK *CreateSplashDialog)(long, long, long, long, char *, HWND, HMENU, HICON, void (CALLBACK *)(HWND), WNDPROC, long, long, long);
 long (CALLBACK *CreateModalDialog)(long, long, long, long, HWND, DLGPROC, long, long);
-HWND (CALLBACK *CreateDialog)(long, long, long, long, HWND, HMENU, HICON, char *, void (CALLBACK *)(HWND), WNDPROC, long, long, long);
+HWND (CALLBACK *CreateNonModalDialog)(long, long, long, long, HWND, HMENU, HICON, char *, void (CALLBACK *)(HWND), WNDPROC, long, long, long);
 HWND (CALLBACK *CreateSplitter)(long, long, long, long, LPSPLITTERDAT, WNDPROC);
 HWND (CALLBACK *CreateMDIDialog)(long, long, long, long, HWND, HMENU, HICON, char *, void (CALLBACK *)(HWND), WNDPROC, long, long);
 HWND (CALLBACK *CreateMDIChildDialog)(HWND, char *, HICON, void (CALLBACK *)(HWND), WNDPROC, long, long, char *);
@@ -1596,6 +1596,8 @@ long (CALLBACK *MenuSetDefaultItem)(HMENU, long);
 long (CALLBACK *MenuSetItemState)(HMENU, long, long);
 long (CALLBACK *MenuSetItemType)(HMENU, long, long);
 long (CALLBACK *MenuSetItemText)(HMENU, char *, long);
+long (CALLBACK *MenuAddSeparator)(HMENU);
+long (CALLBACK *MenuAddString)(HMENU, char *, long, long);
 long (CALLBACK *ScreenWidth)(void);
 long (CALLBACK *ScreenHeight)(void);
 void (CALLBACK *ScreenRectToClient)(HWND, LPRECT);
