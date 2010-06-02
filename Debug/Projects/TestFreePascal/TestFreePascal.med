@@ -13,7 +13,7 @@ IncludeVersion=1
 IncludeManifest=0
 OS=4
 FileType=1
-Title=
+Title=TestFreePascal
 Comments=
 CompanyName=hitchhikr SoftWorks
 FileDescription=
@@ -21,6 +21,10 @@ LegalCopyright=(c) Copyright 2001-2004 Franck Charlet.
 LegalTradeMarks=
 ProductName=
 [LIBS]
-LIBRARY000=[LIBDIR]\windows.ppw
+LIBRARY000=D:[INCLUDEDIR]\FPC[INCLUDEDIR]\2.4.0[INCLUDEDIR]\units[INCLUDEDIR]\i386-win32[INCLUDEDIR]\rtl[INCLUDEDIR]\windows.ppu
 [MODULES]
-MODULE000=[PROJECTSDIR]\TestFreePascal\winhello.pp
+MODULE000=C:[INCLUDEDIR]\Src[INCLUDEDIR]\Pc[INCLUDEDIR]\chromatic[INCLUDEDIR]\Debug[INCLUDEDIR]\Projects[INCLUDEDIR]\TestFreePascal[INCLUDEDIR]\winhello.pp
+[Windows]
+Window000=C:[INCLUDEDIR]\Src[INCLUDEDIR]\Pc[INCLUDEDIR]\chromatic[INCLUDEDIR]\Debug[INCLUDEDIR]\Projects[INCLUDEDIR]\TestFreePascal[INCLUDEDIR]\winhello.pp
+Focus=C:[INCLUDEDIR]\Src[INCLUDEDIR]\Pc[INCLUDEDIR]\chromatic[INCLUDEDIR]\Debug[INCLUDEDIR]\Projects[INCLUDEDIR]\TestFreePascal[INCLUDEDIR]\winhello.pp
+FocusLine=14

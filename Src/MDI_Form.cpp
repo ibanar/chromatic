@@ -2308,7 +2308,7 @@ long CheckLastModified(HWND hWnd, int CheckProject)
 		{
 			if(ProjectModified)
 			{
-				ExternModified += 1;
+				ExternModified++;
 				// Phony entry
 				ModifiedArrayhWnd.Add(0L);
 			}
