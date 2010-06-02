@@ -285,6 +285,11 @@ void InitAppVars(void)
 		Buttons_StaticEdge = 0;
 		WindowsXP = 1;
 	}
+	if(OsType & 8)
+	{
+		Buttons_StaticEdge = 0;
+		WindowsXP = 1;
+	}
 
     // Fill the AddIns services datas
     FillChromaticLib();
