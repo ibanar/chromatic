@@ -2319,6 +2319,14 @@ long CheckLastModified(HWND hWnd, int CheckProject)
     switch(ExternModified)
     {
         case 0:
+	        if(CheckProject)
+            {
+                if(IniReadBoolKey("Layout", "ConfirmBeforeExit", MainIniFile))
+                {
+                    ReturnValue = MiscMsgBox(hMDIform.hWnd, "Do really want to quit ?", MB_QUESTION, Requesters);
+                    if(ReturnValue == IDNO) ReturnValue = IDCANCEL;
+                }
+            }
 			break;
         default:
 			// Prompt for several files
