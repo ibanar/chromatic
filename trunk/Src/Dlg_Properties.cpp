@@ -235,6 +235,7 @@ HWND FRMPropertiesChkAutoOut;
 HWND FRMPropertiesChkUseFileDir;
 HWND FRMPropertiesChkCreateDrop;
 HWND FRMPropertiesChkSaveProjectState;
+HWND FRMPropertiesChkConfirmBeforeExit;
 
 // Other variables
 CStr FRMPropertiesRetVal;
@@ -948,14 +949,15 @@ void CreatePropPage4(HWND hParent)
 // Create fifth properties page
 void CreatePropPage5(HWND hParent)
 {
-    FRMPropertiesPageCodingHelp = CreateFrame(4, 26, 185, 136, hParent, "Coding help", 0, 0, 0);
-    FRMPropertiesPageExtrasLayouts2 = CreateFrame(4, 162, 185, 170, hParent, "Extras layouts", 0, 0, 0);
-	FRMPropertiesChkAutoCorrectKeywords = CreateCheckBox(11, 23, 160, 15, FRMPropertiesPageCodingHelp, "Auto correct keywords", 22, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkWinAPITooltipInfos = CreateCheckBox(11, 43, 160, 15, FRMPropertiesPageCodingHelp, "Display functions tooltips", 2, 0, WS_TABSTOP | WS_GROUP, 0);
-    CreateLabel(37, 66, 110, 15, FRMPropertiesPageCodingHelp, "lines in keywords list", 0, 0, 0, 0);
-    FRMPropertiesTxtAPILines = CreateTextBox(11, 63, 20, 20, FRMPropertiesPageCodingHelp, "", 3, 0, WS_TABSTOP | ES_NUMBER, WS_EX_STATICEDGE);
-    FRMPropertiesChkUseFncDB = CreateCheckBox(11, 88, 160, 15, FRMPropertiesPageCodingHelp, "Use functions database", 4, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkUseConstDB = CreateCheckBox(11, 108, 160, 15, FRMPropertiesPageCodingHelp, "Use constants database", 5, 0, WS_TABSTOP, 0);
+    FRMPropertiesPageCodingHelp = CreateFrame(4, 26, 185, 123, hParent, "Coding help", 0, 0, 0);
+    FRMPropertiesPageExtrasLayouts2 = CreateFrame(4, 149, 185, 183, hParent, "Extras layouts", 0, 0, 0);
+	
+    FRMPropertiesChkAutoCorrectKeywords = CreateCheckBox(11, 18, 160, 15, FRMPropertiesPageCodingHelp, "Auto correct keywords", 22, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkWinAPITooltipInfos = CreateCheckBox(11, 18 + (19 * 1), 160, 15, FRMPropertiesPageCodingHelp, "Display functions tooltips", 2, 0, WS_TABSTOP | WS_GROUP, 0);
+    CreateLabel(37, 18 + (19 * 2) + 3, 110, 15, FRMPropertiesPageCodingHelp, "lines in keywords list", 0, 0, 0, 0);
+    FRMPropertiesTxtAPILines = CreateTextBox(11, 18 + (19 * 2), 20, 20, FRMPropertiesPageCodingHelp, "", 3, 0, WS_TABSTOP | ES_NUMBER, WS_EX_STATICEDGE);
+    FRMPropertiesChkUseFncDB = CreateCheckBox(11, 18 + (19 * 3) + 5, 160, 15, FRMPropertiesPageCodingHelp, "Use functions database", 4, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkUseConstDB = CreateCheckBox(11, 18 + + (19 * 4) + 5, 160, 15, FRMPropertiesPageCodingHelp, "Use constants database", 5, 0, WS_TABSTOP, 0);
 
 	FRMPropertiesChkShowSplash = CreateCheckBox(11, 19, 160, 15, FRMPropertiesPageExtrasLayouts2, "Show splash screen", 6, 0, WS_TABSTOP | WS_GROUP, 0);
     FRMPropertiesChkTVSingle = CreateCheckBox(11, 19 + (18 * 1), 160, 15, FRMPropertiesPageExtrasLayouts2, "Single click expand treeview", 7, 0, WS_TABSTOP | WS_GROUP, 0);
@@ -965,6 +967,7 @@ void CreatePropPage5(HWND hParent)
     FRMPropertiesChkUseFileDir = CreateCheckBox(11, 19 + (18 * 5), 160, 15, FRMPropertiesPageExtrasLayouts2, "Use files directories", 11, 0, WS_TABSTOP, 0);
     FRMPropertiesChkCreateDrop = CreateCheckBox(11, 19 + (18 * 6), 160, 15, FRMPropertiesPageExtrasLayouts2, "New window for dropped files", 12, 0, WS_TABSTOP, 0);
     FRMPropertiesChkSaveProjectState = CreateCheckBox(11, 19 + (18 * 7), 160, 15, FRMPropertiesPageExtrasLayouts2, "Save project state", 13, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkConfirmBeforeExit = CreateCheckBox(11, 19 + (18 * 8), 160, 15, FRMPropertiesPageExtrasLayouts2, "Confirm before exit", 14, 0, WS_TABSTOP, 0);
 }
 
 // -----------------------------------------------------------------------
@@ -1220,6 +1223,8 @@ void FillProperties(void)
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkCreateDrop, FRMPropertiesRetVal.Get_Long());
     FRMPropertiesRetVal = IniReadKey("Layout", "SaveProjectState", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkSaveProjectState, FRMPropertiesRetVal.Get_Long());
+    FRMPropertiesRetVal = IniReadKey("Layout", "ConfirmBeforeExit", MainIniFile);
+    if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkConfirmBeforeExit, FRMPropertiesRetVal.Get_Long());
     // Load building steps
     FRMPropertiesRetVal = IniReadKey("Layout", "StepRes", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) ListViewSetItemCheckbox(FRMStepListView, 0, FRMPropertiesRetVal.Get_Long());
@@ -1426,6 +1431,7 @@ void SavePrefs(void)
     IniWriteKey("Layout", "UseFileDir", CheckBoxGetState(FRMPropertiesChkUseFileDir), MainIniFile);
     IniWriteKey("Layout", "NewWindowOnDrop", CheckBoxGetState(FRMPropertiesChkCreateDrop), MainIniFile);
     IniWriteKey("Layout", "SaveProjectState", CheckBoxGetState(FRMPropertiesChkSaveProjectState), MainIniFile);
+    IniWriteKey("Layout", "ConfirmBeforeExit", CheckBoxGetState(FRMPropertiesChkConfirmBeforeExit), MainIniFile);
 
     // Default backup directory
     TmpBakDir = ControlGetText(FRMPropertiesTxtBackupDir);
