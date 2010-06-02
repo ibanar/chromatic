@@ -5262,20 +5262,29 @@ long CALLBACK MiscGetOSClass(void)
 	OSVERSIONINFO MyOsVersion;
 
 	MyOsVersion.dwOSVersionInfoSize = sizeof(MyOsVersion);
-    if(GetVersionEx(&MyOsVersion) != 0) {
+    if(GetVersionEx(&MyOsVersion) != 0)
+	{
         if(MyOsVersion.dwMajorVersion >= 5)
         {
-			if(MyOsVersion.dwMinorVersion >= 1)
+			if(MyOsVersion.dwMajorVersion >= 6)
 			{
-				// Windows XP (5.1) (+Win2k)
-				if(MyOsVersion.dwPlatformId == VER_PLATFORM_WIN32_NT) Cl |= 4;
+				// Windows 7 (6.1)
+				if(MyOsVersion.dwPlatformId == VER_PLATFORM_WIN32_NT) Cl |= 8;
 			}
 			else
 			{
-				// Windows 2k or Me (5.0)
-				if(MyOsVersion.dwPlatformId == VER_PLATFORM_WIN32_NT) Cl |= 2;
+				if(MyOsVersion.dwMinorVersion >= 1)
+				{
+					// Windows XP (5.1)
+					if(MyOsVersion.dwPlatformId == VER_PLATFORM_WIN32_NT) Cl |= 4;
+				}
+				else
+				{
+					// Windows 2k or Me (5.0)
+					if(MyOsVersion.dwPlatformId == VER_PLATFORM_WIN32_NT) Cl |= 2;
+				}
 			}
-        }
+		}
         else
         {
 			// Windows NT or 9x

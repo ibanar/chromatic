@@ -49,8 +49,15 @@ HIMAGELIST GlobalImageList5;
 void InitImageList1(void)
 {
     GlobalImageList3 = ImageList_Create(1, 18, ILC_MASK + ILC_COLOR16, 0, 0);
-    // Init the first imagelist
-    GlobalImageList1 = ImageList_Create(17, 17, ILC_MASK + ILC_COLOR16, ICON_NBR, 0);
+    if(MiscGetOSClass() & 8)
+    {
+        // Needs exact size
+        GlobalImageList1 = ImageList_Create(16, 16, ILC_MASK + ILC_COLOR16, ICON_NBR, 0);
+    }
+    else
+    {
+        GlobalImageList1 = ImageList_Create(17, 17, ILC_MASK + ILC_COLOR16, ICON_NBR, 0);
+    }
     ImageListAddIcon(GlobalImageList1, ICON_BASE + ICON_ASKDIR);
     ImageListAddIcon(GlobalImageList1, ICON_BASE + ICON_ASM);
     ImageListAddIcon(GlobalImageList1, ICON_BASE + ICON_ASSEMBLE);
@@ -246,7 +253,14 @@ void InitImageList1(void)
 void InitImageList2(void)
 {
     // Init the second imagelist
-    GlobalImageList2 = ImageList_Create(10, 9, ILC_MASK + ILC_COLOR16, ICON_NBR, 0);
+    if(MiscGetOSClass() & 8)
+    {
+        GlobalImageList2 = ImageList_Create(10, 9, ILC_MASK + ILC_COLOR16, ICON_NBR, 0);
+    }
+    else
+    {
+        GlobalImageList2 = ImageList_Create(10, 9, ILC_MASK + ILC_COLOR16, ICON_NBR, 0);
+    }
     ImageListAddIcon(GlobalImageList2, ICON_BASE + ICON_ASSEMBLE);
     ImageListAddIcon(GlobalImageList2, ICON_BASE + ICON_SAVELITTLE);
     ImageListAddIcon(GlobalImageList2, ICON_BASE + ICON_EXEC);
@@ -264,8 +278,15 @@ void InitImageList2(void)
 // Create dialog editor controls imagelist
 void InitImageList4(void)
 {
-    GlobalImageList4 = ImageList_Create(23, 23, ILC_MASK + ILC_COLOR16, ICON_NBR, 0);
-    ImageListAddIcon(GlobalImageList4, ICON_RES_BASE + ICON_RES_ANIMATION);
+    if(MiscGetOSClass() & 8)
+    {
+        GlobalImageList4 = ImageList_Create(24, 24, ILC_MASK + ILC_COLOR16, ICON_NBR, 0);
+    }
+    else
+    {
+        GlobalImageList4 = ImageList_Create(23, 23, ILC_MASK + ILC_COLOR16, ICON_NBR, 0);
+    }
+	ImageListAddIcon(GlobalImageList4, ICON_RES_BASE + ICON_RES_ANIMATION);
     ImageListAddIcon(GlobalImageList4, ICON_RES_BASE + ICON_RES_BUTTON);
     ImageListAddIcon(GlobalImageList4, ICON_RES_BASE + ICON_RES_CALENDAR);
     ImageListAddIcon(GlobalImageList4, ICON_RES_BASE + ICON_RES_CHECKBOX);
@@ -303,8 +324,15 @@ void InitImageList4(void)
 // Create dialog editor tools imagelist
 void InitImageList5(void)
 {
-    GlobalImageList5 = ImageList_Create(17, 17, ILC_MASK + ILC_COLOR16, ICON_NBR, 0);
-    ImageListAddIcon(GlobalImageList5, ICON_RES_TOOL_BASE + ICON_RES_TOOL_LOCKCTRL);
+    if(MiscGetOSClass() & 8)
+    {
+        GlobalImageList5 = ImageList_Create(16, 16, ILC_MASK + ILC_COLOR16, ICON_NBR, 0);
+    }
+    else
+    {
+        GlobalImageList5 = ImageList_Create(17, 17, ILC_MASK + ILC_COLOR16, ICON_NBR, 0);
+    }
+	ImageListAddIcon(GlobalImageList5, ICON_RES_TOOL_BASE + ICON_RES_TOOL_LOCKCTRL);
     ImageListAddIcon(GlobalImageList5, ICON_RES_TOOL_BASE + ICON_RES_TOOL_ALIGNBOTTOM);
     ImageListAddIcon(GlobalImageList5, ICON_RES_TOOL_BASE + ICON_RES_TOOL_ALIGNLEFT);
     ImageListAddIcon(GlobalImageList5, ICON_RES_TOOL_BASE + ICON_RES_TOOL_ALIGNRIGHT);
