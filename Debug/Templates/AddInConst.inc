@@ -233,7 +233,10 @@ MENU_DEBUGBOX_EMPTY_ID          equ     3
 MENU_DEBUGBOX_GOTO_ID           equ     4
 
 ; --- Windowsbox contextual menu
-MENU_WINDOWSBOX_TOGGLE_ID       equ     1
+MENU_WINDOWSBOX_CLOSE_ID        equ     1
+MENU_WINDOWSBOX_SAVE_ID         equ     2
+MENU_WINDOWSBOX_SAVEAS_ID       equ     3
+MENU_WINDOWSBOX_TOGGLE_ID       equ     4
 
 ; --- Other interface constants
 ACCEL_BASE                      equ     9000

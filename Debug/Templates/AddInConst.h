@@ -220,7 +220,10 @@ Version: 2.0
 #define MENU_DEBUGBOX_GOTO_ID 4
 
 /* --- Windowsbox contextual menu */
-#define MENU_WINDOWSBOX_TOGGLE_ID 1
+#define MENU_WINDOWSBOX_CLOSE_ID 1
+#define MENU_WINDOWSBOX_SAVE_ID 2
+#define MENU_WINDOWSBOX_SAVEAS_ID 3
+#define MENU_WINDOWSBOX_TOGGLE_ID 4
 
 /* --- Other interface constants */
 #define ACCEL_BASE 9000
