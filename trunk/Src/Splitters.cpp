@@ -114,6 +114,7 @@ void MoveProjectItems(HTREEITEM OldItem, HTREEITEM NewItem);
 void RefreshCurrentWindowFromList(void);
 void SetPreviousChildInList(void);
 void SetNextChildInList(void);
+HWND GetSelectedWindowFromList(void);
 
 // -----------------------------------------------------------------------
 // Create the vertical splitter
@@ -790,9 +791,7 @@ LRESULT CALLBACK WindowsContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
     long DockState;
     HMENU hPop;
     POINT PopupPoint;
-    long CurrentLvItem;
-    CStr FileName;
-    int i;
+    HWND hSel;
 	
     switch(uMsg)
     {
@@ -830,32 +829,51 @@ LRESULT CALLBACK WindowsContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                 case WINDOWSTOOLBAR_RELOAD:
                     MCMD_Reload();
                     return(0);
-                case MENU_WINDOWSBOX_TOGGLE_ID + MENU_WINDOWSBOX_IDBASE:
 
-                    // Toggle read only flag
-                    CurrentLvItem = ListViewGetSelItem(hWindowsListView, -1);
-                    if(CurrentLvItem != -1)
+                case MENU_WINDOWSBOX_CLOSE_ID + MENU_WINDOWSBOX_IDBASE:
+                    // Close the selected file
+                    hSel = GetSelectedWindowFromList();
+                    if(hSel)
                     {
-                        for(i = 0; i < ChildsLVPos.Amount(); i++)
-                        {
-                            if(ChildsLVPos.Get(i)->Content == CurrentLvItem)
-                            {
-                                // focus on selected window
-                                if(IsChildReadOnly(ChildshWnd.Get(i)->Content))
-                                {
-		                            SetChildReadOnly(ChildshWnd.Get(i)->Content, FALSE);
-                                }
-                                else
-                                {
-		                            SetChildReadOnly(ChildshWnd.Get(i)->Content, TRUE);
-                                }
-                                RefreshChildTitle(ChildshWnd.Get(i)->Content);
-					            break;
-                            }
-                        }
+                        ControlClose(hSel);
                     }
-                    ListViewSetItemSel(hWindowsListView, PreviouslySelectedWindow);
                     return(0);
+
+                case MENU_WINDOWSBOX_SAVE_ID + MENU_WINDOWSBOX_IDBASE:
+                    // Save the selected file
+                    hSel = GetSelectedWindowFromList();
+                    if(hSel)
+                    {
+                        SaveIt(hSel);
+                    }
+                    return(0);
+
+                case MENU_WINDOWSBOX_SAVEAS_ID + MENU_WINDOWSBOX_IDBASE:
+                    // Save the selected file under a new name
+                    hSel = GetSelectedWindowFromList();
+                    if(hSel)
+                    {
+                        SaveItAs(hSel, 0, "", "");
+                    }
+                    return(0);
+
+                case MENU_WINDOWSBOX_TOGGLE_ID + MENU_WINDOWSBOX_IDBASE:
+                    // Toggle read only flag
+                    hSel = GetSelectedWindowFromList();
+                    if(hSel)
+                    {
+                        if(IsChildReadOnly(hSel))
+                        {
+		                    SetChildReadOnly(hSel, FALSE);
+                        }
+                        else
+                        {
+		                    SetChildReadOnly(hSel, TRUE);
+                        }
+                        RefreshChildTitle(hSel);
+                    }
+                    return(0);
+
             }
 			break;
 		case WM_NOTIFY:
@@ -886,6 +904,11 @@ LRESULT CALLBACK WindowsContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                 case NM_RCLICK:
                     // Create Contextual menu
                     hPop = CreatePopupMenu();
+                    MenuAddString(hPop, "Close", MENU_WINDOWSBOX_CLOSE_ID + MENU_WINDOWSBOX_IDBASE, TRUE);
+                    MenuAddSeparator(hPop);
+                    MenuAddString(hPop, "Save", MENU_WINDOWSBOX_SAVE_ID + MENU_WINDOWSBOX_IDBASE, TRUE);
+                    MenuAddString(hPop, "Save as...", MENU_WINDOWSBOX_SAVEAS_ID + MENU_WINDOWSBOX_IDBASE, TRUE);
+                    MenuAddSeparator(hPop);
                     MenuAddString(hPop, "Toggle read only", MENU_WINDOWSBOX_TOGGLE_ID + MENU_WINDOWSBOX_IDBASE, TRUE);
 					GetCursorPos(&PopupPoint);
                     TrackPopupMenu(hPop, TPM_LEFTALIGN + TPM_LEFTBUTTON, PopupPoint.x, PopupPoint.y, 0, hWnd, NULL);
@@ -3318,4 +3341,29 @@ void SetNextChildInList(void)
             }
         }
     }
+}
+
+// -----------------------------------------------------------------------
+// Return the handle of a selected window from the windows list 
+// without selecting it
+HWND GetSelectedWindowFromList(void)
+{
+    long CurrentLvItem;
+    int i;
+    HWND hRes = NULL;
+
+    CurrentLvItem = ListViewGetSelItem(hWindowsListView, -1);
+    if(CurrentLvItem != -1)
+    {
+        for(i = 0; i < ChildsLVPos.Amount(); i++)
+        {
+            if(ChildsLVPos.Get(i)->Content == CurrentLvItem)
+            {
+                hRes = ChildshWnd.Get(i)->Content;
+				break;
+            }
+        }
+    }
+    ListViewSetItemSel(hWindowsListView, PreviouslySelectedWindow);
+    return(hRes);
 }

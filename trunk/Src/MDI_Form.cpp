@@ -1978,7 +1978,8 @@ CStr SaveItAs(HWND hWnd, long RefreshTree, CStr TreeKey, CStr OldTreeFile)
     {
         if(SaveCodeMax(hWnd, FName) == 0) goto NoSaveAs;
         AddRecentFile(FName, 1, 0);
-// This was meant to refresh the project tree but i don't remember why right now.
+// This was meant to refresh the project tree but i don't remember why right now
+// (And i didn't use it anywhere)
 //        If RefreshTree = True Then
 //            PosPar = In_Str(1, OldTreeFile, "(")
 //            If PosPar <> 0 Then

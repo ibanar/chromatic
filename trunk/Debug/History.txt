@@ -7,7 +7,7 @@ Version 1.3.2
 - Fixed free pascal skin and example.
 - Added an option to display a requester before exiting.
 - Most icons should look better on Windows 7.
-- Added a toggle read only popup menu in Windows dock list.
+- Added a popup menu with several options in Windows dock list.
 
 --------------------------------------------------------------------------------
 Version 1.3.1
