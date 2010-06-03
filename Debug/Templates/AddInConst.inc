@@ -176,7 +176,8 @@ PANELS_MINBASE                  equ     1000
 OSTYPE_WINDOWS_9X               equ     0
 OSTYPE_WINDOWS_NT               equ     1
 OSTYPE_WINDOWS_2K               equ     2
-OSTYPE_WINDOWS_XP               equ     3
+OSTYPE_WINDOWS_XP               equ     4
+OSTYPE_WINDOWS_7                equ     8
 
 USE_SECURITY_DESCRIPTOR         equ     1
 NO_SECURITY_DESCRIPTOR          equ     0

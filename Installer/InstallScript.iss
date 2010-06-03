@@ -143,10 +143,8 @@ Source: "..\Debug\Tools\*.*"; DestDir: "{app}\Tools"; Flags: ignoreversion
 Source: "..\Debug\Scripts\*.*"; DestDir: "{app}\Scripts"; Flags: ignoreversion
 Source: "..\Debug\ChromeSup.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Debug\cmaxXX.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Debug\File_Id.diz"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Debug\MakeDll.bat"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Debug\MakeLib.bat"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\Debug\FileList.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Debug\History.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Debug\License.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Debug\Readme.txt"; DestDir: "{app}"; Flags: ignoreversion

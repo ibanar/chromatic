@@ -54,7 +54,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comctl32.lib version.lib /nologo /subsystem:windows /dll /pdb:none /machine:I386 /out:"Release/cmaxXX.dll"
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comctl32.lib version.lib /nologo /subsystem:windows /dll /pdb:none /machine:I386 /out:"..\..\Debug\cmaxXX.dll"
 
 !ELSEIF  "$(CFG)" == "codemax - Win32 Debug"
 
@@ -90,6 +90,97 @@ LINK32=link.exe
 
 # Name "codemax - Win32 Release"
 # Name "codemax - Win32 Debug"
+# Begin Group "Includes"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\BUFFER.H
+# End Source File
+# Begin Source File
+
+SOURCE=.\CEDIT.H
+# End Source File
+# Begin Source File
+
+SOURCE=.\CODEMAX.H
+# End Source File
+# Begin Source File
+
+SOURCE=.\DRAGDROP.H
+# End Source File
+# Begin Source File
+
+SOURCE=.\EDITDLGS.H
+# End Source File
+# Begin Source File
+
+SOURCE=.\EDITSEL.H
+# End Source File
+# Begin Source File
+
+SOURCE=.\EDITVIEW.H
+# End Source File
+# Begin Source File
+
+SOURCE=.\HKEYCTRL.H
+# End Source File
+# Begin Source File
+
+SOURCE=.\MISC.H
+# End Source File
+# Begin Source File
+
+SOURCE=.\PRECOMP.H
+# End Source File
+# Begin Source File
+
+SOURCE=.\regexp.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\resource.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\resource2.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\UNDO.H
+# End Source File
+# End Group
+# Begin Group "Resources"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\codemax.rc
+# End Source File
+# Begin Source File
+
+SOURCE=.\CODEMAX.RC2
+# End Source File
+# Begin Source File
+
+SOURCE=.\hsplit.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\hvsplit.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\leftmarg.cur
+# End Source File
+# Begin Source File
+
+SOURCE=.\vsplit.cur
+# End Source File
+# End Group
+# Begin Group "Source"
+
+# PROP Default_Filter ""
 # Begin Source File
 
 SOURCE=.\bookmark.cpp
@@ -104,15 +195,7 @@ SOURCE=.\buffer.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\BUFFER.H
-# End Source File
-# Begin Source File
-
 SOURCE=.\cedit.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\CEDIT.H
 # End Source File
 # Begin Source File
 
@@ -124,27 +207,7 @@ SOURCE=.\cmdarry.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\codemax.def
-# End Source File
-# Begin Source File
-
-SOURCE=.\CODEMAX.H
-# End Source File
-# Begin Source File
-
-SOURCE=.\codemax.rc
-# End Source File
-# Begin Source File
-
-SOURCE=.\CODEMAX.RC2
-# End Source File
-# Begin Source File
-
 SOURCE=.\dragdrop.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\DRAGDROP.H
 # End Source File
 # Begin Source File
 
@@ -156,23 +219,11 @@ SOURCE=.\editdlgs.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\EDITDLGS.H
-# End Source File
-# Begin Source File
-
 SOURCE=.\editsel.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\EDITSEL.H
-# End Source File
-# Begin Source File
-
 SOURCE=.\editview.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\EDITVIEW.H
 # End Source File
 # Begin Source File
 
@@ -188,27 +239,11 @@ SOURCE=.\hkeyctrl.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\HKEYCTRL.H
-# End Source File
-# Begin Source File
-
 SOURCE=.\hotkey.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\hsplit.cur
-# End Source File
-# Begin Source File
-
-SOURCE=.\hvsplit.cur
-# End Source File
-# Begin Source File
-
 SOURCE=.\language.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\leftmarg.cur
 # End Source File
 # Begin Source File
 
@@ -220,15 +255,7 @@ SOURCE=.\misc.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\MISC.H
-# End Source File
-# Begin Source File
-
 SOURCE=.\msgpump.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\PRECOMP.H
 # End Source File
 # Begin Source File
 
@@ -255,18 +282,6 @@ SOURCE=.\regexp.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\regexp.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\resource.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\resource2.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\splitter.cpp
 # End Source File
 # Begin Source File
@@ -277,13 +292,10 @@ SOURCE=.\syntax.cpp
 
 SOURCE=.\undo.cpp
 # End Source File
+# End Group
 # Begin Source File
 
-SOURCE=.\UNDO.H
-# End Source File
-# Begin Source File
-
-SOURCE=.\vsplit.cur
+SOURCE=.\codemax.def
 # End Source File
 # End Target
 # End Project

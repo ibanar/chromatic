@@ -726,8 +726,8 @@ void CreatePropPage1(HWND hParent)
     FRMPropertiesChkRememberState = CreateCheckBox(11, 229 - 7, 140, 15, FRMPropertiesPageEditor, "Remember last state", 25, 0, WS_TABSTOP, 0);
     FRMPropertiesChkUNIX = CreateCheckBox(11, 245 - 7, 140, 15, FRMPropertiesPageEditor, "Auto convert Unix files", 26, 0, WS_TABSTOP, 0);
     FRMPropertiesChkAutoZoom = CreateCheckBox(11, 261 - 7, 140, 15, FRMPropertiesPageEditor, "Auto focus opened files", 27, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkOutputDates = CreateCheckBox(11, 277 - 7, 140, 15, FRMPropertiesPageEditor, "Dates prefix in output", 28, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkSaveAll = CreateCheckBox(11, 293 - 7, 140, 15, FRMPropertiesPageEditor, "Save files on user cmd", 29, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkOutputDates = CreateCheckBox(11, 277 - 7, 140, 15, FRMPropertiesPageEditor, "Date prefix in output", 28, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkSaveAll = CreateCheckBox(11, 293 - 7, 140, 15, FRMPropertiesPageEditor, "Save before user cmd", 29, 0, WS_TABSTOP, 0);
     FRMPropertiesCbLines = CreateComboBox(39, 15, 84, 150, FRMPropertiesPageLineNumbering, "", 30, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
     ComboBoxAddItem(FRMPropertiesCbLines, "(None)", -1);
     ComboBoxAddItem(FRMPropertiesCbLines, "Binary", -1);
@@ -763,12 +763,12 @@ void CreatePropPage1(HWND hParent)
     ComboBoxAddItem(FRMPropertiesCbSave, "45 minutes", -1);
     ComboBoxAddItem(FRMPropertiesCbSave, "1 hour", -1);
     ComboBoxSetIndex(FRMPropertiesCbSave, 0);
-    FRMPropertiesChkVerbose = CreateCheckBox(7, 37, 110, 15, FRMPropertiesPageAutoSave, "Display files list", 40, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkVerbose = CreateCheckBox(7, 37, 115, 15, FRMPropertiesPageAutoSave, "Display files to save", 40, 0, WS_TABSTOP, 0);
 	FRMPropertiesChkMultiplesInst = CreateCheckBox(5, 9 + 5, 120, 15, FRMPropertiesPageEditor2, "Multiple instances", 41, 0, WS_TABSTOP, 0);
     FRMPropertiesChkRemember = CreateCheckBox(5, 25 + 5, 120, 15, FRMPropertiesPageEditor2, "Remember last pos", 42, 0, WS_TABSTOP, 0);
     FRMPropertiesChkBakFiles = CreateCheckBox(5, 41 + 5, 120, 15, FRMPropertiesPageEditor2, "Create .BAK files", 43, 0, WS_TABSTOP, 0);
     FRMPropertiesChkDecorateBak = CreateCheckBox(5, 57 + 5, 120, 15, FRMPropertiesPageEditor2, "Decorate .BAK files", 44, 0, WS_TABSTOP, 0);
-    FRMPropertiesChkAcceptFiles = CreateCheckBox(5, 73 + 5, 120, 15, FRMPropertiesPageEditor2, "Accept files", 45, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkAcceptFiles = CreateCheckBox(5, 73 + 5, 120, 15, FRMPropertiesPageEditor2, "Accept dropped files", 45, 0, WS_TABSTOP, 0);
     FRMPropertiesChkAutoMax = CreateCheckBox(5, 89 + 5, 118, 15, FRMPropertiesPageEditor2, "Auto maximize childs", 46, 0, WS_TABSTOP, 0);
     FRMPropertiesChkAutoClean = CreateCheckBox(5, 105 + 5, 118, 15, FRMPropertiesPageEditor2, "Auto clear output", 47, 0, WS_TABSTOP, 0);
     FRMPropertiesChkMinimize = CreateCheckBox(5, 121 + 5, 118, 15, FRMPropertiesPageEditor2, "Minimize to systray", 48, 0, WS_TABSTOP, 0);
