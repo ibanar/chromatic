@@ -51,10 +51,6 @@ Editor:
 	- Double click on the 3rd mouse button can either select the entire line
 	  or select 2/3/4/etc. words on the left.
 
-Misc.
-
-	- Put a "toggle read only" option in windows list.
-
 ----------------------------------------------------------------------------------
 Dialog editor:
 
@@ -97,7 +93,8 @@ Coding help:
   (belongs to code completion).
 - Include windows structures in code completion.
 - Include user's procedures/variables in code completion.
-- Editor for the databases (or use them directly as text).
+- Editor for the databases (or use them directly as text)
+- Use SQLLITE for the databases.
 - Create a better auto-correction engine (not just case correction).
 
 Projects:

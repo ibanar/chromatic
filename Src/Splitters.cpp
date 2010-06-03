@@ -96,6 +96,7 @@ long InContextMenu;
 long StatusTextLarg;
 long DebugTextLarg;
 long StatusDebugMode;
+long PreviouslySelectedWindow;
 
 // -----------------------------------------------------------------------
 // Functions declarations
@@ -787,7 +788,12 @@ LRESULT CALLBACK WindowsContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 	HWND hTreeViewFrom = 0;
 	long TbTooltipId = 0;
     long DockState;
-
+    HMENU hPop;
+    POINT PopupPoint;
+    long CurrentLvItem;
+    CStr FileName;
+    int i;
+	
     switch(uMsg)
     {
 		case WM_PAINT:
@@ -815,14 +821,40 @@ LRESULT CALLBACK WindowsContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
         case WM_COMMAND:
             switch(wParam)
             {
-                case (WINDOWSTOOLBAR_PREVIOUS):
+                case WINDOWSTOOLBAR_PREVIOUS:
                     SetPreviousChildInList();
                     return(0);
-                case (WINDOWSTOOLBAR_NEXT):
+                case WINDOWSTOOLBAR_NEXT:
                     SetNextChildInList();
                     return(0);
-                case (WINDOWSTOOLBAR_RELOAD):
+                case WINDOWSTOOLBAR_RELOAD:
                     MCMD_Reload();
+                    return(0);
+                case MENU_WINDOWSBOX_TOGGLE_ID + MENU_WINDOWSBOX_IDBASE:
+
+                    // Toggle read only flag
+                    CurrentLvItem = ListViewGetSelItem(hWindowsListView, -1);
+                    if(CurrentLvItem != -1)
+                    {
+                        for(i = 0; i < ChildsLVPos.Amount(); i++)
+                        {
+                            if(ChildsLVPos.Get(i)->Content == CurrentLvItem)
+                            {
+                                // focus on selected window
+                                if(IsChildReadOnly(ChildshWnd.Get(i)->Content))
+                                {
+		                            SetChildReadOnly(ChildshWnd.Get(i)->Content, FALSE);
+                                }
+                                else
+                                {
+		                            SetChildReadOnly(ChildshWnd.Get(i)->Content, TRUE);
+                                }
+                                RefreshChildTitle(ChildshWnd.Get(i)->Content);
+					            break;
+                            }
+                        }
+                    }
+                    ListViewSetItemSel(hWindowsListView, PreviouslySelectedWindow);
                     return(0);
             }
 			break;
@@ -852,13 +884,21 @@ LRESULT CALLBACK WindowsContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 					}
 					return(0);
                 case NM_RCLICK:
-                    if(ControlGetNotifiedhWnd(lParam) == hWindowsListView) RefreshCurrentWindowFromList();
+                    // Create Contextual menu
+                    hPop = CreatePopupMenu();
+                    MenuAddString(hPop, "Toggle read only", MENU_WINDOWSBOX_TOGGLE_ID + MENU_WINDOWSBOX_IDBASE, TRUE);
+					GetCursorPos(&PopupPoint);
+                    TrackPopupMenu(hPop, TPM_LEFTALIGN + TPM_LEFTBUTTON, PopupPoint.x, PopupPoint.y, 0, hWnd, NULL);
 					return(0);
                 case NM_CLICK:
                     if(ControlGetNotifiedhWnd(lParam) == hWindowsListView) RefreshCurrentWindowFromList();
 					return(0);
             }
 			break;
+
+        case WM_EXITMENULOOP:
+			return(0);
+
 		case DOCKINGBOX_MSG_QUERY_STATE:
 			return(ShowWindowsDockWin);
 		case DOCKINGBOX_MSG_CLOSE:
@@ -3156,6 +3196,7 @@ void RefreshCurrentWindowFromList(void)
     long CurrentSelectedWindow = 0;
 
     CurrentSelectedWindow = ListViewGetSelItem(hWindowsListView, -1);
+    PreviouslySelectedWindow = CurrentSelectedWindow;
     if(CurrentSelectedWindow != -1)
     {
         for(i = 0; i < ChildsLVPos.Amount(); i++)
@@ -3227,6 +3268,7 @@ void SetPreviousChildInList(void)
     long CurrentSelectedWindow = 0;
 
     CurrentSelectedWindow = ListViewGetSelItem(hWindowsListView, -1);
+    PreviouslySelectedWindow = CurrentSelectedWindow;
     if(CurrentSelectedWindow != -1)
     {
         CurrentSelectedWindow--;
@@ -3256,6 +3298,7 @@ void SetNextChildInList(void)
     long CurrentSelectedWindow = 0;
 
     CurrentSelectedWindow = ListViewGetSelItem(hWindowsListView, -1);
+    PreviouslySelectedWindow = CurrentSelectedWindow;
     if(CurrentSelectedWindow != -1)
     {
         CurrentSelectedWindow++;

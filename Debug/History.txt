@@ -2,6 +2,14 @@ Chromatic history file
 Copyright (C) 2001-2010 Franck Charlet.
 
 --------------------------------------------------------------------------------
+Version 1.3.2
+
+- Fixed free pascal skin and example.
+- Added an option to display a requester before exiting.
+- Most icons should look better on Windows 7.
+- Added a toggle read only popup menu in Windows dock list.
+
+--------------------------------------------------------------------------------
 Version 1.3.1
 
 - Changed the behaviour of the filters menus, now each filters
@@ -2682,6 +2690,7 @@ Version 0.11:
                         %@ = Ask user for optional argument
 
         [FIX]   - Now handles linker error messages.
+
                 - MAsmEd will wont really close windows that are referenced
                   in project (just hide them).
 
@@ -2689,17 +2698,22 @@ Version 0.11:
 Version 0.10:
 
         [NEW]   - Added an option to save all opened files.
+
                 - Added project handler
                   (still early release: you can't edit/create forms or resources yet).
+
                 - Syntax highlighting editor is not yet implemented
                   but u can change all those ugly colors (!) in
                   languages.ini (keep the same format).
+
                 - Added a Web site menu (veeery important one!)
                   watch out for new coming releases at this url.
+
                 - Added Masm32 folders selection in properties.
 
         [FIX]   - Slight changes in modified texts handling
                   (for read-only and non-modified files).
+
                 - MAsmEd crashed when opening certains files with longnames.
 
 --------------------------------------------------------------------------------
@@ -2726,10 +2740,13 @@ Version 0.8:
 Version 0.7:
 
         [NEW]   - Added support for lines numbers (+associated color).
+
                 - Added "Delete to start of line" and "Delete to end of line" options.
+
                 - Mouse cursor turned off when a key is pressed in source windows.
 
         [FIX]   - Recent files list will not keep bad files anymore.
+
                 - Recent files list will be correctly updated even if
                   child windows are maximized (i forgot that one :).
 
@@ -2737,8 +2754,11 @@ Version 0.7:
 Version 0.6:
 
         [NEW]   - Added a popup menu in source windows for faster access.
+
                 - Added next/previous window option.
+
                 - Added a most recent files list.
+
                 - Created VBPointers.dll for more convenient coding.
 
         [FIX]   - Changed some "cosmetic" layouts with source windows.
@@ -2747,17 +2767,22 @@ Version 0.6:
 Version 0.5:
 
         [NEW]   - Added more edit commands (Delete group and Block group).
+
                 - Opened files can be redirected to only one instance of MAsmEd.
+
                 - Added a list for most recents arguments.
 
         [FIX]   - Set working directory option now uses standard shell requester.
+
                 - Fixed a bug with command user: starting directory was empty.
 
 --------------------------------------------------------------------------------
 Version 0.4:
 
         [NEW]   - Several GUI enhancements.
+
                 - Added some options in properties screen.
+
                 - Added include file option.
 
         [FIX]   - Completly new source windows handler.
@@ -2766,7 +2791,9 @@ Version 0.4:
 Version 0.3:
 
         [NEW]   - Added a Properties screen (not finished).
+
                 - Added a screen to edit user menus (not finished).
+
                 - Added optional arguments (%@) prompt.
 
         [FIX]   - User commands debugged (now work with multiple arguments).
@@ -2775,7 +2802,9 @@ Version 0.3:
 Version 0.2:
 
         [NEW]   - Added support for multiple windows.
+
                 - Added support for user commands.
+
                 - Added several minors functions.
 
 --------------------------------------------------------------------------------
