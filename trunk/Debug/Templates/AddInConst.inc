@@ -232,6 +232,9 @@ MENU_DEBUGBOX_NEW_ID            equ     2
 MENU_DEBUGBOX_EMPTY_ID          equ     3
 MENU_DEBUGBOX_GOTO_ID           equ     4
 
+; --- Windowsbox contextual menu
+MENU_WINDOWSBOX_TOGGLE_ID       equ     1
+
 ; --- Other interface constants
 ACCEL_BASE                      equ     9000
 MENU_SEPARATORS_ID              equ     -1
@@ -256,6 +259,8 @@ MENU_SNIPPET_IDBASE             equ     10000
 MENU_TEMPLATES_IDBASE           equ     10000
 MENU_CODEMAXIMA_IDBASE          equ     11000
 MENU_OUTBOX_IDBASE              equ     12000
+MENU_DEBUGBOX_IDBASE            equ     12500
+MENU_WINDOWSBOX_IDBASE          equ     12600
 MENU_SCRIPTINSERT_IDBASE        equ     13000
 SYSTRAY_MSG                     equ     14000
 MENU_SYSTRAY_RESTORE            equ     14001

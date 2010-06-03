@@ -2032,6 +2032,9 @@ LRESULT CALLBACK ClientProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             {
                 PosInListView = ListViewItemCount(hWindowsListView);
                 ListViewAddItem(hWindowsListView, ControlGetText((HWND) lParam), PosInListView, wParam);
+                // Keep it up to date
+                PreviouslySelectedWindow = ListViewGetSelItem(hWindowsListView, -1);
+                
                 FoundEmptyHwnd = 0;
                 // Search an empty position in childs handles array
                 for(i = 0; i < ChildshWnd.Amount(); i++)
@@ -2075,6 +2078,7 @@ LRESULT CALLBACK ClientProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                         {
                             ChildsLVPos.Set(j, ChildsLVPos.Get(j)->Content - 1);
                         }
+                        PreviouslySelectedWindow = ListViewGetSelItem(hWindowsListView, -1);
 						break;
                     }
                 }
@@ -2152,6 +2156,7 @@ void FocusOnActiveChild(void)
             {
                 // Modify datas
                 ListViewSetItemSel(hWindowsListView, ChildsLVPos.Get(i)->Content);
+                PreviouslySelectedWindow = ListViewGetSelItem(hWindowsListView, -1);
                 break;
             }
         }

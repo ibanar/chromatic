@@ -69,6 +69,7 @@ extern TV_HITTESTINFO TreeViewhitNew;
 extern long TVLeftCoord;
 extern long TVTopCoord;
 extern long InContextMenu;
+extern long PreviouslySelectedWindow;
 
 // -----------------------------------------------------------------------
 // Treeview popup menu constants
@@ -120,6 +121,8 @@ extern long InContextMenu;
 #define MENU_DEBUGBOX_NEW_ID 2
 #define MENU_DEBUGBOX_EMPTY_ID 3
 #define MENU_DEBUGBOX_GOTO_ID 4
+
+#define MENU_WINDOWSBOX_TOGGLE_ID 1
 
 // -----------------------------------------------------------------------
 // Functions declarations
