@@ -5269,8 +5269,12 @@ long CALLBACK MiscGetOSClass(void)
 			if(MyOsVersion.dwMajorVersion >= 6)
 			{
 				// Windows 7 (6.1)
-				if(MyOsVersion.dwPlatformId == VER_PLATFORM_WIN32_NT) Cl |= 8;
-			}
+				if(MyOsVersion.dwPlatformId == VER_PLATFORM_WIN32_NT)
+                {
+                    Cl |= 4;
+                    Cl |= 8;
+			    }
+            }
 			else
 			{
 				if(MyOsVersion.dwMinorVersion >= 1)

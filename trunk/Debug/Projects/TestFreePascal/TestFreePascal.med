@@ -21,10 +21,10 @@ LegalCopyright=(c) Copyright 2001-2004 Franck Charlet.
 LegalTradeMarks=
 ProductName=
 [LIBS]
-LIBRARY000=D:[INCLUDEDIR]\FPC[INCLUDEDIR]\2.4.0[INCLUDEDIR]\units[INCLUDEDIR]\i386-win32[INCLUDEDIR]\rtl[INCLUDEDIR]\windows.ppu
+LIBRARY000=[LIBDIR]\rtl\windows.ppu
 [MODULES]
-MODULE000=C:[INCLUDEDIR]\Src[INCLUDEDIR]\Pc[INCLUDEDIR]\chromatic[INCLUDEDIR]\Debug[INCLUDEDIR]\Projects[INCLUDEDIR]\TestFreePascal[INCLUDEDIR]\winhello.pp
+MODULE000=[PROJECTSDIR]\TestFreePascal\winhello.pp
 [Windows]
-Window000=C:[INCLUDEDIR]\Src[INCLUDEDIR]\Pc[INCLUDEDIR]\chromatic[INCLUDEDIR]\Debug[INCLUDEDIR]\Projects[INCLUDEDIR]\TestFreePascal[INCLUDEDIR]\winhello.pp
-Focus=C:[INCLUDEDIR]\Src[INCLUDEDIR]\Pc[INCLUDEDIR]\chromatic[INCLUDEDIR]\Debug[INCLUDEDIR]\Projects[INCLUDEDIR]\TestFreePascal[INCLUDEDIR]\winhello.pp
-FocusLine=14
+Window000=[PROJECTSDIR]\TestFreePascal\winhello.pp
+Focus=[PROJECTSDIR]\TestFreePascal\winhello.pp
+FocusLine=12

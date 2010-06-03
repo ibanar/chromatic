@@ -2503,6 +2503,7 @@ void CALLBACK WAMMGetContext(LPADDINCONTEXT VarsStruct)
     if(WindowsNT) VarsStruct->OSType = OSTYPE_WINDOWS_NT;
 	if(Windows2K) VarsStruct->OSType = OSTYPE_WINDOWS_2K;
     if(WindowsXP) VarsStruct->OSType = OSTYPE_WINDOWS_XP;
+    if(Windows7) VarsStruct->OSType = OSTYPE_WINDOWS_7;
 
 	if(FullScreenMode == 1) VarsStruct->FullScreenMode = 1;
     else VarsStruct->FullScreenMode = 0;
@@ -2575,6 +2576,7 @@ int CALLBACK WAMMGetContextElement(int Idx)
             if(WindowsNT) return(OSTYPE_WINDOWS_NT);
 	        if(Windows2K) return(OSTYPE_WINDOWS_2K);
             if(WindowsXP) return(OSTYPE_WINDOWS_XP);
+            if(Windows7) return(OSTYPE_WINDOWS_7);
             else return(OSTYPE_WINDOWS_9X);
 
         case 6:

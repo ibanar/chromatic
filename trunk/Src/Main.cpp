@@ -278,17 +278,16 @@ void InitAppVars(void)
 
 	Buttons_StaticEdge = WS_EX_STATICEDGE;
 	int OsType = MiscGetOSClass();
-	if(OsType & 1) WindowsNT = 1;
-	if(OsType & 2) Windows2K = 1;
-	if(OsType & 4)
+	if(OsType & OSTYPE_WINDOWS_NT) WindowsNT = TRUE;
+	if(OsType & OSTYPE_WINDOWS_2K) Windows2K = TRUE;
+	if(OsType & OSTYPE_WINDOWS_XP)
 	{
 		Buttons_StaticEdge = 0;
-		WindowsXP = 1;
+		WindowsXP = TRUE;
 	}
-	if(OsType & 8)
+	if(OsType & OSTYPE_WINDOWS_7)
 	{
-		Buttons_StaticEdge = 0;
-		WindowsXP = 1;
+		Windows7 = TRUE;
 	}
 
     // Fill the AddIns services datas

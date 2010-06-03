@@ -71,7 +71,8 @@
 #define OSTYPE_WINDOWS_9X 0
 #define OSTYPE_WINDOWS_NT 1
 #define OSTYPE_WINDOWS_2K 2
-#define OSTYPE_WINDOWS_XP 3
+#define OSTYPE_WINDOWS_XP 4
+#define OSTYPE_WINDOWS_7 8
 
 #define USE_SECURITY_DESCRIPTOR 1
 #define NO_SECURITY_DESCRIPTOR 0
@@ -399,6 +400,7 @@ extern long SBPosY[7 + 1];
 extern long WindowsNT;
 extern long Windows2K;
 extern long WindowsXP;
+extern long Windows7;
 
 extern long FullScreenMode;
 extern long SysTrayMode;

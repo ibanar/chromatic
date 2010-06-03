@@ -350,6 +350,7 @@ long SBPosY[7 + 1];
 long WindowsNT = 0;
 long Windows2K = 0;
 long WindowsXP = 0;
+long Windows7 = 0;
 
 long FullScreenMode;
 long SysTrayMode;

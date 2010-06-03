@@ -2,44 +2,6 @@
 
 #ifndef APSTUDIO_INVOKED
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// Version
-//
-#define VERSION_NUMS	1,0,0,0
-#define VERSION_STR	"1.0.0.0\0"
-
-VS_VERSION_INFO VERSIONINFO
- FILEVERSION VERSION_NUMS
- PRODUCTVERSION VERSION_NUMS
- FILEFLAGSMASK 0x3fL
- FILEFLAGS 0x0L
- FILEOS 0x4L
- FILETYPE 0x2L
- FILESUBTYPE 0x0L
-BEGIN
-    BLOCK "StringFileInfo"
-    BEGIN
-        BLOCK "040904b0"
-        BEGIN
-            VALUE "Comments", "CodeMax (Hacked version by Franck Charlet).\0"
-            VALUE "CompanyName", "WinMain Software (http://www.winmain.com)\0"
-            VALUE "FileDescription", "CMAXXX\0"
-            VALUE "FileVersion", VERSION_STR
-            VALUE "InternalName", "CMAXXX\0"
-            VALUE "LegalCopyright", "Copyright © 2001 Barry Allyn.\0"
-            VALUE "OriginalFilename", "CMAXXX.DLL\0"
-            VALUE "ProductName", "CodeMax\0"
-            VALUE "ProductVersion", VERSION_STR
-	    VALUE "OLESelfRegister", "\0"
-        END
-    END
-    BLOCK "VarFileInfo"
-    BEGIN
-        VALUE "Translation", 0x409, 1200
-    END
-END
-
 STRINGTABLE DISCARDABLE 
 BEGIN
 	CMD_WORDUPPERCASE			+ CMD_TO_STRING_OFFSET	"WordUpperCase"
