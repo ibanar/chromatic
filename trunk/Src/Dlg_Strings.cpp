@@ -95,12 +95,12 @@ int CALLBACK FRMStringsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
     long CurrentSelected = 0;
     CStr CurrentStringFromStrings;
     
-	switch(uMsg)
-	{
+    switch(uMsg)
+    {
         case WM_SYSCOLORCHANGE:
             ListViewSetBackColor(FRMStringsListview, GetSysColor(COLOR_WINDOW));
-			break;
-		case WM_INITDIALOG:
+            break;
+        case WM_INITDIALOG:
             ControlSetText(hwndDlg, StringsTitle);
             FRMStringshwnd = hwndDlg;
             hFRMStringsOk = CreateButton(251, 263, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
@@ -141,7 +141,7 @@ int CALLBACK FRMStringsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
             BeginPaint(hwndDlg, &EnterValuePs);
             GDIDrawHorzSep(hwndDlg, 0, 256, 410);
             EndPaint(hwndDlg, &EnterValuePs);
-			break;
+            break;
         case WM_NOTIFY:
             if(ControlGetNotifiedhWnd(lParam) == FRMStringsListview)
             {
@@ -168,7 +168,7 @@ int CALLBACK FRMStringsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
                         return(0);
                 }
             }
-			break;
+            break;
         case WM_COMMAND:
             if((HWND) lParam == hFRMStringsOk)
             {
@@ -188,8 +188,8 @@ int CALLBACK FRMStringsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
             {
                 ControlClose(hwndDlg);
                 return(0);
-			}
-			break;
+            }
+            break;
         case WM_CLOSE:
             FreezeTimer = 0;
             EndDialog(hwndDlg, 0);

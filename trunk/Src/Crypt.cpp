@@ -49,7 +49,7 @@ CStr CryptPassword(CStr PasswordToCrypt)
     CStr InKey2;
     CStr BufString;
 
-	CryptArray.MAdd(PasswordToCrypt.Len(), 0L);
+    CryptArray.MAdd(PasswordToCrypt.Len(), 0L);
     InKey = RegistryGetKeyValue(HKEY_LOCAL_MACHINE, "SYSTEM\\CurrentControlSet\\Control\\ComputerName\\ComputerName", "ComputerName");
     InKey2 = RegistryGetKeyValue(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer", "Logon User Name");
     if((InKey.Len() == 0) || (InKey2.Len() == 0))
@@ -73,7 +73,7 @@ CStr CryptPassword(CStr PasswordToCrypt)
         CryptArray.Set(i - 1, CryptArray.Get(i - 1)->Content ^ 911);
     }
     // Odd number of entries ?
-	if((CryptArray.Amount() & 1) != 0) CryptArray.Add(0L);
+    if((CryptArray.Amount() & 1) != 0) CryptArray.Add(0L);
     for(i = 0; i < CryptArray.Amount(); i = i + 2)
     {
         SwapVal = (CryptArray.Get(i + 1)->Content & 0xFF00) + (CryptArray.Get(i)->Content & 0xFF);
@@ -85,7 +85,7 @@ CStr CryptPassword(CStr PasswordToCrypt)
         BufString = StringNumberComplement(CryptArray.Get(i)->Content, 4) + BufString;
     }
     ReturnValue = BufString;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -100,9 +100,9 @@ CStr DecryptPassword(CStr PasswordToDeCrypt)
     long SwapVal = 0;
     CStr OutKey;
     CStr OutKey2;
-	CStr BufString;
+    CStr BufString;
 
-	CryptArray.MAdd(PasswordToDeCrypt.Len(), 0L);
+    CryptArray.MAdd(PasswordToDeCrypt.Len(), 0L);
     OutKey = RegistryGetKeyValue(HKEY_LOCAL_MACHINE, "SYSTEM\\CurrentControlSet\\Control\\ComputerName\\ComputerName", "ComputerName");
     OutKey2 = RegistryGetKeyValue(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer", "Logon User Name");
     if((OutKey.Len() == 0) || (OutKey2.Len() == 0))
@@ -140,5 +140,5 @@ CStr DecryptPassword(CStr PasswordToDeCrypt)
         j++;
     }
     ReturnValue = BufString;
-	return(ReturnValue);
+    return(ReturnValue);
 }

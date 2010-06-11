@@ -49,42 +49,42 @@ typedef struct _SNAPDLL
 {
     HANDLE hFile;
     LPVOID lpBaseOfDll;
-	CStr *DllName;
-	HTREEITEM TreeViewEntry;
+    CStr *DllName;
+    HTREEITEM TreeViewEntry;
 } SNAPDLL, *LPSNAPDLL;
 
 typedef struct _SNAPPROCESS
 {
-	HANDLE hFile;
-	HANDLE hProcess;
-	HANDLE hThread;
-	LPVOID hThreadLocalBase;
-	LPTHREAD_START_ROUTINE ThreadStartAddress;
-	CStr ImageName;
-	DWORD dwProcessId;
-	DWORD dwThreadId;
-	DWORD PriorityClass;
-	DWORD WorkSize1;
-	DWORD WorkSize2;
-	DWORD PriorityBoost;
-	DWORD ThreadPriorityBoost;
-	SYSTEMTIME CreationTime;
-	SYSTEMTIME ThreadCreationTime;
-	long ProcVersion;
-	long ProcMonitor;
-	long ThreadPriority;
-	LPVOID ImageBase;
-	HTREEITEM ProcessTreeViewEntry;
-	HTREEITEM DatasTreeViewEntry;
-	long SymbolsLoaded;
-	CONTEXT LastContext;
+    HANDLE hFile;
+    HANDLE hProcess;
+    HANDLE hThread;
+    LPVOID hThreadLocalBase;
+    LPTHREAD_START_ROUTINE ThreadStartAddress;
+    CStr ImageName;
+    DWORD dwProcessId;
+    DWORD dwThreadId;
+    DWORD PriorityClass;
+    DWORD WorkSize1;
+    DWORD WorkSize2;
+    DWORD PriorityBoost;
+    DWORD ThreadPriorityBoost;
+    SYSTEMTIME CreationTime;
+    SYSTEMTIME ThreadCreationTime;
+    long ProcVersion;
+    long ProcMonitor;
+    long ThreadPriority;
+    LPVOID ImageBase;
+    HTREEITEM ProcessTreeViewEntry;
+    HTREEITEM DatasTreeViewEntry;
+    long SymbolsLoaded;
+    CONTEXT LastContext;
 } SNAPPROCESS, *LPSNAPPROCESS;
 
 typedef struct _SNAPBP
 {
-	DWORD Address;
-	BYTE OldByte;
-	int BPType;
+    DWORD Address;
+    BYTE OldByte;
+    int BPType;
 } SNAPBP, *LPSNAPBP;
 
 // -----------------------------------------------------------------------

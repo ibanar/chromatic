@@ -48,12 +48,12 @@ CStr InitRetVal;
 long ReadIniFile(void)
 {
     int i = 0;
-	long ReturnValue = 0;
+    long ReturnValue = 0;
     CStr TmpSysDir;
     CStr TmpExt;
     CStr BufString;
-	
-	RegisteredExts.Erase();
+    
+    RegisteredExts.Erase();
     // Read registered extensions
     for(i = 0; i <= 999; i++)
     {
@@ -67,21 +67,21 @@ long ReadIniFile(void)
     NotifiedCurrentdir = "";
     CurrentDir = AppPath;
     InitRetVal = IniReadKey("Dirs", "WORKDIR", MainIniFile);
-	// Should be empty at first install: take application directory
-	if(InitRetVal.Len() == 0) InitRetVal = AppPath;
+    // Should be empty at first install: take application directory
+    if(InitRetVal.Len() == 0) InitRetVal = AppPath;
     if(InitRetVal.Len() != 0)
     {
         CurrentDir = InitRetVal;
         ChDrive(CurrentDir);
         if(ChDir(CurrentDir) == 0)
         {
-			NotifiedCurrentdir = CurrentDir;
-			ReturnValue = 1;
-			CurrentDir = "c:\\";
-			IniWriteKey("Dirs", "WORKDIR", CurrentDir, MainIniFile);
-			ChDrive(CurrentDir);
-			ChDir(CurrentDir);
-		}
+            NotifiedCurrentdir = CurrentDir;
+            ReturnValue = 1;
+            CurrentDir = "c:\\";
+            IniWriteKey("Dirs", "WORKDIR", CurrentDir, MainIniFile);
+            ChDrive(CurrentDir);
+            ChDir(CurrentDir);
+        }
     } 
 
     // Fill others directories + directories names replacements
@@ -97,80 +97,80 @@ long ReadIniFile(void)
     Dirs[DIR_HELP] = strdup(IniReadKey("Dirs", DirsRepl[DIR_HELP], MainIniFile).Get_String());
     DirsRepl[DIR_PROJECTS] = "PROJECTSDIR";
     Dirs[DIR_PROJECTS] = strdup(IniReadKey("Dirs", DirsRepl[DIR_PROJECTS], MainIniFile).Get_String());
-	// Perform a sanity check on the retrieved directory
+    // Perform a sanity check on the retrieved directory
     if(strlen(Dirs[DIR_PROJECTS]) == 0 || FileIsDirectory(Dirs[DIR_PROJECTS]) == 0)
     {
-		free(Dirs[DIR_PROJECTS]);
-		// Set default projects directory
-		BufString = AppPath + (CStr) "\\Projects";
-		Dirs[DIR_PROJECTS] = strdup(BufString.Get_String());
-		// Update project dir
-		// Note: at first install this directory must be empty.
-		// (So it points to the correct one)
-		IniWriteKey("Dirs", "PROJECTSDIR", BufString, MainIniFile);
+        free(Dirs[DIR_PROJECTS]);
+        // Set default projects directory
+        BufString = AppPath + (CStr) "\\Projects";
+        Dirs[DIR_PROJECTS] = strdup(BufString.Get_String());
+        // Update project dir
+        // Note: at first install this directory must be empty.
+        // (So it points to the correct one)
+        IniWriteKey("Dirs", "PROJECTSDIR", BufString, MainIniFile);
     }
     
-	// Application directory
+    // Application directory
     Dirs[DIR_MAIN] = strdup(AppPath.Get_String());
     DirsRepl[DIR_MAIN] = "MAINDIR";
     IniWriteKey("Dirs", "MAINDIR", Dirs[DIR_MAIN], MainIniFile);
     
-	BufString = AppPath + (CStr) "\\Tools";
-	Dirs[DIR_TOOLS] = strdup(BufString.Get_String());
+    BufString = AppPath + (CStr) "\\Tools";
+    Dirs[DIR_TOOLS] = strdup(BufString.Get_String());
     DirsRepl[DIR_TOOLS] = "TOOLSDIR";
     IniWriteKey("Dirs", "TOOLSDIR", Dirs[DIR_TOOLS], MainIniFile);
 
-	BufString = AppPath + (CStr) "\\Templates";
-	Dirs[DIR_TEMPLATES] = strdup(BufString.Get_String());
+    BufString = AppPath + (CStr) "\\Templates";
+    Dirs[DIR_TEMPLATES] = strdup(BufString.Get_String());
     DirsRepl[DIR_TEMPLATES] = "TEMPLATESDIR";
     IniWriteKey("Dirs", "TEMPLATESDIR", Dirs[DIR_TEMPLATES], MainIniFile);
 
-	BufString = AppPath + (CStr) "\\Help";
+    BufString = AppPath + (CStr) "\\Help";
     Dirs[DIR_MAINHELP] = strdup(BufString.Get_String());
     DirsRepl[DIR_MAINHELP] = "MAINHELPDIR";
     IniWriteKey("Dirs", "MAINHELPDIR", Dirs[DIR_MAINHELP], MainIniFile);
 
-	BufString = AppPath + (CStr) "\\Snippets";
+    BufString = AppPath + (CStr) "\\Snippets";
     Dirs[DIR_SNIPPETS] = strdup(BufString.Get_String());
     DirsRepl[DIR_SNIPPETS] = "SNIPPETSDIR";
     IniWriteKey("Dirs", "SNIPPETSDIR", Dirs[DIR_SNIPPETS], MainIniFile);
 
-	BufString = AppPath + (CStr) "\\Databases";
+    BufString = AppPath + (CStr) "\\Databases";
     Dirs[DIR_DATABASES] = strdup(BufString.Get_String());
     DirsRepl[DIR_DATABASES] = "DATABASESDIR";
     IniWriteKey("Dirs", "DATABASESDIR", Dirs[DIR_DATABASES], MainIniFile);
 
-	BufString = AppPath + (CStr) "\\Skins";
+    BufString = AppPath + (CStr) "\\Skins";
     Dirs[DIR_SKINS] = strdup(BufString.Get_String());
     DirsRepl[DIR_SKINS] = "SKINSDIR";
     IniWriteKey("Dirs", "SKINSDIR", Dirs[DIR_SKINS], MainIniFile);
 
-	BufString = AppPath + (CStr) "\\Languages";
+    BufString = AppPath + (CStr) "\\Languages";
     Dirs[DIR_LANGUAGES] = strdup(BufString.Get_String());
     DirsRepl[DIR_LANGUAGES] = "LANGUAGESDIR";
     IniWriteKey("Dirs", "LANGUAGESDIR", Dirs[DIR_LANGUAGES], MainIniFile);
     
-	BufString = AppPath + (CStr) "\\Languages\\Scripts";
+    BufString = AppPath + (CStr) "\\Languages\\Scripts";
     Dirs[DIR_LANGSCRIPTS] = strdup(BufString.Get_String());
     DirsRepl[DIR_LANGSCRIPTS] = "LANGSCRIPTSDIR";
     IniWriteKey("Dirs", "LANGSCRIPTSDIR", Dirs[DIR_LANGSCRIPTS], MainIniFile);
 
-	BufString = AppPath + (CStr) "\\Downloads";
-	Dirs[DIR_DOWNLOADS] = strdup(BufString.Get_String());
+    BufString = AppPath + (CStr) "\\Downloads";
+    Dirs[DIR_DOWNLOADS] = strdup(BufString.Get_String());
     DirsRepl[DIR_DOWNLOADS] = "DOWNLOADSDIR";
     IniWriteKey("Dirs", "DOWNLOADSDIR", Dirs[DIR_DOWNLOADS], MainIniFile);
     
-	BufString = AppPath + (CStr) "\\AddIns";
-	Dirs[DIR_ADDINS] = strdup(BufString.Get_String());
+    BufString = AppPath + (CStr) "\\AddIns";
+    Dirs[DIR_ADDINS] = strdup(BufString.Get_String());
     DirsRepl[DIR_ADDINS] = "ADDINSDIR";
     IniWriteKey("Dirs", "ADDINSDIR", Dirs[DIR_ADDINS], MainIniFile);
     
-	BufString = AppPath + (CStr) "\\Config";
+    BufString = AppPath + (CStr) "\\Config";
     Dirs[DIR_CONFIG] = strdup(BufString.Get_String());
     DirsRepl[DIR_CONFIG] = "CONFIGDIR";
     IniWriteKey("Dirs", "CONFIGDIR", Dirs[DIR_CONFIG], MainIniFile);
     
-	BufString = Dirs[DIR_CONFIG] + (CStr) "\\UserMenus";
+    BufString = Dirs[DIR_CONFIG] + (CStr) "\\UserMenus";
     Dirs[DIR_MENUS] = strdup(BufString.Get_String());
     DirsRepl[DIR_MENUS] = "MENUSDIR";
     IniWriteKey("Dirs", "MENUSDIR", Dirs[DIR_MENUS], MainIniFile);
@@ -219,10 +219,10 @@ long ReadIniFile(void)
     IniWriteKey("Databases", "WinConst", APIConstFile, MainIniFile);
     APIConstFile = ChangeRelativePaths(APIConstFile);
 
-	// Set default value
+    // Set default value
     TipFileName = Dirs[DIR_MAIN] + (CStr) "\\Tips.txt";
     // Or take the one found ini main.ini
-	InitRetVal = IniReadKey("Layout", "TipsFile", MainIniFile);
+    InitRetVal = IniReadKey("Layout", "TipsFile", MainIniFile);
     if(InitRetVal.Len() != 0) TipFileName = InitRetVal;
     TipFileName = ChangeRelativePaths(TipFileName);
     
@@ -232,7 +232,7 @@ long ReadIniFile(void)
     // Retrieve windows directory
     TmpSysDir = TmpSysDir.String(MAX_PATH, 1);
     GetWindowsDirectory(TmpSysDir.Get_String(), MAX_PATH);
-	DirsRepl[DIR_WIN] = "WINDIR";
+    DirsRepl[DIR_WIN] = "WINDIR";
     Dirs[DIR_WIN] = "";
     if(TmpSysDir.Len() != 0)
     {
@@ -258,7 +258,7 @@ long ReadIniFile(void)
     {
         if(strcmp(TmpSysDir.Right(1).Get_String(), "\\") == 0) Dirs[DIR_TEMP] = strdup(TmpSysDir.Left(TmpSysDir.Len() - 1).Get_String());
         else Dirs[DIR_TEMP] = strdup(TmpSysDir.Get_String());
-		Dirs[DIR_TEMP] = strdup(TmpSysDir.Get_String());
+        Dirs[DIR_TEMP] = strdup(TmpSysDir.Get_String());
     }
     
     // Read various layouts
@@ -266,27 +266,27 @@ long ReadIniFile(void)
     InitRetVal = IniReadKey("Layout", "StatusBar", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "0") == 0) ShowStatusbar = 0;
     
-	ShowProjetDockWin = 1;
+    ShowProjetDockWin = 1;
     InitRetVal = IniReadKey("Layout", "DockProjectVisible", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "0") == 0) ShowProjetDockWin = 0;
 
-	ShowWindowsDockWin = 1;
+    ShowWindowsDockWin = 1;
     InitRetVal = IniReadKey("Layout", "DockWindowsVisible", MainIniFile);
-	if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "0") == 0) ShowWindowsDockWin = 0;
+    if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "0") == 0) ShowWindowsDockWin = 0;
 
-	ShowOutputDockWin = 1;
+    ShowOutputDockWin = 1;
     InitRetVal = IniReadKey("Layout", "DockOutputVisible", MainIniFile);
-	if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "0") == 0) ShowOutputDockWin = 0;
+    if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "0") == 0) ShowOutputDockWin = 0;
 
-	ShowDebugDockWin = 1;
+    ShowDebugDockWin = 1;
     InitRetVal = IniReadKey("Layout", "DockDebugVisible", MainIniFile);
-	if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "0") == 0) ShowDebugDockWin = 0;
+    if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "0") == 0) ShowDebugDockWin = 0;
     
-	ShowRegistersDockWin = 1;
+    ShowRegistersDockWin = 1;
     InitRetVal = IniReadKey("Layout", "DockRegistersVisible", MainIniFile);
-	if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "0") == 0) ShowRegistersDockWin = 0;
+    if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "0") == 0) ShowRegistersDockWin = 0;
     
-	LeftM = 0;
+    LeftM = 0;
     InitRetVal = IniReadKey("Layout", "Margin", MainIniFile);
     if(InitRetVal.Len() != 0) if(strcmpi(InitRetVal.Get_String(), "1") == 0) LeftM = 1;
     White = 0;
@@ -367,7 +367,7 @@ long ReadIniFile(void)
     LnStyle = 0;
     InitRetVal = IniReadKey("Layout", "LinesStyle", MainIniFile);
     if(InitRetVal.Len() != 0) LnStyle = InitRetVal.Get_Long();
-	LnStart = 0;
+    LnStart = 0;
     InitRetVal = IniReadKey("Layout", "LinesStart", MainIniFile);
     if(InitRetVal.Len() != 0) LnStart = InitRetVal.Get_Long();
     AutoMaximizeChilds = 0;
@@ -415,8 +415,8 @@ long ReadIniFile(void)
     InitRetVal = ChangeRelativePaths(InitRetVal);
     if(InitRetVal.Len() != 0) UserMenusIniFile = InitRetVal;
     if(FileExist(UserMenusIniFile) == 0) UserMenusIniFile = AppPath + "\\Config\\UserMenus\\Default.ume";
-	UpdateResFiltersIni();
-	return(ReturnValue);
+    UpdateResFiltersIni();
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------

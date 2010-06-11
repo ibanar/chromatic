@@ -68,8 +68,8 @@ int CALLBACK FRMFilesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         case WM_SYSCOLORCHANGE:
             ListViewSetBackColor(FRMFilesListview, GetSysColor(COLOR_WINDOW));
-			break;
-		case WM_INITDIALOG:
+            break;
+        case WM_INITDIALOG:
             InSelFile = 1;
             FRMFilesChoice = IDCANCEL;
             ControlSetText(hwndDlg, FRMFilesTitle);
@@ -80,20 +80,20 @@ int CALLBACK FRMFilesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     FRMFilesCmdCancel = CreateButton(324, 25, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
                     FRMFilesCmdSelAll = CreateButton(324, 51, 77, 23, hwndDlg, "Select all", 4, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
                     FRMFilesCmdUnSelAll = CreateButton(324, 75, 77, 23, hwndDlg, "Unselect all", 5, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-					break;
-				case FILESSCHEME_INTERNMODIFIED:
+                    break;
+                case FILESSCHEME_INTERNMODIFIED:
                     FRMFilesCmdYes = CreateButton(324, 1, 77, 23, hwndDlg, "Yes", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_GROUP, Buttons_StaticEdge);
                     FRMFilesCmdNo = CreateButton(324, 25, 77, 23, hwndDlg, "No", 3, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
                     FRMFilesCmdCancel = CreateButton(324, 49, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
                     FRMFilesCmdSelAll = CreateButton(324, 75, 77, 23, hwndDlg, "Select all", 4, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
                     FRMFilesCmdUnSelAll = CreateButton(324, 99, 77, 23, hwndDlg, "Unselect all", 5, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-					break;
+                    break;
                 case FILESSCHEME_AUTOSAVE:
                     FRMFilesCmdYes = CreateButton(324, 1, 77, 23, hwndDlg, "Save", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_GROUP, Buttons_StaticEdge);
                     FRMFilesCmdCancel = CreateButton(324, 25, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
                     FRMFilesCmdSelAll = CreateButton(324, 51, 77, 23, hwndDlg, "Select all", 4, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
                     FRMFilesCmdUnSelAll = CreateButton(324, 75, 77, 23, hwndDlg, "Unselect all", 5, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-					break;
+                    break;
             }
             FRMFilesListview = CreateListView(2, 2, 319, 240, hwndDlg, 6, 0, 0, LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | LVS_NOCOLUMNHEADER | WS_TABSTOP, WS_EX_STATICEDGE);
             ListViewAddCol(FRMFilesListview, "", 320, 0);
@@ -116,7 +116,7 @@ int CALLBACK FRMFilesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                         return(0);
                 }
             }
-			break;
+            break;
         case WM_COMMAND:
             if((HWND) lParam == FRMFilesCmdSelAll)
             {
@@ -152,7 +152,7 @@ int CALLBACK FRMFilesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 ControlClose(hwndDlg);
                 return(0);
             }
-			break;
+            break;
         case WM_CLOSE:
             FillFilesSelArray();
             FreezeTimer = 0;
@@ -176,23 +176,23 @@ long FillFilesList(HDC hDC)
     {
         if(ModifiedArrayhWnd.Get(i)->Content)
         {
-			ChildStruct = LoadStructure(ModifiedArrayhWnd.Get(i)->Content);
-			FileName = CMGetRealFile(ChildStruct->RFile);
-			ListViewAddItem(FRMFilesListview, FileName, i + 1, 0);
-			ListViewSetItemCheckbox(FRMFilesListview, i, 1);
+            ChildStruct = LoadStructure(ModifiedArrayhWnd.Get(i)->Content);
+            FileName = CMGetRealFile(ChildStruct->RFile);
+            ListViewAddItem(FRMFilesListview, FileName, i + 1, 0);
+            ListViewSetItemCheckbox(FRMFilesListview, i, 1);
         }
         else
         {
-			FileName = ProjectFName;
-			ListViewAddItem(FRMFilesListview, FileName, i + 1, 0);
-			ListViewSetItemCheckbox(FRMFilesListview, i, 1);
-		}
-		// Get filename len to adapt listview control
-		OldFontObj = SelectObject(hDC, WASerifFont);
-		GetTextExtentPoint32(hDC, FileName.Get_String(), FileName.Len(), &FileNameSize);
-		SelectObject(hDC, OldFontObj);
-		if((long) ReturnValue < (long) (FileNameSize.cx + 30)) ReturnValue = (FileNameSize.cx + 30);
-   	}
+            FileName = ProjectFName;
+            ListViewAddItem(FRMFilesListview, FileName, i + 1, 0);
+            ListViewSetItemCheckbox(FRMFilesListview, i, 1);
+        }
+        // Get filename len to adapt listview control
+        OldFontObj = SelectObject(hDC, WASerifFont);
+        GetTextExtentPoint32(hDC, FileName.Get_String(), FileName.Len(), &FileNameSize);
+        SelectObject(hDC, OldFontObj);
+        if((long) ReturnValue < (long) (FileNameSize.cx + 30)) ReturnValue = (FileNameSize.cx + 30);
+    }
     return(ReturnValue);
 }
 
@@ -202,8 +202,8 @@ void FillFilesSelArray(void)
 {
     int i = 0;
     
-	for(i = 0; i < FRMFilesSelArray.Amount(); i++)
-	{
+    for(i = 0; i < FRMFilesSelArray.Amount(); i++)
+    {
         if(ListViewGetItemCheckbox(FRMFilesListview, i) == 1) FRMFilesSelArray.Set(i, 1);
     }
 }

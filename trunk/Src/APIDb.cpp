@@ -94,12 +94,12 @@ CStr RetrieveAPI(void)
     long FoundLibLen = 0;
     CStr BufString;
 
-	APIInfosLib = 0;
+    APIInfosLib = 0;
     APiLib = GetApiDescription(APIFile.Get_String(), LibToFind.Get_String());
     if(APiLib != 0)
     {
         FoundLibLen = strlen(APiLib);
-		APIFuckStrLib = APIFuckStrLib.String(FoundLibLen + 1, 1);
+        APIFuckStrLib = APIFuckStrLib.String(FoundLibLen + 1, 1);
         RtlCopyMemory(APIFuckStrLib.Get_String(), (void *) APiLib, FoundLibLen);
         APIBlockLib = StringSplit(APIFuckStrLib, "^^");
         if(StringGetSplitUBound(APIBlockLib) != -1)
@@ -116,7 +116,7 @@ CStr RetrieveAPI(void)
                 }
                 // Not found: release it
                 StringReleaseSplit(APIInfosLib);
-				APIInfosLib = 0;
+                APIInfosLib = 0;
             }
             if(FoundLib == 1) BufString = StringGetSplitElement(FirstSplit, APIInfosLib, 1);
         }
@@ -124,7 +124,7 @@ CStr RetrieveAPI(void)
         StringReleaseSplit(APIBlockLib);
         StringReleaseSplit((long *) APiLib);
     }
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -140,7 +140,7 @@ CStr DisplayAPI(long dx, long dy)
     int i = 0;
     int j = 0;
     long FoundLibLen = 0;
-	CStr BufString;
+    CStr BufString;
 
     APIX = 0;
     APIY = 0;
@@ -148,7 +148,7 @@ CStr DisplayAPI(long dx, long dy)
     if(APIDescription != 0)
     {
         FoundLibLen = strlen(APIDescription);
-		APIFuckStr = APIFuckStr.String(FoundLibLen + 1, 1);
+        APIFuckStr = APIFuckStr.String(FoundLibLen + 1, 1);
         RtlCopyMemory(APIFuckStr.Get_String(), (void *) APIDescription, FoundLibLen);
         APIBlock = StringSplit(APIFuckStr, "^^");
         APIFound = 0;
@@ -165,7 +165,7 @@ CStr DisplayAPI(long dx, long dy)
                 }
                 // Not found: release it
                 StringReleaseSplit(APIInfos);
-				APIInfos = 0;
+                APIInfos = 0;
             }
             StringReleaseSplit(APIBlock);
             if(APIFound == 1)
@@ -191,9 +191,9 @@ CStr DisplayAPI(long dx, long dy)
                     i = j + i;
                     StArgs = StArgs + "\r\n";
                 }
-				if(strcmp(StArgs.Right(3).Get_String(), ",\r\n") == 0) StArgs = StArgs.Left(StArgs.Len() - 3).Get_String() + (CStr) "\r\n";
+                if(strcmp(StArgs.Right(3).Get_String(), ",\r\n") == 0) StArgs = StArgs.Left(StArgs.Len() - 3).Get_String() + (CStr) "\r\n";
 NoArgs:         
-				APIString = "Function: " + (CStr) StringGetSplitElement(FirstSplit, APIInfos, 0).Get_String() + (CStr) "\r\n";
+                APIString = "Function: " + (CStr) StringGetSplitElement(FirstSplit, APIInfos, 0).Get_String() + (CStr) "\r\n";
                 APIString = APIString + "Import lib: " + (CStr) StringGetSplitElement(FirstSplit, APIInfos, 1).Get_String() + (CStr) "\r\n";
                 APIString = APIString + "Return: " + (CStr) StringGetSplitElement(FirstSplit, APIInfos, 2).Get_String() + (CStr) "\r\n";
                 if(StringGetSplitUBound(APIArgs) == 0) if(strcmp(StringGetSplitElement(SecondSplit, APIArgs, 0).Get_String(), "-") == 0) goto NoStoreArgs;
@@ -224,11 +224,11 @@ StoreArgs:      MaxAPIArgs = StringGetSplitUBound(APIArgs);
                 // Save API name
                 BufString = StringGetSplitElement(FirstSplit, APIInfos, 0);
             }
-			if(APIInfosLib != 0) StringReleaseSplit(APIInfos);
+            if(APIInfosLib != 0) StringReleaseSplit(APIInfos);
         }
         FreeMem((long) APIDescription);
     }
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -240,20 +240,20 @@ CStr RetrieveAPIName(CStr APIFncN)
     CStr ReturnValue;
     char *MaxName = 0;
     char *MaxName2 = 0;
-	CStr BufString;
+    CStr BufString;
 
     if((UseDbFnc == 0) && (UseDbConst == 0)) return(ReturnValue);
-	APIInfosName = 0;
+    APIInfosName = 0;
     if(FncBase != 0) if(UseDbFnc == 1) MaxName = GetAPIKeywordToCorrect(FncBase,APIFncN.Get_String());
     if(ConstBase != 0) if(UseDbConst == 1) MaxName2 = GetAPIKeywordToCorrect(ConstBase,APIFncN.Get_String());
     if((MaxName != 0) || (MaxName2 != 0))
     {
-		// found in functions database ?
-		if(MaxName != 0) BufString = MaxName;
-		// found in constants database ?
-		if(MaxName2 != 0) BufString = MaxName2;
-	}
-	ReturnValue = BufString;
+        // found in functions database ?
+        if(MaxName != 0) BufString = MaxName;
+        // found in constants database ?
+        if(MaxName2 != 0) BufString = MaxName2;
+    }
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -272,7 +272,7 @@ void DisplayAPIWindow(long dx, long dy, HWND hWnd, CStr APIFncN)
     APIListWidth = 0;
     APIListHeight = 1;
     CreateSplashDialog(dx, dy, APIListWidth, APIListHeight, "", ChildStruct->hChildCodeMax, NULL, NULL, &FRMAPIListInitProc, &FRMAPIListWinHook, 0, 0, SW_HIDE);
-	ListBoxReset(APIhListBox);
+    ListBoxReset(APIhListBox);
     if(FncBase != 0) if(UseDbFnc == 1) MaxName = FillAPIListBox(APIhListBox, FncBase);
     if(ConstBase != 0) if(UseDbConst == 1) MaxName2 = FillAPIListBox(APIhListBox, ConstBase);
     if(MaxName2 > MaxName) MaxName = MaxName2;

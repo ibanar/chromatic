@@ -66,10 +66,10 @@ long IncreaseTipLine(long CurrentLineNumber);
 // Display form
 void DisplayTip(HWND hParent)
 {
-	if(LoadTipFile() == 0) return;
-	TipNumberToDisplay = GetRandomTipLine();
-	CreateModalDialog(-1, -1, 354, 250, hParent, &FRMTipProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
-	return;
+    if(LoadTipFile() == 0) return;
+    TipNumberToDisplay = GetRandomTipLine();
+    CreateModalDialog(-1, -1, 354, 250, hParent, &FRMTipProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
+    return;
 }
 
 // -----------------------------------------------------------------------
@@ -77,8 +77,8 @@ void DisplayTip(HWND hParent)
 int CALLBACK FRMTipProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     PAINTSTRUCT TipPs;
-	int i = 0;
-	CStr TipsIniKey;
+    int i = 0;
+    CStr TipsIniKey;
 
     switch(uMsg)
     {
@@ -87,42 +87,42 @@ int CALLBACK FRMTipProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             ControlSetText(hwndDlg, "Tip of the day");
             hFRMTipTip = CreateLabel(0, 0, 354, 217, hwndDlg, "", 0, &FrmTipLabelHook, 0, 0);
             hFRMTipDetails = CreateLabel(39, 44, 354 - 49, 217 - 50, hwndDlg, ParseTipLine(TipNumberToDisplay), 0, 0, 0, 0);
-			hFRMTipNextTip = CreateButton(195, 224, 77, 23, hwndDlg, "Next tip", 3, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+            hFRMTipNextTip = CreateButton(195, 224, 77, 23, hwndDlg, "Next tip", 3, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
             hFRMTipClose = CreateButton(274, 224, 77, 23, hwndDlg, "Close", 2, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
             hFRMTipShow = CreateCheckBox(8, 226, 117, 19, hwndDlg, "Show tips on startup", 3, 0, WS_TABSTOP, 0);
-			TipsIniKey = IniReadKey("Layout", "ShowTips", MainIniFile);
-			if(TipsIniKey.Len() != 0) CheckBoxSetState(hFRMTipShow, TipsIniKey.Get_Long());
-			else CheckBoxSetState(hFRMTipShow, 1);
-			hFRMTipBigFont = GDIObtainFont("MS Sans Serif", 9, 0, 1, 0);
-	        FreezeTimer = 1;
+            TipsIniKey = IniReadKey("Layout", "ShowTips", MainIniFile);
+            if(TipsIniKey.Len() != 0) CheckBoxSetState(hFRMTipShow, TipsIniKey.Get_Long());
+            else CheckBoxSetState(hFRMTipShow, 1);
+            hFRMTipBigFont = GDIObtainFont("MS Sans Serif", 9, 0, 1, 0);
+            FreezeTimer = 1;
             return(0);
         case WM_PAINT:
             BeginPaint(hwndDlg, &TipPs);
             GDIDrawHorzSep(hwndDlg, 0, 217, 354);
-			EndPaint(hwndDlg, &TipPs);
-			break;
+            EndPaint(hwndDlg, &TipPs);
+            break;
         case WM_CTLCOLORSTATIC:
-			if((HWND) lParam != hFRMTipDetails) break;
-			SetBkColor((HDC) wParam, GetSysColor(COLOR_WINDOW));
-			return((int) GetSysColorBrush(COLOR_WINDOW));
-		case WM_COMMAND:
+            if((HWND) lParam != hFRMTipDetails) break;
+            SetBkColor((HDC) wParam, GetSysColor(COLOR_WINDOW));
+            return((int) GetSysColorBrush(COLOR_WINDOW));
+        case WM_COMMAND:
             if((HWND) lParam == hFRMTipNextTip)
             {
-				TipNumberToDisplay = IncreaseTipLine(TipNumberToDisplay);
-				ControlSetText(hFRMTipDetails, ParseTipLine(TipNumberToDisplay));
+                TipNumberToDisplay = IncreaseTipLine(TipNumberToDisplay);
+                ControlSetText(hFRMTipDetails, ParseTipLine(TipNumberToDisplay));
                 return(0);
             }
-			else if((HWND) lParam == hFRMTipClose)
-			{
+            else if((HWND) lParam == hFRMTipClose)
+            {
                 ControlClose(hwndDlg);
                 return(0);
-			}
-			break;
+            }
+            break;
         case WM_CLOSE:
-			if(hFRMTipBigFont != 0) DeleteObject(hFRMTipBigFont);
-			IniWriteKey("Layout", "ShowTips", CheckBoxGetState(hFRMTipShow), MainIniFile);
-			FreeMem(TipFile);
-			FreezeTimer = 0;
+            if(hFRMTipBigFont != 0) DeleteObject(hFRMTipBigFont);
+            IniWriteKey("Layout", "ShowTips", CheckBoxGetState(hFRMTipShow), MainIniFile);
+            FreeMem(TipFile);
+            FreezeTimer = 0;
             EndDialog(hwndDlg, 0);
     }
     return(0);
@@ -132,21 +132,21 @@ int CALLBACK FRMTipProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 // Tip header label hook
 LRESULT CALLBACK FrmTipLabelHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	HICON TipIcon;
+    HICON TipIcon;
     PAINTSTRUCT TipPs;
 
     switch(uMsg)
     {
         case WM_ERASEBKGND:
-			GDIFillWindow(hWnd, GetSysColor(COLOR_WINDOW));
-			return(1);
+            GDIFillWindow(hWnd, GetSysColor(COLOR_WINDOW));
+            return(1);
         case WM_PAINT:
             BeginPaint(hWnd, &TipPs);
-			TipIcon = LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_LIGHT));
+            TipIcon = LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_LIGHT));
             DrawIconEx(TipPs.hdc, 4, 8, TipIcon, 0, 0, 0, 0, DI_NORMAL);
-			GDIWriteText(TipPs.hdc, 39, 17, "DON'T PANIC !" , GetSysColor(COLOR_WINDOWTEXT), hFRMTipBigFont, 1, 0);
-			EndPaint(hWnd, &TipPs);
-			break;
+            GDIWriteText(TipPs.hdc, 39, 17, "DON'T PANIC !" , GetSysColor(COLOR_WINDOWTEXT), hFRMTipBigFont, 1, 0);
+            EndPaint(hWnd, &TipPs);
+            break;
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
@@ -155,36 +155,36 @@ LRESULT CALLBACK FrmTipLabelHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 // Parse a line from the tips file
 CStr ParseTipLine(long LineNumber)
 {
-	CStr ReturnValue;
-	CStr BufString;
-	int i = 0;
-	int InSlash = 0;
-	char *TipLineAddress;
+    CStr ReturnValue;
+    CStr BufString;
+    int i = 0;
+    int InSlash = 0;
+    char *TipLineAddress;
 
-	TipLineAddress = GetFileLineAddress((char *) TipFile, TipFileLen, LineNumber);
-	while(TipLineAddress[i] != '\r' && TipLineAddress[i] != '\n' && i != TipFileLen && TipLineAddress[i] != 0)
-	{
-		if(TipLineAddress[i] == '\\')
-		{
-			InSlash = 1;
-		}
-		else
-		{
-			if(InSlash == 1)
-			{
-				if(TipLineAddress[i] == 'n') BufString = BufString + BufString.Chr(13);
-				else BufString = BufString + "\\";
-				InSlash = 0;
-			}
-			else
-			{
-				BufString = BufString + (CStr) TipLineAddress[i];
-			}
-		}
-		i++;
-	}
-	ReturnValue = BufString;
-	return(ReturnValue);
+    TipLineAddress = GetFileLineAddress((char *) TipFile, TipFileLen, LineNumber);
+    while(TipLineAddress[i] != '\r' && TipLineAddress[i] != '\n' && i != TipFileLen && TipLineAddress[i] != 0)
+    {
+        if(TipLineAddress[i] == '\\')
+        {
+            InSlash = 1;
+        }
+        else
+        {
+            if(InSlash == 1)
+            {
+                if(TipLineAddress[i] == 'n') BufString = BufString + BufString.Chr(13);
+                else BufString = BufString + "\\";
+                InSlash = 0;
+            }
+            else
+            {
+                BufString = BufString + (CStr) TipLineAddress[i];
+            }
+        }
+        i++;
+    }
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -192,30 +192,30 @@ CStr ParseTipLine(long LineNumber)
 // and ensure that it doesn't point to an empty line.
 long GetRandomTipLine(void)
 {
-	long RndLine;
-	char *TempLineAddress;
+    long RndLine;
+    char *TempLineAddress;
 
 WrongLineNumber:
-	RndLine = MathGenerateRandomNumber(TipFileLines);
-	TempLineAddress = GetFileLineAddress((char *) TipFile, TipFileLen, RndLine);
-	// Wrong line: ask for another number
-	if(TempLineAddress[0] == 0 || TempLineAddress[0] == 13 || TempLineAddress[0] == 10) goto WrongLineNumber;
-	return(RndLine);
+    RndLine = MathGenerateRandomNumber(TipFileLines);
+    TempLineAddress = GetFileLineAddress((char *) TipFile, TipFileLen, RndLine);
+    // Wrong line: ask for another number
+    if(TempLineAddress[0] == 0 || TempLineAddress[0] == 13 || TempLineAddress[0] == 10) goto WrongLineNumber;
+    return(RndLine);
 }
 
 // -----------------------------------------------------------------------
 // Load the Tips file
 long LoadTipFile(void)
 {
-	TipFile = (long) MLoadFile(TipFileName.Get_String(), &TipFileLen);
-	// Abort process
-	if(TipFile == 0 || TipFileLen == 0)
-	{
-		FreeMem(TipFile);
-		return(0);
-	}
-	TipFileLines = CountFileLines((char *) TipFile, TipFileLen);
-	return(1);
+    TipFile = (long) MLoadFile(TipFileName.Get_String(), &TipFileLen);
+    // Abort process
+    if(TipFile == 0 || TipFileLen == 0)
+    {
+        FreeMem(TipFile);
+        return(0);
+    }
+    TipFileLines = CountFileLines((char *) TipFile, TipFileLen);
+    return(1);
 }
 
 // -----------------------------------------------------------------------
@@ -223,14 +223,14 @@ long LoadTipFile(void)
 // and ensure that the it doesn't point to an empty line.
 long IncreaseTipLine(long CurrentLineNumber)
 {
-	char *TempLineAddress;
+    char *TempLineAddress;
 
 WrongLineNumber:
-	CurrentLineNumber++;
-	// Reset number if necessary
-	if(CurrentLineNumber >= TipFileLines) CurrentLineNumber = 0;
-	TempLineAddress = GetFileLineAddress((char *) TipFile, TipFileLen, CurrentLineNumber);
-	// Wrong line: ask for another number
-	if(TempLineAddress[0] == 0 || TempLineAddress[0] == 13 || TempLineAddress[0] == 10) goto WrongLineNumber;
-	return(CurrentLineNumber);
+    CurrentLineNumber++;
+    // Reset number if necessary
+    if(CurrentLineNumber >= TipFileLines) CurrentLineNumber = 0;
+    TempLineAddress = GetFileLineAddress((char *) TipFile, TipFileLen, CurrentLineNumber);
+    // Wrong line: ask for another number
+    if(TempLineAddress[0] == 0 || TempLineAddress[0] == 13 || TempLineAddress[0] == 10) goto WrongLineNumber;
+    return(CurrentLineNumber);
 }

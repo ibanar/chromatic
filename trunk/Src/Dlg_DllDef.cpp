@@ -56,7 +56,7 @@ CStr RealProcList;
 void DisplayDefForm(CStr DefFile)
 {
     DllDefFile = DefFile;
-	RealProcList = GetModulesProc();
+    RealProcList = GetModulesProc();
     DllDefArray = StringSplit(RealProcList, RealProcList.Chr(2));
     CreateModalDialog(-1, -1, 342, 295, hMDIform.hWnd, &FRMDllDef, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
 }
@@ -71,8 +71,8 @@ int CALLBACK FRMDllDef(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         case WM_SYSCOLORCHANGE:
             ListViewSetBackColor(FRMDllDefListview, GetSysColor(COLOR_WINDOW));
-			break;
-		case WM_INITDIALOG:
+            break;
+        case WM_INITDIALOG:
             ControlSetText(hwndDlg, "Select procedures to export");
             FRMDllDefCmdOk = CreateButton(263, 1 + 16, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_GROUP, Buttons_StaticEdge);
             FRMDllDefCmdCancel = CreateButton(263, 25 + 16, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
@@ -99,7 +99,7 @@ int CALLBACK FRMDllDef(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                         return(0);
                 }
             }
-			break;
+            break;
         case WM_COMMAND:
             if((HWND) lParam == FRMDllDefCmdOk)
             {
@@ -128,7 +128,7 @@ int CALLBACK FRMDllDef(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 }
                 return(0);
             }
-			break;
+            break;
         case WM_CLOSE:
             StringReleaseSplit(DllDefArray);
             FreezeTimer = 0;

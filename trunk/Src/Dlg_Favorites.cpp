@@ -61,15 +61,15 @@ int CALLBACK FRMFavoritesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
     int j = 0;
     CStr NameToAdd;
     long CurrentSelected = 0;
-	long *FavFilesArray = 0;
-	CStr SelFavFiles;
-	LV_KEYDOWN *lParamKey = 0;
+    long *FavFilesArray = 0;
+    CStr SelFavFiles;
+    LV_KEYDOWN *lParamKey = 0;
     
-	switch(uMsg)
-	{
+    switch(uMsg)
+    {
         case WM_SYSCOLORCHANGE:
             ListViewSetBackColor(FRMFavListView, GetSysColor(COLOR_WINDOW));
-			break;
+            break;
         case WM_INITDIALOG:
             ControlSetText(hwndDlg, "Favorite files");
             FRMFavCmdSave = CreateButton(327, 292, 77, 23, hwndDlg, "Save", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
@@ -85,13 +85,13 @@ int CALLBACK FRMFavoritesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
             FRMFavListView = CreateListView(2, 26, 482, 253, hwndDlg, 5, GlobalImageList1, 0, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | WS_TABSTOP | LVS_NOSORTHEADER, WS_EX_STATICEDGE);
             ListViewAddCol(FRMFavListView, "Path", 280, 0);
             ListViewAddCol(FRMFavListView, "Name", 180, 1);
-			LoadFavList();
+            LoadFavList();
             FreezeTimer = 1;
             return(0);
         case WM_COMMAND:
             if((HWND) lParam == FRMFavCmdOpen)
             {
-				OpenFavFiles();
+                OpenFavFiles();
                 return(0);
             }
             else if((HWND) lParam == FRMFavCmdSave)
@@ -110,8 +110,8 @@ int CALLBACK FRMFavoritesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
                 switch(wParam)
                 {
                     case FAVADDFILES:
-						SelFavFiles = ComDlgGetOpenFileName(hwndDlg, "All files (*.*)|*.*","", 1, CurrentDir);
-						ComDlgParseMultiFilesSelection(SelFavFiles, &EnumFavFiles, MULTIFILESENUM_FORWARD, 0);
+                        SelFavFiles = ComDlgGetOpenFileName(hwndDlg, "All files (*.*)|*.*","", 1, CurrentDir);
+                        ComDlgParseMultiFilesSelection(SelFavFiles, &EnumFavFiles, MULTIFILESENUM_FORWARD, 0);
                         return(0);
                     case FAVADDALLDIRECTORY:
                         NameToAdd = ComDlgBrowseForFolder(hwndDlg, "Select the directory to add...");
@@ -119,13 +119,13 @@ int CALLBACK FRMFavoritesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
                         {
                             if(ListViewFindSubItem(FRMFavListView, NameToAdd, 1, CASE_UNSENSITIVE) == -1)
                             {
-								if(CheckFavFile(NameToAdd) == 0)
-								{
-	                                j = ListViewItemCount(FRMFavListView);
-									ListViewAddItem(FRMFavListView, NameToAdd, j, ICON_NEW);
-									ListViewSetSubItem(FRMFavListView, NameToAdd, j, 1);
-								}
-							}
+                                if(CheckFavFile(NameToAdd) == 0)
+                                {
+                                    j = ListViewItemCount(FRMFavListView);
+                                    ListViewAddItem(FRMFavListView, NameToAdd, j, ICON_NEW);
+                                    ListViewSetSubItem(FRMFavListView, NameToAdd, j, 1);
+                                }
+                            }
                         }
                         return(0);
                     case FAVADDACTIVEFILE:
@@ -139,11 +139,11 @@ int CALLBACK FRMFavoritesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
                                 {
                                     if(CheckFavFile(NameToAdd) == 0)
                                     {
-										j = ListViewItemCount(FRMFavListView);
-										ListViewAddItem(FRMFavListView, FileGetFileName(NameToAdd), j, ICON_NEW);
-										ListViewSetSubItem(FRMFavListView, NameToAdd, j, 1);
-									}
-								}
+                                        j = ListViewItemCount(FRMFavListView);
+                                        ListViewAddItem(FRMFavListView, FileGetFileName(NameToAdd), j, ICON_NEW);
+                                        ListViewSetSubItem(FRMFavListView, NameToAdd, j, 1);
+                                    }
+                                }
                             }
                         }
                         return(0);
@@ -151,63 +151,63 @@ int CALLBACK FRMFavoritesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
                         WAMMEnumSourceWindows((long) &AddAllActiveFilesProc);
                         return(0);
                     case FAVREMSELECTION:
-						RemFavFiles();
+                        RemFavFiles();
                         return(0);
                 }
             }
-			break;
-		case WM_NOTIFY:
+            break;
+        case WM_NOTIFY:
             if(ControlGetNotifiedhWnd(lParam) == FRMFavListView)
             {
                 switch(ControlGetNotifiedMsg(lParam))
                 {
-						case LVN_KEYDOWN:
-							lParamKey = (LV_KEYDOWN *) lParam;
-							if((lParamKey->wVKey & 0xffff) == 46) RemFavFiles();
-							break;
-						case NM_DBLCLK:
-							OpenFavFiles();
-							break;
-				}
+                        case LVN_KEYDOWN:
+                            lParamKey = (LV_KEYDOWN *) lParam;
+                            if((lParamKey->wVKey & 0xffff) == 46) RemFavFiles();
+                            break;
+                        case NM_DBLCLK:
+                            OpenFavFiles();
+                            break;
+                }
             }
             else
             {
-				switch(ControlGetNotifiedMsg(lParam))
-				{
-					case TTN_NEEDTEXT:
-						switch(ControlGetNotifiedID(lParam))
-						{
-							case FAVADDFILES:
-								ToolBarDisplayToolTip("Add file(s) into list", lParam);
-								return(0);
-							case FAVADDACTIVEFILE:
-								ToolBarDisplayToolTip("Add active file into list", lParam);
-								return(0);
-							case FAVADDALLACTIVEFILES:
-								ToolBarDisplayToolTip("Add all opened files into list", lParam);
-								return(0);
-							case FAVADDALLDIRECTORY:
-								ToolBarDisplayToolTip("Add a directory into list", lParam);
-								return(0);
-							case FAVREMSELECTION:
-								ToolBarDisplayToolTip("Remove selected file(s) from the list", lParam);
-								return(0);
-						}
-						break;
-				}
-			}
-			break;
+                switch(ControlGetNotifiedMsg(lParam))
+                {
+                    case TTN_NEEDTEXT:
+                        switch(ControlGetNotifiedID(lParam))
+                        {
+                            case FAVADDFILES:
+                                ToolBarDisplayToolTip("Add file(s) into list", lParam);
+                                return(0);
+                            case FAVADDACTIVEFILE:
+                                ToolBarDisplayToolTip("Add active file into list", lParam);
+                                return(0);
+                            case FAVADDALLACTIVEFILES:
+                                ToolBarDisplayToolTip("Add all opened files into list", lParam);
+                                return(0);
+                            case FAVADDALLDIRECTORY:
+                                ToolBarDisplayToolTip("Add a directory into list", lParam);
+                                return(0);
+                            case FAVREMSELECTION:
+                                ToolBarDisplayToolTip("Remove selected file(s) from the list", lParam);
+                                return(0);
+                        }
+                        break;
+                }
+            }
+            break;
         case WM_PAINT:
             BeginPaint(hwndDlg, &Ps);
             GDIDrawHorzSep(hwndDlg, 0, ControlClientHeight(hwndDlg) - 33, 486);
             EndPaint(hwndDlg, &Ps);
-			break;
+            break;
         case WM_CLOSE:
-			CreateFavoritesMenu();
+            CreateFavoritesMenu();
             FreezeTimer = 0;
             EndDialog(hwndDlg, 0);
-			break;
-	}
+            break;
+    }
     return(0);
 }
 
@@ -224,13 +224,13 @@ long CALLBACK AddAllActiveFilesProc(HWND hWnd)
         NameToAdd = CMGetRealFile(ChildStruct->RFile);
         if(ListViewFindSubItem(FRMFavListView, NameToAdd, 1, CASE_UNSENSITIVE) == -1)
         {
-			if(CheckFavFile(NameToAdd) == 0)
-			{
-				i = ListViewItemCount(FRMFavListView);
-				ListViewAddItem(FRMFavListView, FileGetFileName(NameToAdd), i, ICON_NEW);
-				ListViewSetSubItem(FRMFavListView, NameToAdd, i, 1);
-			}
-		}
+            if(CheckFavFile(NameToAdd) == 0)
+            {
+                i = ListViewItemCount(FRMFavListView);
+                ListViewAddItem(FRMFavListView, FileGetFileName(NameToAdd), i, ICON_NEW);
+                ListViewSetSubItem(FRMFavListView, NameToAdd, i, 1);
+            }
+        }
     }
     return(1);
 }
@@ -256,45 +256,45 @@ void LoadFavList(void)
 {
     int i = 0;
     int j = 0;
-	CStr FileToAdd;
+    CStr FileToAdd;
 
-	ListViewClear(FRMFavListView);
+    ListViewClear(FRMFavListView);
     for(i = 0; i <= 999; i++)
     {
         FileToAdd = IniReadKey("Favorites", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
-		if(FileToAdd.Len() == 0) break;
-		j = ListViewItemCount(FRMFavListView);
+        if(FileToAdd.Len() == 0) break;
+        j = ListViewItemCount(FRMFavListView);
         ListViewAddItem(FRMFavListView, FileGetFileName(FileToAdd), j, ICON_NEW);
-		ListViewSetSubItem(FRMFavListView, FileToAdd, j, 1);
-	}
+        ListViewSetSubItem(FRMFavListView, FileToAdd, j, 1);
+    }
 }
 
 // -----------------------------------------------------------------------
 // Check if an entry is already in favorite files list
 long CheckFavFile(CStr FavFileToCheck)
 {
-	int i = 0;
+    int i = 0;
 
-	for(i = 0; i <= ListViewItemCount(FRMFavListView) - 1; i++)
-	{
-		if(strcmpi(ListViewGetItemText(FRMFavListView, i, 1).Get_String(), FavFileToCheck.Get_String()) == 0)
-		{
-			return(1);
-		}
-	}
-	return(0);
+    for(i = 0; i <= ListViewItemCount(FRMFavListView) - 1; i++)
+    {
+        if(strcmpi(ListViewGetItemText(FRMFavListView, i, 1).Get_String(), FavFileToCheck.Get_String()) == 0)
+        {
+            return(1);
+        }
+    }
+    return(0);
 }
 
 // -----------------------------------------------------------------------
 // Open the selected favorites files
 void OpenFavFiles(void)
 {
-	long CurrentSelected = 0;
+    long CurrentSelected = 0;
 
     CurrentSelected = ListViewGetSelItem(FRMFavListView, -1);
     while(CurrentSelected != -1)
     {
-		OpenUnknownFile(ListViewGetItemText(FRMFavListView, CurrentSelected, 1), TRUE);
+        OpenUnknownFile(ListViewGetItemText(FRMFavListView, CurrentSelected, 1), TRUE);
         CurrentSelected = ListViewGetSelItem(FRMFavListView, CurrentSelected);
     }
 }
@@ -303,33 +303,33 @@ void OpenFavFiles(void)
 // Remove the selected favorites files
 void RemFavFiles(void)
 {
-	long CurrentSelected;
+    long CurrentSelected;
 
-	CurrentSelected = ListViewGetSelItem(FRMFavListView, -1);
-	while(CurrentSelected != -1)
-	{
-		ListViewDeleteItem(FRMFavListView, CurrentSelected);
-		CurrentSelected = ListViewGetSelItem(FRMFavListView, -1);
-	}
+    CurrentSelected = ListViewGetSelItem(FRMFavListView, -1);
+    while(CurrentSelected != -1)
+    {
+        ListViewDeleteItem(FRMFavListView, CurrentSelected);
+        CurrentSelected = ListViewGetSelItem(FRMFavListView, -1);
+    }
 }
 
 // -----------------------------------------------------------------------
 // Callback to add the selected favorites files
 long CALLBACK EnumFavFiles(char *FileToAdd, long UserValue)
 {
-	CStr BufString;
-	int j;
+    CStr BufString;
+    int j;
 
-	BufString = FileToAdd;
-	if(ListViewFindSubItem(FRMFavListView, BufString, 1, CASE_UNSENSITIVE) == -1)
-	{
-		if(CheckFavFile(BufString) == 0)
-		{
-			j = ListViewItemCount(FRMFavListView);
+    BufString = FileToAdd;
+    if(ListViewFindSubItem(FRMFavListView, BufString, 1, CASE_UNSENSITIVE) == -1)
+    {
+        if(CheckFavFile(BufString) == 0)
+        {
+            j = ListViewItemCount(FRMFavListView);
             ListViewAddItem(FRMFavListView, FileGetFileName(BufString), j, ICON_NEW);
-			ListViewSetSubItem(FRMFavListView, BufString, j, 1);
-		}
-	}
-	// Continue enumeration
-	return(1);
+            ListViewSetSubItem(FRMFavListView, BufString, j, 1);
+        }
+    }
+    // Continue enumeration
+    return(1);
 }

@@ -77,11 +77,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     CStr TempWindowsDir;
     CStr SplashStatus;
     CStr BufString;
-	CStr TipsIniKey;
-	long DbRead;
+    CStr TipsIniKey;
+    long DbRead;
    
-	// Save passed arguments
-	PassedFile = lpCmdLine;
+    // Save passed arguments
+    PassedFile = lpCmdLine;
 
     //InstallExceptFilter();
     
@@ -116,110 +116,113 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
         {
             // Own mutex
             BroadCastMutex = CreateMutex(0, -1, "ChromaticMutex");
-			// Start initializations
-			InitCodeMax(ApphInstance);
-			if(hCodeMax != 0)
-			{
-				if((WidgetInit(ApphInstance, LoadIcon(ApphInstance, MAKEINTRESOURCE(APP_ICON)), CURSOR_BASE + CURSOR_SPLITV,
-				               CURSOR_BASE + CURSOR_SPLITH) & INIT_NOEXCONTROLS) == 0) {
-					if(PassedFile.Len() == 0)
-					{
-						SplashStatus = IniReadKey("Layout", "ShowSplash", MainIniFile);
-						if(SplashStatus.Len() == 0) SplashStatus = "1";
-						if(SplashStatus == "1") hSplash = CreateSplashDialog(-1, -1, 500, 215, "DON'T PANIC", 0, 0, 0, &FrmSplashInitProc, &FrmSplashWinHook, 0, 0, SW_SHOW);
-					}
-					FrmSplashSetState("Checking directories structure...");
-					CheckDirectories();
-					FrmSplashSetState("Reading main configuration file...");
-					DirChangedNotify = ReadIniFile();
-					FrmSplashSetState("Reading languages definitions...");
-					ReadLangSpec();
-					FrmSplashSetState("Loading databases...");
-					FncBase = (long) MLoadFile(APIFncFile.Get_String(), &DbRead);
-					ConstBase = (long) MLoadFile(APIConstFile.Get_String(), &DbRead);
-					FrmSplashSetState("Initializing global tables...");
-					InitAppArrays();
-					FrmSplashSetState("Loading resources...");
-					InitImageList1();
-					InitImageList2();
-					InitImageList4();
-					InitImageList5();
-					Get_PSAPI();			// Obtain PSAPI
-					FrmSplashSetState("Creating interface context...");
-					hGlobAccelerators = LoadAccelerators(ApphInstance, MAKEINTRESOURCE(ACCEL_BASE));
-					InitMenuComments();
-					InitMenuToolTips();
-					CreateMDIForm();
-					FrmSplashSetState("Initialization done.");
-					ControlClose(hSplash);
-					if(NotifDirStructureError == 1) MiscMsgBox(hMDIform.hWnd, "Directory structure reconstructed.", MB_INFORMATION, Requesters);
-					if(NotifGrepError == 1) MiscMsgBox(hMDIform.hWnd, "Specified CGrep.ini file isn't usable.\rBuilt-in definitions will be used instead.", MB_INFORMATION, Requesters);
-					if(PassedFile.Len() != 0)
-					{
-						if(OpenUnknownFile(PassedFile, TRUE) == 0)
-						{
-							PassedFile = StringReplace(PassedFile, "\"", "", 1, -1, Binary_Compare);
-							OpenUnknownFile(PassedFile, TRUE);
-						}
-					}
-					else RestoreState(PrivateWorkSpaceFile);
-					SetForegroundWindow(hMDIform.hWnd);
-					// Display the tip of the day
-					TipsIniKey = IniReadKey("Layout", "ShowTips", MainIniFile);
-					if(TipsIniKey.Len() != 0)
-					{
-						if(strcmpi(TipsIniKey.Get_String(), "1") == 0) DisplayTip(hMDIform.hWnd);
-					}
-					else
-					{
-					    DisplayTip(hMDIform.hWnd);
+            // Start initializations
+            InitCodeMax(ApphInstance);
+            if(hCodeMax != 0)
+            {
+                if((WidgetInit(ApphInstance,
+                               LoadIcon(ApphInstance, MAKEINTRESOURCE(APP_ICON)),
+                               CURSOR_BASE + CURSOR_SPLITV,
+                               CURSOR_BASE + CURSOR_SPLITH) & INIT_NOEXCONTROLS) == 0)
+                {
+                    if(PassedFile.Len() == 0)
+                    {
+                        SplashStatus = IniReadKey("Layout", "ShowSplash", MainIniFile);
+                        if(SplashStatus.Len() == 0) SplashStatus = "1";
+                        if(SplashStatus == "1") hSplash = CreateSplashDialog(-1, -1, 500, 215, "DON'T PANIC", 0, 0, 0, &FrmSplashInitProc, &FrmSplashWinHook, 0, 0, SW_SHOW);
+                    }
+                    FrmSplashSetState("Checking directories structure...");
+                    CheckDirectories();
+                    FrmSplashSetState("Reading main configuration file...");
+                    DirChangedNotify = ReadIniFile();
+                    FrmSplashSetState("Reading languages definitions...");
+                    ReadLangSpec();
+                    FrmSplashSetState("Loading databases...");
+                    FncBase = (long) MLoadFile(APIFncFile.Get_String(), &DbRead);
+                    ConstBase = (long) MLoadFile(APIConstFile.Get_String(), &DbRead);
+                    FrmSplashSetState("Initializing global tables...");
+                    InitAppArrays();
+                    FrmSplashSetState("Loading resources...");
+                    InitImageList1();
+                    InitImageList2();
+                    InitImageList4();
+                    InitImageList5();
+                    Get_PSAPI();            // Obtain PSAPI
+                    FrmSplashSetState("Creating interface context...");
+                    hGlobAccelerators = LoadAccelerators(ApphInstance, MAKEINTRESOURCE(ACCEL_BASE));
+                    InitMenuComments();
+                    InitMenuToolTips();
+                    CreateMDIForm();
+                    FrmSplashSetState("Initialization done.");
+                    ControlClose(hSplash);
+                    if(NotifDirStructureError == 1) MiscMsgBox(hMDIform.hWnd, "Directory structure reconstructed.", MB_INFORMATION, Requesters);
+                    if(NotifGrepError == 1) MiscMsgBox(hMDIform.hWnd, "Specified CGrep.ini file isn't usable.\rBuilt-in definitions will be used instead.", MB_INFORMATION, Requesters);
+                    if(PassedFile.Len() != 0)
+                    {
+                        if(OpenUnknownFile(PassedFile, TRUE) == 0)
+                        {
+                            PassedFile = StringReplace(PassedFile, "\"", "", 1, -1, Binary_Compare);
+                            OpenUnknownFile(PassedFile, TRUE);
+                        }
+                    }
+                    else RestoreState(PrivateWorkSpaceFile);
+                    SetForegroundWindow(hMDIform.hWnd);
+                    // Display the tip of the day
+                    TipsIniKey = IniReadKey("Layout", "ShowTips", MainIniFile);
+                    if(TipsIniKey.Len() != 0)
+                    {
+                        if(strcmpi(TipsIniKey.Get_String(), "1") == 0) DisplayTip(hMDIform.hWnd);
+                    }
+                    else
+                    {
+                        DisplayTip(hMDIform.hWnd);
                     }
                     AllocScriptEngine();
-					MiscWaitEvents(hMDIform.hClient, hGlobAccelerators, hMDIform.hWnd);
+                    MiscWaitEvents(hMDIform.hClient, hGlobAccelerators, hMDIform.hWnd);
                     ReleaseScriptEngine();
-					// Stop running addins at the end
-					StopAddIns();
-					// Remove all image lists
-					if(GlobalImageList1 != 0) ImageListDestroy(GlobalImageList1);
-					if(GlobalImageList2 != 0) ImageListDestroy(GlobalImageList2);
-					if(GlobalImageList3 != 0) ImageListDestroy(GlobalImageList3);
-					if(GlobalImageList4 != 0) ImageListDestroy(GlobalImageList4);
-        			if(FncBase != 0) FreeMem(FncBase);
-					if(ConstBase != 0) FreeMem(ConstBase);
-					Close_PSAPI();
-					WidgetUnInit(ApphInstance);
-					EraseResArrays();
-					UnInitCodeMax();
-					if(CurFontHandle != 0) DeleteObject(CurFontHandle);
-					CurFontHandle = 0;
-	            }
-				else
-				{
-					WidgetUnInit(ApphInstance);
-					UnInitCodeMax();
-					BufString = "Sing that song with me:";
-					BufString = BufString + "\r\r";
-					BufString = BufString + AppTitle;
-					BufString = BufString + " cannot be started\rMy system is outdated\rI will use Notepad instead";
-					MiscMsgBox(NULL, BufString, MB_ERROR, Requesters);
-					ShellExecute(0, "open", "notepad.exe", "", "", SW_SHOW);
-				}
-			}
-			else
-			{
-				BufString = AppTitle;
-				BufString = BufString + " can't find CMaxXX.dll.\rPlease, be sure that this file is located in the Dlls directory\ror in Windows System directory.";
-				MiscMsgBox(NULL, BufString, MB_ERROR, Requesters);
-			}
-			// Release mutex before exiting
-			if(BroadCastMutex != 0)
-			{
-				ReleaseMutex(BroadCastMutex);
-				CloseHandle(BroadCastMutex);
-			}
+                    // Stop running addins at the end
+                    StopAddIns();
+                    // Remove all image lists
+                    if(GlobalImageList1 != 0) ImageListDestroy(GlobalImageList1);
+                    if(GlobalImageList2 != 0) ImageListDestroy(GlobalImageList2);
+                    if(GlobalImageList3 != 0) ImageListDestroy(GlobalImageList3);
+                    if(GlobalImageList4 != 0) ImageListDestroy(GlobalImageList4);
+                    if(FncBase != 0) FreeMem(FncBase);
+                    if(ConstBase != 0) FreeMem(ConstBase);
+                    Close_PSAPI();
+                    WidgetUnInit(ApphInstance);
+                    EraseResArrays();
+                    UnInitCodeMax();
+                    if(CurFontHandle != 0) DeleteObject(CurFontHandle);
+                    CurFontHandle = 0;
+                }
+                else
+                {
+                    WidgetUnInit(ApphInstance);
+                    UnInitCodeMax();
+                    BufString = "Sing that song with me:";
+                    BufString = BufString + "\r\r";
+                    BufString = BufString + AppTitle;
+                    BufString = BufString + " cannot be started\rMy system is outdated\rI will use Notepad instead";
+                    MiscMsgBox(NULL, BufString, MB_ERROR, Requesters);
+                    ShellExecute(0, "open", "notepad.exe", "", "", SW_SHOW);
+                }
+            }
+            else
+            {
+                BufString = AppTitle;
+                BufString = BufString + " can't find CMaxXX.dll.\rPlease, be sure that this file is located in the Dlls directory\ror in Windows System directory.";
+                MiscMsgBox(NULL, BufString, MB_ERROR, Requesters);
+            }
+            // Release mutex before exiting
+            if(BroadCastMutex != 0)
+            {
+                ReleaseMutex(BroadCastMutex);
+                CloseHandle(BroadCastMutex);
+            }
         }
     }
-	return(0);
+    return(0);
 }
 
 // -----------------------------------------------------------------------
@@ -227,11 +230,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 void InitAppVars(void)
 {
     int i = 0;
-	char *LocAppPath = "";
+    char *LocAppPath = "";
 
-	// Fake structure
-	memset(&ChildStructBack, 0, sizeof(ChildStructBack));
-	AppVersion = CHROMATIC_VERSION;
+    // Fake structure
+    memset(&ChildStructBack, 0, sizeof(ChildStructBack));
+    AppVersion = CHROMATIC_VERSION;
     AppRevMaj = CHROMATIC_REV_MAJ;
     AppRevMin = CHROMATIC_REV_MIN;
     AppTitle = "Chromatic";
@@ -244,23 +247,23 @@ void InitAppVars(void)
     Requesters = Requesters + ".";
     Requesters = Requesters + AppRevMin;
     VersionString = "Version ";
-	VersionString = VersionString + AppVersion;
-	VersionString = VersionString + ".";
-	VersionString = VersionString + AppRevMaj;
-	VersionString = VersionString + ".";
-	VersionString = VersionString + AppRevMin;
+    VersionString = VersionString + AppVersion;
+    VersionString = VersionString + ".";
+    VersionString = VersionString + AppRevMaj;
+    VersionString = VersionString + ".";
+    VersionString = VersionString + AppRevMin;
     ApphInstance = GetModuleHandle(0);
     AppPath = AppPath.String(260, 1);
-	LocAppPath = AppPath.Get_String();
-	i = GetModuleFileName(0, LocAppPath, MAX_PATH);
-	while(i--)
-	{
-		if(LocAppPath[i] == '\\')
-		{
-			LocAppPath[i] = 0;
-			break;
-		}
-	}
+    LocAppPath = AppPath.Get_String();
+    i = GetModuleFileName(0, LocAppPath, MAX_PATH);
+    while(i--)
+    {
+        if(LocAppPath[i] == '\\')
+        {
+            LocAppPath[i] = 0;
+            break;
+        }
+    }
     if(strcmp(AppPath.Right(1).Get_String(), "\\") == 0) AppPath = AppPath.Left(AppPath.Len() - 1);
 
     // Configuration files
@@ -276,19 +279,19 @@ void InitAppVars(void)
     FiltersIniFile = AppPath + (CStr) "\\Config\\Filters.ini";
     PrivateWorkSpaceFile = AppPath + (CStr) "\\Config\\Chromatic.wst";
 
-	Buttons_StaticEdge = WS_EX_STATICEDGE;
-	int OsType = MiscGetOSClass();
-	if(OsType & OSTYPE_WINDOWS_NT) WindowsNT = TRUE;
-	if(OsType & OSTYPE_WINDOWS_2K) Windows2K = TRUE;
-	if(OsType & OSTYPE_WINDOWS_XP)
-	{
-		Buttons_StaticEdge = 0;
-		WindowsXP = TRUE;
-	}
-	if(OsType & OSTYPE_WINDOWS_7)
-	{
-		Windows7 = TRUE;
-	}
+    Buttons_StaticEdge = WS_EX_STATICEDGE;
+    int OsType = MiscGetOSClass();
+    if(OsType & OSTYPE_WINDOWS_NT) WindowsNT = TRUE;
+    if(OsType & OSTYPE_WINDOWS_2K) Windows2K = TRUE;
+    if(OsType & OSTYPE_WINDOWS_XP)
+    {
+        Buttons_StaticEdge = 0;
+        WindowsXP = TRUE;
+    }
+    if(OsType & OSTYPE_WINDOWS_7)
+    {
+        Windows7 = TRUE;
+    }
 
     // Fill the AddIns services datas
     FillChromaticLib();
@@ -356,91 +359,91 @@ long CALLBACK MainFilter(EXCEPTION_POINTERS *Filter)
 {
     CStr ExceptType;
     CStr DumpFile;
-	CStr BufString;
+    CStr BufString;
 
     BufString = "Latest news report from the graveyard:\r";
     BufString = BufString + "Chromatic got killed by something or someone.\r\r";
     BufString = BufString + "You better call your local police station right now.\r";
     BufString = BufString + "(Ask for agent Scruggs).\r\r";
     BufString = BufString + "Before that, do you want to try to save your current work ?";
-	if(MiscMsgBox((HWND) 0, BufString, MB_ERROR + MB_YESNO, Requesters) == IDYES)
-	{
+    if(MiscMsgBox((HWND) 0, BufString, MB_ERROR + MB_YESNO, Requesters) == IDYES)
+    {
         MCMD_SaveAll();
         MCMD_SaveProject();
     }
     DumpFile = "Exception 0";
-	DumpFile = DumpFile + StringHexNumberComplement(Filter->ExceptionRecord->ExceptionCode, 8);
-	DumpFile = DumpFile + "h (";
+    DumpFile = DumpFile + StringHexNumberComplement(Filter->ExceptionRecord->ExceptionCode, 8);
+    DumpFile = DumpFile + "h (";
     switch(Filter->ExceptionRecord->ExceptionCode)
     {
         case EXCEPTION_ACCESS_VIOLATION:
             DumpFile = DumpFile + "EXCEPTION_ACCESS_VIOLATION";
-			break;
-		case EXCEPTION_ARRAY_BOUNDS_EXCEEDED:
+            break;
+        case EXCEPTION_ARRAY_BOUNDS_EXCEEDED:
             DumpFile = DumpFile + "EXCEPTION_ARRAY_BOUNDS_EXCEEDED";
-			break;
+            break;
         case EXCEPTION_BREAKPOINT:
             DumpFile = DumpFile + "EXCEPTION_BREAKPOINT";
-			break;
+            break;
         case EXCEPTION_DATATYPE_MISALIGNMENT:
             DumpFile = DumpFile + "EXCEPTION_DATATYPE_MISALIGNMENT";
-			break;
+            break;
         case EXCEPTION_FLT_DENORMAL_OPERAND:
             DumpFile = DumpFile + "EXCEPTION_FLT_DENORMAL_OPERAND";
-			break;
+            break;
         case EXCEPTION_FLT_DIVIDE_BY_ZERO:
             DumpFile = DumpFile + "EXCEPTION_FLT_DIVIDE_BY_ZERO";
-			break;
+            break;
         case EXCEPTION_FLT_INEXACT_RESULT:
             DumpFile = DumpFile + "EXCEPTION_FLT_INEXACT_RESULT";
-			break;
+            break;
         case EXCEPTION_FLT_INVALID_OPERATION:
             DumpFile = DumpFile + "EXCEPTION_FLT_INVALID_OPERATION";
-			break;
+            break;
         case EXCEPTION_FLT_OVERFLOW:
             DumpFile = DumpFile + "EXCEPTION_FLT_OVERFLOW";
-			break;
+            break;
         case EXCEPTION_FLT_STACK_CHECK:
             DumpFile = DumpFile + "EXCEPTION_FLT_STACK_CHECK";
-			break;
+            break;
         case EXCEPTION_FLT_UNDERFLOW:
             DumpFile = DumpFile + "EXCEPTION_FLT_UNDERFLOW";
-			break;
+            break;
         case EXCEPTION_ILLEGAL_INSTRUCTION:
             DumpFile = DumpFile + "EXCEPTION_ILLEGAL_In_StrUCTION";
-			break;
+            break;
         case EXCEPTION_IN_PAGE_ERROR:
             DumpFile = DumpFile + "EXCEPTION_IN_PAGE_ERROR";
-			break;
+            break;
         case EXCEPTION_INT_DIVIDE_BY_ZERO:
             DumpFile = DumpFile + "EXCEPTION_INT_DIVIDE_BY_ZERO";
-			break;
+            break;
         case EXCEPTION_INT_OVERFLOW:
             DumpFile = DumpFile + "EXCEPTION_INT_OVERFLOW";
-			break;
+            break;
         case EXCEPTION_INVALID_DISPOSITION:
             DumpFile = DumpFile + "EXCEPTION_INVALID_DISPOSITION";
-			break;
+            break;
         case EXCEPTION_NONCONTINUABLE_EXCEPTION:
             DumpFile = DumpFile + "EXCEPTION_NONCONTINUABLE_EXCEPTION";
-			break;
+            break;
         case EXCEPTION_PRIV_INSTRUCTION:
             DumpFile = DumpFile + "EXCEPTION_PRIV_In_StrUCTION";
-			break;
+            break;
         case EXCEPTION_SINGLE_STEP:
             DumpFile = DumpFile + "EXCEPTION_SINGLE_STEP";
-			break;
+            break;
         case EXCEPTION_STACK_OVERFLOW:
             DumpFile = DumpFile + "EXCEPTION_STACK_OVERFLOW";
-			break;
+            break;
     }
     DumpFile = DumpFile + ")";
-	DumpFile = DumpFile + DumpFile.New_Line();
-	DumpFile = DumpFile + DumpFile.New_Line();
+    DumpFile = DumpFile + DumpFile.New_Line();
+    DumpFile = DumpFile + DumpFile.New_Line();
     DumpFile = DumpFile + "Address: 0";
-	DumpFile = DumpFile + StringHexNumberComplement((long) Filter->ExceptionRecord->ExceptionAddress, 8);
-	DumpFile = DumpFile + "h";
-	DumpFile = DumpFile + DumpFile.New_Line();
+    DumpFile = DumpFile + StringHexNumberComplement((long) Filter->ExceptionRecord->ExceptionAddress, 8);
+    DumpFile = DumpFile + "h";
+    DumpFile = DumpFile + DumpFile.New_Line();
     if(Filter->ExceptionRecord->ExceptionCode == EXCEPTION_ACCESS_VIOLATION)
     {
         if(Filter->ExceptionRecord->ExceptionInformation[0] == 0)
@@ -448,24 +451,24 @@ long CALLBACK MainFilter(EXCEPTION_POINTERS *Filter)
             DumpFile = DumpFile + "(Access type: READ - Virtual address: 0";
             DumpFile = DumpFile + StringHexNumberComplement(Filter->ExceptionRecord->ExceptionInformation[1], 8);
             DumpFile = DumpFile + "h)";
-			DumpFile = DumpFile + DumpFile.New_Line();
+            DumpFile = DumpFile + DumpFile.New_Line();
         }
         else
         {
             DumpFile = DumpFile + "(Access type: WRITE - Virtual address: 0";
-			DumpFile = DumpFile + StringHexNumberComplement(Filter->ExceptionRecord->ExceptionInformation[1], 8);
-			DumpFile = DumpFile + "h)";
-			DumpFile = DumpFile + DumpFile.New_Line();
+            DumpFile = DumpFile + StringHexNumberComplement(Filter->ExceptionRecord->ExceptionInformation[1], 8);
+            DumpFile = DumpFile + "h)";
+            DumpFile = DumpFile + DumpFile.New_Line();
         }
     }
-	DumpFile = DumpFile + DumpFile.New_Line();
-	DumpFile = DumpFile + "-------------------------------";
-	DumpFile = DumpFile + DumpFile.New_Line();
+    DumpFile = DumpFile + DumpFile.New_Line();
+    DumpFile = DumpFile + "-------------------------------";
+    DumpFile = DumpFile + DumpFile.New_Line();
     DumpFile = DumpFile + "CPU state:";
     DumpFile = DumpFile + DumpFile.New_Line();
     DumpFile = DumpFile + DumpFile.New_Line();
 
-	DumpFile = DumpFile + "EIP: 0" + (CStr) StringHexNumberComplement(Filter->ContextRecord->Eip, 8).Get_String() + (CStr) "h";
+    DumpFile = DumpFile + "EIP: 0" + (CStr) StringHexNumberComplement(Filter->ContextRecord->Eip, 8).Get_String() + (CStr) "h";
     DumpFile = DumpFile + DumpFile.New_Line();
     DumpFile = DumpFile + DumpFile.New_Line();
 
@@ -514,7 +517,7 @@ long CALLBACK MainFilter(EXCEPTION_POINTERS *Filter)
     DumpFile = DumpFile + (CStr) StringHex8(Filter->ContextRecord->FloatSave.RegisterArea[28]).Get_String();
     DumpFile = DumpFile + (CStr) StringHex8(Filter->ContextRecord->FloatSave.RegisterArea[29]).Get_String() + (CStr) "h" + (CStr) DumpFile.New_Line().Get_String();
     DumpFile = DumpFile + "ST3: 0" + (CStr) StringHex8(Filter->ContextRecord->FloatSave.RegisterArea[30]).Get_String();
-	DumpFile = DumpFile + (CStr) StringHex8(Filter->ContextRecord->FloatSave.RegisterArea[31]).Get_String();
+    DumpFile = DumpFile + (CStr) StringHex8(Filter->ContextRecord->FloatSave.RegisterArea[31]).Get_String();
     DumpFile = DumpFile + (CStr) StringHex8(Filter->ContextRecord->FloatSave.RegisterArea[32]).Get_String();
     DumpFile = DumpFile + (CStr) StringHex8(Filter->ContextRecord->FloatSave.RegisterArea[33]).Get_String();
     DumpFile = DumpFile + (CStr) StringHex8(Filter->ContextRecord->FloatSave.RegisterArea[34]).Get_String();
@@ -563,8 +566,8 @@ long CALLBACK MainFilter(EXCEPTION_POINTERS *Filter)
     DumpFile = DumpFile + (CStr) StringHex8(Filter->ContextRecord->FloatSave.RegisterArea[77]).Get_String();
     DumpFile = DumpFile + (CStr) StringHex8(Filter->ContextRecord->FloatSave.RegisterArea[78]).Get_String();
     DumpFile = DumpFile + (CStr) StringHex8(Filter->ContextRecord->FloatSave.RegisterArea[79]).Get_String() + (CStr) "h" + (CStr) DumpFile.New_Line().Get_String();
-	BufString = AppPath;
-	BufString = BufString + "\\Crash.Txt";
+    BufString = AppPath;
+    BufString = BufString + "\\Crash.Txt";
     MSaveFile(BufString.Get_String(), (long) DumpFile.Get_String(), DumpFile.Len());
     MiscMsgBox(NULL, (CStr) "Created dump file: " + (CStr) AppPath + (CStr) "\\Crash.Txt", MB_INFORMATION, Requesters);
     return(EXCEPTION_CONTINUE_SEARCH);
@@ -574,38 +577,38 @@ long CALLBACK MainFilter(EXCEPTION_POINTERS *Filter)
 // Check directories structure and reconstruct it if necessary
 void CheckDirectories(void)
 {
-	NotifDirStructureError = 0;
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\AddIns");
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\Backup");
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\Config");
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\Config\\UserMenus");
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\DataBases");
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\DownLoads");
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\Examples");
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\Filters");
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\Help");
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\Tools");
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\Languages");
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\Languages\\Scripts");
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\Projects");
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\Skins");
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\Skins\\ExtraCode");
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\Snippets");
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\Templates");
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\Wizards");
-	CheckStockDirectory((CStr) AppPath + (CStr) "\\Scripts");
+    NotifDirStructureError = 0;
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\AddIns");
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\Backup");
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\Config");
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\Config\\UserMenus");
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\DataBases");
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\DownLoads");
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\Examples");
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\Filters");
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\Help");
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\Tools");
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\Languages");
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\Languages\\Scripts");
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\Projects");
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\Skins");
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\Skins\\ExtraCode");
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\Snippets");
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\Templates");
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\Wizards");
+    CheckStockDirectory((CStr) AppPath + (CStr) "\\Scripts");
 }
 
 // -----------------------------------------------------------------------
 // Check a directory
 void CheckStockDirectory(CStr DirectoryName)
 {
-	// Check it
-	if(FileIsDirectory(DirectoryName) == 0)
-	{
-		// Create it
-		CreateDirectory(DirectoryName.Get_String(),NULL);
-		// Notify user that a reconstruction occured
-		NotifDirStructureError = 1;
-	}
+    // Check it
+    if(FileIsDirectory(DirectoryName) == 0)
+    {
+        // Create it
+        CreateDirectory(DirectoryName.Get_String(),NULL);
+        // Notify user that a reconstruction occured
+        NotifDirStructureError = 1;
+    }
 }

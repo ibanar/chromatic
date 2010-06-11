@@ -75,10 +75,10 @@ CStr ChangeRelativePaths(CStr Path, CStr SubsidDir)
     }
     else
     {
-		if (SubsidDir != "")
-		{
-			Path = StringReplace(Path, "[SOURCEDIR]", SubsidDir, 1, -1, Text_Compare);
-		}
+        if (SubsidDir != "")
+        {
+            Path = StringReplace(Path, "[SOURCEDIR]", SubsidDir, 1, -1, Text_Compare);
+        }
     }
     Path = StringReplace(Path, "[BINDIR]", Dirs[DIR_BIN], 1, -1, Text_Compare);
     Path = StringReplace(Path, "[INCLUDEDIR]", Dirs[DIR_INCLUDE], 1, -1, Text_Compare);
@@ -105,8 +105,8 @@ CStr ChangeRelativePaths(CStr Path, CStr SubsidDir)
     Path = StringReplace(Path, "[EXTRACODEDIR]", Dirs[DIR_EXTRACODE], 1, -1, Text_Compare);
     Path = StringReplace(Path, "[SCRIPTSDIR]", Dirs[DIR_SCRIPTS], 1, -1, Text_Compare);
     Path = StringReplace(Path, "[MAINDIR]", Dirs[DIR_MAIN], 1, -1, Text_Compare);
-	ReturnValue = Path;
-	return(ReturnValue);
+    ReturnValue = Path;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -115,26 +115,26 @@ CStr RemoveRelativePaths(CStr Path)
 {
     CStr BufString;
     CStr ReturnValue;
-	
-	BufString = Dirs[DIR_INCLUDE] + (CStr) "\\";
-	Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
-	BufString = Dirs[DIR_BIN] + (CStr) "\\";
+    
+    BufString = Dirs[DIR_INCLUDE] + (CStr) "\\";
     Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
-	BufString = Dirs[DIR_LIB] + (CStr) "\\";
+    BufString = Dirs[DIR_BIN] + (CStr) "\\";
     Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
-	BufString = Dirs[DIR_HELP] + (CStr) "\\";
+    BufString = Dirs[DIR_LIB] + (CStr) "\\";
     Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
-	BufString = Dirs[DIR_ROOT] + (CStr) "\\";
+    BufString = Dirs[DIR_HELP] + (CStr) "\\";
     Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
-	BufString = Dirs[DIR_WINSYS] + (CStr) "\\";
+    BufString = Dirs[DIR_ROOT] + (CStr) "\\";
     Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
-	BufString = Dirs[DIR_TEMP] + (CStr) "\\";
+    BufString = Dirs[DIR_WINSYS] + (CStr) "\\";
     Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
-	BufString = Dirs[DIR_WIN] + (CStr) "\\";
+    BufString = Dirs[DIR_TEMP] + (CStr) "\\";
     Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
-	BufString = Dirs[DIR_SNIPPETS] + (CStr) "\\";
+    BufString = Dirs[DIR_WIN] + (CStr) "\\";
     Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
-	BufString = Dirs[DIR_MAINHELP] + (CStr) "\\";
+    BufString = Dirs[DIR_SNIPPETS] + (CStr) "\\";
+    Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
+    BufString = Dirs[DIR_MAINHELP] + (CStr) "\\";
     Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
     BufString = Dirs[DIR_TEMPLATES] + (CStr) "\\";
     Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
@@ -142,7 +142,7 @@ CStr RemoveRelativePaths(CStr Path)
     Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
     BufString = Dirs[DIR_TOOLS] + (CStr) "\\";
     Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
-	BufString = Dirs[DIR_DATABASES] + (CStr) "\\";
+    BufString = Dirs[DIR_DATABASES] + (CStr) "\\";
     Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
     BufString = Dirs[DIR_SKINS] + (CStr) "\\";
     Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
@@ -166,10 +166,10 @@ CStr RemoveRelativePaths(CStr Path)
     Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
     BufString = Dirs[DIR_EXTRACODE] + (CStr) "\\";
     Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
-	BufString = Dirs[DIR_MAIN] + (CStr) "\\";
+    BufString = Dirs[DIR_MAIN] + (CStr) "\\";
     Path = StringReplace(Path, BufString, "", 1, -1, Text_Compare);
     ReturnValue = Path;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -180,132 +180,132 @@ CStr ChangeAbsolutePaths(CStr Path, long AvoidSource)
     CStr BufString;
     CStr ReturnValue;
 
-	if(strlen(Dirs[DIR_INCLUDE]))
+    if(strlen(Dirs[DIR_INCLUDE]))
     {
         BufString = Dirs[DIR_INCLUDE] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[INCLUDEDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_BIN]))
+    if(strlen(Dirs[DIR_BIN]))
     {
         BufString = Dirs[DIR_BIN] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[BINDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_LIB]))
+    if(strlen(Dirs[DIR_LIB]))
     {
         BufString = Dirs[DIR_LIB] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[LIBDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_HELP]))
+    if(strlen(Dirs[DIR_HELP]))
     {
         BufString = Dirs[DIR_HELP] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[HELPDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_ROOT]))
+    if(strlen(Dirs[DIR_ROOT]))
     {
         BufString = Dirs[DIR_ROOT] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[ROOTDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_WINSYS]))
+    if(strlen(Dirs[DIR_WINSYS]))
     {
         BufString = Dirs[DIR_WINSYS] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[WINSYSDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_TEMP]))
+    if(strlen(Dirs[DIR_TEMP]))
     {
         BufString = Dirs[DIR_TEMP] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[TEMPDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_WIN]))
+    if(strlen(Dirs[DIR_WIN]))
     {
         BufString = Dirs[DIR_WIN] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[WINDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_DATABASES]))
+    if(strlen(Dirs[DIR_DATABASES]))
     {
         BufString = Dirs[DIR_DATABASES] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[DATABASESDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_SKINS]))
+    if(strlen(Dirs[DIR_SKINS]))
     {
         BufString = Dirs[DIR_SKINS] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[SKINSDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_LANGSCRIPTS]))
+    if(strlen(Dirs[DIR_LANGSCRIPTS]))
     {
         BufString = Dirs[DIR_LANGSCRIPTS] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[LANGSCRIPTSDIR]\\", 1, -1, Text_Compare);
-	}
-	if(strlen(Dirs[DIR_LANGUAGES]))
+    }
+    if(strlen(Dirs[DIR_LANGUAGES]))
     {
         BufString = Dirs[DIR_LANGUAGES] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[LANGUAGESDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_DOWNLOADS]))
+    if(strlen(Dirs[DIR_DOWNLOADS]))
     {
         BufString = Dirs[DIR_DOWNLOADS] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[DOWNLOADSDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_ADDINS]))
+    if(strlen(Dirs[DIR_ADDINS]))
     {
         BufString = Dirs[DIR_ADDINS] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[ADDINSDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_MENUS]))
+    if(strlen(Dirs[DIR_MENUS]))
     {
         BufString = Dirs[DIR_MENUS] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[MENUSDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_WIZARDS]))
+    if(strlen(Dirs[DIR_WIZARDS]))
     {
         BufString = Dirs[DIR_WIZARDS] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[WIZARDSDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_SCRIPTS]))
+    if(strlen(Dirs[DIR_SCRIPTS]))
     {
         BufString = Dirs[DIR_SCRIPTS] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[SCRIPTSDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_FILTERS]))
+    if(strlen(Dirs[DIR_FILTERS]))
     {
         BufString = Dirs[DIR_FILTERS] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[FILTERSDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_EXTRACODE]))
+    if(strlen(Dirs[DIR_EXTRACODE]))
     {
         BufString = Dirs[DIR_EXTRACODE] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[EXTRACODEDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_CONFIG]))
+    if(strlen(Dirs[DIR_CONFIG]))
     {
         BufString = Dirs[DIR_CONFIG] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[CONFIGDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_SNIPPETS]))
+    if(strlen(Dirs[DIR_SNIPPETS]))
     {
         BufString = Dirs[DIR_SNIPPETS] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[SNIPPETSDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_MAINHELP]))
+    if(strlen(Dirs[DIR_MAINHELP]))
     {
         BufString = Dirs[DIR_MAINHELP] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[MAINHELPDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_TEMPLATES]))
+    if(strlen(Dirs[DIR_TEMPLATES]))
     {
         BufString = Dirs[DIR_TEMPLATES] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[TEMPLATESDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_PROJECTS]))
+    if(strlen(Dirs[DIR_PROJECTS]))
     {
         BufString = Dirs[DIR_PROJECTS] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[PROJECTSDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_TOOLS]))
+    if(strlen(Dirs[DIR_TOOLS]))
     {
         BufString = Dirs[DIR_TOOLS] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[TOOLSDIR]\\", 1, -1, Text_Compare);
     }
-	if(strlen(Dirs[DIR_MAIN]))
+    if(strlen(Dirs[DIR_MAIN]))
     {
         BufString = Dirs[DIR_MAIN] + (CStr) "\\";
         Path = StringReplace(Path, BufString, "[MAINDIR]\\", 1, -1, Text_Compare);
@@ -316,8 +316,8 @@ CStr ChangeAbsolutePaths(CStr Path, long AvoidSource)
         if(strcmp(CurrentFileD.Right(1).Get_String(), "\\") != 0) CurrentFileD = CurrentFileD + "\\";
         Path = StringReplace(Path, CurrentFileD, "[SOURCEDIR]\\", 1, -1, Text_Compare);
     }
-	ReturnValue = Path;
-	return(ReturnValue);
+    ReturnValue = Path;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -343,7 +343,7 @@ void RunUserCommandRec(CStr CommandRec)
 {
     CStr TmpCom;
     
-	TmpCom = TranslateUserCmd(CommandRec);
+    TmpCom = TranslateUserCmd(CommandRec);
     if(FRMArgsEntered == 1)
     {
         FRMArgsEntered = 0;
@@ -387,44 +387,44 @@ void Exec(CStr CmdName, CStr CmdFakeName, long IsInHelp)
     CStr CurSourceTextBlock;
     CStr BufString;
     CStr LUA_Args;
-	
+    
     LocalCmdName = StringReplace(CmdName, "\t", " ", 1, -1, Binary_Compare);
-	LocalCmdName = LocalCmdName.Trim();
+    LocalCmdName = LocalCmdName.Trim();
     if(LocalCmdName.Len() > 6)
     {
         BufString = LocalCmdName.Left(5).Upper_Case();
-		if(BufString == "SNAP ")
-		{
+        if(BufString == "SNAP ")
+        {
             LocalCmdName = LocalCmdName.Mid(6);
             RunWithsnap = 1;
-		}
-		else if(BufString == "PLUG ")
-		{
+        }
+        else if(BufString == "PLUG ")
+        {
             LocalCmdName = LocalCmdName.Mid(6);
             RunPlugIn = 1;
-		}
-		else if(BufString == "CAPT ")
-		{
+        }
+        else if(BufString == "CAPT ")
+        {
             LocalCmdName = LocalCmdName.Mid(6);
             RunCatch = 1;
-		}
-		else if(BufString == "HTML ")
-		{
+        }
+        else if(BufString == "HTML ")
+        {
             LocalCmdName = LocalCmdName.Mid(6);
             RunHtml = 1;
-		}
-		else if(BufString == "DOCU ")
-		{
+        }
+        else if(BufString == "DOCU ")
+        {
             LocalCmdName = LocalCmdName.Mid(6);
             RunDocu = 1;
-		}
-		else if(BufString == "PREP ")
-		{
+        }
+        else if(BufString == "PREP ")
+        {
             LocalCmdName = LocalCmdName.Mid(6);
             RunBuiltin = 1;
-		}
-		else if(BufString == "LUAS ")
-		{
+        }
+        else if(BufString == "LUAS ")
+        {
             LocalCmdName = LocalCmdName.Mid(6);
             RunScript = 1;
         }
@@ -437,7 +437,7 @@ void Exec(CStr CmdName, CStr CmdFakeName, long IsInHelp)
     if(LocalCmdName == "NULL")
     {
         return;
-	}
+    }
     CmdParsed = StringSplit(LocalCmdName, " ");
     Args = "";
     if(StringGetSplitUBound(CmdParsed) == -1)
@@ -484,12 +484,12 @@ ReAssembleArg:
         TrimedCommand = StringGetSplitElement(LocalCmdName, CmdParsed, 0).Trim();
         TrimedCommand = StringReplace(TrimedCommand, "\"", "", 1, -1, Binary_Compare);
         BufString = TrimedCommand.Right(4).Lower_Case();
-		if(BufString == ".chm" || BufString == ".col")
-		{
+        if(BufString == ".chm" || BufString == ".col")
+        {
             DisplayChmVB(TrimedCommand, Args);
-		}
-		else
-		{
+        }
+        else
+        {
             Args = Args.Trim();
             if(Args.Len() != 0)
             {
@@ -629,43 +629,43 @@ CheckPrepcommand:       DBlockBeg = CurSourceText.In_Str(CurrentPosPrep, "BUILDB
         {
             case 0:
                 UserCmdErr = "The operating system is out of memory or resources.";
-				break;
-			case ERROR_FILE_NOT_FOUND:
+                break;
+            case ERROR_FILE_NOT_FOUND:
                 UserCmdErr = "The specified file was not found.";
-				break;
+                break;
             case ERROR_PATH_NOT_FOUND:
                 UserCmdErr = "The specified path was not found.";
-				break;
+                break;
             case ERROR_BAD_FORMAT:
                 UserCmdErr = "The .EXE file is invalid (non-Win32 .EXE or error in .EXE image).";
-				break;
+                break;
             case SE_ERR_ACCESSDENIED:
                 UserCmdErr = "The operating system denied access to the specified file.";
-				break;
+                break;
             case SE_ERR_ASSOCINCOMPLETE:
                 UserCmdErr = "The filename association is incomplete or invalid.";
-				break;
+                break;
             case SE_ERR_DDEBUSY:
                 UserCmdErr = "The DDE transaction could not be completed because other DDE transactions were being processed.";
-				break;
+                break;
             case SE_ERR_DDEFAIL:
                 UserCmdErr = "The DDE transaction failed.";
-				break;
+                break;
             case SE_ERR_DDETIMEOUT:
                 UserCmdErr = "The DDE transaction could not be completed because the request timed out.";
-				break;
+                break;
             case SE_ERR_DLLNOTFOUND:
                 UserCmdErr = "The specified dynamic-link library was not found.";
-				break;
+                break;
             case SE_ERR_NOASSOC:
                 UserCmdErr = "There is no application associated with the given filename extension.";
-				break;
+                break;
             case SE_ERR_OOM:
                 UserCmdErr = "There was not enough memory to complete the operation.";
-				break;
+                break;
             case SE_ERR_SHARE:
                 UserCmdErr = "A sharing violation occurred.";
-				break;
+                break;
         }
     }
     if(UserCmdErr.Len() != 0)
@@ -687,15 +687,15 @@ void RunUserCommand(long CommandNumber)
     long InHelpFile = 0;
     CStr TmpCom;
     CStr BufString;
-	
-	if((long) (CommandNumber - (MENU_USER_IDBASE + 1)) > MenusCmdsHelp.Amount()) return;
+
+    if((long) (CommandNumber - (MENU_USER_IDBASE + 1)) > MenusCmdsHelp.Amount()) return;
     // Save the files before running any external command
     InHelpFile = MenusCmdsHelp.Get(CommandNumber - (MENU_USER_IDBASE + 1))->Content;
     if(MenusCmds.Amount() > 6)
     {
-		BufString = MenusCmds.Get(CommandNumber - (MENU_USER_IDBASE + 1))->Content;
-		if(strcmpi(BufString.Left(5).Get_String(), "HTML ") == 0) goto NoSaveHtml;
-	}
+        BufString = MenusCmds.Get(CommandNumber - (MENU_USER_IDBASE + 1))->Content;
+        if(strcmpi(BufString.Left(5).Get_String(), "HTML ") == 0) goto NoSaveHtml;
+    }
     if(InHelpFile == 0) if(AutoSave == 1) MCMD_SaveAll();
 NoSaveHtml:
     TmpCom = TranslateUserCmd(MenusCmds.Get(CommandNumber - (MENU_USER_IDBASE + 1))->Content);
@@ -712,7 +712,7 @@ NoSaveHtml:
 // Translate an user command
 CStr TranslateUserCmd(CStr cmd)
 {
-	CStr ReturnValue;
+    CStr ReturnValue;
 
     UserArgs = 1;
     cmd = ChangeRelativePaths(cmd);
@@ -730,7 +730,7 @@ CStr TranslateUserCmd(CStr cmd)
         if(cmd.In_Str(1, "%6") != 0) cmd = StringReplace(cmd, "%6", "", 1, -1, Text_Compare);
     }
     ReturnValue = cmd.Trim();
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -744,11 +744,11 @@ CStr TranslateCommands(CStr Comd, CStr Cm)
     long PosOpenFileDlg = 0;
     CStr StartupDir;
     CStr DefaultFilters;
-	CStr BufString;
-	CStr ReturnValue;
-	CStr Select_File;
+    CStr BufString;
+    CStr ReturnValue;
+    CStr Select_File;
 
-	BufString = Comd;
+    BufString = Comd;
     BufString = StringReplace(BufString, "\t", " ", 1, -1, Text_Compare);
     // %1 = Filename with directory / without extension
     BufString = StringReplace(BufString, "%1", FileRemoveExtension(Cm), 1, -1, Text_Compare);
@@ -761,7 +761,7 @@ CStr TranslateCommands(CStr Comd, CStr Cm)
     BufString = StringReplace(BufString, "%7", FileGetExtension(FileGetFileName(Cm)), 1, -1, Text_Compare);
     // %5 = Directory without filename
     CDir = FileGetDirectory(Cm);
-	if(strcmp(CDir.Right(1).Get_String(), "\\") == 0) CDir = CDir.Left(CDir.Len() - 1);
+    if(strcmp(CDir.Right(1).Get_String(), "\\") == 0) CDir = CDir.Left(CDir.Len() - 1);
     if(BufString.In_Str(1, "%5") != 0) BufString = StringReplace(BufString, "%5", CDir, 1, -1, Text_Compare);
     CommandToEx = StringReplace(BufString, "$", " ", 1, -1, Binary_Compare);
     // %? = ask user for required argument
@@ -796,7 +796,7 @@ CStr TranslateCommands(CStr Comd, CStr Cm)
         DefaultFilters = GetCommandArg(&BufString, PosOpenFileDlg + 2);
         Select_File = AffSelFile(&StartupDir, &DefaultFilters);
         if(Select_File.Len() == 0) return("NULL");
-		BufString = StringReplace(BufString, "%9", FileGetFileName(Select_File), 1, -1, Text_Compare);
+        BufString = StringReplace(BufString, "%9", FileGetFileName(Select_File), 1, -1, Text_Compare);
     }
     // %C = prompt user with a color dialog (result as decimal)
     if(BufString.In_Str(1, "%C") != 0) BufString = StringReplace(BufString, "%C", AffSelColor(), 1, -1, Text_Compare);
@@ -810,23 +810,23 @@ CStr TranslateCommands(CStr Comd, CStr Cm)
         DefaultFilters = GetCommandArg(&BufString, PosOpenFileDlg + 2);
         Select_File = AffSelFileSave(&StartupDir, &DefaultFilters);
         if(Select_File.Len() == 0) return("NULL");
-		BufString = StringReplace(BufString, "%&", Select_File, 1, -1, Text_Compare);
+        BufString = StringReplace(BufString, "%&", Select_File, 1, -1, Text_Compare);
     }
     // %* = prompt user with a directory selection dialog
     if(BufString.In_Str(1, "%*") != 0)
     {
-		Select_File = ComDlgBrowseForFolder(hMDIform.hWnd, "Select a directory...");
-     	BufString = StringReplace(BufString, "%*", Select_File, 1, -1, Text_Compare);
+        Select_File = ComDlgBrowseForFolder(hMDIform.hWnd, "Select a directory...");
+        BufString = StringReplace(BufString, "%*", Select_File, 1, -1, Text_Compare);
         if(Select_File.Len() == 0) return("NULL");
     }
-	// %@ = prompt with an optional argument dialog
+    // %@ = prompt with an optional argument dialog
     if(BufString.In_Str(1, "%@") != 0) BufString = StringReplace(BufString, "%@", Argument(), 1, -1, Text_Compare);
     // %N = create a new child window
     if(BufString.In_Str(1, "%N") != 0) BufString = StringReplace(BufString, "%N", AffNewChild(), 1, -1, Text_Compare);
     // %% = prompt with an required argument dialog
     if(BufString.In_Str(1, "%%") != 0) BufString = StringReplace(BufString, "%%", "%", 1, -1, Text_Compare);
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -834,11 +834,11 @@ CStr TranslateCommands(CStr Comd, CStr Cm)
 // Argument must be enclosed inside <>
 CStr GetCommandArg(CStr *ComLine, long InitPos)
 {
-	CStr ReturnValue;
+    CStr ReturnValue;
     CStr CurrentChar;
     CStr InitialDirectory;
     CStr BufString;
-	long LineLen = 0;
+    long LineLen = 0;
 
     InitialDirectory = "";
     // Pass blank chars
@@ -846,7 +846,7 @@ CStr GetCommandArg(CStr *ComLine, long InitPos)
     {
         InitPos++;
     }
-	BufString = ComLine->Mid(InitPos, 1);
+    BufString = ComLine->Mid(InitPos, 1);
     if(BufString == "<")
     {
         LineLen = ComLine->Len();
@@ -856,60 +856,60 @@ CStr GetCommandArg(CStr *ComLine, long InitPos)
         if(InitPos <= LineLen)
         {
             CurrentChar = ComLine->Mid(InitPos, 1);
-			ComLine->Get_String()[InitPos - 1] = 2;
+            ComLine->Get_String()[InitPos - 1] = 2;
             while(CurrentChar != ">")
             {
                 InitPos++;
                 if(InitPos > LineLen) break;
                 InitialDirectory = InitialDirectory + CurrentChar;
                 CurrentChar = ComLine->Mid(InitPos, 1);
-				ComLine->Get_String()[InitPos - 1] = 2;
+                ComLine->Get_String()[InitPos - 1] = 2;
             }
         }
         ReturnValue.Set_String(InitialDirectory.Get_String());
         ComLine->Set_String(StringReplace(ComLine, ComLine->Chr(2), "", 1, -1, Text_Compare).Get_String());
     }
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Change the current drive
 int ChDrive(CStr DriveStr)
 {
-	int ReturnValue = 1;
-	CStr ChDriveStrTmp;
+    int ReturnValue = 1;
+    CStr ChDriveStrTmp;
 
-	ChDriveStrTmp = ChDriveStrTmp.String(MAX_PATH+1,1);
-	GetCurrentDirectory(MAX_PATH,ChDriveStrTmp.Get_String());
-	strncpy(ChDriveStrTmp.Get_String(),DriveStr.Left(1).Get_String(),1);
-	if(SetCurrentDirectory(ChDriveStrTmp.Get_String()) == 0)
-	{
-		ChDriveStrTmp.Get_String()[1] = ':';
-		ChDriveStrTmp.Get_String()[2] = '\\';
-		ChDriveStrTmp.Get_String()[3] = '\0';
-		ReturnValue = SetCurrentDirectory(ChDriveStrTmp.Get_String());
-	}
-	return(ReturnValue);
+    ChDriveStrTmp = ChDriveStrTmp.String(MAX_PATH+1,1);
+    GetCurrentDirectory(MAX_PATH,ChDriveStrTmp.Get_String());
+    strncpy(ChDriveStrTmp.Get_String(),DriveStr.Left(1).Get_String(),1);
+    if(SetCurrentDirectory(ChDriveStrTmp.Get_String()) == 0)
+    {
+        ChDriveStrTmp.Get_String()[1] = ':';
+        ChDriveStrTmp.Get_String()[2] = '\\';
+        ChDriveStrTmp.Get_String()[3] = '\0';
+        ReturnValue = SetCurrentDirectory(ChDriveStrTmp.Get_String());
+    }
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Change the current directory
 int ChDir(CStr DirStr)
 {
-	return(SetCurrentDirectory(DirStr.Get_String()));
+    return(SetCurrentDirectory(DirStr.Get_String()));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the current directory
 CStr CurDir(CStr Drive)
 {
-	CStr CurDriveStrTmp;
-	CStr ReturnValue;
-	
-	CurDriveStrTmp = CurDriveStrTmp.String(MAX_PATH + 1,1);
-	GetCurrentDirectory(MAX_PATH,CurDriveStrTmp.Get_String());
-	ReturnValue = CurDriveStrTmp;
-	return(ReturnValue);
+    CStr CurDriveStrTmp;
+    CStr ReturnValue;
+    
+    CurDriveStrTmp = CurDriveStrTmp.String(MAX_PATH + 1,1);
+    GetCurrentDirectory(MAX_PATH,CurDriveStrTmp.Get_String());
+    ReturnValue = CurDriveStrTmp;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -930,22 +930,22 @@ CStr AffSelFile(CStr *SpecifiedDir, CStr *SpecifiedFilters)
     {
         if(GetUseFileDir() == 1)
         {
-			if(NbForms != 0)
-			{
-				ChildStruct = LoadStructure(CurrentForm);
-				BufString = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, FileGetDirectory(ChildStruct->RFile), 0, CurrentDir);
-			}
-			else
-			{
-				BufString = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastUserLoadDir, 0, CurrentDir);
-			}
+            if(NbForms != 0)
+            {
+                ChildStruct = LoadStructure(CurrentForm);
+                BufString = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, FileGetDirectory(ChildStruct->RFile), 0, CurrentDir);
+            }
+            else
+            {
+                BufString = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastUserLoadDir, 0, CurrentDir);
+            }
         }
         else
         {
             BufString = ComDlgGetOpenFileName(hMDIform.hWnd, OpFilters, LastUserLoadDir, 0, CurrentDir);
         }
     }
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     if(BufString.Len() == 0) return(ReturnValue);
     LastUserLoadDir = FileGetDirectory(ReturnValue);
     return(ReturnValue);
@@ -969,22 +969,22 @@ CStr AffSelFileSave(CStr *SpecifiedDir, CStr *SpecifiedFilters)
     {
         if(GetUseFileDir() == 1)
         {
-			if(NbForms != 0)
-			{
-				ChildStruct = LoadStructure(CurrentForm);
-				BufString = ComDlgGetSaveFileName(hMDIform.hWnd, OpFilters, FileGetDirectory(ChildStruct->RFile), CurrentDir);
-			}
-			else
-			{
-				BufString = ComDlgGetSaveFileName(hMDIform.hWnd, OpFilters, LastUserSaveDir, CurrentDir);
-			}
+            if(NbForms != 0)
+            {
+                ChildStruct = LoadStructure(CurrentForm);
+                BufString = ComDlgGetSaveFileName(hMDIform.hWnd, OpFilters, FileGetDirectory(ChildStruct->RFile), CurrentDir);
+            }
+            else
+            {
+                BufString = ComDlgGetSaveFileName(hMDIform.hWnd, OpFilters, LastUserSaveDir, CurrentDir);
+            }
         }
         else
         {
             BufString = ComDlgGetSaveFileName(hMDIform.hWnd, OpFilters, LastUserSaveDir, CurrentDir);
         }
     }
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     if(BufString.Len() == 0) return(ReturnValue);
     LastUserSaveDir = FileGetDirectory(ReturnValue);
     return(ReturnValue);
@@ -995,11 +995,11 @@ CStr AffSelFileSave(CStr *SpecifiedDir, CStr *SpecifiedFilters)
 CStr AffSelColor(void)
 {
     CStr ReturnValue;
-	CStr BufString;
+    CStr BufString;
 
     if(ComDlgChooseColor(hMDIform.hWnd, 0) != 0) BufString = MyColor.rgbResult;
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1007,11 +1007,11 @@ CStr AffSelColor(void)
 CStr AffSelColorHex(void)
 {
     CStr ReturnValue;
-	CStr BufString;
+    CStr BufString;
 
     if(ComDlgChooseColor(hMDIform.hWnd, 0) != 0) BufString = BufString.Hex_To_String(MyColor.rgbResult);
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1021,7 +1021,7 @@ CStr AffNewChild(void)
     CStr ReturnValue;
 
     MCMD_New();
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1031,8 +1031,8 @@ CStr Argument(void)
     CStr ReturnValue;
 
     CreateModalDialog(-1, -1, 277, 120, hMDIform.hWnd, &FRMArgsProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
-	ReturnValue = EnteredArg;
-	return(ReturnValue);
+    ReturnValue = EnteredArg;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1053,7 +1053,7 @@ long RunDOSCmd(CStr DOSCmdName, CStr DOSCmdArgs, CStr DOSCmdDir, CStr OutputFile
     CStr BufStringCmdName;
     CStr BufString;
 
-	SecAt.nLength = sizeof(SecAt);
+    SecAt.nLength = sizeof(SecAt);
     SecAt.lpSecurityDescriptor = 0;
     SecAt.bInheritHandle = 1;
     memset(&MyProcStartup, 0, sizeof(MyProcStartup));
@@ -1078,19 +1078,19 @@ long RunDOSCmd(CStr DOSCmdName, CStr DOSCmdArgs, CStr DOSCmdDir, CStr OutputFile
     BufStringCmdDir = DOSCmdDir;
     if(BufStringCmdDir.Len() == 0) BufStringCmdDir = FileGetDirectory(DOSCmdName);
     if(BufStringCmdDir.Len() == 0) BufStringCmdDir = CurDir();
-	if(strcmp(BufStringCmdDir.Right(1).Get_String(), "\\") == 0) BufStringCmdDir = BufStringCmdDir.Mid(1, BufStringCmdDir.Len() - 1);
+    if(strcmp(BufStringCmdDir.Right(1).Get_String(), "\\") == 0) BufStringCmdDir = BufStringCmdDir.Mid(1, BufStringCmdDir.Len() - 1);
     // Create the process
     CursorSetWait();
     BufStringCmdName = StringReplace(DOSCmdName, "\"", "", 1, -1, Binary_Compare);
     if(OutputFile.Len() == 0)
     {
         ChDir(DOSCmdDir);
-		BufString = CorrectFileName(BufStringCmdName).Get_String() + (CStr) " " + (CStr) DOSCmdArgs.Get_String();
-	    CreateProcess(BufStringCmdName.Get_String(), BufString.Get_String(), &SecAt, &SecAt, 0, 0, NULL, BufStringCmdDir.Get_String(), &MyProcStartup, &MyProcInfos);
+        BufString = CorrectFileName(BufStringCmdName).Get_String() + (CStr) " " + (CStr) DOSCmdArgs.Get_String();
+        CreateProcess(BufStringCmdName.Get_String(), BufString.Get_String(), &SecAt, &SecAt, 0, 0, NULL, BufStringCmdDir.Get_String(), &MyProcStartup, &MyProcInfos);
     }
     else
     {
-		BufString = CorrectFileName(BufStringCmdName).Get_String() + (CStr) " " + (CStr) DOSCmdArgs.Get_String();
+        BufString = CorrectFileName(BufStringCmdName).Get_String() + (CStr) " " + (CStr) DOSCmdArgs.Get_String();
         CreateProcess(BufStringCmdName.Get_String(), BufString.Get_String(), &SecAt, &SecAt, 1, 0, NULL, BufStringCmdDir.Get_String(), &MyProcStartup, &MyProcInfos);
     }
     if(MyProcInfos.hProcess != 0)
@@ -1146,7 +1146,7 @@ void CaptureDOSOutput(CStr DOSCmdName, CStr DOSCmdArgs, CStr DOSCmdDir)
     MyProcStartup.hStdError = PipeOut;
     MyProcStartup.wShowWindow = SW_HIDE;
     BufStringCmdDir = DOSCmdDir;
-	if(BufStringCmdDir.Len() == 0) BufStringCmdDir = FileGetDirectory(DOSCmdName);
+    if(BufStringCmdDir.Len() == 0) BufStringCmdDir = FileGetDirectory(DOSCmdName);
     if(BufStringCmdDir.Len() == 0) BufStringCmdDir = CurDir();
     if(strcmp(BufStringCmdDir.Right(1).Get_String(), "\\") == 0) BufStringCmdDir = BufStringCmdDir.Mid(1, BufStringCmdDir.Len() - 1);
     // Create the process
@@ -1155,16 +1155,16 @@ void CaptureDOSOutput(CStr DOSCmdName, CStr DOSCmdArgs, CStr DOSCmdDir)
     BufStringCmdName = StringReplace(DOSCmdName, "\"", "", 1, 2, Binary_Compare);
     BufStringCmdDir = StringReplace(BufStringCmdDir, "\"", "", 1, 2, Binary_Compare);
     BufString = CorrectFileName(BufStringCmdName).Get_String() + (CStr) " " + (CStr) DOSCmdArgs.Get_String();
-	CreateProcess(BufStringCmdName.Get_String(), BufString.Get_String(), &SecAt, &SecAt, 1, 0, NULL, BufStringCmdDir.Get_String(), &MyProcStartup, &MyProcInfos);
+    CreateProcess(BufStringCmdName.Get_String(), BufString.Get_String(), &SecAt, &SecAt, 1, 0, NULL, BufStringCmdDir.Get_String(), &MyProcStartup, &MyProcInfos);
     if(MyProcInfos.hProcess != 0)
     {
         // --- Display captured text in status window
         WaitForSingleObject(MyProcInfos.hProcess, -1);
         CloseHandle(PipeOut);
         StrCapture = StrCapture.String(65535, 1);
-		if(ReadFile(PipeIn, StrCapture.Get_String(), 65535, &OutSizeRead, 0) != 0)
-		{
-			StrCapture.Get_String()[OutSizeRead] = 0;
+        if(ReadFile(PipeIn, StrCapture.Get_String(), 65535, &OutSizeRead, 0) != 0)
+        {
+            StrCapture.Get_String()[OutSizeRead] = 0;
             if(AutoClearOut == 1) ClearStatus();
             ArrayCapture = StringSplit(StrCapture, "\n");
             WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "*** Captured from command: " + (CStr) DOSCmdName.Get_String() + (CStr) " " + (CStr) DOSCmdArgs.Get_String());
@@ -1195,8 +1195,8 @@ void CaptureDOSOutput(CStr DOSCmdName, CStr DOSCmdArgs, CStr DOSCmdDir)
 // Retrieve the directory of the current file
 CStr GetCurrentFileDir(void)
 {
-	CStr ReturnValue;
-	CStr TmpDir;
+    CStr ReturnValue;
+    CStr TmpDir;
     int i = 0;
 
     if(NbForms == 0) return(ReturnValue);
@@ -1210,7 +1210,7 @@ CStr GetCurrentFileDir(void)
             break;
         }
     }
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1488,7 +1488,7 @@ void PrepareHexConvTab(void)
 // Check for project file validity
 long CheckWorkSpaceFile(CStr FileName)
 {
-	long ReturnValue = 0;
+    long ReturnValue = 0;
     HANDLE WorkFileHandle = 0;
     unsigned long WorkFileRead = 0;
     CStr WorkHeader;
@@ -1498,12 +1498,12 @@ long CheckWorkSpaceFile(CStr FileName)
     if(WorkFileHandle != INVALID_HANDLE_VALUE)
     {
         WorkHeader = WorkHeader.String(15,1);
-		ReadFile(WorkFileHandle, WorkHeader.Get_String(), 15, &WorkFileRead, 0);
+        ReadFile(WorkFileHandle, WorkHeader.Get_String(), 15, &WorkFileRead, 0);
         FileClose(WorkFileHandle);
     }
-	BufString = "[" + (CStr) AppTitle + (CStr) "workspc]";
+    BufString = "[" + (CStr) AppTitle + (CStr) "workspc]";
     if(strcmpi(WorkHeader.Get_String(), BufString.Get_String()) == 0) ReturnValue = 1;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1519,11 +1519,11 @@ long GetChildState(void)
 CStr RemoveQuotesVB(CStr Str)
 {
     CStr ReturnValue;
-	long PosQuote = 0;
+    long PosQuote = 0;
     long PosQuoteEnd = 0;
     CStr BufString;
 
-	BufString = Str;
+    BufString = Str;
     PosQuote = 0;
     PosQuoteEnd = 0;
     PosQuote = BufString.In_Str(1, "'");
@@ -1541,8 +1541,8 @@ CStr RemoveQuotesVB(CStr Str)
             if(PosQuoteEnd != 0) if(PosQuoteEnd != PosQuote) BufString = BufString.Mid(1, PosQuote - 1).Get_String() + (CStr) BufString.Mid(PosQuoteEnd + 1).Get_String();
         }
     }
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1550,7 +1550,7 @@ CStr RemoveQuotesVB(CStr Str)
 // Core routine !
 long SelectProcedure(HWND hForm)
 {
-	long ReturnValue = 0;
+    long ReturnValue = 0;
     long CurLinePos = 0;
     long CurLinePosBack = 0;
     CStr CurLangProc1;
@@ -1575,7 +1575,7 @@ long SelectProcedure(HWND hForm)
     long BalanceMaxLines = 0;
     long BalanceOrphanState = 0;
     long BalanceInterlaceState = 0;
-	CStr BufString;
+    CStr BufString;
 
     ChildStruct = LoadStructure(hForm);
     LoadCurrentSel(ChildStruct->hChildCodeMax);
@@ -1619,9 +1619,9 @@ RechckProc:
             for(j = 0; j <= (long) StringGetSplitUBound(CurLangProcArray); j++)
             {
                 // xxx proc xxx
-				BufString = " " + (CStr) StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Get_String() + (CStr) " ";
-	            if(CurLine.In_Str(1, BufString, Text_Compare) != 0)
-	            {
+                BufString = " " + (CStr) StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Get_String() + (CStr) " ";
+                if(CurLine.In_Str(1, BufString, Text_Compare) != 0)
+                {
                     if(ProcPos != -1)
                     {
                         if(BalanceInterlaceState == 1)
@@ -1634,9 +1634,9 @@ RechckProc:
                     goto RechckProc;
                 }
                 // proc xxx (tasm)
-				BufString = StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Get_String() + (CStr) " ";
-				if(CurLine.In_Str(1, BufString, Text_Compare) == 1)
-				{
+                BufString = StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Get_String() + (CStr) " ";
+                if(CurLine.In_Str(1, BufString, Text_Compare) == 1)
+                {
                     if(ProcPos != -1)
                     {
                         if(BalanceInterlaceState == 1)
@@ -1651,9 +1651,9 @@ RechckProc:
                 // Orphans
                 if(BalanceOrphanState == 1)
                 {
-					BufString = StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Get_String();
-				    if(CurLine.In_Str(1, BufString, Text_Compare) == 1)
-				    {
+                    BufString = StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Get_String();
+                    if(CurLine.In_Str(1, BufString, Text_Compare) == 1)
+                    {
                         if(ProcPos != -1)
                         {
                             if(BalanceInterlaceState == 1)
@@ -1669,10 +1669,10 @@ RechckProc:
                 }
                 // xxx proc
                 BufString = StringGetSplitElement(CurLangProc1, CurLangProcArray, j);
-				if((CurLine.Len() - BufString.Len()) != 0)
-				{
+                if((CurLine.Len() - BufString.Len()) != 0)
+                {
                     BufString = " " + (CStr) StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Get_String();
-					if(CurLine.In_Str(1, BufString, Text_Compare) == (CurLine.Len() - StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Len())) {
+                    if(CurLine.In_Str(1, BufString, Text_Compare) == (CurLine.Len() - StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Len())) {
                         if(ProcPos != -1)
                         {
                             if(BalanceInterlaceState == 1)
@@ -1692,15 +1692,15 @@ FuturBalancing:
             {
                 // xxx endp xxx
                 BufString = " " + (CStr) StringGetSplitElement(CurLangProc2, CurLangEndpArray, j).Get_String() + (CStr) " ";
-				if(CurLine.In_Str(1, BufString, Text_Compare) != 0)
-				{
+                if(CurLine.In_Str(1, BufString, Text_Compare) != 0)
+                {
                     EndpPos = i;
                     goto FoundEndp;
                 }
                 // xxx endp
                 if((CurLine.Len() - StringGetSplitElement(CurLangProc2, CurLangEndpArray, j).Len()) != 0)
                 {
-					BufString = " " + (CStr) StringGetSplitElement(CurLangProc2, CurLangEndpArray, j).Get_String();
+                    BufString = " " + (CStr) StringGetSplitElement(CurLangProc2, CurLangEndpArray, j).Get_String();
                     if(CurLine.In_Str(1, BufString, Text_Compare) == (CurLine.Len() - 
                        StringGetSplitElement(CurLangProc2, CurLangEndpArray, j).Len()))
                     {
@@ -1709,7 +1709,7 @@ FuturBalancing:
                     }
                 }
                 // endp xxx
-				BufString = StringGetSplitElement(CurLangProc2, CurLangEndpArray, j).Get_String() + (CStr) " ";
+                BufString = StringGetSplitElement(CurLangProc2, CurLangEndpArray, j).Get_String() + (CStr) " ";
                 if(CurLine.In_Str(1, BufString, Text_Compare) == 1)
                 {
                     EndpPos = i;
@@ -1754,27 +1754,27 @@ FoundEndp:
                         // Check if we found a proc end point before endpoint
                         // xxx endp xxx
                         BufString = " " + (CStr) StringGetSplitElement(CurLangProc2, CurLangEndpArray, j).Get_String() + (CStr) " ";
-						if(CurLine.In_Str(1, BufString, Text_Compare) != 0) goto FoundEndpEnd;
+                        if(CurLine.In_Str(1, BufString, Text_Compare) != 0) goto FoundEndpEnd;
                         // endp xxx (tasm)
                         BufString = StringGetSplitElement(CurLangProc2, CurLangEndpArray, j).Get_String() + (CStr) " ";
-						if(CurLine.In_Str(1, BufString, Text_Compare) == 1) goto FoundEndpEnd;
+                        if(CurLine.In_Str(1, BufString, Text_Compare) == 1) goto FoundEndpEnd;
                         // endp crlf (tasm)
                         BufString = StringGetSplitElement(CurLangProc2, CurLangEndpArray, j).Get_String() + (CStr) "\r\n";
-						if(CurLine.In_Str(1, BufString, Text_Compare) == 1) goto FoundEndpEnd;
+                        if(CurLine.In_Str(1, BufString, Text_Compare) == 1) goto FoundEndpEnd;
                         // xxx endp
                         if((CurLine.Len() - StringGetSplitElement(CurLangProc2, CurLangEndpArray, j).Len()) != 0)
                         {
-							BufString = " " + (CStr) StringGetSplitElement(CurLangProc2, CurLangEndpArray, j).Get_String();
-							if(CurLine.In_Str(1, BufString, Text_Compare) == (CurLine.Len() - StringGetSplitElement(CurLangProc2, CurLangEndpArray, j).Len())) goto FoundEndpEnd;
-						}
-					}
+                            BufString = " " + (CStr) StringGetSplitElement(CurLangProc2, CurLangEndpArray, j).Get_String();
+                            if(CurLine.In_Str(1, BufString, Text_Compare) == (CurLine.Len() - StringGetSplitElement(CurLangProc2, CurLangEndpArray, j).Len())) goto FoundEndpEnd;
+                        }
+                    }
 
                     for(j = 0; j <= (long) StringGetSplitUBound(CurLangProcArray); j++)
                     {
                         // xxx proc xxx
                         BufString = " " + (CStr) StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Get_String() + (CStr) " ";
-						if(CurLine.In_Str(1, BufString, Text_Compare) != 0)
-						{
+                        if(CurLine.In_Str(1, BufString, Text_Compare) != 0)
+                        {
                             ProcPos = i;
                             LastProcTypeKeyword = StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Get_String();
                             goto FoundEndpEnd;
@@ -1783,9 +1783,9 @@ FoundEndp:
                         if((CurLine.Len() - StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Len()) != 0)
                         {
                             BufString = " " + (CStr) StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Get_String();
-							if(CurLine.In_Str(1, BufString, Text_Compare) == (CurLine.Len() -
-							   StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Len()))
-							{
+                            if(CurLine.In_Str(1, BufString, Text_Compare) == (CurLine.Len() -
+                               StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Len()))
+                            {
                                 ProcPos = i;
                                 LastProcTypeKeyword = StringGetSplitElement(CurLangProc1, CurLangProcArray, j);
                                 goto FoundEndpEnd;
@@ -1887,7 +1887,7 @@ StopBalanceCheck:       MiscMsgBox(hMDIform.hWnd, "Unmatched block in procedure.
 FreeSplits:
     StringReleaseSplit(CurLangEndpArray);
     StringReleaseSplit(CurLangProcArray);
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1900,8 +1900,8 @@ CStr GetProcName(CStr ProcBlock, CStr ProcKeyWord)
     long BracketBalance = 0;
     CStr TempProcName;
     int i = 0;
-	CStr ReturnValue;
-	CStr BufString;
+    CStr ReturnValue;
+    CStr BufString;
 
     ProcBlock = StringReplace(ProcBlock, "\t", "", 1, -1, Binary_Compare).Trim();
     ProcPos = ProcBlock.In_Str(1, ProcKeyWord, Text_Compare);
@@ -1931,21 +1931,21 @@ CStr GetProcName(CStr ProcBlock, CStr ProcKeyWord)
             ProcPos--;
             if(ProcPos == 1)
             {
-				ReturnValue = BufString;
-				return(ReturnValue);
+                ReturnValue = BufString;
+                return(ReturnValue);
             }
-			for(i = ProcPos; i >= 1; i--)
-			{
+            for(i = ProcPos; i >= 1; i--)
+            {
                 if(StringIsCloseBracketChar(BufString.Mid(i, 1)) == 0) ProcPos--;
                 else break;
             }
             if(ProcPos == 1)
             {
-				ReturnValue = BufString;
-				return(ReturnValue);
+                ReturnValue = BufString;
+                return(ReturnValue);
             }
-			for(i = ProcPos; i >= 1; i--)
-			{
+            for(i = ProcPos; i >= 1; i--)
+            {
                 ExprCharToTest = BufString.Mid(i, 1);
                 if(StringIsOpenBracketChar(ExprCharToTest)) BracketBalance--;
                 if(StringIsCloseBracketChar(ExprCharToTest)) BracketBalance++;
@@ -1954,21 +1954,21 @@ CStr GetProcName(CStr ProcBlock, CStr ProcKeyWord)
             }
             if(ProcPos == 1)
             {
-				ReturnValue = BufString;
-				return(ReturnValue);
+                ReturnValue = BufString;
+                return(ReturnValue);
             }
-			for(i = ProcPos; i >= 1; i--)
-			{
+            for(i = ProcPos; i >= 1; i--)
+            {
                 if(StringIsLabelChar(BufString.Mid(i, 1)) == 0) ProcPos--;
                 else break;
             }
             if(ProcPos == 1)
             {
-				ReturnValue = BufString;
-				return(ReturnValue);
+                ReturnValue = BufString;
+                return(ReturnValue);
             }
-			for(i = ProcPos; i >= 1; i--)
-			{
+            for(i = ProcPos; i >= 1; i--)
+            {
                 if(StringIsLabelChar(BufString.Mid(i, 1)))
                 {
                     TempProcName = BufString.Mid(i, 1).Get_String() + (CStr) TempProcName;
@@ -1983,8 +1983,8 @@ CStr GetProcName(CStr ProcBlock, CStr ProcKeyWord)
             if(TempProcName.Len() != 0) BufString = TempProcName;
         }
     }
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -2017,10 +2017,10 @@ long OpenFileUnderCursor(long FileToInclude, long ExecFile)
     int i = 0;
     long DidRight = 0;
     long DidLeft = 0;
-	CStr CompleteLine;
+    CStr CompleteLine;
     CStr BufString;
 
-	if(NbForms == 0) return(ReturnValue);
+    if(NbForms == 0) return(ReturnValue);
     ChildStruct = LoadStructure(CurrentForm);
     FileLine = RetrieveCurrentLine(ChildStruct->hChildCodeMax);
     // Check for any select text
@@ -2048,61 +2048,61 @@ ReCheckFile:
     DidRight = 0;
     DidLeft = 0;
     // Invalid chars : \ / : * ? " < > |
-	if(CurPos <= (FileLine.Len() + 1))
-	{
-		for(i = CurPos; i <= FileLine.Len(); i++)
-		{
-			CharF = FileLine.Mid(PosRight2, 1);
-			NbrChars++;
-			PosRight2++;
-			CurPos++;
-			if(CharF == "/") break;
-			if(CharF == "*") break;
-			if(CharF == "?") break;
-			if(CharF == "\"") break;
-			if(CharF == "<") break;
-			if(CharF == ">") break;
-			if(CharF == "|") break;
-			if(CharF == "}") break;
-			CharF1 = CharF;
-			if(CharF == " ") break;
-			if(CharF == "\t") break;
-			FileRight = FileRight + CharF;
-			DidRight = 1;
-		}
-	}
-	if(CurPos2 >= 1)
-	{
-		for(i = (CurPos2 - 1); i >= 1; i--)
-		{
-			CharF = FileLine.Mid(PosLeft2, 1);
-			PosLeft2--;
-			NbrChars++;
-			CurPos2--;
-			if(CharF == "/") break;
-			if(CharF == "*") break;
-			if(CharF == "?") break;
-			if(CharF == "\"") break;
-			if(CharF == "<") break;
-			if(CharF == ">") break;
-			if(CharF == "|") break;
-			CharF2 = CharF;
-			PosLeft--;
-			if(CharF == " ") goto GoTest;
-			if(CharF == "\t") goto GoTest;
+    if(CurPos <= (FileLine.Len() + 1))
+    {
+        for(i = CurPos; i <= FileLine.Len(); i++)
+        {
+            CharF = FileLine.Mid(PosRight2, 1);
+            NbrChars++;
+            PosRight2++;
+            CurPos++;
+            if(CharF == "/") break;
+            if(CharF == "*") break;
+            if(CharF == "?") break;
+            if(CharF == "\"") break;
+            if(CharF == "<") break;
+            if(CharF == ">") break;
+            if(CharF == "|") break;
+            if(CharF == "}") break;
+            CharF1 = CharF;
+            if(CharF == " ") break;
+            if(CharF == "\t") break;
+            FileRight = FileRight + CharF;
+            DidRight = 1;
+        }
+    }
+    if(CurPos2 >= 1)
+    {
+        for(i = (CurPos2 - 1); i >= 1; i--)
+        {
+            CharF = FileLine.Mid(PosLeft2, 1);
+            PosLeft2--;
+            NbrChars++;
+            CurPos2--;
+            if(CharF == "/") break;
+            if(CharF == "*") break;
+            if(CharF == "?") break;
+            if(CharF == "\"") break;
+            if(CharF == "<") break;
+            if(CharF == ">") break;
+            if(CharF == "|") break;
+            CharF2 = CharF;
+            PosLeft--;
+            if(CharF == " ") goto GoTest;
+            if(CharF == "\t") goto GoTest;
             if(PosLeft < 0) break;
-			FileLeft.Get_String()[PosLeft] = CharF.Get_String()[0];
-			DidLeft = 1;
-		}
-	}
+            FileLeft.Get_String()[PosLeft] = CharF.Get_String()[0];
+            DidLeft = 1;
+        }
+    }
     // Needed for no carriage return ends the line
     if(NbrChars > FileLine.Len()) goto NoGo;
     // BOL and EOL reached
     if(DidLeft == 0 && DidRight == 0) goto NoGo;
 GoTest:
     BufString = FileLeft.L_Trim().Get_String() + (CStr) FileRight;
-	BufString = BufString.Trim();
-	if(TestUnderFile(BufString) == 1) goto GoForITLastChance;
+    BufString = BufString.Trim();
+    if(TestUnderFile(BufString) == 1) goto GoForITLastChance;
     if(strcmp(CharF1.Get_String(), " ") == 0) FileRight = FileRight + " ";
     if(FileLeft.Len() != 0)
     {
@@ -2201,7 +2201,7 @@ ForceInInclude:
             return(1);
         }
     }
-	return(0);
+    return(0);
 }
 
 // -----------------------------------------------------------------------
@@ -2338,7 +2338,7 @@ FileOk:
 // Remove a commented lines
 CStr RemoveComments(CStr Str)
 {
-	CStr ReturnValue;
+    CStr ReturnValue;
     long *CLines = 0;
     CStr LineToCheck;
     long InComment = 0;
@@ -2347,7 +2347,7 @@ CStr RemoveComments(CStr Str)
     long PosSngComment = 0;
     CStr CurLangComment;
     CStr BufString;
-	int i = 0;
+    int i = 0;
 
     TempLines = "";
     CurLangComment = GetCMLangComment(CurrentForm);
@@ -2417,8 +2417,8 @@ NoStoreLine:;
         }
     }
     StringReleaseSplit(CLines);
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -2431,12 +2431,12 @@ HWND GoToLine(CStr FileName, long LineNumber, long FNoAddRecent)
     HWND ReturnValue = 0;
     CStr ExtraCurrentDir;
     CStr ExtraSlash;
-	CStr BufString;
+    CStr BufString;
     OFSTRUCT File_Dat;
     
-	if(FileName.Len() == 0) return(0);
-	BufString = FileName;
-	fFile = 0;
+    if(FileName.Len() == 0) return(0);
+    BufString = FileName;
+    fFile = 0;
 ReCheckFileName:
     BufString = StringReplace(BufString, "/", "\\", 1, -1, Binary_Compare);
     ExtraSlash = "";
@@ -2509,7 +2509,7 @@ Undecorated_Found:
             ReturnValue = hwndRegs;
         }
     }
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -2529,7 +2529,7 @@ HWND FocusFile(CStr FileName, long FNoAddRecent)
         ChildStruct = LoadStructure(FoundOpenedhWnd);
         SetFocus(FoundOpenedhWnd);
         SetFocus(ChildStruct->hChildCodeMax);
-		return(FoundOpenedhWnd);
+        return(FoundOpenedhWnd);
     }
     else
     {
@@ -2539,10 +2539,10 @@ HWND FocusFile(CStr FileName, long FNoAddRecent)
             ChildStruct = LoadStructure(hwndRegs);
             SetFocus(FoundOpenedhWnd);
             SetFocus(ChildStruct->hChildCodeMax);
-			return(hwndRegs);
+            return(hwndRegs);
         }
     }
-	return(0);
+    return(0);
 }
 
 // -----------------------------------------------------------------------
@@ -2551,7 +2551,7 @@ CStr GetFileNameFromTreeView(HTREEITEM hItem)
 {
     CStr ReturnValue;
     CStr BufString;
-	long PosRefFile = 0;
+    long PosRefFile = 0;
 
     BufString = TreeViewGetItemText(hTreeView, hItem);
     if(BufString.Len() != 0)
@@ -2568,7 +2568,7 @@ CStr GetFileNameFromTreeView(HTREEITEM hItem)
             BufString = "";
         }
     }
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -2594,7 +2594,7 @@ CStr GetLabelFromTreeView(HTREEITEM hItem)
             BufString = "";
         }
     }
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -2647,13 +2647,13 @@ void SearchOpenFileCM(HWND hWnd)
 // Return found line
 long SearchInText(long Txt, long TxtLen, CStr KeyW, long SearchType, long StartPo)
 {
-	long ReturnValue = 0;
+    long ReturnValue = 0;
 
     ReturnValue = Str_InString(StartPo, (char *) Txt, KeyW.Lower_Case().Get_String());
     // Don't check if no keyword
     CurrentRetriPosition = ReturnValue;
     if(ReturnValue != 0) ReturnValue = (long) GetCurrentLine((char *) Txt, TxtLen, ReturnValue);
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -2663,8 +2663,8 @@ CStr SearchGetTextLine(long Txt, long TxtLen, long LineNumber)
     char *TxtLineAddr = 0;
     long TxtLineAddrLen = 0;
     long TxtLineLenAll = 0;
-	CStr ReturnValue;
-	CStr BufString;
+    CStr ReturnValue;
+    CStr BufString;
 
     TxtLineAddr = GetFileLineAddress((char *) Txt, TxtLen, LineNumber);
     // Get line len
@@ -2672,7 +2672,7 @@ CStr SearchGetTextLine(long Txt, long TxtLen, long LineNumber)
     TxtLineAddrLen = MGetStrLenCR(TxtLineAddr, TxtLineLenAll);
     BufString = BufString.String(TxtLineAddrLen, 1);
     RtlCopyMemory(BufString.Get_String(), (void *) TxtLineAddr, TxtLineAddrLen);
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -2683,16 +2683,16 @@ CStr SearchGetTextLineStr(CStr Txt, long TxtLen, long LineNumber)
     long TxtLineAddr = 0;
     long TxtLineAddrLen = 0;
     long TxtLineLenAll = 0;
-	CStr ReturnValue;
-	CStr BufString;
+    CStr ReturnValue;
+    CStr BufString;
    
-	TxtLineAddr = (long) GetFileLineAddress(Txt.Get_String(), TxtLen, LineNumber);
+    TxtLineAddr = (long) GetFileLineAddress(Txt.Get_String(), TxtLen, LineNumber);
     // Get line len
     TxtLineLenAll = TxtLineAddr - (long) Txt.Get_String();
     TxtLineAddrLen = MGetStrLenCR((char *) TxtLineAddr, TxtLineLenAll);
     BufString = BufString.String(TxtLineAddrLen, 1);
     RtlCopyMemory(BufString.Get_String(), (void *) TxtLineAddr, TxtLineAddrLen);
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -2701,16 +2701,16 @@ CStr SearchGetTextLineStr(CStr Txt, long TxtLen, long LineNumber)
 CStr SearchGetLines(long LineNumber)
 {
     long TxtLineLenAll = 0;
-	CStr ReturnValue;
+    CStr ReturnValue;
     CStr BufString;
 
-	CurrentFileCLine = GetFileLineAddress((char *) CurrentFilePointer, CurrentFileSize, LineNumber);
+    CurrentFileCLine = GetFileLineAddress((char *) CurrentFilePointer, CurrentFileSize, LineNumber);
     // Get line len
     TxtLineLenAll = strlen(CurrentFileCLine);
     CurrentFileLineLen = MGetStrLenCR(CurrentFileCLine, TxtLineLenAll);
     BufString = BufString.String(CurrentFileLineLen, 1);
     RtlCopyMemory(BufString.Get_String(), (void *) CurrentFileCLine, CurrentFileLineLen);
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -2727,13 +2727,13 @@ long SearchInFileCM(HWND hWnd, CStr KeyW, long SearchType, long StartPo, CStr Co
     // lower case all if vbText_Compare
     LoCase((char *) CurrentFilePointerBis);
     CurrentFileSearchKey = KeyW.Lower_Case().Get_String();
-	// Not raw ?
-	if(RawMode == 0)
-	{
-		RemoveCommentBlocksFromFileByChild(CurrentFilePointerBis, CurrentFileSizeBis, hWnd);
-		RemoveSingleLineComment((char *) CurrentFilePointerBis, CurrentFileSizeBis, CommentC.Get_String());
+    // Not raw ?
+    if(RawMode == 0)
+    {
+        RemoveCommentBlocksFromFileByChild(CurrentFilePointerBis, CurrentFileSizeBis, hWnd);
+        RemoveSingleLineComment((char *) CurrentFilePointerBis, CurrentFileSizeBis, CommentC.Get_String());
     }
-	ReturnValue = Str_InString(StartPo, (char *) CurrentFilePointerBis, CurrentFileSearchKey.Get_String());
+    ReturnValue = Str_InString(StartPo, (char *) CurrentFilePointerBis, CurrentFileSearchKey.Get_String());
     CurrentRetriPosition = ReturnValue;
     // Don't check if no keyword
     if(ReturnValue != 0) ReturnValue = (long) GetCurrentLine((char *) CurrentFilePointerBis, CurrentFileSizeBis, ReturnValue);
@@ -2766,13 +2766,13 @@ long SearchInFile(CStr FileName, CStr KeyW, long SearchType, long StartPo, long 
     // lower case all if vbText_Compare
     LoCase((char *) CurrentFilePointerBis);
     CurrentFileSearchKey = KeyW.Lower_Case().Get_String();
-	// Not raw ?
+    // Not raw ?
     if(RawMode == 0)
     {
-		RemoveCommentBlocksFromFileByFile(CurrentFilePointerBis, CurrentFileSizeBis, CurrentFileOpenBis);
-		RemoveSingleLineComment((char *) CurrentFilePointerBis, CurrentFileSizeBis, GetCMLangCommentByFile(FileName).Get_String());
+        RemoveCommentBlocksFromFileByFile(CurrentFilePointerBis, CurrentFileSizeBis, CurrentFileOpenBis);
+        RemoveSingleLineComment((char *) CurrentFilePointerBis, CurrentFileSizeBis, GetCMLangCommentByFile(FileName).Get_String());
     }
-	ReturnValue = Str_InString(StartPo, (char *) CurrentFilePointerBis, CurrentFileSearchKey.Get_String());
+    ReturnValue = Str_InString(StartPo, (char *) CurrentFilePointerBis, CurrentFileSearchKey.Get_String());
     CurrentRetriPosition = ReturnValue;
     // Don't check if no keyword
     if(ReturnValue != 0) ReturnValue = (long) GetCurrentLine((char *) CurrentFilePointerBis, CurrentFileSizeBis, ReturnValue);
@@ -2993,7 +2993,7 @@ void FillFuncEntry(CStr KeyWord, long Position, CStr Comment)
 // Search for a variable declaration
 long SearchVarEntry(HWND hWnd, CStr KeyWord)
 {
-	VarProcFound = 0;
+    VarProcFound = 0;
     VarProcToSearch = KeyWord.Lower_Case();
     VarProcToSearchReal = KeyWord;
     VarProcFoundhwnd = 0;
@@ -3008,12 +3008,12 @@ int CALLBACK EnumSearchVarEntry(HWND hWnd, long lParam)
 {
     CStr BufString;
 
-	if(NbForms == 0)
-	{
+    if(NbForms == 0)
+    {
         return(0);
-	}
-	else
-	{
+    }
+    else
+    {
         VarProcFound = 0;
         VarProcFoundLine = 0;
         if(ControlIsWindowChild(hWnd) == 1)
@@ -3098,8 +3098,8 @@ SearchVarEntryLoop:
                         if(VarProcFoundLineTxt.In_Str(1, VarProcToSearch + (CStr) ":ULONG", Text_Compare) != 0) goto FoundVarEntry;
                         if(VarProcFoundLineTxt.In_Str(1, VarProcToSearch + (CStr) ":DOUBLE", Text_Compare) != 0) goto FoundVarEntry;
                         if(VarProcFoundLineTxt.In_Str(1, VarProcToSearch + (CStr) ":EQU", Text_Compare) != 0) goto FoundVarEntry;
-						BufString = VarProcToSearch + (CStr) ":";
-						if(VarProcFoundLineTxt.In_Str(1, VarProcToSearch, Text_Compare) == 1) if(strcmpi(VarProcFoundLineTxt.Left(VarProcToSearch.Len() + 1).Get_String(), BufString.Get_String()) == 0) goto FoundVarEntry;
+                        BufString = VarProcToSearch + (CStr) ":";
+                        if(VarProcFoundLineTxt.In_Str(1, VarProcToSearch, Text_Compare) == 1) if(strcmpi(VarProcFoundLineTxt.Left(VarProcToSearch.Len() + 1).Get_String(), BufString.Get_String()) == 0) goto FoundVarEntry;
                         VarProcFoundPos++;
                         goto SearchVarEntryLoop;
 FoundVarEntry:          // Mark as found and exit
@@ -3193,7 +3193,7 @@ FoundVarUse:            // Mark as found and exit
         }
         return(1);
     }
-	return(0);
+    return(0);
 }
 
 // -----------------------------------------------------------------------
@@ -3260,7 +3260,7 @@ FoundProcProto:         // Mark as found and exit
         }
         return(1);
     }
-	return(0);
+    return(0);
 }
 
 // -----------------------------------------------------------------------
@@ -3327,7 +3327,7 @@ FoundProcDeclare:       // Mark as found and exit
         }
         return(1);
     }
-	return(0);
+    return(0);
 }
 
 // -----------------------------------------------------------------------
@@ -3352,7 +3352,7 @@ long SearchProcNextUse(HWND hWnd, CStr KeyWord, long FirstLine)
 
 int CALLBACK EnumSearchProcNextUse(HWND hWnd, long lParam)
 {
-	CStr BufString;
+    CStr BufString;
 
     if(NbForms == 0)
     {
@@ -3385,9 +3385,9 @@ SearchVarUseLoop:   VarProcFoundPos = Str_InString(VarProcFoundPos, VarProcText.
                         VarProcFoundLine = (long) GetCurrentLine(VarProcText.Get_String(), VarProcText.Len(), VarProcFoundPos);
                         VarProcFoundLineTxt = SearchGetTextLineStr(VarProcText, VarProcText.Len(), VarProcFoundLine - 1);
                         // Check if variable is the first word of the line (it's declaration then)
-						BufString = StringReplace(VarProcFoundLineTxt, VarProcFoundLineTxt.Chr(2), "", 1, -1, Binary_Compare);
-			            if(BufString.In_Str(1, VarProcToSearch, Text_Compare) != 1)
-			            {
+                        BufString = StringReplace(VarProcFoundLineTxt, VarProcFoundLineTxt.Chr(2), "", 1, -1, Binary_Compare);
+                        if(BufString.In_Str(1, VarProcToSearch, Text_Compare) != 1)
+                        {
                             VarProcFoundLineTxt = BufString;
                             if(VarProcFoundLineTxt.In_Str(1, "CALL" + (CStr) VarProcToSearch, Text_Compare) != 0) goto FoundVarUse;
                             if(VarProcFoundLineTxt.In_Str(1, "INVOKE" + (CStr) VarProcToSearch, Text_Compare) != 0) goto FoundVarUse;
@@ -3407,14 +3407,14 @@ FoundVarUse:            // Mark as found and exit
         }
         return(1);
     }
-	return(0);
+    return(0);
 }
 
 // -----------------------------------------------------------------------
 // Remove leading/trailing chr(2)
 CStr RemoveChr2(CStr Txt)
 {
-	CStr ReturnValue;
+    CStr ReturnValue;
     int i = 0;
     long LeadPos = 0;
     long TrailPos = 0;
@@ -3432,27 +3432,27 @@ CStr RemoveChr2(CStr Txt)
         TrailPos--;
     }
     if((TrailPos - LeadPos) > 0) ReturnValue = Txt.Mid(LeadPos, TrailPos);
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Search for a procedure/variable keyword in a line
 long ProcSearch(CStr Ln, CStr KeyWord, CStr BoundedKeyWord, long Position)
 {
-	long ReturnValue = 0;
+    long ReturnValue = 0;
     long PosKeyWord = 0;
 
     switch(Position)
     {
         case POS_BEFORE:
             PosKeyWord = Ln.In_Str(1, KeyWord.Get_String() + (CStr) BoundedKeyWord.Get_String(), Text_Compare);
-			break;
-		case POS_AFTER:
+            break;
+        case POS_AFTER:
             PosKeyWord = Ln.In_Str(1, BoundedKeyWord.Get_String() + (CStr) KeyWord.Get_String(), Text_Compare);
-			break;
+            break;
     }
     if(PosKeyWord != 0) ReturnValue = 1;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -3460,11 +3460,11 @@ long ProcSearch(CStr Ln, CStr KeyWord, CStr BoundedKeyWord, long Position)
 // (This function is recursive if the passed argument is a directory)
 long OpenUnknownFile(CStr FileName, int AddInRecent)
 {
-	CStr SelUnknownFiles;
-	CStr NameToOpen;
-	int SkipPrjLoadRecent;
+    CStr SelUnknownFiles;
+    CStr NameToOpen;
+    int SkipPrjLoadRecent;
 
-	// Open passed file
+    // Open passed file
     if(FileExist(FileName) == 1)
     {
         if(FileIsDirectory(FileName) == 0)
@@ -3476,44 +3476,44 @@ long OpenUnknownFile(CStr FileName, int AddInRecent)
                     {
                         if(AddInRecent)
                         {
-							if(OpenFileNorm(FileName, 0, 0, 0, FALSE) != 0) LastLoadDir = FileGetDirectory(FileName);
+                            if(OpenFileNorm(FileName, 0, 0, 0, FALSE) != 0) LastLoadDir = FileGetDirectory(FileName);
                         }
                         else
                         {
-							if(OpenFileNorm(FileName, 0, 0, 0, TRUE) != 0) LastLoadDir = FileGetDirectory(FileName);
-						}
-						return(TRUE);
+                            if(OpenFileNorm(FileName, 0, 0, 0, TRUE) != 0) LastLoadDir = FileGetDirectory(FileName);
+                        }
+                        return(TRUE);
                     }
                     else
                     {
                         OpenWorkSpc(FileName);
-						return(TRUE);
+                        return(TRUE);
                     }
                 }
                 else
                 {
                     SkipPrjLoadRecent = RealOpenPrj(FileName);
-					if(SkipPrjLoadRecent != -1) AddRecentPrj(FileName, SkipPrjLoadRecent, 0);
-					return(TRUE);
+                    if(SkipPrjLoadRecent != -1) AddRecentPrj(FileName, SkipPrjLoadRecent, 0);
+                    return(TRUE);
                 }
             }
         }
         else
         {
-			SelUnknownFiles = ComDlgGetOpenFileName(GetActiveWindow(),"All files (*.*)|*.*", FileName, 1, CurrentDir);
-			if(ComDlgParseMultiFilesSelection(SelUnknownFiles, &EnumUnknownFiles, MULTIFILESENUM_FORWARD, AddInRecent).Len() != 0)
-			{
-				return(TRUE);
-			}
-		}
+            SelUnknownFiles = ComDlgGetOpenFileName(GetActiveWindow(),"All files (*.*)|*.*", FileName, 1, CurrentDir);
+            if(ComDlgParseMultiFilesSelection(SelUnknownFiles, &EnumUnknownFiles, MULTIFILESENUM_FORWARD, AddInRecent).Len() != 0)
+            {
+                return(TRUE);
+            }
+        }
     }
-	return(FALSE);
+    return(FALSE);
 }
 
 long CALLBACK EnumUnknownFiles(char *FileToAdd, long UserValue)
 {
-	OpenUnknownFile(FileToAdd, UserValue);
-	return(TRUE);
+    OpenUnknownFile(FileToAdd, UserValue);
+    return(TRUE);
 }
 
 // -----------------------------------------------------------------------
@@ -3547,10 +3547,10 @@ CStr HexToDec(CStr Number)
     long HexIdx = 0;
     long MaxLen = 0;
     long StartHex = 0;
-	CStr BufString;
-	CStr TempBuf;
+    CStr BufString;
+    CStr TempBuf;
 
-	TempBuf = Number.Trim();
+    TempBuf = Number.Trim();
     StartHex = 1;
     // Filter the datas
     if(strcmpi(TempBuf.Left(2).Get_String(), "0x") == 0)
@@ -3570,12 +3570,12 @@ CStr HexToDec(CStr Number)
         HexChar = TempBuf.Mid(i + (StartHex - 1), 1).Upper_Case();
         if(((strcmp(HexChar.Get_String(), "0") >= 0) && (strcmp(HexChar.Get_String(), "9") <= 0)) || ((strcmpi(HexChar.Get_String(), "A") >= 0) && (strcmpi(HexChar.Get_String(), "F") <= 0)))
         {
-		    HexToConvert = HexToConvert + HexChar;
+            HexToConvert = HexToConvert + HexChar;
         }
         else
         {
             if(GoodHex == 0) if(strcmpi(HexChar.Get_String(), "h") == 0) GoodHex = 1;
-			break;
+            break;
         }
     }
     if(GoodHex == 1)
@@ -3594,7 +3594,7 @@ CStr HexToDec(CStr Number)
             BufString = ConvertedHex;
         }
     }
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -3612,13 +3612,13 @@ CStr DecToHex(CStr Number)
     CStr DecToConvert;
     long RealDec = 0;
     long MaxLen = 0;
-	CStr BufString;
-	CStr TempBuf;
+    CStr BufString;
+    CStr TempBuf;
 
-	// Filter the datas
+    // Filter the datas
     
-	TempBuf = Number.Trim();
-	MaxLen = TempBuf.Len();
+    TempBuf = Number.Trim();
+    MaxLen = TempBuf.Len();
     if(MaxLen > 10) MaxLen = 10;
     GoodDec = 1;
     for(i = 1; i <= MaxLen; i++)
@@ -3644,7 +3644,7 @@ CStr DecToHex(CStr Number)
             BufString = BufString.Hex_To_String(RealDec);
         }
     }
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -3664,12 +3664,12 @@ CStr DecToBin(CStr Number)
     long RealDec = 0;
     CStr RealDecComp;
     long MaxLen = 0;
-	CStr BufString;
-	CStr TempBuf;
+    CStr BufString;
+    CStr TempBuf;
 
     // Filter the datas
     TempBuf = Number.Trim();
-	MaxLen = TempBuf.Len();
+    MaxLen = TempBuf.Len();
     if(MaxLen > 10) MaxLen = 10;
     GoodDec = 1;
     for(i = 1; i <= MaxLen; i++)
@@ -3712,7 +3712,7 @@ CStr DecToBin(CStr Number)
             BufString = RealDecComp.Mid(i);
         }
     }
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -3732,10 +3732,10 @@ CStr HexToBin(CStr Number)
     long HexIdx = 0;
     long MaxLen = 0;
     long StartHex = 0;
-	CStr BufString;
-	CStr TempBuf;
+    CStr BufString;
+    CStr TempBuf;
 
-	TempBuf = Number.Trim();
+    TempBuf = Number.Trim();
     StartHex = 1;
     // Filter the datas
     if(strcmpi(TempBuf.Left(2).Get_String(), "0x") == 0)
@@ -3760,7 +3760,7 @@ CStr HexToBin(CStr Number)
         else
         {
             if(GoodHex == 0) if(strcmpi(HexChar.Get_String(), "h") == 0) GoodHex = 1;
-			break;
+            break;
         }
     }
     if(GoodHex == 1)
@@ -3780,7 +3780,7 @@ CStr HexToBin(CStr Number)
             BufString = DecToBin(BufString);
         }
     }
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -3795,11 +3795,11 @@ CStr BinToDec(CStr Number)
     long GoodBin = 0;
     CStr ReturnValue;
     CStr BufString;
-	CStr BinChar;
+    CStr BinChar;
     CStr BinToConvert;
-	CStr TempBuf;
+    CStr TempBuf;
 
-	TempBuf = Number.Trim();
+    TempBuf = Number.Trim();
     for(i = 1; i <= 33; i++)
     {
         BinChar = TempBuf.Mid(i, 1).Upper_Case();
@@ -3822,7 +3822,7 @@ CStr BinToDec(CStr Number)
         }
         BufString = DecBin;
     }
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -3839,9 +3839,9 @@ CStr BinToHex(CStr Number)
     CStr BufString;
     CStr BinChar;
     CStr BinToConvert;
-	CStr TempBuf;
+    CStr TempBuf;
 
-	TempBuf = Number.Trim();
+    TempBuf = Number.Trim();
     for(i = 1; i <= 33; i++)
     {
         BinChar = TempBuf.Mid(i, 1).Upper_Case();
@@ -3865,7 +3865,7 @@ CStr BinToHex(CStr Number)
         BufString = DecBin;
         BufString = DecToHex(BufString);
     }
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -3885,12 +3885,12 @@ CStr HexToFlt(CStr Number)
     long HexIdx = 0;
     long MaxLen = 0;
     long StartHex = 0;
-	CStr BufString;
-	CStr TempBuf;
+    CStr BufString;
+    CStr TempBuf;
     float ConvertFlt;
     int Real_Start = 0;
 
-	TempBuf = Number.Trim();
+    TempBuf = Number.Trim();
     StartHex = 1;
     // Filter the datas
     if(strcmpi(TempBuf.Left(2).Get_String(), "0x") == 0)
@@ -3917,7 +3917,7 @@ CStr HexToFlt(CStr Number)
         if(((strcmp(HexChar.Get_String(), "0") >= 0) && (strcmp(HexChar.Get_String(), "9") <= 0)) ||
            ((strcmpi(HexChar.Get_String(), "A") >= 0) && (strcmpi(HexChar.Get_String(), "F") <= 0)))
         {
-		    HexToConvert = HexToConvert + HexChar;
+            HexToConvert = HexToConvert + HexChar;
         }
     }
     if(GoodHex == 1)
@@ -3942,7 +3942,7 @@ CStr HexToFlt(CStr Number)
             if(BufString.In_Str(1, ".") == 0) BufString += ".0";
         }
     }
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -3957,11 +3957,11 @@ CStr FltToHex(CStr Number)
     DWORD dwNbrOut;
     char *pEnd;
 
-	fNbr = (float) strtod(Number.Get_String(), &pEnd);
+    fNbr = (float) strtod(Number.Get_String(), &pEnd);
     // No process
     if(strlen(pEnd) != 0) return(Number);
-	_asm
-	{
+    _asm
+    {
         mov eax,[fNbr]
         mov [dwNbrOut],eax
     }
@@ -3976,9 +3976,9 @@ CStr GetModulesProc(void)
     CStr ReturnValue;
     HTREEITEM TreeViewChildEntryProc = 0;
     CStr TVEntryFName;
-	CStr BufString;
+    CStr BufString;
 
-	// Add user modules to header
+    // Add user modules to header
     TreeViewChildEntryProc = TreeViewGetFirstItemChild(hTreeView, hTreeViewModules);
     while(TreeViewChildEntryProc != 0)
     {
@@ -3986,169 +3986,170 @@ CStr GetModulesProc(void)
         BufString = BufString + GetProcedureList(TVEntryFName);
         TreeViewChildEntryProc = TreeViewGetNextItem(hTreeView, TreeViewChildEntryProc);
     }
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Return the position of a procedure entry point/end point in a text
-CStr FindProcedure(CStr FileName, long hFile, CStr hFileCase, long FileLen, long StartPos,
+CStr FindProcedure(CStr FileName, long hFile, CStr hFileCase,
+                   long FileLen, long StartPos,
                    LPPOINT ProcPos, CStr CurLangProc, CStr CurLangEndProc)
 {
     long *CurLangProcArray = 0;
     long *CurLangProcEndpArray = 0;
-	BYTE *hFilePtr = 0;
+    BYTE *hFilePtr = 0;
     int i = 0;
     int j = 0;
-	int EntryPointPos = 0;
-	int EndPointPos = 0;
-	int EntryPointPosReal = 0;
-	int EndPointPosReal = 0;
+    int EntryPointPos = 0;
+    int EndPointPos = 0;
+    int EntryPointPosReal = 0;
+    int EndPointPosReal = 0;
     CStr LastLangProc;
     int k = 0;
     CStr FoundProcName;
-	long InProcFound = 0;
-	long ProcBalance = 0;
-	long Locali = 0;
-	CStr ReturnValue;
+    long InProcFound = 0;
+    long ProcBalance = 0;
+    long Locali = 0;
+    CStr ReturnValue;
 
-	ProcPos->x = -1;
-	ProcPos->y = -1;
+    ProcPos->x = -1;
+    ProcPos->y = -1;
 
     // Not valid ?
-	if(CurLangProc.Len() == 0) return(ReturnValue);
+    if(CurLangProc.Len() == 0) return(ReturnValue);
     if(CurLangEndProc.Len() == 0) return(ReturnValue);
     // Split'em
-	CurLangProcArray = StringSplit(CurLangProc, " ");
+    CurLangProcArray = StringSplit(CurLangProc, " ");
     CurLangProcEndpArray = StringSplit(CurLangEndProc, " ");
 
-	hFilePtr = (BYTE *) hFile;
-	i = StartPos;
-	if(i == 0) i = 1;
-	// Loop till the end of the file
-	while(i < FileLen)
-	{
-		if(InProcFound == 0)
-		{
-			// Search any specified entry point
-			for(j = 0; j <= StringGetSplitUBound(CurLangProcArray); j++)
-			{
-				// xxx proc xxx
-				EntryPointPos = Str_InString(i, (char *) hFile, StringGetSplitElement(CurLangProc, CurLangProcArray, j).Upper_Case().Get_String());
-				if(EntryPointPos != 0)
-				{
-					i = EntryPointPos;
-					LastLangProc = StringGetSplitElement(CurLangProc, CurLangProcArray, j);
-					if(CheckProcKeywordValidity((char *) hFile, EntryPointPos, LastLangProc) == 1) goto FoundNextProc;
-				}
-			}
-		}
-		else
-		{
-			// Search entry point
-			EntryPointPosReal = 0;
-			Locali = i;
+    hFilePtr = (BYTE *) hFile;
+    i = StartPos;
+    if(i == 0) i = 1;
+    // Loop till the end of the file
+    while(i < FileLen)
+    {
+        if(InProcFound == 0)
+        {
+            // Search any specified entry point
+            for(j = 0; j <= StringGetSplitUBound(CurLangProcArray); j++)
+            {
+                // xxx proc xxx
+                EntryPointPos = Str_InString(i, (char *) hFile, StringGetSplitElement(CurLangProc, CurLangProcArray, j).Upper_Case().Get_String());
+                if(EntryPointPos != 0)
+                {
+                    i = EntryPointPos;
+                    LastLangProc = StringGetSplitElement(CurLangProc, CurLangProcArray, j);
+                    if(CheckProcKeywordValidity((char *) hFile, EntryPointPos, LastLangProc) == 1) goto FoundNextProc;
+                }
+            }
+        }
+        else
+        {
+            // Search entry point
+            EntryPointPosReal = 0;
+            Locali = i;
 SearchRealEntryPoint:
-			for(j = 0; j <= StringGetSplitUBound(CurLangProcArray); j++)
-			{
-				// xxx proc xxx
-				EndPointPos = Str_InString(Locali, (char *) hFile, StringGetSplitElement(CurLangProc, CurLangProcArray, j).Upper_Case().Get_String());
-				if(EndPointPos != 0)
-				{
-					if(CheckProcKeywordValidity((char *) hFile, EndPointPos, StringGetSplitElement(CurLangProc, CurLangProcArray, j)) == 1)
-					{
-						EntryPointPosReal = EndPointPos;
-						break;
-					}
-					else
-					{
-						Locali = EndPointPos + StringGetSplitElement(CurLangProc, CurLangProcArray, j).Len();
-						goto SearchRealEntryPoint;
-					}
-				}
-			}
-			// Add keyword length if found
-			// (Or start search at same point if nothing found previously)
-			// Search end point (once we found a valid entry point for a function).
-			EndPointPosReal = 0;
-			Locali = i;
+            for(j = 0; j <= StringGetSplitUBound(CurLangProcArray); j++)
+            {
+                // xxx proc xxx
+                EndPointPos = Str_InString(Locali, (char *) hFile, StringGetSplitElement(CurLangProc, CurLangProcArray, j).Upper_Case().Get_String());
+                if(EndPointPos != 0)
+                {
+                    if(CheckProcKeywordValidity((char *) hFile, EndPointPos, StringGetSplitElement(CurLangProc, CurLangProcArray, j)) == 1)
+                    {
+                        EntryPointPosReal = EndPointPos;
+                        break;
+                    }
+                    else
+                    {
+                        Locali = EndPointPos + StringGetSplitElement(CurLangProc, CurLangProcArray, j).Len();
+                        goto SearchRealEntryPoint;
+                    }
+                }
+            }
+            // Add keyword length if found
+            // (Or start search at same point if nothing found previously)
+            // Search end point (once we found a valid entry point for a function).
+            EndPointPosReal = 0;
+            Locali = i;
 SearchRealEndPoint:
-			for(j = 0; j <= StringGetSplitUBound(CurLangProcEndpArray); j++)
-			{
-				// xxx proc xxx
-				k = Str_InString(Locali, (char *) hFile, StringGetSplitElement(CurLangEndProc, CurLangProcEndpArray, j).Upper_Case().Get_String());
-				if(k != 0)
-				{
-					if(CheckProcKeywordValidity((char *) hFile, k, StringGetSplitElement(CurLangProc, CurLangProcArray, j)) == 1)
-					{
-						EndPointPosReal = k;
-						break;
-					}
-					else
-					{
-						// Wrong keyword
-						Locali = k + StringGetSplitElement(CurLangEndProc, CurLangProcEndpArray, j).Len();
-						goto SearchRealEndPoint;
-					}
-				}
-			}
-			// Error in file structure: report it and exit
-			if(EntryPointPosReal == 0 && EndPointPosReal == 0)
-			{
-				WriteToStatus("Unexpected end of file ('" + (CStr) FileName + (CStr) "')");
-				StringReleaseSplit(CurLangProcEndpArray);
-				StringReleaseSplit(CurLangProcArray);
-				return(ReturnValue);
-			}
-			// If the found entry point is lower than the end point
-			// then make it the new reference.
-			// (They can't be equal)
-			if(EntryPointPosReal != 0)
-			{   // Entry not found (possible end of file)
-				if(EntryPointPosReal < EndPointPosReal)
-				{
-					EndPointPosReal = EntryPointPosReal;
-					ProcBalance++;
-				}
-				else
-				{
-					ProcBalance--;
-				}
-			}
-			else
-			{
-				ProcBalance--;
-			}
-			k = EndPointPosReal;
-			// Correct balance ? Switch mode
-			if(ProcBalance == 0)
-			{
-				ProcPos->y = EndPointPosReal;			// Store endpoint
-				// Release the splits
-				StringReleaseSplit(CurLangProcEndpArray);
-				StringReleaseSplit(CurLangProcArray);
-				ReturnValue = FoundProcName;
-				return(ReturnValue);
-			}
-		}
-		// Nothing found in file or wrong type
-		if(k != 0) i = k + 1;		// Add keyword length
-		else i++;
-		goto NoNextProc;
-FoundNextProc:	// Valid ?
-		//GetTxtLineFromFile(hPFileCase, PFileLen, (long) GetCurrentLine((char *) hPFile, PFileLen, i) - 1)
-		FoundProcName = GetProcedureName(hFileCase, i, LastLangProc, ProcPos);
-		if(FoundProcName.Len() != 0)
-		{
-			ProcBalance = 1;		// Reset counter
-			InProcFound = 1;
-		}
-		i = i + StringGetSplitElement(CurLangProc, CurLangProcArray, j).Len();
+            for(j = 0; j <= StringGetSplitUBound(CurLangProcEndpArray); j++)
+            {
+                // xxx proc xxx
+                k = Str_InString(Locali, (char *) hFile, StringGetSplitElement(CurLangEndProc, CurLangProcEndpArray, j).Upper_Case().Get_String());
+                if(k != 0)
+                {
+                    if(CheckProcKeywordValidity((char *) hFile, k, StringGetSplitElement(CurLangProc, CurLangProcArray, j)) == 1)
+                    {
+                        EndPointPosReal = k;
+                        break;
+                    }
+                    else
+                    {
+                        // Wrong keyword
+                        Locali = k + StringGetSplitElement(CurLangEndProc, CurLangProcEndpArray, j).Len();
+                        goto SearchRealEndPoint;
+                    }
+                }
+            }
+            // Error in file structure: report it and exit
+            if(EntryPointPosReal == 0 && EndPointPosReal == 0)
+            {
+                WriteToStatus("Unexpected end of file ('" + (CStr) FileName + (CStr) "')");
+                StringReleaseSplit(CurLangProcEndpArray);
+                StringReleaseSplit(CurLangProcArray);
+                return(ReturnValue);
+            }
+            // If the found entry point is lower than the end point
+            // then make it the new reference.
+            // (They can't be equal)
+            if(EntryPointPosReal != 0)
+            {   // Entry not found (possible end of file)
+                if(EntryPointPosReal < EndPointPosReal)
+                {
+                    EndPointPosReal = EntryPointPosReal;
+                    ProcBalance++;
+                }
+                else
+                {
+                    ProcBalance--;
+                }
+            }
+            else
+            {
+                ProcBalance--;
+            }
+            k = EndPointPosReal;
+            // Correct balance ? Switch mode
+            if(ProcBalance == 0)
+            {
+                ProcPos->y = EndPointPosReal;           // Store endpoint
+                // Release the splits
+                StringReleaseSplit(CurLangProcEndpArray);
+                StringReleaseSplit(CurLangProcArray);
+                ReturnValue = FoundProcName;
+                return(ReturnValue);
+            }
+        }
+        // Nothing found in file or wrong type
+        if(k != 0) i = k + 1;       // Add keyword length
+        else i++;
+        goto NoNextProc;
+FoundNextProc:  // Valid ?
+        //GetTxtLineFromFile(hPFileCase, PFileLen, (long) GetCurrentLine((char *) hPFile, PFileLen, i) - 1)
+        FoundProcName = GetProcedureName(hFileCase, i, LastLangProc, ProcPos);
+        if(FoundProcName.Len() != 0)
+        {
+            ProcBalance = 1;        // Reset counter
+            InProcFound = 1;
+        }
+        i = i + StringGetSplitElement(CurLangProc, CurLangProcArray, j).Len();
 NoNextProc:;
-	}
+    }
     // Release the splits
-	StringReleaseSplit(CurLangProcEndpArray);
-	StringReleaseSplit(CurLangProcArray);
+    StringReleaseSplit(CurLangProcEndpArray);
+    StringReleaseSplit(CurLangProcArray);
     return(ReturnValue);
 }
 
@@ -4156,25 +4157,25 @@ NoNextProc:;
 // Check the validity
 long CheckProcKeywordValidity(char *FileToCheck, long PosInFile, CStr KeyWord)
 {
-	if(PosInFile == 1)
-	{
-		// proc xxx
-		if(FileToCheck[PosInFile + KeyWord.Len() - 1] == 32) return(1);
-	}
-	else
-	{
-		// xxx proc xxx
-		if(FileToCheck[PosInFile - 2] == 10) goto ForceProcFound;
-		if(FileToCheck[PosInFile - 2] == 32)
-		{
-ForceProcFound:				
-			if(FileToCheck[PosInFile + KeyWord.Len() - 1] == 32) return(1);
-			if(FileToCheck[PosInFile + KeyWord.Len() - 1] == 13) return(1);
-			// Handle Unix texts style
-			if(FileToCheck[PosInFile + KeyWord.Len() - 1] == 10) return(1);
-		}
-	}
-	return(0);
+    if(PosInFile == 1)
+    {
+        // proc xxx
+        if(FileToCheck[PosInFile + KeyWord.Len() - 1] == 32) return(1);
+    }
+    else
+    {
+        // xxx proc xxx
+        if(FileToCheck[PosInFile - 2] == 10) goto ForceProcFound;
+        if(FileToCheck[PosInFile - 2] == 32)
+        {
+ForceProcFound:             
+            if(FileToCheck[PosInFile + KeyWord.Len() - 1] == 32) return(1);
+            if(FileToCheck[PosInFile + KeyWord.Len() - 1] == 13) return(1);
+            // Handle Unix texts style
+            if(FileToCheck[PosInFile + KeyWord.Len() - 1] == 10) return(1);
+        }
+    }
+    return(0);
 }
 
 // -----------------------------------------------------------------------
@@ -4187,9 +4188,9 @@ CStr GetProcedureName(CStr ProcBlock, long Pos, CStr ProcKeyWord, LPPOINT PointP
     long BracketBalance = 0;
     CStr TempProcName;
     int i = 0;
-	int BracketToCheck = 0;
-	CStr ReturnValue;
-	CStr BufString;
+    int BracketToCheck = 0;
+    CStr ReturnValue;
+    CStr BufString;
 
     ProcPos = Pos - 1; // Pos should be on first char of entry point keyword
     // proc xxx
@@ -4205,62 +4206,62 @@ CStr GetProcedureName(CStr ProcBlock, long Pos, CStr ProcKeyWord, LPPOINT PointP
             BracketBalance = 0;
             if(ProcPos == 1)
             {
-				ReturnValue = BufString;
-    			PointPos->x = ProcPos;
-				return(ReturnValue);
+                ReturnValue = BufString;
+                PointPos->x = ProcPos;
+                return(ReturnValue);
             }
-			for(i = ProcPos; i >= 1; i--)
-			{
-				if(StringIsCloseBracketChar(BufString.Mid(i, 1)) == 0)
-				{
-					if(!isspace(BufString.Mid(i, 1).Get_String()[0]))
-					{
-						BracketToCheck++;
-						break;
-					}
-					ProcPos--;
-				}
-				else
-				{
-				    break;
+            for(i = ProcPos; i >= 1; i--)
+            {
+                if(StringIsCloseBracketChar(BufString.Mid(i, 1)) == 0)
+                {
+                    if(!isspace(BufString.Mid(i, 1).Get_String()[0]))
+                    {
+                        BracketToCheck++;
+                        break;
+                    }
+                    ProcPos--;
+                }
+                else
+                {
+                    break;
                 }
             }
             if(ProcPos == 1)
             {
-				ReturnValue = BufString;
-    			PointPos->x = ProcPos;
-				return(ReturnValue);
+                ReturnValue = BufString;
+                PointPos->x = ProcPos;
+                return(ReturnValue);
             }
-			if(BracketToCheck == 0)
-			{
-				for(i = ProcPos; i >= 1; i--)
-				{
-					ExprCharToTest = BufString.Mid(i, 1);
-					if(StringIsOpenBracketChar(ExprCharToTest)) BracketBalance--;
-					if(StringIsCloseBracketChar(ExprCharToTest)) BracketBalance++;
-					ProcPos--;
-					if(BracketBalance == 0) break;
-				}
-				if(ProcPos == 1)
-				{
-					ReturnValue = BufString;
-    				PointPos->x = ProcPos;
-					return(ReturnValue);
-				}
-			}
-			for(i = ProcPos; i >= 1; i--)
-			{
+            if(BracketToCheck == 0)
+            {
+                for(i = ProcPos; i >= 1; i--)
+                {
+                    ExprCharToTest = BufString.Mid(i, 1);
+                    if(StringIsOpenBracketChar(ExprCharToTest)) BracketBalance--;
+                    if(StringIsCloseBracketChar(ExprCharToTest)) BracketBalance++;
+                    ProcPos--;
+                    if(BracketBalance == 0) break;
+                }
+                if(ProcPos == 1)
+                {
+                    ReturnValue = BufString;
+                    PointPos->x = ProcPos;
+                    return(ReturnValue);
+                }
+            }
+            for(i = ProcPos; i >= 1; i--)
+            {
                 if(StringIsLabelChar(BufString.Mid(i, 1)) == 0) ProcPos--;
                 else break;
             }
             if(ProcPos == 1)
             {
-				ReturnValue = BufString;
-    			PointPos->x = ProcPos;
-				return(ReturnValue);
+                ReturnValue = BufString;
+                PointPos->x = ProcPos;
+                return(ReturnValue);
             }
-			for(i = ProcPos; i >= 1; i--)
-			{
+            for(i = ProcPos; i >= 1; i--)
+            {
                 if(StringIsLabelChar(BufString.Mid(i, 1)))
                 {
                     TempProcName = BufString.Mid(i, 1).Get_String() + (CStr) TempProcName;
@@ -4273,12 +4274,12 @@ CStr GetProcedureName(CStr ProcBlock, long Pos, CStr ProcKeyWord, LPPOINT PointP
             }
             TempProcName = TempProcName.Trim();
             if(TempProcName.Len() != 0) BufString = TempProcName;
-			// Update position
-    		PointPos->x = ProcPos;
+            // Update position
+            PointPos->x = ProcPos;
         }
     }
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -4289,45 +4290,45 @@ CStr GetProcedureList(CStr FileName)
     CStr CurLangProc;
     CStr CurLangEndProc;
     CStr BufString;
-	CStr FoundProcName;
-	CStr FlexFile;
-	POINT PosInFile;
-	long hPFile;
-	char *hPFileCase;
-	long BytesRead = 0;
-	long PFileLen = 0;
+    CStr FoundProcName;
+    CStr FlexFile;
+    POINT PosInFile;
+    long hPFile;
+    char *hPFileCase;
+    long BytesRead = 0;
+    long PFileLen = 0;
 
-	// Entry/End keywords
-	CurLangProc = GetCMLangProcByFile(FileName);
-	CurLangEndProc = GetCMLangProcCloseByFile(FileName);
-	// Load the file to be checked
-	hPFile = (long) MLoadFile(FileName.Get_String(), &BytesRead);
+    // Entry/End keywords
+    CurLangProc = GetCMLangProcByFile(FileName);
+    CurLangEndProc = GetCMLangProcCloseByFile(FileName);
+    // Load the file to be checked
+    hPFile = (long) MLoadFile(FileName.Get_String(), &BytesRead);
     if(hPFile != 0)
     {
-		// Take the length of the file
-		PFileLen = strlen((char *) hPFile);
-		// Prepare it
-		TabToSpace((char *) hPFile, PFileLen);
-		RemoveCommentBlocksFromFileByFile(hPFile, PFileLen, FileName);
-		RemoveSingleLineComment((char *) hPFile, PFileLen, GetCMLangCommentByFile(FileName).Get_String());
-		RemoveQuotes((char *) hPFile, PFileLen);
-		// Make a copy for case preservation
-		hPFileCase = (char *) AllocMem(PFileLen);
-		RtlCopyMemory(hPFileCase, (void *) hPFile, PFileLen);
-		// Convert case now
-		UpCase((char *) hPFile);
-		FlexFile = hPFileCase;
-		PosInFile.y = 1;
-		for(;;)
-		{
-			FoundProcName = FindProcedure(FileName, hPFile, FlexFile, PFileLen, PosInFile.y, &PosInFile, CurLangProc, CurLangEndProc);
-			if(FoundProcName.Len() == 0) break;
-			BufString = BufString + FoundProcName + (CStr) BufString.Chr(2).Get_String();
-		}
-		FreeMem((long) hPFileCase);
-		FreeMem(hPFile);
-	}
-	ReturnValue = BufString;
+        // Take the length of the file
+        PFileLen = strlen((char *) hPFile);
+        // Prepare it
+        TabToSpace((char *) hPFile, PFileLen);
+        RemoveCommentBlocksFromFileByFile(hPFile, PFileLen, FileName);
+        RemoveSingleLineComment((char *) hPFile, PFileLen, GetCMLangCommentByFile(FileName).Get_String());
+        RemoveQuotes((char *) hPFile, PFileLen);
+        // Make a copy for case preservation
+        hPFileCase = (char *) AllocMem(PFileLen);
+        RtlCopyMemory(hPFileCase, (void *) hPFile, PFileLen);
+        // Convert case now
+        UpCase((char *) hPFile);
+        FlexFile = hPFileCase;
+        PosInFile.y = 1;
+        for(;;)
+        {
+            FoundProcName = FindProcedure(FileName, hPFile, FlexFile, PFileLen, PosInFile.y, &PosInFile, CurLangProc, CurLangEndProc);
+            if(FoundProcName.Len() == 0) break;
+            BufString = BufString + FoundProcName + (CStr) BufString.Chr(2).Get_String();
+        }
+        FreeMem((long) hPFileCase);
+        FreeMem(hPFile);
+    }
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -4345,13 +4346,13 @@ long OpenContextHelpFile(CStr HelpFileName, CStr HelpKeyWord)
         TmpHelpFile = ChangeRelativePaths(TmpHelpFile);
         MSDNWord = HelpKeyWord;
         BufString = FileGetExtension(TmpHelpFile).Upper_Case();
-		if(BufString == "CHM" || BufString == "COL")
-		{
+        if(BufString == "CHM" || BufString == "COL")
+        {
             ReturnValue = -1;
             DisplayChmVB(TmpHelpFile, MSDNWord);
-		}
-		else
-		{
+        }
+        else
+        {
             ReturnValue = WinHelp(hMDIform.hWnd, TmpHelpFile.Get_String(), HELP_PARTIALKEY, (long) HelpKeyWord.Get_String());
         }
     }
@@ -4368,12 +4369,12 @@ CStr GetTxtLineFromFile(long hFile, long FileLength, long LineNumber)
     long TxtLineLenAll = 0;
     CStr BufString;
 
-	TxtLineAddr = GetFileLineAddress((char *) hFile, FileLength, LineNumber);
+    TxtLineAddr = GetFileLineAddress((char *) hFile, FileLength, LineNumber);
     TxtLineLenAll = strlen(TxtLineAddr);
     TxtLineAddrLen = MGetStrLenCR(TxtLineAddr, TxtLineLenAll);
     BufString = BufString.String(TxtLineAddrLen + 1, 1);
     RtlCopyMemory(BufString.Get_String(), (void *) TxtLineAddr, TxtLineAddrLen);
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -4390,7 +4391,7 @@ int IsFileInProject(char *FileName)
         while(TreeViewChildEntry != 0)
         {
             if(strcmpi(GetFileNameFromTreeView(TreeViewChildEntry).Get_String(), FileName) == 0) return(TRUE);
-			TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+            TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         }
         // Modules
         TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewModules);
@@ -4403,24 +4404,24 @@ int IsFileInProject(char *FileName)
         TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewResources);
         while(TreeViewChildEntry != 0)
         {
-			// Avoid these folders
+            // Avoid these folders
             if(TreeViewChildEntry == hTreeViewIcons) goto AvoidTreeFolders;
-			else if(TreeViewChildEntry == hTreeViewCursors) goto AvoidTreeFolders;
-			else if(TreeViewChildEntry == hTreeViewBitmaps) goto AvoidTreeFolders;
-			else if(TreeViewChildEntry == hTreeViewStrings) goto AvoidTreeFolders;
-			else if(TreeViewChildEntry == hTreeViewAccelerators) goto AvoidTreeFolders;
-			else if(TreeViewChildEntry == hTreeViewMenus) goto AvoidTreeFolders;
-			else if(TreeViewChildEntry == hTreeViewDialogs) goto AvoidTreeFolders;
-			else if(TreeViewChildEntry == hTreeViewRawdatas) goto AvoidTreeFolders;
-			else
-			{
-				if(strcmpi(GetFileNameFromTreeView(TreeViewChildEntry).Get_String(), FileName) == 0) return(TRUE);
+            else if(TreeViewChildEntry == hTreeViewCursors) goto AvoidTreeFolders;
+            else if(TreeViewChildEntry == hTreeViewBitmaps) goto AvoidTreeFolders;
+            else if(TreeViewChildEntry == hTreeViewStrings) goto AvoidTreeFolders;
+            else if(TreeViewChildEntry == hTreeViewAccelerators) goto AvoidTreeFolders;
+            else if(TreeViewChildEntry == hTreeViewMenus) goto AvoidTreeFolders;
+            else if(TreeViewChildEntry == hTreeViewDialogs) goto AvoidTreeFolders;
+            else if(TreeViewChildEntry == hTreeViewRawdatas) goto AvoidTreeFolders;
+            else
+            {
+                if(strcmpi(GetFileNameFromTreeView(TreeViewChildEntry).Get_String(), FileName) == 0) return(TRUE);
             }
 AvoidTreeFolders:
             TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         }
     }
-	return(FALSE);
+    return(FALSE);
 }
 
 // -----------------------------------------------------------------------
@@ -4429,7 +4430,7 @@ void GetAllFiles(void)
 {
     HTREEITEM TreeViewChildEntry = 0;
     
-	FilesList.Erase();
+    FilesList.Erase();
     FilesListhWnd.Erase();
     if(ProjectOn == 1)
     {
@@ -4439,7 +4440,7 @@ void GetAllFiles(void)
         {
             FilesList.Add(GetFileNameFromTreeView(TreeViewChildEntry).Get_String());
             FilesListhWnd.Add(0L);
-			TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
+            TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         }
         // Modules
         TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewModules);
@@ -4453,17 +4454,17 @@ void GetAllFiles(void)
         TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewResources);
         while(TreeViewChildEntry != 0)
         {
-			// Avoid these folders
+            // Avoid these folders
             if(TreeViewChildEntry == hTreeViewIcons) goto AvoidTreeFolders;
-			else if(TreeViewChildEntry == hTreeViewCursors) goto AvoidTreeFolders;
-			else if(TreeViewChildEntry == hTreeViewBitmaps) goto AvoidTreeFolders;
-			else if(TreeViewChildEntry == hTreeViewStrings) goto AvoidTreeFolders;
-			else if(TreeViewChildEntry == hTreeViewAccelerators) goto AvoidTreeFolders;
-			else if(TreeViewChildEntry == hTreeViewMenus) goto AvoidTreeFolders;
-			else if(TreeViewChildEntry == hTreeViewDialogs) goto AvoidTreeFolders;
-			else if(TreeViewChildEntry == hTreeViewRawdatas) goto AvoidTreeFolders;
-			else
-			{
+            else if(TreeViewChildEntry == hTreeViewCursors) goto AvoidTreeFolders;
+            else if(TreeViewChildEntry == hTreeViewBitmaps) goto AvoidTreeFolders;
+            else if(TreeViewChildEntry == hTreeViewStrings) goto AvoidTreeFolders;
+            else if(TreeViewChildEntry == hTreeViewAccelerators) goto AvoidTreeFolders;
+            else if(TreeViewChildEntry == hTreeViewMenus) goto AvoidTreeFolders;
+            else if(TreeViewChildEntry == hTreeViewDialogs) goto AvoidTreeFolders;
+            else if(TreeViewChildEntry == hTreeViewRawdatas) goto AvoidTreeFolders;
+            else
+            {
                 FilesList.Add(GetFileNameFromTreeView(TreeViewChildEntry).Get_String());
                 FilesListhWnd.Add(0L);
             }
@@ -4530,8 +4531,8 @@ long SearchNextTreeViewEntry(HWND hTree, HTREEITEM hChild, CStr Prefix)
     long CurToAdd = 0;
     long EntryCount = 0;
     CStr BufString;
-	
-	EntryCount = TreeViewGetChildItemsCount(hTree, hChild);
+    
+    EntryCount = TreeViewGetChildItemsCount(hTree, hChild);
     if(EntryCount != 0)
     {
         CurToAdd = -1;
@@ -4539,7 +4540,7 @@ long SearchNextTreeViewEntry(HWND hTree, HTREEITEM hChild, CStr Prefix)
         {
             CurToAdd++;
             BufString = (CStr) Prefix.Get_String() + (CStr) CurToAdd;
-			if(TreeViewSearchChildPartialText(hTree, hChild, BufString) == -1) break;
+            if(TreeViewSearchChildPartialText(hTree, hChild, BufString) == -1) break;
         }
         EntryCount = CurToAdd;
     }
@@ -4572,7 +4573,7 @@ long GetUseFileDir(void)
 // Save Application state into a given workspace file
 void SaveState(CStr WorkSpaceName)
 {
-	WINDOWPLACEMENT Mdi_Datas;
+    WINDOWPLACEMENT Mdi_Datas;
 
     if(IniReadBoolKey("Layout", "RememberState", MainIniFile))
     {
@@ -4584,18 +4585,18 @@ void SaveState(CStr WorkSpaceName)
         // Include project file into the list
         if(ProjectOn == 1) IniWriteKey("Files", "File" + (CStr) StringNumberComplement(WorkSpaceNumber, 3).Get_String(), ProjectFName, WorkSpaceName);
     }
-	Mdi_Datas.length = sizeof(WINDOWPLACEMENT);
-	GetWindowPlacement(hMDIform.hWnd, &Mdi_Datas);
-	IniWriteKey("Layout", "MDI_Flags", Mdi_Datas.flags, MainIniFile);
-	IniWriteKey("Layout", "MDI_MinPosX", Mdi_Datas.ptMinPosition.x, MainIniFile);
-	IniWriteKey("Layout", "MDI_MinPosY", Mdi_Datas.ptMinPosition.y, MainIniFile);
-	IniWriteKey("Layout", "MDI_MaxPosX", Mdi_Datas.ptMaxPosition.x, MainIniFile);
-	IniWriteKey("Layout", "MDI_MaxPosY", Mdi_Datas.ptMaxPosition.y, MainIniFile);
-	IniWriteKey("Layout", "MDI_PosL", Mdi_Datas.rcNormalPosition.left, MainIniFile);
-	IniWriteKey("Layout", "MDI_PosT", Mdi_Datas.rcNormalPosition.top, MainIniFile);
-	IniWriteKey("Layout", "MDI_PosR", Mdi_Datas.rcNormalPosition.right, MainIniFile);
-	IniWriteKey("Layout", "MDI_PosB", Mdi_Datas.rcNormalPosition.bottom, MainIniFile);
-	IniWriteKey("Layout", "MDI_Show", Mdi_Datas.showCmd, MainIniFile);
+    Mdi_Datas.length = sizeof(WINDOWPLACEMENT);
+    GetWindowPlacement(hMDIform.hWnd, &Mdi_Datas);
+    IniWriteKey("Layout", "MDI_Flags", Mdi_Datas.flags, MainIniFile);
+    IniWriteKey("Layout", "MDI_MinPosX", Mdi_Datas.ptMinPosition.x, MainIniFile);
+    IniWriteKey("Layout", "MDI_MinPosY", Mdi_Datas.ptMinPosition.y, MainIniFile);
+    IniWriteKey("Layout", "MDI_MaxPosX", Mdi_Datas.ptMaxPosition.x, MainIniFile);
+    IniWriteKey("Layout", "MDI_MaxPosY", Mdi_Datas.ptMaxPosition.y, MainIniFile);
+    IniWriteKey("Layout", "MDI_PosL", Mdi_Datas.rcNormalPosition.left, MainIniFile);
+    IniWriteKey("Layout", "MDI_PosT", Mdi_Datas.rcNormalPosition.top, MainIniFile);
+    IniWriteKey("Layout", "MDI_PosR", Mdi_Datas.rcNormalPosition.right, MainIniFile);
+    IniWriteKey("Layout", "MDI_PosB", Mdi_Datas.rcNormalPosition.bottom, MainIniFile);
+    IniWriteKey("Layout", "MDI_Show", Mdi_Datas.showCmd, MainIniFile);
 }
 
 // -----------------------------------------------------------------------
@@ -4655,7 +4656,7 @@ void ControlSetSysToTray(HINSTANCE hInstance, HWND hWnd, long IDTray, long IconI
     }
     else
     {
-		// Use it as old structure
+        // Use it as old structure
         SysTrayStruct.cbSize = 88; //sizeof(SysTrayStruct);
         SysTrayStruct.hWnd = hWnd;
         SysTrayStruct.uID = IDTray;
@@ -4679,7 +4680,9 @@ void RemoveCommentBlocksFromFileByFile(long hFile, long FileLen, CStr FileName)
     }
     else
     {
-        RemoveCommentBlocksEx((char *) hFile, FileLen, GetCMLangMultiCommentByFile(FileName).Trim().Get_String(),
+        RemoveCommentBlocksEx((char *) hFile,
+                              FileLen,
+                              GetCMLangMultiCommentByFile(FileName).Trim().Get_String(),
                               GetCMLangMultiCommentEndByFile(FileName).Trim().Get_String());
     }
 }
@@ -4695,7 +4698,9 @@ void RemoveCommentBlocksFromFile(long hFile, long FileLen, HWND hWnd)
     }
     else
     {
-        RemoveCommentBlocksEx((char *) hFile, FileLen, GetCMLangMultiComment(hWnd).Trim().Get_String(),
+        RemoveCommentBlocksEx((char *) hFile,
+                              FileLen,
+                              GetCMLangMultiComment(hWnd).Trim().Get_String(),
                               GetCMLangMultiCommentEnd(hWnd).Trim().Get_String());
     }
 }
@@ -4710,7 +4715,9 @@ void RemoveCommentBlocksFromFileByChild(long hFile, long FileLen, HWND hWnd)
     }
     else
     {
-        RemoveCommentBlocksEx((char *) hFile, FileLen, GetCMLangMultiCommentByChild(hWnd).Trim().Get_String(),
+        RemoveCommentBlocksEx((char *) hFile,
+                              FileLen,
+                              GetCMLangMultiCommentByChild(hWnd).Trim().Get_String(),
                               GetCMLangMultiCommentEndByChild(hWnd).Trim().Get_String());
     }
 }
@@ -4725,7 +4732,9 @@ void RemoveCommentBlocksFromFileByChildStr(CStr FileString, long FileLen, HWND h
     }
     else
     {
-        RemoveCommentBlocksEx(FileString.Get_String(), FileLen, GetCMLangMultiCommentByChild(hWnd).Trim().Get_String(),
+        RemoveCommentBlocksEx(FileString.Get_String(),
+                              FileLen,
+                              GetCMLangMultiCommentByChild(hWnd).Trim().Get_String(),
                               GetCMLangMultiCommentEndByChild(hWnd).Trim().Get_String());
     }
 }
@@ -4734,12 +4743,12 @@ void RemoveCommentBlocksFromFileByChildStr(CStr FileString, long FileLen, HWND h
 // Add a date prefix in status box lines
 CStr PutStatusDatePrefix(void)
 {
-	CStr ReturnValue;
-	CStr BufString;
+    CStr ReturnValue;
+    CStr BufString;
     
-	if(OutputDates == 1) BufString = "[" + (CStr) DateGetNow(DATE_NO_SECONDS).Get_String() + (CStr) "] ";
-	ReturnValue = BufString;
-	return(ReturnValue);
+    if(OutputDates == 1) BufString = "[" + (CStr) DateGetNow(DATE_NO_SECONDS).Get_String() + (CStr) "] ";
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -4766,47 +4775,47 @@ void RunExtProg(CStr ProgToRun)
 CStr CorrectFileName(CStr FileName)
 {
     CStr ReturnValue;
-	CStr BufString;
+    CStr BufString;
 
     BufString = FileName;
     if(BufString.In_Str(1, " ") != 0) BufString = "\"" + (CStr) BufString + (CStr) "\"";
     ReturnValue = BufString;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Jump to an arbitrary address (to be removed)
 long JumpToAddr(FARPROC Address)
 {
-	long ReturnValue = 0;
-	_asm
-	{
-		mov		eax,Address
-		test	eax,eax
-		je		NoJumpToAddr
-		call	eax
-		mov		ReturnValue,eax
+    long ReturnValue = 0;
+    _asm
+    {
+        mov     eax,Address
+        test    eax,eax
+        je      NoJumpToAddr
+        call    eax
+        mov     ReturnValue,eax
 NoJumpToAddr:
-	}
-	return(ReturnValue);
+    }
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Jump to an arbitrary address (to be removed)
 long JumpToAddrArg(FARPROC Address, long Arg)
 {
-	long ReturnValue = 0;
-	_asm
-	{
-		mov		eax,Address
-		test	eax,eax
-		jz		NoJumpToAddrArg
-		push	Arg
-		call	eax
-		mov		ReturnValue,eax
+    long ReturnValue = 0;
+    _asm
+    {
+        mov     eax,Address
+        test    eax,eax
+        jz      NoJumpToAddrArg
+        push    Arg
+        call    eax
+        mov     ReturnValue,eax
 NoJumpToAddrArg:
-	}
-	return(ReturnValue);
+    }
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -4814,50 +4823,50 @@ NoJumpToAddrArg:
 int GetMDIWidth(void)
 {
 //    return(ControlWidth(hMDIform.hWnd));
-	return(GetSystemMetrics(SM_CXMAXIMIZED));
+    return(GetSystemMetrics(SM_CXMAXIMIZED));
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the real height of the MDI
 int GetMDIHeight(void)
 {
-	return(GetSystemMetrics(SM_CYMAXIMIZED));
+    return(GetSystemMetrics(SM_CYMAXIMIZED));
 }
 
 // -----------------------------------------------------------------------
 // Display the mouse pointer
 void DisplayCursor(void)
 {
-	ShowCursor(TRUE);
-	CursorDisabled = 0;
+    ShowCursor(TRUE);
+    CursorDisabled = 0;
 }
 
 // -----------------------------------------------------------------------
 // Hide the mouse pointer
 void HideCursor(void)
 {
-	ShowCursor(FALSE);
-	CursorDisabled = 1;
+    ShowCursor(FALSE);
+    CursorDisabled = 1;
 }
 
 // -----------------------------------------------------------------------
 // Turn a string into upper acse
 void UpCase(char *String)
 {
-	for(int i = 0; String[i] != '\0'; i++)
+    for(int i = 0; String[i] != '\0'; i++)
     {
-		String[i] = toupper(String[i]);
-	}
+        String[i] = toupper(String[i]);
+    }
 }
 
 // -----------------------------------------------------------------------
 // Turn a string into lower acse
 void LoCase(char *String)
 {
-	for(int i = 0; String[i] != '\0'; i++)
+    for(int i = 0; String[i] != '\0'; i++)
     {
-		String[i] = tolower(String[i]);
-	}
+        String[i] = tolower(String[i]);
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -4868,12 +4877,12 @@ int CountFileLines(char *String, int MaxSize)
 
     if(String != NULL)
     {
-	    for(int i = 0; i < MaxSize; i++)
+        for(int i = 0; i < MaxSize; i++)
         {
             if(String[i] == '\0') break;
             if(String[i] == '\r') continue;
             if(String[i] == '\n') Lines++;
-	    }
+        }
         Lines++;
     }
     return(Lines);
@@ -4889,7 +4898,7 @@ char *GetFileLineAddress(char *String, int MaxSize, int LineNumber)
     {
         if(LineNumber)
         {
-	        for(int i = 0; i < MaxSize; i++)
+            for(int i = 0; i < MaxSize; i++)
             {
                 Char = *String++;
                 if(Char == '\0') break;
@@ -4919,11 +4928,11 @@ void SpaceToNewLine(char *String, int MaxSize)
 {
     if(String != NULL)
     {
-	    for(int i = 0; i < MaxSize; i++)
+        for(int i = 0; i < MaxSize; i++)
         {
             if(String[i] == '\0') break;
             if(String[i] == ' ') String[i] = '\n';
-	    }
+        }
     }
 }
 
@@ -4936,7 +4945,7 @@ int RemCRLF(char *String, int MaxSize)
 
     if(String != NULL)
     {
-	    for(int i = 0; i < MaxSize; i++)
+        for(int i = 0; i < MaxSize; i++)
         {
             if(String[i] == '\0') break;
             if(String[i] == '\r') continue;
@@ -4955,7 +4964,7 @@ int RemCRLF(char *String, int MaxSize)
                     String[i - 2] = '\0';
                 }
             }
-	    }
+        }
     }
     return(Len);
 }
@@ -4994,11 +5003,11 @@ void SpaceToTab(char *String, int MaxSize)
 {
     if(String != NULL)
     {
-	    for(int i = 0; i < MaxSize; i++)
+        for(int i = 0; i < MaxSize; i++)
         {
             if(String[i] == '\0') break;
             if(String[i] == ' ') String[i] = '\t';
-	    }
+        }
     }
 }
 
@@ -5008,11 +5017,11 @@ void TabToSpace(char *String, int MaxSize)
 {
     if(String != NULL)
     {
-	    for(int i = 0; i < MaxSize; i++)
+        for(int i = 0; i < MaxSize; i++)
         {
             if(String[i] == '\0') break;
             if(String[i] == '\t') String[i] = ' ';
-	    }
+        }
     }
 }
 
@@ -5022,11 +5031,11 @@ void ToggleCase(char *String, int Len)
 {
     if(String != NULL)
     {
-	    for(int i = 0; i < Len; i++)
+        for(int i = 0; i < Len; i++)
         {
             if(isupper(String[i])) String[i] = tolower(String[i]);
             else if(islower(String[i])) String[i] = toupper(String[i]);
-	    }
+        }
     }
 }
 

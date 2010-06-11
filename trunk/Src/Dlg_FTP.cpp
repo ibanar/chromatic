@@ -135,27 +135,27 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     long CurrentPopupItem = 0;
     POINT PopMenuCoords;
     PAINTSTRUCT Ps;
-	CStr BufString;
+    CStr BufString;
 
     switch(uMsg)
     {
         // Main socket
         case WM_SYSCOLORCHANGE:
             ListViewSetBackColor(FRMFTPListview, GetSysColor(COLOR_WINDOW));
-			break;
-		case WM_MAINSOCKET:
+            break;
+        case WM_MAINSOCKET:
             MainSocketEvents(lParam, hwndDlg);
-			break;
+            break;
         // Directories socket
         case WM_DIRSOCKET:
             DirSocketEvents(lParam, hwndDlg);
-			break;
+            break;
         case WM_DOWNLOADSOCKET:
             DownloadSocketEvents(lParam, hwndDlg);
-			break;
+            break;
         case WM_UPLOADSOCKET:
             UploadSocketEvents(lParam, hwndDlg);
-			break;
+            break;
         case WM_INITDIALOG:
             FRMFTPhWnd = hwndDlg;
             ControlSetText(hwndDlg, "FTP manager");
@@ -218,8 +218,8 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             {
                                 case IDYES:
                                     BreakConnection(hwndDlg);
-									break;
-								case IDNO:
+                                    break;
+                                case IDNO:
                                     return(0);
                             }
                         }
@@ -316,8 +316,8 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                                 {
                                     SocketSendASCIIDatasCR(FTMFTPhSocketMain, "DELE " + (CStr) ListViewGetItemText(FRMFTPListview, CurrentSelected, 0));
                                 }
-								break;
-						}
+                                break;
+                        }
                         return(0);
                     case FTPDIRPERMS:
                         if(FTMFTPConnectionState == 0)
@@ -352,11 +352,11 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                         {
                             case 1:
                                 SocketSendASCIIDatasCR(FTMFTPhSocketMain, "TYPE A");
-								break;
+                                break;
                             case 2:
                                 SocketSendASCIIDatasCR(FTMFTPhSocketMain, "TYPE I");
-								break;
-						}
+                                break;
+                        }
                         return(0);
                     case FTPUPLOAD:
                         if(FTMFTPConnectionState == 0)
@@ -373,22 +373,22 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             {
                                 case 1:
                                     SocketSendASCIIDatasCR(FTMFTPhSocketMain, "TYPE A");
-									break;
+                                    break;
                                 case 2:
                                     SocketSendASCIIDatasCR(FTMFTPhSocketMain, "TYPE I");
-									break;
-							}
+                                    break;
+                            }
                         }
-						return(0);
+                        return(0);
                 }
-			}
-			else if((HWND) lParam == FRMFTPCbAccounts)
-			{
+            }
+            else if((HWND) lParam == FRMFTPCbAccounts)
+            {
                     if((wParam & 0x7FFF0000) == 0x10000) FillAccount(ComboBoxGetIndex(FRMFTPCbAccounts));
                     return(0);
-			}
-			else if((HWND) lParam == FRMFTPCmdClose)
-			{
+            }
+            else if((HWND) lParam == FRMFTPCmdClose)
+            {
                     ControlClose(hwndDlg);
                     return(0);
             }
@@ -402,7 +402,7 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     SendMessage(hwndDlg, WM_COMMAND, FTPDEL, (long) FRMFTPToolbar);
                     return(0);
             }
-			break;
+            break;
         case WM_NOTIFY:
             if(ControlGetNotifiedhWnd(lParam) == FRMFTPListview)
             {
@@ -431,16 +431,16 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             {
                                 case 1:
                                     SocketSendASCIIDatasCR(FTMFTPhSocketMain, "TYPE A");
-									break;
-								case 2:
+                                    break;
+                                case 2:
                                     SocketSendASCIIDatasCR(FTMFTPhSocketMain, "TYPE I");
                             }
                         }
-						break;
+                        break;
                     case LVN_COLUMNCLICK:
                         ListViewSort(FRMFTPListview, ListViewGetNotifiedColumnIndex(lParam), &FRMFTPListviewSort);
                         return(0);
-				}
+                }
             }
             switch(ControlGetNotifiedMsg(lParam))
             {
@@ -478,26 +478,26 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             ToolBarDisplayToolTip("Upload files", lParam);
                             return(0);
                     }
-					break;
-			}
-			break;
-		case WM_CONTEXTMENU:
+                    break;
+            }
+            break;
+        case WM_CONTEXTMENU:
             CurrentLvItem = ListViewGetItemUnderCursor(FRMFTPListview);
             if(CurrentLvItem != -1)
             {
                 ListViewSetItemSel(FRMFTPListview, CurrentLvItem);
                 CurrentPopupItem = ListViewGetItemUnderCursor(FRMFTPListview);
                 SetFocus(FRMFTPListview);
-				GetCursorPos(&PopMenuCoords);
+                GetCursorPos(&PopMenuCoords);
                 TrackPopupMenu(hFTPMenu, TPM_LEFTALIGN + TPM_LEFTBUTTON, PopMenuCoords.x, PopMenuCoords.y, 0, hwndDlg, NULL);
             }
-			return(0);
-		case WM_PAINT:
+            return(0);
+        case WM_PAINT:
             BeginPaint(hwndDlg, &Ps);
             GDIDrawHorzSep(hwndDlg, 0, ControlClientHeight(hwndDlg) - 33, ControlClientWidth(hwndDlg));
             EndPaint(hwndDlg, &Ps);
-			break;
-		case WM_CLOSE:
+            break;
+        case WM_CLOSE:
             // Just in case
             if(FTMFTPConnectionState == 1)
             {
@@ -506,8 +506,8 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 {
                     case IDYES:
                         BreakConnection(hwndDlg);
-						break;
-					case IDNO:
+                        break;
+                    case IDNO:
                         return(1);
                 }
             }
@@ -520,7 +520,7 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             WinsockUnInit();
             FreezeTimer = 0;
             EndDialog(hwndDlg, 0);
-			break;
+            break;
     }
     return(0);
 }
@@ -581,24 +581,24 @@ void DispatchFTPMessages(CStr Message)
     int k = 0;
     long *MessageArray = 0;
     CStr SavedMessage;
-	CStr BufString;
+    CStr BufString;
 
     MessageArray = StringSplit(Message, "\r\n");
     for(k = 0; k <= StringGetSplitUBound(MessageArray); k++)
     {
         SavedMessage = StringGetSplitElement(Message, MessageArray, k);
         BufString = SavedMessage.Left(3);
-		if(BufString == "200")
-		{
+        if(BufString == "200")
+        {
             switch(CurrentOperation)
             {
                 case FTPOP_DOWNLOAD:
                     if(SavedMessage.In_Str(1, "PORT", Text_Compare) != 0)
                     {
-SkipDirs:				CurrentSize = ListViewGetItemText(FRMFTPListview, CurrentSelected, 1);
+SkipDirs:               CurrentSize = ListViewGetItemText(FRMFTPListview, CurrentSelected, 1);
                         if(strcmpi(CurrentSize.Get_String(), "(DIR)") == 0)
                         {
-SkipFile:					CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelected);
+SkipFile:                   CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelected);
                             if(CurrentSelected == -1)
                             {
                                 CurrentOperation = FTPOP_NONE;
@@ -631,7 +631,7 @@ SkipFile:					CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelect
                     {
                         FRMFTPhSocketDown = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DOWNLOADSOCKET);
                     }
-					break;
+                    break;
                 case FTPOP_UPLOAD:
                     if(CurrentUpBreak == 0)
                     {
@@ -665,26 +665,26 @@ SkipFile:					CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelect
                     {
                         CursorSetNormal();
                     }
-					break;
-				default:
+                    break;
+                default:
                     // First dir
                     if(TriggerDir == 1) FRMFTPhSocketDir = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
                     TriggerDir = 0;
                     if(SavedMessage.In_Str(1, "PORT", Text_Compare) != 0) SocketSendASCIIDatasCR(FTMFTPhSocketMain, "LIST");
             }
-		}
-		else if(BufString == "350")
-		{
+        }
+        else if(BufString == "350")
+        {
             // Resume accepted: let's go
             switch(CurrentOperation)
             {
                 case FTPOP_DOWNLOAD:
                     SocketSendASCIIDatasCR(FTMFTPhSocketMain, "RETR " + (CStr) CurrentDownloaded);
-					break;
-			}
-		}
-		else if(BufString == "226")
-		{
+                    break;
+            }
+        }
+        else if(BufString == "226")
+        {
             switch(CurrentOperation)
             {
                 case FTPOP_DOWNLOAD:
@@ -705,7 +705,7 @@ SkipFile:					CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelect
                             FRMFTPhSocketDown = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DOWNLOADSOCKET);
                         }
                     }
-					break;
+                    break;
                 case FTPOP_UPLOAD:
                     if(CurrentUpBreak == 0)
                     {
@@ -716,16 +716,16 @@ SkipFile:					CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelect
                         {
                             case 1:
                                 SocketSendASCIIDatasCR(FTMFTPhSocketMain, "TYPE A");
-								break;
-							case 2:
+                                break;
+                            case 2:
                                 SocketSendASCIIDatasCR(FTMFTPhSocketMain, "TYPE I");
-								break;
+                                break;
                         }
                     }
             }
-		}
-		else if(BufString == "220")
-		{
+        }
+        else if(BufString == "220")
+        {
             if(OkUser == 0)
             {
                 // Ask for user name
@@ -739,9 +739,9 @@ SkipFile:					CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelect
                 }
             }
             OkUser = 1;
-		}
-		else if(BufString == "230")
-		{
+        }
+        else if(BufString == "230")
+        {
             if(OkConnected == 0)
             {
                 // Connected
@@ -759,9 +759,9 @@ SkipFile:					CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelect
                 }
             }
             OkConnected = 1;
-		}
-		else if(BufString == "250")
-		{
+        }
+        else if(BufString == "250")
+        {
             if(SavedMessage.In_Str(1, "DELE ") != 0)
             {
                 // Set next file to delete
@@ -789,9 +789,9 @@ SkipFile:					CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelect
             {
                 FRMFTPhSocketDir = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
             }
-		}
-		else if(BufString == "331")
-		{
+        }
+        else if(BufString == "331")
+        {
             // Ask for password
             if(FTPNoAnonAllowed == 0)
             {
@@ -829,26 +829,26 @@ SkipFile:					CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelect
                     SocketSendASCIIDatasCR(FTMFTPhSocketMain, "PASS " + (CStr) NewDatToSend);
                 }
             }
-		}
-		else if(BufString == "350")
-		{
+        }
+        else if(BufString == "350")
+        {
             // Effective rename
             SocketSendASCIIDatasCR(FTMFTPhSocketMain, "RNTO " + (CStr) NewRename);
-		}
-		else if(BufString == "421")
-		{
+        }
+        else if(BufString == "421")
+        {
             MiscMsgBox(FRMFTPhWnd, SavedMessage.Mid(5), MB_ERROR, Requesters);
-		}
-		else if(BufString == "426")
-		{
+        }
+        else if(BufString == "426")
+        {
             MiscMsgBox(FRMFTPhWnd, SavedMessage.Mid(5), MB_ERROR, Requesters);
-		}
-		else if(BufString == "257")
-		{
+        }
+        else if(BufString == "257")
+        {
             FRMFTPhSocketDir = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
-		}
-		else if(BufString == "530")
-		{
+        }
+        else if(BufString == "530")
+        {
             if(SavedMessage.In_Str(1, "anonymous", Text_Compare) != 0)
             {
                 NewDatToSend = MiscInputBox(FRMFTPhWnd, "Enter new user name", ICON_FTPUSER, "", 0, INPUTBOX_SIMPLETEXT, "");
@@ -893,9 +893,9 @@ SkipFile:					CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelect
                     MiscMsgBox(FRMFTPhWnd, SavedMessage, MB_ERROR, Requesters);
                 }
             }
-		}
-		else if(BufString == "550")
-		{
+        }
+        else if(BufString == "550")
+        {
             if(CurrentSelected != -1)
             {
                 BufString = "Server returned message: \r" + (CStr) CMGetRealFile(SavedMessage) + (CStr) "\rWant to continue operation ?";
@@ -921,12 +921,12 @@ SkipFile:					CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelect
                                 SocketSendASCIIDatasCR(FTMFTPhSocketMain, "DELE " + (CStr) ListViewGetItemText(FRMFTPListview, CurrentSelected, 0));
                             }
                         }
-						break;
+                        break;
                     case IDNO:
                         FRMFTPhSocketDir = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DIRSOCKET);
                         CurrentOperation = FTPOP_NONE;
-						break;
-				}
+                        break;
+                }
             }
             else
             {
@@ -943,7 +943,7 @@ ReleaseMessage:
 void ConnectToFTP(HWND hWnd)
 {
     long WSError = 0;
-	CStr BufString;
+    CStr BufString;
 
     FTMFTPhSocketMain = SocketCreate();
     if(FTMFTPhSocketMain == -1)
@@ -984,9 +984,9 @@ void MainSocketEvents(long Message, HWND hWnd)
             Retrieved = SocketReceiveASCIIDatas(FTMFTPhSocketMain);
             // Check if there's other datas to retrieve
             DispatchFTPMessages(Retrieved);
-			break;
+            break;
         case FD_WRITE:
-			break;
+            break;
         case FD_CONNECT:
             if(WinSErrFlag == 0)
             {
@@ -994,15 +994,15 @@ void MainSocketEvents(long Message, HWND hWnd)
                 WriteFTPStatus((CStr) "Connected to " + (CStr) FTPCurrentIP + (CStr) " on port " + (CStr) FTPCurrentPort + (CStr) ".");
                 ControlEnable(FRMFTPCbAccounts, 0);
             }
-			break;
+            break;
         case FD_CLOSE:
             WriteFTPStatus("Not connected.");
             SocketDestroy(FTMFTPhSocketMain, hWnd);
             ControlEnable(FRMFTPCbAccounts, 1);
             FTMFTPConnectionState = 0;
-			break;
-		case FD_ACCEPT:
-			break;
+            break;
+        case FD_ACCEPT:
+            break;
     }
 }
 
@@ -1018,7 +1018,7 @@ void UploadSocketEvents(long Message, HWND hWnd)
         case FD_WRITE:
             if(CurrentUpActual < CurrentUpLen)
             {
-				CurrentSend = send(FRMFTPhSocketUploading, (char *) CurrentUphFile + CurrentUpActual, CurrentUpLen - CurrentUpActual, 0);
+                CurrentSend = send(FRMFTPhSocketUploading, (char *) CurrentUphFile + CurrentUpActual, CurrentUpLen - CurrentUpActual, 0);
                 if(CurrentSend == -1)
                 {
                     if(MiscMsgBox(FRMFTPhWnd, (CStr) "Winsock error: " + (CStr) WSAGetLastError() + (CStr) "\rContinue operation ?", MB_ERRORQUESTION, Requesters) == IDYES)
@@ -1035,11 +1035,11 @@ void UploadSocketEvents(long Message, HWND hWnd)
                         {
                             case 1:
                                 SocketSendASCIIDatasCR(FTMFTPhSocketMain, (CStr) "TYPE A");
-								break;
-							case 2:
+                                break;
+                            case 2:
                                 SocketSendASCIIDatasCR(FTMFTPhSocketMain, (CStr) "TYPE I");
-								break;
-						}
+                                break;
+                        }
                     }
                     else
                     {
@@ -1069,7 +1069,7 @@ void UploadSocketEvents(long Message, HWND hWnd)
                 WriteFTPStatus((CStr) "Connected to " + (CStr) FTPCurrentIP + (CStr) " on port " + (CStr) FTPCurrentPort + (CStr) ".");
                 SetFocus(FRMFTPListview);
             }
-			break;
+            break;
         case FD_ACCEPT:
             FRMFTPhSocketUploading = SocketAcceptConnection(FRMFTPhSocketUp, &FTMFTPSocketInfosAccept);
             CurrentUpActual = 0;
@@ -1090,11 +1090,11 @@ void UploadSocketEvents(long Message, HWND hWnd)
                     {
                         case 1:
                             SocketSendASCIIDatasCR(FTMFTPhSocketMain, "TYPE A");
-							break;
-						case 2:
+                            break;
+                        case 2:
                             SocketSendASCIIDatasCR(FTMFTPhSocketMain, "TYPE I");
-							break;
-					}
+                            break;
+                    }
                 }
                 else
                 {
@@ -1120,11 +1120,11 @@ void UploadSocketEvents(long Message, HWND hWnd)
                             {
                                 case 1:
                                     SocketSendASCIIDatasCR(FTMFTPhSocketMain, "TYPE A");
-									break;
-								case 2:
+                                    break;
+                                case 2:
                                     SocketSendASCIIDatasCR(FTMFTPhSocketMain, "TYPE I");
-									break;
-							}
+                                    break;
+                            }
                         }
                         else
                         {
@@ -1144,7 +1144,7 @@ void UploadSocketEvents(long Message, HWND hWnd)
                     }
                 }
             }
-			break;
+            break;
         case FD_CLOSE:
             FreeMem(CurrentUphFile);
             CurrentUphFile = 0;
@@ -1152,7 +1152,7 @@ void UploadSocketEvents(long Message, HWND hWnd)
             SocketDestroy(FRMFTPhSocketUp, hWnd);
             WriteFTPStatus((CStr) "Connected to " + (CStr) FTPCurrentIP + (CStr) " on port " + (CStr) FTPCurrentPort + (CStr) ".");
             SetFocus(FRMFTPListview);
-			break;
+            break;
     }
 }
 
@@ -1179,7 +1179,7 @@ void DownloadSocketEvents(long Message, HWND hWnd)
             }
             WriteFTPStatus((CStr) "Retrieving file '" + (CStr) CurrentDownloaded + (CStr) "' (" + (CStr) CurrentResume + (CStr) "/" + (CStr) CurrentSizeLng + (CStr) " bytes)...");
             FreeMem((long) RetrievedDirEntry);
-			break;
+            break;
         case FD_ACCEPT:
             FRMFTPhSocketDownloading = SocketAcceptConnection(FRMFTPhSocketDown, &FTMFTPSocketInfosAccept);
             if(CurrentResume != 0)
@@ -1200,8 +1200,8 @@ void DownloadSocketEvents(long Message, HWND hWnd)
                 CurrenthFile = FileCreateEmpty(Dirs[DIR_DOWNLOADS] + (CStr) "\\" + (CStr) CurrentDownloaded, NO_SECURITY_DESCRIPTOR);
             }
             CursorSetWait();
-			break;
-		case FD_CLOSE:
+            break;
+        case FD_CLOSE:
             if(CurrenthFile != INVALID_HANDLE_VALUE)
             {
                 if(CurrenthFile != 0)
@@ -1228,14 +1228,14 @@ void DirSocketEvents(long Message, HWND hWnd)
         case FD_READ:
             RetrievedDirEntry = SocketReceiveASCIIDatas(FRMFTPhSocketDirIncoming);
             FTPDirectories = FTPDirectories + (CStr) RetrievedDirEntry;
-			break;
-		case FD_ACCEPT:
+            break;
+        case FD_ACCEPT:
             FRMFTPhSocketDirIncoming = SocketAcceptConnection(FRMFTPhSocketDir, &FTMFTPSocketInfosAccept);
             WriteFTPStatus("Retrieving directory...");
             CursorSetWait();
             FTPDirectories = "";
             FRMFTPDirEntries = 0;
-			break;
+            break;
         case FD_CLOSE:
             FilCListView();
             CursorSetNormal();
@@ -1243,7 +1243,7 @@ void DirSocketEvents(long Message, HWND hWnd)
             SocketDestroy(FRMFTPhSocketDir, hWnd);
             WriteFTPStatus((CStr) "Connected to " + (CStr) FTPCurrentIP + (CStr) " on port " + (CStr) FTPCurrentPort + (CStr) ".");
             SetFocus(FRMFTPListview);
-			break;
+            break;
     }
 }
 
@@ -1259,7 +1259,7 @@ void BreakConnection(HWND hWnd)
     ControlEnable(FRMFTPCbAccounts, 1);
     FTMFTPConnectionState = 0;
     FTPNoAnonAllowed = 0;
-	WriteFTPStatus("Not connected.");
+    WriteFTPStatus("Not connected.");
 }
 
 // -----------------------------------------------------------------------
@@ -1450,13 +1450,13 @@ LRESULT CALLBACK FRMFTPListviewHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
 // Item sorting function
 int CALLBACK FRMFTPListviewSort(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 {
-	int ReturnValue = 0;
+    int ReturnValue = 0;
     CStr Data1;
     CStr Data2;
-	long Datas1Lng = 0;
-	long Datas2Lng = 0;
-	FILETIME Date1;
-	FILETIME Date2;
+    long Datas1Lng = 0;
+    long Datas2Lng = 0;
+    FILETIME Date1;
+    FILETIME Date2;
 
     Data1 = ListViewGetItemText(FRMFTPListview, lParam1, 0);
     Data2 = ListViewGetItemText(FRMFTPListview, lParam2, 0);
@@ -1479,8 +1479,8 @@ int CALLBACK FRMFTPListviewSort(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSor
         case 0:
             // Names
             ReturnValue = strcmpi(Data1.Get_String(), Data2.Get_String());
-			break;
-		case 1:
+            break;
+        case 1:
             // Sizes
             // Dir entries are always lower
             if(strcmpi(Data1.Get_String(), "(DIR)") == 0)
@@ -1498,33 +1498,33 @@ int CALLBACK FRMFTPListviewSort(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSor
                 ReturnValue = 1;
                 goto ExitSort;
             }
-			Datas1Lng = Data1.Get_Long();
-			Datas2Lng = Data2.Get_Long();
-	        if(Datas1Lng > Datas2Lng)
-	        {
+            Datas1Lng = Data1.Get_Long();
+            Datas2Lng = Data2.Get_Long();
+            if(Datas1Lng > Datas2Lng)
+            {
                 ReturnValue = 1;
-	        }
-	        else if(Datas1Lng < Datas2Lng)
-	        {
+            }
+            else if(Datas1Lng < Datas2Lng)
+            {
                 ReturnValue = -1;
-	        }
-	        else
-	        {
+            }
+            else
+            {
                 ReturnValue = 0;
             }
-			break;
+            break;
         case 2:
-			// (Return values are ignored here)
-			DateStringToDate(Data1, &Date1);
-			DateStringToDate(Data2, &Date2);
-			ReturnValue = -CompareFileTime(&Date1, &Date2);
-			break;
-		case 3:
+            // (Return values are ignored here)
+            DateStringToDate(Data1, &Date1);
+            DateStringToDate(Data2, &Date2);
+            ReturnValue = -CompareFileTime(&Date1, &Date2);
+            break;
+        case 3:
             // Permissions
             ReturnValue = strcmpi(Data1.Get_String(), Data2.Get_String());
-			break;
-	}
+            break;
+    }
 ExitSort:
     ListViewReOrder(FRMFTPListview);
-	return(ReturnValue);
+    return(ReturnValue);
 }

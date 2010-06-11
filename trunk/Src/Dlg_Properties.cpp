@@ -342,7 +342,7 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 {
     PAINTSTRUCT CreatePs;
     int i = 0;
-	CStr BufString;
+    CStr BufString;
     long LbOldIdx = 0;
 
     switch(uMsg)
@@ -353,13 +353,13 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
             {
                 if(SkinListViews.Get(i)->Content != 0) ListViewSetBackColor(SkinListViews.Get(i)->Content, GetSysColor(COLOR_WINDOW));
             }
-			break;
+            break;
         case WM_INITDIALOG:
             FRMPropertiesInFtpCreation = 0;
             RefreshProperties = 0;
             FRMPropertieshwnd = hwndDlg;
             ControlSetText(hwndDlg, AppTitle + (CStr) " properties");
-			FRMPropertiesSysTab = CreateSysTab(2, 1, 520, 334, hwndDlg, 0, 0, GlobalImageList1, WS_TABSTOP | TCS_BUTTONS | TCS_FLATBUTTONS | TCS_HOTTRACK);
+            FRMPropertiesSysTab = CreateSysTab(2, 1, 520, 334, hwndDlg, 0, 0, GlobalImageList1, WS_TABSTOP | TCS_BUTTONS | TCS_FLATBUTTONS | TCS_HOTTRACK);
             SysTabSetSeparators(FRMPropertiesSysTab, 0);
             SysTabAddItem(FRMPropertiesSysTab, "General", 0, ICON_PROPERTIES);
             SysTabAddItem(FRMPropertiesSysTab, "Editor layouts", 1, ICON_COLORS);
@@ -386,22 +386,22 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
             return(1);
         case WM_SIZE:
             ListBoxSetHorzScrollWidth(FRMPropertiesLbFileExt, ControlWidth(FRMPropertiesLbFileExt) * 2);
-			break;
-		case WM_NOTIFY:
+            break;
+        case WM_NOTIFY:
             switch(ControlGetNotifiedMsg(lParam))
             {
                 case TCN_SELCHANGE:
                     FRMPropertiesChangeCurrentTab();
                     return(0);
                 case TTN_NEEDTEXT:
-					switch(ControlGetNotifiedID(lParam))
-					{
-						case BACKUP_SELDIR:
-							ToolBarDisplayToolTip("Select new backup dir", lParam);
-							return(0);
-						case BACKUP_DELETE:
-							ToolBarDisplayToolTip("Empty selected dir", lParam);
-							return(0);
+                    switch(ControlGetNotifiedID(lParam))
+                    {
+                        case BACKUP_SELDIR:
+                            ToolBarDisplayToolTip("Select new backup dir", lParam);
+                            return(0);
+                        case BACKUP_DELETE:
+                            ToolBarDisplayToolTip("Empty selected dir", lParam);
+                            return(0);
                         case EXT_REPLACE:
                             ToolBarDisplayToolTip("Replace entry", lParam);
                             return(0);
@@ -418,8 +418,8 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                             ToolBarDisplayToolTip("Save colors profile", lParam);
                             return(0);
                         case FOLDER_CHOOSE:
-							ToolBarDisplayToolTip("Select a directory", lParam);
-							return(0);
+                            ToolBarDisplayToolTip("Select a directory", lParam);
+                            return(0);
                         case FTPACC_CREATE:
                             ToolBarDisplayToolTip("Create a new account", lParam);
                             return(0);
@@ -430,11 +430,11 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                             ToolBarDisplayToolTip("Delete current account", lParam);
                             return(0);
                         case DEBUGGER_VALID:
-							ToolBarDisplayToolTip("Add entry into list", lParam);
-							return(0);
+                            ToolBarDisplayToolTip("Add entry into list", lParam);
+                            return(0);
                     }
-			}
-			break;
+            }
+            break;
         case WM_COMMAND:
             if((HWND) lParam == FRMPropertiesCmdOk)
             {
@@ -479,8 +479,8 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
             }
             else if((HWND) lParam == FRMPropertiesCmdGenProg)
             {
-				GetGenProtoProg();
-				return(0);
+                GetGenProtoProg();
+                return(0);
             }
             else if((HWND) lParam == FRMPropertiesCmdDebugger)
             {
@@ -501,8 +501,8 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
             }
             else if((HWND) lParam == FRMPropertiesTbFileExt)
             {
-				switch(wParam)
-				{
+                switch(wParam)
+                {
                     case EXT_REPLACE:
                         if(ListBoxCount(FRMPropertiesLbFileExt) != 0)
                         {
@@ -524,7 +524,7 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                         {
                             if(ListBoxGetSelItemIndex(FRMPropertiesLbFileExt) != -1)
                             {
-AddFileExt:						ListBoxAddItem(FRMPropertiesLbFileExt, ControlGetText(FRMPropertiesTxtFileExt), ListBoxGetSelItemIndex(FRMPropertiesLbFileExt));
+AddFileExt:                     ListBoxAddItem(FRMPropertiesLbFileExt, ControlGetText(FRMPropertiesTxtFileExt), ListBoxGetSelItemIndex(FRMPropertiesLbFileExt));
                                 ListBoxSetIndex(FRMPropertiesLbFileExt, LbOldIdx);
                                 SetFocus(FRMPropertiesLbFileExt);
                             }
@@ -681,18 +681,18 @@ AddFileExt:						ListBoxAddItem(FRMPropertiesLbFileExt, ControlGetText(FRMProper
                 FRMPropertiesSelectFont();
                 return(0);
             }
-			break;
+            break;
         case WM_PAINT:
             BeginPaint(hwndDlg, &CreatePs);
             GDIDrawHorzSep(hwndDlg, 0, 337, 527);
             EndPaint(hwndDlg, &CreatePs);
-			break;
-		case WM_CLOSE:
+            break;
+        case WM_CLOSE:
             if(LblFont != 0) DeleteObject(LblFont);
             FreezeTimer = 0;
             EndDialog(hwndDlg, 0);
             FocusOnActiveChild();
-			break;
+            break;
     }
     return(0);
 }
@@ -745,8 +745,8 @@ void CreatePropPage1(HWND hParent)
     ToolBarAddButton(FRMPropertiesTbFileExt, "", EXT_INSERT, ICON_INSERT, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     ToolBarAddButton(FRMPropertiesTbFileExt, "", EXT_DELETE, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     FRMPropertiesLbFont = CreateLabel(7, 17, 195, 15, FRMPropertiesPageFont, "", 0, 0, 0, 0);
-	FRMPropertiesCmdFontChoose = CreateButton(202 + 161, 14 + 209, 25, 21, hParent, "...", 35, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
-	CreateLabel(27, 12, 63, 15, FRMPropertiesPageOther, "Tabulations :", 0, 0, 0, 0);
+    FRMPropertiesCmdFontChoose = CreateButton(202 + 161, 14 + 209, 25, 21, hParent, "...", 35, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+    CreateLabel(27, 12, 63, 15, FRMPropertiesPageOther, "Tabulations :", 0, 0, 0, 0);
     FRMPropertiesTabulations = CreateTextBox(92, 10, 27, 20, FRMPropertiesPageOther, "", 36, 0, WS_TABSTOP | ES_NUMBER, WS_EX_STATICEDGE);
     CreateLabel(26, 31, 63, 15, FRMPropertiesPageOther, "Recent files :", 0, 0, 0, 0);
     FRMPropertiesRecentFiles = CreateTextBox(92, 29, 27, 20, FRMPropertiesPageOther, "", 37, 0, WS_TABSTOP | ES_NUMBER, WS_EX_STATICEDGE);
@@ -764,7 +764,7 @@ void CreatePropPage1(HWND hParent)
     ComboBoxAddItem(FRMPropertiesCbSave, "1 hour", -1);
     ComboBoxSetIndex(FRMPropertiesCbSave, 0);
     FRMPropertiesChkVerbose = CreateCheckBox(7, 37, 115, 15, FRMPropertiesPageAutoSave, "Display files to save", 40, 0, WS_TABSTOP, 0);
-	FRMPropertiesChkMultiplesInst = CreateCheckBox(5, 9 + 5, 120, 15, FRMPropertiesPageEditor2, "Multiple instances", 41, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkMultiplesInst = CreateCheckBox(5, 9 + 5, 120, 15, FRMPropertiesPageEditor2, "Multiple instances", 41, 0, WS_TABSTOP, 0);
     FRMPropertiesChkRemember = CreateCheckBox(5, 25 + 5, 120, 15, FRMPropertiesPageEditor2, "Remember last pos", 42, 0, WS_TABSTOP, 0);
     FRMPropertiesChkBakFiles = CreateCheckBox(5, 41 + 5, 120, 15, FRMPropertiesPageEditor2, "Create .BAK files", 43, 0, WS_TABSTOP, 0);
     FRMPropertiesChkDecorateBak = CreateCheckBox(5, 57 + 5, 120, 15, FRMPropertiesPageEditor2, "Decorate .BAK files", 44, 0, WS_TABSTOP, 0);
@@ -774,8 +774,8 @@ void CreatePropPage1(HWND hParent)
     FRMPropertiesChkMinimize = CreateCheckBox(5, 121 + 5, 118, 15, FRMPropertiesPageEditor2, "Minimize to systray", 48, 0, WS_TABSTOP, 0);
     FRMPropertiesChkOnTop = CreateCheckBox(5, 137 + 5, 118, 15, FRMPropertiesPageEditor2, "Always on top", 49, 0, WS_TABSTOP, 0);
     FRMPropertiesChkSaveBk = CreateCheckBox(5, 153 + 5, 118, 15, FRMPropertiesPageEditor2, "Save bookmarks", 50, 0, WS_TABSTOP, 0);
-	FRMPropertiesTxtBackupDir = CreateTextBox(6, 14, 169, 20, FRMPropertiesPageBackup, "", 50, 0, ES_READONLY | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-	FRMPropertiesTbBackup = CreateToolBar(177 + 161, 13 + 291, 50, 24, hParent, GlobalImageList1, 51, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | WS_TABSTOP | TBS_FIXEDLENGTH, 0);
+    FRMPropertiesTxtBackupDir = CreateTextBox(6, 14, 169, 20, FRMPropertiesPageBackup, "", 50, 0, ES_READONLY | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+    FRMPropertiesTbBackup = CreateToolBar(177 + 161, 13 + 291, 50, 24, hParent, GlobalImageList1, 51, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | WS_TABSTOP | TBS_FIXEDLENGTH, 0);
     ToolBarAddButton(FRMPropertiesTbBackup, "", BACKUP_SELDIR, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     ToolBarAddButton(FRMPropertiesTbBackup, "", BACKUP_DELETE, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
 }
@@ -835,10 +835,10 @@ void CreatePropPage2(HWND hParent)
     FRMPropertiesColExtraHighLight3 = CreateColorBox(221, 38 + (16 * 8), 26, 15, FRMPropertiesPageColors, 19, 0, 0);
     FRMPropertiesColLuminosity = CreateTrackBar(2, 187, 152, 20, FRMPropertiesPageColors, 20, 0, 0, 200, TBS_NOTICKS | TBS_TOOLTIPS | TBS_BOTH);
     TrackBarSetPos(FRMPropertiesColLuminosity, 100);
-	Assigned_ToolTip = TrackBarGetToolTips(FRMPropertiesColLuminosity);
-	FRMPropertiesChkItalic = CreateCheckBox(155, 188, 97, 15, FRMPropertiesPageColors, "Italic comments", 20, 0, WS_TABSTOP, 0);
+    Assigned_ToolTip = TrackBarGetToolTips(FRMPropertiesColLuminosity);
+    FRMPropertiesChkItalic = CreateCheckBox(155, 188, 97, 15, FRMPropertiesPageColors, "Italic comments", 20, 0, WS_TABSTOP, 0);
     FRMPropertiesTxtWindowsAPI = CreateTextBox(5, 16, 223, 20, FRMPropertiesPageAPIHelp, "", 21, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-	FRMPropertiesCmdWindowsAPI = CreateButton(230 + 263, 16 + 26, 25, 21, hParent, "...", 22, 0, 0, 0, WS_TABSTOP | WS_GROUP, Buttons_StaticEdge);
+    FRMPropertiesCmdWindowsAPI = CreateButton(230 + 263, 16 + 26, 25, 21, hParent, "...", 22, 0, 0, 0, WS_TABSTOP | WS_GROUP, Buttons_StaticEdge);
     FRMPropertiesTxtMSDN = CreateTextBox(5, 16, 223, 20, FRMPropertiesPageSDKHelp, "", 23, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
     FRMPropertiesCmdMSDN = CreateButton(230 + 263, 16 + 69, 25, 21, hParent, "...", 24, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
     FRMPropertiesTxtDDK = CreateTextBox(5, 16, 223, 20, FRMPropertiesPageDDKHelp, "", 25, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
@@ -859,33 +859,33 @@ void CreatePropPage3(HWND hParent)
     FRMPropertiesPageProtoGen = CreateFrame(4, 238, 275, 94, hParent, "Prototypes generator", 0, 0, 0);
     CreateLabel(6, 13, 236, 15, FRMPropertiesPageFolders, "Main directory [ROOTDIR] :", 0, 0, 0, 0);
     FRMPropertiesTxtROOTDIR = CreateTextBox(6, 26, 236, 20, FRMPropertiesPageFolders, "", 1, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-	
+    
     FRMPropertiesTbROOTDIR = CreateToolBar(244 + 4, 25 + 26, 25, 23, hParent, GlobalImageList1, 3, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
     ToolBarAddButton(FRMPropertiesTbROOTDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-	
+    
     CreateLabel(6, 13 + 32, 236, 15, FRMPropertiesPageFolders, "Bin directory [BINDIR] :", 0, 0, 0, 0);
     FRMPropertiesTxtBINDIR = CreateTextBox(6, 26 + 32, 236, 20, FRMPropertiesPageFolders, "", 3, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-	FRMPropertiesTbBINDIR = CreateToolBar(244 + 4, 25 + 26 + 32, 25, 23, hParent, GlobalImageList1, 4, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+    FRMPropertiesTbBINDIR = CreateToolBar(244 + 4, 25 + 26 + 32, 25, 23, hParent, GlobalImageList1, 4, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
     ToolBarAddButton(FRMPropertiesTbBINDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-	CreateLabel(6, 13 + (32 * 2), 236, 15, FRMPropertiesPageFolders, "Include directory [INCLUDEDIR] :", 0, 0, 0, 0);
+    CreateLabel(6, 13 + (32 * 2), 236, 15, FRMPropertiesPageFolders, "Include directory [INCLUDEDIR] :", 0, 0, 0, 0);
     FRMPropertiesTxtINCLUDEDIR = CreateTextBox(6, 26 + (32 * 2), 236, 20, FRMPropertiesPageFolders, "", 5, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-	FRMPropertiesTbINCLUDEDIR = CreateToolBar(244 + 4, 25 + 26 + (32 * 2), 25, 23, hParent, GlobalImageList1, 6, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+    FRMPropertiesTbINCLUDEDIR = CreateToolBar(244 + 4, 25 + 26 + (32 * 2), 25, 23, hParent, GlobalImageList1, 6, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
     ToolBarAddButton(FRMPropertiesTbINCLUDEDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-	CreateLabel(6, 13 + (32 * 3), 236, 15, FRMPropertiesPageFolders, "Lib/Units directory [LIBDIR] :", 0, 0, 0, 0);
+    CreateLabel(6, 13 + (32 * 3), 236, 15, FRMPropertiesPageFolders, "Lib/Units directory [LIBDIR] :", 0, 0, 0, 0);
     FRMPropertiesTxtLIBDIR = CreateTextBox(6, 26 + (32 * 3), 236, 20, FRMPropertiesPageFolders, "", 7, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-	FRMPropertiesTbLIBDIR = CreateToolBar(244 + 4, 25 + 26 + (32 * 3), 25, 23, hParent, GlobalImageList1, 8, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+    FRMPropertiesTbLIBDIR = CreateToolBar(244 + 4, 25 + 26 + (32 * 3), 25, 23, hParent, GlobalImageList1, 8, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
     ToolBarAddButton(FRMPropertiesTbLIBDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-	CreateLabel(6, 13 + (32 * 4), 236, 15, FRMPropertiesPageFolders, "Help directory [HELPDIR] :", 0, 0, 0, 0);
+    CreateLabel(6, 13 + (32 * 4), 236, 15, FRMPropertiesPageFolders, "Help directory [HELPDIR] :", 0, 0, 0, 0);
     FRMPropertiesTxtHELPDIR = CreateTextBox(6, 26 + (32 * 4), 236, 20, FRMPropertiesPageFolders, "", 9, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-	FRMPropertiesTbHELPDIR = CreateToolBar(244 + 4, 25 + 26 + (32 * 4), 25, 23, hParent, GlobalImageList1, 10, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+    FRMPropertiesTbHELPDIR = CreateToolBar(244 + 4, 25 + 26 + (32 * 4), 25, 23, hParent, GlobalImageList1, 10, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
     ToolBarAddButton(FRMPropertiesTbHELPDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-	CreateLabel(6, 13 + (32 * 5), 236, 15, FRMPropertiesPageFolders, "Projects directory [PROJECTSDIR] :", 0, 0, 0, 0);
+    CreateLabel(6, 13 + (32 * 5), 236, 15, FRMPropertiesPageFolders, "Projects directory [PROJECTSDIR] :", 0, 0, 0, 0);
     FRMPropertiesTxtPROJECTSDIR = CreateTextBox(6, 26 + (32 * 5), 236, 20, FRMPropertiesPageFolders, "", 11, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
     FRMPropertiesTbPROJECTSDIR = CreateToolBar(244 + 4, 25 + 26 + (32 * 5), 25, 23, hParent, GlobalImageList1, 12, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
     ToolBarAddButton(FRMPropertiesTbPROJECTSDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-	CreateLabel(6, 20, 106, 15, FRMPropertiesPageProtoGen, "Program :", 0, 0, 0, 0);
+    CreateLabel(6, 20, 106, 15, FRMPropertiesPageProtoGen, "Program :", 0, 0, 0, 0);
     FRMPropertiesTxtGenProg = CreateTextBox(58, 17, 183, 20, FRMPropertiesPageProtoGen, "", 13, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-	FRMPropertiesCmdGenProg = CreateButton(243 + 4, 17 + 238, 25, 21, hParent, "...", 14, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
+    FRMPropertiesCmdGenProg = CreateButton(243 + 4, 17 + 238, 25, 21, hParent, "...", 14, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
     CreateLabel(6, 20 + 25, 106, 15, FRMPropertiesPageProtoGen, "Source :", 0, 0, 0, 0);
     FRMPropertiesTxtGenSource = CreateTextBox(58, 17 + 25, 210, 20, FRMPropertiesPageProtoGen, "", 15, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
     CreateLabel(6, 20 + 25 + 25, 106, 15, FRMPropertiesPageProtoGen, "Dest. :", 0, 0, 0, 0);
@@ -917,7 +917,7 @@ void CreatePropPage4(HWND hParent)
     FRMPropertiesPageTransfersTypes = CreateFrame(318, 75, 205, 69, hParent, "Transfers type", 0, 0, 0);
     CreateLabel(9, 20, 78, 15, FRMPropertiesPageFTPManage, "Account name :", 0, 0, 0, 0);
     FRMPropertiesCbAccounts = CreateComboBox(90, 17, 152, 150, FRMPropertiesPageFTPManage, "", 0, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
-	FRMPropertiesTbAccounts = CreateToolBar(244 + 4, 16 + 26, 84, 23, hParent, GlobalImageList1, 3, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
+    FRMPropertiesTbAccounts = CreateToolBar(244 + 4, 16 + 26, 84, 23, hParent, GlobalImageList1, 3, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
     ToolBarAddButton(FRMPropertiesTbAccounts, "", FTPACC_CREATE, ICON_ASKDIR, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     ToolBarAddButton(FRMPropertiesTbAccounts, "", FTPACC_SAVE, ICON_SAVE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     ToolBarAddButton(FRMPropertiesTbAccounts, "", FTPACC_DELETE, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
@@ -951,7 +951,7 @@ void CreatePropPage5(HWND hParent)
 {
     FRMPropertiesPageCodingHelp = CreateFrame(4, 26, 185, 123, hParent, "Coding help", 0, 0, 0);
     FRMPropertiesPageExtrasLayouts2 = CreateFrame(4, 149, 185, 183, hParent, "Extras layouts", 0, 0, 0);
-	
+    
     FRMPropertiesChkAutoCorrectKeywords = CreateCheckBox(11, 18, 160, 15, FRMPropertiesPageCodingHelp, "Auto correct keywords", 22, 0, WS_TABSTOP, 0);
     FRMPropertiesChkWinAPITooltipInfos = CreateCheckBox(11, 18 + (19 * 1), 160, 15, FRMPropertiesPageCodingHelp, "Display functions tooltips", 2, 0, WS_TABSTOP | WS_GROUP, 0);
     CreateLabel(37, 18 + (19 * 2) + 3, 110, 15, FRMPropertiesPageCodingHelp, "lines in keywords list", 0, 0, 0, 0);
@@ -959,9 +959,9 @@ void CreatePropPage5(HWND hParent)
     FRMPropertiesChkUseFncDB = CreateCheckBox(11, 18 + (19 * 3) + 5, 160, 15, FRMPropertiesPageCodingHelp, "Use functions database", 4, 0, WS_TABSTOP, 0);
     FRMPropertiesChkUseConstDB = CreateCheckBox(11, 18 + + (19 * 4) + 5, 160, 15, FRMPropertiesPageCodingHelp, "Use constants database", 5, 0, WS_TABSTOP, 0);
 
-	FRMPropertiesChkShowSplash = CreateCheckBox(11, 19, 160, 15, FRMPropertiesPageExtrasLayouts2, "Show splash screen", 6, 0, WS_TABSTOP | WS_GROUP, 0);
+    FRMPropertiesChkShowSplash = CreateCheckBox(11, 19, 160, 15, FRMPropertiesPageExtrasLayouts2, "Show splash screen", 6, 0, WS_TABSTOP | WS_GROUP, 0);
     FRMPropertiesChkTVSingle = CreateCheckBox(11, 19 + (18 * 1), 160, 15, FRMPropertiesPageExtrasLayouts2, "Single click expand treeview", 7, 0, WS_TABSTOP | WS_GROUP, 0);
-	FRMPropertiesChkTVTool = CreateCheckBox(11, 19 + (18 * 2), 160, 15, FRMPropertiesPageExtrasLayouts2, "Tooltips in treeview", 8, 0, WS_TABSTOP, 0);
+    FRMPropertiesChkTVTool = CreateCheckBox(11, 19 + (18 * 2), 160, 15, FRMPropertiesPageExtrasLayouts2, "Tooltips in treeview", 8, 0, WS_TABSTOP, 0);
     FRMPropertiesChkRecentDoc = CreateCheckBox(11, 19 + (18 * 3), 160, 15, FRMPropertiesPageExtrasLayouts2, "Store in Windows docs", 9, 0, WS_TABSTOP, 0);
     FRMPropertiesChkAutoOut = CreateCheckBox(11, 19 + (18 * 4), 160, 15, FRMPropertiesPageExtrasLayouts2, "Silent output", 10, 0, WS_TABSTOP, 0);
     FRMPropertiesChkUseFileDir = CreateCheckBox(11, 19 + (18 * 5), 160, 15, FRMPropertiesPageExtrasLayouts2, "Use files directories", 11, 0, WS_TABSTOP, 0);
@@ -976,7 +976,7 @@ void FillProfil(void)
 {
     int i = 0;
     
-	ComboBoxReset(FRMPropertiesCbColors);
+    ComboBoxReset(FRMPropertiesCbColors);
     for(i = 0; i <= 999; i++)
     {
         FRMPropertiesRetVal = IniReadKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), ColorsIniFile);
@@ -1079,7 +1079,7 @@ void FillProperties(void)
     ColorBoxSetColor(FRMPropertiesColExtraHighLight3, LangColorHColor);
     Prof_BackColor = ColorBoxGetColor(FRMPropertiesColBackGround);
     Orig_Prof_BackColor = Prof_BackColor;
-	Prof_NormText = ColorBoxGetColor(FRMPropertiesColNormalText);
+    Prof_NormText = ColorBoxGetColor(FRMPropertiesColNormalText);
     Orig_Prof_NormText = Prof_NormText;
     Prof_HighText = ColorBoxGetColor(FRMPropertiesColHighlightText);
     Orig_Prof_HighText = Prof_HighText;
@@ -1159,11 +1159,11 @@ void FillProperties(void)
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkMultiplesInst, FRMPropertiesRetVal.Get_Long());
     FRMPropertiesRetVal = IniReadKey("Layout", "Remember", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkRemember, FRMPropertiesRetVal.Get_Long());
-	FRMPropertiesRetVal = IniReadKey("Layout", "CreateBak", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "CreateBak", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkBakFiles, FRMPropertiesRetVal.Get_Long());
-	FRMPropertiesRetVal = IniReadKey("Layout", "DecorateBak", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "DecorateBak", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkDecorateBak, FRMPropertiesRetVal.Get_Long());
-	FRMPropertiesRetVal = IniReadKey("Layout", "AcceptFiles", MainIniFile);
+    FRMPropertiesRetVal = IniReadKey("Layout", "AcceptFiles", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkAcceptFiles, FRMPropertiesRetVal.Get_Long());
     FRMPropertiesRetVal = IniReadKey("Layout", "AutoMax", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkAutoMax, FRMPropertiesRetVal.Get_Long());
@@ -1247,7 +1247,7 @@ void FillProperties(void)
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkUseConstDB, FRMPropertiesRetVal.Get_Long());
     FRMPropertiesRetVal = IniReadKey("Layout", "DbLinesNumbers", MainIniFile);
     // Put a default value (6 lines)
-	if(FRMPropertiesRetVal.Len() == 0) FRMPropertiesRetVal = "6";
+    if(FRMPropertiesRetVal.Len() == 0) FRMPropertiesRetVal = "6";
     ControlSetText(FRMPropertiesTxtAPILines, FRMPropertiesRetVal);
     FRMPropertiesRetVal = IniReadKey("Layout", "ShowSplash", MainIniFile);
     if(FRMPropertiesRetVal.Len() != 0) CheckBoxSetState(FRMPropertiesChkShowSplash, FRMPropertiesRetVal.Get_Long());
@@ -1393,7 +1393,7 @@ void SavePrefs(void)
     if(CheckBoxGetState(FRMPropertiesChkAcceptFiles) == 0) AcceptFiles = 0;
     else AcceptFiles = 1;
     
-	// Set client state
+    // Set client state
     DragAcceptFiles(hMDIform.hClient, AcceptFiles);
     IniWriteKey("Layout", "AutoMax", CheckBoxGetState(FRMPropertiesChkAutoMax), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkAutoMax) == 0) AutoMaximizeChilds = 0;
@@ -1408,7 +1408,7 @@ void SavePrefs(void)
     IniWriteKey("Layout", "ShowSplash", CheckBoxGetState(FRMPropertiesChkShowSplash), MainIniFile);
     IniWriteKey("Layout", "TVSingle", CheckBoxGetState(FRMPropertiesChkTVSingle), MainIniFile);
     
-	// Refresh the treeview's expand type
+    // Refresh the treeview's expand type
     SetTreeviewExpand();
     IniWriteKey("Layout", "UseDbFnc", CheckBoxGetState(FRMPropertiesChkUseFncDB), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkUseFncDB) == 0) UseDbFnc = 0;
@@ -1457,10 +1457,10 @@ void SavePrefs(void)
 
     // Refresh masm directories
     free(Dirs[DIR_ROOT]);
-	Dirs[DIR_ROOT] = strdup(ControlGetText(FRMPropertiesTxtROOTDIR).Get_String());
+    Dirs[DIR_ROOT] = strdup(ControlGetText(FRMPropertiesTxtROOTDIR).Get_String());
     IniWriteKey("Dirs", DirsRepl[DIR_ROOT], Dirs[DIR_ROOT], MainIniFile);
     free(Dirs[DIR_BIN]);
-	Dirs[DIR_BIN] = strdup(ControlGetText(FRMPropertiesTxtBINDIR).Get_String());
+    Dirs[DIR_BIN] = strdup(ControlGetText(FRMPropertiesTxtBINDIR).Get_String());
     IniWriteKey("Dirs", DirsRepl[DIR_BIN], Dirs[DIR_BIN], MainIniFile);
     free(Dirs[DIR_INCLUDE]);
     Dirs[DIR_INCLUDE] = strdup(ControlGetText(FRMPropertiesTxtINCLUDEDIR).Get_String());
@@ -1476,11 +1476,11 @@ void SavePrefs(void)
     // Set it by default just in case
     if(strlen(Dirs[DIR_PROJECTS]) == 0)
     {
-		free(Dirs[DIR_PROJECTS]);
-		BufString = AppPath + (CStr) "\\Projects";
-    	Dirs[DIR_PROJECTS] = strdup(BufString.Get_String());
+        free(Dirs[DIR_PROJECTS]);
+        BufString = AppPath + (CStr) "\\Projects";
+        Dirs[DIR_PROJECTS] = strdup(BufString.Get_String());
     }
-	IniWriteKey("Dirs", DirsRepl[DIR_PROJECTS], Dirs[DIR_PROJECTS], MainIniFile);
+    IniWriteKey("Dirs", DirsRepl[DIR_PROJECTS], Dirs[DIR_PROJECTS], MainIniFile);
     
     // Save colors
     Prof_BackColor = ColorBoxGetColor(FRMPropertiesColBackGround);
@@ -1540,7 +1540,7 @@ void SavePrefs(void)
     IniWriteKey("Layout", "ColorFValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorFValue).Get_String(), MainIniFile);
     IniWriteKey("Layout", "ColorGValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorGValue).Get_String(), MainIniFile);
     IniWriteKey("Layout", "ColorHValue", "0x" + (CStr) BufString.Hex_To_String(Prof_ColorHValue).Get_String(), MainIniFile);
-	IniWriteKey("Layout", "CommentItalic", CheckBoxGetState(FRMPropertiesChkItalic), MainIniFile);
+    IniWriteKey("Layout", "CommentItalic", CheckBoxGetState(FRMPropertiesChkItalic), MainIniFile);
     if(CheckBoxGetState(FRMPropertiesChkItalic) == 0) ItalicFont = 0;
     else ItalicFont = 1;
    
@@ -1565,48 +1565,48 @@ void SavePrefs(void)
     // Get skin filename
     if(ComboBoxCount(FRMPropertiesCbSkin) != 0)
     {
-		TmpSkinName = PrgSkinArray.Get(ComboBoxGetIndex(FRMPropertiesCbSkin))->Content;
+        TmpSkinName = PrgSkinArray.Get(ComboBoxGetIndex(FRMPropertiesCbSkin))->Content;
     }
-	// Save skin
+    // Save skin
     for(i = 0; i < PrgSkinControlsDest.Amount(); i++)
     {
         BufString = PrgSkinControlsDest.Get(i)->Content;
-		BufString = BufString.Left(5).Upper_Case();
-		if(BufString == "COMBO")
-		{
+        BufString = BufString.Left(5).Upper_Case();
+        if(BufString == "COMBO")
+        {
             SkinValue = ComboBoxGetIndex(PrgSkinControls.Get(i)->Content);
             IniWriteKey("CURRENT", PrgSkinControlsDest.Get(i)->Content, SkinValue, TmpSkinName);
-		}
-		else if(BufString == "CHECK")
-		{
+        }
+        else if(BufString == "CHECK")
+        {
             SkinValue = CheckBoxGetState(PrgSkinControls.Get(i)->Content);
             IniWriteKey("CURRENT", PrgSkinControlsDest.Get(i)->Content, SkinValue, TmpSkinName);
-		}
-		else if(BufString == "TEXTB")
-		{
+        }
+        else if(BufString == "TEXTB")
+        {
             TextBoxValue = ControlGetText(PrgSkinControls.Get(i)->Content);
             IniWriteKey("CURRENT", PrgSkinControlsDest.Get(i)->Content, TextBoxValue, TmpSkinName);
-		}
-		else if(BufString == "LISTC")
-		{
+        }
+        else if(BufString == "LISTC")
+        {
             for(k = 0; k <= (long) ListViewItemCount(PrgSkinControls.Get(i)->Content); k++)
             {
                 BufString = PrgSkinControlsDest.Get(i)->Content;
-				BufString = BufString + (CStr) StringNumberComplement(k, 3).Get_String();
-				IniWriteKey("CURRENT", BufString, ListViewGetItemCheckbox(PrgSkinControls.Get(i)->Content, k), TmpSkinName);
+                BufString = BufString + (CStr) StringNumberComplement(k, 3).Get_String();
+                IniWriteKey("CURRENT", BufString, ListViewGetItemCheckbox(PrgSkinControls.Get(i)->Content, k), TmpSkinName);
             }
-		}
-		else if(BufString == "RADIO")
-		{
+        }
+        else if(BufString == "RADIO")
+        {
             SkinValue = RadioButtonGetState(PrgSkinControls.Get(i)->Content);
             if(SkinValue != 0)
             {
                 BufString = PrgSkinControlsDest.Get(i)->Content;
-				BufString = BufString.Mid(9);
-				RadioValue = BufString.Get_Long();
+                BufString = BufString.Mid(9);
+                RadioValue = BufString.Get_Long();
                 BufString = PrgSkinControlsDest.Get(i)->Content;
-				BufString = BufString.Left(8);
-				IniWriteKey("CURRENT", BufString, RadioValue, TmpSkinName);
+                BufString = BufString.Left(8);
+                IniWriteKey("CURRENT", BufString, RadioValue, TmpSkinName);
             }
         }
     }
@@ -1622,8 +1622,8 @@ void SavePrefs(void)
     if(DefLangToStore.Len() == 0) DefLangToStore = "";
     IniWriteKey("RefLanguages", "DefLang", DefLangToStore, LanguagesIniFile);
 
-	// Re-init the autosave timer
-	RefreshTimer(hMDIform.hWnd);
+    // Re-init the autosave timer
+    RefreshTimer(hMDIform.hWnd);
 }
 
 // -----------------------------------------------------------------------
@@ -1635,13 +1635,13 @@ void SetBackupEn(void)
         case 0:
             ToolBarSetButtonEnabled(FRMPropertiesTbBackup, BACKUP_SELDIR, 0);
             ToolBarSetButtonEnabled(FRMPropertiesTbBackup, BACKUP_DELETE, 0);
-			ControlEnable(FRMPropertiesChkDecorateBak, 0);
-			break;
-		case 1:
+            ControlEnable(FRMPropertiesChkDecorateBak, 0);
+            break;
+        case 1:
             ToolBarSetButtonEnabled(FRMPropertiesTbBackup, BACKUP_SELDIR, 1);
             ToolBarSetButtonEnabled(FRMPropertiesTbBackup, BACKUP_DELETE, 1);
-			ControlEnable(FRMPropertiesChkDecorateBak, 1);
-			break;
+            ControlEnable(FRMPropertiesChkDecorateBak, 1);
+            break;
     }
 }
 
@@ -1675,15 +1675,15 @@ LRESULT CALLBACK FRMPropertiesFrameGeneral(HWND hWnd, UINT uMsg, WPARAM wParam, 
 LRESULT CALLBACK FRMPropertiesFrameColors(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     int Luminosity;
 
-	switch(uMsg)
-	{
+    switch(uMsg)
+    {
         case WM_COMMAND:
-			if((HWND) lParam == FRMPropertiesChkItalic)
-			{
-				FRMPropertiesSetItalicComments(FRMPropertiesCodeMax);
-				return(0);
+            if((HWND) lParam == FRMPropertiesChkItalic)
+            {
+                FRMPropertiesSetItalicComments(FRMPropertiesCodeMax);
+                return(0);
             }
-			break;
+            break;
         case MSG_COLORBOX_CLICKED:
             if((HWND) wParam == FRMPropertiesColBackGround)
             {
@@ -1712,7 +1712,7 @@ LRESULT CALLBACK FRMPropertiesFrameColors(HWND hWnd, UINT uMsg, WPARAM wParam, L
             }
             else if((HWND) wParam == FRMPropertiesColKeywords)
             {
-				FRMPropertiesSetColor((HWND) wParam);
+                FRMPropertiesSetColor((HWND) wParam);
                 return(0);
             }
             else if((HWND) wParam == FRMPropertiesColDirectives)
@@ -1762,7 +1762,7 @@ LRESULT CALLBACK FRMPropertiesFrameColors(HWND hWnd, UINT uMsg, WPARAM wParam, L
             }
             else if((HWND) wParam == FRMPropertiesChkItalic)
             {
-				FRMPropertiesSetColor((HWND) wParam);
+                FRMPropertiesSetColor((HWND) wParam);
                 return(0);
             }
             else if((HWND) wParam == FRMPropertiesColExtraHighLight1)
@@ -1780,22 +1780,22 @@ LRESULT CALLBACK FRMPropertiesFrameColors(HWND hWnd, UINT uMsg, WPARAM wParam, L
                 FRMPropertiesSetColor((HWND) wParam);
                 return(0);
             }
-			break;
+            break;
         case WM_NOTIFY:
             switch(ControlGetNotifiedMsg(lParam))
             {
                 case TTN_NEEDTEXT:
-					if(Assigned_ToolTip != NULL)
-					{
-						if(ControlGetNotifiedhWnd(lParam) == Assigned_ToolTip)
-						{
-							Luminosity = TrackBarGetPos(FRMPropertiesColLuminosity);
-							ToolBarDisplayToolTip("Luminosity: " + (CStr) Luminosity + (CStr) "%", lParam);
-							return(0);
-						}
-					}
-				}
-			break;
+                    if(Assigned_ToolTip != NULL)
+                    {
+                        if(ControlGetNotifiedhWnd(lParam) == Assigned_ToolTip)
+                        {
+                            Luminosity = TrackBarGetPos(FRMPropertiesColLuminosity);
+                            ToolBarDisplayToolTip("Luminosity: " + (CStr) Luminosity + (CStr) "%", lParam);
+                            return(0);
+                        }
+                    }
+                }
+            break;
         case WM_HSCROLL:
             switch(wParam & 0xFFFF)
             {
@@ -1807,30 +1807,30 @@ LRESULT CALLBACK FRMPropertiesFrameColors(HWND hWnd, UINT uMsg, WPARAM wParam, L
                 case TB_LINEDOWN:
                 case TB_PAGEUP:
                 case TB_PAGEDOWN:           
-					Prof_Luminosity = TrackBarGetPos(FRMPropertiesColLuminosity);
-					ColorBoxSetColor(FRMPropertiesColBackGround, GDIColorCalcLuminosity(Orig_Prof_BackColor, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColNormalText, GDIColorCalcLuminosity(Orig_Prof_NormText, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColHighlightText, GDIColorCalcLuminosity(Orig_Prof_HighText, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColMargin, GDIColorCalcLuminosity(Orig_Prof_MarginColor, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColLineNumber, GDIColorCalcLuminosity(Orig_Prof_LinesColor, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColNumber, GDIColorCalcLuminosity(Orig_Prof_NumbersColorValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColStrings, GDIColorCalcLuminosity(Orig_Prof_StringsColorValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColComments, GDIColorCalcLuminosity(Orig_Prof_CommentsColorValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColScopeKeywords, GDIColorCalcLuminosity(Orig_Prof_KeyWordsColorValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColAPIHighlighting, GDIColorCalcLuminosity(Orig_Prof_APIHighColor, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColKeywords, GDIColorCalcLuminosity(Orig_Prof_ColorAValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColSeparators, GDIColorCalcLuminosity(Orig_Prof_ColorBValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColDirectives, GDIColorCalcLuminosity(Orig_Prof_ColorCValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColRegisters, GDIColorCalcLuminosity(Orig_Prof_ColorDValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColExtraFunctions, GDIColorCalcLuminosity(Orig_Prof_ColorEValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColExtraHighLight1, GDIColorCalcLuminosity(Orig_Prof_ColorFValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColExtraHighLight2, GDIColorCalcLuminosity(Orig_Prof_ColorGValue, Prof_Luminosity));
-					ColorBoxSetColor(FRMPropertiesColExtraHighLight3, GDIColorCalcLuminosity(Orig_Prof_ColorHValue, Prof_Luminosity));
-					BuildPreview(FRMPropertiesCodeMax);
-					GdiFlush();
-    				return(0);
-			}
-			break;
+                    Prof_Luminosity = TrackBarGetPos(FRMPropertiesColLuminosity);
+                    ColorBoxSetColor(FRMPropertiesColBackGround, GDIColorCalcLuminosity(Orig_Prof_BackColor, Prof_Luminosity));
+                    ColorBoxSetColor(FRMPropertiesColNormalText, GDIColorCalcLuminosity(Orig_Prof_NormText, Prof_Luminosity));
+                    ColorBoxSetColor(FRMPropertiesColHighlightText, GDIColorCalcLuminosity(Orig_Prof_HighText, Prof_Luminosity));
+                    ColorBoxSetColor(FRMPropertiesColMargin, GDIColorCalcLuminosity(Orig_Prof_MarginColor, Prof_Luminosity));
+                    ColorBoxSetColor(FRMPropertiesColLineNumber, GDIColorCalcLuminosity(Orig_Prof_LinesColor, Prof_Luminosity));
+                    ColorBoxSetColor(FRMPropertiesColNumber, GDIColorCalcLuminosity(Orig_Prof_NumbersColorValue, Prof_Luminosity));
+                    ColorBoxSetColor(FRMPropertiesColStrings, GDIColorCalcLuminosity(Orig_Prof_StringsColorValue, Prof_Luminosity));
+                    ColorBoxSetColor(FRMPropertiesColComments, GDIColorCalcLuminosity(Orig_Prof_CommentsColorValue, Prof_Luminosity));
+                    ColorBoxSetColor(FRMPropertiesColScopeKeywords, GDIColorCalcLuminosity(Orig_Prof_KeyWordsColorValue, Prof_Luminosity));
+                    ColorBoxSetColor(FRMPropertiesColAPIHighlighting, GDIColorCalcLuminosity(Orig_Prof_APIHighColor, Prof_Luminosity));
+                    ColorBoxSetColor(FRMPropertiesColKeywords, GDIColorCalcLuminosity(Orig_Prof_ColorAValue, Prof_Luminosity));
+                    ColorBoxSetColor(FRMPropertiesColSeparators, GDIColorCalcLuminosity(Orig_Prof_ColorBValue, Prof_Luminosity));
+                    ColorBoxSetColor(FRMPropertiesColDirectives, GDIColorCalcLuminosity(Orig_Prof_ColorCValue, Prof_Luminosity));
+                    ColorBoxSetColor(FRMPropertiesColRegisters, GDIColorCalcLuminosity(Orig_Prof_ColorDValue, Prof_Luminosity));
+                    ColorBoxSetColor(FRMPropertiesColExtraFunctions, GDIColorCalcLuminosity(Orig_Prof_ColorEValue, Prof_Luminosity));
+                    ColorBoxSetColor(FRMPropertiesColExtraHighLight1, GDIColorCalcLuminosity(Orig_Prof_ColorFValue, Prof_Luminosity));
+                    ColorBoxSetColor(FRMPropertiesColExtraHighLight2, GDIColorCalcLuminosity(Orig_Prof_ColorGValue, Prof_Luminosity));
+                    ColorBoxSetColor(FRMPropertiesColExtraHighLight3, GDIColorCalcLuminosity(Orig_Prof_ColorHValue, Prof_Luminosity));
+                    BuildPreview(FRMPropertiesCodeMax);
+                    GdiFlush();
+                    return(0);
+            }
+            break;
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
@@ -1855,10 +1855,10 @@ LRESULT CALLBACK FRMPropertiesFrameExtensions(HWND hWnd, UINT uMsg, WPARAM wPara
         case WM_COMMAND:
             if((HWND) lParam == FRMPropertiesLbFileExt)
             {
-				ControlSetText(FRMPropertiesTxtFileExt, ListBoxGetItem(FRMPropertiesLbFileExt, ListBoxGetSelItemIndex(FRMPropertiesLbFileExt)));
-				return(0);
+                ControlSetText(FRMPropertiesTxtFileExt, ListBoxGetItem(FRMPropertiesLbFileExt, ListBoxGetSelItemIndex(FRMPropertiesLbFileExt)));
+                return(0);
             } 
-			break;
+            break;
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
@@ -1867,9 +1867,9 @@ LRESULT CALLBACK FRMPropertiesFrameExtensions(HWND hWnd, UINT uMsg, WPARAM wPara
 // Init minima properties for codemax preview
 void FRMPropertiesInitCodeMax(HWND hwnd)
 {
-	CStr BufString;
+    CStr BufString;
     
-	CM_SetReadOnly(hwnd, 1);
+    CM_SetReadOnly(hwnd, 1);
     CM_ShowScrollBar(hwnd, 0, 1);
     CM_ShowScrollBar(hwnd, 1, 1);
     CM_EnableSplitter(hwnd, 0, 1);
@@ -1878,22 +1878,22 @@ void FRMPropertiesInitCodeMax(HWND hwnd)
     CM_EnableHideSel(hwnd, 0);
     CM_SetLanguage(hwnd, "Assembler");
     BufString = "WndProc proc hWin:DWORD,uMsg:DWORD,wParam:DWORD,lParam:DWORD\r\n";
-	BufString = BufString + "comment \\\r\n";
-	BufString = BufString + "  Save 50 bytes from WndProc with Snap\r\n";
-	BufString = BufString + "  Then exit.\r\n";
-	BufString = BufString + "\\\r\n";
-	BufString = BufString + "\t.if uMsg == WM_DESTROY\r\n";
-	BufString = BufString + "\t\tszText LogFile,\"d:\\test.dbg\"\r\n";
-	BufString = BufString + "\t\tinvoke SnapSaveFile,ADDR LogFile,ADDR WndProc,50\r\n";
-	BufString = BufString + "\t\tszText TheMsg,\"Assembler, Pure & Simple\"\r\n";
-	BufString = BufString + "\t\tinvoke MessageBox,hWin,ADDR TheMsg,ADDR szDisplayName,MB_OK\r\n";
-	BufString = BufString + "\t\txor eax,eax\r\n";
-	BufString = BufString + "\t\tinvoke PostQuitMessage,eax\r\n";
-	BufString = BufString + "\t\treturn 0\r\n";
-	BufString = BufString + "\t.endif\r\n";
-	BufString = BufString + "\tret\r\n";
-	BufString = BufString + "WndProc endp";
-	CM_SetText(hwnd,BufString.Get_String());
+    BufString = BufString + "comment \\\r\n";
+    BufString = BufString + "  Save 50 bytes from WndProc with Snap\r\n";
+    BufString = BufString + "  Then exit.\r\n";
+    BufString = BufString + "\\\r\n";
+    BufString = BufString + "\t.if uMsg == WM_DESTROY\r\n";
+    BufString = BufString + "\t\tszText LogFile,\"d:\\test.dbg\"\r\n";
+    BufString = BufString + "\t\tinvoke SnapSaveFile,ADDR LogFile,ADDR WndProc,50\r\n";
+    BufString = BufString + "\t\tszText TheMsg,\"Assembler, Pure & Simple\"\r\n";
+    BufString = BufString + "\t\tinvoke MessageBox,hWin,ADDR TheMsg,ADDR szDisplayName,MB_OK\r\n";
+    BufString = BufString + "\t\txor eax,eax\r\n";
+    BufString = BufString + "\t\tinvoke PostQuitMessage,eax\r\n";
+    BufString = BufString + "\t\treturn 0\r\n";
+    BufString = BufString + "\t.endif\r\n";
+    BufString = BufString + "\tret\r\n";
+    BufString = BufString + "WndProc endp";
+    CM_SetText(hwnd,BufString.Get_String());
 }
 
 // -----------------------------------------------------------------------
@@ -1909,14 +1909,14 @@ void BuildPreview(HWND hwnd)
     else CM_SetHighlightedLine(hwnd, -1);
     if(ControlGetText(FRMPropertiesTabulations).Len() == 0) CM_SetTabSize(hwnd, 8);
     else CM_SetTabSize(hwnd, ControlGetText(FRMPropertiesTabulations).Get_Long());
-	switch(CheckBoxGetState(FRMPropertiesChkLanguageScopeIndent))
-	{
+    switch(CheckBoxGetState(FRMPropertiesChkLanguageScopeIndent))
+    {
         case 0:
             CM_SetAutoIndentMode(hwnd, CM_INDENT_OFF);
-			break;
-		case 1:
+            break;
+        case 1:
             CM_SetAutoIndentMode(hwnd, CM_INDENT_SCOPE);
-			break;
+            break;
     }
     CM_EnableColorSyntax(hwnd, CheckBoxGetState(FRMPropertiesChkSyntaxHighlighting));
     CM_EnableLineToolTips(hwnd, CheckBoxGetState(FRMPropertiesChkLineNumberTooltip));
@@ -2001,72 +2001,72 @@ void FRMPropertiesChooseROOTDIR(HWND hwnd)
                 if(strcmp(NewROOTDIR.Right(1).Get_String(), "\\") == 0) NewROOTDIR = NewROOTDIR.Left(NewROOTDIR.Len() - 1);
                 if(FileExist(NewROOTDIR + (CStr) "\\bin\\win32"))
                 {
-					ControlSetText(FRMPropertiesTxtBINDIR, NewROOTDIR + (CStr) "\\bin\\win32");
+                    ControlSetText(FRMPropertiesTxtBINDIR, NewROOTDIR + (CStr) "\\bin\\win32");
                 }
                 else
                 {
-					if(FileExist(NewROOTDIR + (CStr) "\\bin"))
-					{
-						ControlSetText(FRMPropertiesTxtBINDIR, NewROOTDIR + (CStr) "\\bin");
-					}
-					else
-					{
-						ControlSetText(FRMPropertiesTxtBINDIR, "");
-					}
-				}
+                    if(FileExist(NewROOTDIR + (CStr) "\\bin"))
+                    {
+                        ControlSetText(FRMPropertiesTxtBINDIR, NewROOTDIR + (CStr) "\\bin");
+                    }
+                    else
+                    {
+                        ControlSetText(FRMPropertiesTxtBINDIR, "");
+                    }
+                }
                 if(FileExist(NewROOTDIR + (CStr) "\\include"))
                 {
-					ControlSetText(FRMPropertiesTxtINCLUDEDIR, NewROOTDIR + (CStr) "\\include");
+                    ControlSetText(FRMPropertiesTxtINCLUDEDIR, NewROOTDIR + (CStr) "\\include");
                 }
                 else
                 {
-					ControlSetText(FRMPropertiesTxtINCLUDEDIR, "");
-				}
-				if(FileExist(NewROOTDIR + (CStr) "\\lib"))
-				{
-					ControlSetText(FRMPropertiesTxtLIBDIR, NewROOTDIR + (CStr) "\\lib");
-				}
-				else
-				{
-					if(FileExist(NewROOTDIR + (CStr) "\\units\\win32\\rtl"))
-					{
-						ControlSetText(FRMPropertiesTxtLIBDIR, NewROOTDIR + (CStr) "\\units\\win32\\rtl");
-					}
-					else
-					{
-						if(FileExist(NewROOTDIR + (CStr) "\\units\\win32"))
-						{
-							ControlSetText(FRMPropertiesTxtLIBDIR, NewROOTDIR + (CStr) "\\units\\win32");
-						}
-						else
-						{
-							if(FileExist(NewROOTDIR + (CStr) "\\units"))
-							{
-								ControlSetText(FRMPropertiesTxtLIBDIR, NewROOTDIR + (CStr) "\\units");
-							}
-							else
-							{
-								ControlSetText(FRMPropertiesTxtLIBDIR, "");
-							}
-						}
-					}
-				}
-				if(FileExist(NewROOTDIR + (CStr) "\\help"))
-				{
-					ControlSetText(FRMPropertiesTxtHELPDIR, NewROOTDIR + (CStr) "\\help");
-				}
-				else
-				{
-					if(FileExist(NewROOTDIR + (CStr) "\\doc"))
-					{
-						ControlSetText(FRMPropertiesTxtHELPDIR, NewROOTDIR + (CStr) "\\doc");
-					}
-					else
-					{
-						ControlSetText(FRMPropertiesTxtHELPDIR, "");
-					}
-				}
-			}
+                    ControlSetText(FRMPropertiesTxtINCLUDEDIR, "");
+                }
+                if(FileExist(NewROOTDIR + (CStr) "\\lib"))
+                {
+                    ControlSetText(FRMPropertiesTxtLIBDIR, NewROOTDIR + (CStr) "\\lib");
+                }
+                else
+                {
+                    if(FileExist(NewROOTDIR + (CStr) "\\units\\win32\\rtl"))
+                    {
+                        ControlSetText(FRMPropertiesTxtLIBDIR, NewROOTDIR + (CStr) "\\units\\win32\\rtl");
+                    }
+                    else
+                    {
+                        if(FileExist(NewROOTDIR + (CStr) "\\units\\win32"))
+                        {
+                            ControlSetText(FRMPropertiesTxtLIBDIR, NewROOTDIR + (CStr) "\\units\\win32");
+                        }
+                        else
+                        {
+                            if(FileExist(NewROOTDIR + (CStr) "\\units"))
+                            {
+                                ControlSetText(FRMPropertiesTxtLIBDIR, NewROOTDIR + (CStr) "\\units");
+                            }
+                            else
+                            {
+                                ControlSetText(FRMPropertiesTxtLIBDIR, "");
+                            }
+                        }
+                    }
+                }
+                if(FileExist(NewROOTDIR + (CStr) "\\help"))
+                {
+                    ControlSetText(FRMPropertiesTxtHELPDIR, NewROOTDIR + (CStr) "\\help");
+                }
+                else
+                {
+                    if(FileExist(NewROOTDIR + (CStr) "\\doc"))
+                    {
+                        ControlSetText(FRMPropertiesTxtHELPDIR, NewROOTDIR + (CStr) "\\doc");
+                    }
+                    else
+                    {
+                        ControlSetText(FRMPropertiesTxtHELPDIR, "");
+                    }
+                }
+            }
         }
     }
 }
@@ -2084,7 +2084,7 @@ void LoadColorsProfile(CStr ProfileName)
     if(RetColProf.Len() == 0) goto ProfileCorrupted;
     Prof_BackColor = RetColProf.Get_Hex();
     Orig_Prof_BackColor = Prof_BackColor;
-	RetColProf = IniReadKey(ProfileName, "NormText", ColorsIniFile);
+    RetColProf = IniReadKey(ProfileName, "NormText", ColorsIniFile);
     if(RetColProf.Len() == 0) goto ProfileCorrupted;
     Prof_NormText = RetColProf.Get_Hex();
     Orig_Prof_NormText = Prof_NormText;
@@ -2175,9 +2175,9 @@ void LoadColorsProfile(CStr ProfileName)
     ColorBoxSetColor(FRMPropertiesColExtraHighLight2, Prof_ColorGValue);
     ColorBoxSetColor(FRMPropertiesColExtraHighLight3, Prof_ColorHValue);
     
-	// Reset slider
+    // Reset slider
     TrackBarSetPos(FRMPropertiesColLuminosity, 100);
-	CheckBoxSetState(FRMPropertiesChkItalic, Prof_ItalicComment);
+    CheckBoxSetState(FRMPropertiesChkItalic, Prof_ItalicComment);
     BuildPreview(FRMPropertiesCodeMax);
     return;
 ProfileCorrupted:
@@ -2193,7 +2193,7 @@ long SaveColorsProfile(CStr ProfileName)
     int i = 0;
     long NoReg = 0;
     CStr UProfName;
-	CStr BufString;
+    CStr BufString;
 
     ProfNameToRegister = StringReplace(ProfileName.Trim(), "\t", "", 1, -1, Binary_Compare);
     if(ProfNameToRegister.Len() == 0) return(0);
@@ -2223,8 +2223,8 @@ long SaveColorsProfile(CStr ProfileName)
         case 0:
             // Register name
             IniWriteKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), ProfNameToRegister, ColorsIniFile);
-			break;
-		case 2:
+            break;
+        case 2:
             return(1);
     }
     IniWriteKey(ProfNameToRegister, "BackColor", "0x" + (CStr) BufString.Hex_To_String(ColorBoxGetColor(FRMPropertiesColBackGround)).Get_String(), ColorsIniFile);
@@ -2250,7 +2250,7 @@ long SaveColorsProfile(CStr ProfileName)
     ControlSetText(FRMPropertiesCbColors, ProfNameToRegister);
     BufString = "Profile '" + (CStr) ProfNameToRegister + (CStr) "' saved.";
     MiscMsgBox(FRMPropertieshwnd, BufString, MB_INFORMATION, Requesters);
-	return(1);
+    return(1);
 }
 
 // -----------------------------------------------------------------------
@@ -2265,7 +2265,7 @@ void SetLines(HWND hWnd)
         LnSt = "0";
         ControlSetText(FRMPropertiesTxtLines, LnSt);
     }
-	SetCodeMaxLineStyle(hWnd, ComboBoxGetIndex(FRMPropertiesCbLines));
+    SetCodeMaxLineStyle(hWnd, ComboBoxGetIndex(FRMPropertiesCbLines));
 }
 
 // -----------------------------------------------------------------------
@@ -2282,15 +2282,15 @@ void FRMPropertiesSetItalicComments(HWND hwnd)
 {
     CM_FONTSTYLES PrevFontStyle;
     
-	memset(&PrevFontStyle, 0, sizeof(PrevFontStyle));
-	switch(CheckBoxGetState(FRMPropertiesChkItalic))
-	{
+    memset(&PrevFontStyle, 0, sizeof(PrevFontStyle));
+    switch(CheckBoxGetState(FRMPropertiesChkItalic))
+    {
         case 0:
             PrevFontStyle.byComment = CM_FONT_NORMAL;
-			break;
-		case 1:
+            break;
+        case 1:
             PrevFontStyle.byComment = CM_FONT_ITALIC;
-			break;
+            break;
     }
     PrevFontStyle.byKeyword = CM_FONT_NORMAL;
     PrevFontStyle.byLineNumber = CM_FONT_NORMAL;
@@ -2315,7 +2315,7 @@ void FRMPropertiesSetCodeMaxColors(HWND hwnd)
 {
     CM_COLORS PrevColsToSet;
 
-	memset(&PrevColsToSet, 0, sizeof(PrevColsToSet));
+    memset(&PrevColsToSet, 0, sizeof(PrevColsToSet));
     PrevColsToSet.crText = ColorBoxGetColor(FRMPropertiesColNormalText);
     PrevColsToSet.crTextBk = ColorBoxGetColor(FRMPropertiesColBackGround);
     PrevColsToSet.crBookmark = 0xDD7766;
@@ -2384,7 +2384,7 @@ void FRMPropertiesSelectBakDir(void)
 {
     CStr NewBakDir;
     
-	NewBakDir = ComDlgBrowseForFolder(FRMPropertieshwnd, "Select default .BAK directory...");
+    NewBakDir = ComDlgBrowseForFolder(FRMPropertieshwnd, "Select default .BAK directory...");
     if(NewBakDir.Len() != 0)
     {
         NewBakDir = ChangeAbsolutePaths(NewBakDir);
@@ -2407,10 +2407,10 @@ LRESULT CALLBACK FRMPropertiesFrameCodeMax(HWND hWnd, UINT uMsg, WPARAM wParam, 
                         LoadCurrentSel(FRMPropertiesCodeMax);
                         if(CodeMaxCurRange.posStart.nLine != (long) CM_GetHighlightedLine(FRMPropertiesCodeMax)) CM_SetHighlightedLine(FRMPropertiesCodeMax, CodeMaxCurRange.posStart.nLine);
                     }
-					break;
+                    break;
                 case CMN_VSCROLL:
                     FRMProPertiesConfineCaret();
-					break;
+                    break;
                 case CMN_SHOWPROPS:
                     return(1);
                 case CMN_REGISTEREDCMD:
@@ -2436,8 +2436,8 @@ LRESULT CALLBACK FRMPropertiesFrameManagment(HWND hWnd, UINT uMsg, WPARAM wParam
                     SetFocus(FRMPropertiesTxtIP);
                 }
                 return(0);
-			} 
-			break;
+            } 
+            break;
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
@@ -2511,17 +2511,17 @@ int CALLBACK EnumRefreshChilds(HWND hWnd, long lParam)
                 ChildStruct = LoadStructure(hWnd);
                 if(CMGetRealFile(ChildStruct->RFile).Len() != 0)
                 {
-					// hChildCodeMax can be null in case of a custom child
-					if(ChildStruct->hChildCodeMax != NULL)
-					{
-						SetCodeMaxColors(ChildStruct->hChildCodeMax);
-						if(ChildStruct->CodeMaxPropertiesHook != NULL)
-						{
-							// Run hook
-							ChildStruct->CodeMaxPropertiesHook(ChildStruct->hChildCodeMax);
-						}
-					}
-				}
+                    // hChildCodeMax can be null in case of a custom child
+                    if(ChildStruct->hChildCodeMax != NULL)
+                    {
+                        SetCodeMaxColors(ChildStruct->hChildCodeMax);
+                        if(ChildStruct->CodeMaxPropertiesHook != NULL)
+                        {
+                            // Run hook
+                            ChildStruct->CodeMaxPropertiesHook(ChildStruct->hChildCodeMax);
+                        }
+                    }
+                }
             }
         }
         return(1);
@@ -2569,15 +2569,15 @@ void FillFTPProps(void)
         {
             case 0:
                 ControlSetText(FRMPropertiesTxtPassword, "");
-				break;
-			case 1:
+                break;
+            case 1:
                 ControlSetText(FRMPropertiesTxtPassword, IniReadKey(AccountName, "FTPUserPass", FtpAccountsIniFile));
-				break;
+                break;
             case 2:
                 // Load password and decrypt it
                 DecryptedPass = IniReadKey(AccountName, "FTPUserPass", FtpAccountsIniFile);
                 ControlSetText(FRMPropertiesTxtPassword, DecryptPassword(DecryptedPass));
-				break;
+                break;
         }
     }
     else
@@ -2597,11 +2597,11 @@ void FillFTPProps(void)
             case 1:
                 RadioButtonSetState(FRMPropertiesRBASCII, 1);
                 RadioButtonSetState(FRMPropertiesRBBinary, 0);
-				break;
-			case 2:
+                break;
+            case 2:
                 RadioButtonSetState(FRMPropertiesRBBinary, 1);
                 RadioButtonSetState(FRMPropertiesRBASCII, 0);
-				break;
+                break;
         }
     }
     else
@@ -2649,13 +2649,13 @@ void SetAnonymousState(long DontFocus)
             ControlEnable(FRMPropertiesTxtPassword, 1);
             ControlEnable(FRMPropertiesCbPasswordType, 1);
             if(DontFocus == 0) SetFocus(FRMPropertiesTxtUserName);
-			break;
+            break;
         case 1:
             ControlEnable(FRMPropertiesTxtUserName, 0);
             ControlEnable(FRMPropertiesTxtPassword, 0);
             ControlEnable(FRMPropertiesCbPasswordType, 0);
-			break;
-	}
+            break;
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -2666,7 +2666,7 @@ void SaveFTPProps(void)
     CStr AccountName;
     CStr BufString;
     
-	AccountName = ControlGetText(FRMPropertiesCbAccounts);
+    AccountName = ControlGetText(FRMPropertiesCbAccounts);
     if(AccountName.Len() == 0) return;
     // Search account key
     for(i = 0; i <= 999; i++)
@@ -2685,13 +2685,13 @@ void SaveFTPProps(void)
     {
         case 0:
             IniWriteKey(AccountName, "FTPUserPass", "", FtpAccountsIniFile);
-			break;
-		case 1:
+            break;
+        case 1:
             IniWriteKey(AccountName, "FTPUserPass", ControlGetText(FRMPropertiesTxtPassword), FtpAccountsIniFile);
-			break;
+            break;
         case 2:
             IniWriteKey(AccountName, "FTPUserPass", CryptPassword(ControlGetText(FRMPropertiesTxtPassword)), FtpAccountsIniFile);
-			break;
+            break;
     }
     IniWriteKey(AccountName, "FTPSavePass ", ComboBoxGetIndex(FRMPropertiesCbPasswordType), FtpAccountsIniFile);
     IniWriteKey(AccountName, "FTPPath", ControlGetText(FRMPropertiesTxtInitialPath), FtpAccountsIniFile);
@@ -2701,13 +2701,13 @@ void SaveFTPProps(void)
     {
         case 1:
             IniWriteKey(AccountName, "FTPTransfersType", "1", FtpAccountsIniFile);
-			break;
-	}
+            break;
+    }
     switch(RadioButtonGetState(FRMPropertiesRBBinary))
     {
         case 1:
             IniWriteKey(AccountName, "FTPTransfersType", "2", FtpAccountsIniFile);
-			break;
+            break;
     }
     IniWriteKey(AccountName, "FTPPassive", CheckBoxGetState(FRMPropertiesChkPassive), FtpAccountsIniFile);
     BufString = "FTP account '" + (CStr) AccountName + (CStr) "' updated.",
@@ -2766,8 +2766,8 @@ void FRMPropertiesChangeCurrentTab(void)
             ControlBringToTop(FRMPropertiesTbBackup);
             ControlBringToTop(FRMPropertiesTbFileExt);
             ControlBringToTop(FRMPropertiesPageEditor);
-			break;
-		case 1:
+            break;
+        case 1:
             ControlVisible(FRMPropertiesPageEditor, 0);
             ControlVisible(FRMPropertiesPageFileExtensions, 0);
             ControlVisible(FRMPropertiesTbFileExt, 0);
@@ -2812,8 +2812,8 @@ void FRMPropertiesChangeCurrentTab(void)
             ControlVisible(FRMPropertiesPageExtrasLayouts, 1);
             ControlVisible(FRMPropertiesCmdRegs, 1);
             ControlBringToTop(FRMPropertiesTbColors);
-			break;
-		case 2:
+            break;
+        case 2:
             ControlVisible(FRMPropertiesPageEditor, 0);
             ControlVisible(FRMPropertiesPageFileExtensions, 0);
             ControlVisible(FRMPropertiesTbFileExt, 0);
@@ -2863,8 +2863,8 @@ void FRMPropertiesChangeCurrentTab(void)
             ControlBringToTop(FRMPropertiesTbHELPDIR);
             ControlBringToTop(FRMPropertiesTbPROJECTSDIR);
             ControlBringToTop(FRMPropertiesTbValidDebugger);
-			break;
-		case 3:
+            break;
+        case 3:
             ControlVisible(FRMPropertiesPageEditor, 0);
             ControlVisible(FRMPropertiesPageFileExtensions, 0);
             ControlVisible(FRMPropertiesTbFileExt, 0);
@@ -2908,8 +2908,8 @@ void FRMPropertiesChangeCurrentTab(void)
             ControlVisible(FRMPropertiesPageAccountInfos, 1);
             ControlVisible(FRMPropertiesPageTransfersTypes, 1);
             ControlBringToTop(FRMPropertiesTbAccounts);
-			break;
-		case 4:
+            break;
+        case 4:
             ControlVisible(FRMPropertiesPageEditor, 0);
             ControlVisible(FRMPropertiesPageFileExtensions, 0);
             ControlVisible(FRMPropertiesTbFileExt, 0);
@@ -2991,7 +2991,7 @@ void Fillskins(void)
     CStr SkinToAdd;
     long SelectedIdx = 0;
     
-	PrgSkinArray.Erase();
+    PrgSkinArray.Erase();
     PrfCurrentSkin = IniReadKey("BuildSkins", "CurrentSkin", SkinsIniFile);
     PrfCurrentSkin = ChangeRelativePaths(PrfCurrentSkin);
     for(i = 0; i <= 999; i++)
@@ -3036,7 +3036,7 @@ void FillCurrentSkin(void)
     {
         Skinelement = IniReadKey("TEMPHEADER", "Opt" + (CStr) StringNumberComplement(i, 3).Get_String(), PrfCurrentSkin);
         if(Skinelement.Len() == 0) break;
-		BufString = Skinelement.Left(5).Upper_Case();
+        BufString = Skinelement.Left(5).Upper_Case();
         if(BufString == "COMBO")
         {
             ElementName = IniReadKey(Skinelement, "Name", PrfCurrentSkin);
@@ -3092,7 +3092,7 @@ void FillCurrentSkin(void)
                         ElementhWnd = CreateRadioButton(StringGetSplitElement(ElementCoords, ElementArray, 0).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 1).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 2).Get_Long(), StringGetSplitElement(ElementCoords, ElementArray, 3).Get_Long(), ElementFrame, ElementName, ctId, 0, WS_TABSTOP | FirstRadio);
                         StringReleaseSplit(ElementArray);
                         BufString = Skinelement + (CStr) j;
-						PrgSkinControlsDest.Add(BufString.Get_String());
+                        PrgSkinControlsDest.Add(BufString.Get_String());
                         PrgSkinControls.Add(ElementhWnd);
                         ctId++;
                         ElementSelected = IniReadKey("CURRENT", Skinelement, PrfCurrentSkin);
@@ -3207,7 +3207,7 @@ LRESULT CALLBACK FRMPropertiesFrameBuilding(HWND hWnd, UINT uMsg, WPARAM wParam,
                     return(0);
                 }
             }
-			break;
+            break;
         case WM_NOTIFY:
             if(ControlGetNotifiedhWnd(lParam) == FRMStepListView)
             {
@@ -3236,8 +3236,8 @@ LRESULT CALLBACK FRMPropertiesFrameBuilding(HWND hWnd, UINT uMsg, WPARAM wParam,
                         }
                 }
             }
-			break;
-		case WM_ERASEBKGND:
+            break;
+        case WM_ERASEBKGND:
             GDIDrawHorzSep(hWnd, 2, 129, 238);
             return(0);
     }
@@ -3269,7 +3269,7 @@ void FillDefLanguage(void)
     int i = 0;
 
     OldDefault = IniReadKey("RefLanguages", "DefLang", LanguagesIniFile);
-	ComboBoxAddItem(FRMPropertiesCbDefLang, "(None)", -1);
+    ComboBoxAddItem(FRMPropertiesCbDefLang, "(None)", -1);
     for(i = 0; i <= 999; i++)
     {
         FRMPropertiesRetVal = IniReadKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(i, 3).Get_String(), LanguagesIniFile);

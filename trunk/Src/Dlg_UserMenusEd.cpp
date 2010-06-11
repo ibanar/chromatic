@@ -123,8 +123,8 @@ int CALLBACK FRMUserMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
     CStr BufString;
     CStr MsgBoxStr;
 
-	switch(uMsg)
-	{
+    switch(uMsg)
+    {
         case WM_INITDIALOG:
             FRMUserMenushwnd = hwndDlg;
             CurrentMenusFileName = UserMenusIniFile;
@@ -172,11 +172,11 @@ int CALLBACK FRMUserMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
             BeginPaint(hwndDlg, &EnterValuePs);
             GDIDrawHorzSep(hwndDlg, 0, 333, 530);
             EndPaint(hwndDlg, &EnterValuePs);
-			break;
+            break;
         case WM_SIZE:
             ListBoxSetHorzScrollWidth(FRMUserMenusListbox, ControlWidth(FRMUserMenusListbox) * 2);
-			break;
-		case WM_COMMAND:
+            break;
+        case WM_COMMAND:
             if((HWND) lParam == FRMUserMenusListbox)
             {
                 if(ControlGetNotifiedCommand(wParam) == LBN_SELCHANGE)
@@ -214,45 +214,45 @@ int CALLBACK FRMUserMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
                                 }
                                 else
                                 {
-									BufString = ControlGetText(FRMUserMenusTxtDat).Upper_Case();
+                                    BufString = ControlGetText(FRMUserMenusTxtDat).Upper_Case();
                                     BufString = BufString.Left(5);
-									if(BufString == "CAPT ")
-									{
+                                    if(BufString == "CAPT ")
+                                    {
                                         ComboBoxSetIndex(FRMUserMenusCbRunType, 2);
                                         ControlSetText(FRMUserMenusTxtDat, ControlGetText(FRMUserMenusTxtDat).Mid(6));
-									}
-									else if(BufString == "PLUG ")
-									{
+                                    }
+                                    else if(BufString == "PLUG ")
+                                    {
                                         ComboBoxSetIndex(FRMUserMenusCbRunType, 3);
                                         ControlSetText(FRMUserMenusTxtDat, ControlGetText(FRMUserMenusTxtDat).Mid(6));
-									}
-									else if(BufString == "SNAP ")
-									{
+                                    }
+                                    else if(BufString == "SNAP ")
+                                    {
                                         ComboBoxSetIndex(FRMUserMenusCbRunType, 4);
                                         ControlSetText(FRMUserMenusTxtDat, ControlGetText(FRMUserMenusTxtDat).Mid(6));
-									}
-									else if(BufString == "HTML ")
-									{
+                                    }
+                                    else if(BufString == "HTML ")
+                                    {
                                         ComboBoxSetIndex(FRMUserMenusCbRunType, 5);
                                         ControlSetText(FRMUserMenusTxtDat, ControlGetText(FRMUserMenusTxtDat).Mid(6));
-									}
-									else if(BufString == "DOCU ")
-									{
+                                    }
+                                    else if(BufString == "DOCU ")
+                                    {
                                         ComboBoxSetIndex(FRMUserMenusCbRunType, 6);
                                         ControlSetText(FRMUserMenusTxtDat, ControlGetText(FRMUserMenusTxtDat).Mid(6));
-									}
-									else if(BufString == "PREP ")
-									{
+                                    }
+                                    else if(BufString == "PREP ")
+                                    {
                                         ComboBoxSetIndex(FRMUserMenusCbRunType, 7);
                                         ControlSetText(FRMUserMenusTxtDat, ControlGetText(FRMUserMenusTxtDat).Mid(6));
-									}
-									else if(BufString == "LUAS ")
-									{
+                                    }
+                                    else if(BufString == "LUAS ")
+                                    {
                                         ComboBoxSetIndex(FRMUserMenusCbRunType, 8);
                                         ControlSetText(FRMUserMenusTxtDat, ControlGetText(FRMUserMenusTxtDat).Mid(6));
-									}
-									else
-									{
+                                    }
+                                    else
+                                    {
                                         ComboBoxSetIndex(FRMUserMenusCbRunType, 0);
                                     }
                                 }
@@ -382,10 +382,10 @@ int CALLBACK FRMUserMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
             else if((HWND) lParam == FRMUserMenusTbOpen)
             {
                 if((HWND) wParam == FRMUserMenusBUTTONOPEN) {
-					FRMUserMenusSelFile();
+                    FRMUserMenusSelFile();
                 }
                 return(0);
-			}
+            }
             switch(wParam)
             {
                 case (USRM_DEL + USRM_IDBASE):
@@ -398,7 +398,7 @@ int CALLBACK FRMUserMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
                     ListBoxSelItemDown(FRMUserMenusListbox);
                     return(0);
             }
-			break;
+            break;
         case WM_NOTIFY:
             switch(ControlGetNotifiedMsg(lParam))
             {
@@ -410,16 +410,16 @@ int CALLBACK FRMUserMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
                             return(0);
                     }
             }
-			break;
+            break;
         case WM_CLOSE:
             if(hUsrMenu != 0) DestroyMenu(hUsrMenu);
             FreezeTimer = 0;
             EndDialog(hwndDlg, 0);
-			break;
-		default:
+            break;
+        default:
             ListBoxProcessDrag(FRMUserMenusListbox, uMsg, lParam, CURSOR_DRAG + CURSOR_BASE);
-			break;
-	}
+            break;
+    }
     return(0);
 }
 
@@ -453,8 +453,8 @@ LRESULT CALLBACK FRMUserMenusLsbProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
             }
             // Delete
             if(wParam == 46) ListBoxSelItemRemove(FRMUserMenusListbox);
-			break;
-		case WM_RBUTTONDOWN:
+            break;
+        case WM_RBUTTONDOWN:
             ItemToSelect = ListBoxItemUnderCursor(hWnd);
             if(ItemToSelect != -1) ListBoxSetIndex(hWnd, ItemToSelect);
             return(0);
@@ -493,15 +493,15 @@ void FRMUserMenusListboxReplace(void)
     long OldIdx = 0;
     CStr BufString;
     
-	if(ListBoxCount(FRMUserMenusListbox) == 0) return;
+    if(ListBoxCount(FRMUserMenusListbox) == 0) return;
     // Replace menu name
     if(strcmp(ListBoxGetCurrentItem(FRMUserMenusListbox).Left(1).Get_String(), "[") == 0)
     {
         for(i = 0; i <= (long) ListBoxCount(FRMUserMenusListbox) - 1; i++)
         {
             BufString = "[" + (CStr) ControlGetText(FRMUserMenusTxtDescription) + (CStr) "]";
-			if(strcmpi(ListBoxGetItem(FRMUserMenusListbox, i).Get_String(), BufString.Get_String()) == 0)
-			{
+            if(strcmpi(ListBoxGetItem(FRMUserMenusListbox, i).Get_String(), BufString.Get_String()) == 0)
+            {
                 MiscMsgBox(FRMUserMenushwnd, "Menu already exists in list.", MB_ERROR, Requesters);
                 SetFocus(FRMUserMenusTxtDescription);
                 return;
@@ -512,7 +512,7 @@ void FRMUserMenusListboxReplace(void)
         ListBoxReplaceSelItem(FRMUserMenusListbox, "[" + (CStr) ControlGetText(FRMUserMenusTxtDescription).Trim() + (CStr) "]");
         ListBoxSetIndex(FRMUserMenusListbox, OldIdx);
         SetFocus(FRMUserMenusListbox);
-		return;
+        return;
     }
     if(ControlGetText(FRMUserMenusTxtDescription).Len() == 0)
     {
@@ -538,34 +538,34 @@ void FRMUserMenusListboxReplace(void)
     switch(ComboBoxGetIndex(FRMUserMenusCbRunType))
     {
         case 0:
-			break;
-	    case 1:
+            break;
+        case 1:
             CmdToReplace = CmdToReplace + (CStr) " | HELP";
-			break;
+            break;
         case 2:
             CmdToReplace = "CAPT " + (CStr) CmdToReplace;
-			break;
+            break;
         case 3:
             CmdToReplace = "PLUG " + (CStr) CmdToReplace;
-			break;
+            break;
         case 4:
             CmdToReplace = "SNAP " + (CStr) CmdToReplace;
-			break;
+            break;
         case 5:
             CmdToReplace = "HTML " + (CStr) CmdToReplace;
-			break;
+            break;
         case 6:
             CmdToReplace = "DOCU " + (CStr) CmdToReplace;
-			break;
+            break;
         case 7:
             CmdToReplace = "PREP " + (CStr) CmdToReplace;
-			break;
+            break;
         case 8:
             CmdToReplace = "LUAS " + (CStr) CmdToReplace;
-			break;
+            break;
     }
-	BufString = ControlGetText(FRMUserMenusTxtDescription);
-	BufString = BufString + (CStr) " | " + (CStr) CmdToReplace;
+    BufString = ControlGetText(FRMUserMenusTxtDescription);
+    BufString = BufString + (CStr) " | " + (CStr) CmdToReplace;
     CmdToRep = "..." + (CStr) BufString.Trim().Get_String();
     ListBoxReplaceSelItem(FRMUserMenusListbox, CmdToRep);
     ListBoxSetIndex(FRMUserMenusListbox, OldIdx);
@@ -605,35 +605,35 @@ void FRMUserMenusListboxAddCmd(void)
     switch(ComboBoxGetIndex(FRMUserMenusCbRunType))
     {
         case 0:
-			break;
+            break;
         case 1:
             CmdToReplace = CmdToReplace + " | HELP";
-			break;
+            break;
         case 2:
             CmdToReplace = "CAPT " + CmdToReplace;
-			break;
+            break;
         case 3:
             CmdToReplace = "PLUG " + CmdToReplace;
-			break;
+            break;
         case 4:
             CmdToReplace = "SNAP " + CmdToReplace;
-			break;
+            break;
         case 5:
             CmdToReplace = "HTML " + CmdToReplace;
-			break;
+            break;
         case 6:
             CmdToReplace = "DOCU " + CmdToReplace;
-			break;
+            break;
         case 7:
             CmdToReplace = "PREP " + CmdToReplace;
-			break;
+            break;
         case 8:
             CmdToReplace = "LUAS " + CmdToReplace;
-			break;
-	}
-	BufString = ControlGetText(FRMUserMenusTxtDescription);
+            break;
+    }
+    BufString = ControlGetText(FRMUserMenusTxtDescription);
     BufString = BufString + (CStr) " | " + (CStr) CmdToReplace;
-	CmdToReplace = "..." + (CStr) BufString.Trim().Get_String();
+    CmdToReplace = "..." + (CStr) BufString.Trim().Get_String();
     OldIdx = ListBoxGetSelItemIndex(FRMUserMenusListbox);
     ListBoxAddItem(FRMUserMenusListbox, CmdToReplace, ListBoxGetSelItemIndex(FRMUserMenusListbox));
     if(OldIdx == -1) OldIdx = 0;
@@ -663,18 +663,18 @@ void FRMUserMenusListboxAddMenu(void)
     }
     for(i = 0; i <= (long) ListBoxCount(FRMUserMenusListbox) - 1; i++)
     {
-		BufString = "[" + (CStr) ControlGetText(FRMUserMenusTxtDescription).Get_String() + (CStr) "]";
+        BufString = "[" + (CStr) ControlGetText(FRMUserMenusTxtDescription).Get_String() + (CStr) "]";
         if(strcmpi(ListBoxGetItem(FRMUserMenusListbox, i).Get_String(), BufString.Get_String()) == 0)
         {
             MiscMsgBox(FRMUserMenushwnd, "Menu already exists in list.", MB_ERROR, Requesters);
             SetFocus(FRMUserMenusTxtDescription);
             return;
-		}
-	}
+        }
+    }
     ControlSetText(FRMUserMenusTxtDat, "");
     OldIdx = ListBoxGetSelItemIndex(FRMUserMenusListbox);
     BufString = ControlGetText(FRMUserMenusTxtDescription).Trim();
-	ListBoxAddItem(FRMUserMenusListbox, "[" + (CStr) BufString.Get_String() + (CStr) "]", ListBoxGetSelItemIndex(FRMUserMenusListbox));
+    ListBoxAddItem(FRMUserMenusListbox, "[" + (CStr) BufString.Get_String() + (CStr) "]", ListBoxGetSelItemIndex(FRMUserMenusListbox));
     if(OldIdx == -1) OldIdx = 0;
     ListBoxSetIndex(FRMUserMenusListbox, OldIdx);
     SetFocus(FRMUserMenusListbox);
@@ -713,7 +713,7 @@ long FRMUserMenusValidate(void)
     CStr MName;
     long PosJ = 0;
     CList <char *> TempOldMenus;
-	CStr BufString;
+    CStr BufString;
 
     if(ListBoxCount(FRMUserMenusListbox) != 0)
     {
@@ -743,8 +743,8 @@ long FRMUserMenusValidate(void)
             // Menu entry
             if(strcmp(CurEntr.Left(1).Get_String(), "[") == 0)
             {
-				BufString = CurEntr.Mid(2, CurEntr.Len() - 2);
-				// Create an empty slot for menus elements
+                BufString = CurEntr.Mid(2, CurEntr.Len() - 2);
+                // Create an empty slot for menus elements
                 NewMenusNbr.Add(0L);
                 NewMenus.Add(BufString.Get_String());
                 NbMenus++;
@@ -758,7 +758,7 @@ long FRMUserMenusValidate(void)
                     NewMenusDetails.Add("-");
                     NbCmd++;
                     NbCmd2++;
-					NewMenusNbr.Set(NbMenus - 1, NbCmd2);
+                    NewMenusNbr.Set(NbMenus - 1, NbCmd2);
                 }
                 else
                 {
@@ -766,13 +766,13 @@ long FRMUserMenusValidate(void)
                     CurEntr2 = CurEntr.Trim();
                     ArCur = StringSplit(CurEntr2, " | ");
                     DemEntr2 = StringReplace(StringGetSplitElement(CurEntr2, ArCur, 1), " ", "$", 1, -1, Binary_Compare);
-					BufString = StringGetSplitElement(CurEntr2, ArCur, 0).Mid(4) + (CStr) " | " + (CStr) DemEntr2;
+                    BufString = StringGetSplitElement(CurEntr2, ArCur, 0).Mid(4) + (CStr) " | " + (CStr) DemEntr2;
                     if(StringGetSplitUBound(ArCur) == 2) BufString = BufString + " | HELP";
-					NewMenusDetails.Add(BufString.Get_String());
+                    NewMenusDetails.Add(BufString.Get_String());
                     StringReleaseSplit(ArCur);
                     NbCmd++;
                     NbCmd2++;
-					NewMenusNbr.Set(NbMenus - 1, NbCmd2);
+                    NewMenusNbr.Set(NbMenus - 1, NbCmd2);
                 }
             }
         }
@@ -828,7 +828,7 @@ void SetTempUserArray(void)
     TempMenusLbl.Erase();
     for(i = 0; i < MenusCmdsComments.Amount(); i++)
     {
-		TempMenusCommands.Add(MenusCmdsComments.Get(i)->Content);
+        TempMenusCommands.Add(MenusCmdsComments.Get(i)->Content);
         TempMenusLbl.Add(MenusCmdsLbl.Get(i)->Content);
     }
 }
@@ -993,7 +993,7 @@ int CALLBACK FRMMenusClearProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
     {
         case WM_SYSCOLORCHANGE:
             ListViewSetBackColor(FRMMenusListview, GetSysColor(COLOR_WINDOW));
-			break;
+            break;
         case WM_INITDIALOG:
             ControlSetText(hwndDlg, "Select menus to erase");
             FRMMenusClCmdClear = CreateButton(224, 1, 77, 23, hwndDlg, "Erase", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_GROUP, Buttons_StaticEdge);
@@ -1020,7 +1020,7 @@ int CALLBACK FRMMenusClearProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                         return(0);
                 }
             }
-			break;
+            break;
         case WM_COMMAND:
             if((HWND) lParam == FRMMenusClCmdSelAll)
             {
@@ -1060,7 +1060,7 @@ int CALLBACK FRMMenusClearProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                 ControlClose(hwndDlg);
                 return(0);
             }
-			break;
+            break;
         case WM_CLOSE:
             EndDialog(hwndDlg, 0);
     }
@@ -1085,7 +1085,7 @@ long FillMenusArray(void)
         if(strcmp(CurEntr.Left(1).Get_String(), "[") == 0)
         {
             BufString = CurEntr.Mid(2, CurEntr.Len() - 2);
-			ClearMenusArray.Add(BufString.Get_String());
+            ClearMenusArray.Add(BufString.Get_String());
             ClearMenusArrayBeg.Add(i);
             ClearMenusArrayEnd.Add(0L);
             ReturnValue++;
@@ -1199,10 +1199,10 @@ void SaveUserMenus(CStr FileToSave)
     CList <int> SaveNewMenusNbr;
     CList <char *> SaveNewMenusDetails;
     CStr BufString;
-	HANDLE MenusFileHandle;
+    HANDLE MenusFileHandle;
 
-	if(ListBoxCount(FRMUserMenusListbox) != 0)
-	{
+    if(ListBoxCount(FRMUserMenusListbox) != 0)
+    {
         if(strcmp(ListBoxGetItem(FRMUserMenusListbox, 0).Left(1).Get_String(), "[") != 0)
         {
             MiscMsgBox(FRMUserMenushwnd, "First entry must be a menu name.", MB_ERROR, Requesters);
@@ -1228,8 +1228,8 @@ void SaveUserMenus(CStr FileToSave)
             // Menu entry
             if(strcmp(CurEntr.Left(1).Get_String(), "[") == 0)
             {
-				BufString = CurEntr.Mid(2, CurEntr.Len() - 2);
-	            SaveNewMenus.Add(BufString.Get_String());
+                BufString = CurEntr.Mid(2, CurEntr.Len() - 2);
+                SaveNewMenus.Add(BufString.Get_String());
                 SaveNewMenusNbr.Add(0);
                 NbMenus++;
                 NbCmd2 = 0;
@@ -1251,9 +1251,9 @@ void SaveUserMenus(CStr FileToSave)
                     ArCur = StringSplit(CurEntr2, " | ");
                     DemEntr2 = StringReplace(StringGetSplitElement(CurEntr2, ArCur, 1), " ", "$", 1, -1, Binary_Compare);
                     BufString = StringGetSplitElement(CurEntr2, ArCur, 0);
-					BufString = BufString.Mid(4) + (CStr) " | " + (CStr) DemEntr2;
+                    BufString = BufString.Mid(4) + (CStr) " | " + (CStr) DemEntr2;
                     if(StringGetSplitUBound(ArCur) == 2) BufString = BufString + " | HELP";
-					SaveNewMenusDetails.Add(BufString.Get_String());
+                    SaveNewMenusDetails.Add(BufString.Get_String());
                     StringReleaseSplit(ArCur);
                     NbCmd++;
                     NbCmd2++;
@@ -1289,7 +1289,7 @@ void SaveUserMenus(CStr FileToSave)
     }
     SetCurrentMenusWinTitle(CurrentMenusFileName);
 
-	SaveNewMenus.Erase();
-	SaveNewMenusDetails.Erase();
-	SaveNewMenusNbr.Erase();
+    SaveNewMenus.Erase();
+    SaveNewMenusDetails.Erase();
+    SaveNewMenusNbr.Erase();
 }

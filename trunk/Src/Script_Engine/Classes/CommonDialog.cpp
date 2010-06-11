@@ -104,12 +104,12 @@ int GetOpenFileName(lua_State *L)
             // In case of multi selection, we return an array
             lua_newtable(L);
             for(i = 0; i <= StringGetSplitUBound(FilesArray); i++)
-	        {
+            {
                 TempRet = StringReplace(StringGetSplitElement(Ret, FilesArray, i), Ret.Chr(2), " ", 1, -1, Binary_Compare);
                 
-		        lua_pushstring(L, StringCStrConvertToString(TempRet));
-		        lua_rawseti(L, -2, i);
-	        }
+                lua_pushstring(L, StringCStrConvertToString(TempRet));
+                lua_rawseti(L, -2, i);
+            }
         }
     }
     else

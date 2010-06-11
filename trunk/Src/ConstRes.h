@@ -174,7 +174,7 @@
 #define ICON_STEPOVER 131
 #define ICON_STEPOUT 132
 #define ICON_ADDCONST 133
-#define ICON_STATUSBAR 134			// Imported
+#define ICON_STATUSBAR 134          // Imported
 #define ICON_LOWERCASE 135
 #define ICON_UPPERCASE 136
 #define ICON_REPLACECONST 137

@@ -66,7 +66,7 @@ int CALLBACK FRMMissingFiles(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
     {
         case WM_SYSCOLORCHANGE:
             ListViewSetBackColor(FRMMissingFilesListview, GetSysColor(COLOR_WINDOW));
-			break;
+            break;
         case WM_INITDIALOG:
             FRMMissingFileshwnd = hwndDlg;
             ControlSetText(hwndDlg, "Missing files");
@@ -93,26 +93,26 @@ int CALLBACK FRMMissingFiles(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             }
             else if((HWND) lParam == FRMMissingFilesCmdToFile)
             {
-				NewMissingFilesSave();
+                NewMissingFilesSave();
                 return(0);
             }
             else if((HWND) lParam == FRMMissingFilesCmdToDoc)
             {
-				NewMissingFilesDoc();
+                NewMissingFilesDoc();
                 return(0);
             }
             else if((HWND) lParam == FRMMissingFilesCmdBrowse)
             {
-				ReplaceMissingFile(hwndDlg);
+                ReplaceMissingFile(hwndDlg);
                 return(0);
             }
-			break;
+            break;
         case WM_CLOSE:
             ProjectModified = TRUE;
             FreezeTimer = 0;
             EndDialog(hwndDlg, 0);
-			break;
-	}
+            break;
+    }
     return(0);
 }
 
@@ -143,29 +143,29 @@ long FillMissingFilesList(HDC hDC)
 // Save results into a file
 void NewMissingFilesSave(void)
 {
-	CStr TextToAdd;
+    CStr TextToAdd;
     CStr FileName;
     CStr Filters;
     CStr FName;
-	int i;
+    int i;
 
-	Filters = "All files (*.*)|*.*";
+    Filters = "All files (*.*)|*.*";
     FName = ComDlgGetSaveFileName(FRMMissingFileshwnd, Filters, "", CurrentDir);
     if(FName.Len() != 0)
     {
-		TextToAdd = "Missing files for project: " + ProjectFName;
-		TextToAdd = TextToAdd + (CStr) "\r\n" + (CStr) TextToAdd.String(TextToAdd.Len(),'-').Get_String() + (CStr) "\r\n\r\n";
-		for(i = 0; i < PossibleMissingFiles.Amount(); i++)
-		{
-			FileName = PossibleMissingFiles.Get(i)->Content;
-			TextToAdd = TextToAdd + FileName + (CStr) "\r\n";
-		}
-		if(MSaveFile(FName.Get_String(), (long) TextToAdd.Get_String(), TextToAdd.Len()) == 0)
-		{
+        TextToAdd = "Missing files for project: " + ProjectFName;
+        TextToAdd = TextToAdd + (CStr) "\r\n" + (CStr) TextToAdd.String(TextToAdd.Len(),'-').Get_String() + (CStr) "\r\n\r\n";
+        for(i = 0; i < PossibleMissingFiles.Amount(); i++)
+        {
+            FileName = PossibleMissingFiles.Get(i)->Content;
+            TextToAdd = TextToAdd + FileName + (CStr) "\r\n";
+        }
+        if(MSaveFile(FName.Get_String(), (long) TextToAdd.Get_String(), TextToAdd.Len()) == 0)
+        {
             MiscMsgBox(FRMMissingFileshwnd, "Error in saving file: '" + (CStr) FName + (CStr) "'.", MB_ERROR, Requesters);
-		}
-		else
-		{
+        }
+        else
+        {
             MiscMsgBox(FRMMissingFileshwnd, "Results saved as '" + (CStr) FName + (CStr) "'.", MB_INFORMATION, Requesters);
         }
     }
@@ -176,26 +176,26 @@ void NewMissingFilesSave(void)
 // Create a new window with results
 void NewMissingFilesDoc(void)
 {
-	HWND NewChildHandle;
-	CStr TextToAdd;
+    HWND NewChildHandle;
+    CStr TextToAdd;
     CStr FileName;
-	int i;
+    int i;
 
     StoreLanguageToOpen("");
     NewChildHandle = CreateNewFile("Missing files.txt");
     if(NewChildHandle == 0)
     {
-		MiscMsgBox(FRMMissingFileshwnd, "Can't create new window.", MB_ERROR, Requesters);
-		return;
-	}
+        MiscMsgBox(FRMMissingFileshwnd, "Can't create new window.", MB_ERROR, Requesters);
+        return;
+    }
     ForceChildFile(NewChildHandle);
-	TextToAdd = "Missing files for project: " + ProjectFName;
-	TextToAdd = TextToAdd + (CStr) "\r\n" + (CStr) TextToAdd.String(TextToAdd.Len(), '-').Get_String() + (CStr) "\r\n\r\n";
+    TextToAdd = "Missing files for project: " + ProjectFName;
+    TextToAdd = TextToAdd + (CStr) "\r\n" + (CStr) TextToAdd.String(TextToAdd.Len(), '-').Get_String() + (CStr) "\r\n\r\n";
     for(i = 0; i < PossibleMissingFiles.Amount(); i++)
     {
-		FileName = PossibleMissingFiles.Get(i)->Content;
-		TextToAdd = TextToAdd + FileName + (CStr) "\r\n";
-	}
+        FileName = PossibleMissingFiles.Get(i)->Content;
+        TextToAdd = TextToAdd + FileName + (CStr) "\r\n";
+    }
     SendTextToChild(NewChildHandle, TextToAdd);
     return;
 }
@@ -204,114 +204,114 @@ void NewMissingFilesDoc(void)
 // Replace selected listbox entry with selected file
 void ReplaceMissingFile(HWND hWnd)
 {
-	CStr ItemToReplace;
-	CStr LdFile;
-	HTREEITEM OrigItem;
-	char *OrigResourceName;
-	int OrigResourceProp;
-	int OrigResourceLang;
-	CStr EntryToAdd;
+    CStr ItemToReplace;
+    CStr LdFile;
+    HTREEITEM OrigItem;
+    char *OrigResourceName;
+    int OrigResourceProp;
+    int OrigResourceLang;
+    CStr EntryToAdd;
 
-	int SelItem = ListViewGetSelItem(FRMMissingFilesListview, -1);
-	if(SelItem != -1)
-	{
-		ItemToReplace = ListViewGetItemText(FRMMissingFilesListview, SelItem, 0);
-		LdFile = ComDlgGetOpenFileName(hWnd, "All files (*.*)|*.*", "", FALSE, ItemToReplace.Extract_Directory());
-		if(LdFile.Len() == 0) return;
-		OrigItem = PossibleMissingFilesTree.Get(SelItem)->Content;
-		OrigResourceName = PossibleMissingFilesResName.Get(SelItem)->Content;
-		OrigResourceProp = PossibleMissingFilesResProp.Get(SelItem)->Content;
-		OrigResourceLang = PossibleMissingFilesResLang.Get(SelItem)->Content;
-		EntryToAdd = FileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")";
+    int SelItem = ListViewGetSelItem(FRMMissingFilesListview, -1);
+    if(SelItem != -1)
+    {
+        ItemToReplace = ListViewGetItemText(FRMMissingFilesListview, SelItem, 0);
+        LdFile = ComDlgGetOpenFileName(hWnd, "All files (*.*)|*.*", "", FALSE, ItemToReplace.Extract_Directory());
+        if(LdFile.Len() == 0) return;
+        OrigItem = PossibleMissingFilesTree.Get(SelItem)->Content;
+        OrigResourceName = PossibleMissingFilesResName.Get(SelItem)->Content;
+        OrigResourceProp = PossibleMissingFilesResProp.Get(SelItem)->Content;
+        OrigResourceLang = PossibleMissingFilesResLang.Get(SelItem)->Content;
+        EntryToAdd = FileGetFileName(LdFile).Get_String() + (CStr) " (" + (CStr) LdFile + (CStr) ")";
 
-		if(OrigItem == hTreeViewIncludes)
-		{
+        if(OrigItem == hTreeViewIncludes)
+        {
             TreeViewAddItem(hTreeView, EntryToAdd, OrigItem, 0, ICON_NEW, ICON_NEW, 0, 0);
-		}
-		else if(OrigItem == hTreeViewLibs)
-		{
-			TreeViewAddItem(hTreeView, EntryToAdd, OrigItem, 0, ICON_STATIC, ICON_STATIC, 0, 0);
-		}
-		else if(OrigItem == hTreeViewModules)
-		{
+        }
+        else if(OrigItem == hTreeViewLibs)
+        {
+            TreeViewAddItem(hTreeView, EntryToAdd, OrigItem, 0, ICON_STATIC, ICON_STATIC, 0, 0);
+        }
+        else if(OrigItem == hTreeViewModules)
+        {
             TreeViewAddItem(hTreeView, EntryToAdd, OrigItem, 0, ICON_NEW, ICON_NEW, 0, 0);
-		}
-		else if(OrigItem == hTreeViewObjects)
-		{
+        }
+        else if(OrigItem == hTreeViewObjects)
+        {
             TreeViewAddItem(hTreeView, EntryToAdd, OrigItem, 0, ICON_OBJECT, ICON_OBJECT, 0, 0);
-		}
-		else if(OrigItem == hTreeViewResources)
-		{
+        }
+        else if(OrigItem == hTreeViewResources)
+        {
             TreeViewAddItem(hTreeView, EntryToAdd, OrigItem, 0, ICON_RES, ICON_RES, 0, 0);
 
-		// Resources
-		}
-		else if(OrigItem == hTreeViewIcons)
-		{
+        // Resources
+        }
+        else if(OrigItem == hTreeViewIcons)
+        {
             EntryToAdd = OrigResourceName + (CStr) " (" + (CStr) LdFile + (CStr) ")";
             AddIconInArray(OrigResourceProp, OrigResourceLang);
             TreeViewAddItem(hTreeView, EntryToAdd, OrigItem, 0, ICON_RES, ICON_RES, 0, 0);
-		}
-		else if(OrigItem == hTreeViewCursors)
-		{
+        }
+        else if(OrigItem == hTreeViewCursors)
+        {
             EntryToAdd = OrigResourceName + (CStr) " (" + (CStr) LdFile + (CStr) ")";
             AddCursorInArray(OrigResourceProp, OrigResourceLang);
             TreeViewAddItem(hTreeView, EntryToAdd, OrigItem, 0, ICON_RES, ICON_RES, 0, 0);
-		}
-		else if(OrigItem == hTreeViewBitmaps)
-		{
+        }
+        else if(OrigItem == hTreeViewBitmaps)
+        {
             EntryToAdd = OrigResourceName + (CStr) " (" + (CStr) LdFile + (CStr) ")";
             AddBitmapInArray(OrigResourceProp, OrigResourceLang);
             TreeViewAddItem(hTreeView, EntryToAdd, OrigItem, 0, ICON_RES, ICON_RES, 0, 0);
-		}
-		else if(OrigItem == hTreeViewStrings)
-		{
+        }
+        else if(OrigItem == hTreeViewStrings)
+        {
             EntryToAdd = OrigResourceName + (CStr) " (" + (CStr) LdFile + (CStr) ")";
             AddStringInArray(OrigResourceProp, OrigResourceLang);
             TreeViewAddItem(hTreeView, EntryToAdd, OrigItem, 0, ICON_RES, ICON_RES, 0, 0);
-		}
-		else if(OrigItem == hTreeViewAccelerators)
-		{
+        }
+        else if(OrigItem == hTreeViewAccelerators)
+        {
             EntryToAdd = OrigResourceName + (CStr) " (" + (CStr) LdFile + (CStr) ")";
             AddAcceleratorInArray(OrigResourceProp, OrigResourceLang);
             TreeViewAddItem(hTreeView, EntryToAdd, OrigItem, 0, ICON_RES, ICON_RES, 0, 0);
-		}
-		else if(OrigItem == hTreeViewMenus)
-		{
+        }
+        else if(OrigItem == hTreeViewMenus)
+        {
             EntryToAdd = OrigResourceName + (CStr) " (" + (CStr) LdFile + (CStr) ")";
             AddMenuInArray(OrigResourceProp, OrigResourceLang);
             TreeViewAddItem(hTreeView, EntryToAdd, OrigItem, 0, ICON_RES, ICON_RES, 0, 0);
-		}
-		else if(OrigItem == hTreeViewDialogs)
-		{
+        }
+        else if(OrigItem == hTreeViewDialogs)
+        {
             EntryToAdd = OrigResourceName + (CStr) " (" + (CStr) LdFile + (CStr) ")";
             AddDialogInArray(OrigResourceProp, OrigResourceLang);
             TreeViewAddItem(hTreeView, EntryToAdd, OrigItem, 0, ICON_RES, ICON_RES, 0, 0);
-		}
-		else if(OrigItem == hTreeViewRawdatas)
-		{
+        }
+        else if(OrigItem == hTreeViewRawdatas)
+        {
             EntryToAdd = OrigResourceName + (CStr) " (" + (CStr) LdFile + (CStr) ")";
             AddRawDatasInArray(OrigResourceProp, OrigResourceLang);
             TreeViewAddItem(hTreeView, EntryToAdd, OrigItem, 0, ICON_RES, ICON_RES, 0, 0);
 
-		}
-		else if(OrigItem == hTreeViewDefs)
-		{
+        }
+        else if(OrigItem == hTreeViewDefs)
+        {
             TreeViewAddItem(hTreeView, EntryToAdd, OrigItem, 0, ICON_RES, ICON_RES, 0, 0);
-		}
-		else if(OrigItem == hTreeViewTexts)
-		{
+        }
+        else if(OrigItem == hTreeViewTexts)
+        {
             TreeViewAddItem(hTreeView, EntryToAdd, OrigItem, 0, ICON_RES, ICON_RES, 0, 0);
-		} 
+        } 
 
-		PossibleMissingFiles.Del(SelItem);
-		ListViewDeleteItem(FRMMissingFilesListview, SelItem);
-		if(ListViewItemCount(FRMMissingFilesListview) == 0)
-		{
-			// Exit if all files has been corrected
-			ControlClose(hWnd);
-			return;
-		}
-		ListViewSetItemSel(FRMMissingFilesListview, 0);
-	}
+        PossibleMissingFiles.Del(SelItem);
+        ListViewDeleteItem(FRMMissingFilesListview, SelItem);
+        if(ListViewItemCount(FRMMissingFilesListview) == 0)
+        {
+            // Exit if all files has been corrected
+            ControlClose(hWnd);
+            return;
+        }
+        ListViewSetItemSel(FRMMissingFilesListview, 0);
+    }
 }

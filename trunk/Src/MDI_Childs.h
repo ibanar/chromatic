@@ -63,8 +63,8 @@ typedef struct _CHILDDAT
     LPFILETIME FileDateOpen;
     long oldAPILineLine;
     long oldAPILineCol;
-	WNDPROC CurCallBackProc;
-	void (CALLBACK *CodeMaxPropertiesHook)(HWND);
+    WNDPROC CurCallBackProc;
+    void (CALLBACK *CodeMaxPropertiesHook)(HWND);
 } CHILDDAT, *LPCHILDDAT;
 
 // -----------------------------------------------------------------------

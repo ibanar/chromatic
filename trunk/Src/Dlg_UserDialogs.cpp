@@ -127,58 +127,58 @@ HFONT IPSerif;
 
 int Tab_DiagTools[] =
 {
-	DIALOGCURSOR,
-	DIALOGPICTURE,
-	DIALOGLABEL,
-	DIALOGTEXTBOX,
-	DIALOGFRAME,
-	DIALOGBUTTON,
-	DIALOGCHECKBOX,
-	DIALOGRADIOBUTTON,
-	DIALOGCOMBOBOX,
-	DIALOGLISTBOX,
-	DIALOGHSCROLLBAR,
-	DIALOGTREEVIEW,
-	DIALOGLISTVIEW,
-	DIALOGSYSTAB,
-	DIALOGPROGRESSBAR,
-	DIALOGTRACKBAR,
-	DIALOGSPIN,
-	DIALOGXCOMBOBOX,
-	DIALOGTEXTIP,
-	DIALOGHOTKEY,
-	DIALOGCALENDAR,
-	DIALOGDATEPICKER,
-	DIALOGANIMATION,
-	DIALOGTOOLBAR,
-	DIALOGSTATUSBAR,
-	DIALOGRICHTEXT,
-	DIALOGPAGER,
-	DIALOGHEADER,
-	DIALOGREBAR,
-	DIALOGTOOLTIP
+    DIALOGCURSOR,
+    DIALOGPICTURE,
+    DIALOGLABEL,
+    DIALOGTEXTBOX,
+    DIALOGFRAME,
+    DIALOGBUTTON,
+    DIALOGCHECKBOX,
+    DIALOGRADIOBUTTON,
+    DIALOGCOMBOBOX,
+    DIALOGLISTBOX,
+    DIALOGHSCROLLBAR,
+    DIALOGTREEVIEW,
+    DIALOGLISTVIEW,
+    DIALOGSYSTAB,
+    DIALOGPROGRESSBAR,
+    DIALOGTRACKBAR,
+    DIALOGSPIN,
+    DIALOGXCOMBOBOX,
+    DIALOGTEXTIP,
+    DIALOGHOTKEY,
+    DIALOGCALENDAR,
+    DIALOGDATEPICKER,
+    DIALOGANIMATION,
+    DIALOGTOOLBAR,
+    DIALOGSTATUSBAR,
+    DIALOGRICHTEXT,
+    DIALOGPAGER,
+    DIALOGHEADER,
+    DIALOGREBAR,
+    DIALOGTOOLTIP
 };
 
 int Tab_Tools[] =
 {
-	DIALOGTOOLS_ALIGNLEFT,
-	DIALOGTOOLS_ALIGNRIGHT,
-	DIALOGTOOLS_ALIGNTOP,
-	DIALOGTOOLS_ALIGNBOTTOM,
-	DIALOGTOOLS_CENTERHORZ,
-	DIALOGTOOLS_CENTERVERT,
-	DIALOGTOOLS_SAMEWIDTH,
-	DIALOGTOOLS_SAMEHEIGHT,
-	DIALOGTOOLS_SAMESIZE,
-	DIALOGTOOLS_SPACEACROSS,
-	DIALOGTOOLS_SPACEDOWN,
-	DIALOGTOOLS_ALIGNGRID,
-	DIALOGTOOLS_LOCKCTRL,
-	0,
-	DIALOGTOOLS_GRID,
-	DIALOGTOOLS_TOOLBAR,
-	DIALOGTOOLS_PROPERTIES,
-	DIALOGTOOLS_TEST
+    DIALOGTOOLS_ALIGNLEFT,
+    DIALOGTOOLS_ALIGNRIGHT,
+    DIALOGTOOLS_ALIGNTOP,
+    DIALOGTOOLS_ALIGNBOTTOM,
+    DIALOGTOOLS_CENTERHORZ,
+    DIALOGTOOLS_CENTERVERT,
+    DIALOGTOOLS_SAMEWIDTH,
+    DIALOGTOOLS_SAMEHEIGHT,
+    DIALOGTOOLS_SAMESIZE,
+    DIALOGTOOLS_SPACEACROSS,
+    DIALOGTOOLS_SPACEDOWN,
+    DIALOGTOOLS_ALIGNGRID,
+    DIALOGTOOLS_LOCKCTRL,
+    0,
+    DIALOGTOOLS_GRID,
+    DIALOGTOOLS_TOOLBAR,
+    DIALOGTOOLS_PROPERTIES,
+    DIALOGTOOLS_TEST
 };
 
 // -----------------------------------------------------------------------
@@ -201,10 +201,10 @@ void CreateUserDialog(void)
     DialogBase = EntryAccCount;
     DialogName = "DIALOG_" + (CStr) DialogBase;
     DialogTitle = "New dialog";
-    CurrentLeft = 10 + 200;	// PropertiesXPos + PropertiesXLarg
+    CurrentLeft = 10 + 200; // PropertiesXPos + PropertiesXLarg
     CurrentWidth = ((ScreenWidth() * 98) / 100) - CurrentLeft;
     CurrentHeight = ((ScreenHeight() * 70) / 100) - GetSystemMetrics(SM_CYCAPTION) - GetSystemMetrics(SM_CYBORDER);
-	CurrentTop = (ScreenHeight() - ((ScreenHeight() * 70) / 100)) / 2;
+    CurrentTop = (ScreenHeight() - ((ScreenHeight() * 70) / 100)) / 2;
     CreateModalDialog(CurrentLeft, CurrentTop, CurrentWidth, CurrentHeight, hMDIform.hWnd, &FRMUserDiagProc, WS_BORDER | WS_CAPTION | WS_SYSMENU | WS_MAXIMIZEBOX | WS_SIZEBOX | DS_ABSALIGN, 0);
 }
 
@@ -222,9 +222,9 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
     CStr PrimToolbarMode;
     CStr PrimPropertiesMode;
     RECT CRect;
-	HWND SizehWnd;
-	LPRECT RequestedRect;
-	LPGRIPBOXSQRBOXDAT RequestedSteps;
+    HWND SizehWnd;
+    LPRECT RequestedRect;
+    LPGRIPBOXSQRBOXDAT RequestedSteps;
 
     switch(uMsg)
     {
@@ -232,11 +232,11 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             if(hSubEditBrush != 0) DeleteObject(hSubEditBrush);
             CreateSubEditBrush(GetSysColor(COLOR_WINDOW));
             CreateGrid(hwndDlg);
-			ResizeFromToolbar(FRMDiagTBhwnd, hDiagToolBar, ControlLeft(FRMDiagTBhwnd), ControlTop(FRMDiagTBhwnd), 15, 2, Tab_DiagTools);
-			ResizeFromToolbar(FRMDiagToolhwnd, hDiagTools, ControlLeft(FRMDiagToolhwnd), ControlTop(FRMDiagToolhwnd), 18, 1, Tab_Tools);
-			ControlRefresh(FRMDiagTBhwnd);
-			ControlRefresh(FRMDiagToolhwnd);
-			break;
+            ResizeFromToolbar(FRMDiagTBhwnd, hDiagToolBar, ControlLeft(FRMDiagTBhwnd), ControlTop(FRMDiagTBhwnd), 15, 2, Tab_DiagTools);
+            ResizeFromToolbar(FRMDiagToolhwnd, hDiagTools, ControlLeft(FRMDiagToolhwnd), ControlTop(FRMDiagToolhwnd), 18, 1, Tab_Tools);
+            ControlRefresh(FRMDiagTBhwnd);
+            ControlRefresh(FRMDiagToolhwnd);
+            break;
         case WM_INITDIALOG:
             CurrentWidth = 390 + 8;
             CurrentHeight = 260 + 27;
@@ -268,7 +268,7 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             PrimGridAlign = IniReadKey("Layout", "AlignGrid", MainIniFile);
             if(PrimGridAlign.Len() != 0) if(strcmp(PrimGridAlign.Get_String(), "1") == 0) GridAlign = TRUE;
             PrimGridWidth = IniReadKey("Layout", "GridWidth", MainIniFile);
-			if(PrimGridWidth.Get_String() != 0) GridXLarg = PrimGridWidth.Get_Long();
+            if(PrimGridWidth.Get_String() != 0) GridXLarg = PrimGridWidth.Get_Long();
             if(GridXLarg == 0) GridXLarg = 16;
             PrimGridHeight = IniReadKey("Layout", "GridHeight", MainIniFile);
             if(PrimGridHeight.Len() != 0) GridYLong = PrimGridHeight.Get_Long();
@@ -281,9 +281,9 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             ToolbarYPos = PropertiesYPos - 82;
             if(ToolbarMode == 1) FRMDiagTBhwnd = CreateNonModalDialog(ToolbarXPos, ToolbarYPos, 398 + 60, 82, hwndDlg, 0, 0, "Controls", &FrmUserDiagToolBarInitProc, &FrmUserDiagToolBarProc, WS_EX_TOOLWINDOW, WS_SYSMENU, SW_SHOW);
             FRMDiagToolhwnd = CreateNonModalDialog(10, PropertiesYLong + PropertiesYPos, 437, 47, hwndDlg, 0, 0, "Tools", &FrmUserDiagToolsInitProc, &FrmUserDiagToolsProc, WS_EX_TOOLWINDOW, 0, SW_SHOW);
-			
-			ResizeFromToolbar(FRMDiagTBhwnd, hDiagToolBar, ToolbarXPos, ToolbarYPos, 15, 2, Tab_DiagTools);
-			ResizeFromToolbar(FRMDiagToolhwnd, hDiagTools, 10, PropertiesYLong + PropertiesYPos, 18, 1, Tab_Tools);
+            
+            ResizeFromToolbar(FRMDiagTBhwnd, hDiagToolBar, ToolbarXPos, ToolbarYPos, 15, 2, Tab_DiagTools);
+            ResizeFromToolbar(FRMDiagToolhwnd, hDiagTools, 10, PropertiesYLong + PropertiesYPos, 18, 1, Tab_Tools);
 
             if(PropertiesMode == 1) FRMDiagPropshwnd = CreateNonModalDialog(PropertiesXPos, PropertiesYPos, PropertiesXLarg, PropertiesYLong, hwndDlg, 0, 0, "Properties", &FrmUserDiagPropsInitProc, &FrmUserDiagPropsProc, WS_EX_TOOLWINDOW, WS_SYSMENU | WS_SIZEBOX, SW_SHOW);
             CreateGrid(hwndDlg);
@@ -295,26 +295,26 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
   //          BeginPaint(hwndDlg, &DiagPs);
             //if(GridMode == 1) BitBlt(DiagPs.hdc, 0, 0, DiagPs.rcPaint.right, DiagPs.rcPaint.bottom, BackGridDC, 0, 0, SRCCOPY);
     //        EndPaint(hwndDlg, &DiagPs);
-	//		break;
+    //      break;
         case WM_ERASEBKGND:
             if(GridMode == 1)
             {
-				GetClientRect(hwndDlg, &CRect);
-				BitBlt((HDC) wParam, 0, 0, CRect.right, CRect.bottom, BackGridDC, 0, 0, SRCCOPY);
-				return(TRUE);
+                GetClientRect(hwndDlg, &CRect);
+                BitBlt((HDC) wParam, 0, 0, CRect.right, CRect.bottom, BackGridDC, 0, 0, SRCCOPY);
+                return(TRUE);
             }
             else
             {
-				return(FALSE);
-			}
-			break;
+                return(FALSE);
+            }
+            break;
         case WM_LBUTTONDOWN:
             if((wParam & MK_LBUTTON) != 0)
             {
-				// Remove all selections if a control is about to be
-				// created.
+                // Remove all selections if a control is about to be
+                // created.
                 UnSelectControlsList();
-				DiagX1 = ControlGetXMousePos(lParam);
+                DiagX1 = ControlGetXMousePos(lParam);
                 DiagY1 = ControlGetYMousePos(lParam);
                 GetClientRect(hwndDlg, &CRect);
                 if(DiagX1 > CRect.right) DiagX1 = CRect.right;
@@ -333,7 +333,7 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                 SetCapture(hwndDlg);
                 return(0);
             }
-			break;
+            break;
         case WM_MOUSEMOVE:
             if((wParam & MK_LBUTTON) != 0)
             {
@@ -341,7 +341,7 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                 {
                     DiagX2 = ControlGetXMousePos(lParam);
                     DiagY2 = ControlGetYMousePos(lParam);
-					GetClientRect(hwndDlg, &CRect);
+                    GetClientRect(hwndDlg, &CRect);
                     if(DiagX2 > CRect.right) DiagX2 = CRect.right;
                     if(DiagY2 > CRect.bottom) DiagY2 = CRect.bottom;
                     if(GridAlign && DiagEditMode == MOUSE_MODE_EDIT)
@@ -351,7 +351,7 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                         if((DiagX2 - DiagX1) <= 0) DiagX2--;
                         if((DiagY2 - DiagY1) <= 0) DiagY2--;
                     }
-					FillOldRectDatas();
+                    FillOldRectDatas();
                     FillNewRectDatas();
                     if(FirstDrawn == 0) DrawOldSelectRect(hwndDlg);
                     FirstDrawn = 0;
@@ -363,7 +363,7 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                     return(0);
                 }
             }
-			break;
+            break;
         case WM_RBUTTONDOWN:
         case WM_MBUTTONDOWN:
             // Cancel dragging with right mouse button
@@ -386,7 +386,7 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                 if(FirstDrawn == 0) DrawNewSelectRect(hwndDlg);
                 ReleaseCapture();
             }
-			break;
+            break;
         case WM_LBUTTONUP:
             if(DiagInDrag == 1)
             {
@@ -421,29 +421,29 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                     DiagY1 = DiagY2;
                     DiagY2 = SaveCoord;
                 }
-				if(DiagEditMode == MOUSE_MODE_EDIT)
-				{
-					if((DiagX1 != DiagX2) && (DiagY1 != DiagY2))
-					{
-						// Avoid creation of controls with dimensions of 1x1
-						// (Since 0x0 isn't possible due to coordinates corrections done above)
-						if((DiagX1 != (DiagX2 - 1)) && (DiagY1 != (DiagY2 - 1)))
-						{
-							// Place an object on dialog
-							ObjectX = DiagX1;
-							ObjectY = DiagY1;
-							ObjectWidth = (DiagX2 - DiagX1) + 1;
-							ObjectHeight = (DiagY2 - DiagY1) + 1;
-							CreateNewControl(hwndDlg);
-						}
-					}
-				}
-				else
-				{
-	                // Select objects
-				}
+                if(DiagEditMode == MOUSE_MODE_EDIT)
+                {
+                    if((DiagX1 != DiagX2) && (DiagY1 != DiagY2))
+                    {
+                        // Avoid creation of controls with dimensions of 1x1
+                        // (Since 0x0 isn't possible due to coordinates corrections done above)
+                        if((DiagX1 != (DiagX2 - 1)) && (DiagY1 != (DiagY2 - 1)))
+                        {
+                            // Place an object on dialog
+                            ObjectX = DiagX1;
+                            ObjectY = DiagY1;
+                            ObjectWidth = (DiagX2 - DiagX1) + 1;
+                            ObjectHeight = (DiagY2 - DiagY1) + 1;
+                            CreateNewControl(hwndDlg);
+                        }
+                    }
+                }
+                else
+                {
+                    // Select objects
+                }
             }
-			break;
+            break;
         case WM_SIZE:
             // Modify width
             ModWidth = (lParam & 0xFFFF);
@@ -461,45 +461,45 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                 // Refresh properties listbox
                 //If DiagLabelsFormDimRoutine(3) <> 0 Then JumpToAddr DiagLabelsFormDimRoutine(3)
             }
-			break;
-		case GRIPBOX_MSG_ASKSIZE:
-			// A GripBox asks for the position of a control
-			// wParam = GripBox hwnd
-			// lParam = RECT struct to fill
-			SizehWnd = GetControlFromGripBox((LPGRIPBOXDAT) wParam);
-			if(SizehWnd != NULL)
-			{
-				// Fill the RECT struct
-				RequestedRect = (LPRECT) lParam;
-				GetWindowRect(SizehWnd, RequestedRect);
-				ScreenRectToClient(hwndDlg, RequestedRect);
-			}
-			return(0);
-		case GRIPBOX_MSG_ASKSTEPS:
-			// A Gripbox asks for the X/Y steps
-			// wParam = 0
-			// lParam = Pointer to GRIPBOXSQRBOXDAT structure to fill
-			RequestedSteps = (LPGRIPBOXSQRBOXDAT) lParam;
-			if(GridAlign)
-			{
-				RequestedSteps->StepX = GridXLarg;
-				RequestedSteps->StepY = GridYLong;
-			}
-			else
-			{
-				RequestedSteps->StepX = 1;
-				RequestedSteps->StepY = 1;
-			}
-			return(0);
+            break;
+        case GRIPBOX_MSG_ASKSIZE:
+            // A GripBox asks for the position of a control
+            // wParam = GripBox hwnd
+            // lParam = RECT struct to fill
+            SizehWnd = GetControlFromGripBox((LPGRIPBOXDAT) wParam);
+            if(SizehWnd != NULL)
+            {
+                // Fill the RECT struct
+                RequestedRect = (LPRECT) lParam;
+                GetWindowRect(SizehWnd, RequestedRect);
+                ScreenRectToClient(hwndDlg, RequestedRect);
+            }
+            return(0);
+        case GRIPBOX_MSG_ASKSTEPS:
+            // A Gripbox asks for the X/Y steps
+            // wParam = 0
+            // lParam = Pointer to GRIPBOXSQRBOXDAT structure to fill
+            RequestedSteps = (LPGRIPBOXSQRBOXDAT) lParam;
+            if(GridAlign)
+            {
+                RequestedSteps->StepX = GridXLarg;
+                RequestedSteps->StepY = GridYLong;
+            }
+            else
+            {
+                RequestedSteps->StepX = 1;
+                RequestedSteps->StepY = 1;
+            }
+            return(0);
 
-		case GRIPBOX_MSG_RESIZED:
-			// A GripBox tells that a control has been resized
-			// wParam = GripBox hwnd
-			// lParam = RECT struct containing new coordinates
-			ResizeControlFromGripBox((LPGRIPBOXDAT) wParam, (LPRECT) lParam);
-			return(0);
+        case GRIPBOX_MSG_RESIZED:
+            // A GripBox tells that a control has been resized
+            // wParam = GripBox hwnd
+            // lParam = RECT struct containing new coordinates
+            ResizeControlFromGripBox((LPGRIPBOXDAT) wParam, (LPRECT) lParam);
+            return(0);
 
-		case WM_CLOSE:
+        case WM_CLOSE:
             DiscardGrid();
             if(hSubEditBrush != 0) DeleteObject(hSubEditBrush);
             if(IPSerif != 0) DeleteObject(IPSerif);
@@ -507,15 +507,15 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             if(CurrentFont != 0) DeleteObject(CurrentFont);
             SetDialogEditModeOff();
             UnSelectControlsList();
-			SaveDialog();
-			EraseControlsList();
-			CursorSetNormal();
+            SaveDialog();
+            EraseControlsList();
+            CursorSetNormal();
             ControlClose(FRMDiagToolhwnd);
             ControlClose(FRMDiagTBhwnd);
             FreezeTimer = 0;
             EndDialog(hwndDlg, 0);
-			break;
-	}
+            break;
+    }
     return(0);
 }
 
@@ -524,7 +524,7 @@ int CALLBACK FRMUserDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 void CALLBACK FrmUserDiagToolBarInitProc(HWND hWnd)
 {
     hDiagToolBar = CreateToolBar(1, 1, 460, 66, hWnd, GlobalImageList4, 0, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | TBSTYLE_WRAPABLE | WS_TABSTOP, 0);
-	ToolBarAddButton(hDiagToolBar, "", DIALOGCURSOR, ICON_RES_CURSOR, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDiagToolBar, "", DIALOGCURSOR, ICON_RES_CURSOR, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
     ToolBarAddButton(hDiagToolBar, "", DIALOGPICTURE, ICON_RES_PICTURE, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
     ToolBarAddButton(hDiagToolBar, "", DIALOGLABEL, ICON_RES_LABEL, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
     ToolBarAddButton(hDiagToolBar, "", DIALOGTEXTBOX, ICON_RES_TEXT, TBSTYLE_CHECKGROUP, TBSTATE_ENABLED, 1);
@@ -673,7 +673,7 @@ LRESULT CALLBACK FrmUserDiagToolBarProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
                     case DIALOGRICHTEXT:
                         SetDialogEditModeOn();
                         DiagControlNumber = CONTROL_RICHTEXT;
-						return(0);
+                        return(0);
                     case DIALOGPAGER:
                         SetDialogEditModeOn();
                         DiagControlNumber = CONTROL_PAGER;
@@ -692,8 +692,8 @@ LRESULT CALLBACK FrmUserDiagToolBarProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
                         return(0);
                 }
             }
-			break;
-		case WM_NOTIFY:
+            break;
+        case WM_NOTIFY:
             switch(ControlGetNotifiedMsg(lParam))
             {
                 case TTN_NEEDTEXT:
@@ -791,11 +791,11 @@ LRESULT CALLBACK FrmUserDiagToolBarProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
                             return(0);
                     }
             }
-			break;
+            break;
         case WM_CLOSE:
             ToolbarXPos = ControlLeft(hWnd);
             ToolbarYPos = ControlTop(hWnd);
-			break;
+            break;
         case WM_DESTROY:
             ToolBarSetButtonChecked(hDiagTools, DIALOGTOOLS_TOOLBAR, 0);
             return(0);
@@ -887,7 +887,7 @@ LRESULT CALLBACK FrmUserDiagToolsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                         {
                             FRMDiagTBhwnd = CreateNonModalDialog(ToolbarXPos, ToolbarYPos, 398, 82, FRMDiaghwnd, 0, 0, "Controls", &FrmUserDiagToolBarInitProc, &FrmUserDiagToolBarProc, WS_EX_TOOLWINDOW, WS_SYSMENU, SW_SHOW);
                             IniWriteKey("Layout", "DialogToolbar", "1", MainIniFile);
-							ResizeFromToolbar(FRMDiagTBhwnd, hDiagToolBar, ToolbarXPos, ToolbarYPos, 15, 2, Tab_DiagTools);
+                            ResizeFromToolbar(FRMDiagTBhwnd, hDiagToolBar, ToolbarXPos, ToolbarYPos, 15, 2, Tab_DiagTools);
                         }
                         else
                         {
@@ -922,9 +922,9 @@ LRESULT CALLBACK FrmUserDiagToolsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                     case (GRID_IDBASE + GRID_SETTINGS_ID):
                         CreateModalDialog(-1, -1, 190, 110, FRMDiaghwnd, &FRMGridDiagProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
                         return(0);
-				}
+                }
             }
-			break;
+            break;
         case WM_NOTIFY:
             switch(ControlGetNotifiedMsg(lParam))
             {
@@ -983,18 +983,18 @@ LRESULT CALLBACK FrmUserDiagToolsProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                             ToolBarDisplayToolTip("Test Dialog", lParam);
                             return(0);
                     }
-					break;
+                    break;
                 case TBN_DROPDOWN:
                     ToolBarDisplayPopupMenu(hDiagTools, ToolBarGetNotifiedDropDownItem(lParam), hGridMenu, hWnd);
                     return(0);
             }
-			break;
+            break;
         case WM_PAINT:
             BeginPaint(hWnd, &FrmDiagToolsPs);
             GDIDrawHorzSep(hWnd, 0, 72, 104);
             EndPaint(hWnd, &FrmDiagToolsPs);
-			break;
-		case WM_DESTROY:
+            break;
+        case WM_DESTROY:
             return(0);
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
@@ -1157,7 +1157,7 @@ void SetGridOff(void)
     CheckMenuItem(hGridMenu, GRID_TOGGLE_ID, MF_BYPOSITION | MF_UNCHECKED);
     IniWriteKey("Layout", "DialogGrid", "0", MainIniFile);
     GridMode = 0;
-	RefreshDialog();
+    RefreshDialog();
 }
 
 // -----------------------------------------------------------------------
@@ -1246,22 +1246,22 @@ int CALLBACK FRMGridDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                     if(GridMode == 1) RefreshDialog();
                 }
                 ControlClose(hwndDlg);
-				return(0);
+                return(0);
             }
             else if((HWND) lParam == hGridCancel)
             {
                 ControlClose(hwndDlg);
                 return(0);
             }
-			break;
+            break;
         case WM_PAINT:
             BeginPaint(hwndDlg, &ArgsPs);
             GDIDrawHorzSep(hwndDlg, 0, 77, 190);
             EndPaint(hwndDlg, &ArgsPs);
-			break;
-		case WM_CLOSE:
+            break;
+        case WM_CLOSE:
             EndDialog(hwndDlg, 0);
-			break;
+            break;
     }
     return(0);
 }
@@ -1270,7 +1270,7 @@ int CALLBACK FRMGridDiagProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 // Save dialogs datas
 void SaveDialog(void)
 {
-	
+    
 }
 
 // -----------------------------------------------------------------------
@@ -1280,24 +1280,24 @@ void RefreshDialog(void)
     ControlRepaint(FRMDiaghwnd);
     for(int i = 0; i < ControlsList.Amount(); i++)
     {
-		int *CurMem = ControlsList.Get(i)->Content;
-		if(CurMem[OBJECT_HWNDCHILDCHILD]) ControlRepaint((HWND) CurMem[OBJECT_HWNDCHILDCHILD]);
-		if(CurMem[OBJECT_HWNDCHILD]) ControlRepaint((HWND) CurMem[OBJECT_HWNDCHILD]);
-		if(CurMem[OBJECT_HWND]) ControlRepaint((HWND) CurMem[OBJECT_HWND]);
-	}
+        int *CurMem = ControlsList.Get(i)->Content;
+        if(CurMem[OBJECT_HWNDCHILDCHILD]) ControlRepaint((HWND) CurMem[OBJECT_HWNDCHILDCHILD]);
+        if(CurMem[OBJECT_HWNDCHILD]) ControlRepaint((HWND) CurMem[OBJECT_HWNDCHILD]);
+        if(CurMem[OBJECT_HWND]) ControlRepaint((HWND) CurMem[OBJECT_HWND]);
+    }
 }
 
 // -----------------------------------------------------------------------
 // Refresh dialogs and controls
 void ResizeFromToolbar(HWND Dialog, HWND Toolbar, int PosX, int PosY, int NbrColumns, int NbrRows, int Tab_Buttons[])
 {
-	int X_Size = 0;
+    int X_Size = 0;
 
-	for(int i = 0; i < NbrColumns; i++)
-	{
-		X_Size += ToolBarGetButtonIndexXSize(Toolbar, Tab_Buttons[i]);
-	}
-	int Y_Size = ToolBarGetButtonYSize(Toolbar) * NbrRows;
-	MoveWindow(Dialog, PosX, PosY, X_Size + GetSystemMetrics(SM_CXFIXEDFRAME) + GetSystemMetrics(SM_CXEDGE) + 1, Y_Size + GetSystemMetrics(SM_CYSMCAPTION) + GetSystemMetrics(SM_CYFIXEDFRAME) + GetSystemMetrics(SM_CYEDGE) + 1, 1);
-	MoveWindow(Toolbar, 0, 0, X_Size, Y_Size, 1);
+    for(int i = 0; i < NbrColumns; i++)
+    {
+        X_Size += ToolBarGetButtonIndexXSize(Toolbar, Tab_Buttons[i]);
+    }
+    int Y_Size = ToolBarGetButtonYSize(Toolbar) * NbrRows;
+    MoveWindow(Dialog, PosX, PosY, X_Size + GetSystemMetrics(SM_CXFIXEDFRAME) + GetSystemMetrics(SM_CXEDGE) + 1, Y_Size + GetSystemMetrics(SM_CYSMCAPTION) + GetSystemMetrics(SM_CYFIXEDFRAME) + GetSystemMetrics(SM_CYEDGE) + 1, 1);
+    MoveWindow(Toolbar, 0, 0, X_Size, Y_Size, 1);
 }

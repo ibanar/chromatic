@@ -202,12 +202,12 @@ Read_Again:
         if(NewString)
         {
             lua_pushstring(L, "");
-	        lua_setglobal(L, Variable_Name);
+            lua_setglobal(L, Variable_Name);
         }
         else
         {
             lua_pushnumber(L, 0);
-	        lua_setglobal(L, Variable_Name);
+            lua_setglobal(L, Variable_Name);
         }
         goto Read_Again;
     }

@@ -94,18 +94,18 @@ int CALLBACK FRMEnterValueProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                     TextBoxSetMaxLen(hFRMEnterValueTextBox, EnterValueLen);
                     TextBoxSelText(hFRMEnterValueTextBox, -1);
                     ControlSendMessage(hwndDlg, (EN_CHANGE << 16), (long) hFRMEnterValueTextBox);
-					break;
-				case INPUTBOX_PASSWORD:
+                    break;
+                case INPUTBOX_PASSWORD:
                     hFRMEnterValueTextBox = CreateTextBox(48, 30, 252, 20, hwndDlg, PassValue, 3, 0, WS_TABSTOP | ES_AUTOHSCROLL | ES_PASSWORD, WS_EX_STATICEDGE);
                     TextBoxSetMaxLen(hFRMEnterValueTextBox, EnterValueLen);
                     TextBoxSelText(hFRMEnterValueTextBox, -1);
                     ControlSendMessage(hwndDlg, (EN_CHANGE << 16), (long) hFRMEnterValueTextBox);
-					break;
+                    break;
                 case INPUTBOX_HEXA:
                     hFRMEnterValueTextBox = CreateHexBox(48, 30, 252, 20, hwndDlg, PassValue, 3, EnterValueLen, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
                     TextBoxSelText(hFRMEnterValueTextBox, -1);
                     ControlSendMessage(hwndDlg, (EN_CHANGE << 16), (long) hFRMEnterValueTextBox);
-					break;
+                    break;
                 case INPUTBOX_COMBO:
                     hFRMEnterValueTextBox = CreateComboBox(48, 30, 227, 150, hwndDlg, PassValue, 3, 0, WS_TABSTOP | CBS_DROPDOWN);
                     hFRMEnterValuehTB = CreateToolBar(276, 29, 25, 23, hwndDlg, GlobalImageList1, 4, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
@@ -114,7 +114,7 @@ int CALLBACK FRMEnterValueProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                     TextBoxSelText(hFRMEnterValueTextBox, -1);
                     if(EnterValueKey.Len() != 0) ComboBoxFillFromIniFile(hFRMEnterValueTextBox, EnterValueKey, MainIniFile);
                     ControlSendMessage(hwndDlg, (CBN_EDITCHANGE << 16), (long) hFRMEnterValueTextBox);
-					break;
+                    break;
             }
             ValidValue = 0;
             FreezeTimer = 1;
@@ -124,7 +124,7 @@ int CALLBACK FRMEnterValueProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
             BeginPaint(hwndDlg, &EnterValuePs);
             GDIDrawHorzSep(hwndDlg, 0, 57, 304);
             EndPaint(hwndDlg, &EnterValuePs);
-			break;
+            break;
         case WM_NOTIFY:
             if(EnterValueType == INPUTBOX_COMBO)
             {
@@ -137,10 +137,10 @@ int CALLBACK FRMEnterValueProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                                 ToolBarDisplayToolTip("Clear list", lParam);
                                 return(0);
                         }
-						break;
+                        break;
                 }
             }
-			break;
+            break;
         case WM_COMMAND:
             if((HWND) lParam == hFRMEnterValueOk)
             {
@@ -159,24 +159,24 @@ int CALLBACK FRMEnterValueProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                 {
                     switch(ControlGetNotifiedCommand(wParam))
                     {
-						case CBN_SELENDOK:
+                        case CBN_SELENDOK:
                         case CBN_EDITCHANGE:
-							if(EnterValueAllowEmpty)
-							{
+                            if(EnterValueAllowEmpty)
+                            {
                                 ControlEnable(hFRMEnterValueOk, 1);
-							}
-							else
-							{
-								if(ControlGetTextLen(hFRMEnterValueTextBox) > 0)
-								{
-									ControlEnable(hFRMEnterValueOk, 1);
-								}
-								else
-								{
-									ControlEnable(hFRMEnterValueOk, 0);
-								}
-							}
-							break;
+                            }
+                            else
+                            {
+                                if(ControlGetTextLen(hFRMEnterValueTextBox) > 0)
+                                {
+                                    ControlEnable(hFRMEnterValueOk, 1);
+                                }
+                                else
+                                {
+                                    ControlEnable(hFRMEnterValueOk, 0);
+                                }
+                            }
+                            break;
                         case CBN_SELCHANGE:
                             if(ComboBoxGetIndex(hFRMEnterValueTextBox) != CB_ERR)
                             {
@@ -186,7 +186,7 @@ int CALLBACK FRMEnterValueProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                             {
                                 ControlEnable(hFRMEnterValueOk, 0);
                             }
-							break;
+                            break;
                     }
                 }
                 else
@@ -194,22 +194,22 @@ int CALLBACK FRMEnterValueProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                     switch(ControlGetNotifiedCommand(wParam))
                     {
                         case EN_CHANGE:
-							if(EnterValueAllowEmpty)
-							{
+                            if(EnterValueAllowEmpty)
+                            {
                                 ControlEnable(hFRMEnterValueOk, 1);
-							}
-							else
-							{
-								if(TextBoxGetLen(hFRMEnterValueTextBox) > 0)
-								{
-									ControlEnable(hFRMEnterValueOk, 1);
-								}
-								else
-								{
-									ControlEnable(hFRMEnterValueOk, 0);
-								}
-							}
-							break;
+                            }
+                            else
+                            {
+                                if(TextBoxGetLen(hFRMEnterValueTextBox) > 0)
+                                {
+                                    ControlEnable(hFRMEnterValueOk, 1);
+                                }
+                                else
+                                {
+                                    ControlEnable(hFRMEnterValueOk, 0);
+                                }
+                            }
+                            break;
                     }
                 }
             }
@@ -225,9 +225,9 @@ int CALLBACK FRMEnterValueProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                             ControlSendMessage(hwndDlg, (CBN_EDITCHANGE << 16), (long) hFRMEnterValueTextBox);
                             return(0);
                     }
-				}
+                }
             }
-			break;
+            break;
         case WM_CLOSE:
             FreezeTimer = 0;
             EnterValueType = INPUTBOX_SIMPLETEXT;
@@ -240,50 +240,50 @@ int CALLBACK FRMEnterValueProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 // Validate entered value
 long CheckEnteredValue(void)
 {
-	// Retrieve user's input
+    // Retrieve user's input
     PassValue = ControlGetText(hFRMEnterValueTextBox);
     // Check if it's empty or not
-	if(!EnterValueAllowEmpty)
-	{
-		if(PassValue.Len() == 0)
-		{
-			MiscMsgBox(FRMEnterhwnd, "Empty value is not allowed.", MB_ERROR, Requesters);
-			SetFocus(hFRMEnterValueTextBox);
-			return(0);
-		}
-	}
-	switch(EnterValueType)
-	{
-		// SIMPLETEXT and PASSWORD don't requires any checkup
-		// (No rules are defined for these and Windows ensures that
-		// the number of chars is correct).
+    if(!EnterValueAllowEmpty)
+    {
+        if(PassValue.Len() == 0)
+        {
+            MiscMsgBox(FRMEnterhwnd, "Empty value is not allowed.", MB_ERROR, Requesters);
+            SetFocus(hFRMEnterValueTextBox);
+            return(0);
+        }
+    }
+    switch(EnterValueType)
+    {
+        // SIMPLETEXT and PASSWORD don't requires any checkup
+        // (No rules are defined for these and Windows ensures that
+        // the number of chars is correct).
         case INPUTBOX_SIMPLETEXT:
-		case INPUTBOX_PASSWORD:
-			break;
+        case INPUTBOX_PASSWORD:
+            break;
         case INPUTBOX_HEXA:
-			// Check if the length matches the requested one
+            // Check if the length matches the requested one
             if(PassValue.Len() < TextBoxGetMaxLen(hFRMEnterValueTextBox))
             {
-				// No: halt process
+                // No: halt process
                 MiscMsgBox(FRMEnterhwnd, TextBoxGetMaxLen(hFRMEnterValueTextBox) + (CStr) " chars required.", MB_ERROR, Requesters);
                 SetFocus(hFRMEnterValueTextBox);
-				return(0);
+                return(0);
             }
-			// Check if value is a hexadecimal string
+            // Check if value is a hexadecimal string
             if(StringIsHexaDecimal(PassValue) != 0)
             {
-				// No: halt process
-				MiscMsgBox(FRMEnterhwnd, "Invalid hexadecimal value.", MB_ERROR, Requesters);
-				SetFocus(hFRMEnterValueTextBox);
-				return(0);
-			}
-			break;
-		case INPUTBOX_COMBO:
-			// Save combo datas in requested key/ini file.
+                // No: halt process
+                MiscMsgBox(FRMEnterhwnd, "Invalid hexadecimal value.", MB_ERROR, Requesters);
+                SetFocus(hFRMEnterValueTextBox);
+                return(0);
+            }
+            break;
+        case INPUTBOX_COMBO:
+            // Save combo datas in requested key/ini file.
             ComboBoxSaveInIniFile(hFRMEnterValueTextBox, PassValue, EnterValueKey, MainIniFile);
-			break;
+            break;
     }
-	// (Internally validated)
+    // (Internally validated)
     ValidValue = 1;
     return(1);
 }
@@ -292,16 +292,16 @@ long CheckEnteredValue(void)
 // Prompt user for new datas
 CStr MiscInputBox(HWND hParent, CStr NameTitle, long Icon, CStr ValueToPass, long PromptLen, long PromptType, CStr PromptIniKey)
 {
-	CStr ReturnValue;
+    CStr ReturnValue;
  
     EnterValueTxt = NameTitle;
     PassEdValue = ValueToPass;
     EnterValueLen = PromptLen;
     EnterValueType = PromptType & ~INPUTBOX_ALLOW_EMPTY;
-	EnterValueAllowEmpty = PromptType & INPUTBOX_ALLOW_EMPTY;
+    EnterValueAllowEmpty = PromptType & INPUTBOX_ALLOW_EMPTY;
     EnterValueKey = PromptIniKey;
     EnterValueIcon = LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + Icon));
     CreateModalDialog(-1, -1, 304, 90, hParent, &FRMEnterValueProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
     if(ValidValue == 1) ReturnValue = PassValue;
-	return(ReturnValue);
+    return(ReturnValue);
 }

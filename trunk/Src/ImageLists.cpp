@@ -286,7 +286,7 @@ void InitImageList4(void)
     {
         GlobalImageList4 = ImageList_Create(23, 23, ILC_MASK + ILC_COLOR16, ICON_NBR, 0);
     }
-	ImageListAddIcon(GlobalImageList4, ICON_RES_BASE + ICON_RES_ANIMATION);
+    ImageListAddIcon(GlobalImageList4, ICON_RES_BASE + ICON_RES_ANIMATION);
     ImageListAddIcon(GlobalImageList4, ICON_RES_BASE + ICON_RES_BUTTON);
     ImageListAddIcon(GlobalImageList4, ICON_RES_BASE + ICON_RES_CALENDAR);
     ImageListAddIcon(GlobalImageList4, ICON_RES_BASE + ICON_RES_CHECKBOX);
@@ -332,7 +332,7 @@ void InitImageList5(void)
     {
         GlobalImageList5 = ImageList_Create(17, 17, ILC_MASK + ILC_COLOR16, ICON_NBR, 0);
     }
-	ImageListAddIcon(GlobalImageList5, ICON_RES_TOOL_BASE + ICON_RES_TOOL_LOCKCTRL);
+    ImageListAddIcon(GlobalImageList5, ICON_RES_TOOL_BASE + ICON_RES_TOOL_LOCKCTRL);
     ImageListAddIcon(GlobalImageList5, ICON_RES_TOOL_BASE + ICON_RES_TOOL_ALIGNBOTTOM);
     ImageListAddIcon(GlobalImageList5, ICON_RES_TOOL_BASE + ICON_RES_TOOL_ALIGNLEFT);
     ImageListAddIcon(GlobalImageList5, ICON_RES_TOOL_BASE + ICON_RES_TOOL_ALIGNRIGHT);

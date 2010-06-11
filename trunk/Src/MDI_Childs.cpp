@@ -79,28 +79,28 @@ void CALLBACK MDIChildInitProc(HWND hWnd)
     int i = 0;
     LPCHILDDAT NewChildMem;
     CStr NewChildFile;
-	void (CALLBACK * LocInitChildHook)(HWND hWnd);
+    void (CALLBACK * LocInitChildHook)(HWND hWnd);
 
     NewChildMem = (LPCHILDDAT) AllocMem(sizeof(CHILDDAT));
     NewChildMem->RFile = new CStr;
     NewChildMem->Language = new CStr;
-	NewChildMem->oldAPIFnc = new CStr;
-	NewChildMem->oldAPILineFnc = new CStr;
-	NewChildMem->FileDateOpen = (LPFILETIME) AllocMem(sizeof(FILETIME));
-	// Create a new instance of the codemax control
-	NewChildMem->hChildCodeMax = CreateCodeMax(-1, -1, -1, -1, hWnd, ApphInstance, 1);
+    NewChildMem->oldAPIFnc = new CStr;
+    NewChildMem->oldAPILineFnc = new CStr;
+    NewChildMem->FileDateOpen = (LPFILETIME) AllocMem(sizeof(FILETIME));
+    // Create a new instance of the codemax control
+    NewChildMem->hChildCodeMax = CreateCodeMax(-1, -1, -1, -1, hWnd, ApphInstance, 1);
     InitMinimumCodeMax(NewChildMem->hChildCodeMax);
-	NewChildMem->RFile->Set_String(FileToOpen.Get_String());
-	ControlSetText(hWnd, NewChildMem->RFile);
+    NewChildMem->RFile->Set_String(FileToOpen.Get_String());
+    ControlSetText(hWnd, NewChildMem->RFile);
     SetCodeMaxFont(NewChildMem->hChildCodeMax);
-	// (StoreLanguage() uses ChildStruct)
+    // (StoreLanguage() uses ChildStruct)
     ChildStruct = NewChildMem;
-	StoreLanguage(LanguageToOpen);
+    StoreLanguage(LanguageToOpen);
     CurrentForm = hWnd;
     SetWindowLong(hWnd, GWL_USERDATA, (long) NewChildMem);
     NewChildMem->CodeMaxPropertiesHook = &SetCodeMaxProperties;
     SetCodeMaxColors(NewChildMem->hChildCodeMax);
-	SetCodeMaxProperties(NewChildMem->hChildCodeMax);
+    SetCodeMaxProperties(NewChildMem->hChildCodeMax);
     SetCodeMaxLanguage(NewChildMem->hChildCodeMax);
     NbForms++;
     LoadCurrentSel(NewChildMem->hChildCodeMax);
@@ -114,10 +114,10 @@ void CALLBACK MDIChildInitProc(HWND hWnd)
     {
         if(ChildCreateHooks.Get(i)->Content != 0)
         {
-			LocInitChildHook = (void (CALLBACK *)(HWND)) ChildCreateHooks.Get(i)->Content;
-			LocInitChildHook(hWnd);
-		}
-	}
+            LocInitChildHook = (void (CALLBACK *)(HWND)) ChildCreateHooks.Get(i)->Content;
+            LocInitChildHook(hWnd);
+        }
+    }
     SendMessage(hMDIform.hClient, CHILD_MSG_CREATED, ICON_WINDOWNORM, (long) hWnd);
 }
 
@@ -132,8 +132,8 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
     PAINTSTRUCT ChildPs;
     long HaveToDie = 0;
     CStr BufString;
-	DLGPROC LocChildHook;
-	CM_CMDFAILUREDATA *Err_datas;
+    DLGPROC LocChildHook;
+    CM_CMDFAILUREDATA *Err_datas;
 
     // Execute possible hooks
     for(i = 0; i < ChildHooks.Amount(); i++)
@@ -141,8 +141,8 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
         if(ChildHooks.Get(i)->Content != 0)
         {
             LocChildHook = ChildHooks.Get(i)->Content;
-			if(LocChildHook(hWnd, uMsg, wParam, lParam) == HOOK_DIE)
-			{
+            if(LocChildHook(hWnd, uMsg, wParam, lParam) == HOOK_DIE)
+            {
                 HaveToDie = HaveToDie | HOOK_DIE;
             }
         }
@@ -157,21 +157,21 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 
         case WM_URGENTKILLCLIST:
             ControlClose(FRMAPIListhWnd);
-			break;
+            break;
 
-		case WM_NOTIFY:
+        case WM_NOTIFY:
             switch(ControlGetNotifiedMsg(lParam))
             {
-				case CMN_MARKALL:
+                case CMN_MARKALL:
                     ChildStruct = LoadStructure(hWnd);
-					CM_EnableLeftMargin(ChildStruct->hChildCodeMax, 1);
-					break;
-				case CMN_FOUNDTEXT:
-					SendMessage(GetParent(GetParent(hWnd)), WM_FOUND_TEXT, 0, (LPARAM) hWnd);
-					break;
+                    CM_EnableLeftMargin(ChildStruct->hChildCodeMax, 1);
+                    break;
+                case CMN_FOUNDTEXT:
+                    SendMessage(GetParent(GetParent(hWnd)), WM_FOUND_TEXT, 0, (LPARAM) hWnd);
+                    break;
                 case CMN_MODIFIEDCHANGE:
                     ChildStruct = LoadStructure(hWnd);
-					ChildStruct->ModifFlag = CM_IsModified(ChildStruct->hChildCodeMax);
+                    ChildStruct->ModifFlag = CM_IsModified(ChildStruct->hChildCodeMax);
                     if(ChildStruct->ModifFlag == 1)
                     {
                         TempRfile = ChildStruct->RFile + (CStr) " *";
@@ -182,30 +182,30 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                         ControlSetText(hWnd, ChildStruct->RFile);
                     }
                     RefreshChildTitle(hWnd);
-					break;
+                    break;
 
-				case CMN_CMDFAILURE:
-					Err_datas = (CM_CMDFAILUREDATA *) lParam;
-					switch(Err_datas->dwErr)
-					{
-						case CMDERR_NOTFOUND_FORWARD_MARKALL:
-							// Notify the MDI
-							SendMessage(GetParent(GetParent(hWnd)), WM_FINDMARKALL_WRAP, 0, (LPARAM) hWnd);
-							break;
-						case CMDERR_NOTFOUND_FORWARD_REPLACEALL:
-							// Notify the MDI
-							SendMessage(GetParent(GetParent(hWnd)), WM_FINDREPLACEALL_WRAP, 0, (LPARAM) hWnd);
-							break;
-						case CMDERR_NOTFOUND_FORWARD:
-							SendMessage(GetParent(GetParent(hWnd)), WM_FIND_FORWARD_WRAP, 0, (LPARAM) hWnd);
-							break;
-						case CMDERR_NOTFOUND_BACKWARD:
-							SendMessage(GetParent(GetParent(hWnd)), WM_FIND_BACKWARD_WRAP, 0, (LPARAM) hWnd);
-							break;
-					}
-					break;
+                case CMN_CMDFAILURE:
+                    Err_datas = (CM_CMDFAILUREDATA *) lParam;
+                    switch(Err_datas->dwErr)
+                    {
+                        case CMDERR_NOTFOUND_FORWARD_MARKALL:
+                            // Notify the MDI
+                            SendMessage(GetParent(GetParent(hWnd)), WM_FINDMARKALL_WRAP, 0, (LPARAM) hWnd);
+                            break;
+                        case CMDERR_NOTFOUND_FORWARD_REPLACEALL:
+                            // Notify the MDI
+                            SendMessage(GetParent(GetParent(hWnd)), WM_FINDREPLACEALL_WRAP, 0, (LPARAM) hWnd);
+                            break;
+                        case CMDERR_NOTFOUND_FORWARD:
+                            SendMessage(GetParent(GetParent(hWnd)), WM_FIND_FORWARD_WRAP, 0, (LPARAM) hWnd);
+                            break;
+                        case CMDERR_NOTFOUND_BACKWARD:
+                            SendMessage(GetParent(GetParent(hWnd)), WM_FIND_BACKWARD_WRAP, 0, (LPARAM) hWnd);
+                            break;
+                    }
+                    break;
 
-				case CMN_SELCHANGE:
+                case CMN_SELCHANGE:
                     ChildStruct = LoadStructure(hWnd);
                     // Load the current selection
                     LoadCurrentSel(ChildStruct->hChildCodeMax);
@@ -267,7 +267,7 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                     
                     // Save current line number
                     ChildStruct->oldCMLine = GetCurrentLineNumber(ChildStruct->hChildCodeMax);
-					break;
+                    break;
                 case CMN_VSCROLL:
                     if(CursorFollow == 1)
                     {
@@ -276,16 +276,16 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                     }
                     if(APITTip == 1) if(APIMode == 1) MoveFncY(hWnd, FRMAPIhwnd);
                     if(APIListMode == 1) MoveFncY(hWnd, FRMAPIListhWnd);
-					break;
+                    break;
                 case CMN_HSCROLL:
                     if(APITTip == 1) if(APIMode == 1) MoveFncX(hWnd, FRMAPIhwnd);
                     if(APIListMode == 1) MoveFncX(hWnd, FRMAPIListhWnd);
-					break;
+                    break;
                 case CMN_VIEWCHANGE:
                     if(APITTip == 1) if(APIMode == 1) MoveFncXY(hWnd, FRMAPIhwnd);
                     if(APIListMode == 1) MoveFncXY(hWnd, FRMAPIListhWnd);
-					break;
-				case CMN_SHOWPROPS:
+                    break;
+                case CMN_SHOWPROPS:
                     return(1);
                 case CMN_MOUSEUP:
                     // Trap middle mousebutton
@@ -299,7 +299,7 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                             return(1);
                         }
                     }
-					break;
+                    break;
                 case CMN_REGISTEREDCMD:
                     CopyMemory(&RegCom, (void *) lParam, sizeof(RegCom));
                     switch(RegCom.wCmd)
@@ -307,15 +307,15 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                         case 1000:
                             OpenFileUnderCursor(0, 0);
                             return(1);
-						case 1001:
+                        case 1001:
                             OpenFileUnderCursor(0, 1);
                             return(1);
                         case 1002:
                             hSnippetMenu = CreatePopupMenu();
-							ChildStruct = LoadStructure(hWnd);
+                            ChildStruct = LoadStructure(hWnd);
                             CreateSnippetMenu(hSnippetMenu, ChildStruct->hChildCodeMax);
                             if(SnipArray.Amount() != 0) DisplaySubContextMenu(hWnd, hSnippetMenu);
-							return(1);
+                            return(1);
                         case 1003:
                             ChildStruct = LoadStructure(hWnd);
                             CMDecToHex(ChildStruct->hChildCodeMax);
@@ -323,7 +323,7 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                         case 1004:
                             ChildStruct = LoadStructure(hWnd);
                             CMDecToBin(ChildStruct->hChildCodeMax);
-							return(1);
+                            return(1);
                         case 1005:
                             ChildStruct = LoadStructure(hWnd);
                             CMHexToDec(ChildStruct->hChildCodeMax);
@@ -356,11 +356,11 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                             DisplayAPIList(hWnd);
                             return(1);
                     }
-			}
-			break;
+            }
+            break;
         case WM_CHILDACTIVATE:
             CurrentForm = hWnd;
-			break;
+            break;
         case WM_WINDOWPOSCHANGED:
             CurrentForm = ClientGetActiveChild(hMDIform.hClient);
             if(ControlIsVisible(CurrentForm) != 0)
@@ -368,22 +368,22 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                 ChildStruct = LoadStructure(CurrentForm);
                 SetFocus(ChildStruct->hChildCodeMax);
             }
-			break;
+            break;
         case WM_ERASEBKGND:
             return(0);
         case WM_NCACTIVATE:
             if(APITTip == 1) if(APIMode == 1) ControlClose(FRMAPIhwnd);
             if(APIListMode == 1) ControlClose(FRMAPIListhWnd);
-			break;
-		case WM_MOVE:
+            break;
+        case WM_MOVE:
             if(APITTip == 1) if(APIMode == 1) ControlClose(FRMAPIhwnd);
             if(APIListMode == 1) ControlClose(FRMAPIListhWnd);
-			break;
+            break;
         case WM_SIZE:
             if(APITTip == 1) if(APIMode == 1) ControlClose(FRMAPIhwnd);
             if(APIListMode == 1) ControlClose(FRMAPIListhWnd);
             CurrentForm = hWnd;
-			break;
+            break;
         case WM_MOUSEACTIVATE:
             if(ClientGetActiveChild(hMDIform.hClient) != hWnd)
             {
@@ -391,7 +391,7 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                 SetFocus(CurrentForm);
                 return(MA_ACTIVATE);
             }
-			break;
+            break;
         case WM_PAINT:
             BeginPaint(hWnd, &ChildPs);
             ResizeChildCodeMax(hWnd);
@@ -402,11 +402,11 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
             RefreshSBStat = 1;
             WritePositionInStatus(ChildStruct->hChildCodeMax);
             SetFocus(ChildStruct->hChildCodeMax);
-			break;
-		case WM_CLOSE:
+            break;
+        case WM_CLOSE:
 //            if(ForcePrj == 1) {
 //NotInProject:
-			if(CursorDisabled) DisplayCursor();
+            if(CursorDisabled) DisplayCursor();
             ChildStruct = LoadStructure(hWnd);
             if(ChildStruct->ModifFlag == 1)
             {
@@ -414,24 +414,24 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                 switch(MiscMsgBox(hMDIform.hWnd, BufString, MB_QUESTIONCANCEL, Requesters)) {
                     case IDYES:
                         SaveIt(hWnd);
-						break;
-					case IDNO:
-						break;
+                        break;
+                    case IDNO:
+                        break;
                     case IDCANCEL:
-						return(0);
+                        return(0);
                 }
             }
             StoreLastPosInChild(hWnd);
-			// Delete them manually
-			delete ChildStruct->RFile;
-			delete ChildStruct->Language;
-			delete ChildStruct->oldAPIFnc;
-			delete ChildStruct->oldAPILineFnc;
-			FreeMem((long) ChildStruct->FileDateOpen);
+            // Delete them manually
+            delete ChildStruct->RFile;
+            delete ChildStruct->Language;
+            delete ChildStruct->oldAPIFnc;
+            delete ChildStruct->oldAPILineFnc;
+            FreeMem((long) ChildStruct->FileDateOpen);
             // Free the child structure
             FreeMem(GetWindowLong(hWnd, GWL_USERDATA));
-			// Put a phony structure for following messages
-			SetWindowLong(hWnd, GWL_USERDATA, (long) &ChildStructBack);
+            // Put a phony structure for following messages
+            SetWindowLong(hWnd, GWL_USERDATA, (long) &ChildStructBack);
 //            Else
                 // Just hide the window if it is in project
                 // And no global close
@@ -446,12 +446,12 @@ LRESULT CALLBACK MDIChildProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 //                MDIChildForm1Proc = 0
 //                Exit Function
 //           End If
-			break;
+            break;
         case WM_DESTROY:
             NbForms--;
             if(NbForms == 0) ClearStatusBarParts();
             // Notify the parent
-			SendMessage(hMDIform.hClient, CHILD_MSG_DESTROYED, 0, (long) hWnd);
+            SendMessage(hMDIform.hClient, CHILD_MSG_DESTROYED, 0, (long) hWnd);
             return(0);
     }
     return(DefMDIChildProc(hWnd, uMsg, wParam, lParam));
@@ -465,9 +465,9 @@ LPCHILDDAT LoadStructure(HWND hWnd)
     {
         //RtlZeroMemory(&ChildStruct, sizeof(ChildStruct));
         return((LPCHILDDAT) GetWindowLong(hWnd, GWL_USERDATA));
-		//RtlCopyMemory(&ChildStruct, (void *) GetWindowLong(hWnd, GWL_USERDATA), sizeof(ChildStruct));
+        //RtlCopyMemory(&ChildStruct, (void *) GetWindowLong(hWnd, GWL_USERDATA), sizeof(ChildStruct));
     }
-	return(NULL);
+    return(NULL);
 }
             
 // -----------------------------------------------------------------------
@@ -476,9 +476,9 @@ void ResizeChildCodeMax(HWND hWnd)
 {
     RECT CodeMaxRect;
 
-	GetClientRect(hWnd, &CodeMaxRect);
+    GetClientRect(hWnd, &CodeMaxRect);
     ChildStruct = LoadStructure(hWnd);
-	SetWindowPos(ChildStruct->hChildCodeMax, 0, CodeMaxRect.left, CodeMaxRect.top, CodeMaxRect.right - CodeMaxRect.left, CodeMaxRect.bottom - CodeMaxRect.top, SWP_NOOWNERZORDER | SWP_NOZORDER | SWP_SHOWWINDOW);
+    SetWindowPos(ChildStruct->hChildCodeMax, 0, CodeMaxRect.left, CodeMaxRect.top, CodeMaxRect.right - CodeMaxRect.left, CodeMaxRect.bottom - CodeMaxRect.top, SWP_NOOWNERZORDER | SWP_NOZORDER | SWP_SHOWWINDOW);
 }
 
 // -----------------------------------------------------------------------
@@ -511,33 +511,33 @@ void CALLBACK SetCodeMaxProperties(HWND hWnd)
     RefreshIdentScope(hWnd);
     CM_EnableSelBounds(hWnd, Wrap);
     SetHighLine(hWnd);
-	SetCorrectionHook(hWnd);
+    SetCorrectionHook(hWnd);
 }
 
 // -----------------------------------------------------------------------
 // Refresh auto indent mode according to child's language
 void RefreshIdentScope(HWND hWnd)
 {
-	CStr BufString;
+    CStr BufString;
     
-	switch(IndentScope)
-	{
+    switch(IndentScope)
+    {
         case 0:
             CM_SetAutoIndentMode(hWnd, CM_INDENT_OFF);
-			break;
-		case 1:
-			ChildStruct = LoadStructure(GetParent(hWnd));
-			BufString = ChildStruct->Language->Left(ChildStruct->Language->Len());
-			if(BufString.Len() == 0)
-			{
-			    CM_SetAutoIndentMode(hWnd, CM_INDENT_OFF);
-			}
-			else
-			{
-				if(strcmpi(BufString.Get_String(), "(none)") == 0) CM_SetAutoIndentMode(hWnd, CM_INDENT_OFF);
-				else CM_SetAutoIndentMode(hWnd, CM_INDENT_SCOPE);
-			}
-	}
+            break;
+        case 1:
+            ChildStruct = LoadStructure(GetParent(hWnd));
+            BufString = ChildStruct->Language->Left(ChildStruct->Language->Len());
+            if(BufString.Len() == 0)
+            {
+                CM_SetAutoIndentMode(hWnd, CM_INDENT_OFF);
+            }
+            else
+            {
+                if(strcmpi(BufString.Get_String(), "(none)") == 0) CM_SetAutoIndentMode(hWnd, CM_INDENT_OFF);
+                else CM_SetAutoIndentMode(hWnd, CM_INDENT_SCOPE);
+            }
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -561,9 +561,9 @@ void SetCodeMaxColors(HWND hWnd)
     CM_COLORS ColsToSet;
     CM_FONTSTYLES StyleToSet;
 
-	memset(&ColsToSet, 0, sizeof(ColsToSet));
-	memset(&StyleToSet, 0, sizeof(StyleToSet));
-	ColsToSet.crTextBk = CurBackColor;
+    memset(&ColsToSet, 0, sizeof(ColsToSet));
+    memset(&StyleToSet, 0, sizeof(StyleToSet));
+    ColsToSet.crTextBk = CurBackColor;
     ColsToSet.crWindow = CurBackColor;
     ColsToSet.crVDividerLines = CurMarginColor;
     ColsToSet.crHDividerLines = CurMarginColor;
@@ -628,44 +628,44 @@ void SetCodeMaxLineStyle(HWND hWnd, long StyleToUse)
 {
     CM_LINENUMBERING LnStyleStruct;
     
-	memset(&LnStyleStruct, 0, sizeof(LnStyleStruct));
-	switch(StyleToUse)
-	{
-		case 1:
+    memset(&LnStyleStruct, 0, sizeof(LnStyleStruct));
+    switch(StyleToUse)
+    {
+        case 1:
             LnStyleStruct.bEnabled = 1;
             LnStyleStruct.dwStyle = CM_BINARY;
             LnStyleStruct.nStartAt = LnStart;
-	        LnStyleStruct.bComplementHexa = 0;
+            LnStyleStruct.bComplementHexa = 0;
             CM_SetLineNumbering(hWnd, &LnStyleStruct);
-			break;
+            break;
         case 2:
             LnStyleStruct.bEnabled = 1;
             LnStyleStruct.dwStyle = CM_DECIMAL;
             LnStyleStruct.nStartAt = LnStart;
-	        LnStyleStruct.bComplementHexa = 0;
+            LnStyleStruct.bComplementHexa = 0;
             CM_SetLineNumbering(hWnd, &LnStyleStruct);
-			break;
+            break;
         case 3:
             LnStyleStruct.bEnabled = 1;
             LnStyleStruct.dwStyle = CM_HEXADECIMAL;
             LnStyleStruct.nStartAt = LnStart;
-	        LnStyleStruct.bComplementHexa = 0;
+            LnStyleStruct.bComplementHexa = 0;
             CM_SetLineNumbering(hWnd, &LnStyleStruct);
-			break;
+            break;
         case 4:
             LnStyleStruct.bEnabled = 1;
             LnStyleStruct.dwStyle = CM_OCTAL;
             LnStyleStruct.nStartAt = LnStart;
-	        LnStyleStruct.bComplementHexa = 0;
+            LnStyleStruct.bComplementHexa = 0;
             CM_SetLineNumbering(hWnd, &LnStyleStruct);
-			break;
+            break;
         default:
             LnStyleStruct.bEnabled = 0;
             LnStyleStruct.dwStyle = 0;
             LnStyleStruct.nStartAt = 0;
-	        LnStyleStruct.bComplementHexa = 0;
-	        CM_SetLineNumbering(hWnd, &LnStyleStruct);
-			break;
+            LnStyleStruct.bComplementHexa = 0;
+            CM_SetLineNumbering(hWnd, &LnStyleStruct);
+            break;
     }
 }
 
@@ -765,15 +765,15 @@ long GetCurrentColNumber(HWND hWnd)
 CStr CMGetCurrentLine(HWND hWnd, long LineNumber)
 {
     CStr ReturnValue;
-	CStr BufString;
-	long CurrLineN = 0;
+    CStr BufString;
+    long CurrLineN = 0;
     
-	CurrLineN = CM_GetLineLength(hWnd, LineNumber, 0);
+    CurrLineN = CM_GetLineLength(hWnd, LineNumber, 0);
     if(CurrLineN <= 0) return(ReturnValue);
     BufString = BufString.String(CurrLineN, 1);
     CM_GetLine(hWnd, LineNumber, BufString.Get_String());
-	ReturnValue.Set_String(BufString.Get_String());
-	return(ReturnValue);
+    ReturnValue.Set_String(BufString.Get_String());
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -781,11 +781,11 @@ CStr CMGetCurrentLine(HWND hWnd, long LineNumber)
 CStr CMGetRealFile(CStr CMFile)
 {
     CStr ReturnValue;
-	CStr BufString;
-	
-	BufString = CMFile.Left(CMFile.Len());
-	ReturnValue.Set_String(BufString.Get_String());
-	return(ReturnValue);
+    CStr BufString;
+    
+    BufString = CMFile.Left(CMFile.Len());
+    ReturnValue.Set_String(BufString.Get_String());
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -793,11 +793,11 @@ CStr CMGetRealFile(CStr CMFile)
 CStr CMGetRealLanguage(CStr CMFile)
 {
     CStr ReturnValue;
- 	CStr BufString;
-	
-	BufString = CMFile.Left(CMFile.Len());
-	ReturnValue.Set_String(BufString.Get_String());
-	return(ReturnValue);
+    CStr BufString;
+    
+    BufString = CMFile.Left(CMFile.Len());
+    ReturnValue.Set_String(BufString.Get_String());
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -805,17 +805,17 @@ CStr CMGetRealLanguage(CStr CMFile)
 CStr RetrieveCurrentLine(HWND hWnd)
 {
     CStr ReturnValue;
- 	CStr BufString;
+    CStr BufString;
     long LineToRetrieve = 0;
     long LnToRetLen = 0;
     
-	LineToRetrieve = GetCurrentLineNumber(hWnd);
+    LineToRetrieve = GetCurrentLineNumber(hWnd);
     LnToRetLen = CM_GetLineLength(hWnd, LineToRetrieve, 0);
     if(LnToRetLen > 0)
     {
-		BufString = BufString.String(LnToRetLen, 1);
+        BufString = BufString.String(LnToRetLen, 1);
         CM_GetLine(hWnd, LineToRetrieve, BufString.Get_String());
-		ReturnValue.Set_String(BufString.Get_String());
+        ReturnValue.Set_String(BufString.Get_String());
     }
     return(ReturnValue);
 }
@@ -833,15 +833,15 @@ long GetCurrentLogicalSelLen(HWND hWnd)
 CStr GetCurrentLogicalSelText(HWND hWnd)
 {
     CStr ReturnValue;
-	CStr BufString;
-	long SelL = 0;
+    CStr BufString;
+    long SelL = 0;
 
     SelL = GetCurrentLogicalSelLen(hWnd);
     if(SelL == 0) return(ReturnValue);
     BufString = BufString.String(SelL, 1);
     CM_GetText(hWnd, BufString.Get_String(), &CodeMaxCurRange);
-	ReturnValue.Set_String(BufString.Get_String());
-	return(ReturnValue);
+    ReturnValue.Set_String(BufString.Get_String());
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -902,7 +902,7 @@ void ClearFile(HWND hWnd)
 long LoadFile(HWND hWnd)
 {
     long ReturnValue = 0;
-	CStr DirectUnix;
+    CStr DirectUnix;
     CStr FileTitle;
     long UnixBytesReaded = 0;
     long UnixFileHandle = 0;
@@ -955,18 +955,18 @@ DirectConvertUnix:
     ChildStruct->FileLoaded = 1;
     if(FileIsReadOnly(FileTitle))
     {
-		SetChildReadOnly(hWnd, TRUE);
+        SetChildReadOnly(hWnd, TRUE);
     }
     else
     {
-		SetChildReadOnly(hWnd, FALSE);
-	}
-	RefreshSBStat = 1;
+        SetChildReadOnly(hWnd, FALSE);
+    }
+    RefreshSBStat = 1;
     WritePositionInStatus(ChildStruct->hChildCodeMax);
     SetHighLine(ChildStruct->hChildCodeMax);
     ReturnValue = 1;
     RefreshChildTitle(hWnd);
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1016,7 +1016,7 @@ DirectConvertUnix:
     }
     WritePositionInStatus(ChildStruct->hChildCodeMax);
     ReturnValue = 1;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1024,8 +1024,8 @@ DirectConvertUnix:
 long SaveCodeMax(HWND hWnd, CStr FName)
 {
     CStr BakDirToSave;
-	CStr NameDeco;
-	long ReturnValue = 0;
+    CStr NameDeco;
+    long ReturnValue = 0;
 
     ChildStruct = LoadStructure(hWnd);
     if(CM_SaveFile(ChildStruct->hChildCodeMax, FName.Get_String(), 0) != CME_SUCCESS) goto ErrSave;
@@ -1045,15 +1045,15 @@ long SaveCodeMax(HWND hWnd, CStr FName)
         {
             BakDirToSave = CMGetRealFile(FName).Get_String();
         }
-		// Add decoration
-		if(DecorateBak == 1)
-		{
-			NameDeco = DateGetDay() + (CStr) DateGetMonth() + (CStr) DateGetYear() + (CStr) DateGetHour();
-			NameDeco = StringReplace(NameDeco, ":", "", 1, -1, Binary_Compare);
-			NameDeco = StringReplace(NameDeco, " ", "", 1, -1, Binary_Compare);
-			BakDirToSave = BakDirToSave + "." + (CStr) NameDeco;
-		}
-		BakDirToSave = BakDirToSave + ".BAK";
+        // Add decoration
+        if(DecorateBak == 1)
+        {
+            NameDeco = DateGetDay() + (CStr) DateGetMonth() + (CStr) DateGetYear() + (CStr) DateGetHour();
+            NameDeco = StringReplace(NameDeco, ":", "", 1, -1, Binary_Compare);
+            NameDeco = StringReplace(NameDeco, " ", "", 1, -1, Binary_Compare);
+            BakDirToSave = BakDirToSave + "." + (CStr) NameDeco;
+        }
+        BakDirToSave = BakDirToSave + ".BAK";
         DeleteFile(BakDirToSave.Get_String());
         CM_SaveFile(ChildStruct->hChildCodeMax, BakDirToSave.Get_String(), 0);
         WriteComment("");
@@ -1090,8 +1090,8 @@ void SaveBookmarks(HWND hWnd, CStr FileName, long BaseLine, long Lines)
     long BkRealNumber = 0;
     int i = 0;
     
-	if(strcmpi(FileName.Get_String(), "<untitled document") != 0)
-	{
+    if(strcmpi(FileName.Get_String(), "<untitled document") != 0)
+    {
         // Save the bookmarks
         SaveBook = IniReadKey("Layout", "SaveBookmarks", MainIniFile);
         if(SaveBook.Len() != 0)
@@ -1100,7 +1100,7 @@ void SaveBookmarks(HWND hWnd, CStr FileName, long BaseLine, long Lines)
             {
                 // Retrieve the number of bookmarks
                 BookName = FileReplaceExtension(FileName, "mbk");
-				ChildStruct = LoadStructure(hWnd);
+                ChildStruct = LoadStructure(hWnd);
                 BkNumber = CM_GetAllBookmarks(ChildStruct->hChildCodeMax, 0);
                 if(BkNumber != 0)
                 {
@@ -1119,7 +1119,7 @@ void SaveBookmarks(HWND hWnd, CStr FileName, long BaseLine, long Lines)
                     // Save number of bookmarks
                     BkRealNumber = 0;
                     // Store bookmarks datas
-					BkBlockPtr = (long *) BkBlock;
+                    BkBlockPtr = (long *) BkBlock;
                     for(i = 0; i <= BkNumber - 1; i++)
                     {
                         BkLineNumber = BkBlockPtr[i] - BaseLine;
@@ -1159,7 +1159,7 @@ void LoadBookmarks(HWND hWnd, CStr BkFName, long BaseLine)
     FILETIME BookfileTime;
     int i = 0;
     
-	LoadBook = IniReadKey("Layout", "SaveBookmarks", MainIniFile);
+    LoadBook = IniReadKey("Layout", "SaveBookmarks", MainIniFile);
     if(LoadBook.Len() != 0)
     {
         if(strcmp(LoadBook.Get_String(), "1") == 0)
@@ -1180,8 +1180,8 @@ void LoadBookmarks(HWND hWnd, CStr BkFName, long BaseLine)
                         NbBooksLng = NbBooks.Get_Long();
                         RealLoadBook = 0;
                         ChildStruct = LoadStructure(hWnd);
-                		for(i = 0; i <= NbBooksLng - 1; i++)
-                		{
+                        for(i = 0; i <= NbBooksLng - 1; i++)
+                        {
                             BookToStore = IniReadKey("BOOKMARKDAT", "BOOK" + (CStr) StringNumberComplement(i, 6).Get_String(), BkNameToLoad);
                             if(BookToStore.Len() != 0)
                             {
@@ -1209,7 +1209,7 @@ void UpdateLanguage(HWND hWnd, CStr FileName)
     CStr NewRFile;
     CStr NewLanguageToStore;
     
-	ChildStruct = LoadStructure(hWnd);
+    ChildStruct = LoadStructure(hWnd);
     NewRFile = CMGetRealFile(FileName);
     NewLanguageToStore = GetLanguageToOpen(NewRFile);
     if(strcmpi(NewLanguageToStore.Get_String(), CMGetRealFile(ChildStruct->Language).Get_String()) != 0)
@@ -1234,7 +1234,7 @@ void PrintFile(HWND hWnd, long Selection)
     long PFlags = 0;
     CStr BufString;
 
-	if(NbForms == 0) return;
+    if(NbForms == 0) return;
     ChildStruct = LoadStructure(hWnd);
     if(Selection == 1) if(GetCurrentLogicalSelLen(ChildStruct->hChildCodeMax) == 0) goto ErrEmptyPrint;
     else if(CM_GetTextLengthAll(ChildStruct->hChildCodeMax, 1) == 0) goto ErrEmptyPrint;
@@ -1243,7 +1243,7 @@ void PrintFile(HWND hWnd, long Selection)
     if(CM_Print(ChildStruct->hChildCodeMax, 0, PFlags) != CME_SUCCESS) goto ErrPrint;
     return;
 ErrPrint:
-	BufString =	"Can't print file '" + (CStr) ChildStruct->RFile->Left(ChildStruct->RFile->Len()).Get_String() + (CStr) "'.";
+    BufString = "Can't print file '" + (CStr) ChildStruct->RFile->Left(ChildStruct->RFile->Len()).Get_String() + (CStr) "'.";
     MiscMsgBox(hMDIform.hWnd, BufString, MB_ERROR, Requesters);
     return;
 ErrEmptyPrint:
@@ -1256,14 +1256,14 @@ CStr GetCurrentCharWord(HWND hWnd)
 {
     CStr ReturnValue;
     CM_RANGE CodeMaxCurCharRange;
-	CStr BufString;
+    CStr BufString;
     
-	CM_GetSel(hWnd, &CodeMaxCurCharRange, 1);
+    CM_GetSel(hWnd, &CodeMaxCurCharRange, 1);
     CodeMaxCurCharRange.posEnd.nCol = CodeMaxCurCharRange.posEnd.nCol + 1;
     BufString = BufString.String(CM_GetTextLength(hWnd, &CodeMaxCurCharRange, 1), 1);
     CM_GetText(hWnd, BufString.Get_String(), &CodeMaxCurCharRange);
     ReturnValue.Set_String(BufString.Left(1).Get_String());
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1271,7 +1271,7 @@ CStr GetCurrentCharWord(HWND hWnd)
 CStr SelectCurrentWord(HWND hWnd)
 {
     CStr ReturnValue;
-	CStr BufString;
+    CStr BufString;
 
     BufString = GetCurrentWord(hWnd);
     if(BufString.Len() != 0)
@@ -1283,8 +1283,8 @@ CStr SelectCurrentWord(HWND hWnd)
             BufString = GetCurrentWord(hWnd);
         }
     }
-	ReturnValue.Set_String(BufString.Get_String());
-	return(ReturnValue);
+    ReturnValue.Set_String(BufString.Get_String());
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1293,7 +1293,7 @@ CStr GetCurrentWord(HWND hWnd)
 {
     CStr ReturnValue;
     CStr BufString;
-	CM_POSITION CPos;
+    CM_POSITION CPos;
 
 ReSelectWord:
     LoadCurrentSel(hWnd);
@@ -1319,7 +1319,7 @@ ReSelectWord:
         else
         {
 ForceItRight:
-			CM_ExecuteCmd(hWnd, CMD_CHARRIGHT, 0);
+            CM_ExecuteCmd(hWnd, CMD_CHARRIGHT, 0);
         }
         goto ReSelectWord;
     }
@@ -1441,7 +1441,7 @@ ForceItRight:
         goto ReSelectWord;
     }
     ReturnValue = BufString;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1474,13 +1474,13 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     CStr ExprCharToTest;
     long wParamCMD = 0;
     long HaveToDie = 0;
-	long *LParamGetSel;
-	DLGPROC LocCodeMaxHook;
-	POINT New_Mouse_Coords;
-	CStr Script_FileName;
-	int ScriptFile_Size;
-	long ScriptFile_Size_Out;
-	HGLOBAL Script_File;
+    long *LParamGetSel;
+    DLGPROC LocCodeMaxHook;
+    POINT New_Mouse_Coords;
+    CStr Script_FileName;
+    int ScriptFile_Size;
+    long ScriptFile_Size_Out;
+    HGLOBAL Script_File;
     
     // Execute possible hooks
     for(i = 0; i < CodeMaxHooks.Amount(); i++)
@@ -1488,8 +1488,8 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         if(CodeMaxHooks.Get(i)->Content != 0)
         {
             LocCodeMaxHook = CodeMaxHooks.Get(i)->Content;
-			if(LocCodeMaxHook(hWnd, uMsg, wParam, lParam) == HOOK_DIE)
-			{
+            if(LocCodeMaxHook(hWnd, uMsg, wParam, lParam) == HOOK_DIE)
+            {
                 HaveToDie = HaveToDie | HOOK_DIE;
             }
         }
@@ -1501,8 +1501,8 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         // ----------------------- RichTexBox emulation -----------
         case EM_EXGETSEL:
             // lParam should contains CHARRANGE address
-			LParamGetSel = (long *) lParam;
-	        LParamGetSel[0] = 0;
+            LParamGetSel = (long *) lParam;
+            LParamGetSel[0] = 0;
             LParamGetSel[1] = GetCurrentLogicalSelLen(hWnd);
             return(0);
         case EM_EXSETSEL:
@@ -1511,9 +1511,9 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         case EM_GETSELTEXT:
             // lParam should contains buffer address to store at
             if(lParam != 0) RtlCopyMemory((void *) lParam, GetCurrentLogicalSelText(hWnd).Get_String(), GetCurrentLogicalSelLen(hWnd));
-			return(0);
+            return(0);
         case EM_REPLACESEL:
-			if(IsChildReadOnly(GetParent(hWnd)) == 1) return(0);
+            if(IsChildReadOnly(GetParent(hWnd)) == 1) return(0);
             // wParam is not used (can undo or not)
             // lParam should contains buffer address to retrieve from
             EmulTxtToRep = EmulTxtToRep.String(strlen((char *) lParam), 1);
@@ -1525,7 +1525,7 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         case WM_CONTEXTMENU:
             if((HWND) wParam == hWnd)
             {
-				if(CursorDisabled) DisplayCursor();
+                if(CursorDisabled) DisplayCursor();
                 hPop = CreatePopupMenu();
                 MenuAddString(hPop, "Context help\tF1", MENU_CONTEXT_CONTEXTHELP_ID + MENU_CONTEXT_IDBASE, TRUE);
                 MenuAddString(hPop, "MSDN/Platform SDK help\tCtrl+F1", MENU_CONTEXT_MSDNHELP_ID + MENU_CONTEXT_IDBASE, TRUE);
@@ -1642,14 +1642,14 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 MenuAddSeparator(hPop);
                 MenuAddString(hPop, "New\tCtrl+N", MENU_CONTEXT_NEW_ID + MENU_CONTEXT_IDBASE, TRUE);
                 
-				hPopSub = CreatePopupMenu();
+                hPopSub = CreatePopupMenu();
                 MenuAddString(hPopSub, "Source file(s)...\tCtrl+I", MENU_CONTEXT_INCLUDEFILE_ID + MENU_CONTEXT_IDBASE, TRUE);
-				MenuSetDefaultItem(hPopSub, 0);
-				hPopSubSub = CreatePopupMenu();
-				// 0 to avoid global menu registering
-				CreateFiltersMenu(hPopSubSub, 0, MENU_CONTEXT_INCLUDEFILTERS_ID + MENU_CONTEXT_IDBASE, "Laboratory...\tCtrl+Shift+I", 1);
-				AppendMenu(hPopSub, MF_POPUP, (UINT) hPopSubSub, "Filters");
-				AppendMenu(hPop, MF_POPUP, (UINT) hPopSub, "Include");
+                MenuSetDefaultItem(hPopSub, 0);
+                hPopSubSub = CreatePopupMenu();
+                // 0 to avoid global menu registering
+                CreateFiltersMenu(hPopSubSub, 0, MENU_CONTEXT_INCLUDEFILTERS_ID + MENU_CONTEXT_IDBASE, "Laboratory...\tCtrl+Shift+I", 1);
+                AppendMenu(hPopSub, MF_POPUP, (UINT) hPopSubSub, "Filters");
+                AppendMenu(hPop, MF_POPUP, (UINT) hPopSub, "Include");
                 
                 MenuAddString(hPop, "Duplicate file", MENU_CONTEXT_DUPLICATEFILE_ID + MENU_CONTEXT_IDBASE, TRUE);
                 MenuAddString(hPop, "Reload file\tCtrl+Shift+N", MENU_CONTEXT_RELOADFILE_ID + MENU_CONTEXT_IDBASE, TRUE);
@@ -1663,86 +1663,86 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             {
                 return(0);
             }
-			break;
+            break;
         // Process dropped file from shell
         case WM_DROPFILES:
             if(AcceptFiles == 1)
             {
                 if(wParam != 0)
                 {
-					if(IniReadBoolKey("Layout", "NewWindowOnDrop", MainIniFile))
-					{
-						// Retrieve the number of droped files
-						NbrDroped = DragQueryFile((HDROP) wParam, 0xFFFFFFFF, 0, 0);
-						if(NbrDroped != 0)
-						{
-							for(i = 0; i <= (long) NbrDroped - 1; i++)
-							{
-								// Retrieve the size to allocate for filename (+1)
-								FNameSize = DragQueryFile((HDROP) wParam, i, NULL, 0) + 1;
-								if(FNameSize != 0)
-								{
-									// Allocate space
-									DropedFileName = DropedFileName.String(FNameSize + 1, ' ');
-									// Retrieve filename
-									DragQueryFile((HDROP) wParam, i, DropedFileName.Get_String(), FNameSize);
-									DropedFileName = DropedFileName.Trim();
-									OpenUnknownFile(DropedFileName, TRUE);
-								}
-							}
-						}
-						return(0);
-					}
-					else
-					{
-						// Retrieve the number of droped files
-						NbrDroped = DragQueryFile((HDROP) wParam, 0xFFFFFFFF, 0, 0);
-						if(NbrDroped != 0)
-						{
-							// Retrieve cursor position in window
-							DragQueryPoint((HDROP) wParam, &DropPosition);
-							// Set the caret new position (line only)
-							CM_GetSelFromPoint(hWnd, DropPosition.y, DropPosition.x, &DropInPosition);
-							if(DropInPosition.nLine > CM_GetLineCount(hWnd)) DropInPosition.nLine = CM_GetLineCount(hWnd);
-							// Deplace caret at dropping line
-							CM_SetCaretPos(hWnd, DropInPosition.nLine, 0);
-							for(i = 0; i <= NbrDroped - 1; i++)
-							{
-								// Retrieve the size to allocate for filename (+1)
-								FNameSize = DragQueryFile((HDROP) wParam, i, NULL, 0) + 1;
-								if(FNameSize != 0)
-								{
-									// Allocate space
-									DropedFileName = DropedFileName.String(FNameSize + 1, ' ');
-									// Retrieve filename
-									DragQueryFile((HDROP) wParam, i, DropedFileName.Get_String(), FNameSize);
-									// Include it in source
-									DropedFileName = DropedFileName.Trim();
-									DroppedFile = (long) MLoadFile(DropedFileName.Get_String(), &DroppedRead);
-									ChildStruct = LoadStructure(CurrentForm);
-									if(DroppedFile != 0)
-									{
-										LoadCurrentSel(ChildStruct->hChildCodeMax);
-										LineToDrop = CodeMaxCurRange.posStart.nLine;
-										SmartInsertFile(CurrentForm, DroppedFile);
-										LoadBookmarks(CurrentForm, CMGetRealFile(DropedFileName), LineToDrop);
-										FreeMem(DroppedFile);
-									}
-									if(strcmpi(ChildStruct->RFile->Left(18).Get_String(), "<untitled document") == 0)
-									{
-										CM_SetModified(hWnd, 0);
-										ChildStruct->RFile->Set_String(DropedFileName.Get_String());
-										ControlSetText(CurrentForm, ChildStruct->RFile);
-										UpdateLanguage(CurrentForm, DropedFileName);
-									}
-								}
-							}
-						}
-					}
+                    if(IniReadBoolKey("Layout", "NewWindowOnDrop", MainIniFile))
+                    {
+                        // Retrieve the number of droped files
+                        NbrDroped = DragQueryFile((HDROP) wParam, 0xFFFFFFFF, 0, 0);
+                        if(NbrDroped != 0)
+                        {
+                            for(i = 0; i <= (long) NbrDroped - 1; i++)
+                            {
+                                // Retrieve the size to allocate for filename (+1)
+                                FNameSize = DragQueryFile((HDROP) wParam, i, NULL, 0) + 1;
+                                if(FNameSize != 0)
+                                {
+                                    // Allocate space
+                                    DropedFileName = DropedFileName.String(FNameSize + 1, ' ');
+                                    // Retrieve filename
+                                    DragQueryFile((HDROP) wParam, i, DropedFileName.Get_String(), FNameSize);
+                                    DropedFileName = DropedFileName.Trim();
+                                    OpenUnknownFile(DropedFileName, TRUE);
+                                }
+                            }
+                        }
+                        return(0);
+                    }
+                    else
+                    {
+                        // Retrieve the number of droped files
+                        NbrDroped = DragQueryFile((HDROP) wParam, 0xFFFFFFFF, 0, 0);
+                        if(NbrDroped != 0)
+                        {
+                            // Retrieve cursor position in window
+                            DragQueryPoint((HDROP) wParam, &DropPosition);
+                            // Set the caret new position (line only)
+                            CM_GetSelFromPoint(hWnd, DropPosition.y, DropPosition.x, &DropInPosition);
+                            if(DropInPosition.nLine > CM_GetLineCount(hWnd)) DropInPosition.nLine = CM_GetLineCount(hWnd);
+                            // Deplace caret at dropping line
+                            CM_SetCaretPos(hWnd, DropInPosition.nLine, 0);
+                            for(i = 0; i <= NbrDroped - 1; i++)
+                            {
+                                // Retrieve the size to allocate for filename (+1)
+                                FNameSize = DragQueryFile((HDROP) wParam, i, NULL, 0) + 1;
+                                if(FNameSize != 0)
+                                {
+                                    // Allocate space
+                                    DropedFileName = DropedFileName.String(FNameSize + 1, ' ');
+                                    // Retrieve filename
+                                    DragQueryFile((HDROP) wParam, i, DropedFileName.Get_String(), FNameSize);
+                                    // Include it in source
+                                    DropedFileName = DropedFileName.Trim();
+                                    DroppedFile = (long) MLoadFile(DropedFileName.Get_String(), &DroppedRead);
+                                    ChildStruct = LoadStructure(CurrentForm);
+                                    if(DroppedFile != 0)
+                                    {
+                                        LoadCurrentSel(ChildStruct->hChildCodeMax);
+                                        LineToDrop = CodeMaxCurRange.posStart.nLine;
+                                        SmartInsertFile(CurrentForm, DroppedFile);
+                                        LoadBookmarks(CurrentForm, CMGetRealFile(DropedFileName), LineToDrop);
+                                        FreeMem(DroppedFile);
+                                    }
+                                    if(strcmpi(ChildStruct->RFile->Left(18).Get_String(), "<untitled document") == 0)
+                                    {
+                                        CM_SetModified(hWnd, 0);
+                                        ChildStruct->RFile->Set_String(DropedFileName.Get_String());
+                                        ControlSetText(CurrentForm, ChildStruct->RFile);
+                                        UpdateLanguage(CurrentForm, DropedFileName);
+                                    }
+                                }
+                            }
+                        }
+                    }
                     SetFocus(hWnd);
                 }
             }
-			break;
+            break;
 
         // --- Contextual menu selections
         case WM_MENUSELECT:
@@ -1750,43 +1750,43 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             {
                 if((wParam & 0x8000) == 0)
                 {
-					if(CursorDisabled) DisplayCursor();
+                    if(CursorDisabled) DisplayCursor();
                     wParamSelCM = (wParam & 0xFFFF);
                     if(wParamSelCM >= MENU_SCRIPTINSERT_IDBASE)
                     {
-						if((wParamSelCM - MENU_SCRIPTINSERT_IDBASE) < LUAArray.Amount())
-						{
-							WriteComment(LUAArray.Get(wParamSelCM - MENU_SCRIPTINSERT_IDBASE)->Content);
-						}
-						else
-						{
-							WriteComment("Modify scripts list for this language");
-						}
-						return(0);
+                        if((wParamSelCM - MENU_SCRIPTINSERT_IDBASE) < LUAArray.Amount())
+                        {
+                            WriteComment(LUAArray.Get(wParamSelCM - MENU_SCRIPTINSERT_IDBASE)->Content);
+                        }
+                        else
+                        {
+                            WriteComment("Modify scripts list for this language");
+                        }
+                        return(0);
                     }
                     else if(wParamSelCM >= MENU_CODEMAXIMA_IDBASE)
                     {
-						WriteComment("");
-						return(0);
+                        WriteComment("");
+                        return(0);
                     }
                     else if(wParamSelCM < MENU_CONTEXT_IDBASE)
                     {
-						WriteComment("");
-						return(0);
+                        WriteComment("");
+                        return(0);
                     }
                     else if(wParamSelCM < MENU_SNIPPET_IDBASE)
                     {
-						WriteComment(MenuCodeMaxComments[wParamSelCM - MENU_CONTEXT_IDBASE]);
-						return(0);
+                        WriteComment(MenuCodeMaxComments[wParamSelCM - MENU_CONTEXT_IDBASE]);
+                        return(0);
                     }
                     else if(wParamSelCM < MENU_CODEMAXIMA_IDBASE)
                     {
-						WriteComment(SnipArray.Get(wParamSelCM - MENU_SNIPPET_IDBASE)->Content);
-						return(0);
+                        WriteComment(SnipArray.Get(wParamSelCM - MENU_SNIPPET_IDBASE)->Content);
+                        return(0);
                     }
                 }
             }
-			break;
+            break;
 
         case WM_EXITMENULOOP:
             WriteComment("");
@@ -1794,7 +1794,7 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         
         // --- Contextual menu commands
         case WM_COMMAND:
-			if(CursorDisabled) DisplayCursor();
+            if(CursorDisabled) DisplayCursor();
             if((wParam & 0x8000) == 0)
             {
                 wParamCMD = (wParam & 0xFFFF);
@@ -1802,242 +1802,242 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 {
                     case MENU_CONTEXT_CONTEXTHELP_ID + MENU_CONTEXT_IDBASE:
                         MCMD_ContextHelp();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_MSDNHELP_ID + MENU_CONTEXT_IDBASE:
                         MCMD_MSDNHelp();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_DDKHELP_ID + MENU_CONTEXT_IDBASE:
                         MCMD_DDKHelp();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_DIRECTXSDKHELP_ID + MENU_CONTEXT_IDBASE:
                         MCMD_DirectXSDKHelp();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_OPENFILEUNDERCURSOR_ID + MENU_CONTEXT_IDBASE:
                         OpenFileUnderCursor(0, 0);
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_EXECFILEUNDERCURSOR_ID + MENU_CONTEXT_IDBASE:
                         OpenFileUnderCursor(0, 1);
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_DECTOHEX_ID + MENU_CONTEXT_IDBASE:
                         CMDecToHex(hWnd);
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_DECTOBIN_ID + MENU_CONTEXT_IDBASE:
                         CMDecToBin(hWnd);
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_HEXTODEC_ID + MENU_CONTEXT_IDBASE:
                         CMHexToDec(hWnd);
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_HEXTOBIN_ID + MENU_CONTEXT_IDBASE:
                         CMHexToBin(hWnd);
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BINTODEC_ID + MENU_CONTEXT_IDBASE:
                         CMBinToDec(hWnd);
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BINTOHEX_ID + MENU_CONTEXT_IDBASE:
                         CMBinToHex(hWnd);
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_HEXTOFLT_ID + MENU_CONTEXT_IDBASE:
                         CMHexToFlt(hWnd);
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_FLTTOHEX_ID + MENU_CONTEXT_IDBASE:
                         CMFltToHex(hWnd);
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_UNDO_ID + MENU_CONTEXT_IDBASE:
                         MCMD_Undo();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_REDO_ID + MENU_CONTEXT_IDBASE:
                         MCMD_Redo();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_CUT_ID + MENU_CONTEXT_IDBASE:
                         MCMD_Cut();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_COPY_ID + MENU_CONTEXT_IDBASE:
                         MCMD_Copy();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_COPYFILEPATHNAME_ID + MENU_CONTEXT_IDBASE:
                         MCMD_CopyFileNamePath();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_COPYENTIRETEXT_ID + MENU_CONTEXT_IDBASE:
                         MCMD_CopyEntireText();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_PASTE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_Paste();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_PASTENEWWINDOW_ID + MENU_CONTEXT_IDBASE:
                         MCMD_PasteNewWindow();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_SELECTLINE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_SelectLine();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_SELECTALL_ID + MENU_CONTEXT_IDBASE:
                         MCMD_SelectAll();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_SELECTPROCEDURE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_SelectProc();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_SELECTPROCEDUREANDCOLLAPSE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_SelectProcCollapse();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_UNCOLLAPSEPROCEDURE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_UnCollapse();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_FIND_ID + MENU_CONTEXT_IDBASE:
                         MCMD_Find();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_REPLACE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_Replace();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BOOKMARKS_TOGGLE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_ToggleBookMark();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BOOKMARKS_FIRST_ID + MENU_CONTEXT_IDBASE:
                         MCMD_FirstBookMark();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BOOKMARKS_PREVIOUS_ID + MENU_CONTEXT_IDBASE:
                         MCMD_PreviousBookMark();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BOOKMARKS_NEXT_ID + MENU_CONTEXT_IDBASE:
                         MCMD_NextBookMark();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BOOKMARKS_LAST_ID + MENU_CONTEXT_IDBASE:
                         MCMD_LastBookMark();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BOOKMARKS_CLEARALL_ID + MENU_CONTEXT_IDBASE:
                         MCMD_ClearAllBookMark();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BREAKPOINTS_TOGGLE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_ToggleBreakpoint();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BREAKPOINTS_FIRST_ID + MENU_CONTEXT_IDBASE:
                         MCMD_FirstBreakpoint();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BREAKPOINTS_PREVIOUS_ID + MENU_CONTEXT_IDBASE:
                         MCMD_PreviousBreakpoint();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BREAKPOINTS_NEXT_ID + MENU_CONTEXT_IDBASE:
                         MCMD_NextBreakpoint();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BREAKPOINTS_LAST_ID + MENU_CONTEXT_IDBASE:
                         MCMD_LastBreakpoint();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BREAKPOINTS_CLEARALL_ID + MENU_CONTEXT_IDBASE:
                         MCMD_ClearAllBreakpoint();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_GOTO_TOP_ID + MENU_CONTEXT_IDBASE:
                         MCMD_GotoTop();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_GOTO_BOTTOM_ID + MENU_CONTEXT_IDBASE:
                         MCMD_GotoBottom();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_GOTO_LINE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_GotoLine();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_GOTO_MATCHINGBRACKET_ID + MENU_CONTEXT_IDBASE:
                         MCMD_GotoMatchingBracket();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_GOTO_PREVIOUSWORD_ID + MENU_CONTEXT_IDBASE:
                         MCMD_PrevWord();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_GOTO_NEXTWORD_ID + MENU_CONTEXT_IDBASE:
                         MCMD_NextWord();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_GOTO_PREVIOUSPROCEDURE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_PreviousProc();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_GOTO_NEXTPROCEDURE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_NextProc();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_GOTO_PREVIOUSPARAGRAPH_ID + MENU_CONTEXT_IDBASE:
                         MCMD_PreviousParagraph();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_GOTO_NEXTPARAGRAPH_ID + MENU_CONTEXT_IDBASE:
                         MCMD_NextParagraph();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_GOTO_VARIABLEDECLARATION_ID + MENU_CONTEXT_IDBASE:
                         MCMD_VarDeclaration();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_GOTO_VARIABLENEXTUSE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_VarNextUse();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_GOTO_PROCEDUREPROTOTYPE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_ProcProto();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_GOTO_PROCEDUREENTRYPOINT_ID + MENU_CONTEXT_IDBASE:
                         MCMD_ProcDeclare();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_GOTO_PROCEDURENEXTUSE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_ProcNextUse();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BLOCK_INDENT_ID + MENU_CONTEXT_IDBASE:
                         MCMD_BlockIndent();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BLOCK_UNINDENT_ID + MENU_CONTEXT_IDBASE:
                         MCMD_BlockUnindent();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BLOCK_UPPERCASE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_BlockUpperCase();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BLOCK_LOWERCASE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_BlockLowerCase();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BLOCK_TOGGLECASE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_BlockToggleCase();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BLOCK_COMMENT_ID + MENU_CONTEXT_IDBASE:
                         MCMD_BlockComment();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BLOCK_UNCOMMENT_ID + MENU_CONTEXT_IDBASE:
                         MCMD_BlockUnComment();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BLOCK_TABIFY_ID + MENU_CONTEXT_IDBASE:
                         MCMD_BlockTabify();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BLOCK_UNTABIFY_ID + MENU_CONTEXT_IDBASE:
                         MCMD_BlockUnTabify();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BLOCK_SPACESTOTABS_ID + MENU_CONTEXT_IDBASE:
                         MCMD_BlockSpacesToTabs();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BLOCK_REGISTERS_ID + MENU_CONTEXT_IDBASE:
                         MCMD_Registers();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BLOCK_BLKCOMMENT_ID + MENU_CONTEXT_IDBASE:
                         MCMD_BlockCommentMultiLine();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BLOCK_CUSTOMCOMMENT_ID + MENU_CONTEXT_IDBASE:
                         MCMD_CustomBlockComment();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BLOCK_TRIMSPACES_ID + MENU_CONTEXT_IDBASE:
                         MCMD_BlockTrimSpaces();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BLOCK_CONVERTTOINCLUDE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_BlockConvertToInclude();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BLOCK_SAVEAS_ID + MENU_CONTEXT_IDBASE:
                         MCMD_BlockSave();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_BLOCK_PRINT_ID + MENU_CONTEXT_IDBASE:
                         MCMD_BlockPrint();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_NEW_ID + MENU_CONTEXT_IDBASE:
                         MCMD_New();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_INCLUDEFILE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_IncludeFile();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_INCLUDEFILTERS_ID + MENU_CONTEXT_IDBASE:
                         MCMD_IncludeFilters();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_DUPLICATEFILE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_Duplicate();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_RELOADFILE_ID + MENU_CONTEXT_IDBASE:
                         MCMD_Reload();
-						return(0);
+                        return(0);
                     case MENU_CONTEXT_PROPERTIES_ID + MENU_CONTEXT_IDBASE:
                         MCMD_Properties();
-						return(0);
-				}
+                        return(0);
+                }
                 if(wParamCMD >= MENU_SNIPPET_IDBASE)
                 {
                     if(wParam < (MENU_SNIPPET_IDBASE + 1000))
@@ -2048,52 +2048,52 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             SnippetVal = ChangeRelativePaths(SnippetVal);
                             InsertSnippetCode(CurrentForm, SnippetVal);
                         }
-						return(0);
+                        return(0);
                     }
                     else
                     {
                         if(wParam >= MENU_SCRIPTINSERT_IDBASE)
                         {
-							Script_FileName = LUAArray.Get(wParamCMD - MENU_SCRIPTINSERT_IDBASE)->Content;
-							if(Script_FileName.Extract_FileName().Len() == 0)
-							{
-								WriteToStatus("Empty script filename.");
-								return(0);
-							}
-							// Get the size
-							ScriptFile_Size = FileGetSize(Script_FileName);
-							if(ScriptFile_Size == 0)
-							{
-								WriteToStatus("Empty script file.");
-								return(0);
-							}
-							// Read the file
-							Script_File = FileLoadIntoMem(Script_FileName, &ScriptFile_Size_Out);
-							if(Script_File == NULL)
-							{
-								WriteToStatus("Error while reading script file.");
-								return(0);
-							}
-							if(strlen((char *) Script_File) != 0) InsertScriptCode(Script_FileName.Get_String(), (char *) Script_File);
-							free(Script_File);
-						}
-						return(0);
+                            Script_FileName = LUAArray.Get(wParamCMD - MENU_SCRIPTINSERT_IDBASE)->Content;
+                            if(Script_FileName.Extract_FileName().Len() == 0)
+                            {
+                                WriteToStatus("Empty script filename.");
+                                return(0);
+                            }
+                            // Get the size
+                            ScriptFile_Size = FileGetSize(Script_FileName);
+                            if(ScriptFile_Size == 0)
+                            {
+                                WriteToStatus("Empty script file.");
+                                return(0);
+                            }
+                            // Read the file
+                            Script_File = FileLoadIntoMem(Script_FileName, &ScriptFile_Size_Out);
+                            if(Script_File == NULL)
+                            {
+                                WriteToStatus("Error while reading script file.");
+                                return(0);
+                            }
+                            if(strlen((char *) Script_File) != 0) InsertScriptCode(Script_FileName.Get_String(), (char *) Script_File);
+                            free(Script_File);
+                        }
+                        return(0);
                     }
                 }
                 else
                 {
-					if((wParam & 0xFFFF) >= MENU_FILTERS_INCLUDE_IDBASE)
-					{
-						// Filters: include mode
-						Run_Filter_Profile((wParam & 0xFFFF) - MENU_FILTERS_INCLUDE_IDBASE, FILTER_INCLUDE_MODE);
-					}
-				}
+                    if((wParam & 0xFFFF) >= MENU_FILTERS_INCLUDE_IDBASE)
+                    {
+                        // Filters: include mode
+                        Run_Filter_Profile((wParam & 0xFFFF) - MENU_FILTERS_INCLUDE_IDBASE, FILTER_INCLUDE_MODE);
+                    }
+                }
             }
-			break;
-		case WM_HSCROLL:
-			break;
+            break;
+        case WM_HSCROLL:
+            break;
         case WM_VSCROLL:
-			break;
+            break;
         case WM_KEYUP:
             if(wParam == 45)
             {
@@ -2112,20 +2112,20 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                         if(CurrentCMLine.In_Str(1, "invoke", Text_Compare) != 0)
                         {
                             CurrentCMLine = CurrentCMLine.Trim();
-							CurrentCMLine = StringReplace(CurrentCMLine, "\t", " ", 1, -1, Binary_Compare);
+                            CurrentCMLine = StringReplace(CurrentCMLine, "\t", " ", 1, -1, Binary_Compare);
                             PosInvoke = CurrentCMLine.In_Str(1, "invoke ", Text_Compare);
                             if(PosInvoke != 0)
                             {
                                 if((GetCurrentColNumber(hWnd) + 1) > (PosInvoke + 7))
                                 {
                                     CurrentCMLine = CurrentCMLine.Trim();
-									CurrentCMLine = StringReplace(CurrentCMLine, " ", "", 1, -1, Binary_Compare);
+                                    CurrentCMLine = StringReplace(CurrentCMLine, " ", "", 1, -1, Binary_Compare);
                                     CurrentCMLine = RemoveComments(CurrentCMLine).Trim();
                                     PosInvoke = CurrentCMLine.In_Str(1, "invoke", Text_Compare);
                                     CurrentCMLine = CurrentCMLine.Mid(PosInvoke + 6);
                                     InvokeArray = StringSplit(CurrentCMLine, ",");
                                     if(StringGetSplitUBound(InvokeArray) != -1) DispFnc(hWnd, StringGetSplitElement(CurrentCMLine, InvokeArray, 0), CompleteCMLine, 1, 0);
-									StringReleaseSplit(InvokeArray);
+                                    StringReleaseSplit(InvokeArray);
                                 }
                                 else
                                 {
@@ -2138,20 +2138,20 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             if(CurrentCMLine.In_Str(1, "call", Text_Compare) != 0)
                             {
                                 CurrentCMLine = CurrentCMLine.Trim();
-								CurrentCMLine = StringReplace(CurrentCMLine, "\t", " ", 1, -1, Binary_Compare);
+                                CurrentCMLine = StringReplace(CurrentCMLine, "\t", " ", 1, -1, Binary_Compare);
                                 PosInvoke = CurrentCMLine.In_Str(1, "call ", Text_Compare);
                                 if(PosInvoke != 0)
                                 {
                                     if(GetCurrentColNumber(hWnd) + 1 > (PosInvoke + 5))
                                     {
                                         CurrentCMLine = CurrentCMLine.Trim();
-										CurrentCMLine = StringReplace(CurrentCMLine, " ", "", 1, -1, Binary_Compare);
+                                        CurrentCMLine = StringReplace(CurrentCMLine, " ", "", 1, -1, Binary_Compare);
                                         CurrentCMLine = RemoveComments(CurrentCMLine).Trim();
                                         PosInvoke = CurrentCMLine.In_Str(1, "call", Text_Compare);
                                         CurrentCMLine = CurrentCMLine.Mid(PosInvoke + 4);
                                         InvokeArray = StringSplit(CurrentCMLine, ",");
                                         if(StringGetSplitUBound(InvokeArray) != -1) DispFnc(hWnd, StringGetSplitElement(CurrentCMLine, InvokeArray, 0), CompleteCMLine, 1, 0);
-										StringReleaseSplit(InvokeArray);
+                                        StringReleaseSplit(InvokeArray);
                                     }
                                     else
                                     {
@@ -2178,7 +2178,7 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                                 // Trim it before checking
                                 for(i = CurFncPos; i >= 1; i--)
                                 {
-								    if(StringIsLabelChar(CurrentCMLine.Mid(i, 1).Get_String()) == 0) CurFncPos--;
+                                    if(StringIsLabelChar(CurrentCMLine.Mid(i, 1).Get_String()) == 0) CurFncPos--;
                                     else break;
                                 }
                                 for(i = CurFncPos; i >= 1; i--)
@@ -2190,7 +2190,7 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                                 DispFnc(hWnd, GetFncWord, CompleteCMLine, 1, 1);
                             }
                         }
-						break;
+                        break;
                     case 53:
                         // Check for "("
                         CurrentCMLine = CMGetCurrentLine(hWnd, GetCurrentLineNumber(hWnd));
@@ -2211,53 +2211,53 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             GetFncWord = CurFncChar + GetFncWord;
                         }
                         DispFnc(hWnd, GetFncWord, CompleteCMLine, 1, 1);
-						break;
-				}
+                        break;
+                }
             }
-			break;
-		case WM_KEYDOWN:
+            break;
+        case WM_KEYDOWN:
             if(APITTip == 1) if(APIMode == 1) if(wParam == 27) ControlClose(FRMAPIhwnd);
             if(APIListMode == 1) if(wParam == 27) ControlClose(FRMAPIListhWnd);
             if(CursorDisabled == 0)
             {
-				// Only disable it within codemax region
-				if(ControlGetHwndFromPoint() == hWnd)
-				{
-					// Store the coordinates
-					GetCursorPos(&Mouse_Coords);
-					HideCursor();
-				}
-			}
-			break;
+                // Only disable it within codemax region
+                if(ControlGetHwndFromPoint() == hWnd)
+                {
+                    // Store the coordinates
+                    GetCursorPos(&Mouse_Coords);
+                    HideCursor();
+                }
+            }
+            break;
         case WM_NCMOUSEMOVE:
-			if(CursorDisabled) DisplayCursor();
-			break;
+            if(CursorDisabled) DisplayCursor();
+            break;
         case WM_MOUSEMOVE:
             if(CursorDisabled == 1)
             {
-				GetCursorPos(&New_Mouse_Coords);
-				if(Mouse_Coords.x != New_Mouse_Coords.x || Mouse_Coords.y != New_Mouse_Coords.y)
-				{
-					DisplayCursor();
-				}
-			}
-			break;
+                GetCursorPos(&New_Mouse_Coords);
+                if(Mouse_Coords.x != New_Mouse_Coords.x || Mouse_Coords.y != New_Mouse_Coords.y)
+                {
+                    DisplayCursor();
+                }
+            }
+            break;
         case WM_LBUTTONDOWN:
             if(CursorDisabled) DisplayCursor();
-			break;
+            break;
         case WM_LBUTTONUP:
             if(CursorDisabled) DisplayCursor();
-			break;
+            break;
         case WM_RBUTTONDOWN:
             if(CursorDisabled) DisplayCursor();
-			break;
+            break;
         case WM_RBUTTONUP:
             if(CursorDisabled) DisplayCursor();
-			break;
+            break;
     }
     ChildStruct = LoadStructure(GetParent(hWnd));
     if(ChildStruct->OldCodeMaxHook == NULL) return(0);
-	return(CallWindowProc((WNDPROC) ChildStruct->OldCodeMaxHook, hWnd, uMsg, wParam, lParam));
+    return(CallWindowProc((WNDPROC) ChildStruct->OldCodeMaxHook, hWnd, uMsg, wParam, lParam));
 }
 
 // -----------------------------------------------------------------------
@@ -2292,11 +2292,11 @@ void SmartInsert(HWND hWnd, CStr Txt)
 // Insert or replace a text in a child window and jump to next line
 void SmartInsertLine(HWND hWnd, CStr Txt)
 {
-	CStr BufString;
+    CStr BufString;
 
-	BufString = Txt;
+    BufString = Txt;
     BufString = BufString + "\r\n";
-	ChildStruct = LoadStructure(hWnd);
+    ChildStruct = LoadStructure(hWnd);
     LoadCurrentSel(ChildStruct->hChildCodeMax);
     if(CM_GetTextLength(ChildStruct->hChildCodeMax, &CodeMaxCurRange, 1) != 0)
     {
@@ -2319,7 +2319,7 @@ void SmartInsertFile(HWND hWnd, long File)
 {
     long LnNumberPasted = 0;
     
-	ChildStruct = LoadStructure(hWnd);
+    ChildStruct = LoadStructure(hWnd);
     LoadCurrentSel(ChildStruct->hChildCodeMax);
     if(CM_GetTextLength(ChildStruct->hChildCodeMax, &CodeMaxCurRange, 1) != 0)
     {
@@ -2359,13 +2359,13 @@ void RefreshStatusBar(HWND hWnd)
 // Set file flag for a child window
 void ForceChildFile(HWND hWnd)
 {
-	CStr BufString;
+    CStr BufString;
     
-	ChildStruct = LoadStructure(hWnd);
+    ChildStruct = LoadStructure(hWnd);
     ChildStruct->ModifFlag = 1;
     ChildStruct->FileLoaded = 1;
-	BufString = ControlGetText(hWnd);
-	BufString = BufString + " *";
+    BufString = ControlGetText(hWnd);
+    BufString = BufString + " *";
     ControlSetText(hWnd, BufString);
 }
 
@@ -2373,13 +2373,13 @@ void ForceChildFile(HWND hWnd)
 // Set modified flag for a child window
 void ForceChildModified(HWND hWnd)
 {
-	CStr BufString;
+    CStr BufString;
 
     ChildStruct = LoadStructure(hWnd);
     if(ChildStruct->ModifFlag == 1) return;
     ChildStruct->ModifFlag = 1;
-	BufString = ControlGetText(hWnd);
-	BufString = BufString + " *";
+    BufString = ControlGetText(hWnd);
+    BufString = BufString + " *";
     ControlSetText(hWnd, BufString);
 }
 
@@ -2392,10 +2392,10 @@ void SetHighLine(HWND hWnd)
         case 1:
             LoadCurrentSel(hWnd);
             CM_SetHighlightedLine(hWnd, CodeMaxCurRange.posStart.nLine);
-			break;
-		case 0:
+            break;
+        case 0:
             CM_SetHighlightedLine(hWnd, -1);
-			break;
+            break;
     }
 }
 
@@ -2444,7 +2444,7 @@ void StoreLastPosInChild(HWND hWnd)
     int i = 0;
     CStr FileToCheckPos;
     
-	ChildStruct = LoadStructure(hWnd);
+    ChildStruct = LoadStructure(hWnd);
     if(ChildStruct->FileLoaded != 0)
     {
         FileToCheckPos = CMGetRealFile(ChildStruct->RFile);
@@ -2453,7 +2453,7 @@ void StoreLastPosInChild(HWND hWnd)
             if(strcmpi(FileToCheckPos.Get_String(), LastOpened.Get(i)->Content) == 0)
             {
                 LoadCurrentSel(ChildStruct->hChildCodeMax);
-				LastOpenedLine.Set(i, CodeMaxCurRange.posStart.nLine);
+                LastOpenedLine.Set(i, CodeMaxCurRange.posStart.nLine);
                 LastOpenedCol.Set(i, CodeMaxCurRange.posStart.nCol);
                 LastOpenedFirst.Set(i, GetCurrentTopIndex(ChildStruct->hChildCodeMax));
                 break;
@@ -2472,9 +2472,9 @@ void CreateSnippetMenu(HMENU hsMenu, HWND hWnd)
     CStr TempLang;
     CStr TempLang2;
     CStr BufString;
-	CStr CurrentLanguage;
-	
-	CurrentLanguage = GetCMLangNameByChild(hWnd);
+    CStr CurrentLanguage;
+    
+    CurrentLanguage = GetCMLangNameByChild(hWnd);
 
     SnipArray.Erase();
     k = 0;
@@ -2490,25 +2490,25 @@ void CreateSnippetMenu(HMENU hsMenu, HWND hWnd)
         {
             // Get the language
             TempLang = GetLanguageToOpen(RetVal2);
-			if(TempLang.Len() == 0)
-			{
-				// If the language can't be guessed: always display the snippet
-				TempLang = "Unknown";
-				TempLang2 = CurrentLanguage;
-			}
-			else
-			{
-				TempLang2 = TempLang;
-			}
-		 	// Only add snippet into menu if guessed language is the same
-			if(lstrcmpi(CurrentLanguage.Get_String(), TempLang2.Get_String()) == 0)
-			{
-				BufString = ChildRetVal;
+            if(TempLang.Len() == 0)
+            {
+                // If the language can't be guessed: always display the snippet
+                TempLang = "Unknown";
+                TempLang2 = CurrentLanguage;
+            }
+            else
+            {
+                TempLang2 = TempLang;
+            }
+            // Only add snippet into menu if guessed language is the same
+            if(lstrcmpi(CurrentLanguage.Get_String(), TempLang2.Get_String()) == 0)
+            {
+                BufString = ChildRetVal;
                 MenuAddString(hsMenu, BufString, k + MENU_SNIPPET_IDBASE, TRUE);
-				SnipArray.Add(RetVal2.Get_String());
-				k++;
-			}
-		}
+                SnipArray.Add(RetVal2.Get_String());
+                k++;
+            }
+        }
     }
 }
 
@@ -2544,7 +2544,7 @@ void CreateTemplateMenu(HMENU hsMenu)
             // Add it in menu
             BufString = ChildRetVal + (CStr) " (" + (CStr) TempLang + (CStr) ")";
             MenuAddString(hsMenu, BufString, k + MENU_TEMPLATES_IDBASE, TRUE);
-			TemplatesArray.Add(RetVal2.Get_String());
+            TemplatesArray.Add(RetVal2.Get_String());
             k++;
         }
     }
@@ -2581,7 +2581,7 @@ void DisplaySubContextMenu(HWND hWnd, HMENU hsMenu)
 long CreateLangScripts(HMENU hsMenu)
 {
     int i = 0;
-	int k = 0;
+    int k = 0;
     CStr RetVal2;
     CStr LUAFile;
     CStr LUALanguageToOpen;
@@ -2597,31 +2597,31 @@ long CreateLangScripts(HMENU hsMenu)
             if(ChildRetVal == "-")
             {
                 MenuAddSeparator(hsMenu);
-				ReturnValue = FALSE;
+                ReturnValue = FALSE;
             }
             else
             {
-				RetVal2 = IniReadKey("Scripts", "ScriptData" + (CStr) StringNumberComplement(i, 3).Get_String(), LUALanguageToOpen);
-				// Script filename
-				if(RetVal2.Len() == 0) break;
-				// Script label
-				if(ChildRetVal.Len() == 0) break;
-				RetVal2 = ChangeRelativePaths(RetVal2);
+                RetVal2 = IniReadKey("Scripts", "ScriptData" + (CStr) StringNumberComplement(i, 3).Get_String(), LUALanguageToOpen);
+                // Script filename
+                if(RetVal2.Len() == 0) break;
+                // Script label
+                if(ChildRetVal.Len() == 0) break;
+                RetVal2 = ChangeRelativePaths(RetVal2);
                 MenuAddString(hsMenu, ChildRetVal, k + MENU_SCRIPTINSERT_IDBASE, TRUE);
-				ReturnValue = TRUE;
-				LUAArray.Add(RetVal2.Get_String());
-				k++;
-			}
-		}
+                ReturnValue = TRUE;
+                LUAArray.Add(RetVal2.Get_String());
+                k++;
+            }
+        }
     }
-	// draw the separator bar
-	if(ReturnValue) MenuAddSeparator(hsMenu);
-	// Add the editor entry
+    // draw the separator bar
+    if(ReturnValue) MenuAddSeparator(hsMenu);
+    // Add the editor entry
     MenuAddString(hsMenu, "Edit scripts list", k + MENU_SCRIPTINSERT_IDBASE, TRUE);
-	if(ReturnValue) i++;
-	MenuSetDefaultItem(hsMenu, i);
+    if(ReturnValue) i++;
+    MenuSetDefaultItem(hsMenu, i);
     MenuEnable(hsMenu, i, FALSE);
-	return(TRUE);
+    return(TRUE);
 }
 
 // -----------------------------------------------------------------------
@@ -2629,7 +2629,7 @@ long CreateLangScripts(HMENU hsMenu)
 void CMDecToHex(HWND hWnd)
 {
     CStr LocCurWord;
-	CStr BufString;
+    CStr BufString;
 
     ChildStruct = LoadStructure(GetParent(hWnd));
     LocCurWord = SelectCurrentWord(ChildStruct->hChildCodeMax);
@@ -2637,15 +2637,15 @@ void CMDecToHex(HWND hWnd)
     if(LocCurWord.Len() != 0)
     {
         BufString = GetCMLangHexType(GetParent(hWnd));
-		if(BufString.Len() == 0)
-		{
-			WriteToStatus("Number format not supplied for this language.");
-		}
-		else
-		{
-			BufString = StringReplace(BufString, "%1", LocCurWord, 1, -1, Binary_Compare);
-			CM_ReplaceText(ChildStruct->hChildCodeMax, BufString.Get_String(), &CodeMaxCurRange);
-		}
+        if(BufString.Len() == 0)
+        {
+            WriteToStatus("Number format not supplied for this language.");
+        }
+        else
+        {
+            BufString = StringReplace(BufString, "%1", LocCurWord, 1, -1, Binary_Compare);
+            CM_ReplaceText(ChildStruct->hChildCodeMax, BufString.Get_String(), &CodeMaxCurRange);
+        }
     }
 }
 
@@ -2654,7 +2654,7 @@ void CMDecToHex(HWND hWnd)
 void CMDecToBin(HWND hWnd)
 {
     CStr LocCurWord;
-	CStr BufString;
+    CStr BufString;
 
     ChildStruct = LoadStructure(GetParent(hWnd));
     LocCurWord = SelectCurrentWord(ChildStruct->hChildCodeMax);
@@ -2662,15 +2662,15 @@ void CMDecToBin(HWND hWnd)
     if(LocCurWord.Len() != 0)
     {
         BufString = GetCMLangBinType(GetParent(hWnd));
-		if(BufString.Len() == 0)
-		{
-			WriteToStatus("Number format not supplied for this language.");
-		}
-		else
-		{
-			BufString = StringReplace(BufString, "%1", LocCurWord, 1, -1, Binary_Compare);
-			CM_ReplaceText(ChildStruct->hChildCodeMax, BufString.Get_String(), &CodeMaxCurRange);
-		}
+        if(BufString.Len() == 0)
+        {
+            WriteToStatus("Number format not supplied for this language.");
+        }
+        else
+        {
+            BufString = StringReplace(BufString, "%1", LocCurWord, 1, -1, Binary_Compare);
+            CM_ReplaceText(ChildStruct->hChildCodeMax, BufString.Get_String(), &CodeMaxCurRange);
+        }
     }
 }
 
@@ -2691,7 +2691,7 @@ void CMHexToDec(HWND hWnd)
 void CMHexToBin(HWND hWnd)
 {
     CStr LocCurWord;
-	CStr BufString;
+    CStr BufString;
 
     ChildStruct = LoadStructure(GetParent(hWnd));
     LocCurWord = SelectCurrentWord(ChildStruct->hChildCodeMax);
@@ -2699,15 +2699,15 @@ void CMHexToBin(HWND hWnd)
     if(LocCurWord.Len() != 0)
     {
         BufString = GetCMLangBinType(GetParent(hWnd));
-		if(BufString.Len() == 0)
-		{
-			WriteToStatus("Number format not supplied for this language.");
-		}
-		else
-		{
-			BufString = StringReplace(BufString, "%1", LocCurWord, 1, -1, Binary_Compare);
-			CM_ReplaceText(ChildStruct->hChildCodeMax, BufString.Get_String(), &CodeMaxCurRange);
-		}
+        if(BufString.Len() == 0)
+        {
+            WriteToStatus("Number format not supplied for this language.");
+        }
+        else
+        {
+            BufString = StringReplace(BufString, "%1", LocCurWord, 1, -1, Binary_Compare);
+            CM_ReplaceText(ChildStruct->hChildCodeMax, BufString.Get_String(), &CodeMaxCurRange);
+        }
     }
 }
 
@@ -2728,7 +2728,7 @@ void CMBinToDec(HWND hWnd)
 void CMBinToHex(HWND hWnd)
 {
     CStr LocCurWord;
-	CStr BufString;
+    CStr BufString;
 
     ChildStruct = LoadStructure(GetParent(hWnd));
     LocCurWord = SelectCurrentWord(ChildStruct->hChildCodeMax);
@@ -2736,15 +2736,15 @@ void CMBinToHex(HWND hWnd)
     if(LocCurWord.Len() != 0)
     {
         BufString = GetCMLangHexType(GetParent(hWnd));
-		if(BufString.Len() == 0)
-		{
-			WriteToStatus("Number format not supplied for this language.");
-		}
-		else
-		{
-			BufString = StringReplace(BufString, "%1", LocCurWord, 1, -1, Binary_Compare);
-			CM_ReplaceText(ChildStruct->hChildCodeMax, BufString.Get_String(), &CodeMaxCurRange);
-		}
+        if(BufString.Len() == 0)
+        {
+            WriteToStatus("Number format not supplied for this language.");
+        }
+        else
+        {
+            BufString = StringReplace(BufString, "%1", LocCurWord, 1, -1, Binary_Compare);
+            CM_ReplaceText(ChildStruct->hChildCodeMax, BufString.Get_String(), &CodeMaxCurRange);
+        }
     }
 }
 
@@ -2753,7 +2753,7 @@ void CMBinToHex(HWND hWnd)
 void CMHexToFlt(HWND hWnd)
 {
     CStr LocCurWord;
-	CStr BufString;
+    CStr BufString;
 
     ChildStruct = LoadStructure(GetParent(hWnd));
     LocCurWord = SelectCurrentWord(ChildStruct->hChildCodeMax);
@@ -2766,7 +2766,7 @@ void CMHexToFlt(HWND hWnd)
 void CMFltToHex(HWND hWnd)
 {
     CStr LocCurWord;
-	CStr BufString;
+    CStr BufString;
 
     ChildStruct = LoadStructure(GetParent(hWnd));
     LocCurWord = SelectCurrentWord(ChildStruct->hChildCodeMax);
@@ -2774,15 +2774,15 @@ void CMFltToHex(HWND hWnd)
     if(LocCurWord.Len() != 0)
     {
         BufString = GetCMLangHexType(GetParent(hWnd));
-		if(BufString.Len() == 0)
-		{
-			WriteToStatus("Number format not supplied for this language.");
-		}
-		else
-		{
-			BufString = StringReplace(BufString, "%1", LocCurWord, 1, -1, Binary_Compare);
-			CM_ReplaceText(ChildStruct->hChildCodeMax, BufString.Get_String(), &CodeMaxCurRange);
-		}
+        if(BufString.Len() == 0)
+        {
+            WriteToStatus("Number format not supplied for this language.");
+        }
+        else
+        {
+            BufString = StringReplace(BufString, "%1", LocCurWord, 1, -1, Binary_Compare);
+            CM_ReplaceText(ChildStruct->hChildCodeMax, BufString.Get_String(), &CodeMaxCurRange);
+        }
     }
 }
 
@@ -2862,7 +2862,7 @@ void SaveAPIName(HWND hwndCM, CStr FncToSave)
 // Return the real position in a codemax control
 long GetRealYposition(HWND hWnd)
 {
-	long ReturnValue = 0;
+    long ReturnValue = 0;
     HFONT PosFont = 0;
     CStr TestString;
     SIZE PosSize;
@@ -2878,7 +2878,7 @@ long GetRealYposition(HWND hWnd)
     SelectObject(hDC, PosOldObject);
     DeleteObject(PosFont);
     ReleaseDC(hWnd, hDC);
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -2898,7 +2898,7 @@ long CountComma(CStr Line, long XPos)
         }
     }
     ReturnValue--;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -3006,7 +3006,7 @@ void MoveFncXY(HWND hWnd, HWND DesthWnd)
     long ParWidth = 0;
     long ParHeight = 0;
 
-	ChildStruct = LoadStructure(hWnd);
+    ChildStruct = LoadStructure(hWnd);
     // Min Y
     if(GetCurrentTopIndex(ChildStruct->hChildCodeMax) > GetCurrentLineNumber(ChildStruct->hChildCodeMax))
     {
@@ -3107,7 +3107,7 @@ CStr GetLeftWord(HWND hWnd, CStr LineToCheck)
     long OldCurFncPos = 0;
     CStr CurFncChar;
     CStr ReturnValue;
-	CStr BufString;
+    CStr BufString;
 
     CurFncPos = GetCurrentColNumber(hWnd);
     OldCurFncPos = CurFncPos;
@@ -3133,7 +3133,7 @@ CStr GetLeftWord(HWND hWnd, CStr LineToCheck)
         if(StringIsLabelChar(CurFncChar) == 0) break;
         BufString = BufString + CurFncChar;
     }
-	ReturnValue.Set_String(BufString.Get_String());
+    ReturnValue.Set_String(BufString.Get_String());
     return(ReturnValue);
 }
 
@@ -3153,12 +3153,12 @@ CStr SelectLeftWord(HWND hWnd, CStr LineToCheck)
     // Trim it before checking
     for(i = CurFncPos; i >= 1; i--)
     {
-	    if(StringIsBlankChar(LineToCheck.Mid(i, 1)) == 0) break;
+        if(StringIsBlankChar(LineToCheck.Mid(i, 1)) == 0) break;
         CurFncPos--;
     }
     CMSetCaretPos(hWnd, LineNumberToDisplay, CurFncPos);
     ReturnValue.Set_String(SelectCurrentWord(hWnd).Get_String());
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -3185,7 +3185,7 @@ void DisplayAPIList(HWND hWnd)
     if(APIMode == 1) ControlClose(FRMAPIhwnd);
     if(APIListMode == 1) if(ChildStruct->oldAPILineLine = GetCurrentLineNumber(ChildStruct->hChildCodeMax)) if(strcmpi(CMGetRealFile(ChildStruct->oldAPILineFnc).Get_String(), LineToDisplay.Get_String()) == 0) return;
     if(APIListMode == 1) ControlClose(FRMAPIListhWnd);
-	if(CursorDisabled) DisplayCursor();
+    if(CursorDisabled) DisplayCursor();
     APILineFnc = LineToDisplay;
     GetWindowRect(ChildStruct->hChildCodeMax, &APIRect);
     APILineOldRealPosition = (GetRealYposition(ChildStruct->hChildCodeMax));
@@ -3214,15 +3214,15 @@ void RefreshChildTitle(HWND hWnd)
     {
         // Read-Only
         SendMessage(hMDIform.hClient, CHILD_MSG_SETTITLE, ICON_WINDOWLOCK, (LPARAM) hWnd);
-		return;
-	}
-	if(ChildStruct->ModifFlag != 0)
-	{
+        return;
+    }
+    if(ChildStruct->ModifFlag != 0)
+    {
         // Modified
         SendMessage(hMDIform.hClient, CHILD_MSG_SETTITLE, ICON_WINDOWMODIF, (LPARAM) hWnd);
-	}
-	else
-	{
+    }
+    else
+    {
         // Unchanged
         SendMessage(hMDIform.hClient, CHILD_MSG_SETTITLE, ICON_WINDOWNORM, (LPARAM) hWnd);
     }
@@ -3232,68 +3232,68 @@ void RefreshChildTitle(HWND hWnd)
 // Set the keywords corrector
 void SetCorrectionHook(HWND hWnd)
 {
-	ChildStruct = LoadStructure(GetParent(hWnd));
-	if(AutoCorrectKey != 0 && (ChildStruct->Language->Len() != 0))
-	{
-		CM_SetTokenCallBack(hWnd,(long) &CorrectKeyWordsHook);
-	}
-	else
-	{
-		// No suitable language
-		CM_SetTokenCallBack(hWnd, 0);
-	}
+    ChildStruct = LoadStructure(GetParent(hWnd));
+    if(AutoCorrectKey != 0 && (ChildStruct->Language->Len() != 0))
+    {
+        CM_SetTokenCallBack(hWnd,(long) &CorrectKeyWordsHook);
+    }
+    else
+    {
+        // No suitable language
+        CM_SetTokenCallBack(hWnd, 0);
+    }
 }
 
 int CALLBACK CorrectKeyWordsHook(LPTSTR Token, long Pos, long PosBefore)
 {
-	char *CurToken;
-	CStr CurToken2;
-	CStr APICorrected;
+    char *CurToken;
+    CStr CurToken2;
+    CStr APICorrected;
 
-	CurToken = Token + Pos;
-	CurToken2 = Token;
-	CurToken2 = CurToken2.Mid(PosBefore + 1,Pos - PosBefore);
-	while(isspace(CurToken2.Left(1).Asc()))
-	{
-		PosBefore++;
-		CurToken2 = CurToken2.Mid(2);
-	}
-	while(isspace(CurToken2.Right(1).Asc()))
-	{
-		Pos--;
-		CurToken2 = CurToken2.Mid(1,CurToken2.Len() - 1);
-	}
-	if(CurToken2.Len() != 0)
-	{
-		// Check the word in APIs (fnc+const) databases
-		APICorrected = RetrieveAPIName(CurToken2);
-		// Found a suitable keyword ?
-		if(APICorrected.Len() != 0)
-		{
-			CopyMem2(APICorrected.Get_String(), Token, APICorrected.Len(), 0, PosBefore);
-		}
-	}
-	// Unchanged
-	return(0);
+    CurToken = Token + Pos;
+    CurToken2 = Token;
+    CurToken2 = CurToken2.Mid(PosBefore + 1,Pos - PosBefore);
+    while(isspace(CurToken2.Left(1).Asc()))
+    {
+        PosBefore++;
+        CurToken2 = CurToken2.Mid(2);
+    }
+    while(isspace(CurToken2.Right(1).Asc()))
+    {
+        Pos--;
+        CurToken2 = CurToken2.Mid(1,CurToken2.Len() - 1);
+    }
+    if(CurToken2.Len() != 0)
+    {
+        // Check the word in APIs (fnc+const) databases
+        APICorrected = RetrieveAPIName(CurToken2);
+        // Found a suitable keyword ?
+        if(APICorrected.Len() != 0)
+        {
+            CopyMem2(APICorrected.Get_String(), Token, APICorrected.Len(), 0, PosBefore);
+        }
+    }
+    // Unchanged
+    return(0);
 }
 
 // -----------------------------------------------------------------------
 // Return 1 if the source window is in read-only mode
 long IsChildReadOnly(HWND hWnd)
 {
-	if(NbForms == 0) return(0);
-	if(hWnd == 0) return(0);
-	ChildStruct = LoadStructure(hWnd);
-	return(ChildStruct->ReadOnly);
+    if(NbForms == 0) return(0);
+    if(hWnd == 0) return(0);
+    ChildStruct = LoadStructure(hWnd);
+    return(ChildStruct->ReadOnly);
 }
 
 // -----------------------------------------------------------------------
 // Set the source window in read only mode or not
 void SetChildReadOnly(HWND hWnd, int State)
 {
-	if(NbForms == 0) return;
-	if(hWnd == 0) return;
-	ChildStruct = LoadStructure(hWnd);
-	ChildStruct->ReadOnly = State;
-	CM_SetReadOnly(ChildStruct->hChildCodeMax, State);
+    if(NbForms == 0) return;
+    if(hWnd == 0) return;
+    ChildStruct = LoadStructure(hWnd);
+    ChildStruct->ReadOnly = State;
+    CM_SetReadOnly(ChildStruct->hChildCodeMax, State);
 }

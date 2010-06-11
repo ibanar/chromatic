@@ -92,19 +92,19 @@ void InitReBarContent(HWND hParent)
     HWND hCurrentPager = 0;
     HWND hCurrentToolBar = 0;
     long NbrDrop = 0;
-	CStr BufString;
-	CStr BufString2;
-	long CurrentCommandNumber;
-	long MarginWidth = 13;
+    CStr BufString;
+    CStr BufString2;
+    long CurrentCommandNumber;
+    long MarginWidth = 13;
 
-	MARGINS MarginDatas;
+    MARGINS MarginDatas;
 
-	if(WindowsXP)
-	{
-		// Retrieve the width of the margins
-		SendMessage(hRebar, RB_GETBANDMARGINS, 0, (LPARAM) &MarginDatas);
-		MarginWidth += MarginDatas.cxLeftWidth;
-	}
+    if(WindowsXP)
+    {
+        // Retrieve the width of the margins
+        SendMessage(hRebar, RB_GETBANDMARGINS, 0, (LPARAM) &MarginDatas);
+        MarginWidth += MarginDatas.cxLeftWidth;
+    }
 
     ToolBarArray.Erase();
     ToolBarMenus.Erase();
@@ -122,13 +122,13 @@ void InitReBarContent(HWND hParent)
     for(i = 0; i <= 999; i++)
     {
         BufString2 = "TbName";
-		BufString2 = BufString2 + StringNumberComplement(i, 3);
-		ToolBarKey = IniReadKey("Toolbars", BufString2, ToolbarsIniFile);
+        BufString2 = BufString2 + StringNumberComplement(i, 3);
+        ToolBarKey = IniReadKey("Toolbars", BufString2, ToolbarsIniFile);
         BufString2 = "TbType";
-		BufString2 = BufString2 + StringNumberComplement(i, 3);
+        BufString2 = BufString2 + StringNumberComplement(i, 3);
         ToolBarType = IniReadKey("Toolbars", BufString2, ToolbarsIniFile);
         BufString2 = "TbShow";
-		BufString2 = BufString2 + StringNumberComplement(i, 3);
+        BufString2 = BufString2 + StringNumberComplement(i, 3);
         ToolBarShow = IniReadKey("Toolbars", BufString2, ToolbarsIniFile);
         if(ToolBarKey.Len() == 0) break;
         if(ToolBarType.Len() == 0) ToolBarType = "0";
@@ -144,21 +144,21 @@ void InitReBarContent(HWND hParent)
         OldTBSize = 0;
         for(j = 0; j <= 999; j++)
         {
-			BufString = "BtnIcon";
-			BufString = BufString + StringNumberComplement(j, 3);
+            BufString = "BtnIcon";
+            BufString = BufString + StringNumberComplement(j, 3);
             BtnIcon = IniReadKey(ToolBarKey, BufString, ToolbarsIniFile);
             BufString = "BtnMenu";
-			BufString = BufString + StringNumberComplement(j, 3);
+            BufString = BufString + StringNumberComplement(j, 3);
             BtnMenu = IniReadKey(ToolBarKey, BufString, ToolbarsIniFile);
             BufString = "BtnTool";
-			BufString = BufString + StringNumberComplement(j, 3);
-			BtnToolTip = IniReadKey(ToolBarKey, BufString, ToolbarsIniFile);
+            BufString = BufString + StringNumberComplement(j, 3);
+            BtnToolTip = IniReadKey(ToolBarKey, BufString, ToolbarsIniFile);
             BufString = "BtnHelp";
-			BufString = BufString + StringNumberComplement(j, 3);
-			BtnComment = IniReadKey(ToolBarKey, BufString, ToolbarsIniFile);
+            BufString = BufString + StringNumberComplement(j, 3);
+            BtnComment = IniReadKey(ToolBarKey, BufString, ToolbarsIniFile);
             BufString = "BtnComd";
-			BufString = BufString + StringNumberComplement(j, 3);
-			BtnCommand = IniReadKey(ToolBarKey, BufString, ToolbarsIniFile);
+            BufString = BufString + StringNumberComplement(j, 3);
+            BtnCommand = IniReadKey(ToolBarKey, BufString, ToolbarsIniFile);
             if(BtnIcon.Len() == 0) break;
             if(BtnMenu.Len() == 0) break;
             switch(BtnMenu.Get_Long())
@@ -167,13 +167,13 @@ void InitReBarContent(HWND hParent)
                 case -2:
                     ToolBarAddSeparator(hCurrentToolBar, 0);
                     // Hack it to 8 pixels
-		            OldTBSize += 8;
-					break;
-				// Simple button
+                    OldTBSize += 8;
+                    break;
+                // Simple button
                 case -1:
                     if(BtnIcon.Is_Numeric())
                     {
-						ToolBarAddButton(hCurrentToolBar, "", BtnID, BtnIcon.Get_Long(), TBSTYLE_BUTTON | TBSTYLE_AUTOSIZE, TBSTATE_ENABLED, 1);
+                        ToolBarAddButton(hCurrentToolBar, "", BtnID, BtnIcon.Get_Long(), TBSTYLE_BUTTON | TBSTYLE_AUTOSIZE, TBSTATE_ENABLED, 1);
                         OldTBSize += ToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
                     }
                     else
@@ -181,43 +181,43 @@ void InitReBarContent(HWND hParent)
                         ToolBarAddButton(hCurrentToolBar, BtnIcon, BtnID, 0, TBSTYLE_BUTTON | TBSTYLE_AUTOSIZE, TBSTATE_ENABLED, 1);
                         OldTBSize += ToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
                     }
-					break;
+                    break;
                 // Dropdown button
                 default:
-					if(BtnIcon.Is_Numeric())
-					{
+                    if(BtnIcon.Is_Numeric())
+                    {
                         switch(BtnMenu.Get_Long())
                         {
                             case 9:
                                 ToolBarAddButton(hCurrentToolBar, "", BtnID, BtnIcon.Get_Long(), TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE | BTNS_WHOLEDROPDOWN, TBSTATE_ENABLED, 1);
                                 OldTBSize += ToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
-								break;
+                                break;
                             case 10:
                                 ToolBarAddButton(hCurrentToolBar, "", BtnID, BtnIcon.Get_Long(), TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE | BTNS_WHOLEDROPDOWN, TBSTATE_ENABLED, 1);
                                 OldTBSize += ToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
-								break;
-							default:
+                                break;
+                            default:
                                 ToolBarAddButton(hCurrentToolBar, "", BtnID, BtnIcon.Get_Long(), TBSTYLE_BUTTON | BTNS_DROPDOWN | TBSTYLE_AUTOSIZE, TBSTATE_ENABLED, 1);
                                 OldTBSize += ToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
-								break;
+                                break;
                         }
-					}
-					else
-					{
+                    }
+                    else
+                    {
                         switch(BtnMenu.Get_Long())
                         {
                             case 9:
                                 ToolBarAddButton(hCurrentToolBar, BtnIcon, BtnID, 0, TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE | BTNS_WHOLEDROPDOWN, TBSTATE_ENABLED, 1);
                                 OldTBSize += ToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
-								break;
+                                break;
                             case 10:
                                 ToolBarAddButton(hCurrentToolBar, BtnIcon, BtnID, 0, TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE | BTNS_WHOLEDROPDOWN, TBSTATE_ENABLED, 1);
                                 OldTBSize += ToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
-								break;
+                                break;
                             default:
                                 ToolBarAddButton(hCurrentToolBar, BtnIcon, BtnID, 0, TBSTYLE_BUTTON | BTNS_DROPDOWN | TBSTYLE_AUTOSIZE, TBSTATE_ENABLED, 1);
                                 OldTBSize += ToolBarGetButtonIndexXSize(hCurrentToolBar, BtnID);
-								break;
+                                break;
                         }
                     }
                     NbrDrop++;
@@ -226,7 +226,7 @@ void InitReBarContent(HWND hParent)
             ToolBarArray.Add(hCurrentToolBar);
             ToolBarToolTips.Add(BtnToolTip.Get_String());
             ToolBarComments.Add(BtnComment.Get_String());
-			CurrentCommandNumber = 0;
+            CurrentCommandNumber = 0;
             if(BtnCommand.Len() != 0)
             {
                 // Correct a bug that can happens with some older common controls.
@@ -236,16 +236,16 @@ void InitReBarContent(HWND hParent)
                 {
                     case 9:
                         CurrentCommandNumber = -1;
-						break;
-					case 10:
+                        break;
+                    case 10:
                         CurrentCommandNumber = -1;
-						break;
+                        break;
                     default:
                         CurrentCommandNumber = BtnCommand.Get_Long();
-						break;
+                        break;
                 }
             }
-			ToolBarCommands.Add(CurrentCommandNumber);
+            ToolBarCommands.Add(CurrentCommandNumber);
             CreatedBtn++;
             MaxToolbarBtn++;
             BtnID++;
@@ -253,7 +253,7 @@ void InitReBarContent(HWND hParent)
         if(CreatedBtn != 0)
         {
             ToolBarResize(hCurrentToolBar);
-			hCurrentPager = CreatePager(0, 0, OldTBSize, ToolBarGetYSize(hCurrentToolBar), hParent, hCurrentToolBar, NbrPager, PGS_HORZ);
+            hCurrentPager = CreatePager(0, 0, OldTBSize, ToolBarGetYSize(hCurrentToolBar), hParent, hCurrentToolBar, NbrPager, PGS_HORZ);
             NbrPager++;
             RealCreated = true;
             PagersHwnd.Add(hCurrentPager);
@@ -265,11 +265,11 @@ void InitReBarContent(HWND hParent)
             {
                 case 1:
                     RebarAddBand(hRebar, hCurrentPager, "", ToolBarGetButtonYSize(hCurrentToolBar), RBBS_BREAK | RBBS_GRIPPERALWAYS, OldTBSize + MarginWidth);
-					break;
-				case 0:
+                    break;
+                case 0:
                     RebarAddBand(hRebar, hCurrentPager, "", ToolBarGetButtonYSize(hCurrentToolBar), RBBS_GRIPPERALWAYS, OldTBSize + MarginWidth);
-					break;
-			}
+                    break;
+            }
             RebarBandVisible(hRebar, i, ToolBarShow.Get_Long());
         }
     }
@@ -371,7 +371,7 @@ void InitToolBarsIcons(void)
     ToolbarEditIcons[MENU_EDIT_DELETE_DELETEPARAGRAPH_ID] = ICON_DELETE;
     ToolbarEditIcons[MENU_EDIT_GOTO_PREVIOUSPARAGRAPH_ID] = ICON_WINDOWS;
     ToolbarEditIcons[MENU_EDIT_GOTO_NEXTPARAGRAPH_ID] = ICON_WINDOWS;
-	ToolbarEditIcons[MENU_EDIT_BLOCK_TRIMSPACES_ID] = ICON_WINDOWS;
+    ToolbarEditIcons[MENU_EDIT_BLOCK_TRIMSPACES_ID] = ICON_WINDOWS;
     ToolbarEditIcons[MENU_EDIT_BREAKPOINTS_TOGGLE_ID] = ICON_SETBREAK;
     ToolbarEditIcons[MENU_EDIT_BREAKPOINTS_FIRST_ID] = ICON_FIRSTBREAK;
     ToolbarEditIcons[MENU_EDIT_BREAKPOINTS_PREVIOUS_ID] = ICON_PREVBREAK;
@@ -424,22 +424,22 @@ void InitToolBarsIcons(void)
     ToolbarWindowIcons[MENU_WINDOW_ARRANGEICONS_ID] = ICON_WINDOWS;
     ToolbarWindowIcons[MENU_WINDOW_NEXTWINDOW_ID] = ICON_NEXTWINDOW;
     ToolbarWindowIcons[MENU_WINDOW_PREVIOUSWINDOW_ID] = ICON_PREVWINDOW;
-	ToolbarWindowIcons[MENU_WINDOW_TIPOFTHEDAY_ID] = ICON_KEYBOARD;
+    ToolbarWindowIcons[MENU_WINDOW_TIPOFTHEDAY_ID] = ICON_KEYBOARD;
 }
 
 // -----------------------------------------------------------------------
 // Rebar hook
 //LRESULT CALLBACK RebarHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-//	RECT rect;
+//  RECT rect;
 
-//	if(WindowsXP) {
-//		switch(uMsg) {
-//			case WM_ERASEBKGND:
-//				GetClientRect(hWnd, &rect);
-//				FillRect((HDC) wParam, &rect, GetSysColorBrush(COLOR_BTNFACE));
-//				return(1);
-//		}
-//	}
+//  if(WindowsXP) {
+//      switch(uMsg) {
+//          case WM_ERASEBKGND:
+//              GetClientRect(hWnd, &rect);
+//              FillRect((HDC) wParam, &rect, GetSysColorBrush(COLOR_BTNFACE));
+//              return(1);
+//      }
+//  }
   //  return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 //}
 
@@ -449,6 +449,6 @@ void RefreshToolbars(void)
 {
     DestroyWindow(hRebar);
     hRebar = CreateRebar(0, 0, 0, 18, hMDIform.hWnd, 0, 0, CCS_TOP | RBS_BANDBORDERS | WS_BORDER);
-	RebarResize(hRebar);
+    RebarResize(hRebar);
     InitReBarContent(hMDIform.hWnd);
 }

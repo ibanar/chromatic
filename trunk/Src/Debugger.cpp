@@ -161,70 +161,70 @@
 
 long Reg_Icons[] =
 {
-	ICON_REGEAX,
-	ICON_REGEBX,
-	ICON_REGECX,
-	ICON_REGEDX,
-	ICON_REGESI,
-	ICON_REGEDI,
-	ICON_REGEIP,
-	ICON_REGESP,
-	ICON_REGEBP,
-	ICON_REGEFL,
-	ICON_REGCS,
-	ICON_REGDS,
-	ICON_REGES,
-	ICON_REGFS,
-	ICON_REGGS,
-	ICON_REGSS,
-	ICON_REGST0,
-	ICON_REGST1,
-	ICON_REGST2,
-	ICON_REGST3,
-	ICON_REGST4,
-	ICON_REGST5,
-	ICON_REGST6,
-	ICON_REGST7,
-	ICON_REGFPUCTRL,
-	ICON_REGFPUSTAT,
-	ICON_REGFPUTAGS,
-	ICON_REGCS,
-	ICON_REGEIP,
-	ICON_REGDS,
-	ICON_REGFPUEDO,
-	ICON_REGMM0,
-	ICON_REGMM1,
-	ICON_REGMM2,
-	ICON_REGMM3,
-	ICON_REGMM4,
-	ICON_REGMM5,
-	ICON_REGMM6,
-	ICON_REGMM7,
-	ICON_REGMM0, -1,
-	ICON_REGMM1, -1,
-	ICON_REGMM2, -1,
-	ICON_REGMM3, -1,
-	ICON_REGMM4, -1,
-	ICON_REGMM5, -1,
-	ICON_REGMM6, -1,
-	ICON_REGMM7, -1,
-	ICON_REGXMM0,
-	ICON_REGXMM1,
-	ICON_REGXMM2,
-	ICON_REGXMM3,
-	ICON_REGXMM4,
-	ICON_REGXMM5,
-	ICON_REGXMM6,
-	ICON_REGXMM7,
-	ICON_REGXMM0, -1, -1, -1,
-	ICON_REGXMM1, -1, -1, -1,
-	ICON_REGXMM2, -1, -1, -1,
-	ICON_REGXMM3, -1, -1, -1,
-	ICON_REGXMM4, -1, -1, -1,
-	ICON_REGXMM5, -1, -1, -1,
-	ICON_REGXMM6, -1, -1, -1,
-	ICON_REGXMM7, -1, -1, -1,
-	ICON_REGMXCSR
+    ICON_REGEAX,
+    ICON_REGEBX,
+    ICON_REGECX,
+    ICON_REGEDX,
+    ICON_REGESI,
+    ICON_REGEDI,
+    ICON_REGEIP,
+    ICON_REGESP,
+    ICON_REGEBP,
+    ICON_REGEFL,
+    ICON_REGCS,
+    ICON_REGDS,
+    ICON_REGES,
+    ICON_REGFS,
+    ICON_REGGS,
+    ICON_REGSS,
+    ICON_REGST0,
+    ICON_REGST1,
+    ICON_REGST2,
+    ICON_REGST3,
+    ICON_REGST4,
+    ICON_REGST5,
+    ICON_REGST6,
+    ICON_REGST7,
+    ICON_REGFPUCTRL,
+    ICON_REGFPUSTAT,
+    ICON_REGFPUTAGS,
+    ICON_REGCS,
+    ICON_REGEIP,
+    ICON_REGDS,
+    ICON_REGFPUEDO,
+    ICON_REGMM0,
+    ICON_REGMM1,
+    ICON_REGMM2,
+    ICON_REGMM3,
+    ICON_REGMM4,
+    ICON_REGMM5,
+    ICON_REGMM6,
+    ICON_REGMM7,
+    ICON_REGMM0, -1,
+    ICON_REGMM1, -1,
+    ICON_REGMM2, -1,
+    ICON_REGMM3, -1,
+    ICON_REGMM4, -1,
+    ICON_REGMM5, -1,
+    ICON_REGMM6, -1,
+    ICON_REGMM7, -1,
+    ICON_REGXMM0,
+    ICON_REGXMM1,
+    ICON_REGXMM2,
+    ICON_REGXMM3,
+    ICON_REGXMM4,
+    ICON_REGXMM5,
+    ICON_REGXMM6,
+    ICON_REGXMM7,
+    ICON_REGXMM0, -1, -1, -1,
+    ICON_REGXMM1, -1, -1, -1,
+    ICON_REGXMM2, -1, -1, -1,
+    ICON_REGXMM3, -1, -1, -1,
+    ICON_REGXMM4, -1, -1, -1,
+    ICON_REGXMM5, -1, -1, -1,
+    ICON_REGXMM6, -1, -1, -1,
+    ICON_REGXMM7, -1, -1, -1,
+    ICON_REGMXCSR
 };
 
 // -----------------------------------------------------------------------
@@ -334,23 +334,23 @@ long WaitForDebugOutput(CStr FileName, CStr Arguments)
     long ThreadClass = 0;
     long i = 0;
     long j = 0;
-	long BtnPos = 0;
-	long No_Debug = 0;
-	CStr DebugDir;
+    long BtnPos = 0;
+    long No_Debug = 0;
+    CStr DebugDir;
     SECURITY_ATTRIBUTES DebSecAt;
     PSAPI_WS_WATCH_INFORMATION MyWatch;
     unsigned long VolatValue = 0;
     unsigned long VolatValue2 = 0;
-	CStr BufString;
-	LPSNAPDLL NewDll;
-	LPSNAPPROCESS NewProcess;
-	CStr ProgDir;
-	DWORD BaseModuleAddr = 0;
-	PIMAGEHLP_MODULE NewModule;
+    CStr BufString;
+    LPSNAPDLL NewDll;
+    LPSNAPPROCESS NewProcess;
+    CStr ProgDir;
+    DWORD BaseModuleAddr = 0;
+    PIMAGEHLP_MODULE NewModule;
     RECT Rec;
-	LPSNAPPROCESS hProcessThread;
-	//HANDLE hCurProcess;
-	LPSNAPPROCESS ParentProcess;
+    LPSNAPPROCESS hProcessThread;
+    //HANDLE hCurProcess;
+    LPSNAPPROCESS ParentProcess;
 
     if(Threadrunning == 1) goto DoubleInstance;
     if(FileName.Len() == 0) goto DoubleInstance;
@@ -374,43 +374,47 @@ long WaitForDebugOutput(CStr FileName, CStr Arguments)
     Arguments = StringReplace(Arguments, "\"", "", 1, -1, Binary_Compare);
     if(Arguments.Len() != 0) Arguments = " " + (CStr) Arguments;
     BufString = FileName + (CStr) Arguments;
-	DebuggedFile = FileName;
-	if(CreateProcess(FileName.Get_String(), BufString.Get_String(), &DebSecAt, &DebSecAt, 0,
-	   DEBUG_PROCESS, NULL, DebugDir.Get_String(), &MyStartup, &DebuggedProc) == 0)
-	{
+    DebuggedFile = FileName;
+    if(CreateProcess(FileName.Get_String(),
+                     BufString.Get_String(),
+                     &DebSecAt, &DebSecAt, 0,
+                     DEBUG_PROCESS, NULL,
+                     DebugDir.Get_String(),
+                     &MyStartup, &DebuggedProc) == 0)
+    {
 DoubleInstance:
         return(0);
     }
-	SnapRunning = 1;
-	EntryPoint = 0;
-	WasBreakPoint = 0;
+    SnapRunning = 1;
+    EntryPoint = 0;
+    WasBreakPoint = 0;
 
-	hRegistersContainer = CreateDockingBox("Registers", &RegistersContainerProc, hMDIform.hDock, MainIniFile.Get_String());
-	//hDumpRegisters = CreateDumpBox(0, 0, 10, 10, hRegistersContainer, 0, GDIGetCourierNew9(), 0, 10, 10, 10, 0, WS_HSCROLL | WS_VSCROLL, WS_EX_STATICEDGE);
-	hRegistersListView = CreateListView(0, 0, 10, 10, hRegistersContainer, 13, GlobalImageList1, NULL, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_EDITLABELS | LVS_SINGLESEL | WS_TABSTOP | LVS_NOCOLUMNHEADER, WS_EX_STATICEDGE);
-	ControlSetFont(hRegistersListView, WACourrierNewFont9);
-	ListViewAddCol(hRegistersListView, "", 10, 0);
-	// Add the registers into the listview
-	for(i = 0; i < REG_NBR; i++)
-	{
-		ListViewAddItem(hRegistersListView, "", ListViewItemCount(hRegistersListView), Reg_Icons[i]);
-	}
+    hRegistersContainer = CreateDockingBox("Registers", &RegistersContainerProc, hMDIform.hDock, MainIniFile.Get_String());
+    //hDumpRegisters = CreateDumpBox(0, 0, 10, 10, hRegistersContainer, 0, GDIGetCourierNew9(), 0, 10, 10, 10, 0, WS_HSCROLL | WS_VSCROLL, WS_EX_STATICEDGE);
+    hRegistersListView = CreateListView(0, 0, 10, 10, hRegistersContainer, 13, GlobalImageList1, NULL, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_EDITLABELS | LVS_SINGLESEL | WS_TABSTOP | LVS_NOCOLUMNHEADER, WS_EX_STATICEDGE);
+    ControlSetFont(hRegistersListView, WACourrierNewFont9);
+    ListViewAddCol(hRegistersListView, "", 10, 0);
+    // Add the registers into the listview
+    for(i = 0; i < REG_NBR; i++)
+    {
+        ListViewAddItem(hRegistersListView, "", ListViewItemCount(hRegistersListView), Reg_Icons[i]);
+    }
           
-	DockingBoxShow(hRegistersContainer, GetMDIWidth(), GetMDIHeight(), 300, 120, DOCKINGBOX_BOTTOM);
-	SetRegistersDockMenuState(ShowRegistersDockWin);
+    DockingBoxShow(hRegistersContainer, GetMDIWidth(), GetMDIHeight(), 300, 120, DOCKINGBOX_BOTTOM);
+    SetRegistersDockMenuState(ShowRegistersDockWin);
     
-	hDebugContainer = CreateDockingBox("Debug", &TreeviewDebugContainerProc, hMDIform.hDock, MainIniFile.Get_String());
-	hTreeViewDebug = CreateTreeView(0, 23, ControlWidth(hDebugContainer), 10, hDebugContainer, 14, GlobalImageList1, 0, TVS_SHOWSELALWAYS, WS_EX_STATICEDGE);
+    hDebugContainer = CreateDockingBox("Debug", &TreeviewDebugContainerProc, hMDIform.hDock, MainIniFile.Get_String());
+    hTreeViewDebug = CreateTreeView(0, 23, ControlWidth(hDebugContainer), 10, hDebugContainer, 14, GlobalImageList1, 0, TVS_SHOWSELALWAYS, WS_EX_STATICEDGE);
     TreeViewSetIndent(hTreeViewDebug, 1);
-	CreateSnapTreeView();
+    CreateSnapTreeView();
 
-	hDebugToolbar = CreateToolBar(0, 0, 0, 23, hDebugContainer, GlobalImageList1, 1, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | TBS_VERT | TBSTYLE_WRAPABLE, 0);
+    hDebugToolbar = CreateToolBar(0, 0, 0, 23, hDebugContainer, GlobalImageList1, 1, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | TBS_VERT | TBSTYLE_WRAPABLE, 0);
     SendMessage(hDebugToolbar, TB_SETROWS, 0x60001, (long) &Rec);
-	ToolBarAddButton(hDebugToolbar, "", DEBUGTOOLBAR_RUN, ICON_RUNPROJECT, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(hDebugToolbar, "", DEBUGTOOLBAR_RUN, ICON_RUNPROJECT, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     ToolBarAddButton(hDebugToolbar, "", DEBUGTOOLBAR_PAUSE, ICON_PAUSE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     ToolBarAddButton(hDebugToolbar, "", DEBUGTOOLBAR_STOP, ICON_STOP, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-	ToolBarAddSeparator(hDebugToolbar, 0);
-	ToolBarAddButton(hDebugToolbar, "", DEBUGTOOLBAR_STEPINTO, ICON_STEPINTO, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddSeparator(hDebugToolbar, 0);
+    ToolBarAddButton(hDebugToolbar, "", DEBUGTOOLBAR_STEPINTO, ICON_STEPINTO, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     ToolBarAddButton(hDebugToolbar, "", DEBUGTOOLBAR_STEPOVER, ICON_STEPOVER, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     ToolBarAddButton(hDebugToolbar, "", DEBUGTOOLBAR_STEPOUT, ICON_STEPOUT, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     
@@ -422,63 +426,63 @@ DoubleInstance:
     DebugToolbarToolTip[DEBUGTOOLBAR_STEPOVER] = "Step over";
     DebugToolbarToolTip[DEBUGTOOLBAR_STEPOUT] = "Step out";
 
-	MenuEnable(hViewMenuDisplay, MENU_VIEW_DEBUGDOCK_ID, 1);
-	MenuEnable(hViewMenuDisplay, MENU_VIEW_REGISTERSDOCK_ID, 1);
-	DockingBoxShow(hDebugContainer, GetMDIWidth(), GetMDIHeight(), 216, 230, DOCKINGBOX_LEFT);
-	SetDebugDockMenuState(ShowDebugDockWin);
+    MenuEnable(hViewMenuDisplay, MENU_VIEW_DEBUGDOCK_ID, 1);
+    MenuEnable(hViewMenuDisplay, MENU_VIEW_REGISTERSDOCK_ID, 1);
+    DockingBoxShow(hDebugContainer, GetMDIWidth(), GetMDIHeight(), 216, 230, DOCKINGBOX_LEFT);
+    SetDebugDockMenuState(ShowDebugDockWin);
 
-	// Clear & select the debug tab
+    // Clear & select the debug tab
     if(AutoClearOut == 1) ClearDebug();
-	SysTabSetFocusItem(hOutputSysTab, 1);
+    SysTabSetFocusItem(hOutputSysTab, 1);
 
-	MiscDoEvents(hMDIform.hClient, hGlobAccelerators, hMDIform.hWnd);
+    MiscDoEvents(hMDIform.hClient, hGlobAccelerators, hMDIform.hWnd);
 
-	x86_init(opt_none, NULL, NULL);
+    x86_init(opt_none, NULL, NULL);
 
-	// Init the FPU for full 80 bits calculations
-	_asm
-	{
-		fninit
-	}
+    // Init the FPU for full 80 bits calculations
+    _asm
+    {
+        fninit
+    }
 
-	if(SymInitialize(DebuggedProc.hProcess, NULL, FALSE) == 0)
-	{
-		WriteToDebug("Can't initialize symbols handler.");
-		KillProcess();
-		goto TchaoProc;
-	}
+    if(SymInitialize(DebuggedProc.hProcess, NULL, FALSE) == 0)
+    {
+        WriteToDebug("Can't initialize symbols handler.");
+        KillProcess();
+        goto TchaoProc;
+    }
 
-	InStepMode = 0;
-	SymSetOptions(SYMOPT_LOAD_LINES | SYMOPT_UNDNAME | SYMOPT_DEFERRED_LOADS | SYMOPT_EXACT_SYMBOLS | SYMOPT_FAIL_CRITICAL_ERRORS);
+    InStepMode = 0;
+    SymSetOptions(SYMOPT_LOAD_LINES | SYMOPT_UNDNAME | SYMOPT_DEFERRED_LOADS | SYMOPT_EXACT_SYMBOLS | SYMOPT_FAIL_CRITICAL_ERRORS);
 
     InException = 0;
     Threadrunning = 1;
     CurrentDThread = DebuggedProc.dwThreadId;
-	SnapRunstate();
+    SnapRunstate();
 
-	// -------------------------------------------
-	// Main debugger loop
+    // -------------------------------------------
+    // Main debugger loop
 
 WaitEnd:
     memset(&MyDebug, 0, sizeof(DEBUG_EVENT));
-	// Try to avoid double events (due to MiscDoEvents)
-	if(Threadrunning == 1)
-	{
-		WaitForDebugEvent(&MyDebug, 0);
-	}
-	MiscDoEvents(hMDIform.hClient, hGlobAccelerators, hMDIform.hWnd);
+    // Try to avoid double events (due to MiscDoEvents)
+    if(Threadrunning == 1)
+    {
+        WaitForDebugEvent(&MyDebug, 0);
+    }
+    MiscDoEvents(hMDIform.hClient, hGlobAccelerators, hMDIform.hWnd);
     switch(MyDebug.dwDebugEventCode)
     {
-		// A new process has been created
-		// (should be unique as far as i know)
+        // A new process has been created
+        // (should be unique as far as i know)
         case CREATE_PROCESS_DEBUG_EVENT:
-			CurrentDThread = MyDebug.dwThreadId;
+            CurrentDThread = MyDebug.dwThreadId;
             NewProcess = (LPSNAPPROCESS) calloc(sizeof(SNAPPROCESS), 1);
-			memset(NewProcess, 0, sizeof(SNAPPROCESS));
+            memset(NewProcess, 0, sizeof(SNAPPROCESS));
 
             NewProcess->hFile = MyDebug.u.CreateProcessInfo.hFile;
-			NewProcess->hProcess = MyDebug.u.CreateProcessInfo.hProcess;
-			NewProcess->dwProcessId = MyDebug.dwProcessId;
+            NewProcess->hProcess = MyDebug.u.CreateProcessInfo.hProcess;
+            NewProcess->dwProcessId = MyDebug.dwProcessId;
             NewProcess->PriorityClass = GetPriorityClass(MyDebug.u.CreateProcessInfo.hProcess);
             NewProcess->WorkSize1 = 0;
             NewProcess->WorkSize2 = 0;
@@ -490,240 +494,240 @@ WaitEnd:
             switch(GetProcessBoost(MyDebug.u.CreateProcessInfo.hProcess))
             {
                 case 1:
-					NewProcess->PriorityBoost = 0;
-					break;
-				case 2:
-					NewProcess->PriorityBoost = 1;
-					break;
+                    NewProcess->PriorityBoost = 0;
+                    break;
+                case 2:
+                    NewProcess->PriorityBoost = 1;
+                    break;
             }
             if(GetProcessTime(MyDebug.u.CreateProcessInfo.hProcess) == 1)
             {
-				NewProcess->CreationTime = lpProcCreationSysTm;
+                NewProcess->CreationTime = lpProcCreationSysTm;
             }
-			NewProcess->ProcVersion = GetProcessVersion(MyDebug.dwProcessId);
+            NewProcess->ProcVersion = GetProcessVersion(MyDebug.dwProcessId);
             if(Windows2K == 1)
             {
                 if(Ptr_InitializeProcessForWsWatch(MyDebug.u.CreateProcessInfo.hProcess) != 0)
                 {
-					NewProcess->ProcMonitor = 1;
+                    NewProcess->ProcMonitor = 1;
                 }
                 else
                 {
-					NewProcess->ProcMonitor = 0;
+                    NewProcess->ProcMonitor = 0;
                 }
             }
-			NewProcess->hThread = MyDebug.u.CreateProcessInfo.hThread;
-			NewProcess->dwThreadId = MyDebug.dwThreadId;
-			NewProcess->ThreadPriority = GetThreadPriority(MyDebug.u.CreateProcessInfo.hThread);
-			NewProcess->ThreadStartAddress = MyDebug.u.CreateProcessInfo.lpStartAddress;
-			EntryPoint = (long) MyDebug.u.CreateProcessInfo.lpStartAddress;
-			// Sticky breakpoint at entry point
-			SetBreakPoint(&DebBreakPoints, EntryPoint, BP_BRANCH);
-			NewProcess->ImageBase = MyDebug.u.CreateProcessInfo.lpBaseOfImage;
+            NewProcess->hThread = MyDebug.u.CreateProcessInfo.hThread;
+            NewProcess->dwThreadId = MyDebug.dwThreadId;
+            NewProcess->ThreadPriority = GetThreadPriority(MyDebug.u.CreateProcessInfo.hThread);
+            NewProcess->ThreadStartAddress = MyDebug.u.CreateProcessInfo.lpStartAddress;
+            EntryPoint = (long) MyDebug.u.CreateProcessInfo.lpStartAddress;
+            // Sticky breakpoint at entry point
+            SetBreakPoint(&DebBreakPoints, EntryPoint, BP_BRANCH);
+            NewProcess->ImageBase = MyDebug.u.CreateProcessInfo.lpBaseOfImage;
             switch(GetThreadBoost(MyDebug.u.CreateProcessInfo.hThread))
             {
                 case 1:
-					NewProcess->ThreadPriorityBoost = 0;
-					break;
-				case 2:
-					NewProcess->ThreadPriorityBoost = 1;
-					break;
-			}
+                    NewProcess->ThreadPriorityBoost = 0;
+                    break;
+                case 2:
+                    NewProcess->ThreadPriorityBoost = 1;
+                    break;
+            }
             if(GetThreadTime(MyDebug.u.CreateProcessInfo.hThread) == 1)
             {
-				NewProcess->ThreadCreationTime = lpThreadCreationSysTm;
+                NewProcess->ThreadCreationTime = lpThreadCreationSysTm;
             }
-			//THREAD_ALL_ACCESS
-			DuplicateHandle(GetCurrentProcess(), NewProcess->hThread, GetCurrentProcess(), &NewProcess->hThread, THREAD_ALL_ACCESS, 0, 0);
-			WriteToDebug("Create process: 0x" + (CStr) StringHexNumberComplement((long) MyDebug.u.CreateProcessInfo.hProcess, 8));
-			WriteToDebug("Create thread: 0x" + (CStr) StringHexNumberComplement((long) NewProcess->hThread, 8));
+            //THREAD_ALL_ACCESS
+            DuplicateHandle(GetCurrentProcess(), NewProcess->hThread, GetCurrentProcess(), &NewProcess->hThread, THREAD_ALL_ACCESS, 0, 0);
+            WriteToDebug("Create process: 0x" + (CStr) StringHexNumberComplement((long) MyDebug.u.CreateProcessInfo.hProcess, 8));
+            WriteToDebug("Create thread: 0x" + (CStr) StringHexNumberComplement((long) NewProcess->hThread, 8));
 
-			NewProcess->ProcessTreeViewEntry = TreeViewAddItem(hTreeViewDebug, "Process: 0x" + (CStr) StringHex32((long) NewProcess->hProcess), hTreeViewDebugProcesses, 0, ICON_PROCESS, ICON_PROCESS, 0, 1);
-			NewProcess->DatasTreeViewEntry = TreeViewAddItem(hTreeViewDebug, "Thread: 0x" + (CStr) StringHex32((long) NewProcess->hThread) + (CStr) " (Start address: 0x" + (CStr) StringHex32((long) NewProcess->ThreadStartAddress) + (CStr) ")", NewProcess->ProcessTreeViewEntry, 0, ICON_THREAD, ICON_THREAD, 0, 1);
-			DebProcesses.Add(NewProcess);
+            NewProcess->ProcessTreeViewEntry = TreeViewAddItem(hTreeViewDebug, "Process: 0x" + (CStr) StringHex32((long) NewProcess->hProcess), hTreeViewDebugProcesses, 0, ICON_PROCESS, ICON_PROCESS, 0, 1);
+            NewProcess->DatasTreeViewEntry = TreeViewAddItem(hTreeViewDebug, "Thread: 0x" + (CStr) StringHex32((long) NewProcess->hThread) + (CStr) " (Start address: 0x" + (CStr) StringHex32((long) NewProcess->ThreadStartAddress) + (CStr) ")", NewProcess->ProcessTreeViewEntry, 0, ICON_THREAD, ICON_THREAD, 0, 1);
+            DebProcesses.Add(NewProcess);
 
-			// Try to load the symbol table
-			NewModule = (PIMAGEHLP_MODULE) calloc(sizeof(IMAGEHLP_MODULE), 1);
-			memset(NewModule, 0, sizeof(IMAGEHLP_MODULE));
-			NewModule->SizeOfStruct = sizeof(IMAGEHLP_MODULE);
-			BaseModuleAddr = SymLoadModule(DebuggedProc.hProcess, NULL, BufString.Get_String(), NULL, 0, 0);
-			ProcessBase = BaseModuleAddr;
-			SymGetModuleInfo(DebuggedProc.hProcess, (DWORD) BaseModuleAddr, NewModule);
-			DebModules.Add(NewModule);
-			if(BaseModuleAddr == 0)
-			{
-				No_Debug = DEBUG_ERR_SYMBTABLE;
-				KillProcess();
-			}
-			else
-			{
-				if(NewModule->SymType != SymCoff &&
-				   NewModule->SymType != SymCv &&
-				   NewModule->SymType != SymDia &&
+            // Try to load the symbol table
+            NewModule = (PIMAGEHLP_MODULE) calloc(sizeof(IMAGEHLP_MODULE), 1);
+            memset(NewModule, 0, sizeof(IMAGEHLP_MODULE));
+            NewModule->SizeOfStruct = sizeof(IMAGEHLP_MODULE);
+            BaseModuleAddr = SymLoadModule(DebuggedProc.hProcess, NULL, BufString.Get_String(), NULL, 0, 0);
+            ProcessBase = BaseModuleAddr;
+            SymGetModuleInfo(DebuggedProc.hProcess, (DWORD) BaseModuleAddr, NewModule);
+            DebModules.Add(NewModule);
+            if(BaseModuleAddr == 0)
+            {
+                No_Debug = DEBUG_ERR_SYMBTABLE;
+                KillProcess();
+            }
+            else
+            {
+                if(NewModule->SymType != SymCoff &&
+                   NewModule->SymType != SymCv &&
+                   NewModule->SymType != SymDia &&
                    NewModule->SymType != SymPdb)
                 {
-					No_Debug = DEBUG_ERR_NODEBUG;
-					KillProcess();
-				}
+                    No_Debug = DEBUG_ERR_NODEBUG;
+                    KillProcess();
+                }
             }
-			GetCurrentContext(CurrentDThread, &NewProcess->LastContext);
-			NewProcess->LastContext.Esi = 0;
-			NewProcess->LastContext.Edi = 0;
-			// Clear the FPU, MMX & XMM registers
-			for(i = 0; i < SIZE_OF_80387_REGISTERS; i++)
-			{
-				NewProcess->LastContext.FloatSave.RegisterArea[i] = 0;
-			}
-			for(i = (10 * 16); i < (10 * 16) + (8 * 16); i++)
-			{
-				NewProcess->LastContext.ExtendedRegisters[i] = 0;
-			}
-			SetCurrentContext(CurrentDThread, &NewProcess->LastContext);
-			ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
-			break;
+            GetCurrentContext(CurrentDThread, &NewProcess->LastContext);
+            NewProcess->LastContext.Esi = 0;
+            NewProcess->LastContext.Edi = 0;
+            // Clear the FPU, MMX & XMM registers
+            for(i = 0; i < SIZE_OF_80387_REGISTERS; i++)
+            {
+                NewProcess->LastContext.FloatSave.RegisterArea[i] = 0;
+            }
+            for(i = (10 * 16); i < (10 * 16) + (8 * 16); i++)
+            {
+                NewProcess->LastContext.ExtendedRegisters[i] = 0;
+            }
+            SetCurrentContext(CurrentDThread, &NewProcess->LastContext);
+            ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
+            break;
 
-		// A new thread has been created
-		case CREATE_THREAD_DEBUG_EVENT:
-			CurrentDThread = MyDebug.dwThreadId;
-			NewProcess = (LPSNAPPROCESS) calloc(sizeof(SNAPPROCESS), 1);
-			memset(NewProcess, 0, sizeof(SNAPPROCESS));
-			NewProcess->hThread = MyDebug.u.CreateThread.hThread;
-			NewProcess->ThreadPriority = GetThreadPriority(MyDebug.u.CreateThread.hThread);
-			NewProcess->ThreadStartAddress = MyDebug.u.CreateThread.lpStartAddress;
-			NewProcess->hThreadLocalBase = MyDebug.u.CreateThread.lpThreadLocalBase;
-			switch(GetThreadBoost(MyDebug.u.CreateThread.hThread))
-			{
+        // A new thread has been created
+        case CREATE_THREAD_DEBUG_EVENT:
+            CurrentDThread = MyDebug.dwThreadId;
+            NewProcess = (LPSNAPPROCESS) calloc(sizeof(SNAPPROCESS), 1);
+            memset(NewProcess, 0, sizeof(SNAPPROCESS));
+            NewProcess->hThread = MyDebug.u.CreateThread.hThread;
+            NewProcess->ThreadPriority = GetThreadPriority(MyDebug.u.CreateThread.hThread);
+            NewProcess->ThreadStartAddress = MyDebug.u.CreateThread.lpStartAddress;
+            NewProcess->hThreadLocalBase = MyDebug.u.CreateThread.lpThreadLocalBase;
+            switch(GetThreadBoost(MyDebug.u.CreateThread.hThread))
+            {
                 case 1:
-					NewProcess->ThreadPriorityBoost = 0;
-					break;
+                    NewProcess->ThreadPriorityBoost = 0;
+                    break;
                 case 2:
-					NewProcess->ThreadPriorityBoost = 1;
-					break;
+                    NewProcess->ThreadPriorityBoost = 1;
+                    break;
             }
-			if(GetThreadTime(MyDebug.u.CreateThread.hThread) == 1)
-			{
-				NewProcess->ThreadCreationTime = lpThreadCreationSysTm;
+            if(GetThreadTime(MyDebug.u.CreateThread.hThread) == 1)
+            {
+                NewProcess->ThreadCreationTime = lpThreadCreationSysTm;
             }
 
-			//hCurProcess = MyDebug.dwProcessId;
-			DuplicateHandle(GetCurrentProcess(), NewProcess->hThread, GetCurrentProcess(), &NewProcess->hThread, THREAD_ALL_ACCESS, 0, 0);
-			WriteToDebug("Create thread: 0x" + (CStr) StringHexNumberComplement((long) NewProcess->hThread, 8));
+            //hCurProcess = MyDebug.dwProcessId;
+            DuplicateHandle(GetCurrentProcess(), NewProcess->hThread, GetCurrentProcess(), &NewProcess->hThread, THREAD_ALL_ACCESS, 0, 0);
+            WriteToDebug("Create thread: 0x" + (CStr) StringHexNumberComplement((long) NewProcess->hThread, 8));
             
-			// Search the process
-			hProcessThread = 0;
-			
-			for(i = 0; i < DebProcesses.Amount(); i++)
-			{
-				ParentProcess = DebProcesses.Get(i)->Content;
-				if(ParentProcess->dwProcessId == MyDebug.dwProcessId)
-				{
-					hProcessThread = ParentProcess;
-					break;
-				}
-			}
-			if(hProcessThread)
-			{
-				NewProcess->ProcessTreeViewEntry = hProcessThread->ProcessTreeViewEntry;
-				NewProcess->DatasTreeViewEntry = TreeViewAddItem(hTreeViewDebug, "Thread: 0x" + (CStr) StringHex32((long) NewProcess->hThread) + (CStr) " (Start address: 0x" + (CStr) StringHex32((long) NewProcess->ThreadStartAddress) + (CStr) ")", NewProcess->ProcessTreeViewEntry, 0, ICON_THREAD, ICON_THREAD, 0, 1);
-				DebProcesses.Add(NewProcess);
+            // Search the process
+            hProcessThread = 0;
+            
+            for(i = 0; i < DebProcesses.Amount(); i++)
+            {
+                ParentProcess = DebProcesses.Get(i)->Content;
+                if(ParentProcess->dwProcessId == MyDebug.dwProcessId)
+                {
+                    hProcessThread = ParentProcess;
+                    break;
+                }
             }
-			GetCurrentContext(CurrentDThread, &NewProcess->LastContext);
-			NewProcess->LastContext.Esi = 0;
-			NewProcess->LastContext.Edi = 0;
-			// Clear the FPU, MMX & XMM registers
-			for(i = 0; i < SIZE_OF_80387_REGISTERS; i++)
-			{
-				NewProcess->LastContext.FloatSave.RegisterArea[i] = 0;
-			}
-			for(i = (10 * 16); i < (10 * 16) + (8 * 16); i++)
-			{
-				NewProcess->LastContext.ExtendedRegisters[i] = 0;
-			}
-			SetCurrentContext(CurrentDThread, &NewProcess->LastContext);
-			ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
-			break;
+            if(hProcessThread)
+            {
+                NewProcess->ProcessTreeViewEntry = hProcessThread->ProcessTreeViewEntry;
+                NewProcess->DatasTreeViewEntry = TreeViewAddItem(hTreeViewDebug, "Thread: 0x" + (CStr) StringHex32((long) NewProcess->hThread) + (CStr) " (Start address: 0x" + (CStr) StringHex32((long) NewProcess->ThreadStartAddress) + (CStr) ")", NewProcess->ProcessTreeViewEntry, 0, ICON_THREAD, ICON_THREAD, 0, 1);
+                DebProcesses.Add(NewProcess);
+            }
+            GetCurrentContext(CurrentDThread, &NewProcess->LastContext);
+            NewProcess->LastContext.Esi = 0;
+            NewProcess->LastContext.Edi = 0;
+            // Clear the FPU, MMX & XMM registers
+            for(i = 0; i < SIZE_OF_80387_REGISTERS; i++)
+            {
+                NewProcess->LastContext.FloatSave.RegisterArea[i] = 0;
+            }
+            for(i = (10 * 16); i < (10 * 16) + (8 * 16); i++)
+            {
+                NewProcess->LastContext.ExtendedRegisters[i] = 0;
+            }
+            SetCurrentContext(CurrentDThread, &NewProcess->LastContext);
+            ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
+            break;
 
-		// A new dll has been loaded
+        // A new dll has been loaded
         case LOAD_DLL_DEBUG_EVENT:
-			CurrentDThread = MyDebug.dwThreadId;
-			NewDll = (LPSNAPDLL) calloc(sizeof(SNAPDLL), 1);
-			memset(NewDll, 0, sizeof(SNAPDLL));
-			NewDll->hFile = MyDebug.u.LoadDll.hFile;
-			NewDll->lpBaseOfDll = MyDebug.u.LoadDll.lpBaseOfDll;
-			NewDll->DllName = new CStr;
-			// Add the dll datas
-			BufString = BufString.String(MAX_PATH, 1);
+            CurrentDThread = MyDebug.dwThreadId;
+            NewDll = (LPSNAPDLL) calloc(sizeof(SNAPDLL), 1);
+            memset(NewDll, 0, sizeof(SNAPDLL));
+            NewDll->hFile = MyDebug.u.LoadDll.hFile;
+            NewDll->lpBaseOfDll = MyDebug.u.LoadDll.lpBaseOfDll;
+            NewDll->DllName = new CStr;
+            // Add the dll datas
+            BufString = BufString.String(MAX_PATH, 1);
             if(GetModuleFileName((HMODULE) MyDebug.u.LoadDll.lpBaseOfDll, BufString.Get_String(), MAX_PATH) == 0)
             {
-				// Empty it
-				BufString = "0x" + (CStr) StringHexNumberComplement((long) MyDebug.u.LoadDll.lpBaseOfDll, 8);
-			}
-			NewDll->DllName->Set_String(BufString.Get_String());
-			NewDll->TreeViewEntry = TreeViewAddItem(hTreeViewDebug, BufString, hTreeViewDebugDLLs, 0, ICON_STATIC, ICON_STATIC, 0, 1);
-			DebDlls.Add(NewDll);
+                // Empty it
+                BufString = "0x" + (CStr) StringHexNumberComplement((long) MyDebug.u.LoadDll.lpBaseOfDll, 8);
+            }
+            NewDll->DllName->Set_String(BufString.Get_String());
+            NewDll->TreeViewEntry = TreeViewAddItem(hTreeViewDebug, BufString, hTreeViewDebugDLLs, 0, ICON_STATIC, ICON_STATIC, 0, 1);
+            DebDlls.Add(NewDll);
 
-			// Try to load the symbol table
-			NewModule = (PIMAGEHLP_MODULE) calloc(sizeof(IMAGEHLP_MODULE), 1);
-			memset(NewModule, 0, sizeof(IMAGEHLP_MODULE));
-			BaseModuleAddr = SymLoadModule(DebuggedProc.hProcess, NULL, BufString.Get_String(), NULL, 0, 0);
-			if(BaseModuleAddr == 0)
-			{
-				WriteToDebug((CStr) "Load DLL: " + BufString + (CStr) " (No exports)");
-			}
-			else
-			{
-				NewModule->SizeOfStruct = sizeof(IMAGEHLP_MODULE);
-				SymGetModuleInfo(DebuggedProc.hProcess, BaseModuleAddr, NewModule);
-				DebModules.Add(NewModule);
-				WriteToDebug((CStr) "Load DLL: " + BufString + (CStr) " (Exports loaded)");
-			}
+            // Try to load the symbol table
+            NewModule = (PIMAGEHLP_MODULE) calloc(sizeof(IMAGEHLP_MODULE), 1);
+            memset(NewModule, 0, sizeof(IMAGEHLP_MODULE));
+            BaseModuleAddr = SymLoadModule(DebuggedProc.hProcess, NULL, BufString.Get_String(), NULL, 0, 0);
+            if(BaseModuleAddr == 0)
+            {
+                WriteToDebug((CStr) "Load DLL: " + BufString + (CStr) " (No exports)");
+            }
+            else
+            {
+                NewModule->SizeOfStruct = sizeof(IMAGEHLP_MODULE);
+                SymGetModuleInfo(DebuggedProc.hProcess, BaseModuleAddr, NewModule);
+                DebModules.Add(NewModule);
+                WriteToDebug((CStr) "Load DLL: " + BufString + (CStr) " (Exports loaded)");
+            }
             ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
-			break;
+            break;
 
-		// A dll has been unloaded
+        // A dll has been unloaded
         case UNLOAD_DLL_DEBUG_EVENT:
-			CurrentDThread = MyDebug.dwThreadId;
-			for(i = 0; i < DebDlls.Amount(); i++)
-			{
-				NewDll = DebDlls.Get(i)->Content;
-				if(NewDll->lpBaseOfDll == MyDebug.u.UnloadDll.lpBaseOfDll)
-				{
-					WriteToDebug("Unload DLL: " + (CStr) NewDll->DllName);
-					// Delete it from the treeview
-					TreeViewRemoveItem(hTreeViewDebug, NewDll->TreeViewEntry);
-					// Delete it from the list
-					for(j = 0; j < DebModules.Amount(); j++)
-					{
-						NewModule = DebModules.Get(j)->Content;
-						if((long) NewModule->BaseOfImage == (long) NewDll->lpBaseOfDll)
-						{
-							SymUnloadModule(DebuggedProc.hProcess, (DWORD) NewModule->BaseOfImage);
-							DebModules.Del(j);
-							break;
-						}
-					}
-					DebDlls.Del(i);
-					break;
-				}
-			}
+            CurrentDThread = MyDebug.dwThreadId;
+            for(i = 0; i < DebDlls.Amount(); i++)
+            {
+                NewDll = DebDlls.Get(i)->Content;
+                if(NewDll->lpBaseOfDll == MyDebug.u.UnloadDll.lpBaseOfDll)
+                {
+                    WriteToDebug("Unload DLL: " + (CStr) NewDll->DllName);
+                    // Delete it from the treeview
+                    TreeViewRemoveItem(hTreeViewDebug, NewDll->TreeViewEntry);
+                    // Delete it from the list
+                    for(j = 0; j < DebModules.Amount(); j++)
+                    {
+                        NewModule = DebModules.Get(j)->Content;
+                        if((long) NewModule->BaseOfImage == (long) NewDll->lpBaseOfDll)
+                        {
+                            SymUnloadModule(DebuggedProc.hProcess, (DWORD) NewModule->BaseOfImage);
+                            DebModules.Del(j);
+                            break;
+                        }
+                    }
+                    DebDlls.Del(i);
+                    break;
+                }
+            }
             ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
-			break;
+            break;
 
-		// An exception has been encountered
+        // An exception has been encountered
         case EXCEPTION_DEBUG_EVENT:
-			CurrentDThread = MyDebug.dwThreadId;
-		    InException = 1;
-			if(MyDebug.u.Exception.ExceptionRecord.ExceptionCode != EXCEPTION_BREAKPOINT)
-			{
-				switch(MyDebug.u.Exception.ExceptionRecord.ExceptionCode)
-				{
+            CurrentDThread = MyDebug.dwThreadId;
+            InException = 1;
+            if(MyDebug.u.Exception.ExceptionRecord.ExceptionCode != EXCEPTION_BREAKPOINT)
+            {
+                switch(MyDebug.u.Exception.ExceptionRecord.ExceptionCode)
+                {
                     case EXCEPTION_SINGLE_STEP:
-						break;
-					default:
-						WriteToDebug("In process: 0x" + (CStr) StringHexNumberComplement((long) GetProcessHandle(MyDebug.dwProcessId), 8));
-						WriteToDebug("In thread: 0x" + (CStr) StringHexNumberComplement((long) GetThreadHandle(CurrentDThread), 8));
-                		WriteToDebug("*** Exception raised at address: 0x" + (CStr) StringHex32((long) MyDebug.u.Exception.ExceptionRecord.ExceptionAddress).Get_String());
-				}
+                        break;
+                    default:
+                        WriteToDebug("In process: 0x" + (CStr) StringHexNumberComplement((long) GetProcessHandle(MyDebug.dwProcessId), 8));
+                        WriteToDebug("In thread: 0x" + (CStr) StringHexNumberComplement((long) GetThreadHandle(CurrentDThread), 8));
+                        WriteToDebug("*** Exception raised at address: 0x" + (CStr) StringHex32((long) MyDebug.u.Exception.ExceptionRecord.ExceptionAddress).Get_String());
+                }
                 if(Windows2K == 1)
                 {
                     if(Ptr_GetWsChanges(DebuggedProc.hProcess, &MyWatch, sizeof(MyWatch)) != 0)
@@ -742,118 +746,118 @@ WaitEnd:
                             {
                                 case 0:
                                     WriteToDebug("*** Reading attempt from address: 0x" + (CStr) BufString.Hex_To_String(MyDebug.u.Exception.ExceptionRecord.ExceptionInformation[1]).Get_String());
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteToDebug("*** Writing attempt to address: 0x" + (CStr) BufString.Hex_To_String(MyDebug.u.Exception.ExceptionRecord.ExceptionInformation[1]).Get_String());
-									break;
-							}
+                                    break;
+                            }
                         }
-						break;
+                        break;
                     case EXCEPTION_DATATYPE_MISALIGNMENT:
                         WriteToDebug("*** Data type misalignment");
-						break;
-					case EXCEPTION_ARRAY_BOUNDS_EXCEEDED:
+                        break;
+                    case EXCEPTION_ARRAY_BOUNDS_EXCEEDED:
                         WriteToDebug("*** Array bounds exceeded");
-						break;
+                        break;
                     case EXCEPTION_FLT_DENORMAL_OPERAND:
                         WriteToDebug("*** Floating point operand too small");
-						break;
+                        break;
                     case EXCEPTION_FLT_DIVIDE_BY_ZERO:
                         WriteToDebug("*** Floating point divide by zero");
-						break;
+                        break;
                     case EXCEPTION_FLT_INEXACT_RESULT:
                         WriteToDebug("*** Floating point result can't be represented as decimal fraction");
-						break;
+                        break;
                     case EXCEPTION_FLT_INVALID_OPERATION:
                         WriteToDebug("*** Floating point invalid operation");
-						break;
+                        break;
                     case EXCEPTION_FLT_OVERFLOW:
                         WriteToDebug("*** Floating point overflow");
-						break;
+                        break;
                     case EXCEPTION_FLT_STACK_CHECK:
                         WriteToDebug("*** Floating point stack underflow/overflow");
-						break;
+                        break;
                     case EXCEPTION_FLT_UNDERFLOW:
                         WriteToDebug("*** Floating point underflow");
-						break;
+                        break;
                     case EXCEPTION_INT_DIVIDE_BY_ZERO:
                         WriteToDebug("*** Divide by zero");
-						break;
+                        break;
                     case EXCEPTION_INT_OVERFLOW:
                         WriteToDebug("*** Integer overflow");
-						break;
+                        break;
                     case EXCEPTION_ILLEGAL_INSTRUCTION:
                         WriteToDebug("*** Illegal instruction");
-						break;
+                        break;
                     case EXCEPTION_PRIV_INSTRUCTION:
                         WriteToDebug("*** Privileged instruction");
-						break;
+                        break;
                     case EXCEPTION_SINGLE_STEP:
-						// Coming from a breakpoint ?
-						// Restore the code before everything else
-						// so it can be executed
-						if(WasBreakPoint)
-						{
-							// Handle correctly the breakpoint
-							// for that address
-							// (sticky breakpoints are restored)
-							// (volatile breakpoints are destroyed)
-							if(BreakPointType(GetCurrentEIP(CurrentDThread)) == BP_STICKY)
-							{
-								// Set it back if it was a sticky one
-								// (ie. defined by user)
-								SetBreakPoint(&DebBreakPoints, GetCurrentEIP(CurrentDThread), BP_STICKY);
-							//} else {
-							//	KillBreakPoint(GetCurrentEIP(CurrentDThread));
-							}
-							// Remove all other possible breakpoints
-							FlushBranchBreakPoints();
-							WasBreakPoint = 0;
-						}
-						// Was triggered from run command ?
-						if(InStepMode == 0)
-						{
-							// Run!
-							ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
-							goto WaitEnd;
-						}
-                   		ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
-						RunThread(CurrentDThread);
-						goto WaitEnd;
+                        // Coming from a breakpoint ?
+                        // Restore the code before everything else
+                        // so it can be executed
+                        if(WasBreakPoint)
+                        {
+                            // Handle correctly the breakpoint
+                            // for that address
+                            // (sticky breakpoints are restored)
+                            // (volatile breakpoints are destroyed)
+                            if(BreakPointType(GetCurrentEIP(CurrentDThread)) == BP_STICKY)
+                            {
+                                // Set it back if it was a sticky one
+                                // (ie. defined by user)
+                                SetBreakPoint(&DebBreakPoints, GetCurrentEIP(CurrentDThread), BP_STICKY);
+                            //} else {
+                            //  KillBreakPoint(GetCurrentEIP(CurrentDThread));
+                            }
+                            // Remove all other possible breakpoints
+                            FlushBranchBreakPoints();
+                            WasBreakPoint = 0;
+                        }
+                        // Was triggered from run command ?
+                        if(InStepMode == 0)
+                        {
+                            // Run!
+                            ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
+                            goto WaitEnd;
+                        }
+                        ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
+                        RunThread(CurrentDThread);
+                        goto WaitEnd;
                     case EXCEPTION_IN_PAGE_ERROR:
                         WriteToDebug("*** Access to inexistant page");
-						break;
+                        break;
                     case EXCEPTION_STACK_OVERFLOW:
                         WriteToDebug("*** Stack overflow");
-						break;
+                        break;
                     case EXCEPTION_INVALID_DISPOSITION:
                         WriteToDebug("*** Invalid disposition in exception dispatcher");
-						break;
+                        break;
                     case EXCEPTION_NONCONTINUABLE_EXCEPTION:
                         WriteToDebug("*** Dead end exception");
-						break;
+                        break;
                     case DBG_CONTROL_C:
                         WriteToDebug("*** Control+C notification");
-						break;
+                        break;
                     case DBG_CONTROL_BREAK:
                         WriteToDebug("*** Control+Break notification");
-						break;
+                        break;
                     default:
-						if(MyDebug.u.Exception.dwFirstChance)
-						{
-							WriteToDebug("*** First-chance exception");
-					//		ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
-					//		goto Continue_Unknown;
-					//	} else {
-						}
-						WriteToDebug("*** Unknown exception: " + (CStr) MyDebug.u.Exception.ExceptionRecord.ExceptionCode);
-					//		break;
-						//}
-				}
+                        if(MyDebug.u.Exception.dwFirstChance)
+                        {
+                            WriteToDebug("*** First-chance exception");
+                    //      ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
+                    //      goto Continue_Unknown;
+                    //  } else {
+                        }
+                        WriteToDebug("*** Unknown exception: " + (CStr) MyDebug.u.Exception.ExceptionRecord.ExceptionCode);
+                    //      break;
+                        //}
+                }
                 if(MyDebug.u.Exception.ExceptionRecord.ExceptionFlags == EXCEPTION_NONCONTINUABLE)
                 {
-					// Can't continue after that
-			        SnapDeadEndstate();
+                    // Can't continue after that
+                    SnapDeadEndstate();
                 }
                 else
                 {
@@ -864,51 +868,51 @@ WaitEnd:
                     case EXCEPTION_SINGLE_STEP:
                     case DBG_CONTROL_C:
                     case DBG_CONTROL_BREAK:
-						ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
-						break;
-					default:
-						// Other exception aren't handled
+                        ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
+                        break;
+                    default:
+                        // Other exception aren't handled
                         ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_EXCEPTION_NOT_HANDLED);
-						break;
+                        break;
                 }
-				StopThread(CurrentDThread);
-				UpdateRegs(CurrentDThread);
-			}
-			else
-			{
-				// Save breakpoint address for backup in single step
-				WasBreakPoint = (DWORD) MyDebug.u.Exception.ExceptionRecord.ExceptionAddress;
-				// Restore old code
-				StopThread(CurrentDThread);
-				if(RestoreBreakPoint(WasBreakPoint) != 0)
-				{
-					// Step back now
-					DebugStepBack(CurrentDThread);
-				}
-				UpdateRegs(CurrentDThread);
-				if(DisplaySourceLine(MyDebug.dwThreadId, GetCurrentEIP(CurrentDThread)))
-				{
-					// Don't notify if it wasn't defined by the user
-					// (take hardcoded int3 into account)
-					WasBreakPoint = BreakPointType(WasBreakPoint);
-					if(WasBreakPoint != BP_VOLATILE && WasBreakPoint != BP_BRANCH)
-					{
-						WriteToDebug("*** Breakpoint reached at address: 0x" + (CStr) StringHex32((long) MyDebug.u.Exception.ExceptionRecord.ExceptionAddress).Get_String());
-					}
-					SnapPausestate();
-				}
-				else
-				{
-					RunThread(CurrentDThread);
-				}
-				WasBreakPoint = 1;
-				ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
-			}
-			break;
+                StopThread(CurrentDThread);
+                UpdateRegs(CurrentDThread);
+            }
+            else
+            {
+                // Save breakpoint address for backup in single step
+                WasBreakPoint = (DWORD) MyDebug.u.Exception.ExceptionRecord.ExceptionAddress;
+                // Restore old code
+                StopThread(CurrentDThread);
+                if(RestoreBreakPoint(WasBreakPoint) != 0)
+                {
+                    // Step back now
+                    DebugStepBack(CurrentDThread);
+                }
+                UpdateRegs(CurrentDThread);
+                if(DisplaySourceLine(MyDebug.dwThreadId, GetCurrentEIP(CurrentDThread)))
+                {
+                    // Don't notify if it wasn't defined by the user
+                    // (take hardcoded int3 into account)
+                    WasBreakPoint = BreakPointType(WasBreakPoint);
+                    if(WasBreakPoint != BP_VOLATILE && WasBreakPoint != BP_BRANCH)
+                    {
+                        WriteToDebug("*** Breakpoint reached at address: 0x" + (CStr) StringHex32((long) MyDebug.u.Exception.ExceptionRecord.ExceptionAddress).Get_String());
+                    }
+                    SnapPausestate();
+                }
+                else
+                {
+                    RunThread(CurrentDThread);
+                }
+                WasBreakPoint = 1;
+                ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
+            }
+            break;
 
-		// A string has been passed to us
+        // A string has been passed to us
         case OUTPUT_DEBUG_STRING_EVENT:
-			CurrentDThread = MyDebug.dwThreadId;
+            CurrentDThread = MyDebug.dwThreadId;
             if(MyDebug.u.DebugString.nDebugStringLength > 1)
             {
                 DeCStr = DeCStr.String(MyDebug.u.DebugString.nDebugStringLength - 1, 1);
@@ -917,100 +921,100 @@ WaitEnd:
                 WriteToDebug(DeCStr);
             }
             ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
-			break;
+            break;
 
-		// A thread has been terminated
+        // A thread has been terminated
         case EXIT_THREAD_DEBUG_EVENT:
-			CurrentDThread = MyDebug.dwThreadId;
-			WriteToDebug("Thread exited with code : 0x" + (CStr) StringHexNumberComplement((long) MyDebug.u.ExitThread.dwExitCode, 8));
-			RemoveThread(MyDebug.dwThreadId);
+            CurrentDThread = MyDebug.dwThreadId;
+            WriteToDebug("Thread exited with code : 0x" + (CStr) StringHexNumberComplement((long) MyDebug.u.ExitThread.dwExitCode, 8));
+            RemoveThread(MyDebug.dwThreadId);
             ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
-			break;
+            break;
 
-		// Process has been terminated
-		// (Should occurs only one time as far as i know)
+        // Process has been terminated
+        // (Should occurs only one time as far as i know)
         case EXIT_PROCESS_DEBUG_EVENT:
-			CurrentDThread = MyDebug.dwThreadId;
-			WriteToDebug("Process exited with code : 0x" + (CStr) StringHexNumberComplement((long) MyDebug.u.ExitProcess.dwExitCode, 8));
-			ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
+            CurrentDThread = MyDebug.dwThreadId;
+            WriteToDebug("Process exited with code : 0x" + (CStr) StringHexNumberComplement((long) MyDebug.u.ExitProcess.dwExitCode, 8));
+            ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
             SnapRunning = 0;
             goto TchaoProc;
 
-		// Other events aren't handled: pass'em to the system
-		default:
-    		if(Threadrunning == 1)
-    		{
-				ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_EXCEPTION_NOT_HANDLED);
-			}
-			break;
+        // Other events aren't handled: pass'em to the system
+        default:
+            if(Threadrunning == 1)
+            {
+                ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_EXCEPTION_NOT_HANDLED);
+            }
+            break;
     }
-	if(SnapRunning == 0) goto TchaoProc;
+    if(SnapRunning == 0) goto TchaoProc;
     goto WaitEnd;
 TchaoProc:
 
-	x86_cleanup();
+    x86_cleanup();
 
-	// -----------------------------------
-	// End of debugger loop
+    // -----------------------------------
+    // End of debugger loop
 
-	switch(No_Debug)
-	{
-		case DEBUG_ERR_SYMBTABLE:
-			WriteToDebug("Can't load symbol table.");
-			break;
-		case DEBUG_ERR_NODEBUG:
-			WriteToDebug("File contains no suitable debugging informations.");
-			break;
-	}
+    switch(No_Debug)
+    {
+        case DEBUG_ERR_SYMBTABLE:
+            WriteToDebug("Can't load symbol table.");
+            break;
+        case DEBUG_ERR_NODEBUG:
+            WriteToDebug("File contains no suitable debugging informations.");
+            break;
+    }
 
-	// Remove the hgihlighted line if necessary
-	if(NbForms != 0)
-	{
-		// Remove them all
-		WAMMEnumSourceWindows((long) &DebuggedFilesProc);
-		if(ShowH == 1)
-		{
-			ChildStruct = LoadStructure(CurrentForm);
-			LoadCurrentSel(ChildStruct->hChildCodeMax);
-			WritePositionInStatus(ChildStruct->hChildCodeMax);
-			CM_SetHighlightedLine(ChildStruct->hChildCodeMax, CodeMaxCurRange.posStart.nLine);
-		} 
-	}
+    // Remove the hgihlighted line if necessary
+    if(NbForms != 0)
+    {
+        // Remove them all
+        WAMMEnumSourceWindows((long) &DebuggedFilesProc);
+        if(ShowH == 1)
+        {
+            ChildStruct = LoadStructure(CurrentForm);
+            LoadCurrentSel(ChildStruct->hChildCodeMax);
+            WritePositionInStatus(ChildStruct->hChildCodeMax);
+            CM_SetHighlightedLine(ChildStruct->hChildCodeMax, CodeMaxCurRange.posStart.nLine);
+        } 
+    }
 
-	// Remove the docking windows
-	DockingBoxRemove(hDebugContainer);
-	DockingBoxRemove(hRegistersContainer);
-	MenuEnable(hViewMenuDisplay, MENU_VIEW_DEBUGDOCK_ID, 0);
-	MenuEnable(hViewMenuDisplay, MENU_VIEW_REGISTERSDOCK_ID, 0);
+    // Remove the docking windows
+    DockingBoxRemove(hDebugContainer);
+    DockingBoxRemove(hRegistersContainer);
+    MenuEnable(hViewMenuDisplay, MENU_VIEW_DEBUGDOCK_ID, 0);
+    MenuEnable(hViewMenuDisplay, MENU_VIEW_REGISTERSDOCK_ID, 0);
 
-	// Clear the lists
-	DebDlls.Erase();
-	// Free loaded modules
-	for(i = 0; i < DebModules.Amount(); i++)
-	{
-		NewModule = DebModules.Get(i)->Content;
-		SymUnloadModule(DebuggedProc.hProcess, (DWORD) NewModule->BaseOfImage);
-	}
-	if(DebuggedProc.hProcess) SymCleanup(DebuggedProc.hProcess);
+    // Clear the lists
+    DebDlls.Erase();
+    // Free loaded modules
+    for(i = 0; i < DebModules.Amount(); i++)
+    {
+        NewModule = DebModules.Get(i)->Content;
+        SymUnloadModule(DebuggedProc.hProcess, (DWORD) NewModule->BaseOfImage);
+    }
+    if(DebuggedProc.hProcess) SymCleanup(DebuggedProc.hProcess);
 
-	// Free processes handles
-	for(i = 0; i < DebProcesses.Amount(); i++)
-	{
-		NewProcess = DebProcesses.Get(i)->Content;
-		if(NewProcess->hFile != 0) FileClose(NewProcess->hFile);
-	}
-	DebProcesses.Erase();
-	DebModules.Erase();
-	DebBreakPoints.Erase();
-	DebWindows.Erase();
+    // Free processes handles
+    for(i = 0; i < DebProcesses.Amount(); i++)
+    {
+        NewProcess = DebProcesses.Get(i)->Content;
+        if(NewProcess->hFile != 0) FileClose(NewProcess->hFile);
+    }
+    DebProcesses.Erase();
+    DebModules.Erase();
+    DebBreakPoints.Erase();
+    DebWindows.Erase();
     // Close the file handle
-	if(DebuggedProc.hThread) CloseHandle(DebuggedProc.hThread);
+    if(DebuggedProc.hThread) CloseHandle(DebuggedProc.hThread);
     if(DebuggedProc.hProcess) CloseHandle(DebuggedProc.hProcess);
     Threadrunning = 0;
-	SnapRunning = 0;
-	// Complete shutdown was required
-	if(ScheduleQuit == 1) ControlClose(hMDIform.hWnd);
-	return(1);
+    SnapRunning = 0;
+    // Complete shutdown was required
+    if(ScheduleQuit == 1) ControlClose(hMDIform.hWnd);
+    return(1);
 }
 
 // -----------------------------------------------------------------------
@@ -1018,8 +1022,8 @@ TchaoProc:
 long CALLBACK DebuggedFilesProc(HWND hWnd)
 {
     ChildStruct = LoadStructure(hWnd);
-	// Remove it
-	CM_SetHighlightedLine(ChildStruct->hChildCodeMax, -1);
+    // Remove it
+    CM_SetHighlightedLine(ChildStruct->hChildCodeMax, -1);
     return(1);
 }
 
@@ -1027,323 +1031,323 @@ long CALLBACK DebuggedFilesProc(HWND hWnd)
 // Refresh snap screen
 void UpdateRegs(long dwThreadID)
 {
-	int i = 0;
-	LPSNAPPROCESS Process = 0;
-	CONTEXT Context;
-	CStr HexDat;
-	TCHAR szScratchPad[255];
-	long double pDoubleReg;
-	float pFloatReg;
-	long *lMXCSR;
-	long *lOldMXCSR;
-	LPCONTEXT LastContext;
-	int HighLightReg = FALSE;
-	int j;
-	BYTE RegByte;
-	BYTE OldRegByte;
-	long *pReg;
-	LONGLONG *pFpuReg;
+    int i = 0;
+    LPSNAPPROCESS Process = 0;
+    CONTEXT Context;
+    CStr HexDat;
+    TCHAR szScratchPad[255];
+    long double pDoubleReg;
+    float pFloatReg;
+    long *lMXCSR;
+    long *lOldMXCSR;
+    LPCONTEXT LastContext;
+    int HighLightReg = FALSE;
+    int j;
+    BYTE RegByte;
+    BYTE OldRegByte;
+    long *pReg;
+    LONGLONG *pFpuReg;
 
-	GetCurrentContext(dwThreadID, &Context);
-	LastContext = GetLastContext(dwThreadID);
+    GetCurrentContext(dwThreadID, &Context);
+    LastContext = GetLastContext(dwThreadID);
 
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.Eax, 8), REG_EAX, 0);
-	if(LastContext->Eax != Context.Eax) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_EAX, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.Ebx, 8), REG_EBX, 0);
-	if(LastContext->Ebx != Context.Ebx) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_EBX, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.Ecx, 8), REG_ECX, 0);
-	if(LastContext->Ecx != Context.Ecx) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_ECX, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.Edx, 8), REG_EDX, 0);
-	if(LastContext->Edx != Context.Edx) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_EDX, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.Esi, 8), REG_ESI, 0);
-	if(LastContext->Esi != Context.Esi) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_ESI, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.Edi, 8), REG_EDI, 0);
-	if(LastContext->Edi != Context.Edi) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_EDI, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.Eip, 8), REG_EIP, 0);
-	if(LastContext->Eip != Context.Eip) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_EIP, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.Esp, 8), REG_ESP, 0);
-	if(LastContext->Esp != Context.Esp) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_ESP, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.Ebp, 8), REG_EBP, 0);
-	if(LastContext->Ebp != Context.Ebp) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_EBP, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.EFlags, 8), REG_EFL, 0);
-	if(LastContext->EFlags != Context.EFlags) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_EFL, HighLightReg);
-	
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.SegCs, 4), REG_CS, 0);
-	if(LastContext->SegCs != Context.SegCs) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_CS, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.SegDs, 4), REG_DS, 0);
-	if(LastContext->SegDs != Context.SegDs) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_DS, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.SegEs, 4), REG_ES, 0);
-	if(LastContext->SegEs != Context.SegEs) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_ES, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.SegFs, 4), REG_FS, 0);
-	if(LastContext->SegFs != Context.SegFs) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_FS, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.SegGs, 4), REG_GS, 0);
-	if(LastContext->SegGs != Context.SegGs) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_GS, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.SegSs, 4), REG_SS, 0);
-	if(LastContext->SegSs != Context.SegSs) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_SS, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.Eax, 8), REG_EAX, 0);
+    if(LastContext->Eax != Context.Eax) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_EAX, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.Ebx, 8), REG_EBX, 0);
+    if(LastContext->Ebx != Context.Ebx) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_EBX, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.Ecx, 8), REG_ECX, 0);
+    if(LastContext->Ecx != Context.Ecx) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_ECX, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.Edx, 8), REG_EDX, 0);
+    if(LastContext->Edx != Context.Edx) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_EDX, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.Esi, 8), REG_ESI, 0);
+    if(LastContext->Esi != Context.Esi) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_ESI, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.Edi, 8), REG_EDI, 0);
+    if(LastContext->Edi != Context.Edi) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_EDI, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.Eip, 8), REG_EIP, 0);
+    if(LastContext->Eip != Context.Eip) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_EIP, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.Esp, 8), REG_ESP, 0);
+    if(LastContext->Esp != Context.Esp) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_ESP, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.Ebp, 8), REG_EBP, 0);
+    if(LastContext->Ebp != Context.Ebp) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_EBP, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.EFlags, 8), REG_EFL, 0);
+    if(LastContext->EFlags != Context.EFlags) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_EFL, HighLightReg);
+    
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.SegCs, 4), REG_CS, 0);
+    if(LastContext->SegCs != Context.SegCs) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_CS, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.SegDs, 4), REG_DS, 0);
+    if(LastContext->SegDs != Context.SegDs) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_DS, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.SegEs, 4), REG_ES, 0);
+    if(LastContext->SegEs != Context.SegEs) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_ES, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.SegFs, 4), REG_FS, 0);
+    if(LastContext->SegFs != Context.SegFs) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_FS, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.SegGs, 4), REG_GS, 0);
+    if(LastContext->SegGs != Context.SegGs) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_GS, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.SegSs, 4), REG_SS, 0);
+    if(LastContext->SegSs != Context.SegSs) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_SS, HighLightReg);
 
-	// Display FPU registers
-	for(i = 0; i < 8; i++)
-	{
-		pFpuReg = (LONGLONG *) (Context.FloatSave.RegisterArea + (10 * i));
-		_asm
-		{
-			mov eax,[pFpuReg]
-			fld TBYTE ptr [eax]
-			fstp qword ptr [pDoubleReg]
-		}
-		sprintf(szScratchPad, "%+1.17Le", pDoubleReg);
-		ListViewSetSubItem(hRegistersListView, szScratchPad, REG_ST0 + i, 0);
-		HighLightReg = FALSE;
-		for(j = 0; j < 10; j++)
-		{
-			RegByte = (Context.FloatSave.RegisterArea[(10 * i) + j]);
-			OldRegByte = (LastContext->FloatSave.RegisterArea[(10 * i) + j]);
-			if(RegByte != OldRegByte)
-			{
-				HighLightReg = TRUE;
-				break;
-			}
-		}
-		ListViewSetItemHighlight(hRegistersListView, REG_ST0 + i, HighLightReg);
-	}
+    // Display FPU registers
+    for(i = 0; i < 8; i++)
+    {
+        pFpuReg = (LONGLONG *) (Context.FloatSave.RegisterArea + (10 * i));
+        _asm
+        {
+            mov eax,[pFpuReg]
+            fld TBYTE ptr [eax]
+            fstp qword ptr [pDoubleReg]
+        }
+        sprintf(szScratchPad, "%+1.17Le", pDoubleReg);
+        ListViewSetSubItem(hRegistersListView, szScratchPad, REG_ST0 + i, 0);
+        HighLightReg = FALSE;
+        for(j = 0; j < 10; j++)
+        {
+            RegByte = (Context.FloatSave.RegisterArea[(10 * i) + j]);
+            OldRegByte = (LastContext->FloatSave.RegisterArea[(10 * i) + j]);
+            if(RegByte != OldRegByte)
+            {
+                HighLightReg = TRUE;
+                break;
+            }
+        }
+        ListViewSetItemHighlight(hRegistersListView, REG_ST0 + i, HighLightReg);
+    }
 
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.FloatSave.ControlWord & 0xffff, 4), REG_FPUCTRL, 0);
-	if((LastContext->FloatSave.ControlWord & 0xffff) != (Context.FloatSave.ControlWord & 0xffff)) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_FPUCTRL, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.FloatSave.StatusWord & 0xffff, 4), REG_FPUSTAT, 0);
-	if((LastContext->FloatSave.StatusWord & 0xffff) != (Context.FloatSave.StatusWord & 0xffff)) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_FPUSTAT, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.FloatSave.TagWord & 0xffff, 4), REG_FPUTAGS, 0);
-	if((LastContext->FloatSave.TagWord & 0xffff) != (Context.FloatSave.TagWord & 0xffff)) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_FPUTAGS, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.FloatSave.ControlWord & 0xffff, 4), REG_FPUCTRL, 0);
+    if((LastContext->FloatSave.ControlWord & 0xffff) != (Context.FloatSave.ControlWord & 0xffff)) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_FPUCTRL, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.FloatSave.StatusWord & 0xffff, 4), REG_FPUSTAT, 0);
+    if((LastContext->FloatSave.StatusWord & 0xffff) != (Context.FloatSave.StatusWord & 0xffff)) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_FPUSTAT, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.FloatSave.TagWord & 0xffff, 4), REG_FPUTAGS, 0);
+    if((LastContext->FloatSave.TagWord & 0xffff) != (Context.FloatSave.TagWord & 0xffff)) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_FPUTAGS, HighLightReg);
 
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.FloatSave.ErrorSelector & 0xffff, 4), REG_FPUCS, 0);
-	if((LastContext->FloatSave.ErrorSelector & 0xffff) != (Context.FloatSave.ErrorSelector & 0xffff)) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_FPUCS, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.FloatSave.ErrorOffset, 8), REG_FPUEIP, 0);
-	if(LastContext->FloatSave.ErrorOffset != Context.FloatSave.ErrorOffset) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_FPUEIP, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.FloatSave.DataSelector & 0xffff, 4), REG_FPUDS, 0);
-	if((LastContext->FloatSave.DataSelector & 0xffff) != (Context.FloatSave.DataSelector & 0xffff)) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_FPUDS, HighLightReg);
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.FloatSave.DataOffset, 8), REG_FPUEDO, 0);
-	if(LastContext->FloatSave.DataOffset != Context.FloatSave.DataOffset) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_FPUEDO, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.FloatSave.ErrorSelector & 0xffff, 4), REG_FPUCS, 0);
+    if((LastContext->FloatSave.ErrorSelector & 0xffff) != (Context.FloatSave.ErrorSelector & 0xffff)) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_FPUCS, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.FloatSave.ErrorOffset, 8), REG_FPUEIP, 0);
+    if(LastContext->FloatSave.ErrorOffset != Context.FloatSave.ErrorOffset) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_FPUEIP, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.FloatSave.DataSelector & 0xffff, 4), REG_FPUDS, 0);
+    if((LastContext->FloatSave.DataSelector & 0xffff) != (Context.FloatSave.DataSelector & 0xffff)) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_FPUDS, HighLightReg);
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(Context.FloatSave.DataOffset, 8), REG_FPUEDO, 0);
+    if(LastContext->FloatSave.DataOffset != Context.FloatSave.DataOffset) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_FPUEDO, HighLightReg);
 
-	// Display MMX registers
-	//int tos = (Context.FloatSave.StatusWord & 0x3800) >> 11;
-	for(i = 0; i < 8; i++)
-	{
-		pReg = (long *) (Context.FloatSave.RegisterArea + (10 * i));
-		sprintf(szScratchPad, "%08lx%08lx", pReg[1], pReg[0]);
-		ListViewSetSubItem(hRegistersListView, szScratchPad, REG_MM0 + i, 0);
+    // Display MMX registers
+    //int tos = (Context.FloatSave.StatusWord & 0x3800) >> 11;
+    for(i = 0; i < 8; i++)
+    {
+        pReg = (long *) (Context.FloatSave.RegisterArea + (10 * i));
+        sprintf(szScratchPad, "%08lx%08lx", pReg[1], pReg[0]);
+        ListViewSetSubItem(hRegistersListView, szScratchPad, REG_MM0 + i, 0);
 
-		HighLightReg = FALSE;
-		for(j = 0; j < 10; j++)
-		{
-			RegByte = (Context.FloatSave.RegisterArea[(10 * i) + j]);
-			OldRegByte = (LastContext->FloatSave.RegisterArea[(10 * i) + j]);
-			if(RegByte != OldRegByte)
-			{
-				HighLightReg = TRUE;
-				break;
-			}
-		}
-		ListViewSetItemHighlight(hRegistersListView, REG_MM0 + i, HighLightReg);
-		_asm
-		{
-			mov eax, [pReg]
-			fld dword ptr [eax]
-			fstp dword ptr [pFloatReg]
-		}
-		sprintf(szScratchPad, "%+1.5le", pFloatReg);
-		ListViewSetSubItem(hRegistersListView, szScratchPad, REG_MM00 + (i * 2), 0);
+        HighLightReg = FALSE;
+        for(j = 0; j < 10; j++)
+        {
+            RegByte = (Context.FloatSave.RegisterArea[(10 * i) + j]);
+            OldRegByte = (LastContext->FloatSave.RegisterArea[(10 * i) + j]);
+            if(RegByte != OldRegByte)
+            {
+                HighLightReg = TRUE;
+                break;
+            }
+        }
+        ListViewSetItemHighlight(hRegistersListView, REG_MM0 + i, HighLightReg);
+        _asm
+        {
+            mov eax, [pReg]
+            fld dword ptr [eax]
+            fstp dword ptr [pFloatReg]
+        }
+        sprintf(szScratchPad, "%+1.5le", pFloatReg);
+        ListViewSetSubItem(hRegistersListView, szScratchPad, REG_MM00 + (i * 2), 0);
 
-		HighLightReg = FALSE;
-		for(j = 0; j < 5; j++)
-		{
-			RegByte = (Context.FloatSave.RegisterArea[(10 * i) + j]);
-			OldRegByte = (LastContext->FloatSave.RegisterArea[(10 * i) + j]);
-			if(RegByte != OldRegByte)
-			{
-				HighLightReg = TRUE;
-				break;
-			}
-		}
-		ListViewSetItemHighlight(hRegistersListView, REG_MM00 + (i * 2), HighLightReg);
-		_asm
-		{
-			mov eax, [pReg]
-			fld dword ptr [eax + 4]
-			fstp dword ptr [pFloatReg]
-		}
-		sprintf(szScratchPad, "%+1.5le", pFloatReg);
-		ListViewSetSubItem(hRegistersListView, szScratchPad, REG_MM01 + (i * 2), 0);
+        HighLightReg = FALSE;
+        for(j = 0; j < 5; j++)
+        {
+            RegByte = (Context.FloatSave.RegisterArea[(10 * i) + j]);
+            OldRegByte = (LastContext->FloatSave.RegisterArea[(10 * i) + j]);
+            if(RegByte != OldRegByte)
+            {
+                HighLightReg = TRUE;
+                break;
+            }
+        }
+        ListViewSetItemHighlight(hRegistersListView, REG_MM00 + (i * 2), HighLightReg);
+        _asm
+        {
+            mov eax, [pReg]
+            fld dword ptr [eax + 4]
+            fstp dword ptr [pFloatReg]
+        }
+        sprintf(szScratchPad, "%+1.5le", pFloatReg);
+        ListViewSetSubItem(hRegistersListView, szScratchPad, REG_MM01 + (i * 2), 0);
 
-		HighLightReg = FALSE;
-		for(j = 5; j < 10; j++)
-		{
-			RegByte = (Context.FloatSave.RegisterArea[(10 * i) + j]);
-			OldRegByte = (LastContext->FloatSave.RegisterArea[(10 * i) + j]);
-			if(RegByte != OldRegByte)
-			{
-				HighLightReg = TRUE;
-				break;
-			}
-		}
-		ListViewSetItemHighlight(hRegistersListView, REG_MM01 + (i * 2), HighLightReg);
-	}
+        HighLightReg = FALSE;
+        for(j = 5; j < 10; j++)
+        {
+            RegByte = (Context.FloatSave.RegisterArea[(10 * i) + j]);
+            OldRegByte = (LastContext->FloatSave.RegisterArea[(10 * i) + j]);
+            if(RegByte != OldRegByte)
+            {
+                HighLightReg = TRUE;
+                break;
+            }
+        }
+        ListViewSetItemHighlight(hRegistersListView, REG_MM01 + (i * 2), HighLightReg);
+    }
 
-	// Display XMM registers
-	//int tos = (Context.FloatSave.StatusWord & 0x3800) >> 11;
-	for(i = 0; i < 8; i++)
-	{
-		pReg = (long *) (Context.ExtendedRegisters + (16 * (i + 10)));
-		sprintf(szScratchPad, "%08lx%08lx%08lx%08lx", pReg[3], pReg[2], pReg[1], pReg[0]);
-		ListViewSetSubItem(hRegistersListView, szScratchPad, REG_XMM0 + i, 0);
+    // Display XMM registers
+    //int tos = (Context.FloatSave.StatusWord & 0x3800) >> 11;
+    for(i = 0; i < 8; i++)
+    {
+        pReg = (long *) (Context.ExtendedRegisters + (16 * (i + 10)));
+        sprintf(szScratchPad, "%08lx%08lx%08lx%08lx", pReg[3], pReg[2], pReg[1], pReg[0]);
+        ListViewSetSubItem(hRegistersListView, szScratchPad, REG_XMM0 + i, 0);
 
-		HighLightReg = FALSE;
-		for(j = 0; j < 16; j++)
-		{
-			RegByte = Context.ExtendedRegisters[(16 * (i + 10)) + j];
-			OldRegByte = LastContext->ExtendedRegisters[(16 * (i + 10)) + j];
-			if(RegByte != OldRegByte)
-			{
-				HighLightReg = TRUE;
-				break;
-			}
-		}
-		ListViewSetItemHighlight(hRegistersListView, REG_XMM0 + i, HighLightReg);
+        HighLightReg = FALSE;
+        for(j = 0; j < 16; j++)
+        {
+            RegByte = Context.ExtendedRegisters[(16 * (i + 10)) + j];
+            OldRegByte = LastContext->ExtendedRegisters[(16 * (i + 10)) + j];
+            if(RegByte != OldRegByte)
+            {
+                HighLightReg = TRUE;
+                break;
+            }
+        }
+        ListViewSetItemHighlight(hRegistersListView, REG_XMM0 + i, HighLightReg);
 
-		_asm
-		{
-			mov eax, [pReg]
-			fld dword ptr [eax]
-			fstp dword ptr [pFloatReg]
-		}
-		sprintf(szScratchPad, "%+1.5le", pFloatReg);
-		ListViewSetSubItem(hRegistersListView, szScratchPad, REG_XMM00 + (i * 4), 0);
-		HighLightReg = FALSE;
-		for(j = 0; j < 4; j++)
-		{
-			RegByte = Context.ExtendedRegisters[(16 * (i + 10)) + j];
-			OldRegByte = LastContext->ExtendedRegisters[(16 * (i + 10)) + j];
-			if(RegByte != OldRegByte)
-			{
-				HighLightReg = TRUE;
-				break;
-			}
-		}
-		ListViewSetItemHighlight(hRegistersListView, REG_XMM00 + (i * 4), HighLightReg);
-		_asm
-		{
-			mov eax, [pReg]
-			fld dword ptr [eax + 4]
-			fstp dword ptr [pFloatReg]
-		}
-		sprintf(szScratchPad, "%+1.5le", pFloatReg);
-		ListViewSetSubItem(hRegistersListView, szScratchPad, REG_XMM01 + (i * 4), 0);
-		HighLightReg = FALSE;
-		for(j = 4; j < 8; j++)
-		{
-			RegByte = Context.ExtendedRegisters[(16 * (i + 10)) + j];
-			OldRegByte = LastContext->ExtendedRegisters[(16 * (i + 10)) + j];
-			if(RegByte != OldRegByte)
-			{
-				HighLightReg = TRUE;
-				break;
-			}
-		}
-		ListViewSetItemHighlight(hRegistersListView, REG_XMM01 + (i * 4), HighLightReg);
-		_asm
-		{
-			mov eax, [pReg]
-			fld dword ptr [eax + 8]
-			fstp dword ptr [pFloatReg]
-		}
-		sprintf(szScratchPad, "%+1.5le", pFloatReg);
-		ListViewSetSubItem(hRegistersListView, szScratchPad, REG_XMM02 + (i * 4), 0);
-		HighLightReg = FALSE;
-		for(j = 8; j < 12; j++)
-		{
-			RegByte = Context.ExtendedRegisters[(16 * (i + 10)) + j];
-			OldRegByte = LastContext->ExtendedRegisters[(16 * (i + 10)) + j];
-			if(RegByte != OldRegByte)
-			{
-				HighLightReg = TRUE;
-				break;
-			}
-		}
-		ListViewSetItemHighlight(hRegistersListView, REG_XMM02 + (i * 4), HighLightReg);
-		_asm
-		{
-			mov eax, [pReg]
-			fld dword ptr [eax + 12]
-			fstp dword ptr [pFloatReg]
-		}
-		sprintf(szScratchPad, "%+1.5le", pFloatReg);
-		ListViewSetSubItem(hRegistersListView, szScratchPad, REG_XMM03 + (i * 4), 0);
-		HighLightReg = FALSE;
-		for(j = 12; j < 16; j++)
-		{
-			RegByte = Context.ExtendedRegisters[(16 * (i + 10)) + j];
-			OldRegByte = LastContext->ExtendedRegisters[(16 * (i + 10)) + j];
-			if(RegByte != OldRegByte)
-			{
-				HighLightReg = TRUE;
-				break;
-			}
-		}
-		ListViewSetItemHighlight(hRegistersListView, REG_XMM03 + (i * 4), HighLightReg);
-	}
-	lMXCSR = (long *) &Context.ExtendedRegisters[24];
-	lOldMXCSR = (long *) &LastContext->ExtendedRegisters[24];
-	ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(*lMXCSR, 8), REG_MXCSR, 0);
-	if(*lOldMXCSR != *lMXCSR) HighLightReg = TRUE;
-	else HighLightReg = FALSE;
-	ListViewSetItemHighlight(hRegistersListView, REG_MXCSR, HighLightReg);
-	
-	// Update the last context now
-	memcpy(LastContext, &Context, sizeof(CONTEXT));
+        _asm
+        {
+            mov eax, [pReg]
+            fld dword ptr [eax]
+            fstp dword ptr [pFloatReg]
+        }
+        sprintf(szScratchPad, "%+1.5le", pFloatReg);
+        ListViewSetSubItem(hRegistersListView, szScratchPad, REG_XMM00 + (i * 4), 0);
+        HighLightReg = FALSE;
+        for(j = 0; j < 4; j++)
+        {
+            RegByte = Context.ExtendedRegisters[(16 * (i + 10)) + j];
+            OldRegByte = LastContext->ExtendedRegisters[(16 * (i + 10)) + j];
+            if(RegByte != OldRegByte)
+            {
+                HighLightReg = TRUE;
+                break;
+            }
+        }
+        ListViewSetItemHighlight(hRegistersListView, REG_XMM00 + (i * 4), HighLightReg);
+        _asm
+        {
+            mov eax, [pReg]
+            fld dword ptr [eax + 4]
+            fstp dword ptr [pFloatReg]
+        }
+        sprintf(szScratchPad, "%+1.5le", pFloatReg);
+        ListViewSetSubItem(hRegistersListView, szScratchPad, REG_XMM01 + (i * 4), 0);
+        HighLightReg = FALSE;
+        for(j = 4; j < 8; j++)
+        {
+            RegByte = Context.ExtendedRegisters[(16 * (i + 10)) + j];
+            OldRegByte = LastContext->ExtendedRegisters[(16 * (i + 10)) + j];
+            if(RegByte != OldRegByte)
+            {
+                HighLightReg = TRUE;
+                break;
+            }
+        }
+        ListViewSetItemHighlight(hRegistersListView, REG_XMM01 + (i * 4), HighLightReg);
+        _asm
+        {
+            mov eax, [pReg]
+            fld dword ptr [eax + 8]
+            fstp dword ptr [pFloatReg]
+        }
+        sprintf(szScratchPad, "%+1.5le", pFloatReg);
+        ListViewSetSubItem(hRegistersListView, szScratchPad, REG_XMM02 + (i * 4), 0);
+        HighLightReg = FALSE;
+        for(j = 8; j < 12; j++)
+        {
+            RegByte = Context.ExtendedRegisters[(16 * (i + 10)) + j];
+            OldRegByte = LastContext->ExtendedRegisters[(16 * (i + 10)) + j];
+            if(RegByte != OldRegByte)
+            {
+                HighLightReg = TRUE;
+                break;
+            }
+        }
+        ListViewSetItemHighlight(hRegistersListView, REG_XMM02 + (i * 4), HighLightReg);
+        _asm
+        {
+            mov eax, [pReg]
+            fld dword ptr [eax + 12]
+            fstp dword ptr [pFloatReg]
+        }
+        sprintf(szScratchPad, "%+1.5le", pFloatReg);
+        ListViewSetSubItem(hRegistersListView, szScratchPad, REG_XMM03 + (i * 4), 0);
+        HighLightReg = FALSE;
+        for(j = 12; j < 16; j++)
+        {
+            RegByte = Context.ExtendedRegisters[(16 * (i + 10)) + j];
+            OldRegByte = LastContext->ExtendedRegisters[(16 * (i + 10)) + j];
+            if(RegByte != OldRegByte)
+            {
+                HighLightReg = TRUE;
+                break;
+            }
+        }
+        ListViewSetItemHighlight(hRegistersListView, REG_XMM03 + (i * 4), HighLightReg);
+    }
+    lMXCSR = (long *) &Context.ExtendedRegisters[24];
+    lOldMXCSR = (long *) &LastContext->ExtendedRegisters[24];
+    ListViewSetSubItem(hRegistersListView, HexDat.Hex_Fix_To_String(*lMXCSR, 8), REG_MXCSR, 0);
+    if(*lOldMXCSR != *lMXCSR) HighLightReg = TRUE;
+    else HighLightReg = FALSE;
+    ListViewSetItemHighlight(hRegistersListView, REG_MXCSR, HighLightReg);
+    
+    // Update the last context now
+    memcpy(LastContext, &Context, sizeof(CONTEXT));
 }
 
 // -----------------------------------------------------------------------
@@ -1406,7 +1410,7 @@ void StopThread(long ThreadID)
 // Resume the thread
 void RunThread(long ThreadID)
 {
-	ResumeThread(GetThreadHandle(ThreadID));
+    ResumeThread(GetThreadHandle(ThreadID));
     InException = 0;
     Threadrunning = 1;
 }
@@ -1415,12 +1419,12 @@ void RunThread(long ThreadID)
 // Remove the process
 void KillProcess(void)
 {
-	Threadrunning = 1;
+    Threadrunning = 1;
     GetExitCodeThread(DebuggedProc.hThread, &ExCode);
     TerminateThread(DebuggedProc.hThread, ExCode);
     GetExitCodeProcess(DebuggedProc.hProcess, &ExCode);
     TerminateProcess(DebuggedProc.hProcess, ExCode);
-	SnapDeadstate();
+    SnapDeadstate();
 }
 
 // -----------------------------------------------------------------------
@@ -1507,7 +1511,7 @@ void AffDWindowInfo(HWND hWnd)
     long HKe = 0;
     HFONT Fonth = 0;
     long CDat = 0;
-	CStr BufString;
+    CStr BufString;
 
     ListBoxAddItem(FRMDebugLbWindows, "Handle: 0x" + (CStr) StringHex32((long) hWnd), -1);
     WClass = ControlGetClassName(hWnd);
@@ -1548,33 +1552,33 @@ void AffDWindowInfo(HWND hWnd)
     {
         case 0:
             ListBoxAddItem(FRMDebugLbWindows, "    MDIChild: No", -1);
-			break;
-		case 1:
+            break;
+        case 1:
             ListBoxAddItem(FRMDebugLbWindows, "    MDIChild: Yes", -1);
-			break;
+            break;
     }
     switch(ControlIsEnabled(hWnd))
     {
         case 0:
             ListBoxAddItem(FRMDebugLbWindows, "    Enabled: No", -1);
-			break;
-		default:
+            break;
+        default:
             ListBoxAddItem(FRMDebugLbWindows, "    Enabled: Yes", -1);
-			break;
-	}
+            break;
+    }
     switch(ControlIsVisible(hWnd))
     {
         case 0:
             ListBoxAddItem(FRMDebugLbWindows, "    Visible: No", -1);
-			break;
-		default:
+            break;
+        default:
             ListBoxAddItem(FRMDebugLbWindows, "    Visible: Yes", -1);
             ListBoxAddItem(FRMDebugLbWindows, "    Rect: " + (CStr) ControlLeft(hWnd) + (CStr) "," + (CStr) ControlTop(hWnd) + (CStr) "," + (CStr) ControlWidth(hWnd) + (CStr) "," + (CStr) ControlHeight(hWnd), -1);
             ListBoxAddItem(FRMDebugLbWindows, "    Client rect: " + (CStr) ControlClientLeft(hWnd) + (CStr) "," + (CStr) ControlClientTop(hWnd) + (CStr) "," + (CStr) ControlClientWidth(hWnd) + (CStr) "," + (CStr) ControlClientHeight(hWnd), -1);
-			break;
-	}
+            break;
+    }
     RealWClass = WClass.Left(WClass.Len());
-	BufString = RealWClass.Upper_Case();
+    BufString = RealWClass.Upper_Case();
     if(BufString == "LISTBOX")
     {
         ListBoxAddItem(FRMDebugLbWindows, "        Entries: " + (CStr) ListBoxCount(hWnd), -1);
@@ -1665,10 +1669,10 @@ DoneButton:;
         {
             case 0:
                 ListBoxAddItem(FRMDebugLbWindows, "        Modified: No", -1);
-				break;
-			default:
+                break;
+            default:
                 ListBoxAddItem(FRMDebugLbWindows, "        Modified: Yes", -1);
-				break;
+                break;
         }
         ListBoxAddItem(FRMDebugLbWindows, "        Options: " + (CStr) TextBoxGetCurrentOptions(hWnd), -1);
         EdPChar = TextBoxGetPasswordChar(hWnd);
@@ -1679,19 +1683,19 @@ DoneButton:;
         {
             case 0:
                 ListBoxAddItem(FRMDebugLbWindows, "        Clipboard datas can be pasted: No", -1);
-				break;
-			default:
+                break;
+            default:
                 ListBoxAddItem(FRMDebugLbWindows, "        Clipboard datas can be pasted: Yes", -1);
-				break;
-		}
+                break;
+        }
         switch(TextBoxCanUndo(hWnd))
         {
             case 0:
                 ListBoxAddItem(FRMDebugLbWindows, "        Current operation can be undone: No", -1);
-				break;
-			case 1:
+                break;
+            case 1:
                 ListBoxAddItem(FRMDebugLbWindows, "        Current operation can be undone: Yes", -1);
-				break;
+                break;
         }
     }
     else if(BufString == "REBARWINDOW32")
@@ -1765,13 +1769,13 @@ long GetProcessBoost(HANDLE hProcess)
             {
                 case 0:
                     return(1);
-					break;
-				default:
+                    break;
+                default:
                     return(2);
             }
         }
     }
-	return(0);
+    return(0);
 }
 
 // -----------------------------------------------------------------------
@@ -1788,12 +1792,12 @@ long GetThreadBoost(HANDLE hThread)
             {
                 case 0:
                     return(1);
-				default:
+                default:
                     return(2);
             }
         }
     }
-	return(0);
+    return(0);
 }
 
 // -----------------------------------------------------------------------
@@ -1802,8 +1806,8 @@ long GetProcessTime(HANDLE hProcess)
 {
     FILETIME LocFTime;
     
-	if(Windows2K == 1)
-	{
+    if(Windows2K == 1)
+    {
         GetProcessTimes(hProcess, &lpProcCreationTm, &lpProcExitTm, &lpProcKModeTm, &lpProcUModeTm);
         FileTimeToLocalFileTime(&lpProcCreationTm, &LocFTime);
         FileTimeToSystemTime(&LocFTime, &lpProcCreationSysTm);
@@ -1815,7 +1819,7 @@ long GetProcessTime(HANDLE hProcess)
         FileTimeToSystemTime(&LocFTime, &lpProcUModeSysTm);
         return(TRUE);
     }
-	return(FALSE);
+    return(FALSE);
 }
 
 // -----------------------------------------------------------------------
@@ -1824,8 +1828,8 @@ long GetThreadTime(HANDLE hThread)
 {
     FILETIME LocFTime;
     
-	if(Windows2K == 1)
-	{
+    if(Windows2K == 1)
+    {
         GetThreadTimes(hThread, &lpThreadCreationTm, &lpThreadExitTm, &lpThreadKModeTm, &lpThreadUModeTm);
         FileTimeToLocalFileTime(&lpThreadCreationTm, &LocFTime);
         FileTimeToSystemTime(&LocFTime, &lpThreadCreationSysTm);
@@ -1837,7 +1841,7 @@ long GetThreadTime(HANDLE hThread)
         FileTimeToSystemTime(&LocFTime, &lpThreadUModeSysTm);
         return(TRUE);
     }
-	return(FALSE);
+    return(FALSE);
 }
 
 // -----------------------------------------------------------------------
@@ -1846,346 +1850,346 @@ void CreateSnapTreeView(void)
 {
     hTreeViewDebugRoot = TreeViewAddItem(hTreeViewDebug, DebuggedFile, TVI_ROOT, 0, ICON_SNAP, ICON_SNAP, TVIS_BOLD, 0);
     hTreeViewDebugProcesses = TreeViewAddItem(hTreeViewDebug, "Processes", hTreeViewDebugRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
-	hTreeViewDebugDLLs = TreeViewAddItem(hTreeViewDebug, "Dlls", hTreeViewDebugRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
+    hTreeViewDebugDLLs = TreeViewAddItem(hTreeViewDebug, "Dlls", hTreeViewDebugRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
 }
 
 // -----------------------------------------------------------------------
 // Add a breakpoint
 long SetBreakPoint(CList <LPSNAPBP> *BPList, DWORD BPAddress, int BPType)
 {
-	int i = 0;
-	DWORD cbBytes = 0;
-	LPSNAPBP NewBreakPoint = 0;
+    int i = 0;
+    DWORD cbBytes = 0;
+    LPSNAPBP NewBreakPoint = 0;
 
-	// Check if breakpoint already exists
-	for(i = 0; i < BPList->Amount(); i++)
-	{
-		// Search breakpoint address in bp list
-		NewBreakPoint = BPList->Get(i)->Content;
-		if(BPAddress == NewBreakPoint->Address)
-		{
-			// Already set = correct
-			return(1);
-		}
-	}
+    // Check if breakpoint already exists
+    for(i = 0; i < BPList->Amount(); i++)
+    {
+        // Search breakpoint address in bp list
+        NewBreakPoint = BPList->Get(i)->Content;
+        if(BPAddress == NewBreakPoint->Address)
+        {
+            // Already set = correct
+            return(1);
+        }
+    }
 
-	// Retrieve old byte
-	if(!ReadProcessMemory(DebuggedProc.hProcess, (LPCVOID) BPAddress, (LPVOID) &OldOpCode, 1, &cbBytes)) return(FALSE);
-	// Patch it
-	if(!WriteProcessMemory(DebuggedProc.hProcess, (LPVOID) BPAddress, (LPVOID) &X86INT3, 1, &cbBytes)) return(FALSE);
+    // Retrieve old byte
+    if(!ReadProcessMemory(DebuggedProc.hProcess, (LPCVOID) BPAddress, (LPVOID) &OldOpCode, 1, &cbBytes)) return(FALSE);
+    // Patch it
+    if(!WriteProcessMemory(DebuggedProc.hProcess, (LPVOID) BPAddress, (LPVOID) &X86INT3, 1, &cbBytes)) return(FALSE);
 
-	NewBreakPoint = (LPSNAPBP) calloc(sizeof(SNAPBP), 1);
-	memset(NewBreakPoint, 0, sizeof(SNAPBP));
+    NewBreakPoint = (LPSNAPBP) calloc(sizeof(SNAPBP), 1);
+    memset(NewBreakPoint, 0, sizeof(SNAPBP));
 
-	// Store breakpoint infos
-	NewBreakPoint->Address = BPAddress;
-	NewBreakPoint->OldByte = OldOpCode;
-	NewBreakPoint->BPType = BPType;
+    // Store breakpoint infos
+    NewBreakPoint->Address = BPAddress;
+    NewBreakPoint->OldByte = OldOpCode;
+    NewBreakPoint->BPType = BPType;
 
-	// Store it into the list
-	BPList->Add(NewBreakPoint);
-	return(TRUE);
+    // Store it into the list
+    BPList->Add(NewBreakPoint);
+    return(TRUE);
 }
 
 // -----------------------------------------------------------------------
 // Restore the original code of a breakpoint
 long RestoreBreakPoint(DWORD BPAddress)
 {
-	DWORD cbBytes;
-	LPSNAPBP BreakPoint;
-	int i;
+    DWORD cbBytes;
+    LPSNAPBP BreakPoint;
+    int i;
 
-	for(i = 0; i < DebBreakPoints.Amount(); i++)
-	{
-		// Search breakpoint address in bp list
-		BreakPoint = DebBreakPoints.Get(i)->Content;
-		if(BPAddress == BreakPoint->Address)
-		{
-			// Write back old code byte
-			if(!WriteProcessMemory(DebuggedProc.hProcess, (LPVOID) BPAddress, (LPVOID) &BreakPoint->OldByte, 1, &cbBytes)) return(FALSE);
-			return(TRUE);
-		}
-	}
-	return(FALSE);
+    for(i = 0; i < DebBreakPoints.Amount(); i++)
+    {
+        // Search breakpoint address in bp list
+        BreakPoint = DebBreakPoints.Get(i)->Content;
+        if(BPAddress == BreakPoint->Address)
+        {
+            // Write back old code byte
+            if(!WriteProcessMemory(DebuggedProc.hProcess, (LPVOID) BPAddress, (LPVOID) &BreakPoint->OldByte, 1, &cbBytes)) return(FALSE);
+            return(TRUE);
+        }
+    }
+    return(FALSE);
 }
 
 // -----------------------------------------------------------------------
 // Kill a volatile breakpoint (sticky are handled by the user)
 long KillBreakPoint(DWORD BPAddress)
 {
-	DWORD cbBytes;
-	LPSNAPBP BreakPoint;
-	int i;
+    DWORD cbBytes;
+    LPSNAPBP BreakPoint;
+    int i;
 
-	for(i = 0; i < DebBreakPoints.Amount(); i++)
-	{
-		// Search breakpoint address in bp list
-		BreakPoint = DebBreakPoints.Get(i)->Content;
-		if(BPAddress == BreakPoint->Address)
-		{
-			if(BreakPoint->BPType == BP_VOLATILE)
-			{
-				// Only remove volatile breakpoints (from single steps)
-				// sticky ones are removed during end of debugging session
-				if(!WriteProcessMemory(DebuggedProc.hProcess, (LPVOID) BPAddress, (LPVOID) &BreakPoint->OldByte, 1, &cbBytes)) return(FALSE);
-				DebBreakPoints.Del(i);
-				return(TRUE);
-			}
-		}
-	}
-	return(FALSE);
+    for(i = 0; i < DebBreakPoints.Amount(); i++)
+    {
+        // Search breakpoint address in bp list
+        BreakPoint = DebBreakPoints.Get(i)->Content;
+        if(BPAddress == BreakPoint->Address)
+        {
+            if(BreakPoint->BPType == BP_VOLATILE)
+            {
+                // Only remove volatile breakpoints (from single steps)
+                // sticky ones are removed during end of debugging session
+                if(!WriteProcessMemory(DebuggedProc.hProcess, (LPVOID) BPAddress, (LPVOID) &BreakPoint->OldByte, 1, &cbBytes)) return(FALSE);
+                DebBreakPoints.Del(i);
+                return(TRUE);
+            }
+        }
+    }
+    return(FALSE);
 }
 
 // -----------------------------------------------------------------------
 // Remove all branch breakpoints from the list
 void FlushBranchBreakPoints(void)
 {
-	DWORD cbBytes;
-	LPSNAPBP BreakPoint;
-	int i = 0;
+    DWORD cbBytes;
+    LPSNAPBP BreakPoint;
+    int i = 0;
 
-	while(i < DebBreakPoints.Amount())
-	{
-		// Search breakpoint address in bp list
-		BreakPoint = DebBreakPoints.Get(i)->Content;
-		if(BreakPoint->BPType == BP_BRANCH)
-		{
-			// Only remove volatile breakpoints (from single steps)
-			// sticky ones are removed during end of debugging session
-			WriteProcessMemory(DebuggedProc.hProcess, (LPVOID) BreakPoint->Address, (LPVOID) &BreakPoint->OldByte, 1, &cbBytes);
-			DebBreakPoints.Del(i);
-			// Restart the counting
-			i = -1;
-		}
-		i++;
-	}
-	return;
+    while(i < DebBreakPoints.Amount())
+    {
+        // Search breakpoint address in bp list
+        BreakPoint = DebBreakPoints.Get(i)->Content;
+        if(BreakPoint->BPType == BP_BRANCH)
+        {
+            // Only remove volatile breakpoints (from single steps)
+            // sticky ones are removed during end of debugging session
+            WriteProcessMemory(DebuggedProc.hProcess, (LPVOID) BreakPoint->Address, (LPVOID) &BreakPoint->OldByte, 1, &cbBytes);
+            DebBreakPoints.Del(i);
+            // Restart the counting
+            i = -1;
+        }
+        i++;
+    }
+    return;
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the type of a breakpoint or 0
 int BreakPointType(DWORD BPAddress)
 {
-	LPSNAPBP BreakPoint;
-	int i;
+    LPSNAPBP BreakPoint;
+    int i;
 
-	for(i = 0; i < DebBreakPoints.Amount(); i++)
-	{
-		// Search breakpoint address in bp list
-		BreakPoint = DebBreakPoints.Get(i)->Content;
-		if(BPAddress == BreakPoint->Address)
-		{
-			// Write back old code byte
-			return(BreakPoint->BPType);
-		}
-	}
-	return(0);
+    for(i = 0; i < DebBreakPoints.Amount(); i++)
+    {
+        // Search breakpoint address in bp list
+        BreakPoint = DebBreakPoints.Get(i)->Content;
+        if(BPAddress == BreakPoint->Address)
+        {
+            // Write back old code byte
+            return(BreakPoint->BPType);
+        }
+    }
+    return(0);
 }
 
 // -----------------------------------------------------------------------
 // Step back in code
 void DebugStepBack(long dwThreadID)
 {
-	HANDLE hThread = 0;
-	int i = 0;
-	CONTEXT Context;
-	LPSNAPPROCESS Process = 0;
+    HANDLE hThread = 0;
+    int i = 0;
+    CONTEXT Context;
+    LPSNAPPROCESS Process = 0;
 
-	memset(&Context, 0, sizeof(CONTEXT));
-	for(i = 0; i < DebProcesses.Amount(); i++)
-	{
-		Process = DebProcesses.Get(i)->Content;
-		if((long) Process->dwThreadId == (long) dwThreadID)
-		{
-			hThread = Process->hThread;
-			Context.ContextFlags = CONTEXT_FULL | CONTEXT_FLOATING_POINT | CONTEXT_DEBUG_REGISTERS | CONTEXT_EXTENDED_REGISTERS;
-			GetThreadContext(hThread, &Context);
-			Context.Eip--;
-			SetThreadContext(hThread, &Context);
-			break;
-		}
-	}
+    memset(&Context, 0, sizeof(CONTEXT));
+    for(i = 0; i < DebProcesses.Amount(); i++)
+    {
+        Process = DebProcesses.Get(i)->Content;
+        if((long) Process->dwThreadId == (long) dwThreadID)
+        {
+            hThread = Process->hThread;
+            Context.ContextFlags = CONTEXT_FULL | CONTEXT_FLOATING_POINT | CONTEXT_DEBUG_REGISTERS | CONTEXT_EXTENDED_REGISTERS;
+            GetThreadContext(hThread, &Context);
+            Context.Eip--;
+            SetThreadContext(hThread, &Context);
+            break;
+        }
+    }
 }
 
 // -----------------------------------------------------------------------
 // Set the current code address
 void DebugSetEIP(long dwThreadID, DWORD Address)
 {
-	HANDLE hThread = 0;
-	int i = 0;
-	CONTEXT Context;
-	LPSNAPPROCESS Process = 0;
+    HANDLE hThread = 0;
+    int i = 0;
+    CONTEXT Context;
+    LPSNAPPROCESS Process = 0;
 
-	memset(&Context, 0, sizeof(CONTEXT));
-	for(i = 0; i < DebProcesses.Amount(); i++)
-	{
-		Process = DebProcesses.Get(i)->Content;
-		if((long) Process->dwThreadId == (long) dwThreadID)
-		{
-			hThread = Process->hThread;
-			Context.ContextFlags = CONTEXT_FULL | CONTEXT_FLOATING_POINT | CONTEXT_DEBUG_REGISTERS | CONTEXT_EXTENDED_REGISTERS;
-			GetThreadContext(hThread, &Context);
-			Context.Eip = Address;
-			SetThreadContext(hThread, &Context);
-			break;
-		}
-	}
+    memset(&Context, 0, sizeof(CONTEXT));
+    for(i = 0; i < DebProcesses.Amount(); i++)
+    {
+        Process = DebProcesses.Get(i)->Content;
+        if((long) Process->dwThreadId == (long) dwThreadID)
+        {
+            hThread = Process->hThread;
+            Context.ContextFlags = CONTEXT_FULL | CONTEXT_FLOATING_POINT | CONTEXT_DEBUG_REGISTERS | CONTEXT_EXTENDED_REGISTERS;
+            GetThreadContext(hThread, &Context);
+            Context.Eip = Address;
+            SetThreadContext(hThread, &Context);
+            break;
+        }
+    }
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the current process's context
 void GetCurrentContext(long dwThreadID, LPCONTEXT Context)
 {
-	HANDLE hThread = 0;
-	int i = 0;
-	LPSNAPPROCESS Process = 0;
+    HANDLE hThread = 0;
+    int i = 0;
+    LPSNAPPROCESS Process = 0;
 
-	memset(Context, 0, sizeof(CONTEXT));
-	for(i = 0; i < DebProcesses.Amount(); i++)
-	{
-		Process = DebProcesses.Get(i)->Content;
-		if((long) Process->dwThreadId == (long) dwThreadID)
-		{
-			hThread = Process->hThread;
-			Context->ContextFlags = CONTEXT_FULL | CONTEXT_FLOATING_POINT | CONTEXT_DEBUG_REGISTERS | CONTEXT_EXTENDED_REGISTERS;
-			GetThreadContext(hThread, Context);
-			break;
-		}
-	}
-	return;
+    memset(Context, 0, sizeof(CONTEXT));
+    for(i = 0; i < DebProcesses.Amount(); i++)
+    {
+        Process = DebProcesses.Get(i)->Content;
+        if((long) Process->dwThreadId == (long) dwThreadID)
+        {
+            hThread = Process->hThread;
+            Context->ContextFlags = CONTEXT_FULL | CONTEXT_FLOATING_POINT | CONTEXT_DEBUG_REGISTERS | CONTEXT_EXTENDED_REGISTERS;
+            GetThreadContext(hThread, Context);
+            break;
+        }
+    }
+    return;
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the last stored process's context
 LPCONTEXT GetLastContext(long dwThreadID)
 {
-	int i = 0;
-	LPSNAPPROCESS Process = 0;
+    int i = 0;
+    LPSNAPPROCESS Process = 0;
 
-	for(i = 0; i < DebProcesses.Amount(); i++)
-	{
-		Process = DebProcesses.Get(i)->Content;
-		if((long) Process->dwThreadId == (long) dwThreadID)
-		{
-			return(&Process->LastContext);
-		}
-	}
-	return(NULL);
+    for(i = 0; i < DebProcesses.Amount(); i++)
+    {
+        Process = DebProcesses.Get(i)->Content;
+        if((long) Process->dwThreadId == (long) dwThreadID)
+        {
+            return(&Process->LastContext);
+        }
+    }
+    return(NULL);
 }
 
 // -----------------------------------------------------------------------
 // Store the current process's context
 void SetCurrentContext(long dwThreadID, LPCONTEXT Context)
 {
-	HANDLE hThread = 0;
-	int i = 0;
-	LPSNAPPROCESS Process = 0;
+    HANDLE hThread = 0;
+    int i = 0;
+    LPSNAPPROCESS Process = 0;
 
-	for(i = 0; i < DebProcesses.Amount(); i++)
-	{
-		Process = DebProcesses.Get(i)->Content;
-		if((long) Process->dwThreadId == (long) dwThreadID)
-		{
-			hThread = Process->hThread;
-			SetThreadContext(hThread, Context);
-			break;
-		}
-	}
-	return;
+    for(i = 0; i < DebProcesses.Amount(); i++)
+    {
+        Process = DebProcesses.Get(i)->Content;
+        if((long) Process->dwThreadId == (long) dwThreadID)
+        {
+            hThread = Process->hThread;
+            SetThreadContext(hThread, Context);
+            break;
+        }
+    }
+    return;
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the current code address or 0
 DWORD GetCurrentEIP(long dwThreadID)
 {
-	HANDLE hThread = 0;
-	int i = 0;
-	CONTEXT Context;
-	LPSNAPPROCESS Process = 0;
-	DWORD EIP = 0;
+    HANDLE hThread = 0;
+    int i = 0;
+    CONTEXT Context;
+    LPSNAPPROCESS Process = 0;
+    DWORD EIP = 0;
 
-	memset(&Context, 0, sizeof(CONTEXT));
-	for(i = 0; i < DebProcesses.Amount(); i++)
-	{
-		Process = DebProcesses.Get(i)->Content;
-		if((long) Process->dwThreadId == (long) dwThreadID)
-		{
-			hThread = Process->hThread;
-			Context.ContextFlags = CONTEXT_FULL | CONTEXT_FLOATING_POINT | CONTEXT_DEBUG_REGISTERS | CONTEXT_EXTENDED_REGISTERS;
-			GetThreadContext(hThread, &Context);
-			EIP = Context.Eip;
-			break;
-		}
-	}
-	return(EIP);
+    memset(&Context, 0, sizeof(CONTEXT));
+    for(i = 0; i < DebProcesses.Amount(); i++)
+    {
+        Process = DebProcesses.Get(i)->Content;
+        if((long) Process->dwThreadId == (long) dwThreadID)
+        {
+            hThread = Process->hThread;
+            Context.ContextFlags = CONTEXT_FULL | CONTEXT_FLOATING_POINT | CONTEXT_DEBUG_REGISTERS | CONTEXT_EXTENDED_REGISTERS;
+            GetThreadContext(hThread, &Context);
+            EIP = Context.Eip;
+            break;
+        }
+    }
+    return(EIP);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the current stack pointer or 0
 DWORD GetCurrentESP(long dwThreadID)
 {
-	HANDLE hThread = 0;
-	int i = 0;
-	CONTEXT Context;
-	LPSNAPPROCESS Process = 0;
-	DWORD ESP = 0;
+    HANDLE hThread = 0;
+    int i = 0;
+    CONTEXT Context;
+    LPSNAPPROCESS Process = 0;
+    DWORD ESP = 0;
 
-	memset(&Context, 0, sizeof(CONTEXT));
-	for(i = 0; i < DebProcesses.Amount(); i++)
-	{
-		Process = DebProcesses.Get(i)->Content;
-		if((long) Process->dwThreadId == (long) dwThreadID)
-		{
-			hThread = Process->hThread;
-			Context.ContextFlags = CONTEXT_FULL | CONTEXT_FLOATING_POINT | CONTEXT_DEBUG_REGISTERS | CONTEXT_EXTENDED_REGISTERS;
-			GetThreadContext(hThread, &Context);
-			ESP = Context.Esp;
-			break;
-		}
-	}
-	return(ESP);
+    memset(&Context, 0, sizeof(CONTEXT));
+    for(i = 0; i < DebProcesses.Amount(); i++)
+    {
+        Process = DebProcesses.Get(i)->Content;
+        if((long) Process->dwThreadId == (long) dwThreadID)
+        {
+            hThread = Process->hThread;
+            Context.ContextFlags = CONTEXT_FULL | CONTEXT_FLOATING_POINT | CONTEXT_DEBUG_REGISTERS | CONTEXT_EXTENDED_REGISTERS;
+            GetThreadContext(hThread, &Context);
+            ESP = Context.Esp;
+            break;
+        }
+    }
+    return(ESP);
 }
 
 // -----------------------------------------------------------------------
 // Return the current word at given address or 0
 DWORD GetCurrentWord(long dwThreadID, DWORD Address)
 {
-	int i = 0;
-	LPSNAPPROCESS Process = 0;
-	DWORD Code = 0;
-	DWORD cbBytes;
+    int i = 0;
+    LPSNAPPROCESS Process = 0;
+    DWORD Code = 0;
+    DWORD cbBytes;
 
-	for(i = 0; i < DebProcesses.Amount(); i++)
-	{
-		Process = DebProcesses.Get(i)->Content;
-		if((long) Process->dwThreadId == (long) dwThreadID)
-		{
-			ReadProcessMemory(DebuggedProc.hProcess, (LPCVOID) Address, (LPVOID) &Code, 2, &cbBytes);
-			break;
-		}
-	}
-	return(Code);
+    for(i = 0; i < DebProcesses.Amount(); i++)
+    {
+        Process = DebProcesses.Get(i)->Content;
+        if((long) Process->dwThreadId == (long) dwThreadID)
+        {
+            ReadProcessMemory(DebuggedProc.hProcess, (LPCVOID) Address, (LPVOID) &Code, 2, &cbBytes);
+            break;
+        }
+    }
+    return(Code);
 }
 
 // -----------------------------------------------------------------------
 // Return the current dword at given address or 0
 DWORD GetCurrentDWord(long dwThreadID, DWORD Address)
 {
-	int i = 0;
-	LPSNAPPROCESS Process = 0;
-	DWORD Code = 0;
-	DWORD cbBytes;
+    int i = 0;
+    LPSNAPPROCESS Process = 0;
+    DWORD Code = 0;
+    DWORD cbBytes;
 
-	for(i = 0; i < DebProcesses.Amount(); i++)
-	{
-		Process = DebProcesses.Get(i)->Content;
-		if((long) Process->dwThreadId == (long) dwThreadID)
-		{
-			ReadProcessMemory(DebuggedProc.hProcess, (LPCVOID) Address, (LPVOID) &Code, 4, &cbBytes);
-			break;
-		}
-	}
-	return(Code);
+    for(i = 0; i < DebProcesses.Amount(); i++)
+    {
+        Process = DebProcesses.Get(i)->Content;
+        if((long) Process->dwThreadId == (long) dwThreadID)
+        {
+            ReadProcessMemory(DebuggedProc.hProcess, (LPCVOID) Address, (LPVOID) &Code, 4, &cbBytes);
+            break;
+        }
+    }
+    return(Code);
 }
 
 // -----------------------------------------------------------------------
@@ -2193,168 +2197,168 @@ DWORD GetCurrentDWord(long dwThreadID, DWORD Address)
 // Return the number of bytes read
 long ReadThreadbytes(long dwThreadID, DWORD Address, BYTE *Dest, DWORD Bytes)
 {
-	int i = 0;
-	LPSNAPPROCESS Process = 0;
-	DWORD cbBytes = 0;
+    int i = 0;
+    LPSNAPPROCESS Process = 0;
+    DWORD cbBytes = 0;
 
-	for(i = 0; i < DebProcesses.Amount(); i++)
-	{
-		Process = DebProcesses.Get(i)->Content;
-		if ((long) Process->dwThreadId == (long) dwThreadID)
-		{
-			ReadProcessMemory(DebuggedProc.hProcess, (LPCVOID) Address, (LPVOID) Dest, Bytes, &cbBytes);
-			break;
-		}
-	}
-	return(cbBytes);
+    for(i = 0; i < DebProcesses.Amount(); i++)
+    {
+        Process = DebProcesses.Get(i)->Content;
+        if ((long) Process->dwThreadId == (long) dwThreadID)
+        {
+            ReadProcessMemory(DebuggedProc.hProcess, (LPCVOID) Address, (LPVOID) Dest, Bytes, &cbBytes);
+            break;
+        }
+    }
+    return(cbBytes);
 }
 
 // -----------------------------------------------------------------------
 // Set thread in single step mode
 void SetSingleStep(long dwThreadID)
 {
-	HANDLE hThread = 0;
-	int i = 0;
-	CONTEXT Context;
-	LPSNAPPROCESS Process = 0;
-	long ThreadID = 0;
+    HANDLE hThread = 0;
+    int i = 0;
+    CONTEXT Context;
+    LPSNAPPROCESS Process = 0;
+    long ThreadID = 0;
 
-	memset(&Context, 0, sizeof(CONTEXT));
-	for(i = 0; i < DebProcesses.Amount(); i++)
-	{
-		Process = DebProcesses.Get(i)->Content;
-		if((long) Process->dwThreadId == (long) dwThreadID)
-		{
-			hThread = Process->hThread;
-			Context.ContextFlags = CONTEXT_FULL | CONTEXT_FLOATING_POINT | CONTEXT_DEBUG_REGISTERS | CONTEXT_EXTENDED_REGISTERS;
-			GetThreadContext(hThread, &Context);
-			// Trap flag on
-			Context.EFlags = Context.EFlags | 0x100;
-			SetThreadContext(hThread, &Context);
-			break;
-		}
-	}
+    memset(&Context, 0, sizeof(CONTEXT));
+    for(i = 0; i < DebProcesses.Amount(); i++)
+    {
+        Process = DebProcesses.Get(i)->Content;
+        if((long) Process->dwThreadId == (long) dwThreadID)
+        {
+            hThread = Process->hThread;
+            Context.ContextFlags = CONTEXT_FULL | CONTEXT_FLOATING_POINT | CONTEXT_DEBUG_REGISTERS | CONTEXT_EXTENDED_REGISTERS;
+            GetThreadContext(hThread, &Context);
+            // Trap flag on
+            Context.EFlags = Context.EFlags | 0x100;
+            SetThreadContext(hThread, &Context);
+            break;
+        }
+    }
 }
 
 // -----------------------------------------------------------------------
 // Set thread in normal mode
 void ClearSingleStep(long dwThreadID)
 {
-	HANDLE hThread = 0;
-	int i = 0;
-	CONTEXT Context;
-	LPSNAPPROCESS Process = 0;
-	long ThreadID = 0;
+    HANDLE hThread = 0;
+    int i = 0;
+    CONTEXT Context;
+    LPSNAPPROCESS Process = 0;
+    long ThreadID = 0;
 
-	memset(&Context, 0, sizeof(CONTEXT));
-	for(i = 0; i < DebProcesses.Amount(); i++)
-	{
-		Process = DebProcesses.Get(i)->Content;
-		if((long) Process->dwThreadId == (long) dwThreadID)
-		{
-			hThread = Process->hThread;
-			Context.ContextFlags = CONTEXT_FULL | CONTEXT_FLOATING_POINT | CONTEXT_DEBUG_REGISTERS | CONTEXT_EXTENDED_REGISTERS;
-			GetThreadContext(hThread, &Context);
-			// Trap flag off
-			Context.EFlags = Context.EFlags & ~0x100;
-			SetThreadContext(hThread, &Context);
-			break;
-		}
-	}
+    memset(&Context, 0, sizeof(CONTEXT));
+    for(i = 0; i < DebProcesses.Amount(); i++)
+    {
+        Process = DebProcesses.Get(i)->Content;
+        if((long) Process->dwThreadId == (long) dwThreadID)
+        {
+            hThread = Process->hThread;
+            Context.ContextFlags = CONTEXT_FULL | CONTEXT_FLOATING_POINT | CONTEXT_DEBUG_REGISTERS | CONTEXT_EXTENDED_REGISTERS;
+            GetThreadContext(hThread, &Context);
+            // Trap flag off
+            Context.EFlags = Context.EFlags & ~0x100;
+            SetThreadContext(hThread, &Context);
+            break;
+        }
+    }
 }
 
 // -----------------------------------------------------------------------
 // Remove a thread from the list
 void RemoveThread(long dwThreadID)
 {
-	int i = 0;
-	LPSNAPPROCESS Process = 0;
+    int i = 0;
+    LPSNAPPROCESS Process = 0;
 
-	for(i = 0; i < DebProcesses.Amount(); i++)
-	{
-		Process = DebProcesses.Get(i)->Content;
-		if((long) Process->dwThreadId == (long) dwThreadID)
-		{
-			CloseHandle(Process->hThread);
-			DebProcesses.Del(i);
-			break;
-		}			
-	}	
+    for(i = 0; i < DebProcesses.Amount(); i++)
+    {
+        Process = DebProcesses.Get(i)->Content;
+        if((long) Process->dwThreadId == (long) dwThreadID)
+        {
+            CloseHandle(Process->hThread);
+            DebProcesses.Del(i);
+            break;
+        }           
+    }   
 }
 
 // -----------------------------------------------------------------------
 // Retrieve a thread handle from it's ID
 HANDLE GetThreadHandle(long dwThreadID)
 {
-	int i = 0;
-	LPSNAPPROCESS Process = 0;
+    int i = 0;
+    LPSNAPPROCESS Process = 0;
 
-	for(i = 0; i < DebProcesses.Amount(); i++)
-	{
-		Process = DebProcesses.Get(i)->Content;
-		if((long) Process->dwThreadId == (long) dwThreadID)
-		{
-			return(Process->hThread);
-		}
-	}
-	return(0);
+    for(i = 0; i < DebProcesses.Amount(); i++)
+    {
+        Process = DebProcesses.Get(i)->Content;
+        if((long) Process->dwThreadId == (long) dwThreadID)
+        {
+            return(Process->hThread);
+        }
+    }
+    return(0);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve a process handle from it's ID
 HANDLE GetProcessHandle(long dwProcessID)
 {
-	int i = 0;
-	LPSNAPPROCESS Process = 0;
+    int i = 0;
+    LPSNAPPROCESS Process = 0;
 
-	for(i = 0; i < DebProcesses.Amount(); i++)
-	{
-		Process = DebProcesses.Get(i)->Content;
-		if((long) Process->dwProcessId == (long) dwProcessID)
-		{
-			return(Process->hProcess);
-		}			
-	}	
-	return(0);
+    for(i = 0; i < DebProcesses.Amount(); i++)
+    {
+        Process = DebProcesses.Get(i)->Content;
+        if((long) Process->dwProcessId == (long) dwProcessID)
+        {
+            return(Process->hProcess);
+        }           
+    }   
+    return(0);
 }
 
 // -----------------------------------------------------------------------
 // Obtain some functions from PSAPI.dll so it can work on Win98
 void Get_PSAPI(void)
 {
-	if(Windows2K == 1)
-	{
-		PSApiDll = LoadLibrary("PSAPI.DLL");
-		Ptr_GetWsChanges = 0;
-		Ptr_InitializeProcessForWsWatch = 0;
-		if(PSApiDll != NULL)
-		{
-			Ptr_GetWsChanges = (BOOL (__stdcall *)(HANDLE, PPSAPI_WS_WATCH_INFORMATION, DWORD)) GetProcAddress((HMODULE) PSApiDll, "GetWsChanges");
-			Ptr_InitializeProcessForWsWatch = (BOOL (__stdcall *)(HANDLE)) GetProcAddress((HMODULE) PSApiDll, "InitializeProcessForWsWatch");
-		}
-	}
+    if(Windows2K == 1)
+    {
+        PSApiDll = LoadLibrary("PSAPI.DLL");
+        Ptr_GetWsChanges = 0;
+        Ptr_InitializeProcessForWsWatch = 0;
+        if(PSApiDll != NULL)
+        {
+            Ptr_GetWsChanges = (BOOL (__stdcall *)(HANDLE, PPSAPI_WS_WATCH_INFORMATION, DWORD)) GetProcAddress((HMODULE) PSApiDll, "GetWsChanges");
+            Ptr_InitializeProcessForWsWatch = (BOOL (__stdcall *)(HANDLE)) GetProcAddress((HMODULE) PSApiDll, "InitializeProcessForWsWatch");
+        }
+    }
 }
 
 // -----------------------------------------------------------------------
 // Close the PSAPI.dll
 void Close_PSAPI(void)
 {
-	if(Windows2K == 1) if(PSApiDll != NULL) FreeLibrary(PSApiDll);
+    if(Windows2K == 1) if(PSApiDll != NULL) FreeLibrary(PSApiDll);
 }
 
 // -----------------------------------------------------------------------
 // Ask the user if we should break the debugging process
 int Ask_Debug_Break(void)
 {
-	switch(MiscMsgBox(hMDIform.hWnd, "The debugger is currently running.\rStop the process now ?", MB_QUESTION, Requesters)) {
-		case IDYES:
-			KillProcess();
-			ScheduleQuit = 1;
-			return(1);
-		case IDNO:
-			return(1);
-	}
-	return(0);
+    switch(MiscMsgBox(hMDIform.hWnd, "The debugger is currently running.\rStop the process now ?", MB_QUESTION, Requesters)) {
+        case IDYES:
+            KillProcess();
+            ScheduleQuit = 1;
+            return(1);
+        case IDNO:
+            return(1);
+    }
+    return(0);
 }
 
 // -----------------------------------------------------------------------
@@ -2365,144 +2369,144 @@ LRESULT CALLBACK TreeviewDebugContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam,
     PAINTSTRUCT VSplitPs;
     SIZE TBSize;
     long SpTooltipId = 0;
-	HWND hTreeViewFrom = 0;
+    HWND hTreeViewFrom = 0;
     long DockState;
-	
+    
     switch(uMsg)
     {
-		case WM_PAINT:
+        case WM_PAINT:
             BeginPaint(hWnd, &VSplitPs);
-			DockState = DockingBoxGetState(hDebugContainer);
-			switch(DockState)
-			{
-				case DOCKINGBOX_LEFT:
-				case DOCKINGBOX_RIGHT:
-				case DOCKINGBOX_FLOATING:
-					// Windows toolbar
-					ToolBarGetXYSize(hDebugToolbar, &TBSize);
-					MoveWindow(hDebugPager, 0, 0, ControlWidth(hWnd), TBSize.cy, 1);
-					MoveWindow(hTreeViewDebug, 0, (23 + 1), ControlWidth(hWnd), ControlHeight(hWnd) - (23 + 1), 1);
-					break;
-				case DOCKINGBOX_TOP:
-				case DOCKINGBOX_BOTTOM:
-					MoveWindow(hDebugPager, 0, 0, 24, ControlHeight(hWnd), 1);
-					MoveWindow(hTreeViewDebug, (24 + 1), 0, ControlWidth(hWnd) - (24 + 1), ControlHeight(hWnd), 1);
-					break;
-			}
+            DockState = DockingBoxGetState(hDebugContainer);
+            switch(DockState)
+            {
+                case DOCKINGBOX_LEFT:
+                case DOCKINGBOX_RIGHT:
+                case DOCKINGBOX_FLOATING:
+                    // Windows toolbar
+                    ToolBarGetXYSize(hDebugToolbar, &TBSize);
+                    MoveWindow(hDebugPager, 0, 0, ControlWidth(hWnd), TBSize.cy, 1);
+                    MoveWindow(hTreeViewDebug, 0, (23 + 1), ControlWidth(hWnd), ControlHeight(hWnd) - (23 + 1), 1);
+                    break;
+                case DOCKINGBOX_TOP:
+                case DOCKINGBOX_BOTTOM:
+                    MoveWindow(hDebugPager, 0, 0, 24, ControlHeight(hWnd), 1);
+                    MoveWindow(hTreeViewDebug, (24 + 1), 0, ControlWidth(hWnd) - (24 + 1), ControlHeight(hWnd), 1);
+                    break;
+            }
             EndPaint(hWnd, &VSplitPs);
-			break;
+            break;
         case WM_COMMAND:
             switch(wParam)
             {
-				case (DEBUGTOOLBAR_RUN):
-					InStepMode = 0;
-					SnapRunstate();
-					FlushBranchBreakPoints();
-					RunThread(CurrentDThread);
-					BringThreadToForeGround();
-                    return(0);
-				case (DEBUGTOOLBAR_STEPINTO):
-					ClearSingleStep(CurrentDThread);
+                case (DEBUGTOOLBAR_RUN):
                     InStepMode = 0;
-					InStepType = STEP_INTO;
-					// No: we're in single step mode
-					// so find what the next breakpoint shall be
-					SetNextBreak(InStepType);
-                   	//ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
-					RunThread(CurrentDThread);
-					return(0);
-				case (DEBUGTOOLBAR_STEPOVER):
-					ClearSingleStep(CurrentDThread);
+                    SnapRunstate();
+                    FlushBranchBreakPoints();
+                    RunThread(CurrentDThread);
+                    BringThreadToForeGround();
+                    return(0);
+                case (DEBUGTOOLBAR_STEPINTO):
+                    ClearSingleStep(CurrentDThread);
+                    InStepMode = 0;
+                    InStepType = STEP_INTO;
+                    // No: we're in single step mode
+                    // so find what the next breakpoint shall be
+                    SetNextBreak(InStepType);
+                    //ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
+                    RunThread(CurrentDThread);
+                    return(0);
+                case (DEBUGTOOLBAR_STEPOVER):
+                    ClearSingleStep(CurrentDThread);
                     ////SetSingleStep(CurrentDThread);
                     InStepMode = 0;
-					InStepType = STEP_OVER;
-					// No: we're in single step mode
-					// so find what the next breakpoint shall be
-					SetNextBreak(InStepType);
-					RunThread(CurrentDThread);
+                    InStepType = STEP_OVER;
+                    // No: we're in single step mode
+                    // so find what the next breakpoint shall be
+                    SetNextBreak(InStepType);
+                    RunThread(CurrentDThread);
                     return(0);
-				case (DEBUGTOOLBAR_STEPOUT):
-					ClearSingleStep(CurrentDThread);
+                case (DEBUGTOOLBAR_STEPOUT):
+                    ClearSingleStep(CurrentDThread);
                     //SetSingleStep(CurrentDThread);
                     InStepMode = 0;
-					InStepType = STEP_OUT;
-					// No: we're in single step mode
-					// so find what the next breakpoint shall be
-					SetNextBreak(InStepType);
-					RunThread(CurrentDThread);
+                    InStepType = STEP_OUT;
+                    // No: we're in single step mode
+                    // so find what the next breakpoint shall be
+                    SetNextBreak(InStepType);
+                    RunThread(CurrentDThread);
                     return(0);
-				case (DEBUGTOOLBAR_PAUSE):
-					StopThread(CurrentDThread);
+                case (DEBUGTOOLBAR_PAUSE):
+                    StopThread(CurrentDThread);
                     // (Ensure that we'll not mess with InStepType)
-					InStepMode = 0;
-					if(!IsSourceLine(GetCurrentEIP(CurrentDThread)))
-					{
-						if(BreakOnCaller()) BringThreadToForeGround();
-					}
-					else
-					{
-						// Found it: Set a breakpoint on this line
-						SetBreakPoint(&DebBreakPoints, GetCurrentEIP(CurrentDThread), BP_BRANCH);
-						BringThreadToForeGround();
-					}
-					RunThread(CurrentDThread);
-					return(0);
-	            case (DEBUGTOOLBAR_STOP):
-					// Close the debugging window
-					KillProcess();
-					return(0);
+                    InStepMode = 0;
+                    if(!IsSourceLine(GetCurrentEIP(CurrentDThread)))
+                    {
+                        if(BreakOnCaller()) BringThreadToForeGround();
+                    }
+                    else
+                    {
+                        // Found it: Set a breakpoint on this line
+                        SetBreakPoint(&DebBreakPoints, GetCurrentEIP(CurrentDThread), BP_BRANCH);
+                        BringThreadToForeGround();
+                    }
+                    RunThread(CurrentDThread);
+                    return(0);
+                case (DEBUGTOOLBAR_STOP):
+                    // Close the debugging window
+                    KillProcess();
+                    return(0);
             }
-			break;
-		case WM_NOTIFY:
+            break;
+        case WM_NOTIFY:
             switch(ControlGetNotifiedMsg(lParam))
             {
                 case PGN_CALCSIZE:
                     ToolBarGetXYSize(PagerGetNotifiedChild(lParam), &MySize);
-					DockState = DockingBoxGetState(hDebugContainer);
-					ToolBarGetXYSize(PagerGetNotifiedChild(lParam), &MySize);
-					switch(DockState)
-					{
-						case DOCKINGBOX_TOP:
-						case DOCKINGBOX_BOTTOM:
-							PagerChangeOrientation(hDebugPager, (LPNMPGCALCSIZE) lParam, PGS_VERT, &MySize);
-							break;
-						default:
-							PagerChangeOrientation(hDebugPager, (LPNMPGCALCSIZE) lParam, PGS_HORZ, &MySize);
-							break;
-					}
+                    DockState = DockingBoxGetState(hDebugContainer);
+                    ToolBarGetXYSize(PagerGetNotifiedChild(lParam), &MySize);
+                    switch(DockState)
+                    {
+                        case DOCKINGBOX_TOP:
+                        case DOCKINGBOX_BOTTOM:
+                            PagerChangeOrientation(hDebugPager, (LPNMPGCALCSIZE) lParam, PGS_VERT, &MySize);
+                            break;
+                        default:
+                            PagerChangeOrientation(hDebugPager, (LPNMPGCALCSIZE) lParam, PGS_HORZ, &MySize);
+                            break;
+                    }
                     return(0);
                 case TTN_NEEDTEXT:
-					SpTooltipId = ControlGetNotifiedID(lParam);
+                    SpTooltipId = ControlGetNotifiedID(lParam);
                     if(SpTooltipId <= DEBUGTOOLBAR_STEPOUT)
                     {
-						ToolBarDisplayToolTip(DebugToolbarToolTip[SpTooltipId], lParam);
-					}
-					return(0);
+                        ToolBarDisplayToolTip(DebugToolbarToolTip[SpTooltipId], lParam);
+                    }
+                    return(0);
                 case TVN_ITEMEXPANDING:
-					hTreeViewFrom = ControlGetNotifiedhWnd(lParam);
-					if(TreeViewGetExpandingItem(lParam) != hTreeViewDebugRoot)
-					{
-						switch(TreeViewGetExpandingState(lParam))
-						{
-							case TVE_EXPAND:
-								TreeViewSetItemIcon(hTreeViewFrom, TreeViewGetExpandingItem(lParam), ICON_OPEN);
-								break;
-							case TVE_COLLAPSE:
-								TreeViewSetItemIcon(hTreeViewFrom, TreeViewGetExpandingItem(lParam), ICON_FILES);
-								break;
-						}
-					}
-					return(0);
-			}
-			break;
-		case DOCKINGBOX_MSG_QUERY_STATE:
-			return(ShowDebugDockWin);
-		case DOCKINGBOX_MSG_CLOSE:
-			ShowDebugDockWin = 0;
+                    hTreeViewFrom = ControlGetNotifiedhWnd(lParam);
+                    if(TreeViewGetExpandingItem(lParam) != hTreeViewDebugRoot)
+                    {
+                        switch(TreeViewGetExpandingState(lParam))
+                        {
+                            case TVE_EXPAND:
+                                TreeViewSetItemIcon(hTreeViewFrom, TreeViewGetExpandingItem(lParam), ICON_OPEN);
+                                break;
+                            case TVE_COLLAPSE:
+                                TreeViewSetItemIcon(hTreeViewFrom, TreeViewGetExpandingItem(lParam), ICON_FILES);
+                                break;
+                        }
+                    }
+                    return(0);
+            }
+            break;
+        case DOCKINGBOX_MSG_QUERY_STATE:
+            return(ShowDebugDockWin);
+        case DOCKINGBOX_MSG_CLOSE:
+            ShowDebugDockWin = 0;
         case WM_DESTROY:
             SetDebugDockMenuState(ShowDebugDockWin);
-			break;
-	}
+            break;
+    }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
 
@@ -2510,16 +2514,16 @@ LRESULT CALLBACK TreeviewDebugContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam,
 // Show/Hide debug treeview
 void SetDebugDockState(long bShow)
 {
-	SetDebugDockMenuState(bShow);
-	switch(bShow)
-	{
+    SetDebugDockMenuState(bShow);
+    switch(bShow)
+    {
         case 0:
-			DockingBoxRemove(hDebugContainer);
-			break;
-		case 1:
-			DockingBoxShow(hDebugContainer, GetMDIWidth(), GetMDIHeight(), 120, 230, DOCKINGBOX_LEFT);
-			break;
-	}
+            DockingBoxRemove(hDebugContainer);
+            break;
+        case 1:
+            DockingBoxShow(hDebugContainer, GetMDIWidth(), GetMDIHeight(), 120, 230, DOCKINGBOX_LEFT);
+            break;
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -2527,14 +2531,14 @@ void SetDebugDockState(long bShow)
 // (MF_BYPOSITION so -1)
 void SetDebugDockMenuState(long bShow)
 {
-	switch(bShow)
-	{
+    switch(bShow)
+    {
         case 0:
             CheckMenuItem(hViewMenuDisplay, MENU_VIEW_DEBUGDOCK_ID, MF_BYPOSITION | MF_UNCHECKED);
-			break;
+            break;
         case 1:
             CheckMenuItem(hViewMenuDisplay, MENU_VIEW_DEBUGDOCK_ID, MF_BYPOSITION | MF_CHECKED);
-			break;
+            break;
     }
 }
 
@@ -2544,33 +2548,33 @@ LRESULT CALLBACK RegistersContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 {
     PAINTSTRUCT VSplitPs;
     long DockState;
-	
+    
     switch(uMsg)
     {
-		case WM_PAINT:
+        case WM_PAINT:
             BeginPaint(hWnd, &VSplitPs);
-			DockState = DockingBoxGetState(hRegistersContainer);
-			switch(DockState)
-			{
-				case DOCKINGBOX_LEFT:
-				case DOCKINGBOX_RIGHT:
-				case DOCKINGBOX_FLOATING:
-				case DOCKINGBOX_TOP:
-				case DOCKINGBOX_BOTTOM:
-					MoveWindow(hRegistersListView, 0, 0, ControlWidth(hWnd), ControlHeight(hWnd), 1);
-					ListViewSetColWidth(hRegistersListView, 0, ControlClientWidth(hWnd) - GetSystemMetrics(SM_CXVSCROLL));
-  					break;
-			}
+            DockState = DockingBoxGetState(hRegistersContainer);
+            switch(DockState)
+            {
+                case DOCKINGBOX_LEFT:
+                case DOCKINGBOX_RIGHT:
+                case DOCKINGBOX_FLOATING:
+                case DOCKINGBOX_TOP:
+                case DOCKINGBOX_BOTTOM:
+                    MoveWindow(hRegistersListView, 0, 0, ControlWidth(hWnd), ControlHeight(hWnd), 1);
+                    ListViewSetColWidth(hRegistersListView, 0, ControlClientWidth(hWnd) - GetSystemMetrics(SM_CXVSCROLL));
+                    break;
+            }
             EndPaint(hWnd, &VSplitPs);
-			break;
-		case DOCKINGBOX_MSG_QUERY_STATE:
-			return(ShowRegistersDockWin);
-		case DOCKINGBOX_MSG_CLOSE:
-			ShowRegistersDockWin = 0;
+            break;
+        case DOCKINGBOX_MSG_QUERY_STATE:
+            return(ShowRegistersDockWin);
+        case DOCKINGBOX_MSG_CLOSE:
+            ShowRegistersDockWin = 0;
         case WM_DESTROY:
             SetDebugDockMenuState(ShowRegistersDockWin);
-			break;
-	}
+            break;
+    }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
 
@@ -2578,16 +2582,16 @@ LRESULT CALLBACK RegistersContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 // Show/Hide registers window
 void SetRegistersDockState(long bShow)
 {
-	SetRegistersDockMenuState(bShow);
-	switch(bShow)
-	{
+    SetRegistersDockMenuState(bShow);
+    switch(bShow)
+    {
         case 0:
-			DockingBoxRemove(hRegistersContainer);
-			break;
-		case 1:
-			DockingBoxShow(hRegistersContainer, GetMDIWidth(), GetMDIHeight(), 300, 120, DOCKINGBOX_BOTTOM);
-			break;
-	}
+            DockingBoxRemove(hRegistersContainer);
+            break;
+        case 1:
+            DockingBoxShow(hRegistersContainer, GetMDIWidth(), GetMDIHeight(), 300, 120, DOCKINGBOX_BOTTOM);
+            break;
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -2595,14 +2599,14 @@ void SetRegistersDockState(long bShow)
 // (MF_BYPOSITION so -1)
 void SetRegistersDockMenuState(long bShow)
 {
-	switch(bShow)
-	{
+    switch(bShow)
+    {
         case 0:
             CheckMenuItem(hViewMenuDisplay, MENU_VIEW_REGISTERSDOCK_ID, MF_BYPOSITION | MF_UNCHECKED);
-			break;
+            break;
         case 1:
             CheckMenuItem(hViewMenuDisplay, MENU_VIEW_REGISTERSDOCK_ID, MF_BYPOSITION | MF_CHECKED);
-			break;
+            break;
     }
 }
 
@@ -2611,115 +2615,115 @@ void SetRegistersDockMenuState(long bShow)
 // Return 1 if line found and displayed / 0 otherwise
 int DisplaySourceLine(long ThreadID, DWORD Address)
 {
-	DWORD LineDisplacement = 0;
-	HWND SourcehWnd;
-	int i;
-	int Found = FALSE;
+    DWORD LineDisplacement = 0;
+    HWND SourcehWnd;
+    int i;
+    int Found = FALSE;
 
-	memset(&ModuleLine, 0, sizeof(IMAGEHLP_LINE));
-	ModuleLine.SizeOfStruct = sizeof(ModuleLine);
-	ModuleLine.Address = (DWORD) Address;
+    memset(&ModuleLine, 0, sizeof(IMAGEHLP_LINE));
+    ModuleLine.SizeOfStruct = sizeof(ModuleLine);
+    ModuleLine.Address = (DWORD) Address;
 
-	LineDisplacement = 0;
-	if(SymGetLineFromAddr(DebuggedProc.hProcess, Address, &LineDisplacement, &ModuleLine) != 0)
-	{
-		// Handle breakpoint
-		SourcehWnd = GoToLine(ModuleLine.FileName, ModuleLine.LineNumber - 1, 1);
-		if(SourcehWnd != 0)
-		{
-			for(i = 0; i < DebWindows.Amount(); i++)
-			{
-				if(DebWindows.Get(i)->Content == SourcehWnd)
-				{
-					Found = TRUE;
-					break;
-				}
-			}
-			ChildStruct = LoadStructure(SourcehWnd);
-			SetTopFromLine(ChildStruct->hChildCodeMax, ModuleLine.LineNumber - 1);
-			// Set the highlihghted line
-			CM_SetHighlightedLine(ChildStruct->hChildCodeMax, ModuleLine.LineNumber - 1);
-			if(Found == FALSE)
-			{
-				// Window is already in the list
-				SetChildReadOnly(SourcehWnd, TRUE);
-				DebWindows.Add(SourcehWnd);
-				RefreshChildTitle(SourcehWnd);
-			}
-		}
-		// Bring us in front
-		SetForegroundWindow(hMDIform.hWnd);
-		// Pause and mark
-		SetSingleStep(ThreadID);
-		InStepMode = 1;
-		return(1);
-	}
-	else
-	{
-		return(0);
-	}
+    LineDisplacement = 0;
+    if(SymGetLineFromAddr(DebuggedProc.hProcess, Address, &LineDisplacement, &ModuleLine) != 0)
+    {
+        // Handle breakpoint
+        SourcehWnd = GoToLine(ModuleLine.FileName, ModuleLine.LineNumber - 1, 1);
+        if(SourcehWnd != 0)
+        {
+            for(i = 0; i < DebWindows.Amount(); i++)
+            {
+                if(DebWindows.Get(i)->Content == SourcehWnd)
+                {
+                    Found = TRUE;
+                    break;
+                }
+            }
+            ChildStruct = LoadStructure(SourcehWnd);
+            SetTopFromLine(ChildStruct->hChildCodeMax, ModuleLine.LineNumber - 1);
+            // Set the highlihghted line
+            CM_SetHighlightedLine(ChildStruct->hChildCodeMax, ModuleLine.LineNumber - 1);
+            if(Found == FALSE)
+            {
+                // Window is already in the list
+                SetChildReadOnly(SourcehWnd, TRUE);
+                DebWindows.Add(SourcehWnd);
+                RefreshChildTitle(SourcehWnd);
+            }
+        }
+        // Bring us in front
+        SetForegroundWindow(hMDIform.hWnd);
+        // Pause and mark
+        SetSingleStep(ThreadID);
+        InStepMode = 1;
+        return(1);
+    }
+    else
+    {
+        return(0);
+    }
 }
 
 // -----------------------------------------------------------------------
 // Return 1 if address is legal and can be displayed / 0 otherwise
 int IsSourceLine(DWORD Address)
 {
-	DWORD LineDisplacement = 0;
-	IMAGEHLP_LINE ModuleLineTest;
+    DWORD LineDisplacement = 0;
+    IMAGEHLP_LINE ModuleLineTest;
 
-	memset(&ModuleLineTest, 0, sizeof(IMAGEHLP_LINE));
-	ModuleLineTest.SizeOfStruct = sizeof(ModuleLineTest);
-	ModuleLineTest.Address = (DWORD) Address;
-	LineDisplacement = 0;
-	return(SymGetLineFromAddr(DebuggedProc.hProcess, Address, &LineDisplacement, &ModuleLineTest));
+    memset(&ModuleLineTest, 0, sizeof(IMAGEHLP_LINE));
+    ModuleLineTest.SizeOfStruct = sizeof(ModuleLineTest);
+    ModuleLineTest.Address = (DWORD) Address;
+    LineDisplacement = 0;
+    return(SymGetLineFromAddr(DebuggedProc.hProcess, Address, &LineDisplacement, &ModuleLineTest));
 }
 
 // -----------------------------------------------------------------------
 // Return 1 if address is legal and can be displayed / 0 otherwise
 int GetSourceLineNumber(DWORD Address)
 {
-	DWORD LineDisplacement = 0;
-	IMAGEHLP_LINE ModuleLineTest;
+    DWORD LineDisplacement = 0;
+    IMAGEHLP_LINE ModuleLineTest;
 
-	memset(&ModuleLineTest, 0, sizeof(IMAGEHLP_LINE));
-	ModuleLineTest.SizeOfStruct = sizeof(ModuleLineTest);
-	ModuleLineTest.Address = (DWORD) Address;
-	LineDisplacement = 0;
-	SymGetLineFromAddr(DebuggedProc.hProcess, Address, &LineDisplacement, &ModuleLineTest);
-	return(ModuleLineTest.LineNumber);
+    memset(&ModuleLineTest, 0, sizeof(IMAGEHLP_LINE));
+    ModuleLineTest.SizeOfStruct = sizeof(ModuleLineTest);
+    ModuleLineTest.Address = (DWORD) Address;
+    LineDisplacement = 0;
+    SymGetLineFromAddr(DebuggedProc.hProcess, Address, &LineDisplacement, &ModuleLineTest);
+    return(ModuleLineTest.LineNumber);
 }
 
 // -----------------------------------------------------------------------
 // Move text to ensure that a line is visible in a codemax control
 void SetTopFromLine(HWND hWnd, long LineNumber)
 {
-	if(LineNumber < GetCurrentTopIndex(hWnd))
-	{
-		SetCurrentTopIndex(hWnd, LineNumber);
-	}
-	else
-	{
-		if(LineNumber > (GetCurrentTopIndex(hWnd) + CM_GetVisibleLineCount(hWnd, CM_GetCurrentView(hWnd), 1)))
-		{
-			SetCurrentTopIndex(hWnd, LineNumber);
-		}
-	}
+    if(LineNumber < GetCurrentTopIndex(hWnd))
+    {
+        SetCurrentTopIndex(hWnd, LineNumber);
+    }
+    else
+    {
+        if(LineNumber > (GetCurrentTopIndex(hWnd) + CM_GetVisibleLineCount(hWnd, CM_GetCurrentView(hWnd), 1)))
+        {
+            SetCurrentTopIndex(hWnd, LineNumber);
+        }
+    }
 }
 
 // -----------------------------------------------------------------------
 // Bring any window of the currently debugged thread into foreground
 void BringThreadToForeGround(void)
 {
-	EnumThreadWindows(DebuggedProc.dwThreadId, &EnumThreadWins, 0);
+    EnumThreadWindows(DebuggedProc.dwThreadId, &EnumThreadWins, 0);
     for(int i = 0; i < DbWinH.Amount(); i++)
     {
         if(DbWinH.Get(i)->Content != 0)
         {
-			// Bring'em to light !
-			SetForegroundWindow(DbWinH.Get(i)->Content);
+            // Bring'em to light !
+            SetForegroundWindow(DbWinH.Get(i)->Content);
         }
     }
-	DbWinH.Erase();
+    DbWinH.Erase();
 }
 
 int CALLBACK EnumThreadWins(HWND hWnd, long lParam)
@@ -2732,20 +2736,20 @@ int CALLBACK EnumThreadWins(HWND hWnd, long lParam)
 /* this is x86dis.c code that needs to be ripped off and used in x86dis.c */
 void x86dis_reporter(enum x86_report_codes code, void *arg)
 {
-	/* here we could examine the error and do something useful;
-	 * instead we just print that an error occurred */
-	switch(code)
-	{
-		case report_disasm_bounds:
-			break;
-		case report_insn_bounds:
-			break;
-		case report_invalid_insn:
-			break;
-		case report_unknown:
-		default:	/* make GCC shut up */
-			break;
-	}
+    /* here we could examine the error and do something useful;
+     * instead we just print that an error occurred */
+    switch(code)
+    {
+        case report_disasm_bounds:
+            break;
+        case report_insn_bounds:
+            break;
+        case report_invalid_insn:
+            break;
+        case report_unknown:
+        default:    /* make GCC shut up */
+            break;
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -2763,243 +2767,243 @@ void x86dis_reporter(enum x86_report_codes code, void *arg)
 
 void SetNextBreak(int StepType)
 {
-	int instr_size;
-	DWORD UpperBound;
-	DWORD LowerBound;
-	BYTE CodeByte;
-	WORD CodeWord;
-	DWORD CodeDWord;
-	BYTE *Byte_Buffer;
-	IMAGEHLP_LINE TestModuleLine;
-	signed char Signed_byte;
-	DWORD LineDisplacement = 0;
-	DWORD StartAddress;
-	DWORD CurrentEIP;
-	x86_insn_t insn;
-	int FirstLine;
-	int WasCondition;
+    int instr_size;
+    DWORD UpperBound;
+    DWORD LowerBound;
+    BYTE CodeByte;
+    WORD CodeWord;
+    DWORD CodeDWord;
+    BYTE *Byte_Buffer;
+    IMAGEHLP_LINE TestModuleLine;
+    signed char Signed_byte;
+    DWORD LineDisplacement = 0;
+    DWORD StartAddress;
+    DWORD CurrentEIP;
+    x86_insn_t insn;
+    int FirstLine;
+    int WasCondition;
 
-	// First we need to get the address of the next line
-	// to obtain an upper boundary.
-	memset(&TestModuleLine, 0, sizeof(IMAGEHLP_LINE));
-	TestModuleLine.SizeOfStruct = sizeof(TestModuleLine);
-	CurrentEIP = GetCurrentEIP(CurrentDThread);
-	TestModuleLine.Address = CurrentEIP;
-	// Check if the single step made the code to run out of sight
-	if(!IsSourceLine(TestModuleLine.Address))
-	{
-		// Yes: it must have been modified by somekind of call
-		// Let's try to obtain the caller
-		// Return address should be on the stack at offset 0 since there
-		// can't be arguments here
-		TestModuleLine.Address = GetCurrentDWord(CurrentDThread, GetCurrentESP(CurrentDThread));
-		if(!IsSourceLine(TestModuleLine.Address))
-		{
-			// We can't obtain it: must be a jmp to valhalla, let's run directly.
-			SnapRunstate();
-			goto SetOnCaller;
-		}
-		CurrentEIP = TestModuleLine.Address;
-	}
-	if(StepType == STEP_OUT)
-	{
-		if(BreakOnCaller())
-		{
-			// Since we don't know how many instructions will be executed...
-			SnapRunstate();
-			goto SetOnCaller;
-		}
-		// Breakpoint couldn't be set correctly: proceed with next line
-	}
-	SymGetLineFromAddr(DebuggedProc.hProcess, TestModuleLine.Address, &LineDisplacement, &TestModuleLine);
-	StartAddress = TestModuleLine.Address;
-	// Get next line
-	if(!SymGetLineNext(DebuggedProc.hProcess, &TestModuleLine))
-	{
-		// (Try this)
-		TestModuleLine.Address = StartAddress + 32;
-	}
+    // First we need to get the address of the next line
+    // to obtain an upper boundary.
+    memset(&TestModuleLine, 0, sizeof(IMAGEHLP_LINE));
+    TestModuleLine.SizeOfStruct = sizeof(TestModuleLine);
+    CurrentEIP = GetCurrentEIP(CurrentDThread);
+    TestModuleLine.Address = CurrentEIP;
+    // Check if the single step made the code to run out of sight
+    if(!IsSourceLine(TestModuleLine.Address))
+    {
+        // Yes: it must have been modified by somekind of call
+        // Let's try to obtain the caller
+        // Return address should be on the stack at offset 0 since there
+        // can't be arguments here
+        TestModuleLine.Address = GetCurrentDWord(CurrentDThread, GetCurrentESP(CurrentDThread));
+        if(!IsSourceLine(TestModuleLine.Address))
+        {
+            // We can't obtain it: must be a jmp to valhalla, let's run directly.
+            SnapRunstate();
+            goto SetOnCaller;
+        }
+        CurrentEIP = TestModuleLine.Address;
+    }
+    if(StepType == STEP_OUT)
+    {
+        if(BreakOnCaller())
+        {
+            // Since we don't know how many instructions will be executed...
+            SnapRunstate();
+            goto SetOnCaller;
+        }
+        // Breakpoint couldn't be set correctly: proceed with next line
+    }
+    SymGetLineFromAddr(DebuggedProc.hProcess, TestModuleLine.Address, &LineDisplacement, &TestModuleLine);
+    StartAddress = TestModuleLine.Address;
+    // Get next line
+    if(!SymGetLineNext(DebuggedProc.hProcess, &TestModuleLine))
+    {
+        // (Try this)
+        TestModuleLine.Address = StartAddress + 32;
+    }
 
-	// Set lower bound
-	LowerBound = CurrentEIP;
-	// Set upper bound
-	UpperBound = TestModuleLine.Address;
-	FirstLine = GetSourceLineNumber(LowerBound);
-	while(LowerBound < UpperBound)
-	{
-		// Allocate required buffer
-		Byte_Buffer = (BYTE *) malloc(UpperBound - LowerBound);
-		// Clear the buffer in case ReadThreadbytes reach a premature end.
-		memset(Byte_Buffer, 0, UpperBound - LowerBound);
-		if(!Byte_Buffer)
-		{
-			// We're *really* unlucky if we're getting here ;(
-			WriteToDebug("Not enough memory for operation.");
-			KillProcess();
-			ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
-			return;
-		}
-		// Read the bytes in the process
-		ReadThreadbytes(CurrentDThread, LowerBound, Byte_Buffer, UpperBound - LowerBound);
+    // Set lower bound
+    LowerBound = CurrentEIP;
+    // Set upper bound
+    UpperBound = TestModuleLine.Address;
+    FirstLine = GetSourceLineNumber(LowerBound);
+    while(LowerBound < UpperBound)
+    {
+        // Allocate required buffer
+        Byte_Buffer = (BYTE *) malloc(UpperBound - LowerBound);
+        // Clear the buffer in case ReadThreadbytes reach a premature end.
+        memset(Byte_Buffer, 0, UpperBound - LowerBound);
+        if(!Byte_Buffer)
+        {
+            // We're *really* unlucky if we're getting here ;(
+            WriteToDebug("Not enough memory for operation.");
+            KillProcess();
+            ContinueDebugEvent(MyDebug.dwProcessId, MyDebug.dwThreadId, DBG_CONTINUE);
+            return;
+        }
+        // Read the bytes in the process
+        ReadThreadbytes(CurrentDThread, LowerBound, Byte_Buffer, UpperBound - LowerBound);
 
-		// Now disasemble it...
-		instr_size = x86_disasm(Byte_Buffer, (UpperBound - LowerBound), 0, 0, &insn);
-		if(instr_size == 0)
-		{
-			// Illegal instruction  encountered
-			free(Byte_Buffer);
-			goto SetOnCaller;
-		}
+        // Now disasemble it...
+        instr_size = x86_disasm(Byte_Buffer, (UpperBound - LowerBound), 0, 0, &insn);
+        if(instr_size == 0)
+        {
+            // Illegal instruction  encountered
+            free(Byte_Buffer);
+            goto SetOnCaller;
+        }
 
-		// Check if the instruction is known to be a branch...
-		CodeWord = (Byte_Buffer[0] << (8 * 1)) | Byte_Buffer[1];
-		CodeDWord = 0;
-		WasCondition = FALSE;
+        // Check if the instruction is known to be a branch...
+        CodeWord = (Byte_Buffer[0] << (8 * 1)) | Byte_Buffer[1];
+        CodeDWord = 0;
+        WasCondition = FALSE;
 
-		// 2 bytes instructions
-		switch(CodeWord)
-		{
-			// near versions
-			case 0x0f87:	// JA/JNBE
-			case 0x0f83:	// JAE/JNB/JNC
-			case 0x0f82:	// JB/JC/JNAE
-			case 0x0f86:	// JBE/JNA
-			case 0x0f84:	// JE/JZ/
-			case 0x0f8f:	// JG/JNLE
-			case 0x0f8d:	// JGE/JNL/JNP
-			case 0x0f8c:	// JL/JNGE
-			case 0x0f8e:	// JLE/JNG
-			case 0x0f85:	// JNE/JNZ
-			case 0x0f81:	// JNO
-			case 0x0f89:	// JNS
-			case 0x0f80:	// JO
-			case 0x0f8a:	// JP/JPE
-			case 0x0f8b:	// JPO
-			case 0x0f88:	// JS
-				// Verified condition
-				CodeDWord = LowerBound + 6 + Get_DWORD2;
-				WasCondition = TRUE;	// (We'll need a second breakpoint right after the condition)
-				break;
-			default:
-				// 1 byte instructions
-				CodeByte = Byte_Buffer[0];
-				switch(CodeByte)
-				{
-					// short version
-					case 0x77:		// JA/JNBE
-					case 0x73:		// JAE/JNB/JNC
-					case 0x72:		// JB/JC/JNAE
-					case 0x76:		// JBE/JNA
-					case 0xe3:		// JCXZ
-					case 0x74:		// JE/JZ
-					case 0x7f:		// JG/JNLE
-					case 0x7d:		// JGE/JNL
-					case 0x7c:		// JL/JNGE
-					case 0x7e:		// JLE/JNG/JNS
-					case 0x75:		// JNE/JNZ
-					case 0x71:		// JNO
-					case 0x7b:		// JNP/JPO
-					case 0x70:		// JO
-					case 0x7a:		// JP/JPE
-					case 0x78:		// JS
-						Signed_byte = (signed char) Byte_Buffer[1];
-						CodeDWord = LowerBound + 2 + ((signed long) Signed_byte);
-						WasCondition = TRUE;
-						break;
+        // 2 bytes instructions
+        switch(CodeWord)
+        {
+            // near versions
+            case 0x0f87:    // JA/JNBE
+            case 0x0f83:    // JAE/JNB/JNC
+            case 0x0f82:    // JB/JC/JNAE
+            case 0x0f86:    // JBE/JNA
+            case 0x0f84:    // JE/JZ/
+            case 0x0f8f:    // JG/JNLE
+            case 0x0f8d:    // JGE/JNL/JNP
+            case 0x0f8c:    // JL/JNGE
+            case 0x0f8e:    // JLE/JNG
+            case 0x0f85:    // JNE/JNZ
+            case 0x0f81:    // JNO
+            case 0x0f89:    // JNS
+            case 0x0f80:    // JO
+            case 0x0f8a:    // JP/JPE
+            case 0x0f8b:    // JPO
+            case 0x0f88:    // JS
+                // Verified condition
+                CodeDWord = LowerBound + 6 + Get_DWORD2;
+                WasCondition = TRUE;    // (We'll need a second breakpoint right after the condition)
+                break;
+            default:
+                // 1 byte instructions
+                CodeByte = Byte_Buffer[0];
+                switch(CodeByte)
+                {
+                    // short version
+                    case 0x77:      // JA/JNBE
+                    case 0x73:      // JAE/JNB/JNC
+                    case 0x72:      // JB/JC/JNAE
+                    case 0x76:      // JBE/JNA
+                    case 0xe3:      // JCXZ
+                    case 0x74:      // JE/JZ
+                    case 0x7f:      // JG/JNLE
+                    case 0x7d:      // JGE/JNL
+                    case 0x7c:      // JL/JNGE
+                    case 0x7e:      // JLE/JNG/JNS
+                    case 0x75:      // JNE/JNZ
+                    case 0x71:      // JNO
+                    case 0x7b:      // JNP/JPO
+                    case 0x70:      // JO
+                    case 0x7a:      // JP/JPE
+                    case 0x78:      // JS
+                        Signed_byte = (signed char) Byte_Buffer[1];
+                        CodeDWord = LowerBound + 2 + ((signed long) Signed_byte);
+                        WasCondition = TRUE;
+                        break;
 
-					case 0xeb:		// JMP rel8
-						Signed_byte = (signed char) Byte_Buffer[1];
-						CodeDWord = LowerBound + 2 + ((signed long) Signed_byte);
-						break;
-					case 0xe9:		// JMP rel16/rel32
-						CodeDWord = LowerBound + 5 + Get_DWORD1;
-						break;
-					case 0xea:		// JMP far (16:16/32:32)
-						CodeDWord = Get_DWORD1;
-						break;
+                    case 0xeb:      // JMP rel8
+                        Signed_byte = (signed char) Byte_Buffer[1];
+                        CodeDWord = LowerBound + 2 + ((signed long) Signed_byte);
+                        break;
+                    case 0xe9:      // JMP rel16/rel32
+                        CodeDWord = LowerBound + 5 + Get_DWORD1;
+                        break;
+                    case 0xea:      // JMP far (16:16/32:32)
+                        CodeDWord = Get_DWORD1;
+                        break;
 
-					case 0xe8:		// CALL rel16/rel32
-						if(StepType == STEP_INTO) CodeDWord = LowerBound + 5 + Get_DWORD1;
-						break;
-					case 0x9a:		// CALL far (16:16/32:32)
-						if(StepType == STEP_INTO) CodeDWord = Get_DWORD1;
-						break;
+                    case 0xe8:      // CALL rel16/rel32
+                        if(StepType == STEP_INTO) CodeDWord = LowerBound + 5 + Get_DWORD1;
+                        break;
+                    case 0x9a:      // CALL far (16:16/32:32)
+                        if(StepType == STEP_INTO) CodeDWord = Get_DWORD1;
+                        break;
 
-					case 0xe2:		// LOOP
-					case 0xe1:		// LOOPE/LOOPZ
-					case 0xe0:		// LOOPNE/LOOPNZ
-						CodeDWord = LowerBound + 2 + Get_DWORD1;
-						break;
-			
-					case 0xc3:		// RET near
-					case 0xcb:		// RET far
-					case 0xc2:		// RET imm16 near
-					case 0xca:		// RET imm16 far
-					case 0xcf:		// IRET/IRETD
-						// Set a breakpoint after the calling instruction and go on...
-						if(BreakOnCaller()) goto SetOnCaller;
-						break;
-				}
-		}
-		free(Byte_Buffer);
-		// a branch has been found..
-		if(CodeDWord)
-		{
-			// Check if the destination is suitable for us
-			if(IsSourceLine(CodeDWord))
-			{
-				LowerBound = CodeDWord;
-				// Yes: add a new break point into the list
-				// of possible branching
-				if(CurrentEIP != LowerBound)
-				{
-					SetBreakPoint(&DebBreakPoints, CodeDWord, BP_BRANCH);
-					if(WasCondition)
-					{
-						memset(&TestModuleLine, 0, sizeof(IMAGEHLP_LINE));
-						TestModuleLine.SizeOfStruct = sizeof(TestModuleLine);
-						TestModuleLine.Address = CurrentEIP;
-						SymGetLineFromAddr(DebuggedProc.hProcess, CurrentEIP, &LineDisplacement, &TestModuleLine);
-						if(SymGetLineNext(DebuggedProc.hProcess, &TestModuleLine))
-						{
-							SetBreakPoint(&DebBreakPoints, TestModuleLine.Address, BP_BRANCH);
-						}
-					}
-					goto SetOnCaller;
-				}
-			}
-			else
-			{
-				// Not suitable: pass over and continue
-				LowerBound += instr_size;
-				if(GetSourceLineNumber(LowerBound) != FirstLine) break;
-			}
-		}
-		else
-		{
-			// Use calculated length to jump to the next instruction
-			// if it lower than the upperbound.
-			LowerBound += instr_size;
-		}
-	}
-	// Proceed normally with the next line
-	// Except in the case of a jump
-	memset(&TestModuleLine, 0, sizeof(IMAGEHLP_LINE));
-	TestModuleLine.SizeOfStruct = sizeof(TestModuleLine);
-	TestModuleLine.Address = CurrentEIP;
-	SymGetLineFromAddr(DebuggedProc.hProcess, CurrentEIP, &LineDisplacement, &TestModuleLine);
-	// Was it a composed line (pointer went backward to beginning of it) ?
-	if(SymGetLineNext(DebuggedProc.hProcess, &TestModuleLine))
-	{
-		// Put a branch breakpoint at the next known line
-		// (instead of a volatile one so that it should resolve the JMP issue)
-		// Since it will be discarded anyway even if the code
-		// doesn't step on it.
-		SetBreakPoint(&DebBreakPoints, TestModuleLine.Address, BP_BRANCH);
-	} // Invalid line will be executed directly (and triggers an exception).
+                    case 0xe2:      // LOOP
+                    case 0xe1:      // LOOPE/LOOPZ
+                    case 0xe0:      // LOOPNE/LOOPNZ
+                        CodeDWord = LowerBound + 2 + Get_DWORD1;
+                        break;
+            
+                    case 0xc3:      // RET near
+                    case 0xcb:      // RET far
+                    case 0xc2:      // RET imm16 near
+                    case 0xca:      // RET imm16 far
+                    case 0xcf:      // IRET/IRETD
+                        // Set a breakpoint after the calling instruction and go on...
+                        if(BreakOnCaller()) goto SetOnCaller;
+                        break;
+                }
+        }
+        free(Byte_Buffer);
+        // a branch has been found..
+        if(CodeDWord)
+        {
+            // Check if the destination is suitable for us
+            if(IsSourceLine(CodeDWord))
+            {
+                LowerBound = CodeDWord;
+                // Yes: add a new break point into the list
+                // of possible branching
+                if(CurrentEIP != LowerBound)
+                {
+                    SetBreakPoint(&DebBreakPoints, CodeDWord, BP_BRANCH);
+                    if(WasCondition)
+                    {
+                        memset(&TestModuleLine, 0, sizeof(IMAGEHLP_LINE));
+                        TestModuleLine.SizeOfStruct = sizeof(TestModuleLine);
+                        TestModuleLine.Address = CurrentEIP;
+                        SymGetLineFromAddr(DebuggedProc.hProcess, CurrentEIP, &LineDisplacement, &TestModuleLine);
+                        if(SymGetLineNext(DebuggedProc.hProcess, &TestModuleLine))
+                        {
+                            SetBreakPoint(&DebBreakPoints, TestModuleLine.Address, BP_BRANCH);
+                        }
+                    }
+                    goto SetOnCaller;
+                }
+            }
+            else
+            {
+                // Not suitable: pass over and continue
+                LowerBound += instr_size;
+                if(GetSourceLineNumber(LowerBound) != FirstLine) break;
+            }
+        }
+        else
+        {
+            // Use calculated length to jump to the next instruction
+            // if it lower than the upperbound.
+            LowerBound += instr_size;
+        }
+    }
+    // Proceed normally with the next line
+    // Except in the case of a jump
+    memset(&TestModuleLine, 0, sizeof(IMAGEHLP_LINE));
+    TestModuleLine.SizeOfStruct = sizeof(TestModuleLine);
+    TestModuleLine.Address = CurrentEIP;
+    SymGetLineFromAddr(DebuggedProc.hProcess, CurrentEIP, &LineDisplacement, &TestModuleLine);
+    // Was it a composed line (pointer went backward to beginning of it) ?
+    if(SymGetLineNext(DebuggedProc.hProcess, &TestModuleLine))
+    {
+        // Put a branch breakpoint at the next known line
+        // (instead of a volatile one so that it should resolve the JMP issue)
+        // Since it will be discarded anyway even if the code
+        // doesn't step on it.
+        SetBreakPoint(&DebBreakPoints, TestModuleLine.Address, BP_BRANCH);
+    } // Invalid line will be executed directly (and triggers an exception).
 
 SetOnCaller:
-	return;
+    return;
 }
 
 // -----------------------------------------------------------------------
@@ -3007,45 +3011,48 @@ SetOnCaller:
 // Return 1 if breakpoint was set 0 otherwise
 int BreakOnCaller(void)
 {
-	DWORD CallerAddress;
+    DWORD CallerAddress;
 
-	CallerAddress = GetCaller();
-	if(IsSourceLine(CallerAddress))
-	{
-		FlushBranchBreakPoints();
-		SetBreakPoint(&DebBreakPoints, CallerAddress, BP_BRANCH);
-		return(1);
-	}
-	return(0);
+    CallerAddress = GetCaller();
+    if(IsSourceLine(CallerAddress))
+    {
+        FlushBranchBreakPoints();
+        SetBreakPoint(&DebBreakPoints, CallerAddress, BP_BRANCH);
+        return(1);
+    }
+    return(0);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve a return address or 0
 DWORD GetCaller(void)
 {
-	STACKFRAME Frame;
+    STACKFRAME Frame;
     CONTEXT FrameContext;
-	
-	// The code is running out of scope:
-	// Backtrace it!
-	memset(&FrameContext, 0, sizeof(CONTEXT));
-	memset(&Frame, 0, sizeof(STACKFRAME));
-	FrameContext.ContextFlags = CONTEXT_FULL | CONTEXT_FLOATING_POINT | CONTEXT_DEBUG_REGISTERS | CONTEXT_EXTENDED_REGISTERS;
-	GetThreadContext(GetThreadHandle(CurrentDThread), &FrameContext);
-	Frame.AddrStack.Mode = AddrModeFlat;
-	Frame.AddrStack.Offset = FrameContext.Esp;
-	Frame.AddrPC.Mode = AddrModeFlat;
-	Frame.AddrPC.Offset = FrameContext.Eip;
-	Frame.AddrFrame.Mode = AddrModeFlat;
-	Frame.AddrFrame.Offset = FrameContext.Ebp;
-	while(1)
-	{
-		if(!StackWalk(IMAGE_FILE_MACHINE_I386, DebuggedProc.hProcess, GetThreadHandle(CurrentDThread),
-				      &Frame, NULL, NULL, &SymFunctionTableAccess, &SymGetModuleBase, NULL))
-		{
-		    return(0);
-		}
-		if(IsSourceLine(Frame.AddrReturn.Offset)) return(Frame.AddrReturn.Offset);
-	}
-	return(Frame.AddrReturn.Offset);
+    
+    // The code is running out of scope:
+    // Backtrace it!
+    memset(&FrameContext, 0, sizeof(CONTEXT));
+    memset(&Frame, 0, sizeof(STACKFRAME));
+    FrameContext.ContextFlags = CONTEXT_FULL | CONTEXT_FLOATING_POINT | CONTEXT_DEBUG_REGISTERS | CONTEXT_EXTENDED_REGISTERS;
+    GetThreadContext(GetThreadHandle(CurrentDThread), &FrameContext);
+    Frame.AddrStack.Mode = AddrModeFlat;
+    Frame.AddrStack.Offset = FrameContext.Esp;
+    Frame.AddrPC.Mode = AddrModeFlat;
+    Frame.AddrPC.Offset = FrameContext.Eip;
+    Frame.AddrFrame.Mode = AddrModeFlat;
+    Frame.AddrFrame.Offset = FrameContext.Ebp;
+    while(1)
+    {
+        if(!StackWalk(IMAGE_FILE_MACHINE_I386,
+                      DebuggedProc.hProcess,
+                      GetThreadHandle(CurrentDThread),
+                      &Frame, NULL, NULL, &SymFunctionTableAccess,
+                      &SymGetModuleBase, NULL))
+        {
+            return(0);
+        }
+        if(IsSourceLine(Frame.AddrReturn.Offset)) return(Frame.AddrReturn.Offset);
+    }
+    return(Frame.AddrReturn.Offset);
 }

@@ -57,7 +57,7 @@ void DisplayImageView(long ImageType, CStr ImageFileName)
     HDC hwDC = 0;
     HWND hFRMImageView = 0;
     
-	FileToDisplay = ImageFileName;
+    FileToDisplay = ImageFileName;
     if(FileExist(FileToDisplay) == 0)
     {
         MiscMsgBox(hMDIform.hWnd, "Can't find file '" + (CStr) FileToDisplay + (CStr) "'.", MB_ERROR, Requesters);
@@ -71,13 +71,13 @@ void DisplayImageView(long ImageType, CStr ImageFileName)
                                                  LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_STACK + ICON_BASE)), FileToDisplay,
                                                  &FrmImageViewInitProc, (WNDPROC) -1, 0,
                                                  WS_MAXIMIZEBOX | WS_SYSMENU | WS_SIZEBOX | WS_HSCROLL | WS_VSCROLL, SW_SHOW);
-			break;
-		default:
+            break;
+        default:
             hFRMImageView = CreateNonModalDialog(-1, -1, 150, 150, hMDIform.hWnd, 0,
                                                  LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_STACK + ICON_BASE)), FileToDisplay,
                                                  &FrmImageViewInitProc, (WNDPROC) -1, 0,
                                                  WS_MAXIMIZEBOX | WS_SYSMENU | WS_SIZEBOX | WS_HSCROLL | WS_VSCROLL, SW_SHOW);
-			break;
+            break;
     }
     NewViewMem = AllocMem(sizeof(ViewStruct));
     memset(&ViewStruct, 0, sizeof(ViewStruct));
@@ -91,10 +91,10 @@ void DisplayImageView(long ImageType, CStr ImageFileName)
     {
         case VIEW_ICON:
             DrawIconEx(hwDC, 0, 0, (HICON) ViewStruct.hBitmap, 0, 0, 0, 0, DI_NORMAL);
-			break;
-		case VIEW_CURSOR:
+            break;
+        case VIEW_CURSOR:
             DrawIconEx(hwDC, 0, 0, (HICON) ViewStruct.hBitmap, 0, 0, 0, 0, DI_NORMAL);
-			break;
+            break;
     }
     ReleaseDC(hFRMImageView, hwDC);
     SetWindowLong(hFRMImageView, GWL_USERDATA, NewViewMem);
@@ -114,11 +114,11 @@ void CALLBACK FrmImageViewInitProc(HWND hwnd)
         case VIEW_ICON:
             ImgHandle = LoadImage(0, FileToDisplay.Get_String(), IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
             if(ImgHandle != 0) ScrollBarShowHide(hwnd, 64, 64, 1);
-			break;
-		case VIEW_CURSOR:
+            break;
+        case VIEW_CURSOR:
             ImgHandle = LoadImage(0, FileToDisplay.Get_String(), IMAGE_CURSOR, 0, 0, LR_LOADFROMFILE);
             if(ImgHandle != 0) ScrollBarShowHide(hwnd, 64, 64, 1);
-			break;
+            break;
         case VIEW_BITMAP:
             ImgHandle = LoadImage(0, FileToDisplay.Get_String(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
             if(ImgHandle != 0)
@@ -127,7 +127,7 @@ void CALLBACK FrmImageViewInitProc(HWND hwnd)
                 CreatePictureBox(0, 0, BitmapInfos.bmWidth, BitmapInfos.bmHeight, hwnd, ImgHandle, IMAGE_BITMAP, 0, 0, SS_CENTERIMAGE);
                 ScrollBarShowHide(hwnd, BitmapInfos.bmWidth, BitmapInfos.bmHeight, 1);
             }
-			break;
+            break;
     }
     SetFocus(hwnd);
 }
@@ -157,39 +157,39 @@ LRESULT CALLBACK FrmImageViewWinHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
             {
                 case VIEW_ICON:
                     ImageList_GetIconSize(ViewStruct.CurrentImage, &ObjSizeX, &ObjSizeY);
-					break;
-				case VIEW_CURSOR:
+                    break;
+                case VIEW_CURSOR:
                     ImageList_GetIconSize(ViewStruct.CurrentImage, &ObjSizeX, &ObjSizeY);
-					break;
-				case VIEW_BITMAP:
+                    break;
+                case VIEW_BITMAP:
                     GetObject(ViewStruct.hBitmap, sizeof(BitmapInfos), &BitmapInfos);
                     ObjSizeX = BitmapInfos.bmWidth;
-					break;
+                    break;
             }
             switch(wParam & 0xFFFF)
             {
                 case SB_LINELEFT:
                     if(GetScrollPos(hWnd, SB_HORZ) > 0) ScrollPicHorz(hWnd, 1, 1);
-					break;
+                    break;
                 case SB_LINERIGHT:
                     if(GetScrollPos(hWnd, SB_HORZ) < (long) (ObjSizeX - ControlClientWidth(hWnd))) ScrollPicHorz(hWnd, -1, 1);
-					break;
+                    break;
                 case SB_PAGELEFT:
                     PagetoScroll = ControlClientWidth(hWnd);
                     if(GetScrollPos(hWnd, SB_HORZ) - PagetoScroll < 0) PagetoScroll = GetScrollPos(hWnd, SB_HORZ);
                     ScrollPicHorz(hWnd, PagetoScroll, 1);
-					break;
+                    break;
                 case SB_PAGERIGHT:
                     PagetoScroll = ControlClientWidth(hWnd);
                     if(GetScrollPos(hWnd, SB_HORZ) + PagetoScroll > ScrollBarGetMaxRange(hWnd, SB_HORZ)) PagetoScroll = (ObjSizeX - ControlClientWidth(hWnd)) - GetScrollPos(hWnd, SB_HORZ);
                     ScrollPicHorz(hWnd, -(long) PagetoScroll, 1);
-					break;
+                    break;
                 case SB_THUMBTRACK:
                     ScrollPicHorz(hWnd, (short) ((wParam & 0xFFFF0000) / 0x10000), 0);
-					break;
-				case SB_THUMBPOSITION:
+                    break;
+                case SB_THUMBPOSITION:
                     ScrollPicHorz(hWnd, (short) ((wParam & 0xFFFF0000) / 0x10000), 0);
-					break;
+                    break;
             }
             return(0);
         case WM_VSCROLL:
@@ -198,39 +198,39 @@ LRESULT CALLBACK FrmImageViewWinHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
             {
                 case VIEW_ICON:
                     ImageList_GetIconSize(ViewStruct.CurrentImage, &ObjSizeX, &ObjSizeY);
-					break;
-				case VIEW_CURSOR:
+                    break;
+                case VIEW_CURSOR:
                     ImageList_GetIconSize(ViewStruct.CurrentImage, &ObjSizeX, &ObjSizeY);
-					break;
+                    break;
                 case VIEW_BITMAP:
                     GetObject(ViewStruct.hBitmap, sizeof(BitmapInfos), &BitmapInfos);
                     ObjSizeY = BitmapInfos.bmHeight;
-					break;
+                    break;
             }
             switch(wParam & 0xFFFF)
             {
                 case SB_LINEUP:
                     if(GetScrollPos(hWnd, SB_VERT) > 0) ScrollPicVert(hWnd, 1, 1);
-					break;
-				case SB_LINEDOWN:
+                    break;
+                case SB_LINEDOWN:
                     if(GetScrollPos(hWnd, SB_VERT) < (long) (ObjSizeY - ControlClientHeight(hWnd))) ScrollPicVert(hWnd, -1, 1);
-					break;
+                    break;
                 case SB_PAGEUP:
                     PagetoScroll = ControlClientHeight(hWnd);
                     if(GetScrollPos(hWnd, SB_VERT) - PagetoScroll < 0) PagetoScroll = GetScrollPos(hWnd, SB_VERT);
                     ScrollPicVert(hWnd, PagetoScroll, 1);
-					break;
+                    break;
                 case SB_PAGEDOWN:
                     PagetoScroll = ControlClientHeight(hWnd);
                     if(GetScrollPos(hWnd, SB_VERT) + PagetoScroll > ScrollBarGetMaxRange(hWnd, SB_VERT)) PagetoScroll = (ObjSizeY - ControlClientHeight(hWnd)) - GetScrollPos(hWnd, SB_VERT);
                     ScrollPicVert(hWnd, -(long) PagetoScroll, 1);
-					break;
+                    break;
                 case SB_THUMBTRACK:
                     ScrollPicVert(hWnd, (short) ((wParam & 0xFFFF0000) / 0x10000), 0);
-					break;
+                    break;
                 case SB_THUMBPOSITION:
                     ScrollPicVert(hWnd, (short) ((wParam & 0xFFFF0000) / 0x10000), 0);
-					break;
+                    break;
             }
             return(0);
         case WM_PAINT:
@@ -240,17 +240,17 @@ LRESULT CALLBACK FrmImageViewWinHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
             {
                 case VIEW_ICON:
                     DrawIconEx(ViewPs.hdc, 0, 0, (HICON) ViewStruct.hBitmap, 0, 0, 0, 0, DI_NORMAL);
-					break;
-				case VIEW_CURSOR:
+                    break;
+                case VIEW_CURSOR:
                     DrawIconEx(ViewPs.hdc, 0, 0, (HICON) ViewStruct.hBitmap, 0, 0, 0, 0, DI_NORMAL);
-					break;
+                    break;
             }
             EndPaint(hWnd, &ViewPs);
             return(0);
         case WM_SIZE:
             ResizeImgView(hWnd);
-			break;
-	}
+            break;
+    }
     return(DefWindowProc(hWnd, uMsg, wParam, lParam));
 }
 
@@ -278,7 +278,7 @@ void ScrollPicHorz(HWND hWnd, long Amount, long Absolute)
 {
     RECT ScrollRect;
     
-	LoadViewStruct(hWnd);
+    LoadViewStruct(hWnd);
     GetClientRect(hWnd, &ScrollRect);
     switch(Absolute)
     {
@@ -287,12 +287,13 @@ void ScrollPicHorz(HWND hWnd, long Amount, long Absolute)
             ViewStruct.OldX = Amount;
             StoreViewStruct(hWnd);
             SetScrollPos(hWnd, SB_HORZ, Amount, 1);
-			break;
+            break;
         case 1:
             ScrollWindow(hWnd, Amount, 0, NULL, &ScrollRect);
             ViewStruct.OldX = ViewStruct.OldX - Amount;
             StoreViewStruct(hWnd);
             SetScrollPos(hWnd, SB_HORZ, ViewStruct.OldX, 1);
+            break;
     }
 }
 
@@ -311,13 +312,13 @@ void ScrollPicVert(HWND hWnd, long Amount, long Absolute)
             ViewStruct.OldY = Amount;
             StoreViewStruct(hWnd);
             SetScrollPos(hWnd, SB_VERT, Amount, 1);
-			break;
-		case 1:
+            break;
+        case 1:
             ScrollWindow(hWnd, 0, Amount, NULL, &ScrollRect);
             ViewStruct.OldY = ViewStruct.OldY - Amount;
             StoreViewStruct(hWnd);
             SetScrollPos(hWnd, SB_VERT, ViewStruct.OldY, 1);
-			break;
+            break;
     }
 }
 
@@ -334,15 +335,15 @@ void ResizeImgView(HWND hWnd)
     {
         case VIEW_ICON:
             ImageList_GetIconSize(ViewStruct.CurrentImage, &ObjSizeX, &ObjSizeY);
-			break;
+            break;
         case VIEW_CURSOR:
             ImageList_GetIconSize(ViewStruct.CurrentImage, &ObjSizeX, &ObjSizeY);
-			break;
+            break;
         case VIEW_BITMAP:
             GetObject(ViewStruct.hBitmap, sizeof(BitmapInfos), &BitmapInfos);
             ObjSizeX = BitmapInfos.bmWidth;
             ObjSizeY = BitmapInfos.bmHeight;
-			break;
+            break;
     }
     ScrollBarShowHide(hWnd, ObjSizeX, ObjSizeY, 1);
 }

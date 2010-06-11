@@ -98,8 +98,8 @@ luaL_reg Meta[] =
     { "__index", Reading },
     { "__newindex", Writing },
 
-	{ "LowDateTime", 0 },
-	{ "HighDateTime", 0 },
+    { "LowDateTime", 0 },
+    { "HighDateTime", 0 },
 
     { NULL, NULL }
 };

@@ -50,8 +50,8 @@ HWND hStatusBar;
 // Redim the status bar
 void SetStatusBarParts(void)
 {
-	if(NbForms != 0)
-	{
+    if(NbForms != 0)
+    {
         SBParts[0] = ControlWidth(hStatusBar) / 2;
         SBParts[1] = ControlWidth(hStatusBar) - (14 * 9) - 4 - 1 - 3;
         SBParts[2] = ControlWidth(hStatusBar) - (14 * 8) - 4 - 3;
@@ -128,9 +128,9 @@ void SetStatusBarParts(void)
         {
             StatusBarSetText(hStatusBar, 9, STATUSBAR_PARTRAISED, "N", 0);
         }
-	}
-	else
-	{
+    }
+    else
+    {
         SBParts[0] = -1;
         StatusBarSetParts(hStatusBar, 1, (long *) &SBParts);
     }
@@ -151,15 +151,15 @@ void ClearStatusBarParts(void)
 // Show/Hide statusbar
 void ShowHideStatusBar(long bShow)
 {
-	switch(bShow)
-	{
+    switch(bShow)
+    {
         case 0:
             CheckMenuItem(hViewMenu, MENU_VIEW_STATUSBAR_ID, MF_BYPOSITION | MF_UNCHECKED);
             IniWriteKey("Layout", "StatusBar", "0", MainIniFile);
             ControlVisible(hStatusBar, 0);
             ResizeMDIform();
-			break;
-	    case 1:
+            break;
+        case 1:
             CheckMenuItem(hViewMenu, MENU_VIEW_STATUSBAR_ID, MF_BYPOSITION | MF_CHECKED);
             IniWriteKey("Layout", "StatusBar", "1", MainIniFile);
             ControlVisible(hStatusBar, 1);
@@ -167,6 +167,6 @@ void ShowHideStatusBar(long bShow)
             ResizeMDIform();
             if(NbForms != 0) RefreshStatusBar(CurrentForm);
             else ClearStatusBarParts();
-			break;
+            break;
     }
 }

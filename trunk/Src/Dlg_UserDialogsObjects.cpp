@@ -63,47 +63,47 @@ LRESULT CALLBACK ObjectProcChildChild(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 int *CreateNewControl(HWND hWnd)
 {
     HWND hTool = 0;
-	int *hLink = 0;
+    int *hLink = 0;
     long NbrProps = 0;
-	HWND hNewObject = NULL;
-	HWND hNewObjectChild = NULL;
-	HWND hNewObjectChildChild = NULL;
-	int Flags = 0;
+    HWND hNewObject = NULL;
+    HWND hNewObjectChild = NULL;
+    HWND hNewObjectChildChild = NULL;
+    int Flags = 0;
 
     switch(DiagControlNumber)
     {
         case CONTROL_PICTURE:
-			hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
             hNewObjectChild = CreatePictureBox(0, 0, ObjectWidth, ObjectHeight, hNewObject, ImageListGetIcon(GlobalImageList4, ICON_RES_PICTURE), IMAGE_BITMAP, 0, &ObjectProcChild, WS_TABSTOP | SS_CENTERIMAGE);
             NbrProps = 10;
-			break;
-	    case CONTROL_LABEL:
-			hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            break;
+        case CONTROL_LABEL:
+            hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
             hNewObjectChild = CreateLabel(0, 0, ObjectWidth, ObjectHeight, hNewObject, "Static text", 0, &ObjectProc, WS_TABSTOP, 0);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_TEXTBOX:
             hNewObject = CreateTextBox(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "EditBox", 0, &ObjectProc, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_CLIENTEDGE);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_FRAME:
-			hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
             hNewObjectChild = CreateLabel(0, 0, ObjectWidth, ObjectHeight, hNewObject, "", 0, &ObjectProcChildChild, WS_TABSTOP, 0);
             hNewObjectChildChild = CreateFrame(0, 0, ObjectWidth, ObjectHeight, hNewObjectChild, "GroupBox", 0, &ObjectProcChild, WS_TABSTOP);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_BUTTON:
             hNewObject = CreateButton(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "Button", 0, 0, 0, &ObjectProc, WS_TABSTOP, 0);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_CHECKBOX:
             hNewObject = CreateCheckBox(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "CheckBox", 0, &ObjectProc, WS_TABSTOP, 0);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_RADIOBUTTON:
             hNewObject = CreateRadioButton(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "Radio Button", 0, &ObjectProc, WS_TABSTOP);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_COMBOBOX:
             hNewObject = CreateComboBox(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "ComboBox", 0, &ObjectProc, CBS_DROPDOWNLIST | WS_TABSTOP);
             ComboBoxAddItem(hNewObject, "ComboBox", -1);
@@ -111,88 +111,88 @@ int *CreateNewControl(HWND hWnd)
             // Correct height
             ObjectHeight = ControlHeight(hNewObject);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_LISTBOX:
             hNewObject = CreateListBox(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, 0, WS_TABSTOP | WS_VSCROLL, WS_EX_CLIENTEDGE);
             ListBoxAddItem(hNewObject, "ListBox", -1);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_HSCROLLBAR:
             hNewObject = CreateScrollBar(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, WS_TABSTOP);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_TREEVIEW:
             hNewObject = CreateTreeView(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, 0, &ObjectProc, WS_TABSTOP | TVS_DISABLEDRAGDROP, WS_EX_CLIENTEDGE);
             TreeViewSetIndent(hNewObject, 1);
             TreeViewAddItem(hNewObject, "Tree Control", TVI_ROOT, 0, 0, 0, 0, 0);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_LISTVIEW:
-			hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
             hNewObjectChild = CreateListView(0, 0, ObjectWidth, ObjectHeight, hNewObject, 0, 0, &ObjectProcChild, 0, LVS_REPORT | WS_TABSTOP | LVS_SINGLESEL, WS_EX_CLIENTEDGE);
             ListViewAddCol(hNewObjectChild, "List Control", ObjectWidth - 5, 0);
-			ControlHookWin(ListViewGetSysHeader(hNewObjectChild), &ObjectProcChildChild);
-			NbrProps = 10;
-			break;
+            ControlHookWin(ListViewGetSysHeader(hNewObjectChild), &ObjectProcChildChild);
+            NbrProps = 10;
+            break;
         case CONTROL_SYSTAB:
-			hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
             hNewObjectChild = CreateSysTab(0, 0, ObjectWidth, ObjectHeight, hNewObject, 0, &ObjectProcChild, 0, WS_TABSTOP);
             SysTabAddItem(hNewObjectChild, "Tab Control", 0, 0);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_PROGRESSBAR:
             hNewObject = CreateProgressBar(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, 0, 100, WS_TABSTOP);
             ProgressBarSetRelPos(hNewObject, 100);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_TRACKBAR:
             hNewObject = CreateTrackBar(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, 0, 10, WS_TABSTOP);
             TrackBarSetTicks(hNewObject, 1);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_UPDOWN:
             hNewObject = CreateUpDown(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, WS_TABSTOP);
             ObjectWidth = ControlWidth(hNewObject);
             ObjectHeight = ControlHeight(hNewObject);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_XCOMBOBOX:
-			hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
             hNewObjectChild = CreateExComboBox(0, 0, ObjectWidth, ObjectHeight, hNewObject, "Extended ComboBox", 0, &ObjectProcChild, 0, CBS_DROPDOWN | WS_TABSTOP | WS_DISABLED);
             ObjectHeight = ControlHeight(hNewObjectChild);
             MoveWindow(hNewObject, ObjectX, ObjectY, ObjectWidth, ObjectHeight, 1);
-			NbrProps = 10;
-			break;
+            NbrProps = 10;
+            break;
         case CONTROL_TEXTIP:
             hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
             hNewObjectChild = CreateIPBox(0, 0, ObjectWidth, ObjectHeight, hNewObject, 0, 0, &ObjectProc, WS_TABSTOP | WS_DISABLED, 1, IPSerif);
             MoveWindow(hNewObjectChild, 0, 0, ObjectWidth, ObjectHeight, 1);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_HOTKEY:
             hNewObject = CreateFictive(ObjectX, ObjectY, 27, 27, hWnd, 0, &ObjectProc, ImageListGetIcon(GlobalImageList4, ICON_RES_HOTKEY));
             ObjectWidth = 27;
             ObjectHeight = 27;
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_CALENDAR:
             hNewObject = CreateMonthCalendar(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, WS_TABSTOP | MCS_DAYSTATE);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_DATEPICKER:
             hNewObject = CreateDateTimePicker(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, 0, &ObjectProc, WS_TABSTOP);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_ANIMATION:
             hNewObject = CreatePictureBox(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, ImageListGetIcon(GlobalImageList4, ICON_RES_ANIMATION), IMAGE_ICON, 0, &ObjectProc, WS_TABSTOP | SS_CENTERIMAGE);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_TOOLBAR:
-			hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
             hNewObjectChild = CreateToolBar(0, 0, ObjectWidth, ObjectHeight, hNewObject, 0, 0, -1, &ObjectProcChild, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBS_FIXEDLENGTH | WS_TABSTOP, WS_BORDER);
             ToolBarAddButton(hNewObjectChild, "", 0, 0, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_STATUSBAR:
             hNewObject = CreateStatusBar("StatusBar", STATUSBAR_PARTSUNKEN, hWnd, 0, &ObjectProc, WS_BORDER);
             ObjectX = ControlLeft(hNewObject);
@@ -200,268 +200,268 @@ int *CreateNewControl(HWND hWnd)
             ObjectWidth = ControlWidth(hNewObject);
             ObjectHeight = ControlHeight(hNewObject);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_RICHTEXT:
             hNewObject = CreateRichTextBox(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "Rich EditBox", 0, &ObjectProc, WS_TABSTOP | ES_AUTOHSCROLL, 1);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_PAGER:
-			hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
             hNewObjectChild = CreatePager(0, 0, ObjectWidth, ObjectHeight, hNewObject, 0, 0, PGS_HORZ);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_HEADER:
             hNewObject = CreateHeader(ObjectX, ObjectY, ObjectWidth, ObjectHeight, hWnd, "Header", 0, &ObjectProc, WS_TABSTOP | HDS_BUTTONS);
             WAHeaderAddItem(hNewObject, "Header", ObjectWidth / 2, 0, 0);
             NbrProps = 10;
-			break;
+            break;
         case CONTROL_REBAR:
-			hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
+            hNewObject = CreateContainer(ObjectX, ObjectY, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProc);
             hNewObjectChild = CreateRebar(0, 0, ObjectWidth, ObjectHeight, hNewObject, &ObjectProcChild, 0, WS_TABSTOP | RBS_BANDBORDERS);
-			//hNewObjectChildChild = CreateContainer(0, 0, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProcChildChild);
+            //hNewObjectChildChild = CreateContainer(0, 0, ObjectWidth, ObjectHeight, 0, hWnd, "", &ObjectProcChildChild);
             RebarAddBand(hNewObjectChild, 0, "Rebar", ObjectHeight, RBBS_GRIPPERALWAYS, ObjectWidth);
             RebarBandVisible(hNewObjectChild, 0, 1);
-		//	RebarResize(hNewObjectChild);
-			Flags = OBJECT_FLAG_REBAR;
-	        NbrProps = 10;
-			break;
+        //  RebarResize(hNewObjectChild);
+            Flags = OBJECT_FLAG_REBAR;
+            NbrProps = 10;
+            break;
         case CONTROL_TOOLTIP:
             hNewObject = CreateFictive(ObjectX, ObjectY, 27, 27, hWnd, 0, &ObjectProc, ImageListGetIcon(GlobalImageList4, ICON_RES_TOOLTIP));
             ObjectWidth = 27;
             ObjectHeight = 27;
             NbrProps = 10;
-			break;
+            break;
     }
     // Add it to the linked list
     hLink = AddObjectEntry(DiagControlNumber, NbrProps, 0, 0, 0, 0, 0, 0, 0, 0, hNewObject, hNewObjectChild, hNewObjectChildChild, Flags);
-	// Select it
-	SelectControl(hNewObject, ObjectX, ObjectY, ObjectWidth, ObjectHeight);
-	return(hLink);
+    // Select it
+    SelectControl(hNewObject, ObjectX, ObjectY, ObjectWidth, ObjectHeight);
+    return(hLink);
 }
 
 // -----------------------------------------------------------------------
 // Select control
 void CaptureCtrl(HWND hWnd, int Shift)
 {
-	HWND Obj_Parent;
-	RECT Move_Rect;
-	LPRECT Stored_Move_Rect;
-	POINT MovePos;
-	int MoveX;
-	int MoveY;
-	RECT Parent_Rect;
-	
-	// Start moving
-	SetCapture(hWnd);
-	Obj_Parent = GetParent(hWnd);
-	GetWindowRect(hWnd, &Move_Rect);
-	ScreenRectToClient(Obj_Parent, &Move_Rect);
+    HWND Obj_Parent;
+    RECT Move_Rect;
+    LPRECT Stored_Move_Rect;
+    POINT MovePos;
+    int MoveX;
+    int MoveY;
+    RECT Parent_Rect;
+    
+    // Start moving
+    SetCapture(hWnd);
+    Obj_Parent = GetParent(hWnd);
+    GetWindowRect(hWnd, &Move_Rect);
+    ScreenRectToClient(Obj_Parent, &Move_Rect);
 
-	UnSelectControlsList();
-	SelectControl(hWnd, Move_Rect.left, Move_Rect.top, Move_Rect.right - Move_Rect.left, Move_Rect.bottom - Move_Rect.top);
-	// Update the rect structure associated with this control
-	Stored_Move_Rect = GetRectSelectionFromControl(hWnd);
-	*GetCaptureStatusFromControl(hWnd) = TRUE;
+    UnSelectControlsList();
+    SelectControl(hWnd, Move_Rect.left, Move_Rect.top, Move_Rect.right - Move_Rect.left, Move_Rect.bottom - Move_Rect.top);
+    // Update the rect structure associated with this control
+    Stored_Move_Rect = GetRectSelectionFromControl(hWnd);
+    *GetCaptureStatusFromControl(hWnd) = TRUE;
 
-	ControlRepaint(hWnd);
-	HDC Move_HDC = GetDC(Obj_Parent);
-	DrawFocusRect(Move_HDC, &Move_Rect);
-	ReleaseDC(Obj_Parent, Move_HDC);
-	Stored_Move_Rect->left = Move_Rect.left;
-	Stored_Move_Rect->top = Move_Rect.top;
-	// Get the gap between cursor and control positions
-	GetCursorPos(&MovePos);
-	MoveX = MovePos.x;
-	MoveY = MovePos.y;
-	Parent_Rect.left = MoveX;
-	Parent_Rect.top = MoveY;
-	Parent_Rect.right = MoveX;
-	Parent_Rect.bottom = MoveY;
-	ScreenRectToClient(Obj_Parent, &Parent_Rect);
-	Stored_Move_Rect->right = (Parent_Rect.left - Move_Rect.left);
-	Stored_Move_Rect->bottom = (Parent_Rect.top - Move_Rect.top);
-	BringWindowToTop(hWnd);
+    ControlRepaint(hWnd);
+    HDC Move_HDC = GetDC(Obj_Parent);
+    DrawFocusRect(Move_HDC, &Move_Rect);
+    ReleaseDC(Obj_Parent, Move_HDC);
+    Stored_Move_Rect->left = Move_Rect.left;
+    Stored_Move_Rect->top = Move_Rect.top;
+    // Get the gap between cursor and control positions
+    GetCursorPos(&MovePos);
+    MoveX = MovePos.x;
+    MoveY = MovePos.y;
+    Parent_Rect.left = MoveX;
+    Parent_Rect.top = MoveY;
+    Parent_Rect.right = MoveX;
+    Parent_Rect.bottom = MoveY;
+    ScreenRectToClient(Obj_Parent, &Parent_Rect);
+    Stored_Move_Rect->right = (Parent_Rect.left - Move_Rect.left);
+    Stored_Move_Rect->bottom = (Parent_Rect.top - Move_Rect.top);
+    BringWindowToTop(hWnd);
 }
 
 // -----------------------------------------------------------------------
 // Move selected control
 void MoveCtrl(HWND hWnd)
 {
-	POINT MovePos;
-	HWND Obj_Parent;
-	RECT Move_Rect;
-	int SizeX;
-	int SizeY;
-	int MoveX;
-	int MoveY;
-	RECT Parent_Rect;
-	HDC Size_HDC;
-	RECT Old_Move_Rect;
-	LPRECT Stored_Move_Rect;
-	
-	int *Capt = GetCaptureStatusFromControl(hWnd);
-	if(Capt)
-	{
-		if(*Capt)
-		{
-			GetCursorPos(&MovePos);
-			Obj_Parent = GetParent(hWnd);
-			GetWindowRect(hWnd, &Move_Rect);
-			ScreenRectToClient(Obj_Parent, &Move_Rect);
-			Stored_Move_Rect = GetRectSelectionFromControl(hWnd);
+    POINT MovePos;
+    HWND Obj_Parent;
+    RECT Move_Rect;
+    int SizeX;
+    int SizeY;
+    int MoveX;
+    int MoveY;
+    RECT Parent_Rect;
+    HDC Size_HDC;
+    RECT Old_Move_Rect;
+    LPRECT Stored_Move_Rect;
+    
+    int *Capt = GetCaptureStatusFromControl(hWnd);
+    if(Capt)
+    {
+        if(*Capt)
+        {
+            GetCursorPos(&MovePos);
+            Obj_Parent = GetParent(hWnd);
+            GetWindowRect(hWnd, &Move_Rect);
+            ScreenRectToClient(Obj_Parent, &Move_Rect);
+            Stored_Move_Rect = GetRectSelectionFromControl(hWnd);
 
-			SizeX = Move_Rect.right - Move_Rect.left;
-			SizeY = Move_Rect.bottom - Move_Rect.top;
-			MoveX = MovePos.x;
-			MoveY = MovePos.y;
-			Parent_Rect.left = MoveX;
-			Parent_Rect.top = MoveY;
-			Parent_Rect.right = MoveX;
-			Parent_Rect.bottom = MoveY;
-			ScreenRectToClient(Obj_Parent, &Parent_Rect);
-			MoveX = Parent_Rect.left;
-			MoveY = Parent_Rect.top;
-			MoveX -= Stored_Move_Rect->right;
-			MoveY -= Stored_Move_Rect->bottom;
+            SizeX = Move_Rect.right - Move_Rect.left;
+            SizeY = Move_Rect.bottom - Move_Rect.top;
+            MoveX = MovePos.x;
+            MoveY = MovePos.y;
+            Parent_Rect.left = MoveX;
+            Parent_Rect.top = MoveY;
+            Parent_Rect.right = MoveX;
+            Parent_Rect.bottom = MoveY;
+            ScreenRectToClient(Obj_Parent, &Parent_Rect);
+            MoveX = Parent_Rect.left;
+            MoveY = Parent_Rect.top;
+            MoveX -= Stored_Move_Rect->right;
+            MoveY -= Stored_Move_Rect->bottom;
 
-			// Bound coordinates
-			GetWindowRect(Obj_Parent, &Parent_Rect);
-			ScreenRectToClient(Obj_Parent, &Parent_Rect);
+            // Bound coordinates
+            GetWindowRect(Obj_Parent, &Parent_Rect);
+            ScreenRectToClient(Obj_Parent, &Parent_Rect);
 
-			if(MoveX > Parent_Rect.right) MoveX = Parent_Rect.right;
-			if(MoveY > Parent_Rect.bottom) MoveY = Parent_Rect.bottom;
-			if(GridAlign)
-			{
-				if(GridXLarg > 1) MoveX = ((MoveX / GridXLarg) * GridXLarg) + 1;
-				if(GridYLong > 1) MoveY = ((MoveY / GridYLong) * GridYLong) + 1;
-				// Correct the position
-				MoveX--;
-				MoveY--;
-			}
+            if(MoveX > Parent_Rect.right) MoveX = Parent_Rect.right;
+            if(MoveY > Parent_Rect.bottom) MoveY = Parent_Rect.bottom;
+            if(GridAlign)
+            {
+                if(GridXLarg > 1) MoveX = ((MoveX / GridXLarg) * GridXLarg) + 1;
+                if(GridYLong > 1) MoveY = ((MoveY / GridYLong) * GridYLong) + 1;
+                // Correct the position
+                MoveX--;
+                MoveY--;
+            }
 
-			Size_HDC = GetDC(Obj_Parent);
-			Old_Move_Rect.left = Stored_Move_Rect->left;
-			Old_Move_Rect.top = Stored_Move_Rect->top;
-			Old_Move_Rect.right = Stored_Move_Rect->left + SizeX;
-			Old_Move_Rect.bottom = Stored_Move_Rect->top + SizeY;
-			DrawFocusRect(Size_HDC, &Old_Move_Rect);
-			Move_Rect.left = MoveX;
-			Move_Rect.top = MoveY;
-			Move_Rect.right = MoveX + SizeX;
-			Move_Rect.bottom = MoveY + SizeY;
-			DrawFocusRect(Size_HDC, &Move_Rect);
-			ReleaseDC(Obj_Parent, Size_HDC);
-			Stored_Move_Rect->left = MoveX;
-			Stored_Move_Rect->top = MoveY;
-		}
-	}
+            Size_HDC = GetDC(Obj_Parent);
+            Old_Move_Rect.left = Stored_Move_Rect->left;
+            Old_Move_Rect.top = Stored_Move_Rect->top;
+            Old_Move_Rect.right = Stored_Move_Rect->left + SizeX;
+            Old_Move_Rect.bottom = Stored_Move_Rect->top + SizeY;
+            DrawFocusRect(Size_HDC, &Old_Move_Rect);
+            Move_Rect.left = MoveX;
+            Move_Rect.top = MoveY;
+            Move_Rect.right = MoveX + SizeX;
+            Move_Rect.bottom = MoveY + SizeY;
+            DrawFocusRect(Size_HDC, &Move_Rect);
+            ReleaseDC(Obj_Parent, Size_HDC);
+            Stored_Move_Rect->left = MoveX;
+            Stored_Move_Rect->top = MoveY;
+        }
+    }
 }
 
 // -----------------------------------------------------------------------
 // End of move sequence
 void ReleaseCtrl(HWND hWnd, int Cancel)
 {
-	POINT MovePos;
-	HWND Obj_Parent;
-	RECT Move_Rect;
-	int SizeX;
-	int SizeY;
-	int MoveX;
-	int MoveY;
-	RECT Parent_Rect;
-	HDC Size_HDC;
-	RECT Old_Move_Rect;
-	LPRECT Stored_Move_Rect;
-	LPGRIPBOXDAT GripDat;
+    POINT MovePos;
+    HWND Obj_Parent;
+    RECT Move_Rect;
+    int SizeX;
+    int SizeY;
+    int MoveX;
+    int MoveY;
+    RECT Parent_Rect;
+    HDC Size_HDC;
+    RECT Old_Move_Rect;
+    LPRECT Stored_Move_Rect;
+    LPGRIPBOXDAT GripDat;
 
-	int *Capt = GetCaptureStatusFromControl(hWnd);
-	if(Capt)
-	{
-		if(*Capt)
-		{
-			*Capt = FALSE;
-			// Done moving
+    int *Capt = GetCaptureStatusFromControl(hWnd);
+    if(Capt)
+    {
+        if(*Capt)
+        {
+            *Capt = FALSE;
+            // Done moving
 
-			GetCursorPos(&MovePos);
-			Obj_Parent = GetParent(hWnd);
-			GetWindowRect(hWnd, &Move_Rect);
-			ScreenRectToClient(Obj_Parent, &Move_Rect);
-			Stored_Move_Rect = GetRectSelectionFromControl(hWnd);
+            GetCursorPos(&MovePos);
+            Obj_Parent = GetParent(hWnd);
+            GetWindowRect(hWnd, &Move_Rect);
+            ScreenRectToClient(Obj_Parent, &Move_Rect);
+            Stored_Move_Rect = GetRectSelectionFromControl(hWnd);
 
-			SizeX = Move_Rect.right - Move_Rect.left;
-			SizeY = Move_Rect.bottom - Move_Rect.top;
-			MoveX = MovePos.x;
-			MoveY = MovePos.y;
-			Parent_Rect.left = MoveX;
-			Parent_Rect.top = MoveY;
-			Parent_Rect.right = MoveX;
-			Parent_Rect.bottom = MoveY;
-			ScreenRectToClient(Obj_Parent, &Parent_Rect);
-			MoveX = Parent_Rect.left;
-			MoveY = Parent_Rect.top;
-			MoveX -= Stored_Move_Rect->right;
-			MoveY -= Stored_Move_Rect->bottom;
-			GetWindowRect(Obj_Parent, &Parent_Rect);
-			ScreenRectToClient(Obj_Parent, &Parent_Rect);
-			if(MoveX > Parent_Rect.right) MoveX = Parent_Rect.right;
-			if(MoveY > Parent_Rect.bottom) MoveY = Parent_Rect.bottom;
-			if(GridAlign)
-			{
-				if(GridXLarg > 1) MoveX = ((MoveX / GridXLarg) * GridXLarg) + 1;
-				if(GridYLong > 1) MoveY = ((MoveY / GridYLong) * GridYLong) + 1;
-				// Correct the position
-				MoveX--;
-				MoveY--;
-			}
+            SizeX = Move_Rect.right - Move_Rect.left;
+            SizeY = Move_Rect.bottom - Move_Rect.top;
+            MoveX = MovePos.x;
+            MoveY = MovePos.y;
+            Parent_Rect.left = MoveX;
+            Parent_Rect.top = MoveY;
+            Parent_Rect.right = MoveX;
+            Parent_Rect.bottom = MoveY;
+            ScreenRectToClient(Obj_Parent, &Parent_Rect);
+            MoveX = Parent_Rect.left;
+            MoveY = Parent_Rect.top;
+            MoveX -= Stored_Move_Rect->right;
+            MoveY -= Stored_Move_Rect->bottom;
+            GetWindowRect(Obj_Parent, &Parent_Rect);
+            ScreenRectToClient(Obj_Parent, &Parent_Rect);
+            if(MoveX > Parent_Rect.right) MoveX = Parent_Rect.right;
+            if(MoveY > Parent_Rect.bottom) MoveY = Parent_Rect.bottom;
+            if(GridAlign)
+            {
+                if(GridXLarg > 1) MoveX = ((MoveX / GridXLarg) * GridXLarg) + 1;
+                if(GridYLong > 1) MoveY = ((MoveY / GridYLong) * GridYLong) + 1;
+                // Correct the position
+                MoveX--;
+                MoveY--;
+            }
 
-			Size_HDC = GetDC(Obj_Parent);
-			Old_Move_Rect.left = Stored_Move_Rect->left;
-			Old_Move_Rect.top = Stored_Move_Rect->top;
-			Old_Move_Rect.right = Stored_Move_Rect->left + SizeX;
-			Old_Move_Rect.bottom = Stored_Move_Rect->top + SizeY;
-			DrawFocusRect(Size_HDC, &Old_Move_Rect);
-			ReleaseDC(Obj_Parent, Size_HDC);
+            Size_HDC = GetDC(Obj_Parent);
+            Old_Move_Rect.left = Stored_Move_Rect->left;
+            Old_Move_Rect.top = Stored_Move_Rect->top;
+            Old_Move_Rect.right = Stored_Move_Rect->left + SizeX;
+            Old_Move_Rect.bottom = Stored_Move_Rect->top + SizeY;
+            DrawFocusRect(Size_HDC, &Old_Move_Rect);
+            ReleaseDC(Obj_Parent, Size_HDC);
 
-			if(!Cancel)
-			{
-				Move_Rect.left = MoveX;
-				Move_Rect.top = MoveY;
-				Move_Rect.right = MoveX + SizeX;
-				Move_Rect.bottom = MoveY + SizeY;
-				ResizeGripBoxFromControl(hWnd, &Move_Rect);
+            if(!Cancel)
+            {
+                Move_Rect.left = MoveX;
+                Move_Rect.top = MoveY;
+                Move_Rect.right = MoveX + SizeX;
+                Move_Rect.bottom = MoveY + SizeY;
+                ResizeGripBoxFromControl(hWnd, &Move_Rect);
 
-				// Update the rect structure associated with this control
-				GripDat = GetGripBoxFromControl(hWnd);
-				BringWindowToTop(hWnd);
-				BringWindowToTop(GripDat->BottomBox);
-				BringWindowToTop(GripDat->BottomLeftBox);
-				BringWindowToTop(GripDat->BottomRightBox);
-				BringWindowToTop(GripDat->LeftBox);
-				BringWindowToTop(GripDat->RightBox);
-				BringWindowToTop(GripDat->TopBox);
-				BringWindowToTop(GripDat->TopLeftBox);
-				BringWindowToTop(GripDat->TopRightBox);
-				ControlRepaint(GripDat->BottomBox);
-				ControlRepaint(GripDat->BottomLeftBox);
-				ControlRepaint(GripDat->BottomRightBox);
-				ControlRepaint(GripDat->LeftBox);
-				ControlRepaint(GripDat->RightBox);
-				ControlRepaint(GripDat->TopBox);
-				ControlRepaint(GripDat->TopLeftBox);
-				ControlRepaint(GripDat->TopRightBox);
-			}
-			ReleaseCapture();
-		}
-	}
+                // Update the rect structure associated with this control
+                GripDat = GetGripBoxFromControl(hWnd);
+                BringWindowToTop(hWnd);
+                BringWindowToTop(GripDat->BottomBox);
+                BringWindowToTop(GripDat->BottomLeftBox);
+                BringWindowToTop(GripDat->BottomRightBox);
+                BringWindowToTop(GripDat->LeftBox);
+                BringWindowToTop(GripDat->RightBox);
+                BringWindowToTop(GripDat->TopBox);
+                BringWindowToTop(GripDat->TopLeftBox);
+                BringWindowToTop(GripDat->TopRightBox);
+                ControlRepaint(GripDat->BottomBox);
+                ControlRepaint(GripDat->BottomLeftBox);
+                ControlRepaint(GripDat->BottomRightBox);
+                ControlRepaint(GripDat->LeftBox);
+                ControlRepaint(GripDat->RightBox);
+                ControlRepaint(GripDat->TopBox);
+                ControlRepaint(GripDat->TopLeftBox);
+                ControlRepaint(GripDat->TopRightBox);
+            }
+            ReleaseCapture();
+        }
+    }
 }
 
 // -----------------------------------------------------------------------
 // Common objects hook for childs of childs
 LRESULT CALLBACK ObjectProcChildChild(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	switch(uMsg)
-	{
-		case WM_SETCURSOR:
+    switch(uMsg)
+    {
+        case WM_SETCURSOR:
             CursorSetNormal();
             return(TRUE);
         case WM_SETFOCUS:
@@ -482,7 +482,7 @@ LRESULT CALLBACK ObjectProcChildChild(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
         case WM_NCLBUTTONDBLCLK:
         case WM_NCRBUTTONDBLCLK:
         case WM_NCMBUTTONDBLCLK:
-		case WM_NCLBUTTONDOWN:
+        case WM_NCLBUTTONDOWN:
         case WM_NCRBUTTONDOWN:
         case WM_NCMBUTTONDOWN:
         case WM_RBUTTONUP:
@@ -492,23 +492,23 @@ LRESULT CALLBACK ObjectProcChildChild(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
         case WM_NCMBUTTONUP:
         case WM_COMMAND:
             return(0);
-		case WM_MOUSEACTIVATE:
-			return(MA_ACTIVATE);
+        case WM_MOUSEACTIVATE:
+            return(MA_ACTIVATE);
         case WM_LBUTTONDOWN:
-			CaptureCtrl(GetParent(GetParent(hWnd)), (wParam & MK_SHIFT));
-			return(0);
+            CaptureCtrl(GetParent(GetParent(hWnd)), (wParam & MK_SHIFT));
+            return(0);
         case WM_MOUSEMOVE:
-			MoveCtrl(GetParent(GetParent(hWnd)));
+            MoveCtrl(GetParent(GetParent(hWnd)));
             return(0);
         case WM_LBUTTONUP:
-			ReleaseCtrl(GetParent(GetParent(hWnd)), FALSE);
+            ReleaseCtrl(GetParent(GetParent(hWnd)), FALSE);
             return(0);
         case WM_RBUTTONDOWN:
         case WM_MBUTTONDOWN:
-			ReleaseCtrl(GetParent(GetParent(hWnd)), TRUE);
+            ReleaseCtrl(GetParent(GetParent(hWnd)), TRUE);
             return(0);
 //        case WM_ERASEBKGND:
-//			return(TRUE);
+//          return(TRUE);
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
@@ -517,8 +517,8 @@ LRESULT CALLBACK ObjectProcChildChild(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 // Common objects hook for childs
 LRESULT CALLBACK ObjectProcChild(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	switch(uMsg)
-	{
+    switch(uMsg)
+    {
         case WM_SETCURSOR:
             CursorSetNormal();
             return(TRUE);
@@ -541,7 +541,7 @@ LRESULT CALLBACK ObjectProcChild(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
         case WM_NCLBUTTONDBLCLK:
         case WM_NCRBUTTONDBLCLK:
         case WM_NCMBUTTONDBLCLK:
-		case WM_NCLBUTTONDOWN:
+        case WM_NCLBUTTONDOWN:
         case WM_NCRBUTTONDOWN:
         case WM_NCMBUTTONDOWN:
         case WM_RBUTTONUP:
@@ -551,24 +551,24 @@ LRESULT CALLBACK ObjectProcChild(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
         case WM_NCMBUTTONUP:
         case WM_COMMAND:
             return(0);
-		case WM_MOUSEACTIVATE:
-			return(MA_ACTIVATE);
+        case WM_MOUSEACTIVATE:
+            return(MA_ACTIVATE);
         case WM_LBUTTONDOWN:
-			CaptureCtrl(GetParent(hWnd), (wParam & MK_SHIFT));
-			return(0);
+            CaptureCtrl(GetParent(hWnd), (wParam & MK_SHIFT));
+            return(0);
         case WM_MOUSEMOVE:
-			MoveCtrl(GetParent(hWnd));
+            MoveCtrl(GetParent(hWnd));
             return(0);
         case WM_LBUTTONUP:
-			ReleaseCtrl(GetParent(hWnd), FALSE);
+            ReleaseCtrl(GetParent(hWnd), FALSE);
             return(0);
         case WM_RBUTTONDOWN:
         case WM_MBUTTONDOWN:
-			ReleaseCtrl(GetParent(hWnd), TRUE);
+            ReleaseCtrl(GetParent(hWnd), TRUE);
             return(0);
   //      case WM_ERASEBKGND:
-	//		return(TRUE);
-	}
+    //      return(TRUE);
+    }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
 
@@ -579,8 +579,8 @@ LRESULT CALLBACK ObjectProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     SIZE MySize;
     HWND hPager = 0;
 
-	switch(uMsg)
-	{
+    switch(uMsg)
+    {
         case WM_SETCURSOR:
             CursorSetNormal();
             return(TRUE);
@@ -612,21 +612,21 @@ LRESULT CALLBACK ObjectProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         case WM_NCRBUTTONUP:
         case WM_NCMBUTTONUP:
         case WM_COMMAND:
-			return(0);
-		case WM_MOUSEACTIVATE:
-			return(MA_ACTIVATE);
+            return(0);
+        case WM_MOUSEACTIVATE:
+            return(MA_ACTIVATE);
         case WM_LBUTTONDOWN:
-			CaptureCtrl(hWnd, (wParam & MK_SHIFT));
-			return(0);
+            CaptureCtrl(hWnd, (wParam & MK_SHIFT));
+            return(0);
         case WM_MOUSEMOVE:
-			MoveCtrl(hWnd);
+            MoveCtrl(hWnd);
             return(0);
         case WM_LBUTTONUP:
-			ReleaseCtrl(hWnd, FALSE);
+            ReleaseCtrl(hWnd, FALSE);
             return(0);
         case WM_RBUTTONDOWN:
         case WM_MBUTTONDOWN:
-			ReleaseCtrl(hWnd, TRUE);
+            ReleaseCtrl(hWnd, TRUE);
             return(0);
         case WM_NOTIFY:
             switch(ControlGetNotifiedMsg(lParam))
@@ -638,9 +638,9 @@ LRESULT CALLBACK ObjectProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     MySize.cy = ControlHeight(hPager);
                     PagerDisplaySetSize((LPNMPGCALCSIZE) lParam, &MySize);
                     return(0);
-				case LVN_COLUMNCLICK:
-					return(0);
-			}
+                case LVN_COLUMNCLICK:
+                    return(0);
+            }
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
@@ -652,7 +652,7 @@ CStr GetMenusIDs(void)
     int i = 0;
     CStr ReturnValue;
     CStr BufString;
-	HTREEITEM TreeViewChildEntry;
+    HTREEITEM TreeViewChildEntry;
 
     // Construct menus list
     BufString = "(None)";
@@ -667,7 +667,7 @@ CStr GetMenusIDs(void)
         i++;
     }
     ReturnValue = BufString;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -679,9 +679,9 @@ int *AddObjectEntry(long ObjType, long NbrProperties, long LeftR, long LeftRPos,
     int *MemHandle = 0;
     long MemSize = 0;
     
-	MemSize = (NbrProperties * (PROPERTY_LEN * 4)) + (OBJECT_LEN * 4);
+    MemSize = (NbrProperties * (PROPERTY_LEN * 4)) + (OBJECT_LEN * 4);
     // Alloc room for object
-	MemHandle = (int *) calloc(MemSize, 1);
+    MemHandle = (int *) calloc(MemSize, 1);
 
     MemHandle[OBJECT_TYPE] = ObjType;
     // Callbacks
@@ -698,9 +698,9 @@ int *AddObjectEntry(long ObjType, long NbrProperties, long LeftR, long LeftRPos,
     MemHandle[OBJECT_HWNDCHILD] = (long) hWndChild;
     MemHandle[OBJECT_HWNDCHILDCHILD] = (long) hWndChildChild;
     MemHandle[OBJECT_FLAGS] = Flags;
-	MemHandle[OBJECT_PROPNBR] = NbrProperties;
+    MemHandle[OBJECT_PROPNBR] = NbrProperties;
 
-	ControlsList.Add(MemHandle);
+    ControlsList.Add(MemHandle);
     return(MemHandle);
 }
 
@@ -712,11 +712,11 @@ void StorePropertyHeader(long PropNumber, int *hMem, CStr PropName, long PropTyp
     long PosDatas = 0;
 
     PosDatas = OBJECT_LEN + (PropNumber * PROPERTY_LEN);
-	// Store name of the property as a new pointer
+    // Store name of the property as a new pointer
     hMem[PosDatas + PROPERTY_NAME] = (long) strdup(PropName.Get_String());
     hMem[PosDatas + PROPERTY_TYPE] = PropType;
     // Store datas of the property
-	hMem[PosDatas + PROPERTY_STORAGE] = (long) strdup(PropStringStore.Get_String());
+    hMem[PosDatas + PROPERTY_STORAGE] = (long) strdup(PropStringStore.Get_String());
     hMem[PosDatas + PROPERTY_FLAGS] = PropFlags;
     hMem[PosDatas + PROPERTY_EXTEND] = PropExtend;
     hMem[PosDatas + PROPERTY_ROUTINE] = PropRoutine;
@@ -748,18 +748,18 @@ void SetPropertyDatas(int *hMem, long PropNumber, long PropIndex, long Datas)
 
     PosDatas = OBJECT_LEN + (PropNumber * PROPERTY_LEN);
 
-	switch(PropIndex)
-	{
-		case PROPERTY_NAME:
-		case PROPERTY_STORAGE:
-			// These two ones are strings
-			free((void *) hMem[PosDatas + PropIndex]);
-			hMem[PosDatas + PropIndex] = (long) strdup((char *) Datas);
-			break;
-		default:
-			hMem[PosDatas + PropIndex] = Datas;
-			break;
-	}
+    switch(PropIndex)
+    {
+        case PROPERTY_NAME:
+        case PROPERTY_STORAGE:
+            // These two ones are strings
+            free((void *) hMem[PosDatas + PropIndex]);
+            hMem[PosDatas + PropIndex] = (long) strdup((char *) Datas);
+            break;
+        default:
+            hMem[PosDatas + PropIndex] = Datas;
+            break;
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -770,9 +770,9 @@ long GetControlIndex(HWND hWnd)
 
     for(int i = 0; i < ControlsList.Amount(); i++)
     {
-		CurMem = ControlsList.Get(i)->Content;
-		if((HWND) CurMem[OBJECT_HWND] == hWnd) return(i);
-	}
+        CurMem = ControlsList.Get(i)->Content;
+        if((HWND) CurMem[OBJECT_HWND] == hWnd) return(i);
+    }
     return(-1);
 }
 
@@ -784,9 +784,9 @@ long GetControlDatas(HWND hWnd, int Datas_Index)
 
     for(int i = 0; i < ControlsList.Amount(); i++)
     {
-		CurMem = (int *) ControlsList.Get(i)->Content;
-		if((HWND) CurMem[OBJECT_HWND] == hWnd) return(CurMem[Datas_Index]);
-	}
+        CurMem = (int *) ControlsList.Get(i)->Content;
+        if((HWND) CurMem[OBJECT_HWND] == hWnd) return(CurMem[Datas_Index]);
+    }
     return(0);
 }
 
@@ -797,15 +797,15 @@ void EraseControl(long ControlIndex)
     long i = 0;
     int *CurMem = 0;
 
-	CurMem = ControlsList.Get(ControlIndex)->Content;
-	// Free the strings allocated for the property
-	for(i = 0; i < CurMem[OBJECT_PROPNBR]; i++)
-	{
-		free((int *) CurMem[OBJECT_LEN + (i * PROPERTY_LEN) + PROPERTY_NAME]);
-		free((int *) CurMem[OBJECT_LEN + (i * PROPERTY_LEN) + PROPERTY_STORAGE]);
-	}
-	// Erase it from the list
-	ControlsList.Del(ControlIndex);
+    CurMem = ControlsList.Get(ControlIndex)->Content;
+    // Free the strings allocated for the property
+    for(i = 0; i < CurMem[OBJECT_PROPNBR]; i++)
+    {
+        free((int *) CurMem[OBJECT_LEN + (i * PROPERTY_LEN) + PROPERTY_NAME]);
+        free((int *) CurMem[OBJECT_LEN + (i * PROPERTY_LEN) + PROPERTY_STORAGE]);
+    }
+    // Erase it from the list
+    ControlsList.Del(ControlIndex);
 }
 
 // -----------------------------------------------------------------------
@@ -814,7 +814,7 @@ void EraseControlsList(void)
 {
     while(ControlsList.Amount() != 0)
     {
-		EraseControl(0);
+        EraseControl(0);
     }
 }
 
@@ -823,18 +823,18 @@ void EraseControlsList(void)
 void HideGripSelection(HWND hWnd)
 {
     long i = 0;
-	LPCTRLSELECTION SelControl;
+    LPCTRLSELECTION SelControl;
 
-	for(i = 0; i < SelectedControls.Amount(); i++)
-	{
-		SelControl = SelectedControls.Get(i)->Content;
-		if(hWnd == SelControl->hControl)
-		{
-			// Hide it
-			GripBoxVisible(SelControl->hGrip, 0);
-			break;
-		}
-	}
+    for(i = 0; i < SelectedControls.Amount(); i++)
+    {
+        SelControl = SelectedControls.Get(i)->Content;
+        if(hWnd == SelControl->hControl)
+        {
+            // Hide it
+            GripBoxVisible(SelControl->hGrip, 0);
+            break;
+        }
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -842,18 +842,18 @@ void HideGripSelection(HWND hWnd)
 void ShowGripSelection(HWND hWnd)
 {
     long i = 0;
-	LPCTRLSELECTION SelControl;
+    LPCTRLSELECTION SelControl;
 
-	for(i = 0; i < SelectedControls.Amount(); i++)
-	{
-		SelControl = SelectedControls.Get(i)->Content;
-		if(hWnd == SelControl->hControl)
-		{
-			// Show it
-			GripBoxVisible(SelControl->hGrip, 1);
-			break;
-		}
-	}
+    for(i = 0; i < SelectedControls.Amount(); i++)
+    {
+        SelControl = SelectedControls.Get(i)->Content;
+        if(hWnd == SelControl->hControl)
+        {
+            // Show it
+            GripBoxVisible(SelControl->hGrip, 1);
+            break;
+        }
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -861,19 +861,19 @@ void ShowGripSelection(HWND hWnd)
 void UnSelectControl(HWND hWnd)
 {
     long i = 0;
-	LPCTRLSELECTION SelControl;
+    LPCTRLSELECTION SelControl;
 
-	for(i = 0; i < SelectedControls.Amount(); i++)
-	{
-		SelControl = SelectedControls.Get(i)->Content;
-		if(hWnd == SelControl->hControl)
-		{
-			// Remove the corresponding gripbox
-			GripBoxClose(SelControl->hGrip);
-			SelectedControls.Del(i);
-			break;
-		}
-	}
+    for(i = 0; i < SelectedControls.Amount(); i++)
+    {
+        SelControl = SelectedControls.Get(i)->Content;
+        if(hWnd == SelControl->hControl)
+        {
+            // Remove the corresponding gripbox
+            GripBoxClose(SelControl->hGrip);
+            SelectedControls.Del(i);
+            break;
+        }
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -881,14 +881,14 @@ void UnSelectControl(HWND hWnd)
 void UnSelectControlsList(void)
 {
     long i = 0;
-	LPCTRLSELECTION SelControl;
+    LPCTRLSELECTION SelControl;
 
     for(i = 0; i < SelectedControls.Amount(); i++)
     {
-		SelControl = (LPCTRLSELECTION) SelectedControls.Get(i)->Content;
-		GripBoxClose(SelControl->hGrip);
+        SelControl = (LPCTRLSELECTION) SelectedControls.Get(i)->Content;
+        GripBoxClose(SelControl->hGrip);
     }
-	SelectedControls.Erase();
+    SelectedControls.Erase();
 }
 
 // -----------------------------------------------------------------------
@@ -896,79 +896,79 @@ void UnSelectControlsList(void)
 void SelectControl(HWND hWnd, long Left, long Top, long Width, long Height)
 {
     LPGRIPBOXDAT hGrip;
-	LPCTRLSELECTION NewSelection;
+    LPCTRLSELECTION NewSelection;
 
-	// Create the corresponding gripbox
-	hGrip = CreateGripBox(Left - 8, Top - 8, Width + 16, Height + 16, GetParent(hWnd), 0, 0x6E5920, 0);
-	// Create a selection for the newly created control
-	NewSelection = (LPCTRLSELECTION) calloc(sizeof(CTRLSELECTION), 1);
-	NewSelection->hGrip = hGrip;
-	NewSelection->hControl = hWnd;
-	NewSelection->Ctrl_Rect.left = Left;
-	NewSelection->Ctrl_Rect.top = Top;
-	NewSelection->Ctrl_Rect.right = Width + Left;
-	NewSelection->Ctrl_Rect.bottom = Height + Top;
-	NewSelection->Captured = FALSE;
-	SelectedControls.Add(NewSelection);
+    // Create the corresponding gripbox
+    hGrip = CreateGripBox(Left - 8, Top - 8, Width + 16, Height + 16, GetParent(hWnd), 0, 0x6E5920, 0);
+    // Create a selection for the newly created control
+    NewSelection = (LPCTRLSELECTION) calloc(sizeof(CTRLSELECTION), 1);
+    NewSelection->hGrip = hGrip;
+    NewSelection->hControl = hWnd;
+    NewSelection->Ctrl_Rect.left = Left;
+    NewSelection->Ctrl_Rect.top = Top;
+    NewSelection->Ctrl_Rect.right = Width + Left;
+    NewSelection->Ctrl_Rect.bottom = Height + Top;
+    NewSelection->Captured = FALSE;
+    SelectedControls.Add(NewSelection);
 }
 
 // -----------------------------------------------------------------------
 // Resize a control
 void ResizeControlFromGripBox(LPGRIPBOXDAT GripDats, LPRECT NewSizeRect)
 {
-	HWND Resize_hWnd;
-	HWND Resize_hWndChild;
-	HWND Resize_hWndChildChild;
+    HWND Resize_hWnd;
+    HWND Resize_hWndChild;
+    HWND Resize_hWndChildChild;
 
-	Resize_hWnd = GetControlFromGripBox(GripDats);
-	if(Resize_hWnd)
-	{
-		GripBoxResize(GripDats, NewSizeRect);
-		MoveWindow(Resize_hWnd, NewSizeRect->left, NewSizeRect->top, (NewSizeRect->right - NewSizeRect->left),
-		           (NewSizeRect->bottom - NewSizeRect->top), 1);
+    Resize_hWnd = GetControlFromGripBox(GripDats);
+    if(Resize_hWnd)
+    {
+        GripBoxResize(GripDats, NewSizeRect);
+        MoveWindow(Resize_hWnd, NewSizeRect->left, NewSizeRect->top, (NewSizeRect->right - NewSizeRect->left),
+                   (NewSizeRect->bottom - NewSizeRect->top), 1);
 
-		Resize_hWndChild = (HWND) GetControlDatas(Resize_hWnd, OBJECT_HWNDCHILDCHILD);
-		if(Resize_hWndChild)
-		{
-		    MoveWindow(Resize_hWndChild, 0, 0, (NewSizeRect->right - NewSizeRect->left), (NewSizeRect->bottom - NewSizeRect->top), 1);
+        Resize_hWndChild = (HWND) GetControlDatas(Resize_hWnd, OBJECT_HWNDCHILDCHILD);
+        if(Resize_hWndChild)
+        {
+            MoveWindow(Resize_hWndChild, 0, 0, (NewSizeRect->right - NewSizeRect->left), (NewSizeRect->bottom - NewSizeRect->top), 1);
         }
-		Resize_hWndChildChild = (HWND) GetControlDatas(Resize_hWnd, OBJECT_HWNDCHILD);
-		if(Resize_hWndChildChild)
-		{
-		    MoveWindow(Resize_hWndChildChild, 0, 0,
-		              (NewSizeRect->right - NewSizeRect->left), (NewSizeRect->bottom - NewSizeRect->top), 1);
+        Resize_hWndChildChild = (HWND) GetControlDatas(Resize_hWnd, OBJECT_HWNDCHILD);
+        if(Resize_hWndChildChild)
+        {
+            MoveWindow(Resize_hWndChildChild, 0, 0,
+                      (NewSizeRect->right - NewSizeRect->left), (NewSizeRect->bottom - NewSizeRect->top), 1);
         }
-		//if(GetControlDatas(Resize_hWnd, OBJECT_FLAGS) & OBJECT_FLAG_REBAR) RebarResize(Resize_hWndChild);
-	}
+        //if(GetControlDatas(Resize_hWnd, OBJECT_FLAGS) & OBJECT_FLAG_REBAR) RebarResize(Resize_hWndChild);
+    }
 }
 
 // -----------------------------------------------------------------------
 // Resize a gripbox
 void ResizeGripBoxFromControl(HWND hWnd, LPRECT NewSizeRect)
 {
-	LPGRIPBOXDAT Resize_hWnd;
-	HWND Resize_hWndChild;
-	HWND Resize_hWndChildRebar;
+    LPGRIPBOXDAT Resize_hWnd;
+    HWND Resize_hWndChild;
+    HWND Resize_hWndChildRebar;
 
-	Resize_hWnd = GetGripBoxFromControl(hWnd);
-	if(Resize_hWnd)
-	{
-		Resize_hWndChild = (HWND) GetControlDatas(hWnd, OBJECT_HWNDCHILDCHILD);
-		if(Resize_hWndChild) MoveWindow(Resize_hWndChild, 0, 0, (NewSizeRect->right - NewSizeRect->left), (NewSizeRect->bottom - NewSizeRect->top), 1);
-		if(GetControlDatas(hWnd, OBJECT_FLAGS) & OBJECT_FLAG_REBAR)
-		{
-			Resize_hWndChildRebar = (HWND) GetControlDatas(hWnd, OBJECT_HWNDCHILD);
-			MoveWindow(Resize_hWndChildRebar, 0, 0, (NewSizeRect->right - NewSizeRect->left), (NewSizeRect->bottom - NewSizeRect->top), 1);
-			MoveWindow(hWnd, NewSizeRect->left, NewSizeRect->top, (NewSizeRect->right - NewSizeRect->left), (NewSizeRect->bottom - NewSizeRect->top), 1);
-		}
-		else
-		{
-			Resize_hWndChildRebar = (HWND) GetControlDatas(hWnd, OBJECT_HWNDCHILD);
-			if(Resize_hWndChildRebar) MoveWindow(Resize_hWndChildRebar, 0, 0, (NewSizeRect->right - NewSizeRect->left), (NewSizeRect->bottom - NewSizeRect->top), 1);
-			MoveWindow(hWnd, NewSizeRect->left, NewSizeRect->top, (NewSizeRect->right - NewSizeRect->left), (NewSizeRect->bottom - NewSizeRect->top), 1);
-		}
-		GripBoxResize(Resize_hWnd, NewSizeRect);
-	}
+    Resize_hWnd = GetGripBoxFromControl(hWnd);
+    if(Resize_hWnd)
+    {
+        Resize_hWndChild = (HWND) GetControlDatas(hWnd, OBJECT_HWNDCHILDCHILD);
+        if(Resize_hWndChild) MoveWindow(Resize_hWndChild, 0, 0, (NewSizeRect->right - NewSizeRect->left), (NewSizeRect->bottom - NewSizeRect->top), 1);
+        if(GetControlDatas(hWnd, OBJECT_FLAGS) & OBJECT_FLAG_REBAR)
+        {
+            Resize_hWndChildRebar = (HWND) GetControlDatas(hWnd, OBJECT_HWNDCHILD);
+            MoveWindow(Resize_hWndChildRebar, 0, 0, (NewSizeRect->right - NewSizeRect->left), (NewSizeRect->bottom - NewSizeRect->top), 1);
+            MoveWindow(hWnd, NewSizeRect->left, NewSizeRect->top, (NewSizeRect->right - NewSizeRect->left), (NewSizeRect->bottom - NewSizeRect->top), 1);
+        }
+        else
+        {
+            Resize_hWndChildRebar = (HWND) GetControlDatas(hWnd, OBJECT_HWNDCHILD);
+            if(Resize_hWndChildRebar) MoveWindow(Resize_hWndChildRebar, 0, 0, (NewSizeRect->right - NewSizeRect->left), (NewSizeRect->bottom - NewSizeRect->top), 1);
+            MoveWindow(hWnd, NewSizeRect->left, NewSizeRect->top, (NewSizeRect->right - NewSizeRect->left), (NewSizeRect->bottom - NewSizeRect->top), 1);
+        }
+        GripBoxResize(Resize_hWnd, NewSizeRect);
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -976,14 +976,14 @@ void ResizeGripBoxFromControl(HWND hWnd, LPRECT NewSizeRect)
 HWND GetControlFromGripBox(LPGRIPBOXDAT hGrip)
 {
     long i = 0;
-	LPCTRLSELECTION SelControl;
+    LPCTRLSELECTION SelControl;
 
     for(i = 0; i < SelectedControls.Amount(); i++)
     {
-		SelControl = SelectedControls.Get(i)->Content;
-		if(hGrip == SelControl->hGrip) return(SelControl->hControl);
+        SelControl = SelectedControls.Get(i)->Content;
+        if(hGrip == SelControl->hGrip) return(SelControl->hControl);
     }
-	return(NULL);
+    return(NULL);
 }
 
 // -----------------------------------------------------------------------
@@ -991,14 +991,14 @@ HWND GetControlFromGripBox(LPGRIPBOXDAT hGrip)
 LPGRIPBOXDAT GetGripBoxFromControl(HWND hControl)
 {
     long i = 0;
-	LPCTRLSELECTION SelControl;
+    LPCTRLSELECTION SelControl;
 
     for(i = 0; i < SelectedControls.Amount(); i++)
     {
-		SelControl = SelectedControls.Get(i)->Content;
-		if(hControl == SelControl->hControl) return(SelControl->hGrip);
+        SelControl = SelectedControls.Get(i)->Content;
+        if(hControl == SelControl->hControl) return(SelControl->hGrip);
     }
-	return(NULL);
+    return(NULL);
 }
 
 // -----------------------------------------------------------------------
@@ -1006,14 +1006,14 @@ LPGRIPBOXDAT GetGripBoxFromControl(HWND hControl)
 LPRECT GetRectSelectionFromControl(HWND hControl)
 {
     long i = 0;
-	LPCTRLSELECTION SelControl;
+    LPCTRLSELECTION SelControl;
 
     for(i = 0; i < SelectedControls.Amount(); i++)
     {
-		SelControl = SelectedControls.Get(i)->Content;
-		if(hControl == SelControl->hControl) return(&SelControl->Ctrl_Rect);
+        SelControl = SelectedControls.Get(i)->Content;
+        if(hControl == SelControl->hControl) return(&SelControl->Ctrl_Rect);
     }
-	return(NULL);
+    return(NULL);
 }
 
 // -----------------------------------------------------------------------
@@ -1021,12 +1021,12 @@ LPRECT GetRectSelectionFromControl(HWND hControl)
 int *GetCaptureStatusFromControl(HWND hControl)
 {
     long i = 0;
-	LPCTRLSELECTION SelControl;
+    LPCTRLSELECTION SelControl;
 
     for(i = 0; i < SelectedControls.Amount(); i++)
     {
-		SelControl = (LPCTRLSELECTION) SelectedControls.Get(i)->Content;
-		if(hControl == SelControl->hControl) return(&SelControl->Captured);
+        SelControl = (LPCTRLSELECTION) SelectedControls.Get(i)->Content;
+        if(hControl == SelControl->hControl) return(&SelControl->Captured);
     }
-	return(NULL);
+    return(NULL);
 }

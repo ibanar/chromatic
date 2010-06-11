@@ -98,10 +98,10 @@ luaL_reg Meta[] =
     { "__index", Reading },
     { "__newindex", Writing },
 
-	{ "left", 0 },
-	{ "top", 0 },
-	{ "right", 0 },
-	{ "bottom", 0 },
+    { "left", 0 },
+    { "top", 0 },
+    { "right", 0 },
+    { "bottom", 0 },
 
     { NULL, NULL }
 };

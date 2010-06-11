@@ -69,7 +69,7 @@ int CALLBACK FRMArgsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             FRMArgshTB = CreateToolBar(248, 59, 25, 23, hwndDlg, GlobalImageList1, 4, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
             ToolBarAddButton(FRMArgshTB, "", ARGSCLEAR, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
             ControlSetText(hwndDlg, "Enter command arguments");
-			ComboBoxFillFromIniFile(hFRMArgsCombo, "Args", MainIniFile);
+            ComboBoxFillFromIniFile(hFRMArgsCombo, "Args", MainIniFile);
             EnteredArg = "";
             UserArgs = 0;
             FRMArgsEntered = 1;
@@ -80,8 +80,8 @@ int CALLBACK FRMArgsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             BeginPaint(hwndDlg, &ArgsPs);
             GDIDrawHorzSep(hwndDlg, 0, 87, 277);
             EndPaint(hwndDlg, &ArgsPs);
-			break;
-		case WM_NOTIFY:
+            break;
+        case WM_NOTIFY:
             switch(ControlGetNotifiedMsg(lParam))
             {
                 case TTN_NEEDTEXT:
@@ -91,10 +91,10 @@ int CALLBACK FRMArgsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             ToolBarDisplayToolTip("Clear arguments list", lParam);
                             return(0);
                     }
-					break;
-			}
-			break;
-		case WM_COMMAND:
+                    break;
+            }
+            break;
+        case WM_COMMAND:
             if((HWND) lParam == hFRMArgsOk)
             {
                 UserArgs = 1;
@@ -129,13 +129,13 @@ int CALLBACK FRMArgsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                         return(0);
                 }
             }
-			break;
+            break;
         case WM_CLOSE:
             EnteredArg = ControlGetText(hFRMArgsCombo);
-			ComboBoxSaveInIniFile(hFRMArgsCombo, EnteredArg, "Args", MainIniFile);
+            ComboBoxSaveInIniFile(hFRMArgsCombo, EnteredArg, "Args", MainIniFile);
             FreezeTimer = 0;
             EndDialog(hwndDlg, 0);
-			break;
-	}
+            break;
+    }
     return(0);
 }

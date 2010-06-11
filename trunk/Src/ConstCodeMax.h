@@ -252,7 +252,7 @@
 #define CMN_FINDWRAPPED 310
 
 // XX
-#define CMN_MARKALL	320         // Bookmark were set
+#define CMN_MARKALL 320         // Bookmark were set
 #define CMN_FOUNDTEXT 330       // Text was found
 
 // Edit commands

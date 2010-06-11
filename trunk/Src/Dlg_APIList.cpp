@@ -68,8 +68,8 @@ LRESULT CALLBACK FRMAPIListWinHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
     RECT ListRect;
     POINT ToolPOINT;
 
-	switch(uMsg)
-	{
+    switch(uMsg)
+    {
         case WM_DESTROY:
             if(APIListhFont != 0) DeleteObject(APIListhFont);
             APIListMode = 0;
@@ -107,25 +107,25 @@ LRESULT CALLBACK FRMAPIhListBoxHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
     switch(uMsg)
     {
         case WM_KEYDOWN:
-			if(wParam == 32 || wParam == 13)
-			{
-				CompleteWord(hWnd);
-        		return(0);
-			}
-			// (
-			if(wParam == 0x35)
-			{
-				CompleteWord(hWnd);
-			    SmartInsert(CurrentForm, "(");
-            	return(0);
-	        }
-			if(wParam == 27)
-			{
-				SendMessage(CurrentForm, WM_URGENTKILLCLIST, 0, 0);
-            	return(0);
-			}
-			break;
-		case WM_LBUTTONDBLCLK:
+            if(wParam == 32 || wParam == 13)
+            {
+                CompleteWord(hWnd);
+                return(0);
+            }
+            // (
+            if(wParam == 0x35)
+            {
+                CompleteWord(hWnd);
+                SmartInsert(CurrentForm, "(");
+                return(0);
+            }
+            if(wParam == 27)
+            {
+                SendMessage(CurrentForm, WM_URGENTKILLCLIST, 0, 0);
+                return(0);
+            }
+            break;
+        case WM_LBUTTONDBLCLK:
             CompleteWord(hWnd);
             return(0);
     }
@@ -142,5 +142,5 @@ void CompleteWord(HWND hWnd)
     ChildStruct = LoadStructure(CurrentForm);
     SelectLeftWord(ChildStruct->hChildCodeMax, LineToDisplay);
     SmartInsert(CurrentForm, &WordToComplete);
-	SendMessage(CurrentForm, WM_URGENTKILLCLIST, 0, 0);
+    SendMessage(CurrentForm, WM_URGENTKILLCLIST, 0, 0);
 }

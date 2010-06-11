@@ -210,7 +210,7 @@ LRESULT CALLBACK FRMAPIHookProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
                     j = 5;
                     goto EndArgs;
                 }
-NextArgsLine:	VirgToParse = StringGetSplitElement(APIString, APIArrParse, j);
+NextArgsLine:   VirgToParse = StringGetSplitElement(APIString, APIArrParse, j);
                 ParsedVirg = StringSplit(VirgToParse, ",");
                 if(StringGetSplitUBound(ParsedVirg) == -1) goto EndArgs;
                 TxtPosX = 3;

@@ -71,7 +71,7 @@ typedef struct _ADDINCONTEXT
     long NbrChilds;
     long ActiveProject;
     HINSTANCE hInstance;
-	long OSType;
+    long OSType;
     long FullScreenMode;
     long SysTrayMode;
     HWND hMDI;
@@ -101,7 +101,7 @@ typedef struct _ADDINCONTEXT
     HWND hWindowsPager;
     HWND hOutputBoxToolbar;
     HWND hOutputBoxPager;
-	long ColdStart;
+    long ColdStart;
 } ADDINCONTEXT, *LPADDINCONTEXT;
 
 // MINICHILD structure
@@ -201,7 +201,7 @@ typedef struct _CHROMATICLIB
     long SysTabGetImagelist;
     long SysTabSetCurrentItem;
     long SysTabSetFocusItem;
-	long SysTabHighLightItem;
+    long SysTabHighLightItem;
     long SysTabItemsCount;
     long SysTabGetRowsCount;
     long SysTabSetSeparators;
@@ -286,9 +286,9 @@ typedef struct _CHROMATICLIB
     long PagerGetBorderSize;
     long PagerGetButtonSize;
     long PagerGetScrollPos;
-	long PagerGetOrientation;
-	long PagerSetOrientation;
-	long PagerChangeOrientation;
+    long PagerGetOrientation;
+    long PagerSetOrientation;
+    long PagerChangeOrientation;
     long ClientResize;
     long ClientGetActiveChild;
     long ClientSetNextChild;
@@ -447,7 +447,7 @@ typedef struct _CHROMATICLIB
     long DockingBoxRemove;
     long DockingBoxShow;
     long DockingBoxWasVisible;
-	long MenuGetString;
+    long MenuGetString;
     long MenuEnable;
     long MenuSetDefaultItem;
     long MenuSetItemState;
@@ -533,8 +533,8 @@ typedef struct _CHROMATICLIB
     long StringFillHexBytes;
     long StringFillHexWords;
     long StringFillHexDWords;
-	long StringFileNameToLabel;
-	long FileGetWriteTime;
+    long StringFileNameToLabel;
+    long FileGetWriteTime;
     long FileGetCreationTime;
     long FileGetAccessedTime;
     long FileGetExtension;
@@ -545,7 +545,7 @@ typedef struct _CHROMATICLIB
     long FileOpenR;
     long FileOpenW;
     long FileOpenWAppend;
-	long FileClose;
+    long FileClose;
     long FileCreateEmpty;
     long FileWriteBuffer;
     long FileWriteLine;
@@ -584,7 +584,7 @@ typedef struct _CHROMATICLIB
     long GDIGetSerif10;
     long GDIGetCourierNew9;
     long ControlNextHook;
-	long ControlSendMessage;
+    long ControlSendMessage;
     long ControlClientTop;
     long ControlClientLeft;
     long ControlClientWidth;
@@ -627,13 +627,13 @@ typedef struct _CHROMATICLIB
     long ControlSetClassCursor;
     long ControlGetWindowState;
     long ControlClose;
-	long ComDlgChooseColor;
+    long ComDlgChooseColor;
     long ComDlgGetOpenFileName;
     long ComDlgGetSaveFileName;
     long ComDlgChooseFont;
     long ComDlgBrowseForFolder;
     long ComDlgParseMultiFilesSelection;
-	long WinsockInit;
+    long WinsockInit;
     long WinsockUnInit;
     long SocketCreate;
     long SocketDestroy;
@@ -666,7 +666,7 @@ typedef struct _CHROMATICLIB
     long MiscCopyMemLoop;
     long MiscCopyMemWithOffsets;
     long MiscGetOSClass;
-	long MiscObtainExtendedFunctions;
+    long MiscObtainExtendedFunctions;
     long WAMMGetWindowLangGUID;
     long WAMMGetWindowLangInclude;
     long WAMMGetWindowLangDoubleSlash;
@@ -689,7 +689,7 @@ typedef struct _CHROMATICLIB
     long WAMMRunCommandScript;
     long WAMMRunDOSCmd;
     long WAMMRunDOSCmdCapture;
-	long WAMMDisplayHelpFile;
+    long WAMMDisplayHelpFile;
     long WAMMGetWindowPath;
     long WAMMIsFileWorkSpace;
     long WAMMIsFileProject;
@@ -774,8 +774,8 @@ typedef struct _CHROMATICLIB
     long WAMMMiscInputBox;
     long WAMMIsChildReadOnly;
     long WAMMSetChildReadOnly;
-	long WAMMCreateCustomChildDialog;
-	long WAMMCreateCodeMax;
+    long WAMMCreateCustomChildDialog;
+    long WAMMCreateCodeMax;
 } CHROMATICLIB, *LPCHROMATICLIB;
 
 // -----------------------------------------------------------------------
