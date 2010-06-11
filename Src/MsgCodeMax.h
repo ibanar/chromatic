@@ -323,8 +323,8 @@ typedef struct _CM_LINENUMBERING
     UINT nStartAt;
     // CM_DECIMAL, CM_HEXADECIMAL, CM_OCTAL, or CM_BINARY
     long dwStyle;
-	// Complement Hexadecmal numbers of not
-	BOOL bComplementHexa;
+    // Complement Hexadecmal numbers of not
+    BOOL bComplementHexa;
 } CM_LINENUMBERING;
 
 // -----------------------------------------------------------------------

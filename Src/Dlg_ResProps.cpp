@@ -99,25 +99,25 @@ int CALLBACK FRMResProps(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             {
                 case RESPROP_ICON:
                     TmpLang = GetIconLang(ResIndex);
-					break;
-			    case RESPROP_CURSOR:
+                    break;
+                case RESPROP_CURSOR:
                     TmpLang = GetCursorLang(ResIndex);
-					break;
+                    break;
                 case RESPROP_BITMAP:
                     TmpLang = GetBitmapLang(ResIndex);
-					break;
+                    break;
                 case RESPROP_STRINGS:
                     TmpLang = Get_StringLang(ResIndex);
-					break;
+                    break;
                 case RESPROP_ACCELERATORS:
                     TmpLang = GetAcceleratorLang(ResIndex);
-					break;
+                    break;
                 case RESPROP_MENUS:
                     TmpLang = GetMenuLang(ResIndex);
-					break;
+                    break;
                 case RESPROP_RAWDATA:
                     TmpLang = GetRawdataLang(ResIndex);
-					break;
+                    break;
             }
             j = 0;
             for(i = 0; i <= 87; i++)
@@ -134,31 +134,31 @@ int CALLBACK FRMResProps(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 case RESPROP_ICON:
                     TmpProp = GetIconProps(ResIndex);
                     ComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
-					break;
+                    break;
                 case RESPROP_CURSOR:
                     TmpProp = GetCursorProps(ResIndex);
                     ComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
-					break;
+                    break;
                 case RESPROP_BITMAP:
                     TmpProp = GetBitmapProps(ResIndex);
                     ComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
-					break;
+                    break;
                 case RESPROP_STRINGS:
                     TmpProp = Get_StringProps(ResIndex);
                     ComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
-					break;
+                    break;
                 case RESPROP_ACCELERATORS:
                     TmpProp = GetAcceleratorProps(ResIndex);
                     ComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
-					break;
+                    break;
                 case RESPROP_MENUS:
                     TmpProp = GetMenuProps(ResIndex);
                     ComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
-					break;
+                    break;
                 case RESPROP_RAWDATA:
                     TmpProp = GetRawdataProps(ResIndex);
                     ComboBoxSetIndex(FRMResPropsLanguage, TmpLang2);
-					break;
+                    break;
             }
             if((TmpProp & RESPROPDAT_LOAD) != 0) CheckBoxSetState(FRMResPropsLoad, 1);
             if((TmpProp & RESPROPDAT_MOVE) != 0) CheckBoxSetState(FRMResPropsMoveable, 1);
@@ -172,8 +172,8 @@ int CALLBACK FRMResProps(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             BeginPaint(hwndDlg, &EnterValuePerms);
             GDIDrawHorzSep(hwndDlg, 0, 80, 240);
             EndPaint(hwndDlg, &EnterValuePerms);
-			break;
-		case WM_COMMAND:
+            break;
+        case WM_COMMAND:
             if((HWND) lParam == FRMResPropsOk)
             {
                 NewResName = ControlGetText(FRMResPropsName);
@@ -264,31 +264,31 @@ int CALLBACK FRMResProps(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     case RESPROP_ICON:
                         SetIconProps(ResIndex, TmpProp);
                         SetIconLang(ResIndex, i);
-						break;
-					case RESPROP_CURSOR:
+                        break;
+                    case RESPROP_CURSOR:
                         SetCursorProps(ResIndex, TmpProp);
                         SetCursorLang(ResIndex, i);
-						break;
+                        break;
                     case RESPROP_BITMAP:
                         SetBitmapProps(ResIndex, TmpProp);
                         SetBitmapLang(ResIndex, i);
-						break;
+                        break;
                     case RESPROP_STRINGS:
                         Set_StringProps(ResIndex, TmpProp);
                         Set_StringLang(ResIndex, i);
-						break;
+                        break;
                     case RESPROP_ACCELERATORS:
                         SetAcceleratorProps(ResIndex, TmpProp);
                         SetAcceleratorLang(ResIndex, i);
-						break;
+                        break;
                     case RESPROP_MENUS:
                         SetMenuProps(ResIndex, TmpProp);
                         SetMenuLang(ResIndex, i);
-						break;
+                        break;
                     case RESPROP_RAWDATA:
                         SetRawDataProps(ResIndex, TmpProp);
                         SetRawDataLang(ResIndex, i);
-						break;
+                        break;
                 }
                 ProjectModified = TRUE;
                 ControlClose(hwndDlg);
@@ -312,14 +312,14 @@ int CALLBACK FRMResProps(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                         {
                             ControlEnable(FRMResPropsOk, 0);
                         }
-						break;
-				}
+                        break;
+                }
             }
-			break;
+            break;
         case WM_CLOSE:
             FreezeTimer = 0;
             EndDialog(hwndDlg, 0);
-			break;
-	}
+            break;
+    }
     return(0);
 }

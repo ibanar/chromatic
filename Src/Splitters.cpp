@@ -122,8 +122,8 @@ void CreateDockingProject(HWND hParent)
 {
     RECT Rec;
 
-	hProjectContainer = CreateDockingBox("Project", &ProjectContainerProc, hMDIform.hDock, MainIniFile.Get_String());
-	hTreeView = CreateTreeView(0, 23, ControlWidth(hProjectContainer), 10, hProjectContainer, 14, GlobalImageList1, &TreeViewHook, TVS_SHOWSELALWAYS, WS_EX_STATICEDGE);
+    hProjectContainer = CreateDockingBox("Project", &ProjectContainerProc, hMDIform.hDock, MainIniFile.Get_String());
+    hTreeView = CreateTreeView(0, 23, ControlWidth(hProjectContainer), 10, hProjectContainer, 14, GlobalImageList1, &TreeViewHook, TVS_SHOWSELALWAYS, WS_EX_STATICEDGE);
     OldTreeViewToolTips = TreeViewGetToolTips(hTreeView);
     TreeViewSetIndent(hTreeView, 1);
     SetTreeviewTT();
@@ -131,17 +131,17 @@ void CreateDockingProject(HWND hParent)
     hProjectToolbar = CreateToolBar(0, 0, 0, 15, hProjectContainer, GlobalImageList2, 4, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | TBS_VERT | TBSTYLE_WRAPABLE, 0);
     SendMessage(hProjectToolbar, TB_SETROWS, 0x60001, (long) &Rec);
     ToolBarAddButton(hProjectToolbar, "", PROJECTTOOLBAR_SAVE, ICON_SMALL_SAVELITTLE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-	ToolBarAddSeparator(hProjectToolbar, 0);
+    ToolBarAddSeparator(hProjectToolbar, 0);
     ToolBarAddButton(hProjectToolbar, "", PROJECTTOOLBAR_ASSEMBLE, ICON_SMALL_ASSEMBLE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     ToolBarAddButton(hProjectToolbar, "", PROJECTTOOLBAR_DEBUG, ICON_SMALL_DEBUG, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     ToolBarAddButton(hProjectToolbar, "", PROJECTTOOLBAR_RUN, ICON_SMALL_EXEC, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     hProjectPager = CreatePager(0, 0, 0, 15, hProjectContainer, hProjectToolbar, 0, PGS_HORZ);
-	ProjectToolbarToolTip[PROJECTTOOLBAR_SAVE] = "Save project (Ctrl+Shift+S)";
+    ProjectToolbarToolTip[PROJECTTOOLBAR_SAVE] = "Save project (Ctrl+Shift+S)";
     ProjectToolbarToolTip[PROJECTTOOLBAR_ASSEMBLE] = "Build project (Shift+F5)";
     ProjectToolbarToolTip[PROJECTTOOLBAR_RUN] = "Run project (Ctrl+F5)";
     ProjectToolbarToolTip[PROJECTTOOLBAR_DEBUG] = "Debug project (Ctrl+Shift+F5)";
-	DockingBoxShow(hProjectContainer, GetMDIWidth(), GetMDIHeight(), 216, 230, DOCKINGBOX_LEFT);
-	SetProjectDockMenuState(ShowProjetDockWin);
+    DockingBoxShow(hProjectContainer, GetMDIWidth(), GetMDIHeight(), 216, 230, DOCKINGBOX_LEFT);
+    SetProjectDockMenuState(ShowProjetDockWin);
 }
 
 // -----------------------------------------------------------------------
@@ -150,48 +150,48 @@ void CreateDockingWindows(HWND hParent)
 {
     RECT Rec;
 
-	hWindowsContainer = CreateDockingBox("Windows", &WindowsContainerProc, hMDIform.hDock, MainIniFile.Get_String());
-	hWindowsListView = CreateListView(0, 0, ControlWidth(hWindowsContainer), 10, hWindowsContainer, 13, GlobalImageList1, &WindowsListProc, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | WS_TABSTOP | LVS_NOSORTHEADER | LVS_NOCOLUMNHEADER, WS_EX_STATICEDGE);
+    hWindowsContainer = CreateDockingBox("Windows", &WindowsContainerProc, hMDIform.hDock, MainIniFile.Get_String());
+    hWindowsListView = CreateListView(0, 0, ControlWidth(hWindowsContainer), 10, hWindowsContainer, 13, GlobalImageList1, &WindowsListProc, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | WS_TABSTOP | LVS_NOSORTHEADER | LVS_NOCOLUMNHEADER, WS_EX_STATICEDGE);
     ListViewAddCol(hWindowsListView, "", ControlWidth(hWindowsContainer), 0);
-	hWindowsToolbar = CreateToolBar(0, 0, 0, 15, hWindowsContainer, GlobalImageList2, 4, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | TBS_VERT | TBSTYLE_WRAPABLE, 0);
+    hWindowsToolbar = CreateToolBar(0, 0, 0, 15, hWindowsContainer, GlobalImageList2, 4, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | TBS_VERT | TBSTYLE_WRAPABLE, 0);
     SendMessage(hWindowsToolbar, TB_SETROWS, 0x60001, (long) &Rec);
     ToolBarAddButton(hWindowsToolbar, "", WINDOWSTOOLBAR_PREVIOUS, ICON_SMALL_BACK, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     ToolBarAddButton(hWindowsToolbar, "", WINDOWSTOOLBAR_NEXT, ICON_SMALL_DEBUG, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-	ToolBarAddSeparator(hWindowsToolbar, 0);
+    ToolBarAddSeparator(hWindowsToolbar, 0);
     ToolBarAddButton(hWindowsToolbar, "", WINDOWSTOOLBAR_RELOAD, ICON_SMALL_RELOAD, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     hWindowsPager = CreatePager(0, 0, 0, 15, hWindowsContainer, hWindowsToolbar, 0, PGS_HORZ);
-	WindowsToolbarToolTip[WINDOWSTOOLBAR_PREVIOUS] = "Previous window (Ctrl+Shift+Tab)";
+    WindowsToolbarToolTip[WINDOWSTOOLBAR_PREVIOUS] = "Previous window (Ctrl+Shift+Tab)";
     WindowsToolbarToolTip[WINDOWSTOOLBAR_NEXT] = "Next window (Ctrl+Tab)";
     WindowsToolbarToolTip[WINDOWSTOOLBAR_RELOAD] = "Reload (Ctrl+Shift+N)";
-	DockingBoxShow(hWindowsContainer, GetMDIWidth(), GetMDIHeight(), 216, 230, DOCKINGBOX_LEFT);
-	SetWindowsDockMenuState(ShowWindowsDockWin);
+    DockingBoxShow(hWindowsContainer, GetMDIWidth(), GetMDIHeight(), 216, 230, DOCKINGBOX_LEFT);
+    SetWindowsDockMenuState(ShowWindowsDockWin);
 }
 
 // -----------------------------------------------------------------------
 // Create the horizontal splitter
 void CreateDockingOutput(HWND hParent)
 {
-	hOutputContainer = CreateDockingBox("Output", &OutputContainerProc, hMDIform.hDock, MainIniFile.Get_String());
+    hOutputContainer = CreateDockingBox("Output", &OutputContainerProc, hMDIform.hDock, MainIniFile.Get_String());
 
-	hOutputSysTab = CreateSysTab(17, 0, 600, 70, hOutputContainer, 0, 0, 0, WS_TABSTOP | TCS_HOTTRACK);
-	SysTabAddItem(hOutputSysTab, "Misc.", 0, 0);
+    hOutputSysTab = CreateSysTab(17, 0, 600, 70, hOutputContainer, 0, 0, 0, WS_TABSTOP | TCS_HOTTRACK);
+    SysTabAddItem(hOutputSysTab, "Misc.", 0, 0);
     SysTabAddItem(hOutputSysTab, "Debug", 1, 0);
     hStatusBox = CreateListBox(0, 0, 600, 70, hOutputSysTab, 0, &StatusBoxHook, 0, LBS_USETABSTOPS | WS_HSCROLL, WS_EX_STATICEDGE);
     hDebugBox = CreateListBox(0, 0, 600, 70, hOutputSysTab, 0, &DebugBoxHook, 0, LBS_USETABSTOPS | WS_HSCROLL, WS_EX_STATICEDGE);
-	ControlVisible(hStatusBox, 1);
-	ControlVisible(hDebugBox, 0);
+    ControlVisible(hStatusBox, 1);
+    ControlVisible(hDebugBox, 0);
     StatusDebugMode = FALSE;
-	hStatusToolBar = CreateToolBar(1, 0, 17, 0, hOutputContainer, GlobalImageList2, 1, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | TBS_VERT | TBSTYLE_WRAPABLE, 0);
+    hStatusToolBar = CreateToolBar(1, 0, 17, 0, hOutputContainer, GlobalImageList2, 1, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | TBS_VERT | TBSTYLE_WRAPABLE, 0);
     ToolBarAddButton(hStatusToolBar, "", STATUSTOOLBAR_SAVE, ICON_SMALL_SAVELITTLE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     ToolBarAddButton(hStatusToolBar, "", STATUSTOOLBAR_NEW, ICON_SMALL_TOWIN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-	ToolBarAddSeparator(hStatusToolBar, 0);
+    ToolBarAddSeparator(hStatusToolBar, 0);
     ToolBarAddButton(hStatusToolBar, "", STATUSTOOLBAR_CLEAR, ICON_SMALL_DELSTATUS, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     hStatusPager = CreatePager(0, 0, 17, 0, hOutputContainer, hStatusToolBar, 0, PGS_VERT);
     StatusToolbarToolTip[STATUSTOOLBAR_SAVE] = "Save content to file";
     StatusToolbarToolTip[STATUSTOOLBAR_NEW] = "Create new window with content";
     StatusToolbarToolTip[STATUSTOOLBAR_CLEAR] = "Empty output window";
-	DockingBoxShow(hOutputContainer, GetMDIWidth(), GetMDIHeight(), 500, 120, DOCKINGBOX_BOTTOM);
-	SetOutputDockMenuState(ShowOutputDockWin);
+    DockingBoxShow(hOutputContainer, GetMDIWidth(), GetMDIHeight(), 500, 120, DOCKINGBOX_BOTTOM);
+    SetOutputDockMenuState(ShowOutputDockWin);
 }
 
 // -----------------------------------------------------------------------
@@ -210,36 +210,36 @@ LRESULT CALLBACK ProjectContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
     HTREEITEM hTreeParent;
     HTREEITEM DroppedItem;
     RECT FromDragRect;
-	long *lParamKey = 0;
-	long *lParamDrag = 0;
-	HWND hTreeViewFrom = 0;
-	long TbTooltipId = 0;
+    long *lParamKey = 0;
+    long *lParamDrag = 0;
+    HWND hTreeViewFrom = 0;
+    long TbTooltipId = 0;
     long DockState;
-	HTREEITEM TreeChild = 0;
+    HTREEITEM TreeChild = 0;
     
     switch(uMsg)
     {
-		case WM_PAINT:
+        case WM_PAINT:
             BeginPaint(hWnd, &VSplitPs);
-			DockState = DockingBoxGetState(hProjectContainer);
-			switch(DockState)
-			{
-				case DOCKINGBOX_LEFT:
-				case DOCKINGBOX_RIGHT:
-				case DOCKINGBOX_FLOATING:
-					// Windows toolbar
-					ToolBarGetXYSize(hProjectToolbar, &TBSize);
-					MoveWindow(hProjectPager, 0, 0, ControlWidth(hWnd), TBSize.cy, 1);
-					MoveWindow(hTreeView, 0, 16, ControlWidth(hWnd), ControlHeight(hWnd) - 16, 1);
-					break;
-				case DOCKINGBOX_TOP:
-				case DOCKINGBOX_BOTTOM:
-					MoveWindow(hProjectPager, 0, 0, 17, ControlHeight(hWnd), 1);
-					MoveWindow(hTreeView, 18, 0, ControlWidth(hWnd) - 18, ControlHeight(hWnd), 1);
-					break;
-			}
+            DockState = DockingBoxGetState(hProjectContainer);
+            switch(DockState)
+            {
+                case DOCKINGBOX_LEFT:
+                case DOCKINGBOX_RIGHT:
+                case DOCKINGBOX_FLOATING:
+                    // Windows toolbar
+                    ToolBarGetXYSize(hProjectToolbar, &TBSize);
+                    MoveWindow(hProjectPager, 0, 0, ControlWidth(hWnd), TBSize.cy, 1);
+                    MoveWindow(hTreeView, 0, 16, ControlWidth(hWnd), ControlHeight(hWnd) - 16, 1);
+                    break;
+                case DOCKINGBOX_TOP:
+                case DOCKINGBOX_BOTTOM:
+                    MoveWindow(hProjectPager, 0, 0, 17, ControlHeight(hWnd), 1);
+                    MoveWindow(hTreeView, 18, 0, ControlWidth(hWnd) - 18, ControlHeight(hWnd), 1);
+                    break;
+            }
             EndPaint(hWnd, &VSplitPs);
-			break;
+            break;
         case WM_COMMAND:
             switch(wParam)
             {
@@ -248,32 +248,32 @@ LRESULT CALLBACK ProjectContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                     return(0);
                 case (PROJECTTOOLBAR_ASSEMBLE):
                     MCMD_AssembleProject();
-					return(0);
+                    return(0);
                 case (PROJECTTOOLBAR_RUN):
                     MCMD_RunProject();
-					return(0);
+                    return(0);
                 case (PROJECTTOOLBAR_DEBUG):
                     MCMD_DebugProject();
-					return(0);
+                    return(0);
             }
-			break;
-		case WM_NOTIFY:
+            break;
+        case WM_NOTIFY:
             switch(ControlGetNotifiedMsg(lParam))
             {
                 case PGN_CALCSIZE:
                     ToolBarGetXYSize(PagerGetNotifiedChild(lParam), &MySize);
-					DockState = DockingBoxGetState(hProjectContainer);
-					ToolBarGetXYSize(PagerGetNotifiedChild(lParam), &MySize);
-					switch(DockState)
-					{
-						case DOCKINGBOX_TOP:
-						case DOCKINGBOX_BOTTOM:
-							PagerChangeOrientation(hProjectPager, (LPNMPGCALCSIZE) lParam, PGS_VERT, &MySize);
-							break;
-						default:
-							PagerChangeOrientation(hProjectPager, (LPNMPGCALCSIZE) lParam, PGS_HORZ, &MySize);
-							break;
-					}
+                    DockState = DockingBoxGetState(hProjectContainer);
+                    ToolBarGetXYSize(PagerGetNotifiedChild(lParam), &MySize);
+                    switch(DockState)
+                    {
+                        case DOCKINGBOX_TOP:
+                        case DOCKINGBOX_BOTTOM:
+                            PagerChangeOrientation(hProjectPager, (LPNMPGCALCSIZE) lParam, PGS_VERT, &MySize);
+                            break;
+                        default:
+                            PagerChangeOrientation(hProjectPager, (LPNMPGCALCSIZE) lParam, PGS_HORZ, &MySize);
+                            break;
+                    }
                     return(0);
                 case NM_DBLCLK:
                     if(ControlGetNotifiedhWnd(lParam) == hTreeView)
@@ -301,92 +301,92 @@ LRESULT CALLBACK ProjectContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                         if(CurrentTreeParent == hTreeViewIncludes)
                         {
                             FocusFile(GetFileNameFromTreeView(CurrentTreeItem), 1);
-							return(0);
-						}
+                            return(0);
+                        }
                         if(CurrentTreeParent == hTreeViewLibs)
                         {
                             GenProto(GetFileNameFromTreeView(CurrentTreeItem));
- 							return(0);
-						}
+                            return(0);
+                        }
                         if(CurrentTreeParent == hTreeViewModules)
                         {
                             FocusFile(GetFileNameFromTreeView(CurrentTreeItem), 1);
- 							return(0);
-						}
+                            return(0);
+                        }
                         if(CurrentTreeParent == hTreeViewObjects)
                         {
- 							return(0);
-						}
-						// Normal resource
+                            return(0);
+                        }
+                        // Normal resource
                         if(CurrentTreeParent == hTreeViewResources)
                         {
                             if(GetFileNameFromTreeView(CurrentTreeItem).Len() != 0) FocusFile(GetFileNameFromTreeView(CurrentTreeItem), 1);
- 							return(0);
-						}
+                            return(0);
+                        }
                         // New resources
                         if(CurrentTreeParent == hTreeViewIcons)
                         {
                             DisplayImageView(VIEW_ICON, GetFileNameFromTreeView(CurrentTreeItem));
- 							return(0);
-						}
+                            return(0);
+                        }
                         if(CurrentTreeParent == hTreeViewCursors)
                         {
                             DisplayImageView(VIEW_CURSOR, GetFileNameFromTreeView(CurrentTreeItem));
- 							return(0);
-						}
+                            return(0);
+                        }
                         if(CurrentTreeParent == hTreeViewBitmaps)
                         {
                             DisplayImageView(VIEW_BITMAP, GetFileNameFromTreeView(CurrentTreeItem));
- 							return(0);
-						}
+                            return(0);
+                        }
                         if(CurrentTreeParent == hTreeViewStrings)
                         {
                             EditStringsTable(GetLabelFromTreeView(CurrentTreeItem), GetFileNameFromTreeView(CurrentTreeItem), TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, hTreeViewStrings));
- 							return(0);
-						}
+                            return(0);
+                        }
                         if(CurrentTreeParent == hTreeViewAccelerators)
                         {
                             EditAcceleratorsTable(GetLabelFromTreeView(CurrentTreeItem), GetFileNameFromTreeView(CurrentTreeItem));
- 							return(0);
-						}
+                            return(0);
+                        }
                         if(CurrentTreeParent == hTreeViewMenus)
                         {
                             EditMenusTable(GetLabelFromTreeView(CurrentTreeItem), GetFileNameFromTreeView(CurrentTreeItem));
- 							return(0);
-						}
+                            return(0);
+                        }
                         if(CurrentTreeParent == hTreeViewDialogs)
                         {
                             // TODO
- 							return(0);
-						}
+                            return(0);
+                        }
                         if(CurrentTreeParent == hTreeViewRawdatas)
                         {
                             OpenFileAsRC(0, GetLabelFromTreeView(CurrentTreeItem), GetFileNameFromTreeView(CurrentTreeItem), TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
- 							return(0);
-						}
+                            return(0);
+                        }
                         if(CurrentTreeParent == hTreeViewDefs)
                         {
                             DisplayDefForm(GetFileNameFromTreeView(CurrentTreeItem));
- 							return(0);
-						}
+                            return(0);
+                        }
                         if(CurrentTreeParent == hTreeViewTexts)
                         {
                             FocusFile(GetFileNameFromTreeView(CurrentTreeItem), 1);
- 							return(0);
-						}
+                            return(0);
+                        }
                     }
- 					return(0);
+                    return(0);
                 case TTN_NEEDTEXT:
-					SpTooltipId = ControlGetNotifiedID(lParam);
+                    SpTooltipId = ControlGetNotifiedID(lParam);
                     if(SpTooltipId <= PROJECTTOOLBAR_DEBUG)
                     {
-						ToolBarDisplayToolTip(ProjectToolbarToolTip[SpTooltipId], lParam);
-					}
-					return(0);
+                        ToolBarDisplayToolTip(ProjectToolbarToolTip[SpTooltipId], lParam);
+                    }
+                    return(0);
                 // Delete an entry in the treeview
                 case TVN_KEYDOWN:
                     lParamKey = (long *) lParam;
-					TreeViewKey = lParamKey[3] & 0xffff;
+                    TreeViewKey = lParamKey[3] & 0xffff;
                     CurrentTreeItem = TreeViewGetSelectedItem(hTreeView);
                     if(CurrentTreeItem == hTreeViewRoot) break;
                     if(CurrentTreeItem == hTreeViewIncludes) break;
@@ -413,271 +413,271 @@ LRESULT CALLBACK ProjectContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                                 TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                 ProjectModified = TRUE;
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewLibs)
                             {
                                 TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                 ProjectModified = TRUE;
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewModules)
                             {
                                 TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                 ProjectModified = TRUE;
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewObjects)
                             {
                                 TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                 ProjectModified = TRUE;
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewResources)
                             {
                                 TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                 ProjectModified = TRUE;
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewIcons)
                             {
                                 RemIconFromArray(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
                                 TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                 ProjectModified = TRUE;
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewCursors)
                             {
                                 RemCursorFromArray(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
                                 TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                 ProjectModified = TRUE;
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewBitmaps)
                             {
                                 RemBitmapFromArray(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
                                 TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                 ProjectModified = TRUE;
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewStrings)
                             {
                                 RemStringFromArray(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
                                 TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                 ProjectModified = TRUE;
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewAccelerators)
                             {
                                 RemAcceleratorFromArray(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
                                 TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                 ProjectModified = TRUE;
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewMenus)
                             {
                                 RemMenuFromArray(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
                                 TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                 ProjectModified = TRUE;
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewDialogs)
                             {
                                 RemDialogFromArray(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
                                 TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                 ProjectModified = TRUE;
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewRawdatas)
                             {
                                 RemRawDataFromArray(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
                                 TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                 ProjectModified = TRUE;
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewTexts)
                             {
                                 TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                 ProjectModified = TRUE;
                                 return(0);
-							}
-							break;
-						case 13:
+                            }
+                            break;
+                        case 13:
                             hTreeParent = TreeViewGetItemParent(hTreeView, CurrentTreeItem);
                             if(hTreeParent == hTreeViewIncludes)
                             {
                                 FocusFile(GetFileNameFromTreeView(CurrentTreeItem), 1);
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewLibs)
                             {
                                 GenProto(GetFileNameFromTreeView(CurrentTreeItem));
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewModules)
                             {
                                 FocusFile(GetFileNameFromTreeView(CurrentTreeItem), 1);
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewObjects)
                             {
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewResources)
                             {
                                 if(GetFileNameFromTreeView(CurrentTreeItem).Len() != 0) FocusFile(GetFileNameFromTreeView(CurrentTreeItem), 1);
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewIcons)
                             {
                                 DisplayImageView(VIEW_ICON, GetFileNameFromTreeView(CurrentTreeItem));
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewCursors)
                             {
                                 DisplayImageView(VIEW_CURSOR, GetFileNameFromTreeView(CurrentTreeItem));
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewBitmaps)
                             {
                                 DisplayImageView(VIEW_BITMAP, GetFileNameFromTreeView(CurrentTreeItem));
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewStrings) {
                                 EditStringsTable(GetLabelFromTreeView(CurrentTreeItem), GetFileNameFromTreeView(CurrentTreeItem), TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, hTreeViewStrings));
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewAccelerators)
                             {
                                 EditAcceleratorsTable(GetLabelFromTreeView(CurrentTreeItem), GetFileNameFromTreeView(CurrentTreeItem));
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewMenus)
                             {
                                 EditMenusTable(GetLabelFromTreeView(CurrentTreeItem), GetFileNameFromTreeView(CurrentTreeItem));
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewDialogs)
                             {
                                 // TODO
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewRawdatas)
                             {
                                 OpenFileAsRC(0, GetLabelFromTreeView(CurrentTreeItem), GetFileNameFromTreeView(CurrentTreeItem), TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewDefs)
                             {
                                 DisplayDefForm(GetFileNameFromTreeView(CurrentTreeItem));
                                 return(0);
-							}
+                            }
                             if(hTreeParent == hTreeViewTexts)
                             {
                                 FocusFile(GetFileNameFromTreeView(CurrentTreeItem), 1);
                                 return(0);
-							}
-							break;
+                            }
+                            break;
                     }
-					break;
+                    break;
                 case TVN_ITEMEXPANDING:
-					hTreeViewFrom = ControlGetNotifiedhWnd(lParam);
-					switch(TreeViewGetExpandingState(lParam))
-					{
-	                    case TVE_EXPAND:
-							TreeViewSetItemIcon(hTreeViewFrom, TreeViewGetExpandingItem(lParam), ICON_OPEN);
-							break;
-						case TVE_COLLAPSE:
-	                        TreeViewSetItemIcon(hTreeViewFrom, TreeViewGetExpandingItem(lParam), ICON_FILES);
-							break;
-					}
-					return(0);
+                    hTreeViewFrom = ControlGetNotifiedhWnd(lParam);
+                    switch(TreeViewGetExpandingState(lParam))
+                    {
+                        case TVE_EXPAND:
+                            TreeViewSetItemIcon(hTreeViewFrom, TreeViewGetExpandingItem(lParam), ICON_OPEN);
+                            break;
+                        case TVE_COLLAPSE:
+                            TreeViewSetItemIcon(hTreeViewFrom, TreeViewGetExpandingItem(lParam), ICON_FILES);
+                            break;
+                    }
+                    return(0);
                 case TVN_SELCHANGED:
                     CurrentTreeItem = TreeViewGetSelectedItem(hTreeView);
-					if(CurrentTreeItem == hTreeViewRoot ||
-						CurrentTreeItem == hTreeViewIncludes ||
-						CurrentTreeItem == hTreeViewLibs ||
-						CurrentTreeItem == hTreeViewModules ||
-						CurrentTreeItem == hTreeViewObjects ||
-						CurrentTreeItem == hTreeViewResources ||
-						CurrentTreeItem == hTreeViewIcons ||
-						CurrentTreeItem == hTreeViewCursors ||
-						CurrentTreeItem == hTreeViewBitmaps ||
-						CurrentTreeItem == hTreeViewStrings ||
-						CurrentTreeItem == hTreeViewAccelerators ||
-						CurrentTreeItem == hTreeViewMenus ||
-						CurrentTreeItem == hTreeViewDialogs ||
-						CurrentTreeItem == hTreeViewRawdatas ||
-						CurrentTreeItem == hTreeViewDefs ||
-						CurrentTreeItem == hTreeViewTexts)
+                    if(CurrentTreeItem == hTreeViewRoot ||
+                        CurrentTreeItem == hTreeViewIncludes ||
+                        CurrentTreeItem == hTreeViewLibs ||
+                        CurrentTreeItem == hTreeViewModules ||
+                        CurrentTreeItem == hTreeViewObjects ||
+                        CurrentTreeItem == hTreeViewResources ||
+                        CurrentTreeItem == hTreeViewIcons ||
+                        CurrentTreeItem == hTreeViewCursors ||
+                        CurrentTreeItem == hTreeViewBitmaps ||
+                        CurrentTreeItem == hTreeViewStrings ||
+                        CurrentTreeItem == hTreeViewAccelerators ||
+                        CurrentTreeItem == hTreeViewMenus ||
+                        CurrentTreeItem == hTreeViewDialogs ||
+                        CurrentTreeItem == hTreeViewRawdatas ||
+                        CurrentTreeItem == hTreeViewDefs ||
+                        CurrentTreeItem == hTreeViewTexts)
                     {
-					    TreeChild = TreeViewGetFirstItemChild(hTreeView,CurrentTreeItem);
-						if(TreeChild == NULL)
-						{
-							// Collapse the dir if it is empty
-	                        TreeViewSetItemIcon(hTreeView, CurrentTreeItem, ICON_FILES);
-						}
-					}
-					break;
+                        TreeChild = TreeViewGetFirstItemChild(hTreeView,CurrentTreeItem);
+                        if(TreeChild == NULL)
+                        {
+                            // Collapse the dir if it is empty
+                            TreeViewSetItemIcon(hTreeView, CurrentTreeItem, ICON_FILES);
+                        }
+                    }
+                    break;
 
 // ----------------------------------------
 // Handle Treeview drag'n'drop
 // ----------------------------------------
                 case TVN_BEGINDRAG:
-					if(ControlGetNotifiedhWnd(lParam) == hTreeView)
-					{
-						DraggingCursor = 0;
-						// Hack here (should be NM_TREEVIEW)
-						// New.hItem
-						lParamDrag = (long *) lParam;
-						DragNewhItem = (HTREEITEM) lParamDrag[3 + 1 + 10 + 1];
-						// Parents
-						if(DragNewhItem == hTreeViewRoot) return(0);
-						if(DragNewhItem == hTreeViewIcons) return(0);
-						if(DragNewhItem == hTreeViewCursors) return(0);
-						if(DragNewhItem == hTreeViewBitmaps) return(0);
-						if(DragNewhItem == hTreeViewStrings) return(0);
-						if(DragNewhItem == hTreeViewAccelerators) return(0);
-						if(DragNewhItem == hTreeViewMenus) return(0);
-						if(DragNewhItem == hTreeViewDialogs) return(0);
-						if(DragNewhItem == hTreeViewRawdatas) return(0);
-						hDragParent = TreeViewGetItemParent(hTreeView, DragNewhItem);
-						if(hDragParent != 0)
-						{
-							if(hTreeViewRoot != hDragParent)
-							{
-								hTreeImageList = (HIMAGELIST) SendMessage(hTreeView, TVM_CREATEDRAGIMAGE, 0, (long) DragNewhItem);
-								if(hTreeImageList != 0)
-								{
-									SetCapture(hWnd);
-									GetCursorPos(&TreeViewhit.pt);
-									TreeViewhit.pt.x = TreeViewhit.pt.x - ControlLeft(hWnd);
-									TreeViewhit.pt.y = TreeViewhit.pt.y - ControlTop(hWnd);
-									ImageList_BeginDrag(hTreeImageList, 0, TreeViewhit.pt.x, TreeViewhit.pt.y);
-									ImageList_DragEnter(0, ControlLeft(hWnd) + TreeViewhit.pt.x, ControlTop(hWnd) + TreeViewhit.pt.y);
-									if(TreeViewGetItemTextRect(hTreeView, DragNewhItem, &FromDragRect) != 0)
-									{
-										TVLeftCoord = FromDragRect.left - 17 - (ControlLeft(hTreeView) - ControlLeft(hWnd));
-									}
-									else
-									{
-										TVLeftCoord = TreeViewhit.pt.x;
-									}
-									if(TreeViewGetItemRect(hTreeView, DragNewhItem, &FromDragRect) != 0)
-									{
-										TVTopCoord = FromDragRect.top - (17 / 2) + ((TreeViewhit.pt.y - FromDragRect.top));
-									}
-									else
-									{
-										TVTopCoord = TreeViewhit.pt.y;
-									}
-									TreeDragging = 1;
-								}
-							}
-						}
-					}
+                    if(ControlGetNotifiedhWnd(lParam) == hTreeView)
+                    {
+                        DraggingCursor = 0;
+                        // Hack here (should be NM_TREEVIEW)
+                        // New.hItem
+                        lParamDrag = (long *) lParam;
+                        DragNewhItem = (HTREEITEM) lParamDrag[3 + 1 + 10 + 1];
+                        // Parents
+                        if(DragNewhItem == hTreeViewRoot) return(0);
+                        if(DragNewhItem == hTreeViewIcons) return(0);
+                        if(DragNewhItem == hTreeViewCursors) return(0);
+                        if(DragNewhItem == hTreeViewBitmaps) return(0);
+                        if(DragNewhItem == hTreeViewStrings) return(0);
+                        if(DragNewhItem == hTreeViewAccelerators) return(0);
+                        if(DragNewhItem == hTreeViewMenus) return(0);
+                        if(DragNewhItem == hTreeViewDialogs) return(0);
+                        if(DragNewhItem == hTreeViewRawdatas) return(0);
+                        hDragParent = TreeViewGetItemParent(hTreeView, DragNewhItem);
+                        if(hDragParent != 0)
+                        {
+                            if(hTreeViewRoot != hDragParent)
+                            {
+                                hTreeImageList = (HIMAGELIST) SendMessage(hTreeView, TVM_CREATEDRAGIMAGE, 0, (long) DragNewhItem);
+                                if(hTreeImageList != 0)
+                                {
+                                    SetCapture(hWnd);
+                                    GetCursorPos(&TreeViewhit.pt);
+                                    TreeViewhit.pt.x = TreeViewhit.pt.x - ControlLeft(hWnd);
+                                    TreeViewhit.pt.y = TreeViewhit.pt.y - ControlTop(hWnd);
+                                    ImageList_BeginDrag(hTreeImageList, 0, TreeViewhit.pt.x, TreeViewhit.pt.y);
+                                    ImageList_DragEnter(0, ControlLeft(hWnd) + TreeViewhit.pt.x, ControlTop(hWnd) + TreeViewhit.pt.y);
+                                    if(TreeViewGetItemTextRect(hTreeView, DragNewhItem, &FromDragRect) != 0)
+                                    {
+                                        TVLeftCoord = FromDragRect.left - 17 - (ControlLeft(hTreeView) - ControlLeft(hWnd));
+                                    }
+                                    else
+                                    {
+                                        TVLeftCoord = TreeViewhit.pt.x;
+                                    }
+                                    if(TreeViewGetItemRect(hTreeView, DragNewhItem, &FromDragRect) != 0)
+                                    {
+                                        TVTopCoord = FromDragRect.top - (17 / 2) + ((TreeViewhit.pt.y - FromDragRect.top));
+                                    }
+                                    else
+                                    {
+                                        TVTopCoord = TreeViewhit.pt.y;
+                                    }
+                                    TreeDragging = 1;
+                                }
+                            }
+                        }
+                    }
                     return(0);
             }
-			break;
+            break;
         case WM_LBUTTONUP:
             if(TreeDragging == 1)
             {
@@ -694,7 +694,7 @@ LRESULT CALLBACK ProjectContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                 DraggingCursor = 0;
                 ReleaseCapture();
             }
-			return(0);
+            return(0);
         case WM_MOUSEMOVE:
             if(TreeDragging == 1)
             {
@@ -711,7 +711,7 @@ LRESULT CALLBACK ProjectContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                     if(hDragParent == CurrentTreeItemDrag) goto DragToParent;
                     if(TreeViewGetItemParent(hTreeView, CurrentTreeItemDrag) == hDragParent)
                     {
-DragToParent:			if(CurrentTreeItemDrag == hTreeViewIcons)
+DragToParent:           if(CurrentTreeItemDrag == hTreeViewIcons)
                         {
                             if(hDragParent == hTreeViewIcons) goto ForceDrag;
                         }
@@ -745,8 +745,8 @@ DragToParent:			if(CurrentTreeItemDrag == hTreeViewIcons)
                         }
                         else
                         {
-ForceDrag:					SendMessage(hTreeView, TVM_SELECTITEM, TVGN_DROPHILITE, (long) CurrentTreeItemDrag);
-						}
+ForceDrag:                  SendMessage(hTreeView, TVM_SELECTITEM, TVGN_DROPHILITE, (long) CurrentTreeItemDrag);
+                        }
                     }
                     if(DraggingCursor == 1)
                     {
@@ -764,15 +764,15 @@ ForceDrag:					SendMessage(hTreeView, TVM_SELECTITEM, TVGN_DROPHILITE, (long) Cu
                 }
                 ImageList_DragShowNolock(1);
             }
-			return(0);
-		case DOCKINGBOX_MSG_QUERY_STATE:
-			return(ShowProjetDockWin);
-		case DOCKINGBOX_MSG_CLOSE:
-			ShowProjetDockWin = 0;
+            return(0);
+        case DOCKINGBOX_MSG_QUERY_STATE:
+            return(ShowProjetDockWin);
+        case DOCKINGBOX_MSG_CLOSE:
+            ShowProjetDockWin = 0;
         case WM_DESTROY:
             SetProjectDockMenuState(ShowProjetDockWin);
-			break;
-	}
+            break;
+    }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
 
@@ -786,37 +786,37 @@ LRESULT CALLBACK WindowsContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
     PAINTSTRUCT VSplitPs;
     SIZE TBSize;
     long SpTooltipId = 0;
-	HWND hTreeViewFrom = 0;
-	long TbTooltipId = 0;
+    HWND hTreeViewFrom = 0;
+    long TbTooltipId = 0;
     long DockState;
     HMENU hPop;
     POINT PopupPoint;
     HWND hSel;
-	
+    
     switch(uMsg)
     {
-		case WM_PAINT:
+        case WM_PAINT:
             BeginPaint(hWnd, &VSplitPs);
-			DockState = DockingBoxGetState(hWindowsContainer);
-			switch(DockState)
-			{
-				case DOCKINGBOX_LEFT:
-				case DOCKINGBOX_RIGHT:
-				case DOCKINGBOX_FLOATING:
-					// Windows toolbar
-					ToolBarGetXYSize(hWindowsToolbar, &TBSize);
-					MoveWindow(hWindowsPager, 0, 0, ControlWidth(hWnd), TBSize.cy, 1);
-					MoveWindow(hWindowsListView, 0, 16, ControlWidth(hWnd), ControlHeight(hWnd) - 16, 1);
-					break;
-				case DOCKINGBOX_TOP:
-				case DOCKINGBOX_BOTTOM:
-					MoveWindow(hWindowsPager, 0, 0, 17, ControlHeight(hWnd), 1);
-					MoveWindow(hWindowsListView, 18, 0, ControlWidth(hWnd) - 18, ControlHeight(hWnd), 1);
-					break;
-			}
-			ListViewSetColWidth(hWindowsListView, 0, ControlClientWidth(hWindowsListView) - 2);
-			EndPaint(hWnd, &VSplitPs);
-			break;
+            DockState = DockingBoxGetState(hWindowsContainer);
+            switch(DockState)
+            {
+                case DOCKINGBOX_LEFT:
+                case DOCKINGBOX_RIGHT:
+                case DOCKINGBOX_FLOATING:
+                    // Windows toolbar
+                    ToolBarGetXYSize(hWindowsToolbar, &TBSize);
+                    MoveWindow(hWindowsPager, 0, 0, ControlWidth(hWnd), TBSize.cy, 1);
+                    MoveWindow(hWindowsListView, 0, 16, ControlWidth(hWnd), ControlHeight(hWnd) - 16, 1);
+                    break;
+                case DOCKINGBOX_TOP:
+                case DOCKINGBOX_BOTTOM:
+                    MoveWindow(hWindowsPager, 0, 0, 17, ControlHeight(hWnd), 1);
+                    MoveWindow(hWindowsListView, 18, 0, ControlWidth(hWnd) - 18, ControlHeight(hWnd), 1);
+                    break;
+            }
+            ListViewSetColWidth(hWindowsListView, 0, ControlClientWidth(hWindowsListView) - 2);
+            EndPaint(hWnd, &VSplitPs);
+            break;
         case WM_COMMAND:
             switch(wParam)
             {
@@ -864,43 +864,43 @@ LRESULT CALLBACK WindowsContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                     {
                         if(IsChildReadOnly(hSel))
                         {
-		                    SetChildReadOnly(hSel, FALSE);
+                            SetChildReadOnly(hSel, FALSE);
                         }
                         else
                         {
-		                    SetChildReadOnly(hSel, TRUE);
+                            SetChildReadOnly(hSel, TRUE);
                         }
                         RefreshChildTitle(hSel);
                     }
                     return(0);
 
             }
-			break;
-		case WM_NOTIFY:
+            break;
+        case WM_NOTIFY:
             switch(ControlGetNotifiedMsg(lParam))
             {
                 case PGN_CALCSIZE:
                     ToolBarGetXYSize(PagerGetNotifiedChild(lParam), &MySize);
-					DockState = DockingBoxGetState(hWindowsContainer);
-					ToolBarGetXYSize(PagerGetNotifiedChild(lParam), &MySize);
-					switch(DockState)
-					{
-						case DOCKINGBOX_TOP:
-						case DOCKINGBOX_BOTTOM:
-							PagerChangeOrientation(hWindowsPager, (LPNMPGCALCSIZE) lParam, PGS_VERT, &MySize);
-							break;
-						default:
-							PagerChangeOrientation(hWindowsPager, (LPNMPGCALCSIZE) lParam, PGS_HORZ, &MySize);
-							break;
-					}
+                    DockState = DockingBoxGetState(hWindowsContainer);
+                    ToolBarGetXYSize(PagerGetNotifiedChild(lParam), &MySize);
+                    switch(DockState)
+                    {
+                        case DOCKINGBOX_TOP:
+                        case DOCKINGBOX_BOTTOM:
+                            PagerChangeOrientation(hWindowsPager, (LPNMPGCALCSIZE) lParam, PGS_VERT, &MySize);
+                            break;
+                        default:
+                            PagerChangeOrientation(hWindowsPager, (LPNMPGCALCSIZE) lParam, PGS_HORZ, &MySize);
+                            break;
+                    }
                     return(0);
                 case TTN_NEEDTEXT:
                     SpTooltipId = ControlGetNotifiedID(lParam);
                     if(SpTooltipId <= WINDOWSTOOLBAR_RELOAD)
                     {
-						ToolBarDisplayToolTip(WindowsToolbarToolTip[SpTooltipId], lParam);
-					}
-					return(0);
+                        ToolBarDisplayToolTip(WindowsToolbarToolTip[SpTooltipId], lParam);
+                    }
+                    return(0);
                 case NM_RCLICK:
                     // Create Contextual menu
                     hPop = CreatePopupMenu();
@@ -910,26 +910,26 @@ LRESULT CALLBACK WindowsContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                     MenuAddString(hPop, "Save as...", MENU_WINDOWSBOX_SAVEAS_ID + MENU_WINDOWSBOX_IDBASE, TRUE);
                     MenuAddSeparator(hPop);
                     MenuAddString(hPop, "Toggle read only", MENU_WINDOWSBOX_TOGGLE_ID + MENU_WINDOWSBOX_IDBASE, TRUE);
-					GetCursorPos(&PopupPoint);
+                    GetCursorPos(&PopupPoint);
                     TrackPopupMenu(hPop, TPM_LEFTALIGN + TPM_LEFTBUTTON, PopupPoint.x, PopupPoint.y, 0, hWnd, NULL);
-					return(0);
+                    return(0);
                 case NM_CLICK:
                     if(ControlGetNotifiedhWnd(lParam) == hWindowsListView) RefreshCurrentWindowFromList();
-					return(0);
+                    return(0);
             }
-			break;
+            break;
 
         case WM_EXITMENULOOP:
-			return(0);
+            return(0);
 
-		case DOCKINGBOX_MSG_QUERY_STATE:
-			return(ShowWindowsDockWin);
-		case DOCKINGBOX_MSG_CLOSE:
-			ShowWindowsDockWin = 0;
+        case DOCKINGBOX_MSG_QUERY_STATE:
+            return(ShowWindowsDockWin);
+        case DOCKINGBOX_MSG_CLOSE:
+            ShowWindowsDockWin = 0;
         case WM_DESTROY:
             SetWindowsDockMenuState(ShowWindowsDockWin);
-			break;
-	}
+            break;
+    }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
 
@@ -943,40 +943,40 @@ LRESULT CALLBACK OutputContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
     long StTooltipId = 0;
     long MaxMdi = 0;
     long DockState = 0;
-	RECT Rect;
+    RECT Rect;
 
-	switch(uMsg)
-	{
+    switch(uMsg)
+    {
         case WM_PAINT:
             BeginPaint(hWnd, &HSplitPs);
-			DockState = DockingBoxGetState(hOutputContainer);
+            DockState = DockingBoxGetState(hOutputContainer);
 
-			switch(DockState)
-			{
-				case DOCKINGBOX_LEFT:
-				case DOCKINGBOX_RIGHT:
-				case DOCKINGBOX_FLOATING:
-					// Windows toolbar
-					ToolBarGetXYSize(hStatusToolBar, &TBSize);
-					MoveWindow(hStatusPager, 0, 0, ControlWidth(hWnd), TBSize.cy, 1);
-					MoveWindow(hOutputSysTab, 0, 16, ControlClientWidth(hWnd), ControlClientHeight(hWnd) - 16, 1);
-					SendMessage(hOutputSysTab, TCM_GETITEMRECT, 0, (LPARAM) &Rect); 
-					MoveWindow(hStatusBox, 5, Rect.bottom + 5, ControlClientWidth(hOutputSysTab) - 10, ControlClientHeight(hOutputSysTab) - (Rect.bottom + 5) - 5, 1);
-					MoveWindow(hDebugBox, 5, Rect.bottom + 5, ControlClientWidth(hOutputSysTab) - 10, ControlClientHeight(hOutputSysTab) - (Rect.bottom + 5) - 5, 1);
-					break;
-				case DOCKINGBOX_TOP:
-				case DOCKINGBOX_BOTTOM:
-					MoveWindow(hStatusPager, 0, 0, 17, ControlHeight(hWnd), 1);
-					MoveWindow(hOutputSysTab, 18, 0, ControlClientWidth(hWnd) - 18, ControlClientHeight(hWnd), 1);
-					SendMessage(hOutputSysTab, TCM_GETITEMRECT, 0, (LPARAM) &Rect); 
-					MoveWindow(hStatusBox, 5, Rect.bottom + 5, ControlClientWidth(hOutputSysTab) - 10, ControlClientHeight(hOutputSysTab) - (Rect.bottom + 5) - 5, 1);
-					MoveWindow(hDebugBox, 5, Rect.bottom + 5, ControlClientWidth(hOutputSysTab) - 10, ControlClientHeight(hOutputSysTab) - (Rect.bottom + 5) - 5, 1);
-					break;
-			}
-			ListBoxSetHorzScrollWidth(hStatusBox, StatusTextLarg);
-			ListBoxSetHorzScrollWidth(hDebugBox, DebugTextLarg);
+            switch(DockState)
+            {
+                case DOCKINGBOX_LEFT:
+                case DOCKINGBOX_RIGHT:
+                case DOCKINGBOX_FLOATING:
+                    // Windows toolbar
+                    ToolBarGetXYSize(hStatusToolBar, &TBSize);
+                    MoveWindow(hStatusPager, 0, 0, ControlWidth(hWnd), TBSize.cy, 1);
+                    MoveWindow(hOutputSysTab, 0, 16, ControlClientWidth(hWnd), ControlClientHeight(hWnd) - 16, 1);
+                    SendMessage(hOutputSysTab, TCM_GETITEMRECT, 0, (LPARAM) &Rect); 
+                    MoveWindow(hStatusBox, 5, Rect.bottom + 5, ControlClientWidth(hOutputSysTab) - 10, ControlClientHeight(hOutputSysTab) - (Rect.bottom + 5) - 5, 1);
+                    MoveWindow(hDebugBox, 5, Rect.bottom + 5, ControlClientWidth(hOutputSysTab) - 10, ControlClientHeight(hOutputSysTab) - (Rect.bottom + 5) - 5, 1);
+                    break;
+                case DOCKINGBOX_TOP:
+                case DOCKINGBOX_BOTTOM:
+                    MoveWindow(hStatusPager, 0, 0, 17, ControlHeight(hWnd), 1);
+                    MoveWindow(hOutputSysTab, 18, 0, ControlClientWidth(hWnd) - 18, ControlClientHeight(hWnd), 1);
+                    SendMessage(hOutputSysTab, TCM_GETITEMRECT, 0, (LPARAM) &Rect); 
+                    MoveWindow(hStatusBox, 5, Rect.bottom + 5, ControlClientWidth(hOutputSysTab) - 10, ControlClientHeight(hOutputSysTab) - (Rect.bottom + 5) - 5, 1);
+                    MoveWindow(hDebugBox, 5, Rect.bottom + 5, ControlClientWidth(hOutputSysTab) - 10, ControlClientHeight(hOutputSysTab) - (Rect.bottom + 5) - 5, 1);
+                    break;
+            }
+            ListBoxSetHorzScrollWidth(hStatusBox, StatusTextLarg);
+            ListBoxSetHorzScrollWidth(hDebugBox, DebugTextLarg);
             EndPaint(hWnd, &HSplitPs);
-			break;
+            break;
         case WM_COMMAND:
             if (lParam == (long) hStatusToolBar)
             {
@@ -985,83 +985,83 @@ LRESULT CALLBACK OutputContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
                     case STATUSTOOLBAR_SAVE:
                         if(StatusDebugMode) SaveBuildReport(hDebugBox);
                         else SaveBuildReport(hStatusBox);
-						return(0);
+                        return(0);
                     case STATUSTOOLBAR_NEW:
                         if(StatusDebugMode) CreateBuildReport(hDebugBox);
                         else CreateBuildReport(hStatusBox);
-						return(0);
+                        return(0);
                     case STATUSTOOLBAR_CLEAR:
-						if(StatusDebugMode) ClearDebug();
-				        else ClearStatus();
+                        if(StatusDebugMode) ClearDebug();
+                        else ClearStatus();
                         return(0);
                 }
-			}
-			break;
+            }
+            break;
         case WM_NOTIFY:
             switch(ControlGetNotifiedMsg(lParam))
             {
                 case PGN_CALCSIZE:
-					DockState = DockingBoxGetState(hOutputContainer);
-					ToolBarGetXYSize(PagerGetNotifiedChild(lParam), &MySize);
-					switch(DockState)
-					{
-						case DOCKINGBOX_TOP:
-						case DOCKINGBOX_BOTTOM:
-							PagerChangeOrientation(hStatusPager, (LPNMPGCALCSIZE) lParam, PGS_VERT, &MySize);
-							break;
-						default:
-							PagerChangeOrientation(hStatusPager, (LPNMPGCALCSIZE) lParam, PGS_HORZ, &MySize);
-							break;
-					}
+                    DockState = DockingBoxGetState(hOutputContainer);
+                    ToolBarGetXYSize(PagerGetNotifiedChild(lParam), &MySize);
+                    switch(DockState)
+                    {
+                        case DOCKINGBOX_TOP:
+                        case DOCKINGBOX_BOTTOM:
+                            PagerChangeOrientation(hStatusPager, (LPNMPGCALCSIZE) lParam, PGS_VERT, &MySize);
+                            break;
+                        default:
+                            PagerChangeOrientation(hStatusPager, (LPNMPGCALCSIZE) lParam, PGS_HORZ, &MySize);
+                            break;
+                    }
                     return(0);
                 case TTN_NEEDTEXT:
                     StTooltipId = ControlGetNotifiedID(lParam);
                     if(StTooltipId <= STATUSTOOLBAR_CLEAR)
                     {
-						ToolBarDisplayToolTip(StatusToolbarToolTip[StTooltipId], lParam);
+                        ToolBarDisplayToolTip(StatusToolbarToolTip[StTooltipId], lParam);
                     }
-					return(0);
-				case TCN_SELCHANGE:
-					switch(SysTabGetCurrentItem(hOutputSysTab))
-					{
-						case 0:
-							ControlVisible(hStatusBox, TRUE);
-							ControlVisible(hDebugBox, FALSE);
-							StatusToolbarToolTip[STATUSTOOLBAR_CLEAR] = "Empty output window";
-							StatusDebugMode = FALSE;
-							ToolBarSetButtonEnabled(hStatusToolBar, STATUSTOOLBAR_SAVE, TRUE);
-							ToolBarSetButtonEnabled(hStatusToolBar, STATUSTOOLBAR_NEW, TRUE);
-							ToolBarSetButtonEnabled(hStatusToolBar, STATUSTOOLBAR_CLEAR, TRUE);
-							break;
-						case 1:
-							ControlVisible(hDebugBox, TRUE);
-							ControlVisible(hStatusBox, FALSE);
-							StatusToolbarToolTip[STATUSTOOLBAR_CLEAR] = "Empty debug window";
-							StatusDebugMode = TRUE;
-							ToolBarSetButtonEnabled(hStatusToolBar, STATUSTOOLBAR_SAVE, TRUE);
-							ToolBarSetButtonEnabled(hStatusToolBar, STATUSTOOLBAR_NEW, TRUE);
-							ToolBarSetButtonEnabled(hStatusToolBar, STATUSTOOLBAR_CLEAR, TRUE);
-							break;
-						default:
-							ControlVisible(hStatusBox, FALSE);
-							ControlVisible(hDebugBox, FALSE);
-							StatusDebugMode = FALSE;
-							StatusToolbarToolTip[STATUSTOOLBAR_CLEAR] = "";
-							ToolBarSetButtonEnabled(hStatusToolBar, STATUSTOOLBAR_SAVE, FALSE);
-							ToolBarSetButtonEnabled(hStatusToolBar, STATUSTOOLBAR_NEW, FALSE);
-							ToolBarSetButtonEnabled(hStatusToolBar, STATUSTOOLBAR_CLEAR, FALSE);
-							break;
-					}
-					return(0);
+                    return(0);
+                case TCN_SELCHANGE:
+                    switch(SysTabGetCurrentItem(hOutputSysTab))
+                    {
+                        case 0:
+                            ControlVisible(hStatusBox, TRUE);
+                            ControlVisible(hDebugBox, FALSE);
+                            StatusToolbarToolTip[STATUSTOOLBAR_CLEAR] = "Empty output window";
+                            StatusDebugMode = FALSE;
+                            ToolBarSetButtonEnabled(hStatusToolBar, STATUSTOOLBAR_SAVE, TRUE);
+                            ToolBarSetButtonEnabled(hStatusToolBar, STATUSTOOLBAR_NEW, TRUE);
+                            ToolBarSetButtonEnabled(hStatusToolBar, STATUSTOOLBAR_CLEAR, TRUE);
+                            break;
+                        case 1:
+                            ControlVisible(hDebugBox, TRUE);
+                            ControlVisible(hStatusBox, FALSE);
+                            StatusToolbarToolTip[STATUSTOOLBAR_CLEAR] = "Empty debug window";
+                            StatusDebugMode = TRUE;
+                            ToolBarSetButtonEnabled(hStatusToolBar, STATUSTOOLBAR_SAVE, TRUE);
+                            ToolBarSetButtonEnabled(hStatusToolBar, STATUSTOOLBAR_NEW, TRUE);
+                            ToolBarSetButtonEnabled(hStatusToolBar, STATUSTOOLBAR_CLEAR, TRUE);
+                            break;
+                        default:
+                            ControlVisible(hStatusBox, FALSE);
+                            ControlVisible(hDebugBox, FALSE);
+                            StatusDebugMode = FALSE;
+                            StatusToolbarToolTip[STATUSTOOLBAR_CLEAR] = "";
+                            ToolBarSetButtonEnabled(hStatusToolBar, STATUSTOOLBAR_SAVE, FALSE);
+                            ToolBarSetButtonEnabled(hStatusToolBar, STATUSTOOLBAR_NEW, FALSE);
+                            ToolBarSetButtonEnabled(hStatusToolBar, STATUSTOOLBAR_CLEAR, FALSE);
+                            break;
+                    }
+                    return(0);
             }
-			break;
-		case DOCKINGBOX_MSG_QUERY_STATE:
-			return(ShowOutputDockWin);
-		case DOCKINGBOX_MSG_CLOSE:
-			ShowOutputDockWin = 0;
+            break;
+        case DOCKINGBOX_MSG_QUERY_STATE:
+            return(ShowOutputDockWin);
+        case DOCKINGBOX_MSG_CLOSE:
+            ShowOutputDockWin = 0;
         case WM_DESTROY:
-			SetOutputDockMenuState(ShowOutputDockWin);
-			break;
+            SetOutputDockMenuState(ShowOutputDockWin);
+            break;
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
@@ -1070,16 +1070,16 @@ LRESULT CALLBACK OutputContainerProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 // Show/Hide project window
 void SetProjectDockState(long bShow)
 {
-	SetProjectDockMenuState(bShow);
-	switch(bShow)
-	{
+    SetProjectDockMenuState(bShow);
+    switch(bShow)
+    {
         case 0:
-			DockingBoxRemove(hProjectContainer);
-			break;
-		case 1:
-			DockingBoxShow(hProjectContainer, GetMDIWidth(), GetMDIHeight(), 120, 230, DOCKINGBOX_LEFT);
-			break;
-	}
+            DockingBoxRemove(hProjectContainer);
+            break;
+        case 1:
+            DockingBoxShow(hProjectContainer, GetMDIWidth(), GetMDIHeight(), 120, 230, DOCKINGBOX_LEFT);
+            break;
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -1087,14 +1087,14 @@ void SetProjectDockState(long bShow)
 // (MF_BYPOSITION so -1)
 void SetProjectDockMenuState(long bShow)
 {
-	switch(bShow)
-	{
+    switch(bShow)
+    {
         case 0:
             CheckMenuItem(hViewMenuDisplay, MENU_VIEW_PROJECTDOCK_ID - 1, MF_BYPOSITION | MF_UNCHECKED);
-			break;
+            break;
         case 1:
             CheckMenuItem(hViewMenuDisplay, MENU_VIEW_PROJECTDOCK_ID - 1, MF_BYPOSITION | MF_CHECKED);
-			break;
+            break;
     }
 }
 
@@ -1102,16 +1102,16 @@ void SetProjectDockMenuState(long bShow)
 // Show/Hide windows list window
 void SetWindowsDockState(long bShow)
 {
-	SetWindowsDockMenuState(bShow);
-	switch(bShow)
-	{
+    SetWindowsDockMenuState(bShow);
+    switch(bShow)
+    {
         case 0:
-			DockingBoxRemove(hWindowsContainer);
-			break;
-		case 1:
-			DockingBoxShow(hWindowsContainer, GetMDIWidth(), GetMDIHeight(), 120, 230, DOCKINGBOX_LEFT);
-			break;
-	}
+            DockingBoxRemove(hWindowsContainer);
+            break;
+        case 1:
+            DockingBoxShow(hWindowsContainer, GetMDIWidth(), GetMDIHeight(), 120, 230, DOCKINGBOX_LEFT);
+            break;
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -1122,27 +1122,27 @@ void SetWindowsDockMenuState(long bShow)
     {
         case 0:
             CheckMenuItem(hViewMenuDisplay, MENU_VIEW_WINDOWSDOCK_ID - 1, MF_BYPOSITION | MF_UNCHECKED);
-			break;
+            break;
         case 1:
             CheckMenuItem(hViewMenuDisplay, MENU_VIEW_WINDOWSDOCK_ID - 1, MF_BYPOSITION | MF_CHECKED);
-			break;
-	}
+            break;
+    }
 }
 
 // -----------------------------------------------------------------------
 // Show/Hide output window
 void SetOutputDockState(long bShow)
 {
-	SetOutputDockMenuState(bShow);
-	switch(bShow)
-	{
+    SetOutputDockMenuState(bShow);
+    switch(bShow)
+    {
         case 0:
-			DockingBoxRemove(hOutputContainer);
-			break;
-		case 1:
-			DockingBoxShow(hOutputContainer, GetMDIWidth(), GetMDIHeight(), 500, 120, DOCKINGBOX_BOTTOM);
-			break;
-	}
+            DockingBoxRemove(hOutputContainer);
+            break;
+        case 1:
+            DockingBoxShow(hOutputContainer, GetMDIWidth(), GetMDIHeight(), 500, 120, DOCKINGBOX_BOTTOM);
+            break;
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -1153,11 +1153,11 @@ void SetOutputDockMenuState(long bShow)
     {
         case 0:
             CheckMenuItem(hViewMenuDisplay, MENU_VIEW_OUTPUTDOCK_ID - 1, MF_BYPOSITION | MF_UNCHECKED);
-			break;
+            break;
         case 1:
             CheckMenuItem(hViewMenuDisplay, MENU_VIEW_OUTPUTDOCK_ID - 1, MF_BYPOSITION | MF_CHECKED);
-			break;
-	}
+            break;
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -1165,7 +1165,7 @@ void SetOutputDockMenuState(long bShow)
 void WriteToStatus(CStr Txt)
 {
     CStr SilentAutoValue;
-	long TextWidth;
+    long TextWidth;
 
     // Popup window if hidden
     SilentAutoValue = IniReadKey("Layout", "SilentAuto", MainIniFile);
@@ -1188,9 +1188,9 @@ void WriteToStatus(CStr Txt)
             }
         }
     }
-	// Store length
-	TextWidth = GDIGetTextWidth(hStatusBox,WASerifFont,Txt);
-	if(TextWidth > StatusTextLarg) StatusTextLarg = TextWidth;
+    // Store length
+    TextWidth = GDIGetTextWidth(hStatusBox,WASerifFont,Txt);
+    if(TextWidth > StatusTextLarg) StatusTextLarg = TextWidth;
     ListBoxAddItem(hStatusBox, Txt, -1);
     ListBoxSetTopIndex(hStatusBox, ListBoxCount(hStatusBox) - 1);
 }
@@ -1200,7 +1200,7 @@ void WriteToStatus(CStr Txt)
 void WriteToDebug(CStr Txt)
 {
     CStr SilentAutoValue;
-	long TextWidth;
+    long TextWidth;
 
     // Popup window if hidden
     SilentAutoValue = IniReadKey("Layout", "SilentAuto", MainIniFile);
@@ -1223,9 +1223,9 @@ void WriteToDebug(CStr Txt)
             }
         }
     }
-	// Store length
-	TextWidth = GDIGetTextWidth(hDebugBox, WACourrierNewFont9, Txt);
-	if(TextWidth > DebugTextLarg) DebugTextLarg = TextWidth;
+    // Store length
+    TextWidth = GDIGetTextWidth(hDebugBox, WACourrierNewFont9, Txt);
+    if(TextWidth > DebugTextLarg) DebugTextLarg = TextWidth;
     ListBoxAddItem(hDebugBox, Txt, -1);
     ListBoxSetTopIndex(hDebugBox, ListBoxCount(hDebugBox) - 1);
 }
@@ -1235,7 +1235,7 @@ void WriteToDebug(CStr Txt)
 void ClearStatus(void)
 {
     ListBoxReset(hStatusBox);
-	StatusTextLarg = 0;
+    StatusTextLarg = 0;
 }
 
 // -----------------------------------------------------------------------
@@ -1243,7 +1243,7 @@ void ClearStatus(void)
 void ClearDebug(void)
 {
     ListBoxReset(hDebugBox);
-	DebugTextLarg = 0;
+    DebugTextLarg = 0;
 }
 
 // -----------------------------------------------------------------------
@@ -1255,7 +1255,7 @@ void SaveBuildReport(HWND hWnd)
     CStr CCCDir;
     int i = 0;
     
-	if(ListBoxCount(hWnd) == 0) return;
+    if(ListBoxCount(hWnd) == 0) return;
     Filters = "All files (*.*)|*.*";
     FName = ComDlgGetSaveFileName(hMDIform.hWnd, Filters, "", CurrentDir);
     DeleteFile(FName.Get_String());
@@ -1265,7 +1265,7 @@ void SaveBuildReport(HWND hWnd)
         for(i = 0; i <= (long) ListBoxCount(hWnd) - 1; i++)
         {
             DOSReportStr = DOSReportStr + ListBoxGetItem(hWnd, i);
-			DOSReportStr = DOSReportStr + DOSReportStr.New_Line();
+            DOSReportStr = DOSReportStr + DOSReportStr.New_Line();
         }
         if(MSaveFile(FName.Get_String(), (long) DOSReportStr.Get_String(), DOSReportStr.Len()) == 0)
         {
@@ -1286,24 +1286,24 @@ void CreateBuildReport(HWND hWnd)
 {
     int i = 0;
     CStr ReportText;
-	CStr BufString;
+    CStr BufString;
     HWND NewChildHandle = 0;
     
     if(ListBoxCount(hWnd) == 0) return;
-	ReportText = "";
+    ReportText = "";
     for(i = 0; i <= (long) ListBoxCount(hWnd) - 1; i++)
     {
         ReportText = ReportText + (CStr) ListBoxGetItem(hWnd, i).Get_String();
-		ReportText = ReportText + (CStr) ReportText.New_Line().Get_String();
-	}
+        ReportText = ReportText + (CStr) ReportText.New_Line().Get_String();
+    }
     StoreLanguageToOpen("");
     BufString = "Output" + (CStr) StringNumberComplement(DateGetDay().Get_Long(), 2).Get_String();
-	BufString = BufString + StringNumberComplement(DateGetMonth().Get_Long(), 2);
-	BufString = BufString + StringNumberComplement(DateGetYear().Get_Long(), 2);
-	BufString = BufString + StringNumberComplement(DateGetHour().Get_Long(), 2);
-	BufString = BufString + StringNumberComplement(DateGetMinutes().Get_Long(), 2);
-	BufString = BufString + ".log";
-	NewChildHandle = CreateNewFile(BufString);
+    BufString = BufString + StringNumberComplement(DateGetMonth().Get_Long(), 2);
+    BufString = BufString + StringNumberComplement(DateGetYear().Get_Long(), 2);
+    BufString = BufString + StringNumberComplement(DateGetHour().Get_Long(), 2);
+    BufString = BufString + StringNumberComplement(DateGetMinutes().Get_Long(), 2);
+    BufString = BufString + ".log";
+    NewChildHandle = CreateNewFile(BufString);
 
     if(NewChildHandle == 0) goto ErrorOpenOutput;
     SendTextToChild(NewChildHandle, ReportText);
@@ -1327,11 +1327,11 @@ LRESULT CALLBACK TreeViewHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
     HANDLE DefFileHandle = 0;
     CStr EntryToAdd;
     CStr BufString;
-	HTREEITEM TreeChild = 0;
+    HTREEITEM TreeChild = 0;
     POINT PopupPoint;
-	
-	switch(uMsg)
-	{
+    
+    switch(uMsg)
+    {
         case WM_RBUTTONDBLCLK:
             return(0);
         case WM_LBUTTONDOWN:
@@ -1343,8 +1343,8 @@ LRESULT CALLBACK TreeViewHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                     TreeViewSetSelectedItem(hTreeView, RightSelection);
                 }
             }
-			break;
-		case WM_RBUTTONDOWN:
+            break;
+        case WM_RBUTTONDOWN:
             if(InContextMenu == 0)
             {
                 RightSelection = TreeViewGetItemFromPos(hTreeView, lParam & 0xFFFF, ((lParam & 0xFFFF0000) >> 16));
@@ -1425,7 +1425,7 @@ LRESULT CALLBACK TreeViewHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                     MenuAddString(hPop, "Add new document file(s)...", MENU_POP_BASEID, TRUE);
                     MenuAddString(hPop, "Add current file", MENU_POP_BASEID + 1, TRUE);
                     LastSelectTreePop = MENU_POP_NEWTEXT;
-				}
+                }
                 if(LastSelectTreePop == MENU_POP_NONE)
                 {
                     // Childs menus
@@ -1537,13 +1537,13 @@ LRESULT CALLBACK TreeViewHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                             MenuAddString(hPop, BufString, MENU_POP_BASEID + 1, TRUE);
                             BufString = "Remove " + (CStr) NodeTp;
                             MenuAddString(hPop, BufString, MENU_POP_BASEID + 2, TRUE);
-						}
+                        }
                     }
                     else if(PopTreeParent == hTreeViewIcons)
                     {
                         NodeTp = "icon resource";
                         LastSelectTreePop = MENU_POP_ICONDETAILS;
-						BufString = "Open " + (CStr) NodeTp;
+                        BufString = "Open " + (CStr) NodeTp;
                         MenuAddString(hPop, BufString, MENU_POP_BASEID, TRUE);
                         MenuSetDefaultItem(hPop, 0);
                         MenuAddString(hPop, "Icon properties", MENU_POP_BASEID + 1, TRUE);
@@ -1687,14 +1687,14 @@ LRESULT CALLBACK TreeViewHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                         MenuAddString(hPop, BufString, MENU_POP_BASEID + 2, TRUE);
                         BufString = "Remove " + (CStr) NodeTp;
                         MenuAddString(hPop, BufString, MENU_POP_BASEID + 3, TRUE);
-					}
+                    }
                 }
                 InContextMenu = 1;
                 GetCursorPos(&PopupPoint);
                 TrackPopupMenu(hPop, TPM_LEFTALIGN + TPM_LEFTBUTTON, PopupPoint.x, PopupPoint.y, 0, hWnd, &myPopRect);
             }
-			break;
-		// --- Contextual menu selections
+            break;
+        // --- Contextual menu selections
         case WM_MENUSELECT:
             // Process user menus
             if((wParam & 0x8000) == 0)
@@ -1709,22 +1709,22 @@ LRESULT CALLBACK TreeViewHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                             {
                                 case 0:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_PROJECTPROPERTIES_ID]);
-									break;
-							    case 1:
+                                    break;
+                                case 1:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ASSEMBLEPROJECT_ID]);
-									break;
+                                    break;
                                 case 2:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_RUNPROJECT_ID]);
-									break;
+                                    break;
                                 case 3:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_DEBUGPROJECT_ID]);
-									break;
+                                    break;
                                 case 4:
                                     WriteComment("Run project without compilation");
-									break;
+                                    break;
                                 case 5:
                                     WriteComment("Debug project without compilation");
-									break;
+                                    break;
                             }
                             return(0);
                         case MENU_POP_NEWINCLUDE:
@@ -1732,13 +1732,13 @@ LRESULT CALLBACK TreeViewHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                             {
                                 case 0:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDINCLUDE_ID]);
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment("Add current opened file to includes entries");
-									break;
-								case 2:
+                                    break;
+                                case 2:
                                     WriteComment("Open all includes entries");
-									break;
+                                    break;
                             }
                             return(0);
                         case MENU_POP_NEWLIBRARY:
@@ -1746,51 +1746,51 @@ LRESULT CALLBACK TreeViewHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                             {
                                 case 0:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDLIBRARY_ID]);
-									break;
-							}
+                                    break;
+                            }
                             return(0);
                         case MENU_POP_NEWMODULE:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDMODULE_ID]);
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment("Add current opened file to modules entries");
-									break;
-								case 2:
+                                    break;
+                                case 2:
                                     WriteComment("Open all modules entries");
-									break;
-							}
+                                    break;
+                            }
                             return(0);
                         case MENU_POP_NEWOBJECT:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDOBJECT_ID]);
-									break;
-							}
-							return(0);
+                                    break;
+                            }
+                            return(0);
                         case MENU_POP_NEWRESOURCE:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDRESOURCE_ID]);
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment("Add current opened file to resources entries");
-									break;
-								case 2:
+                                    break;
+                                case 2:
                                     WriteComment("Open all resources entries");
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_NEWDEF:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment("Create exported procedures file");
-									break;
+                                    break;
                             }
                             return(0);
                         case MENU_POP_NEWTEXT:
@@ -1798,337 +1798,337 @@ LRESULT CALLBACK TreeViewHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                             {
                                 case 0:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDTEXT_ID]);
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment("Add current opened file to documents entries");
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_NEWICON:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDICON_ID]);
-									break;
-							}
-							return(0);
+                                    break;
+                            }
+                            return(0);
                         case MENU_POP_NEWCURSOR:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDCURSOR_ID]);
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_NEWBITMAP:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDBITMAP_ID]);
-									break;
-							}
-							return(0);
+                                    break;
+                            }
+                            return(0);
                         case MENU_POP_NEWSTRINGS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment("Create new strings resource");
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDSTRINGS_ID]);
-									break;
-							}
+                                    break;
+                            }
                             return(0);
                         case MENU_POP_NEWACCELERATORS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment("Create new accelerators resource");
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDACCELERATORS_ID]);
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_NEWMENUS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment("Create new menus resource");
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDMENUS_ID]);
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_NEWDIALOG:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment("Create new dialog resource");
-									break;
+                                    break;
                                 case 1:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDDIALOG_ID]);
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_NEWRAWDATA:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDRAWDATA_ID]);
-									break;
-							}
+                                    break;
+                            }
                             return(0);
                         case MENU_POP_INCLUDEDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment("Open selected include file");
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDINCLUDE_ID]);
-									break;
+                                    break;
                                 case 2:
                                     WriteComment("Remove include file from current project");
-									break;
-							}
-							return(0);
+                                    break;
+                            }
+                            return(0);
                         case MENU_POP_LIBRARYDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDLIBRARY_ID]);
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment("Remove library file from current project");
-									break;
+                                    break;
                                 case 2:
                                     WriteComment("Generate prototypes for selected library file");
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_MODULEDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment("Open selected module file");
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDMODULE_ID]);
-									break;
+                                    break;
                                 case 2:
                                     WriteComment("Remove module file from current project");
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_OBJECTDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDOBJECT_ID]);
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment("Remove object file from current project");
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_RESOURCEDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment("Open current resource file");
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDRESOURCE_ID]);
-									break;
-								case 2:
+                                    break;
+                                case 2:
                                     WriteComment("Remove resource file from current project");
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_ICONDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment("Display selected icon resource");
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment("Edit icon resource properties");
-									break;
+                                    break;
                                 case 2:
                                     WriteComment("Convert icon resource to rc file");
-									break;
+                                    break;
                                 case 3:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDICON_ID]);
-									break;
+                                    break;
                                 case 4:
                                     WriteComment("Remove icon resource from current project");
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_CURSORDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment("Display selected cursor resource");
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment("Edit cursor resource properties");
-									break;
+                                    break;
                                 case 2:
                                     WriteComment("Convert cursor resource to rc file");
-									break;
+                                    break;
                                 case 3:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDCURSOR_ID]);
-									break;
+                                    break;
                                 case 4:
                                     WriteComment("Remove cursor resource from current project");
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_BITMAPDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment("Display selected bitmap resource");
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment("Edit bitmap resource properties");
-									break;
+                                    break;
                                 case 2:
                                     WriteComment("Convert bitmap resource to rc file");
-									break;
+                                    break;
                                 case 3:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDBITMAP_ID]);
-									break;
+                                    break;
                                 case 4:
                                     WriteComment("Remove bitmap resource from current project");
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_STRINGDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment("Edit selected strings resource");
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment("Edit strings resource properties");
-									break;
+                                    break;
                                 case 2:
                                     WriteComment("Convert strings resource to rc file");
-									break;
+                                    break;
                                 case 3:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDSTRINGS_ID]);
-									break;
+                                    break;
                                 case 4:
                                     WriteComment("Remove strings resource from current project");
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_ACCELERATORDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment("Edit selected accelerators resource");
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment("Edit accelerators resource properties");
-									break;
+                                    break;
                                 case 2:
                                     WriteComment("Convert accelerators resource to rc file");
-									break;
+                                    break;
                                 case 3:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDACCELERATORS_ID]);
-									break;
+                                    break;
                                 case 4:
                                     WriteComment("Remove accelerators resource from current project");
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_MENUDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment("Edit selected menus resource");
-									break;
+                                    break;
                                 case 1:
                                     WriteComment("Edit menus resource properties");
-									break;
+                                    break;
                                 case 2:
                                     WriteComment("Convert menus resource to rc file");
-									break;
+                                    break;
                                 case 3:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDMENUS_ID]);
-									break;
+                                    break;
                                 case 4:
                                     WriteComment("Remove menus resource from current project");
-									break;
-							}
+                                    break;
+                            }
                             return(0);
                         case MENU_POP_DIALOGDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment("Edit selected dialog resource");
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment("Edit dialog resource properties");
-									break;
+                                    break;
                                 case 2:
                                     WriteComment("Convert dialog resource to rc file");
-									break;
+                                    break;
                                 case 3:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDDIALOG_ID]);
-									break;
+                                    break;
                                 case 4:
                                     WriteComment("Remove dialog resource from current project");
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_RAWDATADETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment("Edit raw datas resource properties");
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDRAWDATA_ID]);
-									break;
+                                    break;
                                 case 2:
                                     WriteComment("Convert selected raw datas resource to rc file");
-									break;
+                                    break;
                                 case 3:
                                     WriteComment("Remove raw datas resource from current project");
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_DEFDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment("Edit exported procedures list");
-									break;
-							}
-							return(0);
+                                    break;
+                            }
+                            return(0);
                         case MENU_POP_TEXTDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     WriteComment("Open selected document file in " + (CStr) AppTitle);
-									break;
+                                    break;
                                 case 1:
                                     WriteComment("Open selected document file with default application");
-									break;
+                                    break;
                                 case 2:
                                     WriteComment(MenuProjectComments[MENU_PROJECT_ADDTEXT_ID]);
-									break;
+                                    break;
                                 case 3:
                                     WriteComment("Remove document file from current project");
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                     }
                     WriteComment("");
                     return(0);
@@ -2144,11 +2144,11 @@ LRESULT CALLBACK TreeViewHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                 WriteComment("");
                 return(0);
             }
-			break;
+            break;
         case WM_EXITMENULOOP:
             InContextMenu = 0;
             WriteComment("");
-			return(0);
+            return(0);
         case WM_COMMAND:
             // Process user menus
             if((wParam & 0x8000) == 0)
@@ -2165,44 +2165,44 @@ LRESULT CALLBACK TreeViewHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                                 case 0:
                                     MCMD_ProjectProperties();
                                     SetFocus(hTreeView);
-									break;
+                                    break;
                                 case 1:
                                     MCMD_AssembleProject();
-									break;
+                                    break;
                                 case 2:
                                     MCMD_RunProject();
-									break;
+                                    break;
                                 case 3:
                                     MCMD_DebugProject();
-									break;
+                                    break;
                                 case 4:
                                     RunProject();
-									break;
+                                    break;
                                 case 5:
                                     DebugProject();
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_NEWINCLUDE:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     MCMD_AddInclude();
                                     SetFocus(hTreeView);
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     MCMD_AddCurrentInclude();
                                     SetFocus(hTreeView);
-									break;
-								case 2:
-									// Open all includes
+                                    break;
+                                case 2:
+                                    // Open all includes
                                     TreeChild = TreeViewGetFirstItemChild(hTreeView,CurrentTreeItem);
-									while(TreeChild != 0)
-									{
-										FocusFile(GetFileNameFromTreeView(TreeChild), 1);
-										TreeChild = TreeViewGetNextItem(hTreeView, TreeChild);
-									}
-									break;
+                                    while(TreeChild != 0)
+                                    {
+                                        FocusFile(GetFileNameFromTreeView(TreeChild), 1);
+                                        TreeChild = TreeViewGetNextItem(hTreeView, TreeChild);
+                                    }
+                                    break;
                             }
                             return(0);
                         case MENU_POP_NEWLIBRARY:
@@ -2211,78 +2211,78 @@ LRESULT CALLBACK TreeViewHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                                 case 0:
                                     MCMD_AddLibrary();
                                     SetFocus(hTreeView);
-									break;
-							}
-							return(0);
+                                    break;
+                            }
+                            return(0);
                         case MENU_POP_NEWMODULE:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     MCMD_AddModule();
                                     SetFocus(hTreeView);
-									break;
+                                    break;
                                 case 1:
                                     MCMD_AddCurrentModule();
                                     SetFocus(hTreeView);
-									break;
+                                    break;
                                 case 2:
-									// Open all modules
+                                    // Open all modules
                                     TreeChild = TreeViewGetFirstItemChild(hTreeView,CurrentTreeItem);
-									while(TreeChild != 0)
-									{
-										FocusFile(GetFileNameFromTreeView(TreeChild), 1);
-										TreeChild = TreeViewGetNextItem(hTreeView, TreeChild);
-									}
-									break;
+                                    while(TreeChild != 0)
+                                    {
+                                        FocusFile(GetFileNameFromTreeView(TreeChild), 1);
+                                        TreeChild = TreeViewGetNextItem(hTreeView, TreeChild);
+                                    }
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_NEWOBJECT:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     MCMD_AddObject();
                                     SetFocus(hTreeView);
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_NEWRESOURCE:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     MCMD_AddResource();
                                     SetFocus(hTreeView);
-									break;
+                                    break;
                                 case 1:
                                     MCMD_AddCurrentRc();
                                     SetFocus(hTreeView);
-									break;
+                                    break;
                                 case 2:
-									// Open all resources files
+                                    // Open all resources files
                                     TreeChild = TreeViewGetFirstItemChild(hTreeView,CurrentTreeItem);
-									while(TreeChild != 0)
-									{
-										if((TreeChild != hTreeViewIcons) &&
-											(TreeChild != hTreeViewCursors) &&
-											(TreeChild != hTreeViewBitmaps) &&
-											(TreeChild != hTreeViewStrings) &&
-											(TreeChild != hTreeViewAccelerators) &&
-											(TreeChild != hTreeViewMenus) &&
-											(TreeChild != hTreeViewDialogs) &&
-											(TreeChild != hTreeViewRawdatas))
-										{
-												FocusFile(GetFileNameFromTreeView(TreeChild), 1);
-										}
-										TreeChild = TreeViewGetNextItem(hTreeView, TreeChild);
-									}
-									break;
+                                    while(TreeChild != 0)
+                                    {
+                                        if((TreeChild != hTreeViewIcons) &&
+                                            (TreeChild != hTreeViewCursors) &&
+                                            (TreeChild != hTreeViewBitmaps) &&
+                                            (TreeChild != hTreeViewStrings) &&
+                                            (TreeChild != hTreeViewAccelerators) &&
+                                            (TreeChild != hTreeViewMenus) &&
+                                            (TreeChild != hTreeViewDialogs) &&
+                                            (TreeChild != hTreeViewRawdatas))
+                                        {
+                                                FocusFile(GetFileNameFromTreeView(TreeChild), 1);
+                                        }
+                                        TreeChild = TreeViewGetNextItem(hTreeView, TreeChild);
+                                    }
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_NEWDEF:
                             switch(CurrentParam)
                             {
                                 case 0:
-									BufString = FileGetDirectory(ProjectFName);
-									BufString = BufString + ProjectTitle + (CStr) ".mdf";
+                                    BufString = FileGetDirectory(ProjectFName);
+                                    BufString = BufString + ProjectTitle + (CStr) ".mdf";
                                     DefFileHandle = FileCreateEmpty(BufString, NO_SECURITY_DESCRIPTOR);
                                     FileWriteLine(DefFileHandle, "; Chromatic exports file");
                                     FileWriteLine(DefFileHandle, "; Do NOT edit this file manually");
@@ -2292,38 +2292,38 @@ LRESULT CALLBACK TreeViewHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                                     FileClose(DefFileHandle);
                                     EntryToAdd = ProjectTitle + (CStr) ".mdf (" + (CStr) FileGetDirectory(ProjectFName).Get_String() + (CStr) ProjectTitle + (CStr) ".mdf" + (CStr) ")";
                                     TreeViewAddItem(hTreeView, EntryToAdd, hTreeViewDefs, 0, ICON_NEW, ICON_NEW, 0, 1);
-									break;
-							}
-							return(0);
+                                    break;
+                            }
+                            return(0);
                         case MENU_POP_NEWTEXT:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     MCMD_AddText();
                                     SetFocus(hTreeView);
-									break;
+                                    break;
                                 case 1:
                                     MCMD_AddCurrentText();
                                     SetFocus(hTreeView);
-									break;
-							}
-							return(0);
+                                    break;
+                            }
+                            return(0);
                         case MENU_POP_NEWICON:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     MCMD_AddIcon();
                                     SetFocus(hTreeView);
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_NEWCURSOR:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     MCMD_AddCursor();
                                     SetFocus(hTreeView);
-									break;
+                                    break;
                             }
                             return(0);
                         case MENU_POP_NEWBITMAP:
@@ -2332,346 +2332,346 @@ LRESULT CALLBACK TreeViewHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                                 case 0:
                                     MCMD_AddBitmap();
                                     SetFocus(hTreeView);
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_NEWSTRINGS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     CreateStrings();
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     MCMD_AddStrings();
                                     SetFocus(hTreeView);
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_NEWACCELERATORS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     CreateAccelerators();
-									break;
+                                    break;
                                 case 1:
                                     MCMD_AddAccelerators();
                                     SetFocus(hTreeView);
-									break;
-							}
-							return(0);
+                                    break;
+                            }
+                            return(0);
                         case MENU_POP_NEWMENUS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     CreateMenus();
-									break;
+                                    break;
                                 case 1:
                                     MCMD_AddMenus();
                                     SetFocus(hTreeView);
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_NEWDIALOG:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     CreateUserDialog();
-									break;
+                                    break;
                                 case 1:
                                     MCMD_AddDialog();
                                     SetFocus(hTreeView);
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_NEWRAWDATA:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     MCMD_AddRawDatas();
                                     SetFocus(hTreeView);
-									break;
-							}
-							return(0);
+                                    break;
+                            }
+                            return(0);
                         case MENU_POP_INCLUDEDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     FocusFile(GetFileNameFromTreeView(CurrentTreeItem), 1);
-									break;
+                                    break;
                                 case 1:
                                     MCMD_AddInclude();
                                     SetFocus(hTreeView);
-									break;
+                                    break;
                                 case 2:
                                     TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                     ProjectModified = TRUE;
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_LIBRARYDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     MCMD_AddLibrary();
                                     SetFocus(hTreeView);
-									break;
+                                    break;
                                 case 1:
                                     TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                     ProjectModified = TRUE;
-									break;
+                                    break;
                                 case 2:
                                     GenProto(GetFileNameFromTreeView(CurrentTreeItem));
-									break;
-							}
-							return(0);
+                                    break;
+                            }
+                            return(0);
                         case MENU_POP_MODULEDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     FocusFile(GetFileNameFromTreeView(CurrentTreeItem), 1);
-									break;
+                                    break;
                                 case 1:
                                     MCMD_AddModule();
                                     SetFocus(hTreeView);
-									break;
-								case 2:
+                                    break;
+                                case 2:
                                     TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                     ProjectModified = TRUE;
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_OBJECTDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     MCMD_AddObject();
                                     SetFocus(hTreeView);
-									break;
+                                    break;
                                 case 1:
                                     TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                     ProjectModified = TRUE;
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_RESOURCEDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     FocusFile(GetFileNameFromTreeView(CurrentTreeItem), 1);
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     MCMD_AddResource();
                                     SetFocus(hTreeView);
-									break;
+                                    break;
                                 case 2:
                                     TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                     ProjectModified = TRUE;
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_ICONDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     DisplayImageView(VIEW_ICON, GetFileNameFromTreeView(CurrentTreeItem));
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     DisplayResProp(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)), RESPROP_ICON, GetLabelFromTreeView(CurrentTreeItem), CurrentTreeItem);
-									break;
-								case 2:
+                                    break;
+                                case 2:
                                     Convert_Icon(GetFileNameFromTreeView(CurrentTreeItem), GetLabelFromTreeView(CurrentTreeItem), TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
-									break;
+                                    break;
                                 case 3:
                                     MCMD_AddIcon();
-									break;
+                                    break;
                                 case 4:
                                     RemIconFromArray(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
                                     TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                     ProjectModified = TRUE;
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_CURSORDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     DisplayImageView(VIEW_CURSOR, GetFileNameFromTreeView(CurrentTreeItem));
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     DisplayResProp(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)), RESPROP_CURSOR, GetLabelFromTreeView(CurrentTreeItem), CurrentTreeItem);
-									break;
+                                    break;
                                 case 2:
                                     Convert_Cursor(GetFileNameFromTreeView(CurrentTreeItem), GetLabelFromTreeView(CurrentTreeItem), TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
-									break;
+                                    break;
                                 case 3:
                                     MCMD_AddCursor();
-									break;
+                                    break;
                                 case 4:
                                     RemCursorFromArray(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
                                     TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                     ProjectModified = TRUE;
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_BITMAPDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     DisplayImageView(VIEW_BITMAP, GetFileNameFromTreeView(CurrentTreeItem));
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     DisplayResProp(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)), RESPROP_BITMAP, GetLabelFromTreeView(CurrentTreeItem), CurrentTreeItem);
-									break;
-								case 2:
+                                    break;
+                                case 2:
                                     Convert_Bitmap(GetFileNameFromTreeView(CurrentTreeItem), GetLabelFromTreeView(CurrentTreeItem), TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
-									break;
-								case 3:
+                                    break;
+                                case 3:
                                     MCMD_AddBitmap();
-									break;
+                                    break;
                                 case 4:
                                     RemBitmapFromArray(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
                                     TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                     ProjectModified = TRUE;
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_STRINGDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     EditStringsTable(GetLabelFromTreeView(CurrentTreeItem), GetFileNameFromTreeView(CurrentTreeItem), TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, hTreeViewStrings));
-									break;
+                                    break;
                                 case 1:
                                     DisplayResProp(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)), RESPROP_STRINGS, GetLabelFromTreeView(CurrentTreeItem), CurrentTreeItem);
-									break;
+                                    break;
                                 case 2:
                                     Convert_Strings(GetFileNameFromTreeView(CurrentTreeItem), GetLabelFromTreeView(CurrentTreeItem), TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
-									break;
+                                    break;
                                 case 3:
                                     MCMD_AddStrings();
-									break;
+                                    break;
                                 case 4:
                                     RemStringFromArray(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
                                     TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                     ProjectModified = TRUE;
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_ACCELERATORDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     EditAcceleratorsTable(GetLabelFromTreeView(CurrentTreeItem), GetFileNameFromTreeView(CurrentTreeItem));
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     DisplayResProp(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)), RESPROP_ACCELERATORS, GetLabelFromTreeView(CurrentTreeItem), CurrentTreeItem);
-									break;
+                                    break;
                                 case 2:
                                     Convert_Accelerators(GetFileNameFromTreeView(CurrentTreeItem), GetLabelFromTreeView(CurrentTreeItem), TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
-									break;
+                                    break;
                                 case 3:
                                     MCMD_AddAccelerators();
-									break;
+                                    break;
                                 case 4:
                                     RemAcceleratorFromArray(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
                                     TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                     ProjectModified = TRUE;
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_MENUDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     EditMenusTable(GetLabelFromTreeView(CurrentTreeItem), GetFileNameFromTreeView(CurrentTreeItem));
-									break;
+                                    break;
                                 case 1:
                                     DisplayResProp(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)), RESPROP_MENUS, GetLabelFromTreeView(CurrentTreeItem), CurrentTreeItem);
-									break;
+                                    break;
                                 case 2:
                                     Convert_Menus(GetFileNameFromTreeView(CurrentTreeItem), GetLabelFromTreeView(CurrentTreeItem), TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
-									break;
+                                    break;
                                 case 3:
                                     MCMD_AddMenus();
-									break;
+                                    break;
                                 case 4:
                                     RemMenuFromArray(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
                                     TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                     ProjectModified = TRUE;
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_DIALOGDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     // TODO
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     // TODO
-									break;
+                                    break;
                                 case 2:
                                     // TODO
-									break;
+                                    break;
                                 case 3:
                                     MCMD_AddDialog();
-									break;
+                                    break;
                                 case 4:
                                     TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                     ProjectModified = TRUE;
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_RAWDATADETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     DisplayResProp(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)), RESPROP_RAWDATA, GetLabelFromTreeView(CurrentTreeItem), CurrentTreeItem);
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     OpenFileAsRC(0, GetLabelFromTreeView(CurrentTreeItem), GetFileNameFromTreeView(CurrentTreeItem), TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
-									break;
+                                    break;
                                 case 2:
                                     MCMD_AddRawDatas();
-									break;
+                                    break;
                                 case 3:
                                     RemRawDataFromArray(TreeViewGetSelChildItemPos(hTreeView, CurrentTreeItem, TreeViewGetItemParent(hTreeView, CurrentTreeItem)));
                                     TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                     ProjectModified = TRUE;
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_DEFDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     DisplayDefForm(GetFileNameFromTreeView(CurrentTreeItem));
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                         case MENU_POP_TEXTDETAILS:
                             switch(CurrentParam)
                             {
                                 case 0:
                                     FocusFile(GetFileNameFromTreeView(CurrentTreeItem), 1);
-									break;
+                                    break;
                                 case 1:
                                     ShellExecute(hMDIform.hWnd, "open", GetFileNameFromTreeView(CurrentTreeItem).Get_String(), "", FileGetDirectory(GetFileNameFromTreeView(CurrentTreeItem)).Get_String(), SW_SHOW);
-									break;
-								case 2:
+                                    break;
+                                case 2:
                                     MCMD_AddText();
                                     SetFocus(hTreeView);
-									break;
+                                    break;
                                 case 3:
                                     TreeViewRemoveItem(hTreeView, CurrentTreeItem);
                                     ProjectModified = TRUE;
-									break;
+                                    break;
                             }
-							return(0);
+                            return(0);
                     }
                 }
-			}
-			break;
+            }
+            break;
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
@@ -2706,53 +2706,53 @@ LRESULT CALLBACK StatusBoxHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
                         MenuAddSeparator(hPop);
                         MenuAddString(hPop, "Go to error/warning", MENU_OUTBOX_GOTO_ID + MENU_OUTBOX_IDBASE, TRUE);
                     }
-					GetCursorPos(&PopupPoint);
+                    GetCursorPos(&PopupPoint);
                     TrackPopupMenu(hPop, TPM_LEFTALIGN + TPM_LEFTBUTTON, PopupPoint.x, PopupPoint.y, 0, hWnd, NULL);
                 }
             }
-			return(0);
+            return(0);
         case WM_MENUSELECT:
             wParamSelOB = (wParam & 0x7FFF);
             switch(wParamSelOB)
             {
                 case MENU_OUTBOX_SAVE_ID + MENU_OUTBOX_IDBASE:
                     WriteComment("Save content to file");
-					break;
-				case MENU_OUTBOX_NEW_ID + MENU_OUTBOX_IDBASE:
+                    break;
+                case MENU_OUTBOX_NEW_ID + MENU_OUTBOX_IDBASE:
                     WriteComment("Create new window with content");
-					break;
+                    break;
                 case MENU_OUTBOX_EMPTY_ID + MENU_OUTBOX_IDBASE:
                     WriteComment("Empty output window");
-					break;
+                    break;
                 case MENU_OUTBOX_GOTO_ID + MENU_OUTBOX_IDBASE:
                     WriteComment("Go to referenced error/warning");
-					break;
+                    break;
                 default:
                     WriteComment("");
-					break;
+                    break;
             }
-			return(0);
+            return(0);
         case WM_EXITMENULOOP:
             WriteComment("");
-			return(0);
+            return(0);
         case WM_COMMAND:
             // Contextual menu commands
             switch(wParam)
             {
                 case MENU_OUTBOX_SAVE_ID + MENU_OUTBOX_IDBASE:
                     SaveBuildReport(hStatusBox);
-					break;
+                    break;
                 case MENU_OUTBOX_NEW_ID + MENU_OUTBOX_IDBASE:
                     CreateBuildReport(hStatusBox);
-					break;
+                    break;
                 case MENU_OUTBOX_EMPTY_ID + MENU_OUTBOX_IDBASE:
                     ClearStatus();
-					break;
+                    break;
                 case MENU_OUTBOX_GOTO_ID + MENU_OUTBOX_IDBASE:
                     JumpToErrorFromOutBox();
-					break;
+                    break;
             }
-			return(0);
+            return(0);
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
@@ -2780,47 +2780,47 @@ LRESULT CALLBACK DebugBoxHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                     MenuAddString(hPop, "Save content to file", MENU_DEBUGBOX_SAVE_ID + MENU_DEBUGBOX_IDBASE, TRUE);
                     MenuAddString(hPop, "Send content to window", MENU_DEBUGBOX_NEW_ID + MENU_DEBUGBOX_IDBASE, TRUE);
                     MenuAddString(hPop, "Empty debug window", MENU_DEBUGBOX_EMPTY_ID + MENU_DEBUGBOX_IDBASE, TRUE);
-					GetCursorPos(&PopupPoint);
+                    GetCursorPos(&PopupPoint);
                     TrackPopupMenu(hPop, TPM_LEFTALIGN + TPM_LEFTBUTTON, PopupPoint.x, PopupPoint.y, 0, hWnd, NULL);
                 }
             }
-			return(0);
+            return(0);
         case WM_MENUSELECT:
             wParamSelOB = (wParam & 0x7FFF);
             switch(wParamSelOB)
             {
                 case MENU_DEBUGBOX_SAVE_ID + MENU_DEBUGBOX_IDBASE:
                     WriteComment("Save content to file");
-					break;
-				case MENU_DEBUGBOX_NEW_ID + MENU_DEBUGBOX_IDBASE:
+                    break;
+                case MENU_DEBUGBOX_NEW_ID + MENU_DEBUGBOX_IDBASE:
                     WriteComment("Create new window with content");
-					break;
+                    break;
                 case MENU_DEBUGBOX_EMPTY_ID + MENU_DEBUGBOX_IDBASE:
                     WriteComment("Empty debug window");
-					break;
+                    break;
                 default:
                     WriteComment("");
-					break;
+                    break;
             }
-			return(0);
+            return(0);
         case WM_EXITMENULOOP:
             WriteComment("");
-			return(0);
+            return(0);
         case WM_COMMAND:
             // Contextual menu commands
             switch(wParam)
             {
                 case MENU_DEBUGBOX_SAVE_ID + MENU_DEBUGBOX_IDBASE:
                     SaveBuildReport(hDebugBox);
-					break;
+                    break;
                 case MENU_DEBUGBOX_NEW_ID + MENU_DEBUGBOX_IDBASE:
                     CreateBuildReport(hDebugBox);
-					break;
+                    break;
                 case MENU_DEBUGBOX_EMPTY_ID + MENU_DEBUGBOX_IDBASE:
                     ClearDebug();
-					break;
+                    break;
             }
-			return(0);
+            return(0);
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
@@ -2838,11 +2838,11 @@ void SetTreeviewTT(void)
         case 0:
             OldTreeViewToolTips = TreeViewSetToolTips(hTreeView, 0);
             TreeViewSetToolTips(hTreeViewDebug, 0);
-			break;
-		case 1:
+            break;
+        case 1:
             TreeViewSetToolTips(hTreeView, OldTreeViewToolTips);
             TreeViewSetToolTips(hTreeViewDebug, OldTreeViewToolTips);
-			break;
+            break;
     }
 }
 
@@ -2859,11 +2859,11 @@ void SetTreeviewExpand(void)
         case 0:
             TreeViewSetSingleExpandState(hTreeView, 0);
             TreeViewSetSingleExpandState(hTreeViewDebug, 0);
-			break;
-		case 1:
+            break;
+        case 1:
             TreeViewSetSingleExpandState(hTreeView, 1);
             TreeViewSetSingleExpandState(hTreeViewDebug, 1);
-			break;
+            break;
     }
 }
 
@@ -2875,13 +2875,13 @@ long GetTreeviewExpand(void)
 
     TreeValue = IniReadKey("Layout", "TVSingle", MainIniFile);
     if(TreeValue.Len() == 0) TreeValue = "0";
-	switch(TreeValue.Get_Long())
-	{
-		case 1:
-			return(1);
-		default:
-			return(0);
-	}
+    switch(TreeValue.Get_Long())
+    {
+        case 1:
+            return(1);
+        default:
+            return(0);
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -2894,11 +2894,11 @@ void JumpToErrorFromOutBox(void)
     long LineAsm = 0;
     long LineNumber = 0;
     long DoLCC32 = 0;
-	CStr LCC32Dir;
+    CStr LCC32Dir;
     CStr BufString;
-	CStr TakeLine;
+    CStr TakeLine;
     CStr FError;
-	CStr LCC32LineNumber;
+    CStr LCC32LineNumber;
     int Pos_Error;
 
     if(ListBoxGetSelItemIndex(hStatusBox) != -1)
@@ -2916,78 +2916,78 @@ void JumpToErrorFromOutBox(void)
                 LineAsm = StatusLine.In_Str(PosAsm, ")");
                 LineNumber = StatusLine.Mid(PosAsm, LineAsm - PosAsm).Get_Long();
                 PosAsm = PosAsm - 2;
-				TakeLine = StatusLine.Replace("**Error**", "", 1, -1, Binary_Compare);
+                TakeLine = StatusLine.Replace("**Error**", "", 1, -1, Binary_Compare);
                 TakeLine = TakeLine.Trim();
                 PosAsm = TakeLine.In_Str(1, "(");
                 FError = TakeLine.Mid(1, PosAsm - 1);
-				FError = FError.Trim();
+                FError = FError.Trim();
                 if(GoToLine(FError, LineNumber - 1, 1) == 0)
                 {
-					BufString = CurrentDir + (CStr) "\\" + (CStr) FError;
-					if(GoToLine(BufString, LineNumber - 1, 1) == 0 && ProjectOn == 1)
-					{
-						// Load it from project
-						BufString = ProjectDir + (CStr) "\\" + (CStr) FError;
-						GoToLine(BufString, LineNumber - 1, 1);
-					}
-				}
-			} else {
-TestLCC32Error:	// LCC32
-				DoLCC32 = 0;
-				if(strcmpi(StatusLine.Left(6).Get_String(), "error ") == 0)
-				{
-					DoLCC32++;
-					// Format it to be GNU compatible
-					StatusLine = StatusLine.Mid(7);
-				}
-				else if(strcmpi(StatusLine.Left(8).Get_String(), "warning ") == 0)
-				{
-					DoLCC32++;
-					// Format it to be GNU compatible
-					StatusLine = StatusLine.Mid(9);
-				}
-				if(DoLCC32)
-				{
-					PosAsm = StatusLine.In_Str(3, ":");
-					PosAsmStrip = StatusLine.In_Str(PosAsm + 1, ":");
-					LCC32Dir = StatusLine.Left(PosAsm);
-					LCC32Dir = LCC32Dir.Extract_Directory();
-					PosAsm++;
-					LCC32Dir = LCC32Dir + (CStr) StatusLine.Mid(PosAsm, PosAsmStrip - PosAsm).Trim();
+                    BufString = CurrentDir + (CStr) "\\" + (CStr) FError;
+                    if(GoToLine(BufString, LineNumber - 1, 1) == 0 && ProjectOn == 1)
+                    {
+                        // Load it from project
+                        BufString = ProjectDir + (CStr) "\\" + (CStr) FError;
+                        GoToLine(BufString, LineNumber - 1, 1);
+                    }
+                }
+            } else {
+TestLCC32Error: // LCC32
+                DoLCC32 = 0;
+                if(strcmpi(StatusLine.Left(6).Get_String(), "error ") == 0)
+                {
+                    DoLCC32++;
+                    // Format it to be GNU compatible
+                    StatusLine = StatusLine.Mid(7);
+                }
+                else if(strcmpi(StatusLine.Left(8).Get_String(), "warning ") == 0)
+                {
+                    DoLCC32++;
+                    // Format it to be GNU compatible
+                    StatusLine = StatusLine.Mid(9);
+                }
+                if(DoLCC32)
+                {
+                    PosAsm = StatusLine.In_Str(3, ":");
+                    PosAsmStrip = StatusLine.In_Str(PosAsm + 1, ":");
+                    LCC32Dir = StatusLine.Left(PosAsm);
+                    LCC32Dir = LCC32Dir.Extract_Directory();
+                    PosAsm++;
+                    LCC32Dir = LCC32Dir + (CStr) StatusLine.Mid(PosAsm, PosAsmStrip - PosAsm).Trim();
                     PosAsmStrip++;
-					// Pass blank chars
-					while(!isdigit(StatusLine.Mid(PosAsmStrip, 1).Asc()) && (StatusLine.Mid(PosAsmStrip, 1).Len() != 0) )
-					{
-						PosAsmStrip++;
-					}
-					while(isdigit(StatusLine.Mid(PosAsmStrip, 1).Asc()))
-					{
-						LCC32LineNumber = LCC32LineNumber + StatusLine.Mid(PosAsmStrip, 1);
-						PosAsmStrip++;
-					}
-					if(GoToLine(LCC32Dir, LCC32LineNumber.Get_Long() - 1, 1) == 0)
-					{
-						BufString = CurrentDir + (CStr) "\\" + (CStr) LCC32Dir;
-						if(GoToLine(BufString, LCC32LineNumber.Get_Long() - 1, 1) == 0 && ProjectOn == 1)
-						{
-							// Load it from project
-							BufString = ProjectDir + (CStr) "\\" + (CStr) LCC32Dir;
-							GoToLine(BufString, LCC32LineNumber.Get_Long() - 1, 1);
-						}
-					}
-				}
-				else
-				{
-					PosAsm = StatusLine.In_Str(3, ":");
-					if(PosAsm != 0) goto TestGNUError;
-				}
-			}
+                    // Pass blank chars
+                    while(!isdigit(StatusLine.Mid(PosAsmStrip, 1).Asc()) && (StatusLine.Mid(PosAsmStrip, 1).Len() != 0) )
+                    {
+                        PosAsmStrip++;
+                    }
+                    while(isdigit(StatusLine.Mid(PosAsmStrip, 1).Asc()))
+                    {
+                        LCC32LineNumber = LCC32LineNumber + StatusLine.Mid(PosAsmStrip, 1);
+                        PosAsmStrip++;
+                    }
+                    if(GoToLine(LCC32Dir, LCC32LineNumber.Get_Long() - 1, 1) == 0)
+                    {
+                        BufString = CurrentDir + (CStr) "\\" + (CStr) LCC32Dir;
+                        if(GoToLine(BufString, LCC32LineNumber.Get_Long() - 1, 1) == 0 && ProjectOn == 1)
+                        {
+                            // Load it from project
+                            BufString = ProjectDir + (CStr) "\\" + (CStr) LCC32Dir;
+                            GoToLine(BufString, LCC32LineNumber.Get_Long() - 1, 1);
+                        }
+                    }
+                }
+                else
+                {
+                    PosAsm = StatusLine.In_Str(3, ":");
+                    if(PosAsm != 0) goto TestGNUError;
+                }
+            }
         }
         else
         {
-        	if(strcmpi(StatusLine.Left(8).Get_String(), "warning ") == 0) goto TestLCC32Error;
-		    if(StatusLine.In_Str(1, "warning", Text_Compare) != 0)
-		    {
+            if(strcmpi(StatusLine.Left(8).Get_String(), "warning ") == 0) goto TestLCC32Error;
+            if(StatusLine.In_Str(1, "warning", Text_Compare) != 0)
+            {
                 PosAsm = StatusLine.In_Str(1, "(");
                 if(PosAsm != 0)
                 {
@@ -2996,29 +2996,29 @@ TestLCC32Error:	// LCC32
                     LineNumber = StatusLine.Mid(PosAsm, LineAsm - PosAsm).Get_Long();
                     PosAsm = PosAsm - 2;
                     TakeLine = StatusLine.Replace("**Warning**", "", 1, -1, Binary_Compare);
-					TakeLine = TakeLine.Trim();
+                    TakeLine = TakeLine.Trim();
                     PosAsm = TakeLine.In_Str(1, "(");
                     FError = TakeLine.Mid(1, PosAsm - 1);
-					FError = FError.Trim();
+                    FError = FError.Trim();
                     if(GoToLine(FError, LineNumber - 1, 1) == 0)
                     {
-						BufString = CurrentDir + (CStr) "\\" + (CStr) FError;
-						if(GoToLine(BufString, LineNumber - 1, 1) == 0 && ProjectOn == 1)
-						{
-							// Load it from project
-							BufString = ProjectDir + (CStr) "\\" + (CStr) FError;
-							GoToLine(BufString, LineNumber - 1, 1);
-						}
-					}
+                        BufString = CurrentDir + (CStr) "\\" + (CStr) FError;
+                        if(GoToLine(BufString, LineNumber - 1, 1) == 0 && ProjectOn == 1)
+                        {
+                            // Load it from project
+                            BufString = ProjectDir + (CStr) "\\" + (CStr) FError;
+                            GoToLine(BufString, LineNumber - 1, 1);
+                        }
+                    }
                 }
                 else
                 {
                     PosAsm = StatusLine.In_Str(3, ":");
                     if(PosAsm != 0) goto TestGNUError;
                 }
-		    }
-		    else
-		    {
+            }
+            else
+            {
                 // Handle NASM
                 // 3=pass drive
 TestGNUError:   PosAsm = StatusLine.In_Str(3, ":");
@@ -3038,18 +3038,18 @@ TestGNUError:   PosAsm = StatusLine.In_Str(3, ":");
                                 if(StatusLine.Len() > (long) PosAsm)
                                 {
                                     FError = StatusLine.Mid(1, PosAsm - 1);
-									FError = FError.Trim();
+                                    FError = FError.Trim();
                                     if(GoToLine(FError, LineNumber - 1, 1) == 0)
                                     {
-										BufString = CurrentDir + (CStr) "\\" + (CStr) FError;
-										if(GoToLine(BufString, LineNumber - 1, 1) == 0 && ProjectOn == 1)
-										{
-											// Load it from project
-											BufString = ProjectDir + (CStr) "\\" + (CStr) FError;
-											GoToLine(BufString, LineNumber - 1, 1);
-										}
-									}
-								}
+                                        BufString = CurrentDir + (CStr) "\\" + (CStr) FError;
+                                        if(GoToLine(BufString, LineNumber - 1, 1) == 0 && ProjectOn == 1)
+                                        {
+                                            // Load it from project
+                                            BufString = ProjectDir + (CStr) "\\" + (CStr) FError;
+                                            GoToLine(BufString, LineNumber - 1, 1);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -3070,7 +3070,7 @@ void MoveProjectItems(HTREEITEM OldItem, HTREEITEM NewItem)
     HTREEITEM TreeViewChildEntry = 0;
     CStr SaveItem;
     
-	// Get 9th child (and not the 7th son)
+    // Get 9th child (and not the 7th son)
     if(NewItem == hTreeViewResources)
     {
         NewItem = TreeViewGetFirstItemChild(hTreeView, NewItem);
@@ -3142,7 +3142,7 @@ void MoveProjectItems(HTREEITEM OldItem, HTREEITEM NewItem)
     else if(NewItem == hTreeViewRawdatas)
     {
         NewItem = TreeViewGetNextItem(hTreeView, NewItem);
-	}
+    }
     FirstDropped = -1;
     LastDropped = -1;
     // Parent should be the same for both items
@@ -3157,8 +3157,8 @@ void MoveProjectItems(HTREEITEM OldItem, HTREEITEM NewItem)
         // Mark dest item
         if(TreeViewChildEntry == NewItem) LastDropped = i;
         // Fill entry in array
-		ItemsArrayhWnd.Add(TreeViewChildEntry);
-		ItemsArray.Add(TreeViewGetItemText(hTreeView, TreeViewChildEntry).Get_String());
+        ItemsArrayhWnd.Add(TreeViewChildEntry);
+        ItemsArray.Add(TreeViewGetItemText(hTreeView, TreeViewChildEntry).Get_String());
         TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         i++;
     }
@@ -3206,8 +3206,8 @@ LRESULT CALLBACK WindowsListProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
     {
         case WM_KEYUP:
             RefreshCurrentWindowFromList();
-			break;
-	}
+            break;
+    }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
 
@@ -3245,19 +3245,19 @@ HWND GetPreviousChildInList(HWND hWnd)
     {
         if(ChildshWnd.Get(i)->Content == hWnd)
         {
-			if(i > 0)
-			{
-				return(ChildshWnd.Get(i - 1)->Content);
-			}
-			else
-			{
-				// Wrap in list and return last entry
-				return(ChildshWnd.Get(ChildshWnd.Amount() - 1)->Content);
-			}
-			break;
+            if(i > 0)
+            {
+                return(ChildshWnd.Get(i - 1)->Content);
+            }
+            else
+            {
+                // Wrap in list and return last entry
+                return(ChildshWnd.Get(ChildshWnd.Amount() - 1)->Content);
+            }
+            break;
         }
     }
-	return(NULL);
+    return(NULL);
 }
 
 // -----------------------------------------------------------------------
@@ -3268,19 +3268,19 @@ HWND GetNextChildInList(HWND hWnd)
     {
         if(ChildshWnd.Get(i)->Content == hWnd)
         {
-			if(i < (ChildshWnd.Amount() - 1))
-			{
-				return(ChildshWnd.Get(i + 1)->Content);
-			}
-			else
-			{
-				// Wrap in list and return first entry
-				return(ChildshWnd.Get(0)->Content);
-			}
-			break;
+            if(i < (ChildshWnd.Amount() - 1))
+            {
+                return(ChildshWnd.Get(i + 1)->Content);
+            }
+            else
+            {
+                // Wrap in list and return first entry
+                return(ChildshWnd.Get(0)->Content);
+            }
+            break;
         }
     }
-	return(NULL);
+    return(NULL);
 }
 
 // -----------------------------------------------------------------------
@@ -3306,7 +3306,7 @@ void SetPreviousChildInList(void)
                     {
                         SendMessage(hMDIform.hClient, WM_MDIACTIVATE, (long) ChildshWnd.Get(i)->Content, 0);
                     }
-					break;
+                    break;
                 }
             }
         }
@@ -3336,7 +3336,7 @@ void SetNextChildInList(void)
                     {
                         SendMessage(hMDIform.hClient, WM_MDIACTIVATE, (long) ChildshWnd.Get(i)->Content, 0);
                     }
-					break;
+                    break;
                 }
             }
         }
@@ -3360,7 +3360,7 @@ HWND GetSelectedWindowFromList(void)
             if(ChildsLVPos.Get(i)->Content == CurrentLvItem)
             {
                 hRes = ChildshWnd.Get(i)->Content;
-				break;
+                break;
             }
         }
     }

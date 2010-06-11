@@ -62,8 +62,8 @@ int CALLBACK FRMRegsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         case WM_SYSCOLORCHANGE:
             ListViewSetBackColor(FRMRegsListview, GetSysColor(COLOR_WINDOW));
-			break;
-		case WM_INITDIALOG:
+            break;
+        case WM_INITDIALOG:
             ControlSetText(hwndDlg, "Register files extensions");
             FRMRegsCmdRegister = CreateButton(256, 1, 77, 23, hwndDlg, "Register", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_GROUP, Buttons_StaticEdge);
             FRMRegsCmdUnRegister = CreateButton(256, 25, 77, 23, hwndDlg, "Unregister", 3, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
@@ -86,7 +86,7 @@ int CALLBACK FRMRegsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                         return(0);
                 }
             }
-			break;
+            break;
         case WM_COMMAND:
             if((HWND) lParam == FRMRegsCmdSelAll)
             {
@@ -123,10 +123,10 @@ int CALLBACK FRMRegsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 ControlClose(hwndDlg);
                 return(0);
             }
-			break;
+            break;
         case WM_CLOSE:
             EndDialog(hwndDlg, 0);
-			break;
+            break;
     }
     return(0);
 }
@@ -143,7 +143,7 @@ void FillExtLanguage(void)
     int j = 0;
     int k = 0;
     
-	// Get default extensions (.med/.mws)
+    // Get default extensions (.med/.mws)
     ListViewAddItem(FRMRegsListview, "med", k, 0);
     RegEntry = RegistryGetKeyValue(HKEY_CLASSES_ROOT, ".med", "");
     if(RegEntry.Len() != 0)
@@ -173,7 +173,7 @@ void FillExtLanguage(void)
         if(FRMRegsRetVal.Len() == 0) break;
         LangToCheck = ChangeRelativePaths(LangToCheck);
         LangFileToRead = LangToCheck;
-		FRMRegsLangName = IniReadKey("LangSpec", "LangName", LangFileToRead);
+        FRMRegsLangName = IniReadKey("LangSpec", "LangName", LangFileToRead);
         if(FRMRegsLangName.Len() == 0)
         {
             LangToCheck = "<Error>";
@@ -191,9 +191,9 @@ void FillExtLanguage(void)
                 RegEntry = RegistryGetKeyValue(HKEY_CLASSES_ROOT, "." + (CStr) StringGetSplitElement(FRMRegsRetVal, ExtArray, j).Get_String(), "");
                 if(RegEntry.Len() != 0)
                 {
-					BufString = "Chromatic " + (CStr) StringGetSplitElement(FRMRegsRetVal, ExtArray, j).Get_String() + (CStr) " file";
-		            if(strcmpi(RegEntry.Get_String(), BufString.Get_String()) == 0)
-		            {
+                    BufString = "Chromatic " + (CStr) StringGetSplitElement(FRMRegsRetVal, ExtArray, j).Get_String() + (CStr) " file";
+                    if(strcmpi(RegEntry.Get_String(), BufString.Get_String()) == 0)
+                    {
                         ListViewSetItemCheckbox(FRMRegsListview, k, 1);
                     }
                 }
@@ -210,24 +210,24 @@ void FillExtLanguage(void)
 void RegisterExtensions(void)
 {
     int i = 0;
-	CStr BufString;
+    CStr BufString;
 
     for(i = 0; i <= (long) ListViewItemCount(FRMRegsListview) - 1; i++)
     {
         if(ListViewGetItemCheckbox(FRMRegsListview, i) == 1)
         {
             BufString = ListViewGetItemText(FRMRegsListview, i, 0).Upper_Case();
-			if(BufString == "MED")
-			{
+            if(BufString == "MED")
+            {
                 RegisterExt(ListViewGetItemText(FRMRegsListview, i, 0), ICON_ASM + 1);
-			}
-			else if(BufString == "MWS")
-			{
+            }
+            else if(BufString == "MWS")
+            {
                 RegisterExt(ListViewGetItemText(FRMRegsListview, i, 0), ICON_KEYBOARD + 1);
-			}
-			else
-			{
-				RegisterExt(ListViewGetItemText(FRMRegsListview, i, 0), ICON_NEW + 1);
+            }
+            else
+            {
+                RegisterExt(ListViewGetItemText(FRMRegsListview, i, 0), ICON_NEW + 1);
             }
         }
     }

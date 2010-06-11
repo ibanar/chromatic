@@ -68,12 +68,12 @@ int CALLBACK FRMAddInsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
     long OldRunningState = 0;
     CStr BufString;
 
-	switch(uMsg)
-	{
+    switch(uMsg)
+    {
         case WM_SYSCOLORCHANGE:
             ListViewSetBackColor(FRMAddInsListView, GetSysColor(COLOR_WINDOW));
-			break;
-		case WM_INITDIALOG:
+            break;
+        case WM_INITDIALOG:
             FRMAddInshWnd = hwndDlg;
             ControlSetText(hwndDlg, "AddIns manager");
             FRMAddInsCmdOk = CreateButton(327, 292, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
@@ -97,8 +97,8 @@ int CALLBACK FRMAddInsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
             BeginPaint(hwndDlg, &CreatePs);
             GDIDrawHorzSep(hwndDlg, 0, 285, 486);
             EndPaint(hwndDlg, &CreatePs);
-			break;
-		case WM_COMMAND:
+            break;
+        case WM_COMMAND:
             if((HWND) lParam == FRMAddInsCmdOk)
             {
                 SaveAddInList();
@@ -159,7 +159,7 @@ int CALLBACK FRMAddInsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
                         // Step 1: Shutdown it
                         OldRunningState = ShutDownAddIn(CurrentPopupItem);
                         // Step 2: Delete it
-						BufString = Dirs[DIR_ADDINS] + (CStr) "\\" + (CStr) LocalAddInsFiles.Get(CurrentPopupItem)->Content;
+                        BufString = Dirs[DIR_ADDINS] + (CStr) "\\" + (CStr) LocalAddInsFiles.Get(CurrentPopupItem)->Content;
                         DeleteFile(BufString.Get_String());
                         // Step 3: Copy it
                         CopyFile(LdFile.Get_String(), BufString.Get_String(), 0);
@@ -178,11 +178,11 @@ int CALLBACK FRMAddInsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
                         ListViewSetSelItemText(FRMAddInsListView, GetDLLDescription(LocalAddInsFiles.Get(CurrentPopupItem)->Content, AddInDescUpDate), 0);
                         ListViewSetSelItemText(FRMAddInsListView, GetDLLAuthor(AddInAuthUpDate), 1);
                         LastAddInDir = FileGetDirectory(LdFile);
-						MiscMsgBox(hwndDlg, "AddIn '" + GetDLLDescription(LocalAddInsFiles.Get(CurrentPopupItem)->Content, AddInDescUpDate) + (CStr) "' updated.", MB_INFORMATION, Requesters);
+                        MiscMsgBox(hwndDlg, "AddIn '" + GetDLLDescription(LocalAddInsFiles.Get(CurrentPopupItem)->Content, AddInDescUpDate) + (CStr) "' updated.", MB_INFORMATION, Requesters);
                     }
                     return(0);
             }
-			break;
+            break;
         case WM_NOTIFY:
             if(ControlGetNotifiedhWnd(lParam) == FRMAddInsListView)
             {
@@ -198,21 +198,21 @@ int CALLBACK FRMAddInsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
                             ListViewSetItemSel(FRMAddInsListView, CurrentLvItem);
                             ListViewSetSubItemImage(FRMAddInsListView, AddInIcon, CurrentLvItem, 0);
                         }
-						return(0);
+                        return(0);
                 }
             }
-			break;
-		case WM_CONTEXTMENU:
+            break;
+        case WM_CONTEXTMENU:
             CurrentLvItem = ListViewGetItemUnderCursor(FRMAddInsListView);
             if(CurrentLvItem != -1)
             {
                 ListViewSetItemSel(FRMAddInsListView, CurrentLvItem);
                 CurrentPopupItem = ListViewGetItemUnderCursor(FRMAddInsListView);
                 SetFocus(FRMAddInsListView);
-				GetCursorPos(&PopMenuCoords);
+                GetCursorPos(&PopMenuCoords);
                 TrackPopupMenu(hAddInsMenu, TPM_LEFTALIGN + TPM_LEFTBUTTON, PopMenuCoords.x, PopMenuCoords.y, 0, hwndDlg, NULL);
             }
-			return(0);
+            return(0);
         case WM_CLOSE:
             if(hAddInsMenu != 0) DestroyMenu(hAddInsMenu);
             FreezeTimer = 0;
@@ -247,7 +247,7 @@ void FillAddinsList(void)
     while(AddInName.Len() != 0)
     {
         BufString = Dirs[DIR_ADDINS] + (CStr) "\\" + (CStr) AddInName;
-		AddInLib = LoadLibrary(BufString.Get_String());
+        AddInLib = LoadLibrary(BufString.Get_String());
         if(AddInLib != 0)
         {
             AddInDesc = GetProcAddress(AddInLib, "AddInDescription");
@@ -297,9 +297,9 @@ void FillAddinsList(void)
             FreeLibrary(AddInLib);
             // Dlg_Filters.cpp for more infos
             #ifndef _DEBUG
-				CloseHandle(AddInLib);
-			#endif
-		}
+                CloseHandle(AddInLib);
+            #endif
+        }
         AddInName = FileDir();
     }
 }
@@ -328,9 +328,9 @@ void SaveAddInList(void)
     }
     // Save old datas
     OldRunningAddIns.Erase();
-	OldRunningAddIns.MAdd(RunningAddIns.Amount(), 0L);
+    OldRunningAddIns.MAdd(RunningAddIns.Amount(), 0L);
     OldAddInsFiles.Erase();
-	OldAddInsFiles.MAdd(AddInsFiles.Amount(), "");
+    OldAddInsFiles.MAdd(AddInsFiles.Amount(), "");
     OldAddInsDLL.Erase();
     OldAddInsDLL.MAdd(AddInsDLL.Amount(), 0L);
     for(i = 0; i < RunningAddIns.Amount(); i++)
@@ -382,13 +382,13 @@ void RefreshRunningStates(void)
                                     JumpToAddr(AddInsUnLoad.Get(AddInIndex)->Content);
                                     IniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", MainIniFile);
                                 }
-								break;
+                                break;
                             case ADDIN_PERSISTANT:
                                 RunningAddIns.Set(AddInIndex, 1);
                                 // Mark it as persistantly running
                                 IniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), "1", MainIniFile);
-								break;
-						}
+                                break;
+                        }
                     }
                 }
             }
@@ -398,8 +398,8 @@ void RefreshRunningStates(void)
                 if(OldRunningAddIns.Get(OldAddInIndex)->Content != 0)
                 {
                     AddInIndex = SearchAddInName(AddInFileName);
-					if(AddInsUnLoad.Get(AddInIndex)->Content != 0)
-					{
+                    if(AddInsUnLoad.Get(AddInIndex)->Content != 0)
+                    {
                         JumpToAddr(AddInsUnLoad.Get(AddInIndex)->Content);
                         IniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", MainIniFile);
                     }
@@ -424,13 +424,13 @@ void RefreshRunningStates(void)
                                 JumpToAddr(AddInsUnLoad.Get(AddInIndex)->Content);
                                 IniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", MainIniFile);
                             }
-							break;
+                            break;
                         case ADDIN_PERSISTANT:
                             RunningAddIns.Set(AddInIndex, 1);
                             // Mark it as persistantly running
                             IniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), "1", MainIniFile);
-							break;
-					}
+                            break;
+                    }
                 }
             }
         }

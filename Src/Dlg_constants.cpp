@@ -83,65 +83,65 @@ int CALLBACK FRMConstantsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
     CStr Constant_Name;
     CStr Constant_Value;
 
-	switch(uMsg)
-	{
+    switch(uMsg)
+    {
         case WM_SYSCOLORCHANGE:
             ListViewSetBackColor(FRMConstantsListview, GetSysColor(COLOR_WINDOW));
-			break;
-		case WM_INITDIALOG:
+            break;
+        case WM_INITDIALOG:
             ControlSetText(hwndDlg, "Project constants");
             FRMConstantshwnd = hwndDlg;
             hFRMConstantsOk = CreateButton(251, 263, 77, 23, hwndDlg, "Ok", 1, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, Buttons_StaticEdge);
             hFRMConstantsCancel = CreateButton(330, 263, 77, 23, hwndDlg, "Cancel", 2, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
             FRMConstantsToolbar = CreateToolBar(1, 1, 410, 23, hwndDlg, GlobalImageList1, 3, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
-			ToolBarAddButton(FRMConstantsToolbar, "", CONSTANT_CREATE, ICON_ADDCONST, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-			ToolBarAddButton(FRMConstantsToolbar, "", CONSTANT_REPLACE, ICON_REPLACECONST, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-			ToolBarAddSeparator(FRMConstantsToolbar, 0);
-			ToolBarAddButton(FRMConstantsToolbar, "", CONSTANT_DELETE, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-			FRMConstantsListview = CreateListView(2, 25, 406, 206, hwndDlg, 4, GlobalImageList3, &LVConstantsHook, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_NOSORTHEADER | LVS_SINGLESEL | WS_TABSTOP, WS_EX_STATICEDGE);
+            ToolBarAddButton(FRMConstantsToolbar, "", CONSTANT_CREATE, ICON_ADDCONST, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            ToolBarAddButton(FRMConstantsToolbar, "", CONSTANT_REPLACE, ICON_REPLACECONST, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            ToolBarAddSeparator(FRMConstantsToolbar, 0);
+            ToolBarAddButton(FRMConstantsToolbar, "", CONSTANT_DELETE, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+            FRMConstantsListview = CreateListView(2, 25, 406, 206, hwndDlg, 4, GlobalImageList3, &LVConstantsHook, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_NOSORTHEADER | LVS_SINGLESEL | WS_TABSTOP, WS_EX_STATICEDGE);
             ListViewAddCol(FRMConstantsListview, "Name", 303, 1);
             ListViewAddCol(FRMConstantsListview, "Value", 80, 0);
             ListViewSetHeaderPosition(FRMConstantsListview, 0, 1);
             ListViewSetHeaderPosition(FRMConstantsListview, 1, 0);
-			FRMConstantsConstName = CreateTextBox(2, 232, 300, 20, hwndDlg, "", 5, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-			FRMConstantsConstValue = CreateTextBox(304, 232, 104, 20, hwndDlg, "", 6, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+            FRMConstantsConstName = CreateTextBox(2, 232, 300, 20, hwndDlg, "", 5, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+            FRMConstantsConstValue = CreateTextBox(304, 232, 104, 20, hwndDlg, "", 6, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
             // Fill the list
             for(i = 0; i < 999; i++)
             {
                 CurrentStringFromStrings = IniReadKey("Constants", "Name" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectFName);
                 if(CurrentStringFromStrings.Len() == 0) break;
                 CurrentStringFromStrings2 = IniReadKey("Constants", "Value" + (CStr) StringNumberComplement(i, 3).Get_String(), ProjectFName);
-				ListViewAddItem(FRMConstantsListview, CurrentStringFromStrings2, i, -1);
+                ListViewAddItem(FRMConstantsListview, CurrentStringFromStrings2, i, -1);
                 ListViewSetSubItem(FRMConstantsListview, CurrentStringFromStrings, i, 1);
             }
-			ControlSetText(FRMConstantsConstName, ListViewGetItemText(FRMConstantsListview, 0, 0));
-			ControlSetText(FRMConstantsConstValue, ListViewGetItemText(FRMConstantsListview, 0, 1));
+            ControlSetText(FRMConstantsConstName, ListViewGetItemText(FRMConstantsListview, 0, 0));
+            ControlSetText(FRMConstantsConstValue, ListViewGetItemText(FRMConstantsListview, 0, 1));
             if(ListViewItemCount(FRMConstantsListview) > 0) ListViewSetItemSel(FRMConstantsListview, 0);
-			SetFocus(FRMConstantsListview);
+            SetFocus(FRMConstantsListview);
             return(0);
         case WM_PAINT:
             BeginPaint(hwndDlg, &EnterValuePs);
             GDIDrawHorzSep(hwndDlg, 0, 256, 410);
             EndPaint(hwndDlg, &EnterValuePs);
-			break;
+            break;
         case WM_NOTIFY:
             if(ControlGetNotifiedhWnd(lParam) == FRMConstantsListview)
             {
                 switch(ControlGetNotifiedMsg(lParam))
                 {
-					case NM_CLICK:
-					case LVN_ITEMCHANGED:
-						CurrentSelected = ListViewGetSelItem(FRMConstantsListview, -1);
-						if(CurrentSelected != -1)
-						{
-							ControlSetText(FRMConstantsConstName, ListViewGetItemText(FRMConstantsListview, CurrentSelected, 1));
-							ControlSetText(FRMConstantsConstValue, ListViewGetItemText(FRMConstantsListview, CurrentSelected, 0));
+                    case NM_CLICK:
+                    case LVN_ITEMCHANGED:
+                        CurrentSelected = ListViewGetSelItem(FRMConstantsListview, -1);
+                        if(CurrentSelected != -1)
+                        {
+                            ControlSetText(FRMConstantsConstName, ListViewGetItemText(FRMConstantsListview, CurrentSelected, 1));
+                            ControlSetText(FRMConstantsConstValue, ListViewGetItemText(FRMConstantsListview, CurrentSelected, 0));
                         }
-						return(0);
+                        return(0);
                 }
             }
-			switch(ControlGetNotifiedMsg(lParam))
-			{
+            switch(ControlGetNotifiedMsg(lParam))
+            {
                 case TTN_NEEDTEXT:
                     switch(ControlGetNotifiedID(lParam))
                     {
@@ -155,112 +155,112 @@ int CALLBACK FRMConstantsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
                             ToolBarDisplayToolTip("Delete selected constant", lParam);
                             return(0);
                     }
-			}
-			break;
+            }
+            break;
         case WM_COMMAND:
             if((HWND) lParam == FRMConstantsToolbar)
             {
                 switch(wParam)
                 {
                     case CONSTANT_CREATE:
-						Constant_Name = ControlGetText(FRMConstantsConstName);
-						if(Constant_Name.Len())
-						{
-							if(CheckConstantsSymbol(Constant_Name.Get_String()) >= 0)
-							{
-								MiscMsgBox(hwndDlg, "Constant already exists.", MB_ERROR, Requesters);
-								SetFocus(FRMConstantsConstName);
-								break;
-							}
-							if(StringIsLabel(Constant_Name))
-							{
-								Constant_Value = ControlGetText(FRMConstantsConstValue);
-								i = 0;
-								if(Constant_Value[i] == '-') i++;
-								// Only accept dec and hex values
-								if(StringIsDecimal(Constant_Value.Get_String(i), 10))
-								{
-									ListViewAddItem(FRMConstantsListview, Constant_Value.Get_String(), ListViewItemCount(FRMConstantsListview), -1);
-								}
-								else if(StringIsHexaDecimal(Constant_Value))
-								{
-									ListViewAddItem(FRMConstantsListview, Constant_Value.Get_String(), ListViewItemCount(FRMConstantsListview), -1);
-								}
-								else
-								{
-									MiscMsgBox(hwndDlg, "Invalid constant value.", MB_ERROR, Requesters);
-									SetFocus(FRMConstantsConstValue);
-									break;
-								}
-								ListViewSetSubItem(FRMConstantsListview, Constant_Name, ListViewItemCount(FRMConstantsListview) - 1, 1);
-								ListViewSetItemSel(FRMConstantsListview, ListViewItemCount(FRMConstantsListview) - 1);
-								SetFocus(FRMConstantsListview);
-								break;
-							}
-						}
-						MiscMsgBox(hwndDlg, "Invalid constant name.", MB_ERROR, Requesters);
-						SetFocus(FRMConstantsConstName);
-						break;
-					case CONSTANT_REPLACE:
-						CurrentSelected = ListViewGetSelItem(FRMConstantsListview, -1);
-						if(CurrentSelected != -1)
-						{
-							Constant_Name = ControlGetText(FRMConstantsConstName);
-							if(Constant_Name.Len())
-							{
-								if(CheckConstantsSymbol(Constant_Name.Get_String()) != CurrentSelected)
-								{
-									MiscMsgBox(hwndDlg, "Constant already exists.", MB_ERROR, Requesters);
-									SetFocus(FRMConstantsConstName);
-									break;
-								}
-								if(StringIsLabel(Constant_Name))
-								{
-									Constant_Value = ControlGetText(FRMConstantsConstValue);
-									i = 0;
-									if(Constant_Value[i] == '-') i++;
-									// Only accept dec and hex values
-									if(StringIsDecimal(Constant_Value.Get_String(i), 10))
-									{
-										ListViewSetSubItem(FRMConstantsListview, Constant_Value.Get_String(), CurrentSelected, 0);
-									}
-									else if(StringIsHexaDecimal(Constant_Value))
-									{
-										ListViewSetSubItem(FRMConstantsListview, Constant_Value.Get_String(), CurrentSelected, 0);
-									}
-									else
-									{
-										MiscMsgBox(hwndDlg, "Invalid constant value.", MB_ERROR, Requesters);
-										SetFocus(FRMConstantsConstValue);
-										break;
-									}
-									ListViewSetSubItem(FRMConstantsListview, Constant_Name, CurrentSelected, 1);
-									ListViewSetItemSel(FRMConstantsListview, ListViewItemCount(FRMConstantsListview) - 1);
-									SetFocus(FRMConstantsListview);
-									break;
-								}
-            				}
-							MiscMsgBox(hwndDlg, "Invalid constant name.", MB_ERROR, Requesters);
-							SetFocus(FRMConstantsConstName);
-							break;
-						}
-						break;
-					case CONSTANT_DELETE:
-						break;
-				}
-				return(0);
-			}
-			if((HWND) lParam == hFRMConstantsOk)
-			{
+                        Constant_Name = ControlGetText(FRMConstantsConstName);
+                        if(Constant_Name.Len())
+                        {
+                            if(CheckConstantsSymbol(Constant_Name.Get_String()) >= 0)
+                            {
+                                MiscMsgBox(hwndDlg, "Constant already exists.", MB_ERROR, Requesters);
+                                SetFocus(FRMConstantsConstName);
+                                break;
+                            }
+                            if(StringIsLabel(Constant_Name))
+                            {
+                                Constant_Value = ControlGetText(FRMConstantsConstValue);
+                                i = 0;
+                                if(Constant_Value[i] == '-') i++;
+                                // Only accept dec and hex values
+                                if(StringIsDecimal(Constant_Value.Get_String(i), 10))
+                                {
+                                    ListViewAddItem(FRMConstantsListview, Constant_Value.Get_String(), ListViewItemCount(FRMConstantsListview), -1);
+                                }
+                                else if(StringIsHexaDecimal(Constant_Value))
+                                {
+                                    ListViewAddItem(FRMConstantsListview, Constant_Value.Get_String(), ListViewItemCount(FRMConstantsListview), -1);
+                                }
+                                else
+                                {
+                                    MiscMsgBox(hwndDlg, "Invalid constant value.", MB_ERROR, Requesters);
+                                    SetFocus(FRMConstantsConstValue);
+                                    break;
+                                }
+                                ListViewSetSubItem(FRMConstantsListview, Constant_Name, ListViewItemCount(FRMConstantsListview) - 1, 1);
+                                ListViewSetItemSel(FRMConstantsListview, ListViewItemCount(FRMConstantsListview) - 1);
+                                SetFocus(FRMConstantsListview);
+                                break;
+                            }
+                        }
+                        MiscMsgBox(hwndDlg, "Invalid constant name.", MB_ERROR, Requesters);
+                        SetFocus(FRMConstantsConstName);
+                        break;
+                    case CONSTANT_REPLACE:
+                        CurrentSelected = ListViewGetSelItem(FRMConstantsListview, -1);
+                        if(CurrentSelected != -1)
+                        {
+                            Constant_Name = ControlGetText(FRMConstantsConstName);
+                            if(Constant_Name.Len())
+                            {
+                                if(CheckConstantsSymbol(Constant_Name.Get_String()) != CurrentSelected)
+                                {
+                                    MiscMsgBox(hwndDlg, "Constant already exists.", MB_ERROR, Requesters);
+                                    SetFocus(FRMConstantsConstName);
+                                    break;
+                                }
+                                if(StringIsLabel(Constant_Name))
+                                {
+                                    Constant_Value = ControlGetText(FRMConstantsConstValue);
+                                    i = 0;
+                                    if(Constant_Value[i] == '-') i++;
+                                    // Only accept dec and hex values
+                                    if(StringIsDecimal(Constant_Value.Get_String(i), 10))
+                                    {
+                                        ListViewSetSubItem(FRMConstantsListview, Constant_Value.Get_String(), CurrentSelected, 0);
+                                    }
+                                    else if(StringIsHexaDecimal(Constant_Value))
+                                    {
+                                        ListViewSetSubItem(FRMConstantsListview, Constant_Value.Get_String(), CurrentSelected, 0);
+                                    }
+                                    else
+                                    {
+                                        MiscMsgBox(hwndDlg, "Invalid constant value.", MB_ERROR, Requesters);
+                                        SetFocus(FRMConstantsConstValue);
+                                        break;
+                                    }
+                                    ListViewSetSubItem(FRMConstantsListview, Constant_Name, CurrentSelected, 1);
+                                    ListViewSetItemSel(FRMConstantsListview, ListViewItemCount(FRMConstantsListview) - 1);
+                                    SetFocus(FRMConstantsListview);
+                                    break;
+                                }
+                            }
+                            MiscMsgBox(hwndDlg, "Invalid constant name.", MB_ERROR, Requesters);
+                            SetFocus(FRMConstantsConstName);
+                            break;
+                        }
+                        break;
+                    case CONSTANT_DELETE:
+                        break;
+                }
+                return(0);
+            }
+            if((HWND) lParam == hFRMConstantsOk)
+            {
                 if(SaveConstantsFile()) ControlClose(hwndDlg);
-				return(0);
-			}
-			else if((HWND) lParam == hFRMConstantsCancel)
-			{
+                return(0);
+            }
+            else if((HWND) lParam == hFRMConstantsCancel)
+            {
                 ControlClose(hwndDlg);
                 return(0);
-			}
-			break;
+            }
+            break;
         case WM_CLOSE:
             EndDialog(hwndDlg, 0);
     }
@@ -272,27 +272,27 @@ int CALLBACK FRMConstantsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
 int SaveConstantsFile(void)
 {
     int i = 0;
-	int k = 0;
+    int k = 0;
     HANDLE StrFileHandle = 0;
 
     for(i = 0; i < ListViewItemCount(FRMConstantsListview); i++)
     {
-		if(ListViewGetItemText(FRMConstantsListview, i, 0).Len() != 0 && ListViewGetItemText(FRMConstantsListview, i, 1).Len() != 0)
-		{
-			if(ListViewGetItemText(FRMConstantsListview, i, 0).Len() == 0 || ListViewGetItemText(FRMConstantsListview, i, 1).Len() == 0)
-			{
-				MiscMsgBox(FRMConstantshwnd, "Entry is incomplete.", MB_ERROR, Requesters);
-				// Lead user to the faulty entry
-				ListViewSetItemSel(FRMConstantsListview, i);
-				SetFocus(FRMConstantsListview);
-				return(0);
-			}
-			IniWriteKey("Constants", "Name" + (CStr) StringNumberComplement(k, 3).Get_String(), ListViewGetItemText(FRMConstantsListview, i, 1), ProjectFName);
-			IniWriteKey("Constants", "Value" + (CStr) StringNumberComplement(k, 3).Get_String(), ListViewGetItemText(FRMConstantsListview, i, 0), ProjectFName);
-			k++;
-		}
-	}
-	return(1);
+        if(ListViewGetItemText(FRMConstantsListview, i, 0).Len() != 0 && ListViewGetItemText(FRMConstantsListview, i, 1).Len() != 0)
+        {
+            if(ListViewGetItemText(FRMConstantsListview, i, 0).Len() == 0 || ListViewGetItemText(FRMConstantsListview, i, 1).Len() == 0)
+            {
+                MiscMsgBox(FRMConstantshwnd, "Entry is incomplete.", MB_ERROR, Requesters);
+                // Lead user to the faulty entry
+                ListViewSetItemSel(FRMConstantsListview, i);
+                SetFocus(FRMConstantsListview);
+                return(0);
+            }
+            IniWriteKey("Constants", "Name" + (CStr) StringNumberComplement(k, 3).Get_String(), ListViewGetItemText(FRMConstantsListview, i, 1), ProjectFName);
+            IniWriteKey("Constants", "Value" + (CStr) StringNumberComplement(k, 3).Get_String(), ListViewGetItemText(FRMConstantsListview, i, 0), ProjectFName);
+            k++;
+        }
+    }
+    return(1);
 }
 
 // -----------------------------------------------------------------------
@@ -321,10 +321,10 @@ int CheckConstantsSymbol(char *Constant_Name)
 {
     for(int i = 0; i < ListViewItemCount(FRMConstantsListview); i++)
     {
-		if(lstrcmpi(ListViewGetItemText(FRMConstantsListview, i, 1).Get_String(), Constant_Name) == 0)
-		{
-			return(i);
-		}
-	}
-	return(-1);
+        if(lstrcmpi(ListViewGetItemText(FRMConstantsListview, i, 1).Get_String(), Constant_Name) == 0)
+        {
+            return(i);
+        }
+    }
+    return(-1);
 }

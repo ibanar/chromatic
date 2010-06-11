@@ -62,8 +62,8 @@ void InitCodeMax(HINSTANCE hInst)
     hCodeMaxCMUnRegisterLanguage = (void (*) (char *)) GetProcAddress(hCodeMax, "CMUnregisterLanguage");
     hCodeMaxCMRegisterCommand = (void (*) (long, char *, char *)) GetProcAddress(hCodeMax, "CMRegisterCommand");
     hCodeMaxCMRegisterHotKey = (void (*) (long, long)) GetProcAddress(hCodeMax, "CMRegisterHotKey");
-	if(WindowsXP) Cm_Flags |= CM_FLAG_WINDOWSXP;
-	hCodeMaxCMRegisterControl(0x2100, Cm_Flags);
+    if(WindowsXP) Cm_Flags |= CM_FLAG_WINDOWSXP;
+    hCodeMaxCMRegisterControl(0x2100, Cm_Flags);
 }
 
 // -----------------------------------------------------------------------
@@ -121,7 +121,7 @@ long CM_InsertFile(HWND hWnd, char *pszFileName, CM_RANGE *pPos)
 long CM_InsertText(HWND hWnd, char *pszText, CM_RANGE *pPos)
 {
     if(strlen(pszText) != 0) return(SendMessage(hWnd, CMM_INSERTTEXT, (WPARAM) pPos, (LPARAM) pszText));
-	return(0);
+    return(0);
 }
 
 long CM_InsertTextLng(HWND hWnd, long pszText, CM_RANGE *pPos)

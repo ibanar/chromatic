@@ -63,8 +63,8 @@ int CALLBACK FRMProcPerms(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     PAINTSTRUCT EnterValuePerms;
     
-	switch(uMsg)
-	{
+    switch(uMsg)
+    {
         case WM_INITDIALOG:
             ControlSetText(hwndDlg, "Change directories/files permissions");
             FRMProcPermshwnd = hwndDlg;
@@ -205,90 +205,90 @@ int CALLBACK FRMProcPerms(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             BeginPaint(hwndDlg, &EnterValuePerms);
             GDIDrawHorzSep(hwndDlg, 0, 77, 304);
             EndPaint(hwndDlg, &EnterValuePerms);
-			break;
-		case WM_COMMAND:
+            break;
+        case WM_COMMAND:
             if((HWND) lParam == FRMPermsOk)
             {
                 switch(CheckBoxGetState(FRMPermsChkOwnerR))
                 {
                     case BST_UNCHECKED:
                         PermOwnerR = 0;
-						break;
+                        break;
                     case BST_CHECKED:
                         PermOwnerR = PermNbrFiles;
-						break;
+                        break;
                 }
                 switch(CheckBoxGetState(FRMPermsChkOwnerW))
                 {
                     case BST_UNCHECKED:
                         PermOwnerW = 0;
-						break;
+                        break;
                     case BST_CHECKED:
                         PermOwnerW = PermNbrFiles;
-						break;
+                        break;
                 }
                 switch(CheckBoxGetState(FRMPermsChkOwnerE))
                 {
                     case BST_UNCHECKED:
                         PermOwnerX = 0;
-						break;
+                        break;
                     case BST_CHECKED:
                         PermOwnerX = PermNbrFiles;
-						break;
+                        break;
                 }
                 switch(CheckBoxGetState(FRMPermsChkGroupR))
                 {
                     case BST_UNCHECKED:
                         PermGroupR = 0;
-						break;
+                        break;
                     case BST_CHECKED:
                         PermGroupR = PermNbrFiles;
-						break;
-				}
+                        break;
+                }
                 switch(CheckBoxGetState(FRMPermsChkGroupW))
                 {
                     case BST_UNCHECKED:
                         PermGroupW = 0;
-						break;
+                        break;
                     case BST_CHECKED:
                         PermGroupW = PermNbrFiles;
-						break;
+                        break;
                 }
                 switch(CheckBoxGetState(FRMPermsChkGroupE))
                 {
                     case BST_UNCHECKED:
                         PermGroupX = 0;
-						break;
+                        break;
                     case BST_CHECKED:
                         PermGroupX = PermNbrFiles;
-						break;
+                        break;
                 }
                 switch(CheckBoxGetState(FRMPermsChkOtherR))
                 {
                     case BST_UNCHECKED:
                         PermOtherR = 0;
-						break;
+                        break;
                     case BST_CHECKED:
                         PermOtherR = PermNbrFiles;
-						break;
+                        break;
                 }
                 switch(CheckBoxGetState(FRMPermsChkOtherW))
                 {
                     case BST_UNCHECKED:
                         PermOtherW = 0;
-						break;
+                        break;
                     case BST_CHECKED:
                         PermOtherW = PermNbrFiles;
-						break;
+                        break;
                 }
                 switch(CheckBoxGetState(FRMPermsChkOtherE))
                 {
                     case BST_UNCHECKED:
                         PermOtherX = 0;
-						break;
+                        break;
                     case BST_CHECKED:
                         PermOtherX = PermNbrFiles;
-						break;
+                        break;
                 }
                 ControlClose(hwndDlg);
                 return(0);
@@ -297,8 +297,8 @@ int CALLBACK FRMProcPerms(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             {
                 ControlClose(hwndDlg);
                 return(0);
-			}
-			break;
+            }
+            break;
         case WM_CLOSE:
             FreezeTimer = 0;
             EndDialog(hwndDlg, 0);

@@ -106,9 +106,9 @@ void CALLBACK FrmRegsInitProc(HWND hWnd)
             }
             if(FoundR == 0)
             {
-				BufString = FoundReg.Get(i)->Content;
-			    BufString = BufString.Upper_Case(); 
-				ListBoxAddItem(FrmRegsListbox1, BufString, LstIdx);
+                BufString = FoundReg.Get(i)->Content;
+                BufString = BufString.Upper_Case(); 
+                ListBoxAddItem(FrmRegsListbox1, BufString, LstIdx);
                 LstIdx++;
             }
         }
@@ -221,8 +221,8 @@ void FillRegisterList(void)
             StrCurrentLine = StringGetSplitElement(StrLine, RefStr, i);
             if(StrCurrentLine.Len() != 0)
             {
-				CurLine = FoundLines.Get(StrCurrentLine.Get_Long())->Content;
-				ListBoxAddItem(FrmRegsListbox2, "Line: " + (CStr) StringNumberComplement(CurLine + 1, 10).Get_String() + (CStr) " >> " + (CStr) StringReplace(StringGetSplitElement(FrmRegsPrimLinesTxt, FrmRegsFoundLinesTxt, CurLine - FrmRegsSelFirstLine), "\r", "", 1, -1, Binary_Compare), Lst2Idx);
+                CurLine = FoundLines.Get(StrCurrentLine.Get_Long())->Content;
+                ListBoxAddItem(FrmRegsListbox2, "Line: " + (CStr) StringNumberComplement(CurLine + 1, 10).Get_String() + (CStr) " >> " + (CStr) StringReplace(StringGetSplitElement(FrmRegsPrimLinesTxt, FrmRegsFoundLinesTxt, CurLine - FrmRegsSelFirstLine), "\r", "", 1, -1, Binary_Compare), Lst2Idx);
                 ListBoxSetItemData(FrmRegsListbox2, Lst2Idx, CurLine);
                 Lst2Idx++;
             }

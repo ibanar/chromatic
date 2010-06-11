@@ -97,8 +97,8 @@ int CALLBACK FRMToolbarsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             ListViewSetBackColor(FRMToolbarsListview, GetSysColor(COLOR_WINDOW));
             ListViewSetBackColor(FRMToolbarsListDrag, GetSysColor(COLOR_WINDOW));
             ListViewSetBackColor(FRMToolbarsListDrop, GetSysColor(COLOR_WINDOW));
-			break;
-		case WM_INITDIALOG:
+            break;
+        case WM_INITDIALOG:
             FRMToolbarshwnd = hwndDlg;
             DeleteFile(ToolbarsTMPIniFile.Get_String());
             ControlSetText(hwndDlg, "Toolbars manager");
@@ -144,12 +144,12 @@ int CALLBACK FRMToolbarsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                                 case 0:
                                     ListViewSetItemCheckbox(FRMToolbarsListview, CurrentLvItem, 1);
                                     ChangeToolbarVisible(ListViewGetSelItemText(FRMToolbarsListview, 0), 1);
-									break;
-								case 1:
+                                    break;
+                                case 1:
                                     ListViewSetItemCheckbox(FRMToolbarsListview, CurrentLvItem, 0);
                                     ChangeToolbarVisible(ListViewGetSelItemText(FRMToolbarsListview, 0), 0);
-									break;
-							}
+                                    break;
+                            }
                         }
                         return(0);
                 }
@@ -173,8 +173,8 @@ int CALLBACK FRMToolbarsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                                 ControlVisible(FRMToolbarsCmdNew, 1);
                                 ControlVisible(FRMToolbarsCmdRename, 1);
                                 ControlVisible(FRMToolbarsCmdDelete, 1);
-								break;
-							case 1:
+                                break;
+                            case 1:
                                 FRMToolbarsFillCombo();
                                 // Check if selected toolbar still exists
                                 // If not try to display first toolbar in list
@@ -251,13 +251,13 @@ int CALLBACK FRMToolbarsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                         return(0);
                     }
             }
-			break;
+            break;
         case WM_MOUSEMOVE:
             if(LVDrag1 == 1)
             {
                 ListViewMoveDrag(&LVDragPoint);
                 if(ControlGetHwndFromPoint() != FRMToolbarsListDrop) CursorSetNo();
-				else CursorSetNormal();
+                else CursorSetNormal();
             }
             if(LVDrag2 == 1)
             {
@@ -265,7 +265,7 @@ int CALLBACK FRMToolbarsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                 if(ControlGetHwndFromPoint() != FRMToolbarsListDrag) CursorSetNo();
                 else CursorSetNormal();
             }
-			break;
+            break;
         case WM_LBUTTONUP:
             if(LVDrag1 == 1)
             {
@@ -335,7 +335,7 @@ int CALLBACK FRMToolbarsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                 }
                 LVDrag2 = 0;
             }
-			break;
+            break;
         case WM_COMMAND:
             if((HWND) lParam == FRMToolbarsCombo)
             {
@@ -419,13 +419,13 @@ int CALLBACK FRMToolbarsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                 if(OldToolbarName.Len() != 0) ChangeToolbarBreak(OldToolbarName, CheckBoxGetState(FRMToolbarsCheckB));
                 return(0);
             }
-			break;
-		case WM_PAINT:
+            break;
+        case WM_PAINT:
             BeginPaint(hwndDlg, &HexPs);
             GDIDrawHorzSep(hwndDlg, 0, 268, 359);
             EndPaint(hwndDlg, &HexPs);
-			break;
-		case WM_CLOSE:
+            break;
+        case WM_CLOSE:
             FillToolbarsHeader();
             for(i = 0; i < ToolbarsHwnd.Amount(); i++)
             {
@@ -480,10 +480,10 @@ void FillToolbarsHeader(void)
         {
             case 1:
                 ChangeToolbarVisible(ListViewGetItemText(FRMToolbarsListview, i, 0), 1);
-				break;
-			case 0:
+                break;
+            case 0:
                 ChangeToolbarVisible(ListViewGetItemText(FRMToolbarsListview, i, 0), 0);
-				break;
+                break;
         }
         TBK = ListViewGetItemText(FRMToolbarsListview, i, 0);
         // Check if toolbar have been modified
@@ -506,23 +506,23 @@ void FillToolbarsHeader(void)
                         TBBtnMenu = "";
                         TBBtnComment = "";
                         TbValueLng = -2;
-						break;
+                        break;
                     case -3:
                         TBBtnIcon = TBIconsArray.Get(1)->Content;
                         TBBtnTT = TBToolsArray.Get(1)->Content;
                         TBBtnMenu = MenuCommandsID.Get(1)->Content;
                         TBBtnComment = TBBtnCommentArray.Get(1)->Content;
                         TbValueLng = 9;
-						break;
+                        break;
                     case -4:
                         TBBtnIcon = TBIconsArray.Get(2)->Content;
                         TBBtnTT = TBToolsArray.Get(2)->Content;
                         TBBtnMenu = MenuCommandsID.Get(2)->Content;
                         TBBtnComment = TBBtnCommentArray.Get(2)->Content;
                         TbValueLng = 10;
-						break;
-					default:
-						TBBtnIcon = TBIconsArray.Get(TbValueLng)->Content;
+                        break;
+                    default:
+                        TBBtnIcon = TBIconsArray.Get(TbValueLng)->Content;
                         TBBtnTT = TBToolsArray.Get(TbValueLng)->Content;
                         TBBtnComment = TBBtnCommentArray.Get(TbValueLng)->Content;
                         TBBtnMenu = MenuCommandsID.Get(TbValueLng)->Content;
@@ -530,74 +530,74 @@ void FillToolbarsHeader(void)
                         {
                             case (MENU_FILE_IDBASE + MENU_FILE_OPENFILE_ID):
                                 TbValueLng = 0;
-								break;
+                                break;
                             case (MENU_FILE_IDBASE + MENU_FILE_SAVE_ID):
                                 TbValueLng = 1;
-								break;
+                                break;
                             case (MENU_EDIT_IDBASE + MENU_EDIT_COPY_ID):
                                 TbValueLng = 2;
-								break;
+                                break;
                             case (MENU_EDIT_IDBASE + MENU_EDIT_DELETE_DELETESELECTION_ID):
                                 TbValueLng = 3;
-								break;
+                                break;
                             case (MENU_FILE_IDBASE + MENU_FILE_CONSOLE_RUN_ID):
                                 TbValueLng = 4;
-								break;
+                                break;
                             case (MENU_EDIT_IDBASE + MENU_EDIT_BOOKMARKS_TOGGLE_ID):
                                 TbValueLng = 5;
-								break;
+                                break;
                             case (MENU_EDIT_IDBASE + MENU_EDIT_SELECTPROCEDURE_ID):
                                 TbValueLng = 6;
-								break;
+                                break;
                             case (MENU_EDIT_IDBASE + MENU_EDIT_GOTO_TOP_ID):
                                 TbValueLng = 7;
-								break;
+                                break;
                             case (MENU_EDIT_IDBASE + MENU_EDIT_BLOCK_INDENT_ID):
                                 TbValueLng = 8;
-								break;
+                                break;
                             case (MENU_PROJECT_IDBASE + MENU_PROJECT_ADDINCLUDE_ID):
                                 TbValueLng = 11;
-								break;
+                                break;
                             case (MENU_FILE_IDBASE + MENU_FILE_INCLUDEFILE_ID):
                                 TbValueLng = 12;
-								break;
+                                break;
                             case (MENU_FILE_IDBASE + MENU_FILE_NEW_ID):
                                 TbValueLng = 13;
-								break;
+                                break;
                             case (MENU_EDIT_IDBASE + MENU_EDIT_PASTE_ID):
                                 TbValueLng = 14;
-								break;
+                                break;
                             case (MENU_FILE_IDBASE + MENU_FILE_RUNEXTERNALPROGRAM_ID):
                                 TbValueLng = 15;
-								break;
+                                break;
                             case (MENU_FILE_IDBASE + MENU_FILE_FAVORITES_ID):
                                 TbValueLng = 16;
-								break;
+                                break;
                             case (MENU_FILE_IDBASE + MENU_FILE_FILTERS_ID):
                                 TbValueLng = 17;
-								break;
+                                break;
                             case (MENU_EDIT_IDBASE + MENU_FILE_INCLUDEFILTERS_ID):
                                 TbValueLng = 18;
-								break;
+                                break;
                             case (MENU_EDIT_IDBASE + MENU_EDIT_BREAKPOINTS_TOGGLE_ID):
                                 TbValueLng = 19;
-								break;
+                                break;
                             case (MENU_VIEW_IDBASE + MENU_VIEW_PROJECTDOCK_ID):
                                 TbValueLng = 20;
-								break;
+                                break;
                             default:
                                 TbValueLng = -1;
-								break;
+                                break;
                         }
                 }
                 switch(TBBtnMenu.Get_Long())
                 {
                     case -3:
                         TBBtnMenu = 10;
-						break;
+                        break;
                     case -4:
                         TBBtnMenu = 11;
-						break;
+                        break;
                 }
                 // Save new entries datas
                 IniWriteKey(TBK, "BtnIcon" + (CStr) StringNumberComplement(j, 3).Get_String(), TBBtnIcon, ToolbarsIniFile);
@@ -713,8 +713,8 @@ void RemoveToolbarEntry(CStr ToolBarName)
     long FoundEntry = 0;
     CStr CurEntry;
  
-	for(i = 0; i <= 999; i++)
-	{
+    for(i = 0; i <= 999; i++)
+    {
         CurEntry = IniReadKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
         if(CurEntry.Len() == 0) break;
         if(strcmpi(CurEntry.Get_String(), ToolBarName.Get_String()) == 0)
@@ -765,7 +765,7 @@ void FillToolbarDatas(void)
     int i = 0;
     CStr BufString;
     
-	TBToolBarKey = ComboBoxGetItem(FRMToolbarsCombo, ComboBoxGetIndex(FRMToolbarsCombo));
+    TBToolBarKey = ComboBoxGetItem(FRMToolbarsCombo, ComboBoxGetIndex(FRMToolbarsCombo));
     if(TBToolBarKey.Len() != 0)
     {
         TBBreak = IniReadKey("Toolbars", "TbType" + (CStr) StringNumberComplement(ComboBoxGetIndex(FRMToolbarsCombo), 3).Get_String(),
@@ -801,17 +801,17 @@ void FillToolbarDatas(void)
                         TBBtnIcon = TBIconsArray.Get(1)->Content;
                         TBBtnMenu = MenuCommandsID.Get(1)->Content;
                         TBBtnComment = TBBtnCommentArray.Get(1)->Content;
-						break;
+                        break;
                     case -4:
                         TBBtnIcon = TBIconsArray.Get(2)->Content;
                         TBBtnMenu = MenuCommandsID.Get(2)->Content;
                         TBBtnComment = TBBtnCommentArray.Get(2)->Content;
-						break;
-					default:
+                        break;
+                    default:
                         TBBtnIcon = TBIconsArray.Get(TBToolBarModifiedLng)->Content;
                         TBBtnMenu = MenuCommandsID.Get(TBToolBarModifiedLng)->Content;
                         TBBtnComment = TBBtnCommentArray.Get(TBToolBarModifiedLng)->Content;
-						break;
+                        break;
                 }
                 goto AddModifiedCommandToList;
             }
@@ -827,16 +827,16 @@ void FillToolbarDatas(void)
                 case -2:
                     // Separators
                     IniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", ToolbarsTMPIniFile);
-					break;
+                    break;
                 case 9:
                     // Recent files list
                     IniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), "-3", ToolbarsTMPIniFile);
-					break;
+                    break;
                 case 10:
                     // Recent projects list
                     IniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), "-4", ToolbarsTMPIniFile);
-					break;
-				default:
+                    break;
+                default:
                     // Single commands
                     // and drop down menus
                     TBBtnCommandLng = TBBtnCommand.Get_Long();
@@ -850,7 +850,7 @@ void FillToolbarDatas(void)
                     // Edit
                     if(TBBtnCommandLng < MENU_VIEW_IDBASE)
                     {
-						TBBtnCommandLng = (TBBtnCommandLng - MENU_EDIT_IDBASE) + 3 + (sizeof(MenuFileComments) / 4);
+                        TBBtnCommandLng = (TBBtnCommandLng - MENU_EDIT_IDBASE) + 3 + (sizeof(MenuFileComments) / 4);
                         IniWriteKey(TBToolBarKey, "Tool" + (CStr) StringNumberComplement(i, 3).Get_String(), TBBtnCommandLng, ToolbarsTMPIniFile);
                         goto AddModifiedCommandToList;
                     }
@@ -884,8 +884,8 @@ AddModifiedCommandToList:
                 // Separator
                 case -2:
                     ListViewAddItem(FRMToolbarsListDrop, "<Separator>", i, -1);
-					break;
-				// Simple button
+                    break;
+                // Simple button
                 default:
                     if(TBBtnIcon.Is_Numeric())
                     {
@@ -927,7 +927,7 @@ void FillToolbarCommands(void)
     MenuCommandsID.Erase();
     MenuRealCommandsID.Erase();
     
-	// Store toolbar ID
+    // Store toolbar ID
     TBIconsArray.Add(0L);
     TBToolsArray.Add("");
     MenuCommandsID.Add(-2L);
@@ -952,7 +952,7 @@ void FillToolbarCommands(void)
     for(i = 0; i < ((sizeof(MenuFileComments) / 4) ) ; i++)
     {
         ListViewAddItem(FRMToolbarsListDrag, MenuFileComments[i], PosInLV, ToolbarFileIcons[i]);
-		TBIconsArray.Add(ToolbarFileIcons[i]);
+        TBIconsArray.Add(ToolbarFileIcons[i]);
         TBToolsArray.Add(MenuFileToolTips[i]);
         MenuCommandsID.Add((i + MENU_FILE_IDBASE));
         MenuRealCommandsID.Add(RealPos);
@@ -963,7 +963,7 @@ void FillToolbarCommands(void)
     for(i = 0; i < ((sizeof(MenuEditComments) / 4) ); i++)
     {
         ListViewAddItem(FRMToolbarsListDrag, MenuEditComments[i], PosInLV, ToolbarEditIcons[i]);
-		TBIconsArray.Add(ToolbarEditIcons[i]);
+        TBIconsArray.Add(ToolbarEditIcons[i]);
         TBToolsArray.Add(MenuEditToolTips[i]);
         MenuCommandsID.Add((i + MENU_EDIT_IDBASE));
         MenuRealCommandsID.Add(RealPos);
@@ -1017,40 +1017,40 @@ void FillToolbarCommands(void)
             }
             else
             {
-				BufString = MenusCmdsComments.Get(i)->Content;
+                BufString = MenusCmdsComments.Get(i)->Content;
                 BufString = BufString.Left(5);
-				if(BufString == "CAPT ")
-				{
+                if(BufString == "CAPT ")
+                {
                     UserIcon = ICON_CONSOLE;
                     ListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
-				}
-				else if(BufString == "HTML ")
-				{
+                }
+                else if(BufString == "HTML ")
+                {
                     UserIcon = ICON_INTERNET;
                     ListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
-				}
-				else if(BufString == "PLUG ")
-				{
+                }
+                else if(BufString == "PLUG ")
+                {
                     UserIcon = ICON_PLUG;
                     ListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
-				}
-				else if(BufString == "SNAP ")
-				{
+                }
+                else if(BufString == "SNAP ")
+                {
                     UserIcon = ICON_SNAP;
                     ListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
-				}
-				else if(BufString == "DOCU ")
-				{
+                }
+                else if(BufString == "DOCU ")
+                {
                     UserIcon = ICON_FILEASSOC;
                     ListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
-				}
-				else if(BufString == "PREP ")
-				{
+                }
+                else if(BufString == "PREP ")
+                {
                     UserIcon = ICON_LAB;
                     ListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
-				}
-				else
-				{
+                }
+                else
+                {
                     UserIcon = ICON_WINDOWS;
                     ListViewAddItem(FRMToolbarsListDrag, MenuStr, PosInLV, UserIcon);
                 }

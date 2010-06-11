@@ -76,87 +76,87 @@ HWND Wrap_Child;
 void CreateMDIForm(void)
 {
     CStr TopMostProp;
-	WINDOWPLACEMENT Mdi_Datas;
-	CStr strMDI_Datas;
-	int Nbr_Params = 0;
+    WINDOWPLACEMENT Mdi_Datas;
+    CStr strMDI_Datas;
+    int Nbr_Params = 0;
     
     // Set main window on top or not
     TopMostProp = IniReadKey("Layout", "AlwaysOnTop", MainIniFile);
 
-	memset(&Mdi_Datas, 0, sizeof(WINDOWPLACEMENT));
-	Mdi_Datas.length = sizeof(WINDOWPLACEMENT);
-	strMDI_Datas = IniReadKey("Layout", "MDI_Flags", MainIniFile);
-	if(strMDI_Datas.Len())
-	{
-		Mdi_Datas.flags = strMDI_Datas.Get_Long();
-		Nbr_Params++;
-	}
-	strMDI_Datas = IniReadKey("Layout", "MDI_MinPosX", MainIniFile);
-	if(strMDI_Datas.Len())
-	{
-		Mdi_Datas.ptMinPosition.x = strMDI_Datas.Get_Long();
-		Nbr_Params++;
-	}
-	strMDI_Datas = IniReadKey("Layout", "MDI_MinPosY", MainIniFile);
-	if(strMDI_Datas.Len())
-	{
-		Mdi_Datas.ptMinPosition.y = strMDI_Datas.Get_Long();
-		Nbr_Params++;
-	}
-	strMDI_Datas = IniReadKey("Layout", "MDI_MaxPosX", MainIniFile);
-	if(strMDI_Datas.Len())
-	{
-		Mdi_Datas.ptMaxPosition.x = strMDI_Datas.Get_Long();
-		Nbr_Params++;
-	}
-	strMDI_Datas = IniReadKey("Layout", "MDI_MaxPosY", MainIniFile);
-	if(strMDI_Datas.Len())
-	{
-		Mdi_Datas.ptMaxPosition.y = strMDI_Datas.Get_Long();
-		Nbr_Params++;
-	}
-	strMDI_Datas = IniReadKey("Layout", "MDI_PosL", MainIniFile);
-	if(strMDI_Datas.Len())
-	{
-		Mdi_Datas.rcNormalPosition.left = strMDI_Datas.Get_Long();
-		Nbr_Params++;
-	}
-	strMDI_Datas = IniReadKey("Layout", "MDI_PosT", MainIniFile);
-	if(strMDI_Datas.Len())
-	{
-		Mdi_Datas.rcNormalPosition.top = strMDI_Datas.Get_Long();
-		Nbr_Params++;
-	}
-	strMDI_Datas = IniReadKey("Layout", "MDI_PosR", MainIniFile);
-	if(strMDI_Datas.Len())
-	{
-		Mdi_Datas.rcNormalPosition.right = strMDI_Datas.Get_Long();
-		Nbr_Params++;
-	}
-	strMDI_Datas = IniReadKey("Layout", "MDI_PosB", MainIniFile);
-	if(strMDI_Datas.Len())
-	{
-		Mdi_Datas.rcNormalPosition.bottom = strMDI_Datas.Get_Long();
-		Nbr_Params++;
-	}
-	strMDI_Datas = IniReadKey("Layout", "MDI_Show", MainIniFile);
-	if(strMDI_Datas.Len())
-	{
-		Mdi_Datas.showCmd = strMDI_Datas.Get_Long();
-		Nbr_Params++;
-	}
-	if(Nbr_Params != 10)
-	{
-		memset(&Mdi_Datas, 0, sizeof(WINDOWPLACEMENT));
-		Mdi_Datas.length = sizeof(WINDOWPLACEMENT);
-		Mdi_Datas.showCmd = SW_SHOWMAXIMIZED;
-		Mdi_Datas.rcNormalPosition.left = 0;
-		Mdi_Datas.rcNormalPosition.top = 0;
-		Mdi_Datas.rcNormalPosition.right = 800;
-		Mdi_Datas.rcNormalPosition.bottom = 600;
-	}
-	hMDIform.hWnd = CreateMDIDialog(Mdi_Datas.rcNormalPosition.left, Mdi_Datas.rcNormalPosition.top, Mdi_Datas.rcNormalPosition.right - Mdi_Datas.rcNormalPosition.left, Mdi_Datas.rcNormalPosition.bottom - Mdi_Datas.rcNormalPosition.top, 0, 0, LoadIcon(ApphInstance, MAKEINTRESOURCE(APP_ICON)), Requesters, &MDIInitProc, CurrentMDIProc, 0, Mdi_Datas.showCmd);
-	if(Nbr_Params == 10) SetWindowPlacement(hMDIform.hWnd, &Mdi_Datas);
+    memset(&Mdi_Datas, 0, sizeof(WINDOWPLACEMENT));
+    Mdi_Datas.length = sizeof(WINDOWPLACEMENT);
+    strMDI_Datas = IniReadKey("Layout", "MDI_Flags", MainIniFile);
+    if(strMDI_Datas.Len())
+    {
+        Mdi_Datas.flags = strMDI_Datas.Get_Long();
+        Nbr_Params++;
+    }
+    strMDI_Datas = IniReadKey("Layout", "MDI_MinPosX", MainIniFile);
+    if(strMDI_Datas.Len())
+    {
+        Mdi_Datas.ptMinPosition.x = strMDI_Datas.Get_Long();
+        Nbr_Params++;
+    }
+    strMDI_Datas = IniReadKey("Layout", "MDI_MinPosY", MainIniFile);
+    if(strMDI_Datas.Len())
+    {
+        Mdi_Datas.ptMinPosition.y = strMDI_Datas.Get_Long();
+        Nbr_Params++;
+    }
+    strMDI_Datas = IniReadKey("Layout", "MDI_MaxPosX", MainIniFile);
+    if(strMDI_Datas.Len())
+    {
+        Mdi_Datas.ptMaxPosition.x = strMDI_Datas.Get_Long();
+        Nbr_Params++;
+    }
+    strMDI_Datas = IniReadKey("Layout", "MDI_MaxPosY", MainIniFile);
+    if(strMDI_Datas.Len())
+    {
+        Mdi_Datas.ptMaxPosition.y = strMDI_Datas.Get_Long();
+        Nbr_Params++;
+    }
+    strMDI_Datas = IniReadKey("Layout", "MDI_PosL", MainIniFile);
+    if(strMDI_Datas.Len())
+    {
+        Mdi_Datas.rcNormalPosition.left = strMDI_Datas.Get_Long();
+        Nbr_Params++;
+    }
+    strMDI_Datas = IniReadKey("Layout", "MDI_PosT", MainIniFile);
+    if(strMDI_Datas.Len())
+    {
+        Mdi_Datas.rcNormalPosition.top = strMDI_Datas.Get_Long();
+        Nbr_Params++;
+    }
+    strMDI_Datas = IniReadKey("Layout", "MDI_PosR", MainIniFile);
+    if(strMDI_Datas.Len())
+    {
+        Mdi_Datas.rcNormalPosition.right = strMDI_Datas.Get_Long();
+        Nbr_Params++;
+    }
+    strMDI_Datas = IniReadKey("Layout", "MDI_PosB", MainIniFile);
+    if(strMDI_Datas.Len())
+    {
+        Mdi_Datas.rcNormalPosition.bottom = strMDI_Datas.Get_Long();
+        Nbr_Params++;
+    }
+    strMDI_Datas = IniReadKey("Layout", "MDI_Show", MainIniFile);
+    if(strMDI_Datas.Len())
+    {
+        Mdi_Datas.showCmd = strMDI_Datas.Get_Long();
+        Nbr_Params++;
+    }
+    if(Nbr_Params != 10)
+    {
+        memset(&Mdi_Datas, 0, sizeof(WINDOWPLACEMENT));
+        Mdi_Datas.length = sizeof(WINDOWPLACEMENT);
+        Mdi_Datas.showCmd = SW_SHOWMAXIMIZED;
+        Mdi_Datas.rcNormalPosition.left = 0;
+        Mdi_Datas.rcNormalPosition.top = 0;
+        Mdi_Datas.rcNormalPosition.right = 800;
+        Mdi_Datas.rcNormalPosition.bottom = 600;
+    }
+    hMDIform.hWnd = CreateMDIDialog(Mdi_Datas.rcNormalPosition.left, Mdi_Datas.rcNormalPosition.top, Mdi_Datas.rcNormalPosition.right - Mdi_Datas.rcNormalPosition.left, Mdi_Datas.rcNormalPosition.bottom - Mdi_Datas.rcNormalPosition.top, 0, 0, LoadIcon(ApphInstance, MAKEINTRESOURCE(APP_ICON)), Requesters, &MDIInitProc, CurrentMDIProc, 0, Mdi_Datas.showCmd);
+    if(Nbr_Params == 10) SetWindowPlacement(hMDIform.hWnd, &Mdi_Datas);
     DragAcceptFiles(hMDIform.hClient, AcceptFiles);
     if(TopMostProp.Len() != 0) if(strcmpi(TopMostProp.Get_String(), "1") == 0) ControlSetTopMost(hMDIform.hWnd);
     if(FullScreenMode == 1) SetFullScreenMode();
@@ -167,10 +167,10 @@ void CreateMDIForm(void)
 void CALLBACK MDIInitProc(HWND hWnd)
 {
     int i = 0;
-	void (CALLBACK * LocInitMDIHook)(HWND hWnd);
-	RECT rcDefault;
+    void (CALLBACK * LocInitMDIHook)(HWND hWnd);
+    RECT rcDefault;
 
-	hRebar = CreateRebar(0, 0, 0, 18, hWnd, 0, 0, CCS_TOP | RBS_BANDBORDERS | WS_BORDER);
+    hRebar = CreateRebar(0, 0, 0, 18, hWnd, 0, 0, CCS_TOP | RBS_BANDBORDERS | WS_BORDER);
     InitReBarContent(hWnd);
 
     hStatusBar = CreateStatusBar("", STATUSBAR_PARTNORMAL, hWnd, 6, &StatusHook, WS_BORDER);
@@ -178,15 +178,15 @@ void CALLBACK MDIInitProc(HWND hWnd)
     hMDIform.hClient = CreateClient(hWnd, hWindowMenu, LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_NEW)));
     ControlHookWin(hMDIform.hClient, &ClientProc);
 
-	// We need to update it here bcoz some addins might need it
-	hMDIform.hWnd = hWnd;
+    // We need to update it here bcoz some addins might need it
+    hMDIform.hWnd = hWnd;
 
-	// Create docking context
-	rcDefault.left = 0;
-	rcDefault.top = 0;
-	rcDefault.right = ControlWidth(hMDIform.hWnd);
-	rcDefault.bottom = ControlHeight(hMDIform.hWnd);
-	hMDIform.hDock = cDock->Create(hWnd, rcDefault);
+    // Create docking context
+    rcDefault.left = 0;
+    rcDefault.top = 0;
+    rcDefault.right = ControlWidth(hMDIform.hWnd);
+    rcDefault.bottom = ControlHeight(hMDIform.hWnd);
+    hMDIform.hDock = cDock->Create(hWnd, rcDefault);
     cDock->SetClient(hMDIform.hClient);
 
     CreateDockingProject(hWnd);
@@ -194,34 +194,34 @@ void CALLBACK MDIInitProc(HWND hWnd)
     CreateDockingOutput(hWnd);
     SetStatusBarParts();
     
-	// (Don't display it again, only hide it if necessary)
-	// In all case update menus states
-	if(!ShowProjetDockWin) SetProjectDockState(ShowProjetDockWin);
-	else SetProjectDockMenuState(ShowProjetDockWin);
-	if(!ShowWindowsDockWin) SetWindowsDockState(ShowWindowsDockWin);
-	else SetWindowsDockMenuState(ShowWindowsDockWin);
+    // (Don't display it again, only hide it if necessary)
+    // In all case update menus states
+    if(!ShowProjetDockWin) SetProjectDockState(ShowProjetDockWin);
+    else SetProjectDockMenuState(ShowProjetDockWin);
+    if(!ShowWindowsDockWin) SetWindowsDockState(ShowWindowsDockWin);
+    else SetWindowsDockMenuState(ShowWindowsDockWin);
     if(!ShowOutputDockWin) SetOutputDockState(ShowOutputDockWin);
-	else SetOutputDockMenuState(ShowOutputDockWin);
+    else SetOutputDockMenuState(ShowOutputDockWin);
 
-	ShowHideStatusBar(ShowStatusbar);
+    ShowHideStatusBar(ShowStatusbar);
     CreateTimer(hWnd);
     CurFontHandle = GDIObtainFont(CurFontName, CurFontSize, hMDIform.hWnd, 0, 0);
 
     // All context is set
-	// We can run AddIns system now
+    // We can run AddIns system now
     FirstStart = TRUE;
-	FrmSplashSetState("Starting AddIns...");
+    FrmSplashSetState("Starting AddIns...");
     SetAddInsRunningState();
     // Execute possible hooks
     for(i = 0; i < MDICreateHooks.Amount(); i++)
     {
         if(MDICreateHooks.Get(i)->Content != 0)
         {
-			LocInitMDIHook = (void (CALLBACK *) (HWND hWnd)) MDICreateHooks.Get(i)->Content;
-			LocInitMDIHook(hWnd);
-		}
-	}
-	// FALSE for the rest of the program lifetime
+            LocInitMDIHook = (void (CALLBACK *) (HWND hWnd)) MDICreateHooks.Get(i)->Content;
+            LocInitMDIHook(hWnd);
+        }
+    }
+    // FALSE for the rest of the program lifetime
     FirstStart = FALSE;
 }
 
@@ -259,48 +259,48 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     POINT TrayPoint;
     HMENU hTrayMenu = 0;
     long HaveToDie = 0;
-	CStr BufString;
-	DLGPROC LocMDIHook;
-	int SkipPrjLoadRecent;
-	POINT New_Mouse_Coords;
-	HWND Next_Child;
+    CStr BufString;
+    DLGPROC LocMDIHook;
+    int SkipPrjLoadRecent;
+    POINT New_Mouse_Coords;
+    HWND Next_Child;
 
-	// Execute possible hooks
+    // Execute possible hooks
     for(i = 0; i < MDIHooks.Amount(); i++)
     {
         if(MDIHooks.Get(i)->Content != 0)
         {
             LocMDIHook = MDIHooks.Get(i)->Content;
-			if(LocMDIHook(hWnd, uMsg, wParam, lParam) == HOOK_DIE)
-			{
+            if(LocMDIHook(hWnd, uMsg, wParam, lParam) == HOOK_DIE)
+            {
                 HaveToDie = HaveToDie | HOOK_DIE;
             }
         }
     }
     if((long) HaveToDie == HOOK_DIE) return(0);
     
-	// Another instance is calling
-	if (uMsg == BroadCastMessage)
-	{
-		// Free the sending thread
-		ReplyMessage(0);
-		// Retrieve the file
-		PassedFileLen = FileGetSize(Dirs[DIR_WIN] + (CStr) "\\TempOp.CF");
-		if(PassedFileLen != 0)
-		{
-			PassedCmd = PassedCmd.String(PassedFileLen, 1);
-			PassedFileHandle = FileOpenR(Dirs[DIR_WIN] + (CStr) "\\TempOp.CF");
-			if(PassedFileHandle != INVALID_HANDLE_VALUE)
-			{
-				ReadFile(PassedFileHandle, PassedCmd.Get_String(), PassedFileLen, &PassedFileRead, NULL);
-				FileClose(PassedFileHandle);
-			}
-			if(PassedCmd.Len() != 0) OpenUnknownFile(PassedCmd, TRUE);
-		}
-		BufString = Dirs[DIR_WIN] + (CStr) "\\TempOp.CF";
-		DeleteFile(BufString.Get_String());
-		SetForegroundWindow(hMDIform.hWnd);
-		return(0);
+    // Another instance is calling
+    if (uMsg == BroadCastMessage)
+    {
+        // Free the sending thread
+        ReplyMessage(0);
+        // Retrieve the file
+        PassedFileLen = FileGetSize(Dirs[DIR_WIN] + (CStr) "\\TempOp.CF");
+        if(PassedFileLen != 0)
+        {
+            PassedCmd = PassedCmd.String(PassedFileLen, 1);
+            PassedFileHandle = FileOpenR(Dirs[DIR_WIN] + (CStr) "\\TempOp.CF");
+            if(PassedFileHandle != INVALID_HANDLE_VALUE)
+            {
+                ReadFile(PassedFileHandle, PassedCmd.Get_String(), PassedFileLen, &PassedFileRead, NULL);
+                FileClose(PassedFileHandle);
+            }
+            if(PassedCmd.Len() != 0) OpenUnknownFile(PassedCmd, TRUE);
+        }
+        BufString = Dirs[DIR_WIN] + (CStr) "\\TempOp.CF";
+        DeleteFile(BufString.Get_String());
+        SetForegroundWindow(hMDIform.hWnd);
+        return(0);
     }
     switch(uMsg)
     {
@@ -318,104 +318,104 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             PagerSetBackColor(hProjectPager, GetSysColor(COLOR_BTNFACE));
             PagerSetBackColor(hStatusPager, GetSysColor(COLOR_BTNFACE));
             ListViewSetBackColor(hWindowsListView, GetSysColor(COLOR_WINDOW));
-//			ResizeMDIform();
-			DockingBoxRepaint(hProjectContainer);
-			DockingBoxRepaint(hWindowsContainer);
-			DockingBoxRepaint(hOutputContainer);
-			DockingBoxRepaint(hDebugContainer);
-			DockingBoxRepaint(hRegistersContainer);
-//			ControlRepaint(hMDIform.hDock);
-//			if(ControlIsVisible(hProjectContainer)) ControlRepaint(hProjectContainer);
-//			if(ControlIsVisible(hWindowsContainer)) ControlRepaint(hWindowsContainer);
-//			if(ControlIsVisible(hOutputContainer)) ControlRepaint(hOutputContainer);
-//			if(ControlIsVisible(hDebugContainer)) ControlRepaint(hDebugContainer);
-//			if(ControlIsVisible(hRegistersContainer)) ControlRepaint(hRegistersContainer);
+//          ResizeMDIform();
+            DockingBoxRepaint(hProjectContainer);
+            DockingBoxRepaint(hWindowsContainer);
+            DockingBoxRepaint(hOutputContainer);
+            DockingBoxRepaint(hDebugContainer);
+            DockingBoxRepaint(hRegistersContainer);
+//          ControlRepaint(hMDIform.hDock);
+//          if(ControlIsVisible(hProjectContainer)) ControlRepaint(hProjectContainer);
+//          if(ControlIsVisible(hWindowsContainer)) ControlRepaint(hWindowsContainer);
+//          if(ControlIsVisible(hOutputContainer)) ControlRepaint(hOutputContainer);
+//          if(ControlIsVisible(hDebugContainer)) ControlRepaint(hDebugContainer);
+//          if(ControlIsVisible(hRegistersContainer)) ControlRepaint(hRegistersContainer);
 
-			break;
+            break;
 
         case WM_ACTIVATEAPP:
             if(QuitNotif == 0) if(wParam != 0) if(DetectChange == 1) SearchModified(hMDIform.hClient);           
             Check_Update_Language();
             if(APIListMode == 1) ControlClose(FRMAPIListhWnd);
-			return(0);
+            return(0);
 
-		// Handle search wrapping
+        // Handle search wrapping
 
-		case WM_FINDMARKALL_WRAP:
-			if(Wrap_Child) break;
-			Wrap_Child = (HWND) lParam;
-			Next_Child = GetNextChildInList(Wrap_Child);
-			while(Wrap_Child != Next_Child)
-			{
-				// Mark in all childs
-				ChildStruct = LoadStructure(Next_Child);
-				if(CM_GetTextLengthAll(ChildStruct->hChildCodeMax, 1) != 0)
-				{
-					CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_GOTOLINE, 0);
-					CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_FINDMARKALL, 0);
-				}
-				Next_Child = GetNextChildInList(Next_Child);
-			}
-			Wrap_Child = 0;
-			break;
+        case WM_FINDMARKALL_WRAP:
+            if(Wrap_Child) break;
+            Wrap_Child = (HWND) lParam;
+            Next_Child = GetNextChildInList(Wrap_Child);
+            while(Wrap_Child != Next_Child)
+            {
+                // Mark in all childs
+                ChildStruct = LoadStructure(Next_Child);
+                if(CM_GetTextLengthAll(ChildStruct->hChildCodeMax, 1) != 0)
+                {
+                    CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_GOTOLINE, 0);
+                    CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_FINDMARKALL, 0);
+                }
+                Next_Child = GetNextChildInList(Next_Child);
+            }
+            Wrap_Child = 0;
+            break;
  
-		case WM_FINDREPLACEALL_WRAP:
-			if(Wrap_Child) break;
-			Wrap_Child = (HWND) lParam;
-			Next_Child = GetNextChildInList(Wrap_Child);
-			while(Wrap_Child != Next_Child)
-			{
-				// Mark in all childs
-				ChildStruct = LoadStructure(Next_Child);
-				if(CM_GetTextLengthAll(ChildStruct->hChildCodeMax, 1) != 0)
-				{
-					CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_GOTOLINE, 0);
-					CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_REPLACEALLINBUFFER, 0);
-				}
-				Next_Child = GetNextChildInList(Next_Child);
-			}
-			Wrap_Child = 0;
-			break;
+        case WM_FINDREPLACEALL_WRAP:
+            if(Wrap_Child) break;
+            Wrap_Child = (HWND) lParam;
+            Next_Child = GetNextChildInList(Wrap_Child);
+            while(Wrap_Child != Next_Child)
+            {
+                // Mark in all childs
+                ChildStruct = LoadStructure(Next_Child);
+                if(CM_GetTextLengthAll(ChildStruct->hChildCodeMax, 1) != 0)
+                {
+                    CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_GOTOLINE, 0);
+                    CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_REPLACEALLINBUFFER, 0);
+                }
+                Next_Child = GetNextChildInList(Next_Child);
+            }
+            Wrap_Child = 0;
+            break;
         
-		case WM_FOUND_TEXT:
-			SendMessage(hMDIform.hClient, WM_MDIACTIVATE, lParam, 0);
-			return(0);
-		case WM_FIND_FORWARD_WRAP:
-			if(Wrap_Child) break;
-			Wrap_Child = (HWND) lParam;
-			Next_Child = GetNextChildInList(Wrap_Child);
-			while(Wrap_Child != Next_Child)
-			{
-				// Mark in all childs
-				ChildStruct = LoadStructure(Next_Child);
-				if(CM_GetTextLengthAll(ChildStruct->hChildCodeMax, 1) != 0)
-				{
-					CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_GOTOLINE, 0);
-					CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_HOME, 0);
-					CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_FINDNEXT, 0);
-				}
-				Next_Child = GetNextChildInList(Next_Child);
-			}
-			Wrap_Child = 0;
-			break;
-		case WM_FIND_BACKWARD_WRAP:
-			if(Wrap_Child) break;
-			Wrap_Child = (HWND) lParam;
-			Next_Child = GetPreviousChildInList(Wrap_Child);
-			while(Wrap_Child != Next_Child)
-			{
-				// Mark in all childs
-				ChildStruct = LoadStructure(Next_Child);
-				if(CM_GetTextLengthAll(ChildStruct->hChildCodeMax, 1) != 0)
-				{
-					CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_GOTOLINE, CM_GetLineCount(ChildStruct->hChildCodeMax) - 1);
-					CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_END, 0);
-					CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_FINDPREV, 0);
-				}
-				Next_Child = GetPreviousChildInList(Next_Child);
-			}
-			Wrap_Child = 0;
-			break;
+        case WM_FOUND_TEXT:
+            SendMessage(hMDIform.hClient, WM_MDIACTIVATE, lParam, 0);
+            return(0);
+        case WM_FIND_FORWARD_WRAP:
+            if(Wrap_Child) break;
+            Wrap_Child = (HWND) lParam;
+            Next_Child = GetNextChildInList(Wrap_Child);
+            while(Wrap_Child != Next_Child)
+            {
+                // Mark in all childs
+                ChildStruct = LoadStructure(Next_Child);
+                if(CM_GetTextLengthAll(ChildStruct->hChildCodeMax, 1) != 0)
+                {
+                    CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_GOTOLINE, 0);
+                    CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_HOME, 0);
+                    CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_FINDNEXT, 0);
+                }
+                Next_Child = GetNextChildInList(Next_Child);
+            }
+            Wrap_Child = 0;
+            break;
+        case WM_FIND_BACKWARD_WRAP:
+            if(Wrap_Child) break;
+            Wrap_Child = (HWND) lParam;
+            Next_Child = GetPreviousChildInList(Wrap_Child);
+            while(Wrap_Child != Next_Child)
+            {
+                // Mark in all childs
+                ChildStruct = LoadStructure(Next_Child);
+                if(CM_GetTextLengthAll(ChildStruct->hChildCodeMax, 1) != 0)
+                {
+                    CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_GOTOLINE, CM_GetLineCount(ChildStruct->hChildCodeMax) - 1);
+                    CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_END, 0);
+                    CM_ExecuteCmd(ChildStruct->hChildCodeMax, CMD_FINDPREV, 0);
+                }
+                Next_Child = GetPreviousChildInList(Next_Child);
+            }
+            Wrap_Child = 0;
+            break;
         
 // -------------------------------------------------------------------------------
 // Menu comments
@@ -425,29 +425,29 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             {
                 if((wParam & 0x8000) == 0)
                 {
-					if(CursorDisabled) DisplayCursor();
+                    if(CursorDisabled) DisplayCursor();
                     wParamSelect = (wParam & 0xFFFF);
                     if(wParamSelect < MENU_FILE_IDBASE)
                     {
                         if(wParamSelect == MENU_RUNPROGCLEAR_IDBASE)
                         {
                             WriteComment("Erase run programs list");
-							return(0);
+                            return(0);
                         }
                         if(wParamSelect == MENU_RECENTFILESPURGEALL_IDBASE)
                         {
                             WriteComment("Erase recent files list");
-							return(0);
+                            return(0);
                         }
                         if(wParamSelect == MENU_RECENTPROJECTSPURGEALL_IDBASE)
                         {
                             WriteComment("Erase recent projects list");
-							return(0);
+                            return(0);
                         }
                         if(wParamSelect == MENU_RECENTFILESPURGE_IDBASE)
                         {
                             WriteComment("Check and remove obsoletes entries from recent files list");
-							return(0);
+                            return(0);
                         }
                         if(wParamSelect == MENU_RECENTPROJECTSPURGE_IDBASE)
                         {
@@ -459,52 +459,52 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     else if(wParamSelect < MENU_EDIT_IDBASE)
                     {
                         WriteComment((char *) MenuFileComments[wParamSelect - MENU_FILE_IDBASE]);
-						return(0);
+                        return(0);
                     }
                     else if(wParamSelect < MENU_VIEW_IDBASE)
                     {
                         WriteComment((char *) MenuEditComments[wParamSelect - MENU_EDIT_IDBASE]);
-						return(0);
+                        return(0);
                     }
                     else if(wParamSelect < MENU_PROJECT_IDBASE)
                     {
                         WriteComment((char *) MenuViewComments[wParamSelect - MENU_VIEW_IDBASE]);
-						return(0);
+                        return(0);
                     }
                     else if(wParamSelect < MENU_WINDOW_IDBASE)
                     {
                         WriteComment((char *) MenuProjectComments[wParamSelect - MENU_PROJECT_IDBASE]);
-						return(0);
+                        return(0);
                     }
                     else if(wParamSelect < MENU_USER_IDBASE)
                     {
                         WriteComment((char *) MenuWindowComments[wParamSelect - MENU_WINDOW_IDBASE]);
-						return(0);
+                        return(0);
                     }
                     else if(wParamSelect < MENU_MAXIMA_IDBASE)
                     {
                         WriteComment(MenusCmdsComments.Get((wParamSelect - MENU_USER_IDBASE) - 1)->Content);
-						return(0);
+                        return(0);
                     }
                     else if(wParamSelect < MENU_CODEMAXIMA_IDBASE)
                     {
                         WriteComment(TemplatesArray.Get(wParamSelect - MENU_TEMPLATES_IDBASE)->Content);
-						return(0);
+                        return(0);
                     }
                     else if(wParamSelect < MENU_ADDINS_IDBASE)
                     {
                         WriteComment("");
-						return(0);
+                        return(0);
                     }
                     else if(wParamSelect == MENU_ADDINS_IDBASE)
                     {
                         WriteComment((char *) MenuAddInComments[wParamSelect - MENU_ADDINS_IDBASE]);
-						return(0);
+                        return(0);
                     }
                     else if(wParamSelect >= MENU_CODEMAXIMA_IDBASE)
                     {
                         WriteComment("");
-						return(0);
+                        return(0);
                     }
                 }
             }
@@ -515,7 +515,7 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             return(0);
 
         case WM_COMMAND:
-			if(CursorDisabled) DisplayCursor();
+            if(CursorDisabled) DisplayCursor();
             switch(wParam & 0xFFFF)
             {
 
@@ -525,163 +525,163 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 case MENU_SYSTRAY_RESTORE:
                     SysTrayMode = 0;
                     RestoreMDI(hWnd);
-					return(0);
+                    return(0);
                 
                 case MENU_SYSTRAY_EXIT:
                     SysTrayMode = 0;
                     RestoreMDI(hWnd);
                     ControlClose(hWnd);
-					return(0);
+                    return(0);
 
 // -------------------------------------------------------------------------------
 // File Menu
 // -------------------------------------------------------------------------------
                 case MENU_FILE_IDBASE + MENU_FILE_NEW_ID:
                     MCMD_New();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_CLEAR_ID:
                     MCMD_Clear();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_DUPLICATEFILE_ID:
                     MCMD_Duplicate();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_RELOADFILE_ID:
                     MCMD_Reload();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_OPENFILE_ID:
                     MCMD_OpenFile();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_INCLUDEFILE_ID:
                     MCMD_IncludeFile();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_INCLUDEFILTERS_ID:
                     MCMD_IncludeFilters();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_FILTERS_ID:
                     MCMD_OpenFileAsDB();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_OPENWORKSPACE_ID:
                     MCMD_OpenWorkSpace();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_FTPMANAGER_ID:
                     MCMD_FTPManager();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_CLOSE_ID:
                     MCMD_CloseFile();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_CLOSEALL_ID:
                     MCMD_CloseAll();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_SAVE_ID:
                     MCMD_SaveFile();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_SAVEAS_ID:
                     MCMD_SaveFileAs();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_SAVEWORKSPACE_ID:
                     MCMD_SaveWorkSpace();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_REGISTERASSNIPPET_ID:
                     MCMD_RegSnippet();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_REGISTERASTEMPLATE_ID:
                     MCMD_RegTemplate();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_SAVEALL_ID:
                     MCMD_SaveAll();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_PRINTFILE_ID:
                     MCMD_PrintFile();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_CONSOLE_RUN_ID:
                     MCMD_RunConsole();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_CONSOLE_CHANGE_ID:
                     MCMD_ChangeConsole();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_RUNEXTERNALPROGRAM_ID:
                     MCMD_RunExtProg();
-					return(0);
+                    return(0);
 
                 case MENU_RUNPROGCLEAR_IDBASE:
                     MCMD_PurgeRunProgAll();
-					return(0);
+                    return(0);
                 
                 case MENU_FILE_IDBASE + MENU_FILE_FAVORITES_ID:
                     MCMD_Favorites();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_ADD_FAVORITE_ID:
                     MCMD_AddToFavorites();
-					return(0);
+                    return(0);
 
                 case MENU_RECENTFILESPURGE_IDBASE:
                     MCMD_PurgeRecent();
-					return(0);
+                    return(0);
                 
                 case MENU_RECENTFILESPURGEALL_IDBASE:
                     MCMD_PurgeRecentAll();
-					return(0);
+                    return(0);
                 
                 case MENU_RECENTPROJECTSPURGE_IDBASE:
                     MCMD_PurgeRecentPrj();
-					return(0);
+                    return(0);
                 
                 case MENU_RECENTPROJECTSPURGEALL_IDBASE:
                     MCMD_PurgeRecentPrjAll();
-					return(0);
+                    return(0);
                 
                 case MENU_FILE_IDBASE + MENU_FILE_SETWORKINGDIRECTORY_ID:
                     MCMD_SetWorkingDir();
-					return(0);
+                    return(0);
 
                 case MENU_FILE_IDBASE + MENU_FILE_EXIT_ID:
                     MCMD_Exit();
-					return(0);
+                    return(0);
 
 // -------------------------------------------------------------------------------
 // Edit Menu
 // -------------------------------------------------------------------------------
                 case MENU_EDIT_IDBASE + MENU_EDIT_UNDO_ID:
                     MCMD_Undo();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_REDO_ID:
                     MCMD_Redo();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_CUT_ID:
                     MCMD_Cut();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_COPY_ID:
                     MCMD_Copy();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_COPYFILEPATHNAME_ID:
                     MCMD_CopyFileNamePath();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_COPYENTIRETEXT_ID:
                     MCMD_CopyEntireText();
@@ -689,15 +689,15 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_PASTE_ID:
                     MCMD_Paste();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_PASTE_NEWWINDOW_ID:
                     MCMD_PasteNewWindow();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_DELETE_DELETESELECTION_ID:
                     MCMD_DeleteSelection();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_DELETE_DELETELINE_ID:
                     MCMD_DeleteLine();
@@ -705,35 +705,35 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_DELETE_DELETETOSTARTOFLINE_ID:
                     MCMD_DeleteToStart();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_DELETE_DELETETOENDOFLINE_ID:
                     MCMD_DeleteToEnd();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_DELETE_DELETEPARAGRAPH_ID:
                     MCMD_DeleteParagraph();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_SELECTLINE_ID:
                     MCMD_SelectLine();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_SELECTALL_ID:
                     MCMD_SelectAll();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_SELECTPROCEDURE_ID:
                     MCMD_SelectProc();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_SELECTPROCANDCOLLAPSE_ID:
                     MCMD_SelectProcCollapse();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_UNCOLLAPSEPROCEDURE_ID:
                     MCMD_UnCollapse();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_FIND_ID:
                     MCMD_Find();
@@ -741,43 +741,43 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_FINDNEXT_ID:
                     MCMD_FindNext();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_FINDPREVIOUS_ID:
                     MCMD_FindPrevious();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_FINDSELECTION_ID:
                     MCMD_FindSelection();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_REPLACE_ID:
                     MCMD_Replace();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_PROCVARIABLESSEARCH_ID:
                     MCMD_ProcVarSearch();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_SEARCHINFILES_ID:
                     MCMD_SearchInFiles();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BOOKMARKS_TOGGLE_ID:
                     MCMD_ToggleBookMark();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BOOKMARKS_FIRST_ID:
                     MCMD_FirstBookMark();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BOOKMARKS_PREVIOUS_ID:
                     MCMD_PreviousBookMark();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BOOKMARKS_NEXT_ID:
                     MCMD_NextBookMark();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BOOKMARKS_LAST_ID:
                     MCMD_LastBookMark();
@@ -785,23 +785,23 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BOOKMARKS_CLEARALL_ID:
                     MCMD_ClearAllBookMark();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BREAKPOINTS_TOGGLE_ID:
                     MCMD_ToggleBreakpoint();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BREAKPOINTS_FIRST_ID:
                     MCMD_FirstBreakpoint();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BREAKPOINTS_PREVIOUS_ID:
                     MCMD_PreviousBreakpoint();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BREAKPOINTS_NEXT_ID:
                     MCMD_NextBreakpoint();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BREAKPOINTS_LAST_ID:
                     MCMD_LastBreakpoint();
@@ -809,91 +809,91 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BREAKPOINTS_CLEARALL_ID:
                     MCMD_ClearAllBreakpoint();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_GOTO_TOP_ID:
                     MCMD_GotoTop();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_GOTO_BOTTOM_ID:
                     MCMD_GotoBottom();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_GOTO_LINE_ID:
                     MCMD_GotoLine();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_GOTO_MATCHINGBRACKET_ID:
                     MCMD_GotoMatchingBracket();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_GOTO_PREVIOUSWORD_ID:
                     MCMD_PrevWord();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_GOTO_NEXTWORD_ID:
                     MCMD_NextWord();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_GOTO_PREVIOUSPROCEDURE_ID:
                     MCMD_PreviousProc();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_GOTO_NEXTPROCEDURE_ID:
                     MCMD_NextProc();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_GOTO_PREVIOUSPARAGRAPH_ID:
                     MCMD_PreviousParagraph();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_GOTO_NEXTPARAGRAPH_ID:
                     MCMD_NextParagraph();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_GOTO_VARIABLEDECLARATION_ID:
                     MCMD_VarDeclaration();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_GOTO_VARIABLENEXTUSE_ID:
                     MCMD_VarNextUse();
-					return(0);
+                    return(0);
                 
                 case MENU_EDIT_IDBASE + MENU_EDIT_GOTO_PROCEDUREPROTOTYPE_ID:
                     MCMD_ProcProto();
-					return(0);
+                    return(0);
                 
                 case MENU_EDIT_IDBASE + MENU_EDIT_GOTO_PROCEDUREDECLARATION_ID:
                     MCMD_ProcDeclare();
-					return(0);
+                    return(0);
                 
                 case MENU_EDIT_IDBASE + MENU_EDIT_GOTO_PROCEDURENEXTUSE_ID:
                     MCMD_ProcNextUse();
-					return(0);
+                    return(0);
                 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BLOCK_INDENT_ID:
                     MCMD_BlockIndent();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BLOCK_UNINDENT_ID:
                     MCMD_BlockUnindent();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BLOCK_UPPERCASE_ID:
                     MCMD_BlockUpperCase();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BLOCK_LOWERCASE_ID:
                     MCMD_BlockLowerCase();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BLOCK_TOGGLECASE_ID:
                     MCMD_BlockToggleCase();
-					return(0);
+                    return(0);
                 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BLOCK_COMMENT_ID:
                     MCMD_BlockComment();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BLOCK_UNCOMMENT_ID:
                     MCMD_BlockUnComment();
@@ -901,117 +901,117 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BLOCK_TABIFY_ID:
                     MCMD_BlockTabify();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BLOCK_UNTABIFY_ID:
                     MCMD_BlockUnTabify();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BLOCK_SPACESTOTABS_ID:
                     MCMD_BlockSpacesToTabs();
-					return(0);
+                    return(0);
                 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BLOCK_REGISTERS_ID:
                     MCMD_Registers();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BLOCK_BLKCOMMENT_ID:
                     MCMD_BlockCommentMultiLine();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BLOCK_CUSTOMCOMMENT_ID:
                     MCMD_CustomBlockComment();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BLOCK_TRIMSPACES_ID:
                     MCMD_BlockTrimSpaces();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BLOCK_CONVERTTOINCLUDE_ID:
                     MCMD_BlockConvertToInclude();
-					return(0);
+                    return(0);
                 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BLOCK_SAVEAS_ID:
                     MCMD_BlockSave();
-					return(0);
+                    return(0);
 
                 case MENU_EDIT_IDBASE + MENU_EDIT_BLOCK_PRINT_ID:
                     MCMD_BlockPrint();
-					return(0);
+                    return(0);
 
 // -------------------------------------------------------------------------------
 // View Menu
 // -------------------------------------------------------------------------------
                 case MENU_VIEW_IDBASE + MENU_VIEW_STATUSBAR_ID:
                     MCMD_Statusbar();
-					return(0);
+                    return(0);
 
                 case MENU_VIEW_IDBASE + MENU_VIEW_PROJECTDOCK_ID:
                     MCMD_ProjectDock();
-					return(0);
+                    return(0);
 
                 case MENU_VIEW_IDBASE + MENU_VIEW_WINDOWSDOCK_ID:
                     MCMD_WindowsDock();
-					return(0);
+                    return(0);
 
                 case MENU_VIEW_IDBASE + MENU_VIEW_OUTPUTDOCK_ID:
                     MCMD_OutputDock();
-					return(0);
+                    return(0);
 
                 case MENU_VIEW_IDBASE + MENU_VIEW_DEBUGDOCK_ID:
                     MCMD_DebugDock();
-					return(0);
+                    return(0);
 
                 case MENU_VIEW_IDBASE + MENU_VIEW_REGISTERSDOCK_ID:
                     MCMD_RegistersDock();
-					return(0);
+                    return(0);
 
                 case MENU_VIEW_IDBASE + MENU_VIEW_FULLSCREEN_ID:
                     MCMD_FullScreen();
-					return(0);
+                    return(0);
 
                 case MENU_VIEW_IDBASE + MENU_VIEW_PROPERTIES_ID:
                     MCMD_Properties();
-					return(0);
+                    return(0);
 
                 case MENU_VIEW_IDBASE + MENU_VIEW_USERMENUSEDITOR_ID:
                     MCMD_UserMenusEd();
-					return(0);
+                    return(0);
 
                 case MENU_VIEW_IDBASE + MENU_VIEW_USERTOOLBARSEDITOR_ID:
                     MCMD_ToolbarsManager();
-					return(0);
+                    return(0);
 
 // -------------------------------------------------------------------------------
 // Project Menu
 // -------------------------------------------------------------------------------
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_CREATENEWPROJECT_ID:
                     MCMD_CreateProject();
-					return(0);
+                    return(0);
                 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_OPENPROJECT_ID:
                     MCMD_OpenProject();
-					return(0);
+                    return(0);
 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_SAVEPROJECT_ID:
                     MCMD_SaveProject();
-					return(0);
+                    return(0);
 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_SAVEPROJECTAS_ID:
                     MCMD_SaveProjectAs();
-					return(0);
+                    return(0);
 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_ADDINCLUDE_ID:
                     MCMD_AddInclude();
-					return(0);
+                    return(0);
 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_ADDLIBRARY_ID:
                     MCMD_AddLibrary();
-					return(0);
+                    return(0);
 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_ADDMODULE_ID:
                     MCMD_AddModule();
-					return(0);
+                    return(0);
 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_ADDOBJECT_ID:
                     MCMD_AddObject();
@@ -1019,122 +1019,122 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_ADDRESOURCE_ID:
                     MCMD_AddResource();
-					return(0);
+                    return(0);
                 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_ADDTEXT_ID:
                     MCMD_AddText();
-					return(0);
+                    return(0);
                 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_ADDICON_ID:
                     MCMD_AddIcon();
-					return(0);
+                    return(0);
                 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_ADDCURSOR_ID:
                     MCMD_AddCursor();
-					return(0);
+                    return(0);
                 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_ADDBITMAP_ID:
                     MCMD_AddBitmap();
-					return(0);
+                    return(0);
                 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_ADDSTRINGS_ID:
                     MCMD_AddStrings();
-					return(0);
+                    return(0);
                 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_ADDACCELERATORS_ID:
                     MCMD_AddAccelerators();
-					return(0);
+                    return(0);
                 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_ADDMENUS_ID:
                     MCMD_AddMenus();
-					return(0);
+                    return(0);
                 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_ADDDIALOG_ID:
                     MCMD_AddDialog();
-					return(0);
+                    return(0);
                 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_ADDRAWDATA_ID:
                     MCMD_AddRawDatas();
-					return(0);
+                    return(0);
                 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_PROJECTPROPERTIES_ID:
                     MCMD_ProjectProperties();
-					return(0);
+                    return(0);
 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_ASSEMBLEPROJECT_ID:
                     MCMD_AssembleProject();
-					return(0);
+                    return(0);
 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_RUNPROJECT_ID:
                     MCMD_RunProject();
-					return(0);
+                    return(0);
 
                 case MENU_PROJECT_IDBASE + MENU_PROJECT_DEBUGPROJECT_ID:
                     MCMD_DebugProject();
-					return(0);
+                    return(0);
 
 // -------------------------------------------------------------------------------
 // AddIns Menu
 // -------------------------------------------------------------------------------
                 case MENU_ADDINS_IDBASE + MENU_ADDINS_MANAGER_ID:
                     MCMD_AddInsManager();
-					return(0);
+                    return(0);
 
 // -------------------------------------------------------------------------------
 // Window Menu
 // -------------------------------------------------------------------------------
                 case MENU_WINDOW_IDBASE + MENU_WINDOW_CONTEXTHELP_ID:
                     MCMD_ContextHelp();
-					return(0);
+                    return(0);
 
                 case MENU_WINDOW_IDBASE + MENU_WINDOW_MSDNHELP_ID:
                     MCMD_MSDNHelp();
-					return(0);
+                    return(0);
 
                 case MENU_WINDOW_IDBASE + MENU_WINDOW_DDKHELP_ID:
                     MCMD_DDKHelp();
-					return(0);
+                    return(0);
 
                 case MENU_WINDOW_IDBASE + MENU_WINDOW_DIRECTXSDKHELP_ID:
                     MCMD_DirectXSDKHelp();
-					return(0);
+                    return(0);
 
                 case MENU_WINDOW_IDBASE + MENU_WINDOW_TIPOFTHEDAY_ID:
                     DisplayTip(hMDIform.hWnd);
-					return(0);
+                    return(0);
 
                 case MENU_WINDOW_IDBASE + MENU_WINDOW_ABOUT_ID:
                     MCMD_About();
-					return(0);
+                    return(0);
 
                 case MENU_WINDOW_IDBASE + MENU_WINDOW_SPLIT_ID:
                     MCMD_Split();
-					return(0);
+                    return(0);
 
                 case MENU_WINDOW_IDBASE + MENU_WINDOW_TILEHORIZONTALLY_ID:
                     MCMD_TileHorizontally();
-					return(0);
+                    return(0);
 
                 case MENU_WINDOW_IDBASE + MENU_WINDOW_TILEVERTICALLY_ID:
                     MCMD_TileVertically();
-					return(0);
+                    return(0);
 
                 case MENU_WINDOW_IDBASE + MENU_WINDOW_CASCADE_ID:
                     MCMD_Cascade();
-					return(0);
+                    return(0);
 
                 case MENU_WINDOW_IDBASE + MENU_WINDOW_ARRANGEICONS_ID:
                     MCMD_ArrangeIcons();
-					return(0);
+                    return(0);
 
                 case MENU_WINDOW_IDBASE + MENU_WINDOW_NEXTWINDOW_ID:
                     MCMD_NextWindow();
-					return(0);
+                    return(0);
 
                 case MENU_WINDOW_IDBASE + MENU_WINDOW_PREVIOUSWINDOW_ID:
                     MCMD_PreviousWindow();
-					return(0);
-			}
+                    return(0);
+            }
 // -------------------------------------------------------------------------------
 // User Menus
 // -------------------------------------------------------------------------------
@@ -1172,7 +1172,7 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                                 SnippetForm = CreateNewFile("<Untitled document " + (CStr) (NbForms + 1) + (CStr) ">");
                                 InsertSnippetCode(SnippetForm, NewSnippetVal);
                             }
-							return(0);
+                            return(0);
                         }
                         else
                         {
@@ -1182,8 +1182,8 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                                 {
                                     // Launch an AddIn
                                     AddInRun = ((wParam & 0xFFFF) - MENU_ADDINS_IDBASE) - 1;
-									if(RunningAddIns.Amount() >= AddInRun)
-									{
+                                    if(RunningAddIns.Amount() >= AddInRun)
+                                    {
                                         // Already running or not ?
                                         if(RunningAddIns.Get(AddInRun)->Content == 0)
                                         {
@@ -1198,15 +1198,15 @@ ForcePersistantMenu:                        // Just trigger the menu routine if 
                                                 {
                                                     if(AddInsUnLoad.Get(AddInRun)->Content != 0)
                                                     {
-														JumpToAddr(AddInsUnLoad.Get(AddInRun)->Content);
+                                                        JumpToAddr(AddInsUnLoad.Get(AddInRun)->Content);
                                                     }
-													// Store running state
+                                                    // Store running state
                                                     RunningAddIns.Set(AddInRun, 0);
                                                     IniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(AddInRun, 3).Get_String(), RunningAddIns.Get(AddInRun)->Content, MainIniFile);
                                                 }
                                             }
                                         }
-										return(0);
+                                        return(0);
                                     }
                                 }
                             }
@@ -1228,7 +1228,7 @@ ForcePersistantMenu:                        // Just trigger the menu routine if 
                     {
                         MiscMsgBox(hMDIform.hWnd, "File '" + (CStr) TmpRecentFile + (CStr) "' not found.", MB_ERROR, Requesters);
                         AddRecentFile(TmpRecentFile, 0, 0);
-						return(0);
+                        return(0);
                     }
                     if(CheckWorkSpaceFile(TmpRecentFile) == 0)
                     {
@@ -1242,7 +1242,7 @@ ForcePersistantMenu:                        // Just trigger the menu routine if 
                         // Open it as workspace file
                         OpenWorkSpc(TmpRecentFile);
                     }
-					return(0);
+                    return(0);
                 }
                 else
                 {
@@ -1269,41 +1269,41 @@ ForcePersistantMenu:                        // Just trigger the menu routine if 
                             {
                                 if(SysTrayMode == 1) RestoreMDI(hWnd);
                                 SkipPrjLoadRecent = RealOpenPrj(TmpRecentFile);
-								if(SkipPrjLoadRecent != -1) AddRecentPrj(TmpRecentFile, SkipPrjLoadRecent, 0);
+                                if(SkipPrjLoadRecent != -1) AddRecentPrj(TmpRecentFile, SkipPrjLoadRecent, 0);
                                 return(0);
                             }
                         }
                         else
                         {
-							if((wParam & 0xFFFF) < MENU_FAVORITESFILES_IDBASE)
-							{
-								// Recent programs
-								TmpRecentFile = RunProgArray.Get((wParam & 0xFFFF) - MENU_RECENTAPPLICATIONS_IDBASE)->Content;
-								RunExtProg(TmpRecentFile);
-							}
-							else
-							{
-								if((wParam & 0xFFFF) < MENU_FILTERS_IDBASE)
-								{
-									// Favorites files
-									TmpRecentFile = FavoritesArray.Get((wParam & 0xFFFF) - MENU_FAVORITESFILES_IDBASE)->Content;
-									OpenUnknownFile(TmpRecentFile, TRUE);
-								}
-								else
-								{
-									if((wParam & 0xFFFF) < MENU_FILTERS_INCLUDE_IDBASE)
-									{
-										// Filters: open mode
-										Run_Filter_Profile((wParam & 0xFFFF) - MENU_FILTERS_IDBASE, FILTER_OPEN_MODE);
-									}
-									else
-									{
-										// Filters: include mode
-										Run_Filter_Profile((wParam & 0xFFFF) - MENU_FILTERS_INCLUDE_IDBASE, FILTER_INCLUDE_MODE);
-									}
-								}
-							}
-						}
+                            if((wParam & 0xFFFF) < MENU_FAVORITESFILES_IDBASE)
+                            {
+                                // Recent programs
+                                TmpRecentFile = RunProgArray.Get((wParam & 0xFFFF) - MENU_RECENTAPPLICATIONS_IDBASE)->Content;
+                                RunExtProg(TmpRecentFile);
+                            }
+                            else
+                            {
+                                if((wParam & 0xFFFF) < MENU_FILTERS_IDBASE)
+                                {
+                                    // Favorites files
+                                    TmpRecentFile = FavoritesArray.Get((wParam & 0xFFFF) - MENU_FAVORITESFILES_IDBASE)->Content;
+                                    OpenUnknownFile(TmpRecentFile, TRUE);
+                                }
+                                else
+                                {
+                                    if((wParam & 0xFFFF) < MENU_FILTERS_INCLUDE_IDBASE)
+                                    {
+                                        // Filters: open mode
+                                        Run_Filter_Profile((wParam & 0xFFFF) - MENU_FILTERS_IDBASE, FILTER_OPEN_MODE);
+                                    }
+                                    else
+                                    {
+                                        // Filters: include mode
+                                        Run_Filter_Profile((wParam & 0xFFFF) - MENU_FILTERS_INCLUDE_IDBASE, FILTER_INCLUDE_MODE);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -1321,14 +1321,14 @@ ForcePersistantMenu:                        // Just trigger the menu routine if 
                                 if((long) (wParam & 0xFFFF) > (long) ToolBarCommands.Amount()) break;
                                 ToolBarCommand = ToolBarCommands.Get((wParam & 0xFFFF))->Content;
                                 if(ToolBarCommand != -1) ControlSendMessage(hWnd, ToolBarCommand, 0);
-								break;
+                                break;
                             }
                         }
                     }
-					return(0);
+                    return(0);
                 }
             }
-			break;
+            break;
 
 // -------------------------------------------------------------------------------
 // Notifications
@@ -1355,25 +1355,25 @@ ForcePersistantMenu:                        // Just trigger the menu routine if 
                     if(ToolBarArray.Get(TbDroppedId)->Content != 0)
                     {
                         if(ToolBarMenus.Get(TbDroppedId)->Content == -1) goto NoDropDown;
-						else if(ToolBarMenus.Get(TbDroppedId)->Content > MAXSUBMENUS) goto NoDropDown;
-						else ToolBarDisplayPopupMenu(ToolBarArray.Get(TbDroppedId)->Content, TbDroppedId, SubMenusArray[ToolBarMenus.Get(TbDroppedId)->Content], hWnd);
+                        else if(ToolBarMenus.Get(TbDroppedId)->Content > MAXSUBMENUS) goto NoDropDown;
+                        else ToolBarDisplayPopupMenu(ToolBarArray.Get(TbDroppedId)->Content, TbDroppedId, SubMenusArray[ToolBarMenus.Get(TbDroppedId)->Content], hWnd);
                     }
-NoDropDown:			return(0);
+NoDropDown:         return(0);
                 case TBN_HOTITEMCHANGE:
                     TbHotId = ToolBarGetNotifiedHotItem(lParam);
                     if(TbHotId == -1) WriteComment("");
-					else WriteComment(ToolBarComments.Get(TbHotId)->Content);
+                    else WriteComment(ToolBarComments.Get(TbHotId)->Content);
                     return(0);
             }
-			break;
+            break;
 
 // -------------------------------------------------------------------------------
 // Resize
 // -------------------------------------------------------------------------------
-		case WM_MOVE:
+        case WM_MOVE:
             if(APITTip == 1) if(APIMode == 1) ControlClose(FRMAPIhwnd);
             if(APIListMode == 1) ControlClose(FRMAPIListhWnd);
-			break;
+            break;
         case WM_SIZE:
             if(wParam != SIZE_MINIMIZED)
             {
@@ -1393,18 +1393,18 @@ NoDropDown:			return(0);
             return(DefWindowProc(hWnd, uMsg, wParam, lParam));
 
         case WM_NCMOUSEMOVE:
-			if(CursorDisabled) DisplayCursor();
-			break;
+            if(CursorDisabled) DisplayCursor();
+            break;
         case WM_MOUSEMOVE:
             if(CursorDisabled)
             {
-				GetCursorPos(&New_Mouse_Coords);
-				if(Mouse_Coords.x != New_Mouse_Coords.x || Mouse_Coords.y != New_Mouse_Coords.y)
-				{
-					DisplayCursor();
-				}
-			}
-			break;
+                GetCursorPos(&New_Mouse_Coords);
+                if(Mouse_Coords.x != New_Mouse_Coords.x || Mouse_Coords.y != New_Mouse_Coords.y)
+                {
+                    DisplayCursor();
+                }
+            }
+            break;
 
 // -------------------------------------------------------------------------------
 // SysTray handling
@@ -1417,7 +1417,7 @@ NoDropDown:			return(0);
                     case WM_LBUTTONDBLCLK:
                         SysTrayMode = 0;
                         RestoreMDI(hWnd);
-						break;
+                        break;
                     case WM_RBUTTONDOWN:
                         SetForegroundWindow(hWnd);
                         GetCursorPos(&TrayPoint);
@@ -1432,27 +1432,27 @@ NoDropDown:			return(0);
                         TrackPopupMenu(hTrayMenu, TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON, TrayPoint.x, TrayPoint.y, 0, hWnd, NULL);
                 }
             }
-			break;
+            break;
         case WM_ERASEBKGND:
-			return(0);
+            return(0);
         case WM_CLOSE:
-			// Check if a program is being debugged
-			if(SnapRunning != 0) if(Ask_Debug_Break()) return(0);
-			// Proceed...
+            // Check if a program is being debugged
+            if(SnapRunning != 0) if(Ask_Debug_Break()) return(0);
+            // Proceed...
             ForcePrj = 0;
             InQuitProc = 1;
             if(CheckLastModified(hMDIform.hClient, TRUE) != IDCANCEL)
             {
-				if(TimerHandle != 0) KillTimer(hWnd, 1);
+                if(TimerHandle != 0) KillTimer(hWnd, 1);
                 QuitNotif = 1;
                 ForcePrj = 1;
                 // Save opened files/project
                 SaveState(PrivateWorkSpaceFile);
-				DestroyWindow(hWnd);
+                DestroyWindow(hWnd);
                 return(0);
             }
             InQuitProc = 0;
-			return(0);
+            return(0);
         case WM_DESTROY:
             PostQuitMessage(0);
             return(0);
@@ -1465,8 +1465,8 @@ NoDropDown:			return(0);
 void ResizeMDIform(void)
 {
     long StatusHeight = 0;
-	long MinY = RebarGetYSize(hRebar);
-	if(ControlIsVisible(hStatusBar)) StatusHeight = ControlHeight(hStatusBar);
+    long MinY = RebarGetYSize(hRebar);
+    if(ControlIsVisible(hStatusBar)) StatusHeight = ControlHeight(hStatusBar);
     MoveWindow(hMDIform.hDock, 0, MinY, ControlClientWidth(hMDIform.hWnd),
                ControlClientHeight(hMDIform.hWnd) - (MinY + StatusHeight), 1);
 }
@@ -1477,8 +1477,8 @@ void WriteComment(CStr Comment)
 {
     if(ControlIsVisible(hStatusBar) != 0)
     {
-		StatusBarSetText(hStatusBar, 0, STATUSBAR_PARTNORMAL, Comment, 0);
-	}
+        StatusBarSetText(hStatusBar, 0, STATUSBAR_PARTNORMAL, Comment, 0);
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -1487,11 +1487,11 @@ void CloseAllChilds(HWND hWnd)
 {
     if(NbForms != 0)
     {
-		if(CheckLastModified(hMDIform.hClient, FALSE) != IDCANCEL)
-		{
-			EnumChildWindows(hWnd, &EnumCloseChildProc, 0);
-		}
-	}
+        if(CheckLastModified(hMDIform.hClient, FALSE) != IDCANCEL)
+        {
+            EnumChildWindows(hWnd, &EnumCloseChildProc, 0);
+        }
+    }
 }
                     
 int CALLBACK EnumCloseChildProc(HWND hWnd, long lParam)
@@ -1504,15 +1504,15 @@ int CALLBACK EnumCloseChildProc(HWND hWnd, long lParam)
     {
         if(ControlIsWindowChild(hWnd) == 1)
         {
-			if(GetWindowLong(hWnd, GWL_USERDATA) != 0)
-			{
+            if(GetWindowLong(hWnd, GWL_USERDATA) != 0)
+            {
                 // Mark them as unmodified
-				ChildStruct = LoadStructure(hWnd);
+                ChildStruct = LoadStructure(hWnd);
                 ChildStruct->ModifFlag = 0;
-				ControlClose(hWnd);
-			}
-		}
-		return(TRUE);
+                ControlClose(hWnd);
+            }
+        }
+        return(TRUE);
     }
 }
 
@@ -1539,7 +1539,7 @@ int CALLBACK EnumChFontChildProc(HWND hWnd, long lParam)
                 SetCodeMaxFont(ChildStruct->hChildCodeMax);
             }
         }
-		return(TRUE);
+        return(TRUE);
     }
 }
 
@@ -1618,11 +1618,11 @@ HWND OpenFileNorm(CStr FileName, long ReadO, long CheckOp, long ForceCreate, lon
     CStr DirectZoom;
     int i = 0;
     CStr TestBook;
-	CStr BufString;
+    CStr BufString;
     HWND ReturnValue = 0;
     OFSTRUCT File_Dat;
 
-	// Set return value
+    // Set return value
     LoadResultGlob = 0;
     FoundF = 1;
 
@@ -1644,18 +1644,18 @@ HWND OpenFileNorm(CStr FileName, long ReadO, long CheckOp, long ForceCreate, lon
                 {
                     ControlVisible(FoundOpenedhWnd, 1);
                     SetFocus(FoundOpenedhWnd);
-					return(ReturnValue);
+                    return(ReturnValue);
                 }
             }
-			BufString = "File '" + (CStr) FileName.Get_String() + (CStr) "' is already opened. Reload it ?";
+            BufString = "File '" + (CStr) FileName.Get_String() + (CStr) "' is already opened. Reload it ?";
             switch(MiscMsgBox(hMDIform.hWnd, BufString, MB_QUESTION, Requesters))
             {
                 case IDYES:
-					break;
-				case IDNO:
+                    break;
+                case IDNO:
                     ControlVisible(FoundOpenedhWnd, 1);
                     SetFocus(FoundOpenedhWnd);
-					return(ReturnValue);
+                    return(ReturnValue);
             }
         }
     }
@@ -1664,7 +1664,7 @@ HWND OpenFileNorm(CStr FileName, long ReadO, long CheckOp, long ForceCreate, lon
         if(FoundF == 0)
         {
             LoadResult = 0;
-			// Remove it from recent files list
+            // Remove it from recent files list
             if(NoAddRecent == 0) AddRecentFile(FileName, LoadResult, 0);
             return(ReturnValue);
         }
@@ -1696,7 +1696,7 @@ HWND OpenFileNorm(CStr FileName, long ReadO, long CheckOp, long ForceCreate, lon
         {
             // If not found store it at the end of the array
             // With Coords at 0
-			LastOpened.Add(FileName.Upper_Case().Get_String());
+            LastOpened.Add(FileName.Upper_Case().Get_String());
             LastOpenedLine.Add(0L);
             LastOpenedCol.Add(0L);
             LastOpenedFirst.Add(0L);
@@ -1708,7 +1708,8 @@ HWND OpenFileNorm(CStr FileName, long ReadO, long CheckOp, long ForceCreate, lon
             {
                 ChildStruct = LoadStructure(ReturnValue);
                 SetCurrentTopIndex(ChildStruct->hChildCodeMax, LastOpenedFirst.Get(i)->Content);
-                CMSetCaretPos(ChildStruct->hChildCodeMax, LastOpenedLine.Get(i)->Content,
+                CMSetCaretPos(ChildStruct->hChildCodeMax,
+                              LastOpenedLine.Get(i)->Content,
                               LastOpenedCol.Get(i)->Content);
                 LoadCurrentSel(ChildStruct->hChildCodeMax);
                 RefreshSBStat = 1;
@@ -1728,7 +1729,7 @@ HWND OpenFileNorm(CStr FileName, long ReadO, long CheckOp, long ForceCreate, lon
     }
     if(NoAddRecent == 0) AddRecentFile(FileName, LoadResult, 0);
     LoadResultGlob = LoadResult;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1744,24 +1745,24 @@ HWND CreateNewFile(CStr FileN)
 {
     HWND ReturnValue = 0;
 
-	FileToOpen = StringCopyAppendZero(FileToOpen, FileN);
+    FileToOpen = StringCopyAppendZero(FileToOpen, FileN);
     if(NbForms != 0) if(ControlGetWindowState(CurrentForm) == SW_SHOWMAXIMIZED) goto ForceMaximize;
     switch(AutoMaximizeChilds)
     {
         case 0:
             ReturnValue = CreateMDIChildDialog(hMDIform.hClient, "", LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_NEW)),
                                                  CurrentMDIChildInitProc, CurrentMDIChildProc, 0, 1, "");
-			break;
-		case 1:
+            break;
+        case 1:
 ForceMaximize:
             ReturnValue = CreateMDIChildDialog(hMDIform.hClient, "", LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_NEW)),
                                                  CurrentMDIChildInitProc, CurrentMDIChildProc, WS_MAXIMIZE, 1, "");
-			break;
+            break;
     }
     DrawMenuBar(hMDIform.hWnd);
     ResizeChildCodeMax(ReturnValue);
     LoadStructure(ReturnValue);
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1808,9 +1809,9 @@ void OpenFileAsRC(HWND hWnd, CStr FileLabel, CStr FileName, long ResIndex)
     OpHeader = OpHeader + "BEGIN\r\n";
     if(TextToOpEnd.Len() != 0)
     {
-		TextToOpEnd = "\t" + TextToOpEnd.Trim() + "\r\n";
-	}
-	OpHeader = OpHeader + TextToOp + (CStr) TextToOpEnd;
+        TextToOpEnd = "\t" + TextToOpEnd.Trim() + "\r\n";
+    }
+    OpHeader = OpHeader + TextToOp + (CStr) TextToOpEnd;
     OpHeader = OpHeader + "END\r\n";
     // Free the allocated memory for the file
     FreeMem(DBFileMem);
@@ -1841,7 +1842,7 @@ void OpenFileAsRC(HWND hWnd, CStr FileLabel, CStr FileName, long ResIndex)
     return;
 NoOpenFileRC:
     WriteToStatus("Can't open file '" + (CStr) FileName + (CStr) "' for conversion.");
-	return;
+    return;
 }
 
 // -----------------------------------------------------------------------
@@ -1849,7 +1850,7 @@ NoOpenFileRC:
 void OpenWorkSpc(CStr FileName)
 {
     int i = 0;
-	CStr BufString;
+    CStr BufString;
 
     if(CheckWorkSpaceFile(FileName) == 0)
     {
@@ -1914,8 +1915,8 @@ CStr SaveIt(HWND hWnd)
     CStr ReturnValue;
     CStr BufString;
 
-	if(NbForms != 0)
-	{
+    if(NbForms != 0)
+    {
         ChildStruct = LoadStructure(hWnd);
         if(ChildStruct->ModifFlag != 0)
         {
@@ -1944,7 +1945,7 @@ CStr SaveIt(HWND hWnd)
     }
     // Check if it's a language that must be updated.
     Update_Language(CMGetRealFile(ChildStruct->RFile));
-	ReturnValue.Set_String(BufString.Get_String());
+    ReturnValue.Set_String(BufString.Get_String());
     return(ReturnValue);
 }
 
@@ -1955,7 +1956,7 @@ CStr SaveItAs(HWND hWnd, long RefreshTree, CStr TreeKey, CStr OldTreeFile)
     CStr FName;
     CStr Filters;
     CStr ReturnValue;
-	int i;
+    int i;
 
     FName = "";
     if(NbForms == 0) return(ReturnValue);
@@ -1964,11 +1965,11 @@ CStr SaveItAs(HWND hWnd, long RefreshTree, CStr TreeKey, CStr OldTreeFile)
     {
         Filters = Filters + (CStr) RegisteredExts.Get(i)->Content + (CStr) "|";
     }
-	if(Filters.Len() == 0) Filters = "All files (*.*)|*.*";
+    if(Filters.Len() == 0) Filters = "All files (*.*)|*.*";
     if(GetUseFileDir() == 1)
     {
         ChildStruct = LoadStructure(hWnd);
-		FName = ComDlgGetSaveFileName(hMDIform.hWnd, Filters, FileGetDirectory(ChildStruct->RFile), CurrentDir);
+        FName = ComDlgGetSaveFileName(hMDIform.hWnd, Filters, FileGetDirectory(ChildStruct->RFile), CurrentDir);
     }
     else
     {
@@ -1994,7 +1995,7 @@ CStr SaveItAs(HWND hWnd, long RefreshTree, CStr TreeKey, CStr OldTreeFile)
     Update_Language(FName);
 NoSaveAs:
     ReturnValue.Set_String(FName.Get_String());
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -2009,7 +2010,7 @@ LRESULT CALLBACK ClientProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     long HaveToDie = 0;
     long PosInListView = 0;
     long FoundEmptyHwnd = 0;
-	DLGPROC LocMDIClientHook;
+    DLGPROC LocMDIClientHook;
     
     // Execute possible hooks
     for(i = 0; i < MDIClientHooks.Amount(); i++)
@@ -2017,8 +2018,8 @@ LRESULT CALLBACK ClientProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         if(MDIClientHooks.Get(i)->Content != 0)
         {
             LocMDIClientHook = MDIClientHooks.Get(i)->Content;
-			if(LocMDIClientHook(hWnd, uMsg, wParam, lParam) == HOOK_DIE)
-			{
+            if(LocMDIClientHook(hWnd, uMsg, wParam, lParam) == HOOK_DIE)
+            {
                 HaveToDie = HaveToDie | HOOK_DIE;
             }
         }
@@ -2043,7 +2044,7 @@ LRESULT CALLBACK ClientProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     if(ChildshWnd.Get(i)->Content == 0)
                     {
                         FoundEmptyHwnd = 1;
-						break;
+                        break;
                     }
                 }
                 // Save handle and listview ordinal position in found empty position
@@ -2052,15 +2053,15 @@ LRESULT CALLBACK ClientProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 {
                     // Create new empty entries
                     ChildshWnd.Add(lParam);
-					ChildsLVPos.Add(PosInListView);
+                    ChildsLVPos.Add(PosInListView);
                 }
                 else
                 {
-					ChildshWnd.Set(i, (HWND) lParam);
-					ChildsLVPos.Set(i, PosInListView);
-				}
+                    ChildshWnd.Set(i, (HWND) lParam);
+                    ChildsLVPos.Set(i, PosInListView);
+                }
             }
-			return(0);
+            return(0);
         case CHILD_MSG_DESTROYED:
             if(lParam != 0)
             {
@@ -2080,11 +2081,11 @@ LRESULT CALLBACK ClientProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             ChildsLVPos.Set(j, ChildsLVPos.Get(j)->Content - 1);
                         }
                         PreviouslySelectedWindow = ListViewGetSelItem(hWindowsListView, -1);
-						break;
+                        break;
                     }
                 }
             }
-			return(0);
+            return(0);
         case CHILD_MSG_SETTITLE:
             if(lParam != 0)
             {
@@ -2100,9 +2101,9 @@ LRESULT CALLBACK ClientProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     }
                 }
             }
-			return(0);
+            return(0);
         case WM_KILLFOCUS:
-			FocusOnActiveChild();
+            FocusOnActiveChild();
             return(0);
         // Process dropped files from shell
         case WM_DROPFILES:
@@ -2125,7 +2126,7 @@ LRESULT CALLBACK ClientProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                                 // Retrieve filename
                                 DragQueryFile((HDROP) wParam, i, DropedFileName.Get_String(), FNameSize);
                                 DropedFileName = DropedFileName.Trim();
-								OpenUnknownFile(DropedFileName, TRUE);
+                                OpenUnknownFile(DropedFileName, TRUE);
                             }
                         }
                     }
@@ -2147,7 +2148,7 @@ void FocusOnActiveChild(void)
         Forehwnd = ClientGetActiveChild(hMDIform.hClient);
         CurrentForm = Forehwnd;
         ChildStruct = LoadStructure(Forehwnd);
-		
+        
         SetFocus(ChildStruct->hChildCodeMax);
         RefreshSBStat = 1;
         WritePositionInStatus(ChildStruct->hChildCodeMax);
@@ -2169,101 +2170,101 @@ void FocusOnActiveChild(void)
 void SearchModified(HWND hWnd)
 {
     int i = 0;
-	FILETIME TmpProjectFDate;
-	int RetPrjLoad;
+    FILETIME TmpProjectFDate;
+    int RetPrjLoad;
 
     if(InSelFile == 1) return;
     ExternModified = 0;
     ModifiedArrayhWnd.Erase();
-	// Compare project file
+    // Compare project file
     if(ProjectOn)
     {
-		if(FileGetWriteTime(ProjectFName, &TmpProjectFDate) != 0)
-		{
-			if(CompareFileTime(&TmpProjectFDate, &ProjectFDate) > 0)
-			{
-				ExternModified += 1;
-				// (Phony entry)
-				ModifiedArrayhWnd.Add(0L);
-			}
-		}
-	}
+        if(FileGetWriteTime(ProjectFName, &TmpProjectFDate) != 0)
+        {
+            if(CompareFileTime(&TmpProjectFDate, &ProjectFDate) > 0)
+            {
+                ExternModified += 1;
+                // (Phony entry)
+                ModifiedArrayhWnd.Add(0L);
+            }
+        }
+    }
 
-	if(NbForms != 0) EnumChildWindows(hWnd, &EnumSearchDateModified, 0);
+    if(NbForms != 0) EnumChildWindows(hWnd, &EnumSearchDateModified, 0);
     switch(ExternModified)
     {
         case 0:
-			break;
+            break;
         default:
             FRMFilesTitle = "Modified files detected";
             // Scheme: Reload/Cancel
             FRMFilesScheme = FILESSCHEME_EXTERNMODIFIED;
             FRMFilesSelArray.Erase();
-			FRMFilesSelArray.MAdd(ExternModified, 0L);
+            FRMFilesSelArray.MAdd(ExternModified, 0L);
             CreateModalDialog(-1, -1, 402, 244, hMDIform.hWnd, &FRMFilesProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
             switch(FRMFilesChoice)
             {
                 case IDYES:
                     for(i = 0; i < FRMFilesSelArray.Amount(); i++)
                     {
-					    if(FRMFilesSelArray.Get(i)->Content != 0)
-					    {
+                        if(FRMFilesSelArray.Get(i)->Content != 0)
+                        {
                             if(ModifiedArrayhWnd.Get(i)->Content)
                             {
-								ClearFile(ModifiedArrayhWnd.Get(i)->Content);
-								LoadFile(ModifiedArrayhWnd.Get(i)->Content);
+                                ClearFile(ModifiedArrayhWnd.Get(i)->Content);
+                                LoadFile(ModifiedArrayhWnd.Get(i)->Content);
                             }
                             else
                             {
-								// Reload project
-								ProjectModified = FALSE;
-								RetPrjLoad = RealOpenPrj(ProjectFName);
-								if(RetPrjLoad != -1) AddRecentPrj(ProjectFName, RetPrjLoad, 0);
-							}
-					    }
-					    else
-					    {
+                                // Reload project
+                                ProjectModified = FALSE;
+                                RetPrjLoad = RealOpenPrj(ProjectFName);
+                                if(RetPrjLoad != -1) AddRecentPrj(ProjectFName, RetPrjLoad, 0);
+                            }
+                        }
+                        else
+                        {
                             if(ModifiedArrayhWnd.Get(i)->Content)
                             {
-								ChildStruct = LoadStructure(ModifiedArrayhWnd.Get(i)->Content);
-								FileGetWriteTime(CMGetRealFile(ChildStruct->RFile), ChildStruct->FileDateOpen);
+                                ChildStruct = LoadStructure(ModifiedArrayhWnd.Get(i)->Content);
+                                FileGetWriteTime(CMGetRealFile(ChildStruct->RFile), ChildStruct->FileDateOpen);
                             }
                             else
                             {
-								FileGetWriteTime(ProjectFName, &ProjectFDate);
-							}
-						}
+                                FileGetWriteTime(ProjectFName, &ProjectFDate);
+                            }
+                        }
                     }
-					break;
+                    break;
                 case IDCANCEL:
                     // Update all dates
                     for(i = 0; i < FRMFilesSelArray.Amount(); i++)
                     {
                         if(ModifiedArrayhWnd.Get(i)->Content)
                         {
-						    ChildStruct = LoadStructure(ModifiedArrayhWnd.Get(i)->Content);
-							FileGetWriteTime(CMGetRealFile(ChildStruct->RFile), ChildStruct->FileDateOpen);
+                            ChildStruct = LoadStructure(ModifiedArrayhWnd.Get(i)->Content);
+                            FileGetWriteTime(CMGetRealFile(ChildStruct->RFile), ChildStruct->FileDateOpen);
                         }
                         else
                         {
-						    FileGetWriteTime(ProjectFName, &ProjectFDate);
+                            FileGetWriteTime(ProjectFName, &ProjectFDate);
                         }
-					}
-					break;
-			}
-	}
+                    }
+                    break;
+            }
+    }
 }
 
 int CALLBACK EnumSearchDateModified(HWND hWnd, long lParam)
 {
     FILETIME FileDT;
     
-	if(NbForms == 0)
-	{
+    if(NbForms == 0)
+    {
         return(0);
-	}
-	else
-	{
+    }
+    else
+    {
         if(ControlIsWindowChild(hWnd) == 1)
         {
             if(GetWindowLong(hWnd, GWL_USERDATA) != 0)
@@ -2302,30 +2303,30 @@ int CALLBACK EnumSearchDateModified(HWND hWnd, long lParam)
 // Search for internally Modified files
 long CheckLastModified(HWND hWnd, int CheckProject)
 {
-	long ReturnValue = 0;
+    long ReturnValue = 0;
     int i = 0;
 
     if(InSelFile == 1) return(IDCANCEL);
     ExternModified = 0;
     ModifiedArrayhWnd.Erase();
-	if(CheckProject)
-	{
-		if(ProjectOn)
-		{
-			if(ProjectModified)
-			{
-				ExternModified++;
-				// Phony entry
-				ModifiedArrayhWnd.Add(0L);
-			}
-		}
-	}
-	if(NbForms != 0) EnumChildWindows(hWnd, &EnumSearchModified, 0);
+    if(CheckProject)
+    {
+        if(ProjectOn)
+        {
+            if(ProjectModified)
+            {
+                ExternModified++;
+                // Phony entry
+                ModifiedArrayhWnd.Add(0L);
+            }
+        }
+    }
+    if(NbForms != 0) EnumChildWindows(hWnd, &EnumSearchModified, 0);
     ReturnValue = IDYES;
     switch(ExternModified)
     {
         case 0:
-	        if(CheckProject)
+            if(CheckProject)
             {
                 if(IniReadBoolKey("Layout", "ConfirmBeforeExit", MainIniFile))
                 {
@@ -2333,16 +2334,16 @@ long CheckLastModified(HWND hWnd, int CheckProject)
                     if(ReturnValue == IDNO) ReturnValue = IDCANCEL;
                 }
             }
-			break;
+            break;
         default:
-			// Prompt for several files
-	        ReturnValue = IDCANCEL;
+            // Prompt for several files
+            ReturnValue = IDCANCEL;
             FRMFilesTitle = "Modified files";
             // Scheme: Save/Cancel
             FRMFilesScheme = FILESSCHEME_INTERNMODIFIED;
             FRMFilesSelArray.Erase();
-			// Add the number of entries corresponding to the number of modified files found.
-			FRMFilesSelArray.MAdd(ExternModified, 0L);
+            // Add the number of entries corresponding to the number of modified files found.
+            FRMFilesSelArray.MAdd(ExternModified, 0L);
             CreateModalDialog(-1, -1, 402, 244, hMDIform.hWnd, &FRMFilesProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
             switch(FRMFilesChoice)
             {
@@ -2354,26 +2355,26 @@ long CheckLastModified(HWND hWnd, int CheckProject)
                         {
                             if(ModifiedArrayhWnd.Get(i)->Content)
                             {
-								LoadStructure(ModifiedArrayhWnd.Get(i)->Content);
-								SaveIt(ModifiedArrayhWnd.Get(i)->Content);
+                                LoadStructure(ModifiedArrayhWnd.Get(i)->Content);
+                                SaveIt(ModifiedArrayhWnd.Get(i)->Content);
                             }
                             else
                             {
-								// Save the project
-								MCMD_SaveProject();
-							}
-						}
+                                // Save the project
+                                MCMD_SaveProject();
+                            }
+                        }
                     }
                     ReturnValue = IDYES;
-					break;
-				case IDNO:
+                    break;
+                case IDNO:
                     ReturnValue = IDNO;
-					break;
+                    break;
                 case IDCANCEL:
-					break;
+                    break;
             }
     }
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 int CALLBACK EnumSearchModified(HWND hWnd, long lParam)
@@ -2393,7 +2394,7 @@ int CALLBACK EnumSearchModified(HWND hWnd, long lParam)
                 if(ChildStruct->ModifFlag == 1)
                 {
                     // Store modified window handle
-					ModifiedArrayhWnd.Add(hWnd);
+                    ModifiedArrayhWnd.Add(hWnd);
                     ExternModified++;
                 }
             }
@@ -2407,8 +2408,8 @@ int CALLBACK EnumSearchModified(HWND hWnd, long lParam)
 // (after a modification happens in properties)
 long RefreshTimer(HWND hWnd)
 {
-	if(TimerHandle != 0) KillTimer(hWnd, 1);
-	return(CreateTimer(hWnd));
+    if(TimerHandle != 0) KillTimer(hWnd, 1);
+    return(CreateTimer(hWnd));
 }
 
 // -----------------------------------------------------------------------
@@ -2416,45 +2417,45 @@ long RefreshTimer(HWND hWnd)
 long CreateTimer(HWND hWnd)
 {
     long ReturnValue = -1;
-	long Interval = 0;
+    long Interval = 0;
 
     switch(AutoSaveDelay)
     {
         case 0:
             Interval = 0;
-			break;
-		case 1:
+            break;
+        case 1:
             Interval = 1;
-			break;
+            break;
         case 2:
             Interval = 2;
-			break;
+            break;
         case 3:
             Interval = 5;
-			break;
+            break;
         case 4:
             Interval = 10;
-			break;
+            break;
         case 5:
             Interval = 15;
-			break;
+            break;
         case 6:
             Interval = 30;
-			break;
+            break;
         case 7:
             Interval = 45;
-			break;
+            break;
         case 8:
             Interval = 60;
-			break;
+            break;
     }
     TimerHandle = 0;
     if(Interval != 0)
     {
         TimerHandle = SetTimer(hWnd, 1, Interval * 60000, &TimerNotify);
-		ReturnValue = TimerHandle;
+        ReturnValue = TimerHandle;
     }
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 void CALLBACK TimerNotify(HWND hWnd, UINT uMsg, UINT_PTR idEvent, unsigned long dwTime)
@@ -2471,7 +2472,7 @@ void CALLBACK TimerNotify(HWND hWnd, UINT uMsg, UINT_PTR idEvent, unsigned long 
                     CreateTimer(hMDIform.hWnd);
                 }
             }
-			break;
+            break;
     }
 }
 
@@ -2481,18 +2482,18 @@ void CheckAutoSave(HWND hWnd)
 {
     int i = 0;
 
-	ExternModified = 0;
+    ExternModified = 0;
     if(InSelFile == 1) return;
     ModifiedArrayhWnd.Erase();
     if(ProjectOn)
     {
-		if(ProjectModified)
-		{
-			ExternModified += 1;
-			// Phony entry
-			ModifiedArrayhWnd.Add(0L);
-		}
-	}
+        if(ProjectModified)
+        {
+            ExternModified += 1;
+            // Phony entry
+            ModifiedArrayhWnd.Add(0L);
+        }
+    }
     if(NbForms != 0) EnumChildWindows(hWnd, &EnumSearchModified, 0);
     if(ExternModified != 0)
     {
@@ -2500,7 +2501,7 @@ void CheckAutoSave(HWND hWnd)
         // Scheme Save/Cancel
         FRMFilesScheme = FILESSCHEME_AUTOSAVE;
         FRMFilesSelArray.Erase();
-		FRMFilesSelArray.MAdd(ExternModified, 0L);
+        FRMFilesSelArray.MAdd(ExternModified, 0L);
         if(VerboseSave == 1)
         {
             CreateModalDialog(-1, -1, 402, 244, hMDIform.hWnd, &FRMFilesProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, 1);
@@ -2512,7 +2513,7 @@ void CheckAutoSave(HWND hWnd)
             {
                 FRMFilesSelArray.Set(i, 1);
             }
-			// Schedule the saving (right below).
+            // Schedule the saving (right below).
             FRMFilesChoice = IDYES;
         }
         switch(FRMFilesChoice)
@@ -2523,22 +2524,22 @@ void CheckAutoSave(HWND hWnd)
                 {
                     if(FRMFilesSelArray.Get(i)->Content != 0)
                     {
-						if(ModifiedArrayhWnd.Get(i)->Content)
-						{
-							LoadStructure(ModifiedArrayhWnd.Get(i)->Content);
-							SaveIt(ModifiedArrayhWnd.Get(i)->Content);
-						}
-						else
-						{
-							// Save the project
-							MCMD_SaveProject();
-						}
+                        if(ModifiedArrayhWnd.Get(i)->Content)
+                        {
+                            LoadStructure(ModifiedArrayhWnd.Get(i)->Content);
+                            SaveIt(ModifiedArrayhWnd.Get(i)->Content);
+                        }
+                        else
+                        {
+                            // Save the project
+                            MCMD_SaveProject();
+                        }
                     }
                 }
-				break;
-			case IDCANCEL:
-				break;
-		}
+                break;
+            case IDCANCEL:
+                break;
+        }
     }
 }
 

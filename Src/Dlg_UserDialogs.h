@@ -131,8 +131,8 @@ typedef struct _CTRLSELECTION
 {
     HWND hControl;
     LPGRIPBOXDAT hGrip;
-	RECT Ctrl_Rect;
-	int Captured;
+    RECT Ctrl_Rect;
+    int Captured;
 } CTRLSELECTION, *LPCTRLSELECTION;
 
 // -----------------------------------------------------------------------

@@ -78,7 +78,7 @@ WIN32_FIND_DATA ProcFindIncludeDat;
 int CALLBACK FRMProcVarSearchProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     int i = 0;
-	PAINTSTRUCT ProcVarSearchPs;
+    PAINTSTRUCT ProcVarSearchPs;
 
     switch(uMsg)
     {
@@ -104,10 +104,10 @@ int CALLBACK FRMProcVarSearchProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
             {
                 case 0:
                     RadioButtonSetState(FRMProcVarSearchRadioProc, BST_CHECKED);
-					break;
-				case 1:
+                    break;
+                case 1:
                     RadioButtonSetState(FRMProcVarSearchRadioVar, BST_CHECKED);
-					break;
+                    break;
             }
             if(NbForms != 0)
             {
@@ -130,28 +130,28 @@ int CALLBACK FRMProcVarSearchProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
             FreezeTimer = 1;
             ControlEnable(FRMProcVarSearchOk, 0);
             ControlBringToTop(FRMProcVarSearchTBKey);
-			ControlBringToTop(FRMProcVarSearchComboKeyWord);
-			ControlSendMessage(hwndDlg, CBN_EDITCHANGE << 16, (LPARAM) FRMProcVarSearchComboKeyWord);
+            ControlBringToTop(FRMProcVarSearchComboKeyWord);
+            ControlSendMessage(hwndDlg, CBN_EDITCHANGE << 16, (LPARAM) FRMProcVarSearchComboKeyWord);
             SetFocus(FRMProcVarSearchComboKeyWord);
             return(0);
         case WM_PAINT:
             BeginPaint(hwndDlg, &ProcVarSearchPs);
             GDIDrawHorzSep(hwndDlg, 3, 50, 260);
             EndPaint(hwndDlg, &ProcVarSearchPs);
-			break;
+            break;
         case WM_NOTIFY:
             switch(ControlGetNotifiedMsg(lParam))
             {
                 case TTN_NEEDTEXT:
-					switch(ControlGetNotifiedID(lParam))
-					{
-						case FRMProcVarSearchBUTTONKEY:
+                    switch(ControlGetNotifiedID(lParam))
+                    {
+                        case FRMProcVarSearchBUTTONKEY:
                             ToolBarDisplayToolTip("Clear list", lParam);
-							return(0);
-					}
-					break;
-			}
-			break;
+                            return(0);
+                    }
+                    break;
+            }
+            break;
         case WM_COMMAND:
             if((HWND) lParam == FRMProcVarSearchOk)
             {
@@ -203,7 +203,7 @@ int CALLBACK FRMProcVarSearchProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
                         {
                             ControlEnable(FRMProcVarSearchOk, 0);
                         }
-						break;
+                        break;
                     case CBN_SELCHANGE:
                         if(ComboBoxGetIndex(FRMProcVarSearchComboKeyWord) != CB_ERR)
                         {
@@ -213,27 +213,27 @@ int CALLBACK FRMProcVarSearchProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
                         {
                             ControlEnable(FRMProcVarSearchOk, 0);
                         }
-						break;
+                        break;
                 }
             }
             else if((HWND) lParam == FRMProcVarSearchTBKey)
             {
                 switch(wParam)
                 {
-					case FRMProcVarSearchBUTTONKEY:
+                    case FRMProcVarSearchBUTTONKEY:
                         ComboBoxReset(FRMProcVarSearchComboKeyWord);
                         IniDeleteKey("SearchKeys", "", MainIniFile);
                         ControlSendMessage(hwndDlg, (CBN_EDITCHANGE << 16), (long) FRMProcVarSearchComboKeyWord);
-						break;
-				}
-				return(0);
-			}
-			break;
+                        break;
+                }
+                return(0);
+            }
+            break;
         case WM_CLOSE:
             FreezeTimer = 0;
             EndDialog(hwndDlg, 0);
-			break;
-	}
+            break;
+    }
     return(0);
 }
 
@@ -287,10 +287,10 @@ void RunProcSearch(HWND hwnd)
     long IncNameDouble = 0;
     CStr BufString;
 
-	LastSearchFiles = 0;
-	LastSearchLines = 0;
-	LastSearch = "";
-	LastWild = "";
+    LastSearchFiles = 0;
+    LastSearchLines = 0;
+    LastSearch = "";
+    LastWild = "";
 
     if(FRMProcSearchInCalc == 1)
     {
@@ -301,10 +301,10 @@ void RunProcSearch(HWND hwnd)
     {
         case BST_UNCHECKED:
             CsSens = Text_Compare;
-			break;
-		case BST_CHECKED:
+            break;
+        case BST_CHECKED:
             CsSens = Binary_Compare;
-			break;
+            break;
     }
     
     // Check for valid informations
@@ -318,18 +318,18 @@ void RunProcSearch(HWND hwnd)
     // Store keyword for results display
     LastSearch = ControlGetText(FRMProcVarSearchComboKeyWord);
 
-	ComboBoxSaveInIniFile(FRMProcVarSearchComboKeyWord, LastSearch, "SearchKeys", MainIniFile);
+    ComboBoxSaveInIniFile(FRMProcVarSearchComboKeyWord, LastSearch, "SearchKeys", MainIniFile);
 
     switch(FRMProcVarSearchRadioVPValue)
     {
         // Procedures
         case 0:
             ProcType = "procedure";
-			break;
-		// Variables
+            break;
+        // Variables
         case 1:
             ProcType = "variable";
-			break;
+            break;
     }
     
     // Reset global linezs
@@ -386,9 +386,9 @@ void RunProcSearch(HWND hwnd)
                 // Remove single lines comments if not in raw mode
                 if(FRMProcVarSearchChkRawValue == 0)
                 {
-					RemoveSingleLineComment((char *) TextToSearch, TextToSearchLen, FRMProcSearchCommChar.Get_String());
+                    RemoveSingleLineComment((char *) TextToSearch, TextToSearchLen, FRMProcSearchCommChar.Get_String());
                 }
-				// Get include name type
+                // Get include name type
                 if(IncName.Len() == 0) IncName = "include";
                 // Search for "include" word (case insensitive)
                 InCurText = SearchInText(TextToSearch, TextToSearchLen, IncName + (CStr) " ", Text_Compare, 1);
@@ -400,12 +400,12 @@ void RunProcSearch(HWND hwnd)
                 }
                 if(InCurText != 0)
                 {
-					// Remove single lines comments if not in raw mode
-					if(FRMProcVarSearchChkRawValue == 0)
-					{
-						RemoveCommentBlocksFromFileByFile(TextToSearch, TextToSearchLen, FilesList.Get(j)->Content);
+                    // Remove single lines comments if not in raw mode
+                    if(FRMProcVarSearchChkRawValue == 0)
+                    {
+                        RemoveCommentBlocksFromFileByFile(TextToSearch, TextToSearchLen, FilesList.Get(j)->Content);
                     }
-					InCurTextLine = InCurText - 1;
+                    InCurTextLine = InCurText - 1;
                     CurrentTextLines = CountFileLines((char *) TextToSearch, TextToSearchLen);
 FoundMoreNestedIncludes:
                     for(i = InCurTextLine; i <= CurrentTextLines; i++)
@@ -448,8 +448,8 @@ FoundMoreNestedIncludes:
                             }
                             if(FInclude == 1) goto FalseInclude;
                             //IncludeFileName = StringReplace(
-							IncludeFileName = StringReplace(StringGetSplitElement(IncludeLine, IncTab, n), "\"", "", 1, -1, Binary_Compare);
-							//, Chr(0), "", 1, -1, vbBinary_Compare)
+                            IncludeFileName = StringReplace(StringGetSplitElement(IncludeLine, IncTab, n), "\"", "", 1, -1, Binary_Compare);
+                            //, Chr(0), "", 1, -1, vbBinary_Compare)
                             if(IncNameFoot.Len() != 0) IncludeFileName = IncludeFileName.Mid(1, IncludeFileName.Len() - IncNameFoot.Len());
                             // Remove double slashes
                             if(IncNameDouble != 1) IncludeFileName = StringReplace(IncludeFileName, "\\\\", "\\", 1, -1, Binary_Compare);
@@ -537,7 +537,7 @@ NoMoreIncludes:;
                     // Load it from CodeMax
                     SearchOpenFileCM(FilesListhWnd.Get(m)->Content);
                     NbLinesPr = NbLinesPr + CurrentFileLines;
-					NbFilesPr++;
+                    NbFilesPr++;
                     ReCheckLn = 0;
                     CurrentRetriPosition = 1;
                     ControlSetText(FRMProcVarSearchFileLabel, FilesList.Get(m)->Content);
@@ -644,9 +644,9 @@ StopAll:
     else Plur = "s";
     if(NbLinesPr == 1) Plur = "";
     else Plur = "s";
-	LastSearchFiles = NbFilesPr;
-	LastSearchLines = NbLinesPr;
-	BufString = NbFilesPr + (CStr) " file" + (CStr) Plur + (CStr) " and " + (CStr) NbLinesPr + (CStr) " line" + (CStr) Plur2 + (CStr) ")";
+    LastSearchFiles = NbFilesPr;
+    LastSearchLines = NbLinesPr;
+    BufString = NbFilesPr + (CStr) " file" + (CStr) Plur + (CStr) " and " + (CStr) NbLinesPr + (CStr) " line" + (CStr) Plur2 + (CStr) ")";
     if(ProcLines == 1) ControlSetText(hFRMResults, "Search results for " + (CStr) ProcType + (CStr) ": '" + (CStr) LastSearch + (CStr) "' (" + (CStr) ListViewItemCount(FrmResultsListView) + (CStr) " possible occurrence in " + (CStr) BufString);
     else ControlSetText(hFRMResults, "Search results for " + (CStr) ProcType + (CStr) ": '" + (CStr) LastSearch + (CStr) "' (" + (CStr) ListViewItemCount(FrmResultsListView) + (CStr) " possible occurrences in " + (CStr) BufString);
     ControlSetText(FRMProcVarSearchOk, "Ok");
@@ -707,9 +707,9 @@ ForceToRaw:     PosWord = CurLine.In_Str(1, FRMProcSearchSearchWord, CsSens);
                     // Not a variable
                     goto OkLineProc2;
 OkLineProc:;    }
-				break;
+                break;
             // Variables search
-			case BST_CHECKED:
+            case BST_CHECKED:
                 if(FRMProcVarSearchChkRawValue == 1) goto ForceToRaw;
                 PosWord = CurLine.In_Str(1, FRMProcSearchSearchWord, CsSens);
                 if(PosWord != 0)

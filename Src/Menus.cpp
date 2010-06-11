@@ -146,25 +146,25 @@ void CreateFileMenu(HMENU hParent, CStr MenuName, long BaseID)
     MenuAddString(hFileMenu, "Reload file\tCtrl+Shift+N", BaseID + MENU_FILE_RELOADFILE_ID, TRUE);
     MenuAddSeparator(hFileMenu);
 
-	// ------
+    // ------
     hFileMenuOpen = CreatePopupMenu();
     MenuAddString(hFileMenuOpen, "Source file(s)...\tCtrl+O", BaseID + MENU_FILE_OPENFILE_ID, TRUE);
     MenuSetDefaultItem(hFileMenuOpen, 0);
     hFileMenuFilters = CreatePopupMenu();
     CreateFiltersMenu(hFileMenuFilters, 17, BaseID + MENU_FILE_FILTERS_ID, "Laboratory...\tCtrl+Shift+O", 0);
-	AppendMenu(hFileMenuOpen, MF_POPUP, (UINT) hFileMenuFilters, "Filters");
+    AppendMenu(hFileMenuOpen, MF_POPUP, (UINT) hFileMenuFilters, "Filters");
     MenuAddString(hFileMenuOpen, "Workspace...", BaseID + MENU_FILE_OPENWORKSPACE_ID, TRUE);
     AppendMenu(hFileMenu, MF_POPUP, (UINT) hFileMenuOpen, "Open");
     
-	// ------
-	hFileMenuInclude = CreatePopupMenu();
+    // ------
+    hFileMenuInclude = CreatePopupMenu();
     MenuAddString(hFileMenuInclude, "Source file(s)...\tCtrl+I", BaseID + MENU_FILE_INCLUDEFILE_ID, TRUE);
     MenuSetDefaultItem(hFileMenuInclude, 0);
-	hFileMenuIncludeFilters = CreatePopupMenu();
+    hFileMenuIncludeFilters = CreatePopupMenu();
     CreateFiltersMenu(hFileMenuIncludeFilters, 18, BaseID + MENU_FILE_INCLUDEFILTERS_ID, "Laboratory...\tCtrl+Shift+I", 1);
     AppendMenu(hFileMenuInclude, MF_POPUP, (UINT) hFileMenuIncludeFilters, "Filters");
     AppendMenu(hFileMenu, MF_POPUP, (UINT) hFileMenuInclude, "Include");
-	// ------
+    // ------
 
     MenuAddSeparator(hFileMenu);
     MenuAddString(hFileMenu, "FTP manager...", BaseID + MENU_FILE_FTPMANAGER_ID, TRUE);
@@ -526,53 +526,53 @@ void AddRecentFile(CStr FName, long AddFile, long ForceRemove)
 
     if(ForceRemove == 1) goto SaveRecent;
     TmpFName = FName.Left(FName.Len());
-	if(Recents.Amount() != 0)
-	{
-		FRcnt = 0;
-		for(i = 0; i < Recents.Amount(); i++)
-		{
-			if(strcmpi(Recents.Get(i)->Content, TmpFName.Get_String()) == 0)
-			{
-				FRcnt = 1;
-				break;
-			}
-		}
-		if(AddFile == 0)
-		{
-			if(FRcnt != 0) Recents.Set(i, "");
-			goto SaveRecent;
-		}
-		if(FRcnt == 0)
-		{
-			Recents.Add("");
-			// Move'em down
-			for(j = (Recents.Amount() - 2); j >= 0; j--)
-			{
-				Recents.Set(j + 1, Recents.Get(j)->Content);
-			}
-			// Put new entry on top
-			Recents.Set(0, TmpFName.Get_String());
-			if((long) MaxRecent < (long) Recents.Amount()) Recents.Del(Recents.Amount() - 1);
-		}
-		else
-		{
-			// Found: move it in first position
-			// Already in first position
-			if(i != 0)
-			{
-				for(j = i; j >= 1; j--)
-				{
-					TmpR = Recents.Get(j - 1)->Content;
-					Recents.Set(j - 1, Recents.Get(j)->Content);
-					Recents.Set(j, TmpR.Get_String());
-				}
-			}
-			// Correction of Upper_Case
-			Recents.Set(0, TmpFName.Get_String());
-		}
-		AddInWinRecent(TmpFName);
-		goto SaveRecent;
-	}
+    if(Recents.Amount() != 0)
+    {
+        FRcnt = 0;
+        for(i = 0; i < Recents.Amount(); i++)
+        {
+            if(strcmpi(Recents.Get(i)->Content, TmpFName.Get_String()) == 0)
+            {
+                FRcnt = 1;
+                break;
+            }
+        }
+        if(AddFile == 0)
+        {
+            if(FRcnt != 0) Recents.Set(i, "");
+            goto SaveRecent;
+        }
+        if(FRcnt == 0)
+        {
+            Recents.Add("");
+            // Move'em down
+            for(j = (Recents.Amount() - 2); j >= 0; j--)
+            {
+                Recents.Set(j + 1, Recents.Get(j)->Content);
+            }
+            // Put new entry on top
+            Recents.Set(0, TmpFName.Get_String());
+            if((long) MaxRecent < (long) Recents.Amount()) Recents.Del(Recents.Amount() - 1);
+        }
+        else
+        {
+            // Found: move it in first position
+            // Already in first position
+            if(i != 0)
+            {
+                for(j = i; j >= 1; j--)
+                {
+                    TmpR = Recents.Get(j - 1)->Content;
+                    Recents.Set(j - 1, Recents.Get(j)->Content);
+                    Recents.Set(j, TmpR.Get_String());
+                }
+            }
+            // Correction of Upper_Case
+            Recents.Set(0, TmpFName.Get_String());
+        }
+        AddInWinRecent(TmpFName);
+        goto SaveRecent;
+    }
     // First filename to be added
     Recents.Add(TmpFName.Get_String());
 SaveRecent:
@@ -611,50 +611,50 @@ void AddRecentPrj(CStr FName, long AddFile, long ForceRemove)
 
     if(ForceRemove == 1) goto SaveRecent;
     FRcnt = 0;
-	if(RecentsPrj.Amount() != 0)
-	{
-		for(i = 0; i < RecentsPrj.Amount(); i++)
-		{
-			if(strcmpi(RecentsPrj.Get(i)->Content, FName.Get_String()) == 0)
-			{
-				FRcnt = 1;
-				break;
-			}
-		}
-		if(AddFile == 0)
-		{
-			if(FRcnt != 0) RecentsPrj.Set(i, "");
-			goto SaveRecent;
-		}
-		if(FRcnt == 0)
-		{
-			RecentsPrj.Add("");
-			for(j = (RecentsPrj.Amount() - 2); j >= 0; j--)
-			{
-				RecentsPrj.Set(j + 1, RecentsPrj.Get(j)->Content);
-			}
-			RecentsPrj.Set(0, FName.Get_String());
-			if((long) MaxRecentPrj < (long) RecentsPrj.Amount()) RecentsPrj.Del(RecentsPrj.Amount() - 1);
-		}
-		else
-		{
-			// Found: move it in first position
-			// Already in first position
-			if(i != 0)
-			{
-				for(j = i; j >= 1; j--)
-				{
-					TmpR = RecentsPrj.Get(j - 1)->Content;
-					RecentsPrj.Set(j - 1, RecentsPrj.Get(j)->Content);
-					RecentsPrj.Set(j, TmpR.Get_String());
-				}
-			}
-			// Correction of Upper_Case
-			RecentsPrj.Set(0, FName.Get_String());
-		}
-		AddInWinRecent(FName);
-		goto SaveRecent;
-	}
+    if(RecentsPrj.Amount() != 0)
+    {
+        for(i = 0; i < RecentsPrj.Amount(); i++)
+        {
+            if(strcmpi(RecentsPrj.Get(i)->Content, FName.Get_String()) == 0)
+            {
+                FRcnt = 1;
+                break;
+            }
+        }
+        if(AddFile == 0)
+        {
+            if(FRcnt != 0) RecentsPrj.Set(i, "");
+            goto SaveRecent;
+        }
+        if(FRcnt == 0)
+        {
+            RecentsPrj.Add("");
+            for(j = (RecentsPrj.Amount() - 2); j >= 0; j--)
+            {
+                RecentsPrj.Set(j + 1, RecentsPrj.Get(j)->Content);
+            }
+            RecentsPrj.Set(0, FName.Get_String());
+            if((long) MaxRecentPrj < (long) RecentsPrj.Amount()) RecentsPrj.Del(RecentsPrj.Amount() - 1);
+        }
+        else
+        {
+            // Found: move it in first position
+            // Already in first position
+            if(i != 0)
+            {
+                for(j = i; j >= 1; j--)
+                {
+                    TmpR = RecentsPrj.Get(j - 1)->Content;
+                    RecentsPrj.Set(j - 1, RecentsPrj.Get(j)->Content);
+                    RecentsPrj.Set(j, TmpR.Get_String());
+                }
+            }
+            // Correction of Upper_Case
+            RecentsPrj.Set(0, FName.Get_String());
+        }
+        AddInWinRecent(FName);
+        goto SaveRecent;
+    }
 
     // First filename to be added
     RecentsPrj.Add(FName.Get_String());
@@ -722,7 +722,7 @@ void CreateMenuEntry(CStr MName)
     CStr MMName;
     long MPlug = 0;
     CStr PlugToCheck;
-	CStr BufString;
+    CStr BufString;
 
     hMenu = hMainMenu;
     hSubMenu = CreateMenu();
@@ -753,14 +753,14 @@ void CreateMenuEntry(CStr MName)
             if(StringGetSplitUBound(ArEntry) == 2)
             {
                 BufString = SecondElement + " (Help file)";
-				MenusCmdsComments.Add(BufString.Get_String());
-				MenusCmdsHelp.Add(1L);
+                MenusCmdsComments.Add(BufString.Get_String());
+                MenusCmdsHelp.Add(1L);
                 RecognizedPlug = StringGetSplitElement(MainMenusRetVal, ArEntry, 0);
             }
             else
             {
-				MenusCmdsComments.Add(SecondElement.Get_String());
-				MenusCmdsHelp.Add(0L);
+                MenusCmdsComments.Add(SecondElement.Get_String());
+                MenusCmdsHelp.Add(0L);
                 // Try to recognize a plugin
                 if(MPlug == 1)
                 {
@@ -768,7 +768,7 @@ void CreateMenuEntry(CStr MName)
                     PlugToCheck = ChangeRelativePaths(PlugToCheck);
                     PlugToCheck = StringReplace(PlugToCheck, "\"", "", 1, -1, Binary_Compare);
                     if(GetPlugInType(PlugToCheck) == 1) RecognizedPlug = StringGetSplitElement(MainMenusRetVal, ArEntry, 0);
-					else RecognizedPlug = StringGetSplitElement(MainMenusRetVal, ArEntry, 0);
+                    else RecognizedPlug = StringGetSplitElement(MainMenusRetVal, ArEntry, 0);
                 }
                 else
                 {
@@ -812,7 +812,7 @@ void ClearMenus(void)
     int i = 0;
     long ChildState = 0;
     
-	hMenu = GetMenu(hMDIform.hWnd);
+    hMenu = GetMenu(hMDIform.hWnd);
     ChildState = ControlGetWindowState(CurrentForm);
     for(i = 0; i < MainMenuH.Amount(); i++)
     {
@@ -904,9 +904,9 @@ void InitMenuToolTips(void)
     MenuEditToolTips[MENU_EDIT_GOTO_PROCEDUREPROTOTYPE_ID] = "Goto procedure declaration (Ctrl+Alt+F)";
     MenuEditToolTips[MENU_EDIT_GOTO_PROCEDUREDECLARATION_ID] = "Goto procedure entry point";
     MenuEditToolTips[MENU_EDIT_GOTO_PROCEDURENEXTUSE_ID] = "Goto procedure next use";
-	MenuEditToolTips[MENU_EDIT_GOTO_PREVIOUSPARAGRAPH_ID] = "Goto previous paragraph (Ctrl+Alt+Left)";
-	MenuEditToolTips[MENU_EDIT_GOTO_NEXTPARAGRAPH_ID] = "Goto next paragraph (Ctrl+Alt+Right)";
-	MenuEditToolTips[MENU_EDIT_BLOCK_INDENT_ID] = "Indent block (Tab)";
+    MenuEditToolTips[MENU_EDIT_GOTO_PREVIOUSPARAGRAPH_ID] = "Goto previous paragraph (Ctrl+Alt+Left)";
+    MenuEditToolTips[MENU_EDIT_GOTO_NEXTPARAGRAPH_ID] = "Goto next paragraph (Ctrl+Alt+Right)";
+    MenuEditToolTips[MENU_EDIT_BLOCK_INDENT_ID] = "Indent block (Tab)";
     MenuEditToolTips[MENU_EDIT_BLOCK_UNINDENT_ID] = "Unindent block (Shift+Tab)";
     MenuEditToolTips[MENU_EDIT_BLOCK_UPPERCASE_ID] = "Upper case block (Ctrl+U)";
     MenuEditToolTips[MENU_EDIT_BLOCK_LOWERCASE_ID] = "Lower case block (Ctrl+L)";
@@ -919,7 +919,7 @@ void InitMenuToolTips(void)
     MenuEditToolTips[MENU_EDIT_BLOCK_REGISTERS_ID] = "Registers (Ctrl+R)";
     MenuEditToolTips[MENU_EDIT_BLOCK_BLKCOMMENT_ID] = "Comment (multi lines) (Ctrl+Shift+K)";
     MenuEditToolTips[MENU_EDIT_BLOCK_CUSTOMCOMMENT_ID] = "Custom comment (Ctrl+Shift+F8)";
-	MenuEditToolTips[MENU_EDIT_BLOCK_TRIMSPACES_ID] = "Trim trailing spaces (Ctrl+Alt+G)";
+    MenuEditToolTips[MENU_EDIT_BLOCK_TRIMSPACES_ID] = "Trim trailing spaces (Ctrl+Alt+G)";
     MenuEditToolTips[MENU_EDIT_BLOCK_CONVERTTOINCLUDE_ID] = "Convert to include (Ctrl+Shift+L)";
     MenuEditToolTips[MENU_EDIT_BLOCK_SAVEAS_ID] = "Save block (Ctrl+W)";
     MenuEditToolTips[MENU_EDIT_BLOCK_PRINT_ID] = "Print block (Ctrl+Shift+P)";
@@ -983,7 +983,7 @@ void InitMenuToolTips(void)
 // Init comments blocks for factory menus
 void InitMenuComments(void)
 {
-	CStr BufString;
+    CStr BufString;
 
     MenuFileComments[MENU_FILE_NEW_ID] = "Create a new empty file";
     MenuFileComments[MENU_FILE_CLEAR_ID] = "Clear the current file";
@@ -1006,7 +1006,7 @@ void InitMenuComments(void)
     MenuFileComments[MENU_FILE_RUNEXTERNALPROGRAM_ID] = "Run a selected program";
     MenuFileComments[MENU_FILE_SETWORKINGDIRECTORY_ID] = "Set current directory";
     BufString = "Quit " + (CStr) AppTitle;
-	MenuFileComments[MENU_FILE_EXIT_ID] = strdup(BufString.Get_String());
+    MenuFileComments[MENU_FILE_EXIT_ID] = strdup(BufString.Get_String());
     MenuFileComments[MENU_FILE_RELOADFILE_ID] = "Reload current file";
     MenuFileComments[MENU_FILE_INCLUDEFILTERS_ID] = "Insert filtered file(s) at current position";
     MenuFileComments[MENU_FILE_REGISTERASTEMPLATE_ID] = "Register current file as source template";
@@ -1091,7 +1091,7 @@ void InitMenuComments(void)
     MenuViewComments[MENU_VIEW_REGISTERSDOCK_ID] = "Turn registers window on/off";
     MenuViewComments[MENU_VIEW_FULLSCREEN_ID] = "Turn full screen mode on/off";
     BufString = "Modify " + (CStr) AppTitle + (CStr) "'s properties";
-	MenuViewComments[MENU_VIEW_PROPERTIES_ID] = strdup(BufString.Get_String());
+    MenuViewComments[MENU_VIEW_PROPERTIES_ID] = strdup(BufString.Get_String());
     MenuViewComments[MENU_VIEW_USERMENUSEDITOR_ID] = "Modify user's menus";
     MenuViewComments[MENU_VIEW_USERTOOLBARSEDITOR_ID] = "Modify and create toolbars";
     
@@ -1184,7 +1184,7 @@ void InitMenuComments(void)
     MenuCodeMaxComments[MENU_CONTEXT_GOTO_NEXTWORD_ID] = "Position caret on next word";
     MenuCodeMaxComments[MENU_CONTEXT_GOTO_PREVIOUSPARAGRAPH_ID] = "Position caret on previous paragraph";
     MenuCodeMaxComments[MENU_CONTEXT_GOTO_NEXTPARAGRAPH_ID] = "Position caret on next paragraph";
-	MenuCodeMaxComments[MENU_CONTEXT_GOTO_PREVIOUSPROCEDURE_ID] = "Position caret on previous procedure entry point";
+    MenuCodeMaxComments[MENU_CONTEXT_GOTO_PREVIOUSPROCEDURE_ID] = "Position caret on previous procedure entry point";
     MenuCodeMaxComments[MENU_CONTEXT_GOTO_NEXTPROCEDURE_ID] = "Position caret on next procedure entry point";
     MenuCodeMaxComments[MENU_CONTEXT_GOTO_VARIABLEDECLARATION_ID] = "Search for variable declaration";
     MenuCodeMaxComments[MENU_CONTEXT_GOTO_VARIABLENEXTUSE_ID] = "Search for next variable use";
@@ -1261,15 +1261,15 @@ void RegCMCom(CStr CmdName, CStr CmdComment, long CmdNumber, long CmdModif, long
 long GetPlugInType(CStr PlugInName)
 {
     long ReturnValue = 0;
-	HMODULE hPlug = 0;
+    HMODULE hPlug = 0;
     
-	hPlug = LoadLibrary(PlugInName.Get_String());
+    hPlug = LoadLibrary(PlugInName.Get_String());
     if(hPlug != 0)
     {
         if(GetProcAddress(hPlug, "QePlugIn") != 0) ReturnValue = 1;
         FreeLibrary(hPlug);
     }
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1292,11 +1292,10 @@ void CreateRunProgMenu(void)
     CStr ProgRetVal;
     long FoundProg = 0;
     
-	RunProgArray.Erase();
+    RunProgArray.Erase();
     k = 0;
     while(DeleteMenu(hFileMenuRunProg, 0, MF_BYPOSITION) != 0)
     {
-    
     }
     MenuAddString(hFileMenuRunProg, "Run...\tF6", MENU_FILE_IDBASE + MENU_FILE_RUNEXTERNALPROGRAM_ID, TRUE);
     MenuSetDefaultItem(hFileMenuRunProg, 0);
@@ -1337,55 +1336,55 @@ void AddRecentRunProg(CStr FName, long AddFile, long ForceRemove)
 
     if(ForceRemove == 1) goto SaveRecent;
     TmpFName = FName.Left(FName.Len());
-	if(RunProgArray.Amount() != 0)
-	{
-		FRcnt = 0;
-		for(i = 0; i < RunProgArray.Amount(); i++)
-		{
-			if(strcmpi(RunProgArray.Get(i)->Content, TmpFName.Get_String()) == 0)
-			{
-				FRcnt = 1;
-				break;
-			}
-		}
-		if(AddFile == 0)
-		{
-			if(FRcnt != 0) RunProgArray.Set(i, "");
-			goto SaveRecent;
-		}
-		if(FRcnt == 0)
-		{
-			RunProgArray.Add("");
-			// Move'em down
-			for(j = (RunProgArray.Amount() - 2); j >= 0; j--)
-			{
-				RunProgArray.Set(j + 1, RunProgArray.Get(j)->Content);
-			}
-			RunProgArray.Set(0, TmpFName.Get_String());
-			if((long) MaxRecent < (long) RunProgArray.Amount())
-			{
-			    RunProgArray.Del(RunProgArray.Amount() - 1);
-		    }
-		}
-		else
-		{
-			// Found: move it in first position
-			// Already in first position
-			if(i != 0)
-			{
-				for(j = i; j >= 1; j--)
-				{
-					TmpR = RunProgArray.Get(j - 1)->Content;
-					RunProgArray.Set(j - 1, RunProgArray.Get(j)->Content);
-					RunProgArray.Set(j, TmpR.Get_String());
-				}
-			}
-			// Correction of Upper_Case
-			RunProgArray.Set(0, TmpFName.Get_String());
-		}
-		AddInWinRecent(TmpFName);
-		goto SaveRecent;
-	}
+    if(RunProgArray.Amount() != 0)
+    {
+        FRcnt = 0;
+        for(i = 0; i < RunProgArray.Amount(); i++)
+        {
+            if(strcmpi(RunProgArray.Get(i)->Content, TmpFName.Get_String()) == 0)
+            {
+                FRcnt = 1;
+                break;
+            }
+        }
+        if(AddFile == 0)
+        {
+            if(FRcnt != 0) RunProgArray.Set(i, "");
+            goto SaveRecent;
+        }
+        if(FRcnt == 0)
+        {
+            RunProgArray.Add("");
+            // Move'em down
+            for(j = (RunProgArray.Amount() - 2); j >= 0; j--)
+            {
+                RunProgArray.Set(j + 1, RunProgArray.Get(j)->Content);
+            }
+            RunProgArray.Set(0, TmpFName.Get_String());
+            if((long) MaxRecent < (long) RunProgArray.Amount())
+            {
+                RunProgArray.Del(RunProgArray.Amount() - 1);
+            }
+        }
+        else
+        {
+            // Found: move it in first position
+            // Already in first position
+            if(i != 0)
+            {
+                for(j = i; j >= 1; j--)
+                {
+                    TmpR = RunProgArray.Get(j - 1)->Content;
+                    RunProgArray.Set(j - 1, RunProgArray.Get(j)->Content);
+                    RunProgArray.Set(j, TmpR.Get_String());
+                }
+            }
+            // Correction of Upper_Case
+            RunProgArray.Set(0, TmpFName.Get_String());
+        }
+        AddInWinRecent(TmpFName);
+        goto SaveRecent;
+    }
     // First filename to be added
     RunProgArray.Add(TmpFName.Get_String());
 SaveRecent:
@@ -1422,7 +1421,7 @@ void CreateFavoritesMenu(void)
     CStr ProgRetVal;
     long FoundProg = 0;
     
-	FavoritesArray.Erase();
+    FavoritesArray.Erase();
     k = 0;
     while(DeleteMenu(hFileMenuFavorites, 0, MF_BYPOSITION) != 0)
     {
@@ -1468,10 +1467,10 @@ void CreateFiltersMenu(HMENU Dest_Menu, int Index, int Lab_Index, CStr Label, in
     CStr ProgRetVal;
     long FoundProg = 0;
     
-	LPFILTER_ENTRY Entry = (LPFILTER_ENTRY) calloc(sizeof(FILTER_ENTRY), 1);
+    LPFILTER_ENTRY Entry = (LPFILTER_ENTRY) calloc(sizeof(FILTER_ENTRY), 1);
 
     FiltersArray.Erase(FiltersArray_Erase_CallBack);
-	k = 0;
+    k = 0;
     while(DeleteMenu(Dest_Menu, 0, MF_BYPOSITION) != 0)
     {
     }
@@ -1485,11 +1484,11 @@ void CreateFiltersMenu(HMENU Dest_Menu, int Index, int Lab_Index, CStr Label, in
         // Add a separator at first row
         if(FoundProg == 0) MenuAddSeparator(Dest_Menu);
         FoundProg = 1;
-		if(Include_Menu) MenuAddString(Dest_Menu, ProgRetVal + "\tTo window", i + MENU_FILTERS_INCLUDE_IDBASE, TRUE);
+        if(Include_Menu) MenuAddString(Dest_Menu, ProgRetVal + "\tTo window", i + MENU_FILTERS_INCLUDE_IDBASE, TRUE);
         else MenuAddString(Dest_Menu, ProgRetVal + "\tTo window", i + MENU_FILTERS_IDBASE, TRUE);
-	    Entry->Name = strdup(ProgRetVal.Get_String());
-	    Entry->Type = 0;
-		FiltersArray.Add(Entry, sizeof(FILTER_ENTRY));
+        Entry->Name = strdup(ProgRetVal.Get_String());
+        Entry->Type = 0;
+        FiltersArray.Add(Entry, sizeof(FILTER_ENTRY));
         mnu_idx++;
     }
 
@@ -1501,11 +1500,11 @@ void CreateFiltersMenu(HMENU Dest_Menu, int Index, int Lab_Index, CStr Label, in
             ProgRetVal = IniReadKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), FiltersIniFile);
             if(ProgRetVal.Len() == 0) break;
             MenuAddString(Dest_Menu, ProgRetVal + "\tTo file", mnu_idx + MENU_FILTERS_IDBASE, TRUE);
-	        Entry->Name = strdup(ProgRetVal.Get_String());
-	        Entry->Type = 1;
-		    FiltersArray.Add(Entry, sizeof(FILTER_ENTRY));
+            Entry->Name = strdup(ProgRetVal.Get_String());
+            Entry->Type = 1;
+            FiltersArray.Add(Entry, sizeof(FILTER_ENTRY));
             mnu_idx++;
         }
     }
-	if(Index != 0) SubMenusArray[Index] = Dest_Menu;
+    if(Index != 0) SubMenusArray[Index] = Dest_Menu;
 }

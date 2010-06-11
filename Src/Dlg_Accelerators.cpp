@@ -113,14 +113,14 @@ int CALLBACK FRMAcceleratorsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
     CStr CurrentAccelFromIni;
     CStr CurrentAccelCmdFromIni;
     NM_LISTVIEW SelLV;
-	CStr BufString;
+    CStr BufString;
 
     switch(uMsg)
     {
         case WM_SYSCOLORCHANGE:
             ListViewSetBackColor(FRMAcceleratorsListview, GetSysColor(COLOR_WINDOW));
-			break;
-		case WM_INITDIALOG:
+            break;
+        case WM_INITDIALOG:
             FRMAcceleratorshwnd = hwndDlg;
             ControlSetText(hwndDlg, AcceleratorsTitle);
             CreateLabel(4, 39, 33, 17, hwndDlg, "Key :", 0, 0, 0, 0);
@@ -166,8 +166,8 @@ int CALLBACK FRMAcceleratorsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
             GDIDrawHorzSep(hwndDlg, 0, 25, 410);
             GDIDrawHorzSep(hwndDlg, 0, 280, 410);
             EndPaint(hwndDlg, &EnterValuePs);
-			break;
-		case WM_NOTIFY:
+            break;
+        case WM_NOTIFY:
             if(ControlGetNotifiedhWnd(lParam) == FRMAcceleratorsListview)
             {
                 switch(ControlGetNotifiedMsg(lParam))
@@ -208,28 +208,28 @@ int CALLBACK FRMAcceleratorsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
                                 PosInKey = 1;
                                 CurrentKe = ListViewGetSelItemText(FRMAcceleratorsListview, 1);
 GetCurrentAccel:                BufString = CurrentKe.Mid(PosInKey, 5);
-								if(BufString == "CTRL ")
-								{
+                                if(BufString == "CTRL ")
+                                {
                                     CurCtrlState = 1;
                                     PosInKey = PosInKey + 7;
                                     goto GetCurrentAccel;
-								}
-								else if(BufString == "ALT +")
-								{
+                                }
+                                else if(BufString == "ALT +")
+                                {
                                     CurAltState = 1;
                                     PosInKey = PosInKey + 6;
                                     goto GetCurrentAccel;
-								}
-								else if(BufString == "SHIFT")
-								{
+                                }
+                                else if(BufString == "SHIFT")
+                                {
                                     CurShiftState = 1;
                                     PosInKey = PosInKey + 8;
                                     goto GetCurrentAccel;
-								}
-								else
-								{
+                                }
+                                else
+                                {
                                     BufString =  CurrentKe.Mid(PosInKey).Trim();
-									ControlSetText(FRMAcceleratorsCombo, BufString);
+                                    ControlSetText(FRMAcceleratorsCombo, BufString);
                                 }
                                 CheckBoxSetState(FRMAcceleratorsChkCtrl, CurCtrlState);
                                 CheckBoxSetState(FRMAcceleratorsChkAlt, CurAltState);
@@ -238,7 +238,7 @@ GetCurrentAccel:                BufString = CurrentKe.Mid(PosInKey, 5);
                         }
                         return(0);
                 }
-			}				
+            }               
             switch(ControlGetNotifiedMsg(lParam))
             {
                 case TTN_NEEDTEXT:
@@ -254,8 +254,8 @@ GetCurrentAccel:                BufString = CurrentKe.Mid(PosInKey, 5);
                             ToolBarDisplayToolTip("Delete accelerator", lParam);
                             return(0);
                     }
-			}
-			break;
+            }
+            break;
         case WM_COMMAND:
             if((HWND) lParam == FRMAcceleratorsToolbar)
             {
@@ -367,13 +367,13 @@ GetCurrentAccel:                BufString = CurrentKe.Mid(PosInKey, 5);
             {
                 ControlClose(hwndDlg);
                 return(0);
-			}
-			break;
+            }
+            break;
         case WM_CLOSE:
             FreezeTimer = 0;
             EndDialog(hwndDlg, 0);
-			break;
-	}
+            break;
+    }
     return(0);
 }
 
@@ -391,8 +391,8 @@ LRESULT CALLBACK LVAcceleratorsHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
                     LVAcceleratorsInEdit = 1;
                     return(0);
                 }
-				break;
-		}
+                break;
+        }
     }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
@@ -404,7 +404,7 @@ long CheckAcceleratorValidity(CStr AccelToCheck)
     int i = 0;
     long FoundVirtualKey = 0;
     
-	if(AccelToCheck.Len() == 0) return(0);
+    if(AccelToCheck.Len() == 0) return(0);
     FoundVirtualKey = 0;
     for(i = 0; i <= 84; i++)
     {
@@ -426,8 +426,8 @@ long CheckAcceCList(void)
     CStr AccelToCheck;
     int i = 0;
     
-	for(i = 0; i <= (long) (ListViewItemCount(FRMAcceleratorsListview) - 1); i++)
-	{
+    for(i = 0; i <= (long) (ListViewItemCount(FRMAcceleratorsListview) - 1); i++)
+    {
         AccelToCheck = ListViewGetItemText(FRMAcceleratorsListview, i, 0);
         if(AccelToCheck.Len() == 0)
         {
@@ -453,7 +453,7 @@ void CreateNewAcceleratorsFile(void)
     CStr AccelName;
     CStr EntryToAdd;
     
-	AccelName = "ACCELERATORS_" + (CStr) AccelBase;
+    AccelName = "ACCELERATORS_" + (CStr) AccelBase;
     AccelFileName = FileGetDirectory(ProjectFName) + (CStr) AccelName + (CStr) ".acr";
     AccelFileHandle = FileCreateEmpty(AccelFileName, NO_SECURITY_DESCRIPTOR);
     FileWriteLine(AccelFileHandle, "; Chromatic resource accelerators file");

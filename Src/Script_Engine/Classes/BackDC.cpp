@@ -89,11 +89,11 @@ luaL_reg Meta[] =
     { "__index", Reading },
     { "__newindex", Writing },
 
-	{ "hWnd", 0 },
-	{ "Color", 0 },
-	{ "hDC", 0 },
-	{ "Bitmap", 0 },
-	{ "OldObject", 0 },
+    { "hWnd", 0 },
+    { "Color", 0 },
+    { "hDC", 0 },
+    { "Bitmap", 0 },
+    { "OldObject", 0 },
 
     { NULL, NULL }
 };

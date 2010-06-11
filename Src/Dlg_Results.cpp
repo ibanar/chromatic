@@ -77,8 +77,8 @@ LRESULT CALLBACK FrmResultsWinHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
     {
         case WM_SYSCOLORCHANGE:
             ListViewSetBackColor(FrmResultsListView, GetSysColor(COLOR_WINDOW));
-			break;
-		case WM_NOTIFY:
+            break;
+        case WM_NOTIFY:
             if(ControlGetNotifiedhWnd(lParam) == FrmResultsListView)
             {
                 switch(ControlGetNotifiedMsg(lParam))
@@ -88,11 +88,11 @@ LRESULT CALLBACK FrmResultsWinHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
                         return(0);
                     case LVN_COLUMNCLICK:
                         ListViewSort(FrmResultsListView, ListViewGetNotifiedColumnIndex(lParam), &FRMResultsSort);
-						ListViewReOrder(FrmResultsListView);
+                        ListViewReOrder(FrmResultsListView);
                         return(0);
                 }
             }
-			break;
+            break;
         case WM_SIZE:
             FrmResultsWidth = ControlClientWidth(hWnd);
             FrmResultsHeight = ControlClientHeight(hWnd);
@@ -137,7 +137,7 @@ LRESULT CALLBACK FrmResultsWinHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
                 NewResultFile();
                 return(0);
             }
-			break;
+            break;
         case WM_DESTROY:
             hFRMResults = 0;
             return(0);
@@ -162,7 +162,7 @@ void SaveResultFile(void)
     CStr TexttoAdd;
     CStr Slots[3 + 1];
 
-	Filters = "All files (*.*)|*.*";
+    Filters = "All files (*.*)|*.*";
     ControlEnable(hFRMResults, 0);
     FName = ComDlgGetSaveFileName(hMDIform.hWnd, Filters, "", CurrentDir);
     if(FName.Len() != 0)
@@ -304,8 +304,8 @@ void NewResultFile(void)
     TexttoAdd = TexttoAdd + Slots[2] + (CStr) " ";
     TexttoAdd = TexttoAdd + Slots[3] + (CStr) "\r\n";
     TexttoAdd = TexttoAdd + TexttoAdd.String(GreatestType + 1 + GreatestFile + 1 + GreatestLn + 1 + GreatestRelCode + 1, '-').Get_String() + (CStr) "\r\n";
-	for(i = 0; i <= ListViewItemCount(FrmResultsListView) - 1; i++)
-	{
+    for(i = 0; i <= ListViewItemCount(FrmResultsListView) - 1; i++)
+    {
         ToAdd = "";
         if((GreatestType - ListViewGetItemText(FrmResultsListView, i, 0).Len()) > 0) ToAdd = ToAdd.Space(GreatestType - ListViewGetItemText(FrmResultsListView, i, 0).Len());
         ToWRiteVar[0] = ListViewGetItemText(FrmResultsListView, i, 0) + (CStr) ToAdd;
@@ -338,38 +338,38 @@ ErrorOpenResult:
 // -----------------------------------------------------------------------
 // Item sorting function
 int CALLBACK FRMResultsSort(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort) {
-	int ReturnValue = 0;
-	long Value1Lng = 0;
-	long Value2Lng = 0;
+    int ReturnValue = 0;
+    long Value1Lng = 0;
+    long Value2Lng = 0;
     
-	switch(lParamSort)
-	{
+    switch(lParamSort)
+    {
         case 0:
             ReturnValue = strcmpi(ListViewGetItemText(FrmResultsListView, lParam1, lParamSort).Get_String(), ListViewGetItemText(FrmResultsListView, lParam2, lParamSort).Get_String());
-			break;
-		case 1:
-			Value1Lng = ListViewGetItemText(FrmResultsListView, lParam1, lParamSort).Get_Long();
+            break;
+        case 1:
+            Value1Lng = ListViewGetItemText(FrmResultsListView, lParam1, lParamSort).Get_Long();
             Value2Lng = ListViewGetItemText(FrmResultsListView, lParam2, lParamSort).Get_Long();
             if(Value1Lng > Value2Lng)
             {
-				ReturnValue = 1;
+                ReturnValue = 1;
             }
             else if(Value1Lng < Value2Lng)
             {
-				ReturnValue = -1;
+                ReturnValue = -1;
             }
             else
             {
-				ReturnValue = 0;
+                ReturnValue = 0;
             }
-			break;
+            break;
         case 2:
             ReturnValue = strcmpi(ListViewGetItemText(FrmResultsListView, lParam1, lParamSort).Get_String(), ListViewGetItemText(FrmResultsListView, lParam2, lParamSort).Get_String());
-			break;
+            break;
         case 3:
             ReturnValue = strcmpi(ListViewGetItemText(FrmResultsListView, lParam1, lParamSort).Get_String(), ListViewGetItemText(FrmResultsListView, lParam2, lParamSort).Get_String());
-			break;
+            break;
     }
     ListViewReOrder(FrmResultsListView);
-	return(ReturnValue);
+    return(ReturnValue);
 }

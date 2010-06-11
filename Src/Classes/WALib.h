@@ -194,14 +194,14 @@ typedef struct _GRIPBOXDAT
 
 typedef struct _GRIPBOXSQRBOXDAT
 {
-	long Type;
-	long State;
-	long StepX;
-	long StepY;
-	RECT ResizeRect;
-	RECT OldRect;
+    long Type;
+    long State;
+    long StepX;
+    long StepY;
+    RECT ResizeRect;
+    RECT OldRect;
     COLORREF Color;
-	LPGRIPBOXDAT Container;
+    LPGRIPBOXDAT Container;
 } GRIPBOXSQRBOXDAT, *LPGRIPBOXSQRBOXDAT;
 
 typedef struct _BACKDC
@@ -215,8 +215,8 @@ typedef struct _BACKDC
 
 typedef struct _DLGTEMPLATE2
 {
-	DLGTEMPLATE Diag;
-	long Padding[6 + 1];
+    DLGTEMPLATE Diag;
+    long Padding[6 + 1];
 } DLGTEMPLATE2, *LPDLGTEMPLATE2;
 
 typedef struct _NM_TREEVIEWEXPAND
@@ -266,7 +266,7 @@ extern HGLOBAL hMemFont;
 int CALLBACK WidgetInit(HINSTANCE hInst, HICON AppIcon, long vSplitCursor, long hSplitCursor);
 void CALLBACK WidgetUnInit(HINSTANCE hInst);
 HWND CALLBACK CreateSplashDialog(long DLeft, long DTop, long DWidth, long DHeight, CStr DTitle, HWND hParent, HMENU hMenu, HICON hIcon,
-					               void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WindowProc, long WExStyle, long WStyle, long ShowType);
+                                   void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WindowProc, long WExStyle, long WStyle, long ShowType);
 long CALLBACK CreateStockModalDialog(long TemplateNumber, long DLeft, long DTop, long DWidth, long DHeight, HWND hParent, CStr DTitle, DLGPROC WindowProc, long Centered, long ExtraDatas);
 long CALLBACK CreateModalDialog(long DLeft, long DTop, long DWidth, long DHeight, HWND hParent, DLGPROC WindowProc, long ExtraStyle, long Centered);
 HWND CALLBACK CreateNonModalDialog(long DLeft, long DTop, long DWidth, long DHeight, HWND hParent, HMENU hMenu, HICON hIcon, CStr DTitle, void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WindowProc, long WExStyle, long WStyle, long ShowType);
@@ -281,9 +281,9 @@ HWND CALLBACK CreateContainer(long SPLeft, long SPTop, long SPWidth, long SPHeig
 HWND CALLBACK CreateSplitter(long SPLeft, long SPTop, long SPDim, long CtrlID, LPSPLITTERDAT SplitterStruct, WNDPROC WindowProc);
 HWND CALLBACK CreateSplitBar(long SPLeft, long SPTop, long SPWidth, long SPHeight, HWND hParent, long CtrlID, LPSPLITTERDAT SplitStruct);
 HWND CALLBACK CreateMDIDialog(long MDILeft, long MDITop, long MDIWidth, long MDIHeight, HWND hParent, HMENU hMenu, HICON hIcon, CStr MDITitle, 
-					            void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WindowProc, long ExtraStyle, long ShowType);
+                                void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WindowProc, long ExtraStyle, long ShowType);
 HWND CALLBACK CreateMDIChildDialog(HWND hParent, CStr CTitle, HICON hIcon, 
-					                 void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WindowProc, long ExtraStyle, long ZeroPos, CStr CustomClass);
+                                     void (CALLBACK *InitProc)(HWND hwnd), WNDPROC WindowProc, long ExtraStyle, long ZeroPos, CStr CustomClass);
 HWND CALLBACK CreateToolBar(long TBLeft, long TBTop, long TBWidth, long TBHeight, HWND hParent, HIMAGELIST hImageList, long CtrlID, long StdBitmapsType, WNDPROC WindowProc, long ExtraStyle, long ExtendedStyle);
 long CALLBACK ToolBarAddButton(HWND hToolbar, CStr ButtonText, long TBButtonID, long ImgIndex, long ButtonStyle, long ButtonState, long NoImage);
 long CALLBACK ToolBarGetButton(HWND hToolbar, long TBButtonID, LPTBBUTTON ButtonStruct);

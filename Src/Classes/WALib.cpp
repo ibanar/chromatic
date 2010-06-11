@@ -124,15 +124,15 @@ int CALLBACK EnumDockChilds(HWND hWnd, long lParam);
 // Init all
 int CALLBACK WidgetInit(HINSTANCE hInst, HICON AppIcon, long vSplitCursor, long hSplitCursor)
 {
-	INITCOMMONCONTROLSEX MyCommonStruct;
-	int ReturnValue = 0;
+    INITCOMMONCONTROLSEX MyCommonStruct;
+    int ReturnValue = 0;
 
-	int OSType = MiscGetOSClass();
-	if((OSType & 2) || (OSType & 4)) _OnWindows2K = 1;
-	if(OSType & 1) _OnOlderWindows = 1;					// NT4
-	if(OSType == 0) _OnOlderWindows = 1;				// 9X/ME
-	_Btn_StaticEdge = WS_EX_STATICEDGE;	
-	if(OSType & 4) _Btn_StaticEdge = 0;
+    int OSType = MiscGetOSClass();
+    if((OSType & 2) || (OSType & 4)) _OnWindows2K = 1;
+    if(OSType & 1) _OnOlderWindows = 1;                 // NT4
+    if(OSType == 0) _OnOlderWindows = 1;                // 9X/ME
+    _Btn_StaticEdge = WS_EX_STATICEDGE; 
+    if(OSType & 4) _Btn_StaticEdge = 0;
 
     MyCommonStruct.dwSize = sizeof(MyCommonStruct);
     MyCommonStruct.dwICC = ICC_LISTVIEW_CLASSES | ICC_TREEVIEW_CLASSES | ICC_WIN95_CLASSES |
@@ -168,7 +168,7 @@ int CALLBACK WidgetInit(HINSTANCE hInst, HICON AppIcon, long vSplitCursor, long 
     WASetColorBoxClass(hInst);
     WASetDumpBoxClass(hInst);
     WASetGripBoxClass(hInst);
-	Memory_Blocks.Erase();
+    Memory_Blocks.Erase();
     // Register the draglist message
     WADragListMsg = RegisterWindowMessage(DRAGLISTMSGSTRING);
     // Load RichEdit 2.0
@@ -184,19 +184,19 @@ int CALLBACK WidgetInit(HINSTANCE hInst, HICON AppIcon, long vSplitCursor, long 
         if(RichEditDll == 0) ReturnValue = ReturnValue | INIT_NORICHEDCONTROL;
     }
 
-	// Init it now so that we can use ATL/WTL classes
-	_Module.Init(NULL, hInst);
-	// HACK to init the cdock class
-	CDockingWindow *m_dock = new CDockingWindow;
+    // Init it now so that we can use ATL/WTL classes
+    _Module.Init(NULL, hInst);
+    // HACK to init the cdock class
+    CDockingWindow *m_dock = new CDockingWindow;
     cDock = m_dock;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Reset all
 void CALLBACK WidgetUnInit(HINSTANCE hInst)
 {
-	StringFlushGarbageCollector();
+    StringFlushGarbageCollector();
     if(RichEditDll != 0) FreeLibrary(RichEditDll);
     if(WACourrierNewFont9 != 0) DeleteObject(WACourrierNewFont9);
     if(WASerifFont10 != 0) DeleteObject(WASerifFont10);
@@ -213,9 +213,9 @@ void CALLBACK WidgetUnInit(HINSTANCE hInst)
     UnregisterClass("WASplashDialogClass", hInst);
     UnregisterClass("DialogClass", hInst);
     UnregisterClass("WAMDIDialogClass", hInst);
-	// Free collected memory and list
-	Memory_Blocks.Erase();
-	_Module.Term();
+    // Free collected memory and list
+    Memory_Blocks.Erase();
+    _Module.Term();
  }
 
 // -----------------------------------------------------------------------
@@ -238,7 +238,7 @@ HWND CALLBACK CreateSplashDialog(long DLeft, long DTop, long DWidth, long DHeigh
     ControlHookWin(ReturnValue, WindowProc);
     ControlBringToBottom(ReturnValue);
     UpdateWindow(ReturnValue);
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -254,11 +254,11 @@ long CALLBACK CreateStockModalDialog(long TemplateNumber, long DLeft, long DTop,
     DialogTempWidth = DWidth;
     DialogTempHeight = DHeight;
     DialogTempExtra = ExtraDatas;
-	switch(TemplateNumber)
-	{
+    switch(TemplateNumber)
+    {
         case MODALDLG_STOCK_EMPTY:
             return(CreateModalDialog(DLeft, DTop, DWidth, DHeight, hParent, &FRMStockModalDlgEmptyProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, Centered));
-		case MODALDLG_STOCK_STDCLOSE:
+        case MODALDLG_STOCK_STDCLOSE:
             return(CreateModalDialog(DLeft, DTop, DWidth, DHeight, hParent, &FRMStockModalDlgStdCloseProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, Centered));
         case MODALDLG_STOCK_STDOKCANCEL:
             return(CreateModalDialog(DLeft, DTop, DWidth, DHeight, hParent, &FRMStockModalDlgStdOkCancelProc, WS_BORDER | WS_CAPTION | WS_SYSMENU, Centered));
@@ -387,10 +387,10 @@ HWND CALLBACK CreateContainer(long SPLeft, long SPTop, long SPWidth, long SPHeig
 {
     HWND ReturnValue = 0;
 
-	ControlBound(hParent, SPLeft, SPTop, SPWidth, SPHeight);
+    ControlBound(hParent, SPLeft, SPTop, SPWidth, SPHeight);
     ReturnValue = CreateWindowEx(0, "WAContainerClass", Name.Get_String(), WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, SPLeft, SPTop, SPWidth, SPHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-	ControlHookWin(ReturnValue, WindowProc);
+    ControlHookWin(ReturnValue, WindowProc);
     return(ReturnValue);
 }
 
@@ -413,12 +413,12 @@ HWND CALLBACK CreateSplitter(long SPLeft, long SPTop, long SPDim, long CtrlID,
             SPWidth = SPDim;
             SPHeight = SplitterStruct->StartupPos;
             ControlBound(SplitterStruct->hParent, SPLeft, SPTop, SPWidth, SPHeight);
-			break;
-	    case SPLITTER_VERT:
+            break;
+        case SPLITTER_VERT:
             SPWidth = SplitterStruct->StartupPos;
             SPHeight = SPDim;
             ControlBound(SplitterStruct->hParent, SPLeft, SPTop, SPWidth, SPHeight);
-			break;
+            break;
     }
     WACurrentSplitterStruct = SplitterStruct;
     ReturnValue = CreateWindowEx(0, "SplitterClass", "", WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, SPLeft, SPTop, SPWidth, SPHeight, SplitterStruct->hParent, (HMENU) CtrlID, WALocalhInst, NULL);
@@ -441,10 +441,10 @@ HWND CALLBACK CreateSplitBar(long SPLeft, long SPTop, long SPWidth, long SPHeigh
     {
         case SPLITTER_HORZ:
             ReturnValue = CreateWindowEx(0, "WAHorzSplitBarClass", "", WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, SPLeft, SPTop, SPWidth, SPHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
-			break;
-		case SPLITTER_VERT:
+            break;
+        case SPLITTER_VERT:
             ReturnValue = CreateWindowEx(0, "WAVertSplitBarClass", "", WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, SPLeft, SPTop, SPWidth, SPHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
-			break;
+            break;
     }
     if(ReturnValue == 0) return(0);
     SetWindowLong(ReturnValue, GWL_USERDATA, (long) SplitStruct);
@@ -486,7 +486,7 @@ HWND CALLBACK CreateMDIChildDialog(HWND hParent, CStr CTitle, HICON hIcon,
     HWND ReturnValue = 0;
     MDICREATESTRUCT NewMDIChild;
 
-	memset(&NewMDIChild, 0, sizeof(NewMDIChild));
+    memset(&NewMDIChild, 0, sizeof(NewMDIChild));
     if(CustomClass.Len() != 0)
     {
         NewMDIChild.szClass = CustomClass.Get_String();
@@ -513,7 +513,7 @@ HWND CALLBACK CreateMDIChildDialog(HWND hParent, CStr CTitle, HICON hIcon,
     NewMDIChild.style = ExtraStyle | 1;
     NewMDIChild.lParam = 0;
     ReturnValue = (HWND) SendMessage(hParent, WM_MDICREATE, 0, (long) &NewMDIChild);
-	if(ReturnValue == 0) return(0);
+    if(ReturnValue == 0) return(0);
     // Change default windowproc (no subclass here)
     if(CustomClass.Len() == 0) SetWindowLong(ReturnValue, GWL_WNDPROC, (long) WindowProc);
     DialogSetIcon(ReturnValue, hIcon);
@@ -533,7 +533,7 @@ HWND CALLBACK CreateToolBar(long TBLeft, long TBTop, long TBWidth, long TBHeight
     HWND ReturnValue = 0;
     TBADDBITMAP BitmapToAdd;
 
-	memset(&BitmapToAdd, 0, sizeof(BitmapToAdd));
+    memset(&BitmapToAdd, 0, sizeof(BitmapToAdd));
     ControlBound(hParent, TBLeft, TBTop, TBWidth, TBHeight);
     ReturnValue = CreateWindowEx(0, "ToolBarWindow32", "", WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_CHILD | WS_VISIBLE | ExtraStyle, TBLeft, TBTop, TBWidth, TBHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
@@ -562,8 +562,8 @@ long CALLBACK ToolBarAddButton(HWND hToolbar, CStr ButtonText, long TBButtonID, 
     TBADDBITMAP BitmapToAdd;
     TBBUTTON ButtonToAdd;
 
-	memset(&BitmapToAdd, 0, sizeof(BitmapToAdd));
-	memset(&ButtonToAdd, 0, sizeof(ButtonToAdd));
+    memset(&BitmapToAdd, 0, sizeof(BitmapToAdd));
+    memset(&ButtonToAdd, 0, sizeof(ButtonToAdd));
     ButtonToAdd.idCommand = TBButtonID;
     ButtonToAdd.fsState = (BYTE) ButtonState;
     ButtonToAdd.fsStyle = (BYTE) ButtonStyle;
@@ -635,7 +635,7 @@ long CALLBACK ToolBarAddSeparator(HWND hToolbar, long TBButtonID)
 {
     TBBUTTON ButtonToAdd;
 
-	memset(&ButtonToAdd, 0, sizeof(ButtonToAdd));
+    memset(&ButtonToAdd, 0, sizeof(ButtonToAdd));
     ButtonToAdd.iBitmap = 0;
     ButtonToAdd.idCommand = TBButtonID;
     ButtonToAdd.fsState = 0;
@@ -675,7 +675,7 @@ void CALLBACK ToolBarDisplayToolTip(CStr TextToShow, long lParam)
     long TTLen = 0;
 
     RtlMoveMemory(&ToolTipNotify, (void *) lParam, sizeof(ToolTipNotify));
-	memset(&ToolTipNotify.szText, 0, 80);
+    memset(&ToolTipNotify.szText, 0, 80);
     TTLen = TextToShow.Len();
     if(TTLen > 79) TTLen = 79;
     RtlMoveMemory(&ToolTipNotify.szText, TextToShow.Get_String(), TTLen);
@@ -731,12 +731,12 @@ long CALLBACK ToolBarDisplayPopupMenu(HWND hToolbar, long TBButtonID, HMENU hMen
     RECT rc;
     TPMPARAMS tpm;
 
-	memset(&rc, 0, sizeof(rc));
-	memset(&tpm, 0, sizeof(tpm));
+    memset(&rc, 0, sizeof(rc));
+    memset(&tpm, 0, sizeof(tpm));
     SendMessage(hToolbar, TB_GETRECT, TBButtonID, (long) &rc);
     MapWindowPoints(hToolbar, HWND_DESKTOP, (LPPOINT) &rc, 2);
     tpm.cbSize = sizeof(tpm);
-	rc.left = rc.left - 1;
+    rc.left = rc.left - 1;
     if(rc.top < 0) rc.top = 0;
     if(rc.left < 0) rc.left = 0;
     tpm.rcExclude.top = rc.top;
@@ -788,12 +788,12 @@ long CALLBACK ToolBarGetXYSize(HWND hToolbar, LPSIZE TBSize)
 long CALLBACK ToolBarGetRealPos(HWND hToolbar, LPPOINT TBPosition)
 {
     long ReturnValue = 0;
-	RECT TBRct;
+    RECT TBRct;
 
     ReturnValue = GetWindowRect(hToolbar, &TBRct);
     TBPosition->x = TBRct.left;
     TBPosition->y = TBRct.top;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -801,12 +801,12 @@ long CALLBACK ToolBarGetRealPos(HWND hToolbar, LPPOINT TBPosition)
 long CALLBACK ToolBarGetButtonXYPos(HWND hToolbar, long TBButtonID, LPPOINT TBPosition)
 {
     long ReturnValue = 0;
-	RECT TBRct;
+    RECT TBRct;
 
     ReturnValue = SendMessage(hToolbar, TB_GETITEMRECT, TBButtonID, (long) &TBRct);
     TBPosition->x = TBRct.left;
     TBPosition->y = TBRct.top;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -924,7 +924,7 @@ long CALLBACK SysTabAddItem(HWND htab, CStr TabText, long TabIndex, long ImgInde
 {
     TC_ITEM TabItem;
 
-	memset(&TabItem, 0, sizeof(TabItem));
+    memset(&TabItem, 0, sizeof(TabItem));
     TabItem.iImage = ImgIndex;
     TabItem.mask = TCIF_IMAGE;
     if(TabText.Len() != 0)
@@ -997,28 +997,28 @@ long CALLBACK SysTabSetSeparators(HWND htab, long Enable)
 // Set the size of the items of a tab control
 long CALLBACK SysTabSetItemsSize(HWND htab,long Width,long Height)
 {
-	return(SendMessage(htab, TCM_SETITEMSIZE, 0, MAKELPARAM(Width,Height)));
+    return(SendMessage(htab, TCM_SETITEMSIZE, 0, MAKELPARAM(Width,Height)));
 }
 
 // -----------------------------------------------------------------------
 // Delete an item in a tab control
 long CALLBACK SysTabRemoveItem(HWND htab,long ItemIndex)
 {
-	return(SendMessage(htab, TCM_DELETEITEM, (WPARAM) ItemIndex, 0));
+    return(SendMessage(htab, TCM_DELETEITEM, (WPARAM) ItemIndex, 0));
 }
 
 // -----------------------------------------------------------------------
 // Set the minimum width of items in a tab control
 long CALLBACK SysTabSetMinWidth(HWND htab,long Width)
 {
-	return(SendMessage(htab, TCM_SETMINTABWIDTH, 0, (LPARAM) Width));
+    return(SendMessage(htab, TCM_SETMINTABWIDTH, 0, (LPARAM) Width));
 }
 
 // -----------------------------------------------------------------------
 // Set the size of the items of a tab control
 long CALLBACK SysTabSetPadding(HWND htab,long Width,long Height)
 {
-	return(SendMessage(htab, TCM_SETPADDING, 0, MAKELPARAM(Width,Height)));
+    return(SendMessage(htab, TCM_SETPADDING, 0, MAKELPARAM(Width,Height)));
 }
 
 // -----------------------------------------------------------------------
@@ -1095,17 +1095,17 @@ HWND CALLBACK CreateToolTip(HWND hParent, long CtrlID, long ExtraStyle)
 // Add a tool to a tooltip control
 long CALLBACK ToolTipAddTool(HWND hToolTip, HWND hWndOwner, long ID, long ExtraStyle)
 {
-	TOOLINFO TTip_Info;
-	
-	TTip_Info.cbSize = sizeof(TOOLINFO);
-	TTip_Info.uFlags = TTF_SUBCLASS | ExtraStyle;
+    TOOLINFO TTip_Info;
+    
+    TTip_Info.cbSize = sizeof(TOOLINFO);
+    TTip_Info.uFlags = TTF_SUBCLASS | ExtraStyle;
     TTip_Info.hwnd = hWndOwner;
     TTip_Info.hinst = WALocalhInst;
-	TTip_Info.uId = ID;
-	TTip_Info.lpszText = LPSTR_TEXTCALLBACK;
-	// HITTEST Inside the owner window
-	GetClientRect(hWndOwner, &TTip_Info.rect);
-	return(SendMessage(hToolTip, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &TTip_Info));
+    TTip_Info.uId = ID;
+    TTip_Info.lpszText = LPSTR_TEXTCALLBACK;
+    // HITTEST Inside the owner window
+    GetClientRect(hWndOwner, &TTip_Info.rect);
+    return(SendMessage(hToolTip, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &TTip_Info));
 }
 
 // -----------------------------------------------------------------------
@@ -1316,7 +1316,7 @@ long CALLBACK DumpBoxScrollUp(HWND hWnd, long Lines, long Factor, long Integral)
     {
         DumpRect.bottom = DumpRect.bottom * Factor;
         DumpRectClip.bottom = DumpRect.bottom + Factor;
-		if((long) ControlClientHeight(hWnd) < (long) DumpRectClip.bottom) DumpRectClip.bottom = DumpRect.bottom;
+        if((long) ControlClientHeight(hWnd) < (long) DumpRectClip.bottom) DumpRectClip.bottom = DumpRect.bottom;
         ReturnValue = ScrollWindow(hWnd, 0, (Factor * Lines), 0, &DumpRectClip);
     }
     return(ReturnValue);
@@ -1326,22 +1326,22 @@ long CALLBACK DumpBoxScrollUp(HWND hWnd, long Lines, long Factor, long Integral)
 // Retrieve the number of lines of a dumpbox
 long CALLBACK DumpBoxGetVisibleLines(HWND hWnd, long Factor, long Integral)
 {
-	long Returnvalue = 0;
+    long Returnvalue = 0;
 
     Returnvalue = ControlClientHeight(hWnd) / Factor;
     if(Integral == 1) if((ControlClientHeight(hWnd) % Factor) != 0) Returnvalue = Returnvalue - 1;
-	return(Returnvalue);
+    return(Returnvalue);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the number of columns of a dumpbox
 long CALLBACK DumpBoxGetVisibleColumns(HWND hWnd, long Factor, long Integral)
 {
-	long Returnvalue = 0;
+    long Returnvalue = 0;
 
     Returnvalue = ControlClientWidth(hWnd) / Factor;
     if(Integral == 1) if((ControlClientWidth(hWnd) % Factor) != 0) Returnvalue--;
-	return(Returnvalue);
+    return(Returnvalue);
 }
 
 // -----------------------------------------------------------------------
@@ -1353,98 +1353,98 @@ long CALLBACK DumpBoxGetVisibleColumns(HWND hWnd, long Factor, long Integral)
 LPGRIPBOXDAT CALLBACK CreateGripBox(long LLeft, long LTop, long LWidth, long LHeight, HWND hParent,
                                       long CtrlID, COLORREF Color, long ExtraStyle)
 {
-	LPGRIPBOXDAT NewGripDats;
-	LPGRIPBOXSQRBOXDAT NewGripSquare;
+    LPGRIPBOXDAT NewGripDats;
+    LPGRIPBOXSQRBOXDAT NewGripSquare;
 
     ControlBound(hParent, LLeft, LTop, LWidth, LHeight);
 
-	// Create the datas slot
-	NewGripDats = (LPGRIPBOXDAT) AllocMem(sizeof(GRIPBOXDAT));
-	// Store the color
+    // Create the datas slot
+    NewGripDats = (LPGRIPBOXDAT) AllocMem(sizeof(GRIPBOXDAT));
+    // Store the color
 
-	// Create the squares
+    // Create the squares
     NewGripDats->TopLeftBox = CreateWindowEx(0, "GripBoxClass", "", WS_VISIBLE | WS_CHILD | ExtraStyle, LLeft, LTop, 8, 8, hParent, 0, WALocalhInst, NULL);
-	NewGripSquare = (LPGRIPBOXSQRBOXDAT) AllocMem(sizeof(GRIPBOXSQRBOXDAT));
-	NewGripSquare->Type = GRIPBOX_TOPLEFT;
-	NewGripSquare->State = GRIPBOX_STATE_RESET;
-	// Default steps
-	NewGripSquare->StepX = 1;
-	NewGripSquare->StepY = 1;
-	NewGripSquare->Color = Color;
-	NewGripSquare->Container = NewGripDats;
-	SetWindowLong(NewGripDats->TopLeftBox, GWL_USERDATA, (long) NewGripSquare);
+    NewGripSquare = (LPGRIPBOXSQRBOXDAT) AllocMem(sizeof(GRIPBOXSQRBOXDAT));
+    NewGripSquare->Type = GRIPBOX_TOPLEFT;
+    NewGripSquare->State = GRIPBOX_STATE_RESET;
+    // Default steps
+    NewGripSquare->StepX = 1;
+    NewGripSquare->StepY = 1;
+    NewGripSquare->Color = Color;
+    NewGripSquare->Container = NewGripDats;
+    SetWindowLong(NewGripDats->TopLeftBox, GWL_USERDATA, (long) NewGripSquare);
 
     NewGripDats->TopBox = CreateWindowEx(0, "GripBoxClass", "", WS_VISIBLE | WS_CHILD | ExtraStyle, LLeft + ((LWidth >> 1) - 4), LTop, 8, 8, hParent, 0, WALocalhInst, NULL);
-	NewGripSquare = (LPGRIPBOXSQRBOXDAT) AllocMem(sizeof(GRIPBOXSQRBOXDAT));
-	NewGripSquare->Type = GRIPBOX_TOP;
-	NewGripSquare->State = GRIPBOX_STATE_RESET;
-	NewGripSquare->StepX = 1;
-	NewGripSquare->StepY = 1;
-	NewGripSquare->Color = Color;
-	NewGripSquare->Container = NewGripDats;
-	SetWindowLong(NewGripDats->TopBox, GWL_USERDATA, (long) NewGripSquare);
+    NewGripSquare = (LPGRIPBOXSQRBOXDAT) AllocMem(sizeof(GRIPBOXSQRBOXDAT));
+    NewGripSquare->Type = GRIPBOX_TOP;
+    NewGripSquare->State = GRIPBOX_STATE_RESET;
+    NewGripSquare->StepX = 1;
+    NewGripSquare->StepY = 1;
+    NewGripSquare->Color = Color;
+    NewGripSquare->Container = NewGripDats;
+    SetWindowLong(NewGripDats->TopBox, GWL_USERDATA, (long) NewGripSquare);
 
     NewGripDats->TopRightBox = CreateWindowEx(0, "GripBoxClass", "", WS_VISIBLE | WS_CHILD | ExtraStyle, LLeft + (LWidth - 8), LTop, 8, 8, hParent, 0, WALocalhInst, NULL);
-	NewGripSquare = (LPGRIPBOXSQRBOXDAT) AllocMem(sizeof(GRIPBOXSQRBOXDAT));
-	NewGripSquare->Type = GRIPBOX_TOPRIGHT;
-	NewGripSquare->State = GRIPBOX_STATE_RESET;
-	NewGripSquare->StepX = 1;
-	NewGripSquare->StepY = 1;
-	NewGripSquare->Color = Color;
-	NewGripSquare->Container = NewGripDats;
-	SetWindowLong(NewGripDats->TopRightBox, GWL_USERDATA, (long) NewGripSquare);
+    NewGripSquare = (LPGRIPBOXSQRBOXDAT) AllocMem(sizeof(GRIPBOXSQRBOXDAT));
+    NewGripSquare->Type = GRIPBOX_TOPRIGHT;
+    NewGripSquare->State = GRIPBOX_STATE_RESET;
+    NewGripSquare->StepX = 1;
+    NewGripSquare->StepY = 1;
+    NewGripSquare->Color = Color;
+    NewGripSquare->Container = NewGripDats;
+    SetWindowLong(NewGripDats->TopRightBox, GWL_USERDATA, (long) NewGripSquare);
 
     NewGripDats->BottomLeftBox = CreateWindowEx(0, "GripBoxClass", "", WS_VISIBLE | WS_CHILD | ExtraStyle, LLeft, LTop + (LHeight - 8), 8, 8, hParent, 0, WALocalhInst, NULL);
-	NewGripSquare = (LPGRIPBOXSQRBOXDAT) AllocMem(sizeof(GRIPBOXSQRBOXDAT));
-	NewGripSquare->Type = GRIPBOX_BOTTOMLEFT;
-	NewGripSquare->State = GRIPBOX_STATE_RESET;
-	NewGripSquare->StepX = 1;
-	NewGripSquare->StepY = 1;
-	NewGripSquare->Color = Color;
-	NewGripSquare->Container = NewGripDats;
-	SetWindowLong(NewGripDats->BottomLeftBox, GWL_USERDATA, (long) NewGripSquare);
+    NewGripSquare = (LPGRIPBOXSQRBOXDAT) AllocMem(sizeof(GRIPBOXSQRBOXDAT));
+    NewGripSquare->Type = GRIPBOX_BOTTOMLEFT;
+    NewGripSquare->State = GRIPBOX_STATE_RESET;
+    NewGripSquare->StepX = 1;
+    NewGripSquare->StepY = 1;
+    NewGripSquare->Color = Color;
+    NewGripSquare->Container = NewGripDats;
+    SetWindowLong(NewGripDats->BottomLeftBox, GWL_USERDATA, (long) NewGripSquare);
 
     NewGripDats->BottomBox = CreateWindowEx(0, "GripBoxClass", "", WS_VISIBLE | WS_CHILD | ExtraStyle, LLeft + ((LWidth >> 1) - 4), LTop + (LHeight - 8), 8, 8, hParent, 0, WALocalhInst, NULL);
-	NewGripSquare = (LPGRIPBOXSQRBOXDAT) AllocMem(sizeof(GRIPBOXSQRBOXDAT));
-	NewGripSquare->Type = GRIPBOX_BOTTOM;
-	NewGripSquare->State = GRIPBOX_STATE_RESET;
-	NewGripSquare->StepX = 1;
-	NewGripSquare->StepY = 1;
-	NewGripSquare->Color = Color;
-	NewGripSquare->Container = NewGripDats;
-	SetWindowLong(NewGripDats->BottomBox, GWL_USERDATA, (long) NewGripSquare);
+    NewGripSquare = (LPGRIPBOXSQRBOXDAT) AllocMem(sizeof(GRIPBOXSQRBOXDAT));
+    NewGripSquare->Type = GRIPBOX_BOTTOM;
+    NewGripSquare->State = GRIPBOX_STATE_RESET;
+    NewGripSquare->StepX = 1;
+    NewGripSquare->StepY = 1;
+    NewGripSquare->Color = Color;
+    NewGripSquare->Container = NewGripDats;
+    SetWindowLong(NewGripDats->BottomBox, GWL_USERDATA, (long) NewGripSquare);
 
     NewGripDats->BottomRightBox = CreateWindowEx(0, "GripBoxClass", "", WS_VISIBLE | WS_CHILD | ExtraStyle, LLeft + (LWidth - 8), LTop + (LHeight - 8), 8, 8, hParent, 0, WALocalhInst, NULL);
-	NewGripSquare = (LPGRIPBOXSQRBOXDAT) AllocMem(sizeof(GRIPBOXSQRBOXDAT));
-	NewGripSquare->Type = GRIPBOX_BOTTOMRIGHT;
-	NewGripSquare->State = GRIPBOX_STATE_RESET;
-	NewGripSquare->StepX = 1;
-	NewGripSquare->StepY = 1;
-	NewGripSquare->Color = Color;
-	NewGripSquare->Container = NewGripDats;
-	SetWindowLong(NewGripDats->BottomRightBox, GWL_USERDATA, (long) NewGripSquare);
+    NewGripSquare = (LPGRIPBOXSQRBOXDAT) AllocMem(sizeof(GRIPBOXSQRBOXDAT));
+    NewGripSquare->Type = GRIPBOX_BOTTOMRIGHT;
+    NewGripSquare->State = GRIPBOX_STATE_RESET;
+    NewGripSquare->StepX = 1;
+    NewGripSquare->StepY = 1;
+    NewGripSquare->Color = Color;
+    NewGripSquare->Container = NewGripDats;
+    SetWindowLong(NewGripDats->BottomRightBox, GWL_USERDATA, (long) NewGripSquare);
 
-	NewGripDats->LeftBox = CreateWindowEx(0, "GripBoxClass", "", WS_VISIBLE | WS_CHILD | ExtraStyle, LLeft, LTop + ((LHeight >> 1) - 4), 8, 8, hParent, 0, WALocalhInst, NULL);
-	NewGripSquare = (LPGRIPBOXSQRBOXDAT) AllocMem(sizeof(GRIPBOXSQRBOXDAT));
-	NewGripSquare->Type = GRIPBOX_LEFT;
-	NewGripSquare->State = GRIPBOX_STATE_RESET;
-	NewGripSquare->StepX = 1;
-	NewGripSquare->StepY = 1;
-	NewGripSquare->Color = Color;
-	NewGripSquare->Container = NewGripDats;
-	SetWindowLong(NewGripDats->LeftBox, GWL_USERDATA, (long) NewGripSquare);
+    NewGripDats->LeftBox = CreateWindowEx(0, "GripBoxClass", "", WS_VISIBLE | WS_CHILD | ExtraStyle, LLeft, LTop + ((LHeight >> 1) - 4), 8, 8, hParent, 0, WALocalhInst, NULL);
+    NewGripSquare = (LPGRIPBOXSQRBOXDAT) AllocMem(sizeof(GRIPBOXSQRBOXDAT));
+    NewGripSquare->Type = GRIPBOX_LEFT;
+    NewGripSquare->State = GRIPBOX_STATE_RESET;
+    NewGripSquare->StepX = 1;
+    NewGripSquare->StepY = 1;
+    NewGripSquare->Color = Color;
+    NewGripSquare->Container = NewGripDats;
+    SetWindowLong(NewGripDats->LeftBox, GWL_USERDATA, (long) NewGripSquare);
 
-	NewGripDats->RightBox = CreateWindowEx(0, "GripBoxClass", "", WS_VISIBLE | WS_CHILD | ExtraStyle, LLeft + (LWidth - 8), LTop + ((LHeight >> 1) - 4), 8, 8, hParent, 0, WALocalhInst, NULL);
-	NewGripSquare = (LPGRIPBOXSQRBOXDAT) AllocMem(sizeof(GRIPBOXSQRBOXDAT));
-	NewGripSquare->Type = GRIPBOX_RIGHT;
-	NewGripSquare->State = GRIPBOX_STATE_RESET;
-	NewGripSquare->StepX = 1;
-	NewGripSquare->StepY = 1;
-	NewGripSquare->Color = Color;
-	NewGripSquare->Container = NewGripDats;
-	SetWindowLong(NewGripDats->RightBox, GWL_USERDATA, (long) NewGripSquare);
+    NewGripDats->RightBox = CreateWindowEx(0, "GripBoxClass", "", WS_VISIBLE | WS_CHILD | ExtraStyle, LLeft + (LWidth - 8), LTop + ((LHeight >> 1) - 4), 8, 8, hParent, 0, WALocalhInst, NULL);
+    NewGripSquare = (LPGRIPBOXSQRBOXDAT) AllocMem(sizeof(GRIPBOXSQRBOXDAT));
+    NewGripSquare->Type = GRIPBOX_RIGHT;
+    NewGripSquare->State = GRIPBOX_STATE_RESET;
+    NewGripSquare->StepX = 1;
+    NewGripSquare->StepY = 1;
+    NewGripSquare->Color = Color;
+    NewGripSquare->Container = NewGripDats;
+    SetWindowLong(NewGripDats->RightBox, GWL_USERDATA, (long) NewGripSquare);
 
-	// Store the slot in window's user datas
+    // Store the slot in window's user datas
     return(NewGripDats);
 }
 
@@ -1452,9 +1452,9 @@ LPGRIPBOXDAT CALLBACK CreateGripBox(long LLeft, long LTop, long LWidth, long LHe
 // Retrieve color from a gripbox control
 COLORREF CALLBACK GripBoxGetColor(LPGRIPBOXDAT GripDats)
 {
-	LPGRIPBOXSQRBOXDAT GripSquare;
+    LPGRIPBOXSQRBOXDAT GripSquare;
 
-	GripSquare = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->LeftBox, GWL_USERDATA);
+    GripSquare = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->LeftBox, GWL_USERDATA);
     return(GripSquare->Color);
 }
 
@@ -1462,38 +1462,38 @@ COLORREF CALLBACK GripBoxGetColor(LPGRIPBOXDAT GripDats)
 // Retrieve color from a gripbox control
 void CALLBACK GripBoxSetColor(LPGRIPBOXDAT GripDats, COLORREF Color)
 {
-	LPGRIPBOXSQRBOXDAT GripSquare;
+    LPGRIPBOXSQRBOXDAT GripSquare;
 
-	GripSquare = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->BottomBox, GWL_USERDATA);
-	GripSquare->Color = Color;
+    GripSquare = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->BottomBox, GWL_USERDATA);
+    GripSquare->Color = Color;
     RedrawWindow(GripDats->BottomBox, 0, 0, RDW_ERASE | RDW_INVALIDATE);
 
-	GripSquare = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->BottomLeftBox, GWL_USERDATA);
-	GripSquare->Color = Color;
+    GripSquare = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->BottomLeftBox, GWL_USERDATA);
+    GripSquare->Color = Color;
     RedrawWindow(GripDats->BottomLeftBox, 0, 0, RDW_ERASE | RDW_INVALIDATE);
 
-	GripSquare = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->BottomRightBox, GWL_USERDATA);
-	GripSquare->Color = Color;
+    GripSquare = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->BottomRightBox, GWL_USERDATA);
+    GripSquare->Color = Color;
     RedrawWindow(GripDats->BottomRightBox, 0, 0, RDW_ERASE | RDW_INVALIDATE);
 
-	GripSquare = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->LeftBox, GWL_USERDATA);
-	GripSquare->Color = Color;
+    GripSquare = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->LeftBox, GWL_USERDATA);
+    GripSquare->Color = Color;
     RedrawWindow(GripDats->LeftBox, 0, 0, RDW_ERASE | RDW_INVALIDATE);
 
-	GripSquare = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->RightBox, GWL_USERDATA);
-	GripSquare->Color = Color;
+    GripSquare = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->RightBox, GWL_USERDATA);
+    GripSquare->Color = Color;
     RedrawWindow(GripDats->RightBox, 0, 0, RDW_ERASE | RDW_INVALIDATE);
 
-	GripSquare = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->TopBox, GWL_USERDATA);
-	GripSquare->Color = Color;
+    GripSquare = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->TopBox, GWL_USERDATA);
+    GripSquare->Color = Color;
     RedrawWindow(GripDats->TopBox, 0, 0, RDW_ERASE | RDW_INVALIDATE);
 
-	GripSquare = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->TopLeftBox, GWL_USERDATA);
-	GripSquare->Color = Color;
+    GripSquare = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->TopLeftBox, GWL_USERDATA);
+    GripSquare->Color = Color;
     RedrawWindow(GripDats->TopLeftBox, 0, 0, RDW_ERASE | RDW_INVALIDATE);
 
-	GripSquare = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->TopRightBox, GWL_USERDATA);
-	GripSquare->Color = Color;
+    GripSquare = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->TopRightBox, GWL_USERDATA);
+    GripSquare->Color = Color;
     RedrawWindow(GripDats->TopRightBox, 0, 0, RDW_ERASE | RDW_INVALIDATE);
 }
 
@@ -1501,61 +1501,61 @@ void CALLBACK GripBoxSetColor(LPGRIPBOXDAT GripDats, COLORREF Color)
 // Close a gripbox control
 void CALLBACK GripBoxClose(LPGRIPBOXDAT GripDats)
 {
-	LPGRIPBOXSQRBOXDAT GripSquareDats;
-	LPGRIPBOXDAT GripDats_Container;
+    LPGRIPBOXSQRBOXDAT GripSquareDats;
+    LPGRIPBOXDAT GripDats_Container;
 
-	GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->TopLeftBox, GWL_USERDATA);
-	if(GripSquareDats)
+    GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->TopLeftBox, GWL_USERDATA);
+    if(GripSquareDats)
     {
-		GripDats_Container = GripSquareDats->Container;
-		ControlClose(GripDats->TopLeftBox);
-		ControlClose(GripDats->TopBox);
-		ControlClose(GripDats->TopRightBox);
-		ControlClose(GripDats->LeftBox);
-		ControlClose(GripDats->RightBox);
-		ControlClose(GripDats->BottomLeftBox);
-		ControlClose(GripDats->BottomBox);
-		ControlClose(GripDats->BottomRightBox);
-		// Free it now
-		FreeMem((long) GripDats_Container);
-	}
+        GripDats_Container = GripSquareDats->Container;
+        ControlClose(GripDats->TopLeftBox);
+        ControlClose(GripDats->TopBox);
+        ControlClose(GripDats->TopRightBox);
+        ControlClose(GripDats->LeftBox);
+        ControlClose(GripDats->RightBox);
+        ControlClose(GripDats->BottomLeftBox);
+        ControlClose(GripDats->BottomBox);
+        ControlClose(GripDats->BottomRightBox);
+        // Free it now
+        FreeMem((long) GripDats_Container);
+    }
 }
 
 // -----------------------------------------------------------------------
 // Close a gripbox control
 void CALLBACK GripBoxVisible(LPGRIPBOXDAT GripDats, long CState)
 {
-	ControlVisible(GripDats->TopLeftBox, CState);
-	ControlVisible(GripDats->TopBox, CState);
-	ControlVisible(GripDats->TopRightBox, CState);
-	ControlVisible(GripDats->LeftBox, CState);
-	ControlVisible(GripDats->RightBox, CState);
-	ControlVisible(GripDats->BottomLeftBox, CState);
-	ControlVisible(GripDats->BottomBox, CState);
-	ControlVisible(GripDats->BottomRightBox, CState);
+    ControlVisible(GripDats->TopLeftBox, CState);
+    ControlVisible(GripDats->TopBox, CState);
+    ControlVisible(GripDats->TopRightBox, CState);
+    ControlVisible(GripDats->LeftBox, CState);
+    ControlVisible(GripDats->RightBox, CState);
+    ControlVisible(GripDats->BottomLeftBox, CState);
+    ControlVisible(GripDats->BottomBox, CState);
+    ControlVisible(GripDats->BottomRightBox, CState);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve color from a gripbox control
 void CALLBACK GripBoxResize(LPGRIPBOXDAT GripDats, LPRECT NewSizeRect)
 {
-	long LWidth;
-	long LHeight;
-	long LLeft;
-	long LTop;
+    long LWidth;
+    long LHeight;
+    long LLeft;
+    long LTop;
 
-	LLeft = NewSizeRect->left;
-	LTop = NewSizeRect->top;
-	LWidth = NewSizeRect->right - LLeft;
-	LHeight = NewSizeRect->bottom - LTop;
-	MoveWindow(GripDats->TopLeftBox, LLeft - 8, LTop - 8, 8, 8, 1);
-	MoveWindow(GripDats->TopBox, LLeft + ((LWidth >> 1) - 4), LTop - 8, 8, 8, 1);
-	MoveWindow(GripDats->TopRightBox, LLeft + (LWidth - 8) + 8, LTop - 8, 8, 8, 1);
-	MoveWindow(GripDats->BottomLeftBox, LLeft - 8, LTop + (LHeight - 8) + 8, 8, 8, 1);
-	MoveWindow(GripDats->BottomBox, LLeft + ((LWidth >> 1) - 4), LTop + (LHeight - 8) + 8, 8, 8, 1);
-	MoveWindow(GripDats->BottomRightBox, LLeft + (LWidth - 8) + 8, LTop + (LHeight - 8) + 8, 8, 8, 1);
-	MoveWindow(GripDats->LeftBox, LLeft - 8, LTop + ((LHeight >> 1) - 4), 8, 8, 1);
-	MoveWindow(GripDats->RightBox, LLeft + (LWidth - 8) + 8, LTop + ((LHeight >> 1) - 4), 8, 8, 1);
+    LLeft = NewSizeRect->left;
+    LTop = NewSizeRect->top;
+    LWidth = NewSizeRect->right - LLeft;
+    LHeight = NewSizeRect->bottom - LTop;
+    MoveWindow(GripDats->TopLeftBox, LLeft - 8, LTop - 8, 8, 8, 1);
+    MoveWindow(GripDats->TopBox, LLeft + ((LWidth >> 1) - 4), LTop - 8, 8, 8, 1);
+    MoveWindow(GripDats->TopRightBox, LLeft + (LWidth - 8) + 8, LTop - 8, 8, 8, 1);
+    MoveWindow(GripDats->BottomLeftBox, LLeft - 8, LTop + (LHeight - 8) + 8, 8, 8, 1);
+    MoveWindow(GripDats->BottomBox, LLeft + ((LWidth >> 1) - 4), LTop + (LHeight - 8) + 8, 8, 8, 1);
+    MoveWindow(GripDats->BottomRightBox, LLeft + (LWidth - 8) + 8, LTop + (LHeight - 8) + 8, 8, 8, 1);
+    MoveWindow(GripDats->LeftBox, LLeft - 8, LTop + ((LHeight >> 1) - 4), 8, 8, 1);
+    MoveWindow(GripDats->RightBox, LLeft + (LWidth - 8) + 8, LTop + ((LHeight >> 1) - 4), 8, 8, 1);
 }
 
 // -----------------------------------------------------------------------
@@ -1602,10 +1602,10 @@ HWND CALLBACK CreatePictureBox(long LLeft, long LTop, long LWidth, long LHeight,
     {
         case IMAGE_BITMAP:
             PType = SS_BITMAP;
-			break;
+            break;
         case IMAGE_ICON:
             PType = SS_ICON;
-			break;
+            break;
     }
     ReturnValue = CreateWindowEx(0, "STATIC", (char *) 0, WS_VISIBLE | WS_CHILD | PType | ExtraStyle, LLeft, LTop, LWidth, LHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
@@ -1613,11 +1613,11 @@ HWND CALLBACK CreatePictureBox(long LLeft, long LTop, long LWidth, long LHeight,
     {
         case IMAGE_BITMAP:
             SendMessage(ReturnValue, STM_SETIMAGE, IMAGE_BITMAP, (long) hPicture);
-			break;
-		case IMAGE_ICON:
+            break;
+        case IMAGE_ICON:
             SendMessage(ReturnValue, STM_SETICON, (UINT) hPicture, (long) 0);
-			break;
-	}
+            break;
+    }
     ControlHookWin(ReturnValue, WindowProc);
     return(ReturnValue);
 }
@@ -1661,13 +1661,13 @@ HWND CALLBACK CreateFrame(long BLeft, long BTop, long BWidth, long BHeight, HWND
 // Refresh a toolbar included inside a frame
 long CALLBACK FrameRefreshToolbar(HWND hToolbar)
 {
-	long ReturnValue = 0;
+    long ReturnValue = 0;
     HDC TbHdc = 0;
 
     TbHdc = GetDC(hToolbar);
     ReturnValue = SendMessage(hToolbar, WM_PAINT, (UINT) TbHdc, (long) 0);
     ReleaseDC(hToolbar, TbHdc);
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1822,8 +1822,8 @@ HWND CALLBACK CreateTextBox(long EDLeft, long EDTop, long EDWidth, long EDHeight
     }
     ReturnValue = CreateWindowEx(WS_EX_NOPARENTNOTIFY | ExtraExStyle, "EDIT", EDText.Get_String(), WS_VISIBLE | WS_CHILD | ES_LEFT | ExtraStyle, EDLeft, EDTop, EDWidth, EDHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-	if(ExtraStyle & ES_PASSWORD) TextBoxSetPasswordChar(ReturnValue, "*");
-	ControlHookWin(ReturnValue, WindowProc);
+    if(ExtraStyle & ES_PASSWORD) TextBoxSetPasswordChar(ReturnValue, "*");
+    ControlHookWin(ReturnValue, WindowProc);
     ControlSetSerif8(ReturnValue);
     return(ReturnValue);
 }
@@ -1863,7 +1863,7 @@ void CALLBACK TextBoxAddText(HWND hTextBox, CStr TbText)
     CStr Txt;
 
     Txt = ControlGetText(hTextBox);
-	Txt = Txt + TbText;
+    Txt = Txt + TbText;
     ControlSetText(hTextBox, Txt);
 }
 
@@ -1871,11 +1871,11 @@ void CALLBACK TextBoxAddText(HWND hTextBox, CStr TbText)
 // Select the content of a textbox control
 long CALLBACK TextBoxSelText(HWND hTextBox, long NbrToSel)
 {
-	long ReturnValue = 0;
+    long ReturnValue = 0;
 
     if(NbrToSel == -1) ReturnValue = SendMessage(hTextBox, EM_SETSEL, 0, ControlGetTextLen(hTextBox));
     else ReturnValue = SendMessage(hTextBox, EM_SETSEL, 0, NbrToSel);
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1890,7 +1890,7 @@ long CALLBACK TextBoxRemoveSel(HWND hTextBox)
 long CALLBACK TextBoxSetCaretPos(HWND hTextBox, long PosToSel)
 {
     long ReturnValue = 0;
-	long NCaretPos = 0;
+    long NCaretPos = 0;
 
     if(PosToSel == -1)
     {
@@ -1901,7 +1901,7 @@ long CALLBACK TextBoxSetCaretPos(HWND hTextBox, long PosToSel)
     {
         ReturnValue = SendMessage(hTextBox, EM_SETSEL, PosToSel, PosToSel);
     }
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1948,14 +1948,14 @@ CStr CALLBACK TextBoxGetPasswordChar(HWND hTextBox)
 
     Pchar = SendMessage(hTextBox, EM_GETPASSWORDCHAR, 0, (long) 0);
     if(Pchar != 0) ReturnValue = ReturnValue.Chr(Pchar);
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Set the password char of a textbox control
 long CALLBACK TextBoxSetPasswordChar(HWND hTextBox, CStr PassChar)
 {
-	return(SendMessage(hTextBox, EM_SETPASSWORDCHAR, (WPARAM) PassChar.Get_String()[0], (long) 0));
+    return(SendMessage(hTextBox, EM_SETPASSWORDCHAR, (WPARAM) PassChar.Get_String()[0], (long) 0));
 }
 
 // -----------------------------------------------------------------------
@@ -2154,7 +2154,7 @@ long CALLBACK RebarResize(HWND hRebar)
         GetClientRect(hParent, &PRBRct);
         ReturnValue = SetWindowPos(hRebar, 0, 0, 0, PRBRct.right - PRBRct.left, RBRct.bottom - RBRct.top, SWP_NOOWNERZORDER + SWP_NOMOVE + SWP_NOZORDER + SWP_SHOWWINDOW);
     }
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -2234,7 +2234,7 @@ HIMAGELIST CALLBACK RebarGetImageList(HWND hRebar)
     REBARINFO RbInfo;
 
     memset(&RbInfo, 0, sizeof(RbInfo));
-	RbInfo.cbSize = sizeof(RbInfo);
+    RbInfo.cbSize = sizeof(RbInfo);
     RbInfo.fMask = RBIM_IMAGELIST;
     return((HIMAGELIST) SendMessage(hRebar, RB_GETBARINFO, 0, (long) &RbInfo));
 }
@@ -2271,11 +2271,11 @@ void CALLBACK PagerDisplaySetSize(LPNMPGCALCSIZE CalcSizeNotify, LPSIZE PGNewSiz
         case PGF_CALCHEIGHT:
             CalcSizeNotify->iHeight = PGNewSize->cx;
             CalcSizeNotify->iWidth = PGNewSize->cy;
-			break;
-		case PGF_CALCWIDTH:
+            break;
+        case PGF_CALCWIDTH:
             CalcSizeNotify->iHeight = PGNewSize->cy;
             CalcSizeNotify->iWidth = PGNewSize->cx;
-			break;
+            break;
     }
 }
 
@@ -2349,15 +2349,15 @@ long CALLBACK PagerGetScrollPos(HWND hPager)
 // Retrieve the orientation of a pager control
 long CALLBACK PagerGetOrientation(HWND hPager)
 {
-	return(GetWindowLong(hPager, GWL_STYLE) & PGS_HORZ);
+    return(GetWindowLong(hPager, GWL_STYLE) & PGS_HORZ);
 }
 
 // -----------------------------------------------------------------------
 // Set the orientation of a pager control
 long CALLBACK PagerSetOrientation(HWND hPager, long Orientation)
 {
-	if(Orientation != PGS_HORZ) return(SetWindowLong(hPager, GWL_STYLE, GetWindowLong(hPager, GWL_STYLE) & ~PGS_HORZ));
-	else return(SetWindowLong(hPager, GWL_STYLE, GetWindowLong(hPager, GWL_STYLE) | PGS_HORZ));
+    if(Orientation != PGS_HORZ) return(SetWindowLong(hPager, GWL_STYLE, GetWindowLong(hPager, GWL_STYLE) & ~PGS_HORZ));
+    else return(SetWindowLong(hPager, GWL_STYLE, GetWindowLong(hPager, GWL_STYLE) | PGS_HORZ));
 }
 
 // -----------------------------------------------------------------------
@@ -2365,27 +2365,27 @@ long CALLBACK PagerSetOrientation(HWND hPager, long Orientation)
 long CALLBACK PagerChangeOrientation(HWND hPager, LPNMPGCALCSIZE CalcSizeNotify,
                                        long NewOrientation, LPSIZE NewSize)
 {
-	long OldOrientation;
+    long OldOrientation;
 
-	OldOrientation = PagerGetOrientation(hPager);
-	if(NewOrientation == PGS_VERT)
+    OldOrientation = PagerGetOrientation(hPager);
+    if(NewOrientation == PGS_VERT)
     {
-		if(OldOrientation != PGS_VERT)
+        if(OldOrientation != PGS_VERT)
         {
-			CalcSizeNotify->dwFlag = PGF_CALCHEIGHT;
-			OldOrientation = SetWindowLong(hPager, GWL_STYLE, GetWindowLong(hPager, GWL_STYLE) & ~PGS_HORZ);
-		}
-	}
-	else
+            CalcSizeNotify->dwFlag = PGF_CALCHEIGHT;
+            OldOrientation = SetWindowLong(hPager, GWL_STYLE, GetWindowLong(hPager, GWL_STYLE) & ~PGS_HORZ);
+        }
+    }
+    else
     {
-		if(OldOrientation != PGS_HORZ)
+        if(OldOrientation != PGS_HORZ)
         {
-			CalcSizeNotify->dwFlag = PGF_CALCWIDTH;
-			OldOrientation = SetWindowLong(hPager, GWL_STYLE, GetWindowLong(hPager, GWL_STYLE) | PGS_HORZ);
-		}
-	}
-	PagerDisplaySetSize(CalcSizeNotify, NewSize);
-	return(OldOrientation);
+            CalcSizeNotify->dwFlag = PGF_CALCWIDTH;
+            OldOrientation = SetWindowLong(hPager, GWL_STYLE, GetWindowLong(hPager, GWL_STYLE) | PGS_HORZ);
+        }
+    }
+    PagerDisplaySetSize(CalcSizeNotify, NewSize);
+    return(OldOrientation);
 }
 
 // -----------------------------------------------------------------------
@@ -2515,7 +2515,7 @@ HWND CALLBACK CreateListView(long LVLeft, long LVTop, long LVWidth, long LVHeigh
 {
     HWND ReturnValue = 0;
 
-	ControlBound(hParent, LVLeft, LVTop, LVWidth, LVHeight);
+    ControlBound(hParent, LVLeft, LVTop, LVWidth, LVHeight);
     ReturnValue = CreateWindowEx(WS_EX_NOPARENTNOTIFY | ExtraExStyle, "SysListView32", "", WS_HSCROLL | WS_VSCROLL | WS_VISIBLE | WS_CHILD | LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | WStyle, LVLeft, LVTop, LVWidth, LVHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
     ControlSetSerif8(ReturnValue);
@@ -2585,7 +2585,7 @@ long CALLBACK ListViewAddItem(HWND hListview, CStr LVItemText, long LVItemPos, l
     LV_ITEM ListViewItem;
 
     memset(&ListViewItem, 0, sizeof(ListViewItem));
-	ListViewItem.mask = LVIF_STATE | LVIF_PARAM | LVIF_IMAGE;
+    ListViewItem.mask = LVIF_STATE | LVIF_PARAM | LVIF_IMAGE;
     if(LVItemText.Len() != 0) ListViewItem.mask = ListViewItem.mask | LVIF_TEXT;
     ListViewItem.iItem = LVItemPos;
     ListViewItem.iSubItem = 0;
@@ -2612,7 +2612,7 @@ long CALLBACK ListViewSetSubItem(HWND hListview, CStr LVItemText, long LVItemPos
 {
     LV_ITEM ListViewItem;
 
-	memset(&ListViewItem, 0, sizeof(ListViewItem));
+    memset(&ListViewItem, 0, sizeof(ListViewItem));
     ListViewItem.mask = LVIF_TEXT;
     ListViewItem.iItem = LVItemPos;
     ListViewItem.iSubItem = LVSubItemPos;
@@ -2740,13 +2740,13 @@ long CALLBACK ListViewSetItemHighlight(HWND hListview, long LVItemIndex, long En
     GetListViewItem.mask = LVIF_STATE;
     if(Enable)
     {
-		GetListViewItem.state = LVIS_DROPHILITED;
+        GetListViewItem.state = LVIS_DROPHILITED;
     }
     else
     {
-		GetListViewItem.state = 0;
-	}
-	GetListViewItem.stateMask = LVIS_DROPHILITED;
+        GetListViewItem.state = 0;
+    }
+    GetListViewItem.stateMask = LVIS_DROPHILITED;
     GetListViewItem.iItem = LVItemIndex;
     GetListViewItem.iSubItem = 0;
     GetListViewItem.pszText = 0;
@@ -2776,7 +2776,7 @@ long CALLBACK ListViewGetItemUnderCursor(HWND hListview)
 {
     LV_HITTESTINFO MyTest;
 
-	memset(&MyTest, 0, sizeof(MyTest));
+    memset(&MyTest, 0, sizeof(MyTest));
     GetCursorPos(&MyTest.pt);
     MyTest.pt.x = MyTest.pt.x - ControlLeft(hListview);
     MyTest.pt.y = MyTest.pt.y - ControlTop(hListview);
@@ -2802,7 +2802,7 @@ long CALLBACK ListViewGetSelItem(HWND hListview, long LVIndex)
 // Retrieve selection state of the listview selected item
 CStr CALLBACK ListViewGetSelItemText(HWND hListview, long LVSubItemNumber)
 {
-	return(ListViewGetItemText(hListview, ListViewGetFirstFocusItem(hListview), LVSubItemNumber));
+    return(ListViewGetItemText(hListview, ListViewGetFirstFocusItem(hListview), LVSubItemNumber));
 }
 
 // -----------------------------------------------------------------------
@@ -2826,10 +2826,10 @@ long CALLBACK ListViewCheckBoxItemDoubleClick(HWND hListview)
         {
             case 0:
                 ListViewSetItemCheckbox(hListview, CurrentLvItem, 1);
-				break;
-			case 1:
+                break;
+            case 1:
                 ListViewSetItemCheckbox(hListview, CurrentLvItem, 0);
-				break;
+                break;
         }
     }
     return(CurrentLvItem);
@@ -2841,11 +2841,11 @@ CStr CALLBACK ListViewGetItemText(HWND hListview, long LVItemIndex, long LVSubIt
 {
     CStr ReturnValue;
     LV_ITEM GetListViewItem;
-	CStr LVItemTxt;
+    CStr LVItemTxt;
 
     LVItemTxt = LVItemTxt.String(1024, 1);
     LVItemTxt.Get_String()[0] = 0;
-	GetListViewItem.mask = LVIF_TEXT;
+    GetListViewItem.mask = LVIF_TEXT;
     GetListViewItem.iItem = LVItemIndex;
     GetListViewItem.iSubItem = LVSubItemNumber;
     GetListViewItem.pszText = LVItemTxt.Get_String();
@@ -2915,9 +2915,9 @@ CStr CALLBACK ListViewGetHeaderLabel(HWND hListview, long LVColNumber)
 {
     CStr ReturnValue;
     LV_COLUMN MyColHead;
-	CStr LVItemTxt;
+    CStr LVItemTxt;
     
-	LVItemTxt = ReturnValue.String(1024, 1);
+    LVItemTxt = ReturnValue.String(1024, 1);
     LVItemTxt.Get_String()[0] = 0;
     MyColHead.mask = LVCF_TEXT;
     MyColHead.fmt = 0;
@@ -2936,7 +2936,7 @@ long CALLBACK ListViewGetHeaderPosition(HWND hListview, long LVColNumber)
 {
     LV_COLUMN MyColHead;
     
-	MyColHead.mask = LVCF_ORDER;
+    MyColHead.mask = LVCF_ORDER;
     MyColHead.fmt = 0;
     MyColHead.cx = 0;
     MyColHead.pszText = 0;
@@ -2953,7 +2953,7 @@ long CALLBACK ListViewSetHeaderPosition(HWND hListview, long LVColNumber, long N
 {
     LV_COLUMN MyColHead;
     
-	MyColHead.mask = LVCF_ORDER;
+    MyColHead.mask = LVCF_ORDER;
     MyColHead.fmt = 0;
     MyColHead.cx = 0;
     MyColHead.pszText = 0;
@@ -3054,12 +3054,12 @@ long CALLBACK ListViewSetItemCheckbox(HWND hListview, long LVItemIndex, long LVC
     GetListViewItem.mask = LVIF_STATE;
     switch(LVCheckState)
     {
-		case 0:
+        case 0:
             GetListViewItem.state = 0x1000;
-			break;
-		default:
+            break;
+        default:
             GetListViewItem.state = 0x2000;
-			break;
+            break;
     }
     GetListViewItem.stateMask = LVIS_STATEIMAGEMASK;
     GetListViewItem.iItem = LVItemIndex;
@@ -3079,10 +3079,10 @@ long CALLBACK ListViewGetItemCheckbox(HWND hListview, long LVItemIndex)
     {
         case 0x1000:
             ReturnValue = 0;
-			break;
-		case 0x2000:
+            break;
+        case 0x2000:
             ReturnValue = 1;
-			break;
+            break;
     }
     return(ReturnValue);
 }
@@ -3097,13 +3097,13 @@ long CALLBACK ListViewIsCheckboxNotify(HWND hListview, long LVItemIndex)
     {
         case 0x1000:
             ReturnValue = 1;
-			break;
-		case 0x2000:
+            break;
+        case 0x2000:
             ReturnValue = 1;
-			break;
+            break;
         default:
             ReturnValue = 0;
-			break;
+            break;
     }
     return(ReturnValue);
 }
@@ -3128,7 +3128,7 @@ long CALLBACK ListViewFindItem(HWND hListview, CStr LVItemText)
 long CALLBACK ListViewFindSubItem(HWND hListview, CStr TextToFind, long SubItemNbr, long SearchCase)
 {
     long ReturnValue = 0;
-	long i = 0;
+    long i = 0;
 
     ReturnValue = -1;
     if(SearchCase == CASE_SENSITIVE)
@@ -3154,7 +3154,7 @@ long CALLBACK ListViewFindSubItem(HWND hListview, CStr TextToFind, long SubItemN
             }
         }
     }
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -3215,7 +3215,7 @@ long CALLBACK ListViewPasteAutoEdit(HWND hListview, long wParam, long ExtraEditS
     switch(wParam)
     {
         case 8:
-			break;
+            break;
         default:
             CurrentSelected = ListViewGetFirstFocusItem(hListview);
             if(CurrentSelected != -1)
@@ -3255,8 +3255,8 @@ HWND CALLBACK CreateTreeView(long TVLeft, long TVTop, long TVWidth, long TVHeigh
     ControlBound(hParent, TVLeft, TVTop, TVWidth, TVHeight);
     ReturnValue = CreateWindowEx(ExtraExStyle, "SysTreeView32", "", WS_VISIBLE | WS_CHILD | TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | ExtraStyle, TVLeft, TVTop, TVWidth, TVHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
     if(ReturnValue == 0) return(0);
-	SendMessage(ReturnValue, TVM_SETIMAGELIST, TVSIL_NORMAL, (long) hImageList);
-	ControlHookWin(ReturnValue, WindowProc);
+    SendMessage(ReturnValue, TVM_SETIMAGELIST, TVSIL_NORMAL, (long) hImageList);
+    ControlHookWin(ReturnValue, WindowProc);
     ControlSetSerif8(ReturnValue);
     return(ReturnValue);
 }
@@ -3267,10 +3267,10 @@ HTREEITEM CALLBACK TreeViewAddItem(HWND hTreeView, CStr TVItemText, HTREEITEM TV
                                    long TVImage, long TVSelImage, long ExtraStyle, long RefreshParentAfterAdd)
 {
     HTREEITEM ReturnValue = 0;
-	HTREEITEM ParentToCheck = 0;
+    HTREEITEM ParentToCheck = 0;
     TV_INSERTSTRUCT TreeViewItem;
 
-	memset(&TreeViewItem, 0, sizeof(TreeViewItem));
+    memset(&TreeViewItem, 0, sizeof(TreeViewItem));
     TreeViewItem.hParent = TVParent;
     TreeViewItem.hInsertAfter = TVChildPos;
     TreeViewItem.item.mask = TVIF_TEXT | TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_STATE;
@@ -3361,7 +3361,7 @@ long CALLBACK TreeViewSetItemIcon(HWND hTreeView, HTREEITEM hItem, long IconNumb
 {
     TV_ITEM TreeViewItem;
 
-	memset(&TreeViewItem, 0, sizeof(TreeViewItem));
+    memset(&TreeViewItem, 0, sizeof(TreeViewItem));
     TreeViewItem.mask = TVIF_HANDLE | TVIF_IMAGE | TVIF_SELECTEDIMAGE;
     TreeViewItem.hItem = hItem;
     TreeViewItem.iImage = IconNumber;
@@ -3375,7 +3375,7 @@ long CALLBACK TreeViewSetItemExpandedState(HWND hTreeView, HTREEITEM hItem, long
 {
     TV_ITEM TreeViewItem;
 
-	memset(&TreeViewItem, 0, sizeof(TreeViewItem));
+    memset(&TreeViewItem, 0, sizeof(TreeViewItem));
     TreeViewItem.hItem = hItem;
     TreeViewItem.mask = TVIF_STATE;
     TreeViewItem.stateMask = TVIS_EXPANDED;
@@ -3390,7 +3390,7 @@ long CALLBACK TreeViewGetItemExpandedState(HWND hTreeView, HTREEITEM hItem)
 {
     TV_ITEM TreeViewItem;
 
-	memset(&TreeViewItem, 0, sizeof(TreeViewItem));
+    memset(&TreeViewItem, 0, sizeof(TreeViewItem));
     TreeViewItem.hItem = hItem;
     TreeViewItem.mask = TVIF_STATE;
     TreeViewItem.stateMask = TVIS_EXPANDED;
@@ -3420,7 +3420,7 @@ HTREEITEM CALLBACK TreeViewGetItemFromPos(HWND hTreeView, long XPos, long YPos)
 {
     TV_HITTESTINFO THit;
 
-	memset(&THit, 0, sizeof(THit));
+    memset(&THit, 0, sizeof(THit));
     THit.pt.x = XPos;
     THit.pt.y = YPos;
     return((HTREEITEM) SendMessage(hTreeView, TVM_HITTEST, 0, (long) &THit));
@@ -3441,7 +3441,7 @@ CStr CALLBACK TreeViewGetItemText(HWND hTreeView, HTREEITEM hItem)
     TV_ITEM TreeViewItem;
     CStr TVItemTxt;
 
-	memset(&TreeViewItem, 0, sizeof(TreeViewItem));
+    memset(&TreeViewItem, 0, sizeof(TreeViewItem));
     TVItemTxt = ReturnValue.String(1024, 1);
     TVItemTxt.Get_String()[0] = 0;
     TreeViewItem.mask = TVIF_TEXT | TVIF_HANDLE;
@@ -3460,7 +3460,7 @@ long CALLBACK TreeViewSetItemText(HWND hTreeView, HTREEITEM hItem, CStr ItemText
     CStr ReturnValue;
     TV_ITEM TreeViewItem;
 
-	memset(&TreeViewItem, 0, sizeof(TreeViewItem));
+    memset(&TreeViewItem, 0, sizeof(TreeViewItem));
     TreeViewItem.mask = TVIF_TEXT | TVIF_HANDLE;
     TreeViewItem.hItem = hItem;
     TreeViewItem.cchTextMax = ItemText.Len();
@@ -3756,7 +3756,7 @@ HWND CALLBACK CreateHotkey(long BLeft, long BTop, long BWidth, long BHeight, HWN
                              WNDPROC WindowProc, long InvalidCombination, long ValidCombination, long VirtualKey,
                              long Modifiers, long ExtraStyle)
 {
-	HWND ReturnValue = 0;
+    HWND ReturnValue = 0;
 
     ControlBound(hParent, BLeft, BTop, BWidth, BHeight);
     ReturnValue = CreateWindowEx(WS_EX_CLIENTEDGE, "msctls_hotkey32", "", WS_TABSTOP | WS_VISIBLE | WS_CHILD | WS_BORDER | ExtraStyle, BLeft, BTop, BWidth, BHeight, hParent, (HMENU) CtrlID, WALocalhInst, NULL);
@@ -3964,7 +3964,7 @@ CStr CALLBACK ComboBoxGetItem(HWND hCB, long CBIndex)
 {
     CStr ReturnValue;
     
-	if(CBIndex != -1)
+    if(CBIndex != -1)
     {
         ReturnValue = ReturnValue.String(SendMessage(hCB, CB_GETLBTEXTLEN, CBIndex, (long) 0), 1);
         SendMessage(hCB, CB_GETLBTEXT, CBIndex, (long) ReturnValue.Get_String());
@@ -3979,7 +3979,7 @@ CStr CALLBACK ComboBoxGetCurrentItem(HWND hCB)
     CStr ReturnValue;
     long CBIdx = 0;
     
-	CBIdx = ComboBoxGetIndex(hCB);
+    CBIdx = ComboBoxGetIndex(hCB);
     ReturnValue = ReturnValue.String(SendMessage(hCB, CB_GETLBTEXTLEN, CBIdx, (long) 0), 1);
     SendMessage(hCB, CB_GETLBTEXT, CBIdx, (long) ReturnValue.Get_String());
     return(ReturnValue);
@@ -4007,9 +4007,9 @@ void ComboBoxSaveInIniFile(HWND hCombo, CStr EntryToAdd, CStr IniKey, CStr IniFi
     int j = 0;
     long SearchArg = 0;
 
-	if(EntryToAdd.Len() != 0)
+    if(EntryToAdd.Len() != 0)
     {
-		IniDeleteKey(IniKey, "", IniFile);
+        IniDeleteKey(IniKey, "", IniFile);
         for(i = 0; i <= ComboBoxCount(hCombo) - 1; i++)
         {
             IniWriteKey(IniKey, (CStr) "Entry" + (CStr) StringNumberComplement(i, 3).Get_String(), ComboBoxGetItem(hCombo, i), IniFile);
@@ -4031,8 +4031,8 @@ void ComboBoxSaveInIniFile(HWND hCombo, CStr EntryToAdd, CStr IniKey, CStr IniFi
 // Load a combobox with ini file entries
 void ComboBoxFillFromIniFile(HWND hCombo, CStr IniKey, CStr IniFile)
 {
-	int i;
-	CStr ArgToAdd;
+    int i;
+    CStr ArgToAdd;
 
     for(i = 0; i <= 999; i++)
     {
@@ -4053,7 +4053,7 @@ HWND CALLBACK CreateListBox(long BLeft, long BTop, long BWidth, long BHeight, HW
 {
     HWND ReturnValue = 0;
     
-	ControlBound(hParent, BLeft, BTop, BWidth, BHeight);
+    ControlBound(hParent, BLeft, BTop, BWidth, BHeight);
     if((ExtraExStyle & WS_EX_STATICEDGE) != 0)
     {
         BLeft++;
@@ -4089,20 +4089,20 @@ long CALLBACK ListBoxReset(HWND hLB)
 long CALLBACK ListBoxSetHorzScrollWidth(HWND hLB, long LBWidth)
 {
     long HSize = LBWidth;
-	if(HSize < ControlClientWidth(hLB)) HSize = 0;
-	if(HSize == 0)
-	{
-		SetWindowLong(hLB, GWL_STYLE, GetWindowLong(hLB, GWL_STYLE) & ~WM_HSCROLL);
-	}
+    if(HSize < ControlClientWidth(hLB)) HSize = 0;
+    if(HSize == 0)
+    {
+        SetWindowLong(hLB, GWL_STYLE, GetWindowLong(hLB, GWL_STYLE) & ~WM_HSCROLL);
+    }
     else
     {
-		SetWindowLong(hLB, GWL_STYLE, GetWindowLong(hLB, GWL_STYLE) | WM_HSCROLL);
-		if(GetWindowLong(hLB, GWL_STYLE) & WM_VSCROLL)
-		{
-			HSize += GetSystemMetrics(SM_CXVSCROLL);
-		}
-	}
-	return(SendMessage(hLB, LB_SETHORIZONTALEXTENT, HSize, (long) 0));
+        SetWindowLong(hLB, GWL_STYLE, GetWindowLong(hLB, GWL_STYLE) | WM_HSCROLL);
+        if(GetWindowLong(hLB, GWL_STYLE) & WM_VSCROLL)
+        {
+            HSize += GetSystemMetrics(SM_CXVSCROLL);
+        }
+    }
+    return(SendMessage(hLB, LB_SETHORIZONTALEXTENT, HSize, (long) 0));
 }
 
 // -----------------------------------------------------------------------
@@ -4228,7 +4228,7 @@ void CALLBACK ListBoxProcessDrag(HWND hLB, long Message, long lParam, long DragC
     long i = 0;
     long j = 0;
     
-	if(Message != WADragListMsg) return;
+    if(Message != WADragListMsg) return;
     // Local copy of the message datas
     RtlMoveMemory(&DragMsg, (void *) lParam, sizeof(DragMsg));
     switch(DragMsg.uNotification)
@@ -4306,7 +4306,7 @@ long CALLBACK ListBoxSelItemDown(HWND hLB)
 
     if(ListBoxGetSelItemIndex(hLB) != -1)
     {
-		// Max down
+        // Max down
         if(ListBoxGetSelItemIndex(hLB) == (ListBoxCount(hLB) - 1)) return(ReturnValue);
         OldItem = ListBoxGetCurrentItem(hLB);
         CurrentIdx = ListBoxGetSelItemIndex(hLB);
@@ -4346,10 +4346,10 @@ long CALLBACK ListBoxSelItemRemove(HWND hLB)
 {
     long CurrentIdx = 0;
     long NewLBCount = 0;
-	long ReturnValue = 0;
+    long ReturnValue = 0;
 
-	if(ListBoxGetSelItemIndex(hLB) != -1)
-	{
+    if(ListBoxGetSelItemIndex(hLB) != -1)
+    {
         if(ListBoxCount(hLB) == 0) return(ReturnValue);
         CurrentIdx = ListBoxGetSelItemIndex(hLB);
         ReturnValue = ListBoxDeleteItem(hLB, CurrentIdx);
@@ -4359,10 +4359,10 @@ long CALLBACK ListBoxSelItemRemove(HWND hLB)
             ListBoxSetIndex(hLB, 0);
             return(ReturnValue);
         }
-		if(CurrentIdx >= NewLBCount) CurrentIdx--;
+        if(CurrentIdx >= NewLBCount) CurrentIdx--;
         ListBoxSetIndex(hLB, CurrentIdx);
     }
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -4510,29 +4510,30 @@ void CALLBACK ScrollBarShowHide(HWND hWnd, long ObjWidth, long ObjHeight, long U
 // Create a new docking box
 HWND CALLBACK CreateDockingBox(CStr Title, WNDPROC WindowProc, HWND hRoot, char *IniFile)
 {
-	HWND ReturnValue;
+    HWND ReturnValue;
 
-	ReturnValue = CreateContainer(0, 0, 1, 1, 1, hRoot, Title, &DefaultDockingProc);
+    ReturnValue = CreateContainer(0, 0, 1, 1, 1, hRoot, Title, &DefaultDockingProc);
     if(ReturnValue == NULL) return(NULL);
-	// Set it in allocated extra bytes (defined in the class)
-	SetWindowLong(ReturnValue, 0, (long) WindowProc);
-	// Another extra
-	SetWindowLong(ReturnValue, 4, (long) IniFile);
-	return(ReturnValue);
+    // Set it in allocated extra bytes (defined in the class)
+    SetWindowLong(ReturnValue, 0, (long) WindowProc);
+    // Another extra
+    SetWindowLong(ReturnValue, 4, (long) IniFile);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Return the current docking state of a docking box
 long CALLBACK DockingBoxGetState(HWND hDock)
 {
-	return(cDock->GetWindowState(hDock));
+    return(cDock->GetWindowState(hDock));
 }
 
 // -----------------------------------------------------------------------
 // Remove the specified window from the docking frame
 void CALLBACK DockingBoxRemove(HWND hDock)
 {
-	cDock->RemoveWindow(hDock);
+    IniWriteKey("Layout", "Dock" + ControlGetText(hDock) + "Visible", 0, (char *) GetWindowLong(hDock, 4));
+    cDock->RemoveWindow(hDock);
 }
 
 // -----------------------------------------------------------------------
@@ -4541,46 +4542,46 @@ void CALLBACK DockingBoxShow(HWND hDock, int MaxXSize, int MaxYSize,
                              int DefaultXSize, int DefaultYSize,
                              int DefaultState)
 {
-	int DockState;
-	RECT DockRect;
-	int DockSize;
-	int DefaultSizeX = DefaultXSize;
-	int DefaultSizeY = DefaultYSize;
+    int DockState;
+    RECT DockRect;
+    int DockSize;
+    int DefaultSizeX = DefaultXSize;
+    int DefaultSizeY = DefaultYSize;
 
-	if(!cDock->IsDockPane(hDock))
-	{
-		DockingBoxReadState(ControlGetText(hDock), DockState, DockRect, DockSize, DefaultState, DefaultSizeX, DefaultSizeY, (char *) GetWindowLong(hDock, 4));
-		DefaultSizeX = DockRect.right - DockRect.left;
-		DefaultSizeY = DockRect.bottom - DockRect.top;
-		cDock->AddWindow(hDock, MaxXSize, MaxYSize, DefaultSizeX, DefaultSizeY);
-		// DockSize is used for docked windows while 
-		// DockRect is used for floating ones
-		cDock->SetWindow(hDock, DockState, DockRect, DockSize);
-	}
+    if(!cDock->IsDockPane(hDock))
+    {
+        DockingBoxReadState(ControlGetText(hDock), DockState, DockRect, DockSize, DefaultState, DefaultSizeX, DefaultSizeY, (char *) GetWindowLong(hDock, 4));
+        DefaultSizeX = DockRect.right - DockRect.left;
+        DefaultSizeY = DockRect.bottom - DockRect.top;
+        cDock->AddWindow(hDock, MaxXSize, MaxYSize, DefaultSizeX, DefaultSizeY);
+        // DockSize is used for docked windows while 
+        // DockRect is used for floating ones
+        cDock->SetWindow(hDock, DockState, DockRect, DockSize);
+    }
 }
 
 // -----------------------------------------------------------------------
 // Read the latest visible state of a docking window
 long CALLBACK DockingBoxWasVisible(CStr DockName, CStr IniFile)
 {
-	CStr InitValue;
+    CStr InitValue;
 
-	InitValue = IniReadKey("Layout", "Dock" + DockName + "Visible", IniFile);
+    InitValue = IniReadKey("Layout", "Dock" + DockName + "Visible", IniFile);
     if(InitValue.Len() == 0) return(FALSE);
-	else return(InitValue.Get_Long());
+    else return(InitValue.Get_Long());
 }
 
 // -----------------------------------------------------------------------
 // Repaint a docking box and all it's childs
 void CALLBACK DockingBoxRepaint(HWND hWnd)
 {
-	ControlRefreshLocal(hWnd);
-	EnumChildWindows(hWnd, &EnumDockChilds, 0);
+    ControlRefreshLocal(hWnd);
+    EnumChildWindows(hWnd, &EnumDockChilds, 0);
 }
                     
 int CALLBACK EnumDockChilds(HWND hWnd, long lParam)
 {
-	ControlRefreshLocal(hWnd);
+    ControlRefreshLocal(hWnd);
     return(TRUE);
 }
 
@@ -4589,84 +4590,84 @@ int CALLBACK EnumDockChilds(HWND hWnd, long lParam)
 void CALLBACK DockingBoxReadState(CStr DockName, int &State, RECT &Rect, int &Size, int DefaultState, int DefaultSizeX,
                                   int DefaultSizeY, CStr IniFile)
 {
-	CStr InitValue;
+    CStr InitValue;
 
-	if(!DefaultSizeX) DefaultSizeX = 160;
-	if(!DefaultSizeY) DefaultSizeY = 120;
+    if(!DefaultSizeX) DefaultSizeX = 160;
+    if(!DefaultSizeY) DefaultSizeY = 120;
 
-	InitValue = IniReadKey("Layout", "Dock" + DockName + "State", IniFile);
+    InitValue = IniReadKey("Layout", "Dock" + DockName + "State", IniFile);
     if(InitValue.Len() == 0) State = DefaultState;
-	else State = InitValue.Get_Long();
+    else State = InitValue.Get_Long();
 
-	InitValue = IniReadKey("Layout", "Dock" + DockName + "Left", IniFile);
+    InitValue = IniReadKey("Layout", "Dock" + DockName + "Left", IniFile);
     if(InitValue.Len() == 0)
     {
-		Rect.left = 0;
-		State = DefaultState;
+        Rect.left = 0;
+        State = DefaultState;
     }
     else
     {
         Rect.left = InitValue.Get_Long();
-	}
-	if(Rect.left < 0) Rect.left = 0;
+    }
+    if(Rect.left < 0) Rect.left = 0;
 
-	InitValue = IniReadKey("Layout", "Dock" + DockName + "Top", IniFile);
+    InitValue = IniReadKey("Layout", "Dock" + DockName + "Top", IniFile);
     if(InitValue.Len() == 0)
     {
-		Rect.top = 0;
-		State = DefaultState;
+        Rect.top = 0;
+        State = DefaultState;
     }
     else
     {
         Rect.top = InitValue.Get_Long();
-	}
-	if(Rect.top < 0) Rect.top = 0;
+    }
+    if(Rect.top < 0) Rect.top = 0;
 
-	InitValue = IniReadKey("Layout", "Dock" + DockName + "Width", IniFile);
+    InitValue = IniReadKey("Layout", "Dock" + DockName + "Width", IniFile);
     if(InitValue.Len() == 0)
     {
-		Rect.left = 0;
-		Rect.right = DefaultSizeX;
-		State = DefaultState;
+        Rect.left = 0;
+        Rect.right = DefaultSizeX;
+        State = DefaultState;
     }
     else
     {
         Rect.right = Rect.left + InitValue.Get_Long();
-	}
-	if(Rect.right < 0) Rect.right = 0;
+    }
+    if(Rect.right < 0) Rect.right = 0;
 
-	InitValue = IniReadKey("Layout", "Dock" + DockName + "Height", IniFile);
+    InitValue = IniReadKey("Layout", "Dock" + DockName + "Height", IniFile);
     if(InitValue.Len() == 0)
     {
-		Rect.top = 0;
-		Rect.bottom = DefaultSizeY;
-		State = DefaultState;
+        Rect.top = 0;
+        Rect.bottom = DefaultSizeY;
+        State = DefaultState;
     }
     else
     {
         Rect.bottom = Rect.top + InitValue.Get_Long();
-	}
-	if(Rect.bottom < 0) Rect.bottom = 0;
+    }
+    if(Rect.bottom < 0) Rect.bottom = 0;
 
-	if(IsRectEmpty(&Rect))
-	{
-		Rect.left = 0;
-		Rect.right = DefaultSizeX;
-		Rect.top = 0;
-		Rect.bottom = DefaultSizeY;
-	}
+    if(IsRectEmpty(&Rect))
+    {
+        Rect.left = 0;
+        Rect.right = DefaultSizeX;
+        Rect.top = 0;
+        Rect.bottom = DefaultSizeY;
+    }
 
-	switch(State)
-	{
-		case DOCKINGBOX_LEFT:
-		case DOCKINGBOX_RIGHT:
-			Size = Rect.right - Rect.left;
-			break;
-		case DOCKINGBOX_TOP:
-		case DOCKINGBOX_BOTTOM:
-			Size = Rect.bottom - Rect.top;
-			break;
-	}
+    switch(State)
+    {
+        case DOCKINGBOX_LEFT:
+        case DOCKINGBOX_RIGHT:
+            Size = Rect.right - Rect.left;
+            break;
+        case DOCKINGBOX_TOP:
+        case DOCKINGBOX_BOTTOM:
+            Size = Rect.bottom - Rect.top;
+            break;
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -4674,52 +4675,52 @@ void CALLBACK DockingBoxReadState(CStr DockName, int &State, RECT &Rect, int &Si
 void CALLBACK DockingBoxSaveState(HWND hDock, CStr DockName, int Visible, CStr IniFile)
 {
     int DockState;
-	RECT DockRect;
+    RECT DockRect;
 
-	if(cDock->IsDockPane(hDock))
-	{
-		DockState = cDock->GetWindowState(hDock, &DockRect);
-		if(DockRect.left < 0) DockRect.left = 0;
-		if(DockRect.top < 0) DockRect.top = 0;
-		if(DockRect.right < 0) DockRect.right = 0;
-		if(DockRect.bottom < 0) DockRect.bottom = 0;
-		IniWriteKey("Layout", "Dock" + DockName + "Visible", Visible, IniFile);
-		IniWriteKey("Layout", "Dock" + DockName + "State", DockState, IniFile);
-		IniWriteKey("Layout", "Dock" + DockName + "Left", DockRect.left, IniFile);
-		IniWriteKey("Layout", "Dock" + DockName + "Top", DockRect.top, IniFile);
-		IniWriteKey("Layout", "Dock" + DockName + "Width", DockRect.right - DockRect.left, IniFile);
-		IniWriteKey("Layout", "Dock" + DockName + "Height", DockRect.bottom - DockRect.top, IniFile);
-	}
+    if(cDock->IsDockPane(hDock))
+    {
+        DockState = cDock->GetWindowState(hDock, &DockRect);
+        if(DockRect.left < 0) DockRect.left = 0;
+        if(DockRect.top < 0) DockRect.top = 0;
+        if(DockRect.right < 0) DockRect.right = 0;
+        if(DockRect.bottom < 0) DockRect.bottom = 0;
+        IniWriteKey("Layout", "Dock" + DockName + "Visible", Visible, IniFile);
+        IniWriteKey("Layout", "Dock" + DockName + "State", DockState, IniFile);
+        IniWriteKey("Layout", "Dock" + DockName + "Left", DockRect.left, IniFile);
+        IniWriteKey("Layout", "Dock" + DockName + "Top", DockRect.top, IniFile);
+        IniWriteKey("Layout", "Dock" + DockName + "Width", DockRect.right - DockRect.left, IniFile);
+        IniWriteKey("Layout", "Dock" + DockName + "Height", DockRect.bottom - DockRect.top, IniFile);
+    }
 }
 
 // -----------------------------------------------------------------------
 // Original docking box proc (private)
 LRESULT CALLBACK DefaultDockingProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	WNDPROC UserHook;
-	
-	switch(uMsg)
-	{
+    WNDPROC UserHook;
+    
+    switch(uMsg)
+    {
         case WM_CREATE:
             return(0);
-		case DOCKINGBOX_MSG_CLOSE:
-			UserHook = (WNDPROC) GetWindowLong(hWnd, 0);
-			if(UserHook != NULL)
-			{
-				if(IsBadCodePtr((FARPROC) UserHook) == 0) CallWindowProc(UserHook, hWnd, uMsg, wParam, lParam);
-			}
-			DockingBoxSaveState(hWnd, ControlGetText(hWnd), SendMessage(hWnd, DOCKINGBOX_MSG_QUERY_STATE, 0, 0), (char *) GetWindowLong(hWnd, 4));
-			return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
+        case DOCKINGBOX_MSG_CLOSE:
+            UserHook = (WNDPROC) GetWindowLong(hWnd, 0);
+            if(UserHook != NULL)
+            {
+                if(IsBadCodePtr((FARPROC) UserHook) == 0) CallWindowProc(UserHook, hWnd, uMsg, wParam, lParam);
+            }
+            DockingBoxSaveState(hWnd, ControlGetText(hWnd), SendMessage(hWnd, DOCKINGBOX_MSG_QUERY_STATE, 0, 0), (char *) GetWindowLong(hWnd, 4));
+            return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
         case WM_DESTROY:
-			// Note: send a message DOCKINGBOX_MSG_QUERY_STATE to ourself
-			DockingBoxSaveState(hWnd, ControlGetText(hWnd), SendMessage(hWnd, DOCKINGBOX_MSG_QUERY_STATE, 0, 0), (char *) GetWindowLong(hWnd, 4));
-			return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
+            // Note: send a message DOCKINGBOX_MSG_QUERY_STATE to ourself
+            DockingBoxSaveState(hWnd, ControlGetText(hWnd), SendMessage(hWnd, DOCKINGBOX_MSG_QUERY_STATE, 0, 0), (char *) GetWindowLong(hWnd, 4));
+            return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
     }
-	UserHook = (WNDPROC) GetWindowLong(hWnd, 0);
-	if(UserHook != NULL)
-	{
-		if(IsBadCodePtr((FARPROC) UserHook) == 0) return(CallWindowProc(UserHook, hWnd, uMsg, wParam, lParam));
-	}
+    UserHook = (WNDPROC) GetWindowLong(hWnd, 0);
+    if(UserHook != NULL)
+    {
+        if(IsBadCodePtr((FARPROC) UserHook) == 0) return(CallWindowProc(UserHook, hWnd, uMsg, wParam, lParam));
+    }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 
 }
@@ -4840,19 +4841,19 @@ long CALLBACK ScreenHeight(void)
 // to given window coordinate
 void CALLBACK ScreenRectToClient(HWND hWnd, LPRECT RectToFill)
 {
-	POINT ScreenPoint;
-	
-	ScreenPoint.x = RectToFill->left;
-	ScreenPoint.y = RectToFill->top;
-	ScreenToClient(hWnd, &ScreenPoint);
-	RectToFill->left = ScreenPoint.x;
-	RectToFill->top = ScreenPoint.y;
-	ScreenPoint.x = RectToFill->right;
-	ScreenPoint.y = RectToFill->bottom;
-	ScreenToClient(hWnd, &ScreenPoint);
-	RectToFill->right = ScreenPoint.x;
-	RectToFill->bottom = ScreenPoint.y;
-	return;
+    POINT ScreenPoint;
+    
+    ScreenPoint.x = RectToFill->left;
+    ScreenPoint.y = RectToFill->top;
+    ScreenToClient(hWnd, &ScreenPoint);
+    RectToFill->left = ScreenPoint.x;
+    RectToFill->top = ScreenPoint.y;
+    ScreenPoint.x = RectToFill->right;
+    ScreenPoint.y = RectToFill->bottom;
+    ScreenToClient(hWnd, &ScreenPoint);
+    RectToFill->right = ScreenPoint.x;
+    RectToFill->bottom = ScreenPoint.y;
+    return;
 }
 // -----------------------------------------------------------------------
 // Cursor functions
@@ -4930,13 +4931,13 @@ CStr CALLBACK IniReadKey(CStr Section, CStr Key, CStr File)
 // Read a boolean .ini value
 long CALLBACK IniReadBoolKey(CStr Section, CStr Key, CStr File)
 {
-	CStr BufString;
+    CStr BufString;
 
-	BufString = IniReadKey(Section, Key, File);
-	if(BufString.Len() == 0) return(0);
-	if(strcmp(BufString.Get_String(), "0") == 0) return(0);
-	// True on alien value
-	return(1);
+    BufString = IniReadKey(Section, Key, File);
+    if(BufString.Len() == 0) return(0);
+    if(strcmp(BufString.Get_String(), "0") == 0) return(0);
+    // True on alien value
+    return(1);
 }
 
 // -----------------------------------------------------------------------
@@ -4969,11 +4970,11 @@ long CALLBACK IniWriteKey(CStr Section, CStr Key, CStr Value, CStr File)
 // Return a random generated number
 long CALLBACK MathGenerateRandomNumber(long MaxNumber)
 {
-	time_t CurTime;
+    time_t CurTime;
 
-	CurTime = time(NULL);
-	srand(CurTime);
-	return(rand() % MaxNumber);
+    CurTime = time(NULL);
+    srand(CurTime);
+    return(rand() % MaxNumber);
 }
 
 // -----------------------------------------------------------------------
@@ -5045,11 +5046,11 @@ long CALLBACK MiscClipBoardIsEmpty(void)
         hClip = GetClipboardData(CF_TEXT);
         if(hClip != 0)
         {
-			hClipLen = strlen((char *) GlobalLock(hClip));
-			if(hClipLen != 0) ReturnValue = 0;
-			GlobalUnlock(hClip);
+            hClipLen = strlen((char *) GlobalLock(hClip));
+            if(hClipLen != 0) ReturnValue = 0;
+            GlobalUnlock(hClip);
         }
-		CloseClipboard();
+        CloseClipboard();
     }
     return(ReturnValue);
 }
@@ -5067,9 +5068,9 @@ long CALLBACK MiscWaitEvents(HWND hClient, HACCEL hAccelerator, HWND hWndAcceler
 {
     MSG WAMsg;
 
-	memset(&WAMsg, 0, sizeof(WAMsg));
-	if((hClient != 0) && (hAccelerator != 0))
-	{
+    memset(&WAMsg, 0, sizeof(WAMsg));
+    if((hClient != 0) && (hAccelerator != 0))
+    {
         while(GetMessage(&WAMsg, 0, 0, 0) != 0)
         {
             if(TranslateMDISysAccel(hClient, &WAMsg) == 0)
@@ -5116,7 +5117,7 @@ long CALLBACK MiscWaitEvents(HWND hClient, HACCEL hAccelerator, HWND hWndAcceler
         }
         return(WAMsg.wParam);
     }
-	return(WAMsg.wParam);
+    return(WAMsg.wParam);
 }
 
 // -----------------------------------------------------------------------
@@ -5140,11 +5141,11 @@ void CALLBACK MiscDoEvents(HWND hClient, HACCEL hAccelerator, HWND hWndAccelerat
 {
     MSG WAMsg;
 
-	memset(&WAMsg, 0, sizeof(WAMsg));
-	if((hClient != 0) && (hAccelerator != 0))
-	{
-		if(PeekMessage(&WAMsg, 0, 0, 0, PM_REMOVE) != 0)
-		{
+    memset(&WAMsg, 0, sizeof(WAMsg));
+    if((hClient != 0) && (hAccelerator != 0))
+    {
+        if(PeekMessage(&WAMsg, 0, 0, 0, PM_REMOVE) != 0)
+        {
             if(TranslateMDISysAccel(hClient, &WAMsg) == 0)
             {
                 if(TranslateAccelerator(hWndAccelerators, hAccelerator, &WAMsg) == 0)
@@ -5158,8 +5159,8 @@ void CALLBACK MiscDoEvents(HWND hClient, HACCEL hAccelerator, HWND hWndAccelerat
     }
     if((hClient != 0) && (hAccelerator == 0))
     {
-		if(PeekMessage(&WAMsg, 0, 0, 0, PM_REMOVE) != 0)
-		{
+        if(PeekMessage(&WAMsg, 0, 0, 0, PM_REMOVE) != 0)
+        {
             if(TranslateMDISysAccel(hClient, &WAMsg) == 0)
             {
                 TranslateMessage(&WAMsg);
@@ -5170,8 +5171,8 @@ void CALLBACK MiscDoEvents(HWND hClient, HACCEL hAccelerator, HWND hWndAccelerat
     }
     if((hClient == 0) && (hAccelerator != 0))
     {
-		if(PeekMessage(&WAMsg, 0, 0, 0, PM_REMOVE) != 0)
-		{
+        if(PeekMessage(&WAMsg, 0, 0, 0, PM_REMOVE) != 0)
+        {
             if(TranslateAccelerator(hWndAccelerators, hAccelerator, &WAMsg) == 0)
             {
                 TranslateMessage(&WAMsg);
@@ -5182,13 +5183,13 @@ void CALLBACK MiscDoEvents(HWND hClient, HACCEL hAccelerator, HWND hWndAccelerat
     }
     if((hClient == 0) && (hAccelerator == 0))
     {
-		if(PeekMessage(&WAMsg, 0, 0, 0, PM_REMOVE) != 0)
-		{
+        if(PeekMessage(&WAMsg, 0, 0, 0, PM_REMOVE) != 0)
+        {
             TranslateMessage(&WAMsg);
             DispatchMessage(&WAMsg);
         }
     }
-	return;
+    return;
 }
 
 // -----------------------------------------------------------------------
@@ -5196,10 +5197,10 @@ void CALLBACK MiscDoEvents(HWND hClient, HACCEL hAccelerator, HWND hWndAccelerat
 HRESULT CALLBACK MiscObtainGUID(LPGUID GUIDToObtain)
 {
     HRESULT ReturnValue = 0;
-	CoInitialize(0);
+    CoInitialize(0);
     ReturnValue = CoCreateGuid(GUIDToObtain);
     CoUninitialize();
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -5207,14 +5208,14 @@ HRESULT CALLBACK MiscObtainGUID(LPGUID GUIDToObtain)
 // + garbage collector
 HGLOBAL CALLBACK MiscAllocMem(long Amount)
 {
-	HGLOBAL Allocated_Mem;
+    HGLOBAL Allocated_Mem;
 
     if(Amount != 0)
     {
-		Allocated_Mem = calloc(Amount, 1);
-		Memory_Blocks.Add(Allocated_Mem);
-		return(Allocated_Mem);
-	}
+        Allocated_Mem = calloc(Amount, 1);
+        Memory_Blocks.Add(Allocated_Mem);
+        return(Allocated_Mem);
+    }
     return(0);
 }
 
@@ -5223,79 +5224,79 @@ HGLOBAL CALLBACK MiscAllocMem(long Amount)
 // + garbage collector
 long CALLBACK MiscFreeMem(void *MemHandle)
 {
-	int i;
+    int i;
 
-	if(MemHandle != NULL)
-	{
-		free(MemHandle);
-		for(i = 0; i < Memory_Blocks.Amount(); i++)
-		{
-			if(Memory_Blocks.Get(i)->Content == MemHandle)
-			{
-				Memory_Blocks.Del(i);
-				break;
-			}
-		}
-	}
-	return(1);
+    if(MemHandle != NULL)
+    {
+        free(MemHandle);
+        for(i = 0; i < Memory_Blocks.Amount(); i++)
+        {
+            if(Memory_Blocks.Get(i)->Content == MemHandle)
+            {
+                Memory_Blocks.Del(i);
+                break;
+            }
+        }
+    }
+    return(1);
 }
 
 // -----------------------------------------------------------------------
 // Copy a memory block several times
 void CALLBACK MiscCopyMemLoop(void *MemSource, void *MemDest, long Length, long MemLeftOffset, long RepeatCount)
 {
-	CopyMem((char *) MemSource, (char *) MemDest, Length, MemLeftOffset, RepeatCount);
+    CopyMem((char *) MemSource, (char *) MemDest, Length, MemLeftOffset, RepeatCount);
 }
 
 // -----------------------------------------------------------------------
 // Copy a memory block several times
 void CALLBACK MiscCopyMemWithOffsets(void *MemSource, void *MemDest, long Length, long SourceOffset, long DestOffset)
 {
-	CopyMem2((char *) MemSource,(char *)  MemDest, Length, SourceOffset, DestOffset);
+    CopyMem2((char *) MemSource,(char *)  MemDest, Length, SourceOffset, DestOffset);
 }
 
 // -----------------------------------------------------------------------
 // Return the class of the operating system
 long CALLBACK MiscGetOSClass(void)
 {
-	int Cl = 0;			// Default is Windows 9x
-	OSVERSIONINFO MyOsVersion;
+    int Cl = 0;         // Default is Windows 9x
+    OSVERSIONINFO MyOsVersion;
 
-	MyOsVersion.dwOSVersionInfoSize = sizeof(MyOsVersion);
+    MyOsVersion.dwOSVersionInfoSize = sizeof(MyOsVersion);
     if(GetVersionEx(&MyOsVersion) != 0)
-	{
+    {
         if(MyOsVersion.dwMajorVersion >= 5)
         {
-			if(MyOsVersion.dwMajorVersion >= 6)
-			{
-				// Windows 7 (6.1)
-				if(MyOsVersion.dwPlatformId == VER_PLATFORM_WIN32_NT)
+            if(MyOsVersion.dwMajorVersion >= 6)
+            {
+                // Windows 7 (6.1)
+                if(MyOsVersion.dwPlatformId == VER_PLATFORM_WIN32_NT)
                 {
                     Cl |= 4;
                     Cl |= 8;
-			    }
+                }
             }
-			else
-			{
-				if(MyOsVersion.dwMinorVersion >= 1)
-				{
-					// Windows XP (5.1)
-					if(MyOsVersion.dwPlatformId == VER_PLATFORM_WIN32_NT) Cl |= 4;
-				}
-				else
-				{
-					// Windows 2k or Me (5.0)
-					if(MyOsVersion.dwPlatformId == VER_PLATFORM_WIN32_NT) Cl |= 2;
-				}
-			}
-		}
+            else
+            {
+                if(MyOsVersion.dwMinorVersion >= 1)
+                {
+                    // Windows XP (5.1)
+                    if(MyOsVersion.dwPlatformId == VER_PLATFORM_WIN32_NT) Cl |= 4;
+                }
+                else
+                {
+                    // Windows 2k or Me (5.0)
+                    if(MyOsVersion.dwPlatformId == VER_PLATFORM_WIN32_NT) Cl |= 2;
+                }
+            }
+        }
         else
         {
-			// Windows NT or 9x
-			if(MyOsVersion.dwPlatformId == VER_PLATFORM_WIN32_NT) Cl |= 1;
-		}    
-	}
-	return(Cl);
+            // Windows NT or 9x
+            if(MyOsVersion.dwPlatformId == VER_PLATFORM_WIN32_NT) Cl |= 1;
+        }    
+    }
+    return(Cl);
 }
 
 // -----------------------------------------------------------------------
@@ -5344,7 +5345,7 @@ CStr CALLBACK DateGetNow(long ReportsSeconds)
             TempReturnValue = TempReturnValue + ReturnedTime;
         }
     }
-	ReturnValue = TempReturnValue;
+    ReturnValue = TempReturnValue;
     return(ReturnValue);
 }
 
@@ -5352,7 +5353,7 @@ CStr CALLBACK DateGetNow(long ReportsSeconds)
 // Get current year
 CStr CALLBACK DateGetYear(void)
 {
-	return(DateGetFormat("yyyy"));
+    return(DateGetFormat("yyyy"));
 }
 
 // -----------------------------------------------------------------------
@@ -5400,7 +5401,7 @@ CStr CALLBACK DateGetFormat(CStr DateFormat)
     long DateLen = 0;
     long DateMem = 0;
     
-	GetLocalTime(&DtNow);
+    GetLocalTime(&DtNow);
     // Retrieve the needed length
     DateLen = GetDateFormat(LOCALE_USER_DEFAULT, 0, &DtNow, DateFormat.Get_String(), (char *) 0, 0);
     DateMem = AllocMem(DateLen);
@@ -5427,7 +5428,7 @@ CStr CALLBACK DateGetTimeFormat(CStr DateFormat)
     long DateLen = 0;
     long DateMem = 0;
     
-	GetLocalTime(&DtNow);
+    GetLocalTime(&DtNow);
     // Retrieve the needed length
     DateLen = GetTimeFormat(LOCALE_USER_DEFAULT, 0, &DtNow, DateFormat.Get_String(), (char *) 0, 0);
     DateMem = AllocMem(DateLen);
@@ -5448,114 +5449,114 @@ CStr CALLBACK DateGetTimeFormat(CStr DateFormat)
 // Retrieve a date from a string
 long CALLBACK DateStringToDate(CStr StrDate, FILETIME *DestDate)
 {
-	char *DateToConvert;
-	char ReadChar;
-	SYSTEMTIME TmpDate;
+    char *DateToConvert;
+    char ReadChar;
+    SYSTEMTIME TmpDate;
 
-	memset(&TmpDate, 0, sizeof(TmpDate));
-	// Should handle formats:
-	// dd[/|-]mm[/|-]yy[yy] [hh:mm[:ss]]
-	// (Also verify the coherency of the date)
-	DateToConvert = StrDate.Get_String();
+    memset(&TmpDate, 0, sizeof(TmpDate));
+    // Should handle formats:
+    // dd[/|-]mm[/|-]yy[yy] [hh:mm[:ss]]
+    // (Also verify the coherency of the date)
+    DateToConvert = StrDate.Get_String();
 
-	// Get the day
-	ReadChar = DateToConvert[0];
-	if(!isdigit(ReadChar)) return(0);
-	TmpDate.wDay = (ReadChar - 0x30) * 10;
-	DateToConvert++;
-	ReadChar = DateToConvert[0];
-	if(!isdigit(ReadChar)) return(0);
-	TmpDate.wDay = TmpDate.wDay + (ReadChar - 0x30);
-	DateToConvert++;
+    // Get the day
+    ReadChar = DateToConvert[0];
+    if(!isdigit(ReadChar)) return(0);
+    TmpDate.wDay = (ReadChar - 0x30) * 10;
+    DateToConvert++;
+    ReadChar = DateToConvert[0];
+    if(!isdigit(ReadChar)) return(0);
+    TmpDate.wDay = TmpDate.wDay + (ReadChar - 0x30);
+    DateToConvert++;
 
-	// Separator...
-	if(DateToConvert[0] != '-' && DateToConvert[0] != '/') return(0);
-	DateToConvert++;
+    // Separator...
+    if(DateToConvert[0] != '-' && DateToConvert[0] != '/') return(0);
+    DateToConvert++;
 
-	// Get the month
-	ReadChar = DateToConvert[0];
-	if(!isdigit(ReadChar)) return(0);
-	TmpDate.wMonth = (ReadChar - 0x30) * 10;
-	DateToConvert++;
-	ReadChar = DateToConvert[0];
-	if(!isdigit(ReadChar)) return(0);
-	TmpDate.wMonth = TmpDate.wMonth + (ReadChar - 0x30);
-	DateToConvert++;
+    // Get the month
+    ReadChar = DateToConvert[0];
+    if(!isdigit(ReadChar)) return(0);
+    TmpDate.wMonth = (ReadChar - 0x30) * 10;
+    DateToConvert++;
+    ReadChar = DateToConvert[0];
+    if(!isdigit(ReadChar)) return(0);
+    TmpDate.wMonth = TmpDate.wMonth + (ReadChar - 0x30);
+    DateToConvert++;
 
-	// Separator...
-	if(DateToConvert[0] != '-' && DateToConvert[0] != '/') return(0);
-	DateToConvert++;
+    // Separator...
+    if(DateToConvert[0] != '-' && DateToConvert[0] != '/') return(0);
+    DateToConvert++;
 
-	// Get the year
-	ReadChar = DateToConvert[0];
-	if(!isdigit(ReadChar)) return(0);
-	TmpDate.wYear = (ReadChar - 0x30) * 10;
-	DateToConvert++;
-	ReadChar = DateToConvert[0];
-	if(!isdigit(ReadChar)) return(0);
-	TmpDate.wYear = TmpDate.wYear + (ReadChar - 0x30);
-	DateToConvert++;
-	// 4 digits ?
-	ReadChar = DateToConvert[0];
-	if(isdigit(ReadChar))
-	{
-		TmpDate.wYear = TmpDate.wYear * 10;
-		TmpDate.wYear = TmpDate.wYear + (ReadChar - 0x30);
-		DateToConvert++;
-		ReadChar = DateToConvert[0];
-		if(!isdigit(ReadChar)) return(0);
-		TmpDate.wYear = TmpDate.wYear * 10;
-		TmpDate.wYear = TmpDate.wYear + (ReadChar - 0x30);
-		DateToConvert++;
-	}
-	// There must be at least one blank char
-	if(!isspace(DateToConvert[0])) return(0);
-	while(isspace(DateToConvert[0]))
-	{
-		DateToConvert++;
-	}
+    // Get the year
+    ReadChar = DateToConvert[0];
+    if(!isdigit(ReadChar)) return(0);
+    TmpDate.wYear = (ReadChar - 0x30) * 10;
+    DateToConvert++;
+    ReadChar = DateToConvert[0];
+    if(!isdigit(ReadChar)) return(0);
+    TmpDate.wYear = TmpDate.wYear + (ReadChar - 0x30);
+    DateToConvert++;
+    // 4 digits ?
+    ReadChar = DateToConvert[0];
+    if(isdigit(ReadChar))
+    {
+        TmpDate.wYear = TmpDate.wYear * 10;
+        TmpDate.wYear = TmpDate.wYear + (ReadChar - 0x30);
+        DateToConvert++;
+        ReadChar = DateToConvert[0];
+        if(!isdigit(ReadChar)) return(0);
+        TmpDate.wYear = TmpDate.wYear * 10;
+        TmpDate.wYear = TmpDate.wYear + (ReadChar - 0x30);
+        DateToConvert++;
+    }
+    // There must be at least one blank char
+    if(!isspace(DateToConvert[0])) return(0);
+    while(isspace(DateToConvert[0]))
+    {
+        DateToConvert++;
+    }
 
-	// Get the hours
-	ReadChar = DateToConvert[0];
-	if(!isdigit(ReadChar)) return(0);
-	TmpDate.wHour = (ReadChar - 0x30) * 10;
-	DateToConvert++;
-	ReadChar = DateToConvert[0];
-	if(!isdigit(ReadChar)) return(0);
-	TmpDate.wHour = TmpDate.wHour + (ReadChar - 0x30);
-	DateToConvert++;
+    // Get the hours
+    ReadChar = DateToConvert[0];
+    if(!isdigit(ReadChar)) return(0);
+    TmpDate.wHour = (ReadChar - 0x30) * 10;
+    DateToConvert++;
+    ReadChar = DateToConvert[0];
+    if(!isdigit(ReadChar)) return(0);
+    TmpDate.wHour = TmpDate.wHour + (ReadChar - 0x30);
+    DateToConvert++;
 
-	// Separator...
-	if(DateToConvert[0] != ':') return(0);
-	DateToConvert++;
+    // Separator...
+    if(DateToConvert[0] != ':') return(0);
+    DateToConvert++;
 
-	// Get the minutes
-	ReadChar = DateToConvert[0];
-	if(!isdigit(ReadChar)) return(0);
-	TmpDate.wMinute = (ReadChar - 0x30) * 10;
-	DateToConvert++;
-	ReadChar = DateToConvert[0];
-	if(!isdigit(ReadChar)) return(0);
-	TmpDate.wMinute = TmpDate.wMinute + (ReadChar - 0x30);
-	DateToConvert++;
+    // Get the minutes
+    ReadChar = DateToConvert[0];
+    if(!isdigit(ReadChar)) return(0);
+    TmpDate.wMinute = (ReadChar - 0x30) * 10;
+    DateToConvert++;
+    ReadChar = DateToConvert[0];
+    if(!isdigit(ReadChar)) return(0);
+    TmpDate.wMinute = TmpDate.wMinute + (ReadChar - 0x30);
+    DateToConvert++;
 
-	// Optional separator for seconds
-	if(DateToConvert[0] == ':')
-	{
-		DateToConvert++;
-		// Get the seconds
-		ReadChar = DateToConvert[0];
-		if(!isdigit(ReadChar)) return(0);
-		TmpDate.wSecond = (ReadChar - 0x30) * 10;
-		DateToConvert++;
-		ReadChar = DateToConvert[0];
-		if(!isdigit(ReadChar)) return(0);
-		TmpDate.wSecond = TmpDate.wSecond + (ReadChar - 0x30);
-		DateToConvert++;
-	}
-	// (Return value is syncrhonized since SystemTimeToFileTime() will
-	// return 0 on failure)
-	return(SystemTimeToFileTime(&TmpDate, DestDate));
+    // Optional separator for seconds
+    if(DateToConvert[0] == ':')
+    {
+        DateToConvert++;
+        // Get the seconds
+        ReadChar = DateToConvert[0];
+        if(!isdigit(ReadChar)) return(0);
+        TmpDate.wSecond = (ReadChar - 0x30) * 10;
+        DateToConvert++;
+        ReadChar = DateToConvert[0];
+        if(!isdigit(ReadChar)) return(0);
+        TmpDate.wSecond = TmpDate.wSecond + (ReadChar - 0x30);
+        DateToConvert++;
+    }
+    // (Return value is syncrhonized since SystemTimeToFileTime() will
+    // return 0 on failure)
+    return(SystemTimeToFileTime(&TmpDate, DestDate));
 }
 
 // -----------------------------------------------------------------------
@@ -5580,15 +5581,15 @@ long CALLBACK StringFilterNonPrintableChars(long ASCIIChar, long CorrectChar)
 long CALLBACK StringIsLabel(CStr AsmText)
 {
     int i = 0;
-	CStr CharToTest;
+    CStr CharToTest;
 
-	// Can't begin by a number
-	if(StringIsDigitChar(AsmText.Mid(1, 1))) return(0);
+    // Can't begin by a number
+    if(StringIsDigitChar(AsmText.Mid(1, 1))) return(0);
     // Check first char
     for(i = 1 ; i <= (long) AsmText.Len(); i++)
     {
         CharToTest = AsmText.Mid(i, 1);
-		CharToTest = CharToTest.Upper_Case();
+        CharToTest = CharToTest.Upper_Case();
         if(StringIsLabelChar(CharToTest) == 0)
         {
             return(0);
@@ -5602,22 +5603,22 @@ long CALLBACK StringIsLabel(CStr AsmText)
 long CALLBACK StringIsHexaDecimal(CStr HexaText)
 {
     int i = 1;
-	int Max_Len = 8;
+    int Max_Len = 8;
     CStr CharToTest;
 
-	// Remove possible 0x prefix
-	if(HexaText.Len() >= 2)
-	{
-		if(HexaText[0] == '0' && (HexaText[1] == 'X' || HexaText[1] == 'x'))
-		{
-			i += 2;
-			Max_Len += 2;
-		}
-		// 0x only ?
-		if(i == 3 && HexaText.Len() == 2) return(0);
-	}
-	// Look for real chars number (either 8 or 10)
-	if(HexaText.Len() > Max_Len) return(0);
+    // Remove possible 0x prefix
+    if(HexaText.Len() >= 2)
+    {
+        if(HexaText[0] == '0' && (HexaText[1] == 'X' || HexaText[1] == 'x'))
+        {
+            i += 2;
+            Max_Len += 2;
+        }
+        // 0x only ?
+        if(i == 3 && HexaText.Len() == 2) return(0);
+    }
+    // Look for real chars number (either 8 or 10)
+    if(HexaText.Len() > Max_Len) return(0);
     // Check if content is valid
     for(; i <= (long) HexaText.Len(); i++)
     {
@@ -5646,7 +5647,7 @@ long CALLBACK StringIsDecimal(CStr DecText, long MaxLen)
     {
         if(i > (long) MaxLen) goto OverRideDecimal;
         CharToTest = DecText.Mid(i, 1);
-		CharToTest = CharToTest.Upper_Case();
+        CharToTest = CharToTest.Upper_Case();
         if(StringIsDigitChar(CharToTest) == 0)
         {
 OverRideDecimal:;
@@ -5670,7 +5671,7 @@ long CALLBACK StringIsLabelChar(CStr Letter)
 long CALLBACK StringIsDigitChar(CStr Letter)
 {
     if(Letter.Len() != 0) if((Letter.Asc() >= '0') && (Letter.Asc() <= '9')) return(1);
-	return(0);
+    return(0);
 }
 
 // -----------------------------------------------------------------------
@@ -5678,16 +5679,16 @@ long CALLBACK StringIsDigitChar(CStr Letter)
 long CALLBACK StringIsHexaChar(CStr Letter)
 {
     CStr LetterUpper_Case;
-	
-	if(Letter.Len() != 0)
-	{
-		LetterUpper_Case = Letter.Upper_Case();
-		if(LetterUpper_Case.Asc() >= 'A' && LetterUpper_Case.Asc() <= 'F')
-		{
-			return(1);
-		}
-	}
-	return(0);
+    
+    if(Letter.Len() != 0)
+    {
+        LetterUpper_Case = Letter.Upper_Case();
+        if(LetterUpper_Case.Asc() >= 'A' && LetterUpper_Case.Asc() <= 'F')
+        {
+            return(1);
+        }
+    }
+    return(0);
 }
 
 // -----------------------------------------------------------------------
@@ -5696,15 +5697,15 @@ long CALLBACK StringIsAlphaChar(CStr Letter)
 {
     CStr LetterUpper_Case;
     
-	if(Letter.Len() != 0)
-	{
-		LetterUpper_Case = Letter.Upper_Case();
-		if(LetterUpper_Case.Asc() >= 'A' && LetterUpper_Case.Asc() <= 'Z')
-		{
-			return(1);
-		}
-	}
-	return(0);
+    if(Letter.Len() != 0)
+    {
+        LetterUpper_Case = Letter.Upper_Case();
+        if(LetterUpper_Case.Asc() >= 'A' && LetterUpper_Case.Asc() <= 'Z')
+        {
+            return(1);
+        }
+    }
+    return(0);
 }
 
 // -----------------------------------------------------------------------
@@ -5712,7 +5713,7 @@ long CALLBACK StringIsAlphaChar(CStr Letter)
 long CALLBACK StringIsBlankChar(CStr Letter)
 {
     if(Letter.Len() != 0) if(Letter.Asc() == 32 || Letter.Asc() == 9) return(1);
-	return(0);
+    return(0);
 }
 
 // -----------------------------------------------------------------------
@@ -5777,7 +5778,7 @@ long CALLBACK StringIsEOL(CStr Letter)
 {
     if(Letter.Len() == 0) return(1);
     if(Letter.Asc() == 13 || Letter.Asc() == 10 || Letter.Asc() == 0) return(1);
-	return(0);
+    return(0);
 }
 
 // -----------------------------------------------------------------------
@@ -5788,16 +5789,16 @@ CStr CALLBACK StringNumberComplement(long Nbr, long Complement)
     CStr BufString;
     CStr BufStringSource;
     
-	if(Complement > 0)
-	{
+    if(Complement > 0)
+    {
         BufString = BufString.String(16, 1);
-		BufStringSource = "%0";
-		BufStringSource = BufStringSource + Complement;
-		BufStringSource = BufStringSource + "lu";
-		wsprintf(BufString.Get_String(), BufStringSource.Get_String(), Nbr);
+        BufStringSource = "%0";
+        BufStringSource = BufStringSource + Complement;
+        BufStringSource = BufStringSource + "lu";
+        wsprintf(BufString.Get_String(), BufStringSource.Get_String(), Nbr);
     }
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -5808,16 +5809,16 @@ CStr CALLBACK StringHexNumberComplement(long Nbr, long Complement)
     CStr BufString;
     CStr BufStringSource;
     
-	if(Complement > 0)
-	{
+    if(Complement > 0)
+    {
         BufString = BufString.String(Complement, 1);
-		BufStringSource = "%0";
-		BufStringSource = BufStringSource + Complement;
-		BufStringSource = BufStringSource + "lX";
-		wsprintf(BufString.Get_String(), BufStringSource.Get_String(), Nbr);
+        BufStringSource = "%0";
+        BufStringSource = BufStringSource + Complement;
+        BufStringSource = BufStringSource + "lX";
+        wsprintf(BufString.Get_String(), BufStringSource.Get_String(), Nbr);
     }
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -5828,29 +5829,29 @@ CStr CALLBACK StringOctNumberComplement(long Nbr, long Complement)
     CStr BufString;
     CStr BufStringSource;
     
-	if(Complement > 0)
-	{
+    if(Complement > 0)
+    {
         BufString = BufString.String(Complement, 1);
-		BufStringSource = "%0";
-		BufStringSource = BufStringSource + Complement;
-		BufStringSource = BufStringSource + "lo";
-		sprintf(BufString.Get_String(), BufStringSource.Get_String(), Nbr);
+        BufStringSource = "%0";
+        BufStringSource = BufStringSource + Complement;
+        BufStringSource = BufStringSource + "lo";
+        sprintf(BufString.Get_String(), BufStringSource.Get_String(), Nbr);
     }
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Complement a binary number
 CStr CALLBACK StringBinNumberComplement(long Nbr, long Complement)
 {
-	CStr ReturnValue;
+    CStr ReturnValue;
     CStr BufString;
     CStr BufStringMid;
     long BinMask = 1;
     int i = 0;
     
-	if(Complement > 32) Complement = 32;
+    if(Complement > 32) Complement = 32;
     if(Complement < 0) Complement = 0;
     for(i = 0; i <= 31 ; i++)
     {
@@ -5861,16 +5862,16 @@ CStr CALLBACK StringBinNumberComplement(long Nbr, long Complement)
     for(i = 1; i <= (long) BufString.Len(); i++)
     {
         BufStringMid = BufString.Mid(i, 1);
-		if(strcmp(BufStringMid.Get_String(), "0") != 0) break;
+        if(strcmp(BufStringMid.Get_String(), "0") != 0) break;
     }
     BufString = BufString.Mid(i);
     if(BufString.Len() < (long) Complement)
     {
         BufStringMid = BufString.String(Complement - BufString.Len(), '0');
-		BufString = BufStringMid + BufString;
+        BufString = BufStringMid + BufString;
     }
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -5892,27 +5893,27 @@ long CALLBACK StringLen(long StringToCalc)
 // Cat 2 strings
 CStr CALLBACK StringCat(CStr String1, CStr String2)
 {
-//	CStr ReturnValue;
-//	CStr BufString1;
-//	CStr BufString2;
+//  CStr ReturnValue;
+//  CStr BufString1;
+//  CStr BufString2;
 
-//	BufString1 = String1;
-//	BufString2 = String2;
-//	BufString1 = BufString1 + BufString2;
-//	ReturnValue = BufString1;
-	return(String1 + String2);
+//  BufString1 = String1;
+//  BufString2 = String2;
+//  BufString1 = BufString1 + BufString2;
+//  ReturnValue = BufString1;
+    return(String1 + String2);
 }
 
 // -----------------------------------------------------------------------
 // Convert a decimal into a string
 CStr CALLBACK StringDecToString(long DecimalNbr)
 {
-	//CStr ReturnValue;
+    //CStr ReturnValue;
     //CStr BufString1;
 
     //BufString1 = DecimalNbr;
-	//ReturnValue = BufString1;
-	return(DecimalNbr);
+    //ReturnValue = BufString1;
+    return(DecimalNbr);
 }
 
 // -----------------------------------------------------------------------
@@ -5962,10 +5963,10 @@ CountAll:;
 CStr CALLBACK StringReplace(CStr MaIn_String, CStr StringToFind, CStr StringToReplace,
                             long ReplaceStart, long RepCount, long CompareType)
 {
-	CStr ReturnValue;
+    CStr ReturnValue;
 
-	ReturnValue = MaIn_String.Replace(StringToFind,StringToReplace,ReplaceStart,RepCount,CompareType);
-	return(ReturnValue);
+    ReturnValue = MaIn_String.Replace(StringToFind,StringToReplace,ReplaceStart,RepCount,CompareType);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -5973,16 +5974,16 @@ CStr CALLBACK StringReplace(CStr MaIn_String, CStr StringToFind, CStr StringToRe
 CStr CALLBACK StringHex32(long Number)
 {
     CStr ReturnValue;
-	CStr BufString;
+    CStr BufString;
 
-	ReturnValue = ReturnValue.Hex_To_String(Number);
+    ReturnValue = ReturnValue.Hex_To_String(Number);
     if(ReturnValue.Len() < 8)
     {
-		BufString = BufString.String(8 - ReturnValue.Len(), '0');
-		BufString = BufString + ReturnValue;
-		ReturnValue = BufString;
-	}
-	return(ReturnValue);
+        BufString = BufString.String(8 - ReturnValue.Len(), '0');
+        BufString = BufString + ReturnValue;
+        ReturnValue = BufString;
+    }
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -5990,16 +5991,16 @@ CStr CALLBACK StringHex32(long Number)
 CStr CALLBACK StringHex16(long Number)
 {
     CStr ReturnValue;
-	CStr BufString;
+    CStr BufString;
 
-	ReturnValue = ReturnValue.Hex_To_String(Number);
+    ReturnValue = ReturnValue.Hex_To_String(Number);
     if(ReturnValue.Len() < 4)
     {
-		BufString = BufString.String(4 - ReturnValue.Len(), '0');
-		BufString = BufString + ReturnValue;
-		ReturnValue = BufString;
-	}
-	return(ReturnValue);
+        BufString = BufString.String(4 - ReturnValue.Len(), '0');
+        BufString = BufString + ReturnValue;
+        ReturnValue = BufString;
+    }
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -6007,16 +6008,16 @@ CStr CALLBACK StringHex16(long Number)
 CStr CALLBACK StringHex8(long Number)
 {
     CStr ReturnValue;
-	CStr BufString;
+    CStr BufString;
 
-	ReturnValue = ReturnValue.Hex_To_String(Number);
+    ReturnValue = ReturnValue.Hex_To_String(Number);
     if(ReturnValue.Len() < 2)
     {
-		BufString = BufString.String(2 - ReturnValue.Len(), '0');
-		BufString = BufString + ReturnValue;
-		ReturnValue = BufString;
-	}
-	return(ReturnValue);
+        BufString = BufString.String(2 - ReturnValue.Len(), '0');
+        BufString = BufString + ReturnValue;
+        ReturnValue = BufString;
+    }
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -6028,15 +6029,15 @@ CStr CALLBACK StringCopy(CStr DestString, CStr SourceString, long SourceStringLe
         case -1:
             // Alloc and fill string
             DestString = DestString.String(DestStringLen, 1);
-			break;
-		default:
+            break;
+        default:
             // Fill string
             RtlZeroMemory(DestString.Get_String(), SourceStringLen);
             if(DestStringLen > SourceStringLen) DestStringLen = SourceStringLen;
-			break;
-	}
+            break;
+    }
     RtlCopyMemory(DestString.Get_String(), SourceString.Get_String(), DestStringLen);
-	return(DestString);
+    return(DestString);
 }
 
 // -----------------------------------------------------------------------
@@ -6047,8 +6048,8 @@ CStr CALLBACK StringCopyAppendZero(CStr DestString, CStr SourceString)
 
     StLen = SourceString.Len();
     DestString = DestString.String(StLen, 1);
-	RtlCopyMemory(DestString.Get_String(), SourceString.Get_String(), StLen);
-	return(DestString);
+    RtlCopyMemory(DestString.Get_String(), SourceString.Get_String(), StLen);
+    return(DestString);
 }
 
 // -----------------------------------------------------------------------
@@ -6056,7 +6057,7 @@ CStr CALLBACK StringCopyAppendZero(CStr DestString, CStr SourceString)
 CStr CALLBACK StringCopyFixed(CStr DestString, CStr SourceString)
 {
     DestString.Set_String(SourceString.Get_String());
-	return(DestString);
+    return(DestString);
 }
 
 // -----------------------------------------------------------------------
@@ -6064,18 +6065,18 @@ CStr CALLBACK StringCopyFixed(CStr DestString, CStr SourceString)
 CStr CALLBACK StringClear(CStr DestString, long DestStringLen)
 {
     RtlZeroMemory(DestString.Get_String(), DestStringLen);
-	return(DestString);
+    return(DestString);
 }
 
 // -----------------------------------------------------------------------
 // Append a string
 CStr CALLBACK StringAppend(CStr DestString, CStr SourceString)
 {
-	CStr BufString;
+    CStr BufString;
 
-	BufString = DestString.Get_String();
-	BufString = BufString + (CStr) SourceString.Get_String();
-	return(BufString);
+    BufString = DestString.Get_String();
+    BufString = BufString + (CStr) SourceString.Get_String();
+    return(BufString);
 }
 
 // -----------------------------------------------------------------------
@@ -6103,7 +6104,7 @@ CountSplits:
         LngSplitter = LngSplitter + 8;
         LenElements++;
         OldPosSplitter = PosSplitter + LenSplitter;
-		goto CountSplits;
+        goto CountSplits;
     }
     if(LenElements == 0) return(0);
     MemSplitter = (long *) AllocMem(LngSplitter + 4);
@@ -6130,8 +6131,8 @@ StoreSplits:;
 // Retrieve number of element of a splitted string
 long CALLBACK StringGetSplitUBound(long *SplitMem)
 {
-	if(SplitMem == 0) return(-1);
-	else return(SplitMem[0] - 1);
+    if(SplitMem == 0) return(-1);
+    else return(SplitMem[0] - 1);
 }
 
 // -----------------------------------------------------------------------
@@ -6163,7 +6164,7 @@ void CALLBACK StringReleaseSplit(long *SplitMem)
 CStr CALLBACK StringJoin(CStr StrFromSplit, long *SplitMem, CStr JoIn_String, long FirstElement, long ElementLimit)
 {
     CStr ReturnValue;
-	CStr BufString;
+    CStr BufString;
     long JoinLimit = 0;
     long i = 0;
 
@@ -6178,12 +6179,12 @@ CStr CALLBACK StringJoin(CStr StrFromSplit, long *SplitMem, CStr JoIn_String, lo
                 for(i = FirstElement; i <= JoinLimit; i++)
                 {
                     BufString = BufString + StringGetSplitElement(StrFromSplit, SplitMem, i);
-					BufString = BufString + JoIn_String;
+                    BufString = BufString + JoIn_String;
                 }
             }
         }
     }
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -6193,21 +6194,21 @@ CStr CALLBACK StringConvertToCStr(char *StringToConvert)
 {
     CStr ReturnValue;
 
-	ReturnValue = StringToConvert;
-	return(ReturnValue);
+    ReturnValue = StringToConvert;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Convert a CStr to a char *
 char * CALLBACK StringCStrConvertToString(CStr StringToConvert)
 {
-	// Return the datas of the newly created entry
-	return(Garbage_Collector_List.Add(StringToConvert.Get_String())->Content);
+    // Return the datas of the newly created entry
+    return(Garbage_Collector_List.Add(StringToConvert.Get_String())->Content);
 }
 
 void CALLBACK StringFlushGarbageCollector(void)
 {
-	Garbage_Collector_List.Erase();
+    Garbage_Collector_List.Erase();
 }
 
 // -----------------------------------------------------------------------
@@ -6229,8 +6230,8 @@ long CALLBACK StringGetLinesOffsets(CStr StringToCount)
 void CALLBACK StringFillHexBytes(long Source, char *Dest, long Length, long Offset, 
                                  long LineOffset, long NbrLines, long ElementsOffset)
 {
-	FillHexBytes(Source, Dest, Length, Offset, LineOffset, NbrLines, ElementsOffset);
-	return;
+    FillHexBytes(Source, Dest, Length, Offset, LineOffset, NbrLines, ElementsOffset);
+    return;
 }
 
 // -----------------------------------------------------------------------
@@ -6238,8 +6239,8 @@ void CALLBACK StringFillHexBytes(long Source, char *Dest, long Length, long Offs
 void CALLBACK StringFillHexWords(long Source, char *Dest, long Length, long Offset,
                                  long LineOffset, long NbrLines, long ElementsOffset)
 {
-	FillHexWords(Source, Dest, Length, Offset, LineOffset, NbrLines, ElementsOffset);
-	return;
+    FillHexWords(Source, Dest, Length, Offset, LineOffset, NbrLines, ElementsOffset);
+    return;
 }
 
 // -----------------------------------------------------------------------
@@ -6247,20 +6248,20 @@ void CALLBACK StringFillHexWords(long Source, char *Dest, long Length, long Offs
 void CALLBACK StringFillHexDWords(long Source, char *Dest, long Length, long Offset,
                                   long LineOffset, long NbrLines, long ElementsOffset)
 {
-	FillHexDWords(Source, Dest, Length, Offset, LineOffset, NbrLines, ElementsOffset);
-	return;
+    FillHexDWords(Source, Dest, Length, Offset, LineOffset, NbrLines, ElementsOffset);
+    return;
 }
 
 // -----------------------------------------------------------------------
 // Replace all non label chars with an underscore
 void CALLBACK StringFileNameToLabel(char *FileName)
 {
-	int i;
-	if(StringIsDigitChar(FileName[0])) FileName[0] = '_';
+    int i;
+    if(StringIsDigitChar(FileName[0])) FileName[0] = '_';
     for(i = 0; i < ((int) strlen(FileName)); i++)
     {
-		if(!StringIsLabelChar(FileName[i])) FileName[i] = '_';
-	}
+        if(!StringIsLabelChar(FileName[i])) FileName[i] = '_';
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -6417,7 +6418,7 @@ HANDLE CALLBACK FileCreateEmpty(CStr FileName, long Security)
     HANDLE ReturnValue = 0;
     SECURITY_ATTRIBUTES SecAt;
 
-	memset(&SecAt, 0, sizeof(SecAt));
+    memset(&SecAt, 0, sizeof(SecAt));
     DeleteFile(FileName.Get_String());
     if(Security == 1)
     {
@@ -6442,7 +6443,7 @@ long CALLBACK FileWriteBuffer(HANDLE FileHandle, LPCVOID BufferToWrite, long Len
 
     ReturnValue = WriteFile(FileHandle, BufferToWrite, LenToWrite, &BytesWritten, 0);
     if(ReturnValue != 0) ReturnValue = BytesWritten;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -6454,7 +6455,7 @@ long CALLBACK FileWriteBufferVB(HANDLE FileHandle, CStr BufferToWrite, long LenT
 
     ReturnValue = WriteFile(FileHandle, BufferToWrite.Get_String(), LenToWrite, &BytesWritten, 0);
     if(ReturnValue != 0) ReturnValue = BytesWritten;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -6466,7 +6467,7 @@ long CALLBACK FileWriteLine(HANDLE FileHandle, CStr LineToWrite)
     DWORD BytesWritten = 0;
 
     RealLineToWrite = LineToWrite;
-	RealLineToWrite = RealLineToWrite + "\r\n";
+    RealLineToWrite = RealLineToWrite + "\r\n";
     ReturnValue = WriteFile(FileHandle, RealLineToWrite.Get_String(), RealLineToWrite.Len(), &BytesWritten, 0);
     if(ReturnValue != 0) ReturnValue = BytesWritten;
     return(ReturnValue);
@@ -6501,7 +6502,7 @@ long CALLBACK FileGetSize(CStr FileName)
     long ReturnValue = 0;
     SECURITY_ATTRIBUTES SecAt;
 
-	memset(&SecAt, 0, sizeof(SecAt));
+    memset(&SecAt, 0, sizeof(SecAt));
     SecAt.nLength = sizeof(SecAt);
     SecAt.lpSecurityDescriptor = 0;
     SecAt.bInheritHandle = -1;
@@ -6543,7 +6544,7 @@ long CALLBACK FileIsReadOnly(CStr FileToCheck)
 
     RealFileToCheck = FileToCheck;
     if(strcmp(FileToCheck.Right(1).Get_String(), "\\") == 0) RealFileToCheck = FileToCheck.Mid(1, FileToCheck.Len() - 1);
-	return((long) GetFileAttributes(RealFileToCheck.Get_String()) & FILE_ATTRIBUTE_READONLY);
+    return((long) GetFileAttributes(RealFileToCheck.Get_String()) & FILE_ATTRIBUTE_READONLY);
 }
 
 // -----------------------------------------------------------------------
@@ -6555,11 +6556,11 @@ long CALLBACK FileIsUnix(CStr FileToCheck)
     HANDLE hUnixMem = 0;
     DWORD UnixFileRead = 0;
     long PosInFile = 0;
-	CStr BufString;
+    CStr BufString;
     BYTE *hUnixMemPtr;
 
     BufString = "\n";
-	hUnixFile = FileOpenR(FileToCheck);
+    hUnixFile = FileOpenR(FileToCheck);
     if(hUnixFile != INVALID_HANDLE_VALUE)
     {
         // Get 512 bytes of the file ("should be enough for everyone")
@@ -6577,8 +6578,8 @@ NextCheck:
         if(PosInFile != 0)
         {
             // Check 1310
-			hUnixMemPtr = (BYTE *) hUnixMem;
-		    if(hUnixMemPtr[PosInFile - 2] != 13) ReturnValue = 1;
+            hUnixMemPtr = (BYTE *) hUnixMem;
+            if(hUnixMemPtr[PosInFile - 2] != 13) ReturnValue = 1;
         }
         FreeMem((long) hUnixMem);
         FileClose(hUnixFile);
@@ -6605,53 +6606,53 @@ long CALLBACK FileSaveFromMem(CStr FileName, long MemToSave, long LenToSave)
 // (Function accept no argument to return next file)
 CStr CALLBACK FileDir(CStr *PathName, int Attributes)
 {
-	CStr ReturnValue;
-	static WIN32_FIND_DATA DirDat;
-	static HANDLE hDirFound;
-	static int CurrentAttributes;
-	int FoundAttributes = 0;
+    CStr ReturnValue;
+    static WIN32_FIND_DATA DirDat;
+    static HANDLE hDirFound;
+    static int CurrentAttributes;
+    int FoundAttributes = 0;
 
-	if(PathName == 0)
-	{
+    if(PathName == 0)
+    {
 CantFoundFirst:
-		while(1)
-		{
-			if(FindNextFile(hDirFound, &DirDat) == 0)
-			{
-				if(GetLastError() == ERROR_NO_MORE_FILES)
-				{
-					FindClose(hDirFound);
-					return(ReturnValue);
-				}
-			}
-			FoundAttributes = DirDat.dwFileAttributes & 0xff;
-			if((FoundAttributes == 0x20) || (FoundAttributes == 0))
-			{
-				ReturnValue = DirDat.cFileName;
-				return(ReturnValue);
-			}
-			if((FoundAttributes & CurrentAttributes) != 0)
-			{
-				ReturnValue = DirDat.cFileName;
-				return(ReturnValue);
-			}
-		}
-	}
-	CurrentAttributes = Attributes;
-	hDirFound = FindFirstFile(PathName->Get_String(), &DirDat);
-	if(hDirFound == INVALID_HANDLE_VALUE) return(ReturnValue);
-	FoundAttributes = DirDat.dwFileAttributes & 0xff;
-	if((FoundAttributes == 0x20) || (FoundAttributes == 0))
-	{
-		ReturnValue = DirDat.cFileName;
-		return(ReturnValue);
-	}
-	if((FoundAttributes & CurrentAttributes) != 0)
-	{
-		ReturnValue = DirDat.cFileName;
-		return(ReturnValue);
-	}
-	goto CantFoundFirst;
+        while(1)
+        {
+            if(FindNextFile(hDirFound, &DirDat) == 0)
+            {
+                if(GetLastError() == ERROR_NO_MORE_FILES)
+                {
+                    FindClose(hDirFound);
+                    return(ReturnValue);
+                }
+            }
+            FoundAttributes = DirDat.dwFileAttributes & 0xff;
+            if((FoundAttributes == 0x20) || (FoundAttributes == 0))
+            {
+                ReturnValue = DirDat.cFileName;
+                return(ReturnValue);
+            }
+            if((FoundAttributes & CurrentAttributes) != 0)
+            {
+                ReturnValue = DirDat.cFileName;
+                return(ReturnValue);
+            }
+        }
+    }
+    CurrentAttributes = Attributes;
+    hDirFound = FindFirstFile(PathName->Get_String(), &DirDat);
+    if(hDirFound == INVALID_HANDLE_VALUE) return(ReturnValue);
+    FoundAttributes = DirDat.dwFileAttributes & 0xff;
+    if((FoundAttributes == 0x20) || (FoundAttributes == 0))
+    {
+        ReturnValue = DirDat.cFileName;
+        return(ReturnValue);
+    }
+    if((FoundAttributes & CurrentAttributes) != 0)
+    {
+        ReturnValue = DirDat.cFileName;
+        return(ReturnValue);
+    }
+    goto CantFoundFirst;
 }
 
 // -----------------------------------------------------------------------
@@ -6674,9 +6675,9 @@ long CALLBACK RegistryUpdateKey(HKEY KeyRoot, CStr KeyName, CStr SubKeyName, CSt
     int i = 0;
     long HexTab[16];
     SECURITY_ATTRIBUTES lpAttr;
-	CStr BufString;
+    CStr BufString;
     
-	HexTab[0] = 0;
+    HexTab[0] = 0;
     HexTab[1] = 1;
     HexTab[2] = 2;
     HexTab[3] = 3;
@@ -6696,17 +6697,17 @@ long CALLBACK RegistryUpdateKey(HKEY KeyRoot, CStr KeyName, CStr SubKeyName, CSt
     lpAttr.lpSecurityDescriptor = 0;
     lpAttr.bInheritHandle = 1;
     BufString = KeyType;
-	rc = RegCreateKeyEx(KeyRoot, KeyName.Get_String(), 0, BufString.Get_String(), REG_OPTION_NON_VOLATILE,
-	                    KEY_ALL_ACCESS, &lpAttr, &hKey, &hDepth);
+    rc = RegCreateKeyEx(KeyRoot, KeyName.Get_String(), 0, BufString.Get_String(), REG_OPTION_NON_VOLATILE,
+                        KEY_ALL_ACCESS, &lpAttr, &hKey, &hDepth);
     if(rc != ERROR_SUCCESS) goto CreateKeyError;
     SubKeyBuf = SubKeyValue;
-	if(SubKeyBuf.Len() == 0) SubKeyBuf = " ";
+    if(SubKeyBuf.Len() == 0) SubKeyBuf = " ";
     switch(KeyType)
     {
         case REG_SZ:
             rc = RegSetValueEx(hKey, SubKeyName.Get_String(), 0, KeyType, (BYTE *) SubKeyBuf.Get_String(), SubKeyBuf.Len() * 2);
-			break;
-		case REG_BINARY:
+            break;
+        case REG_BINARY:
             BinValBase = SubKeyBuf;
             if((BinValBase.Len() & 1) != 0)
             {
@@ -6743,15 +6744,15 @@ long CALLBACK RegistryDeleteKey(HKEY KeyRoot, CStr KeyName, CStr SubKeyName, lon
     HKEY hKey = 0;
     DWORD hDepth = 0;
     SECURITY_ATTRIBUTES lpAttr;
-	CStr BufString;
+    CStr BufString;
     
-	lpAttr.nLength = 50;
+    lpAttr.nLength = 50;
     lpAttr.lpSecurityDescriptor = 0;
     lpAttr.bInheritHandle = 1;
     BufString = KeyType;
-	rc = RegCreateKeyEx(KeyRoot, KeyName.Get_String(), 0, BufString.Get_String(),
-					    REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, &lpAttr,
-					    &hKey, &hDepth);
+    rc = RegCreateKeyEx(KeyRoot, KeyName.Get_String(), 0, BufString.Get_String(),
+                        REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, &lpAttr,
+                        &hKey, &hDepth);
     if(rc != ERROR_SUCCESS) goto DeleteKeyError;
     rc = RegDeleteKey(hKey, SubKeyName.Get_String());
     if(rc != ERROR_SUCCESS) goto DeleteKeyError;
@@ -6771,13 +6772,13 @@ CStr CALLBACK RegistryGetKeyValue(HKEY KeyRoot, CStr KeyName, CStr SubKeyRef)
     HKEY hKey = 0;
     CStr sKeyVal;
     CStr ReturnValue;
-	DWORD lKeyValType = 0;
+    DWORD lKeyValType = 0;
     CStr tmpVal;
     CStr tmpVal2;
     unsigned long KeyValSize = 0;
     long KeyValLen = 0;
     
-	rc = RegOpenKeyEx(KeyRoot, KeyName.Get_String(), 0, KEY_ALL_ACCESS, &hKey);
+    rc = RegOpenKeyEx(KeyRoot, KeyName.Get_String(), 0, KEY_ALL_ACCESS, &hKey);
     if(rc != ERROR_SUCCESS) goto GetKeyError;
     tmpVal = tmpVal.String(1024, 1);
     KeyValSize = 1024;
@@ -6787,29 +6788,29 @@ CStr CALLBACK RegistryGetKeyValue(HKEY KeyRoot, CStr KeyName, CStr SubKeyRef)
     switch(lKeyValType)
     {
         case REG_SZ:
-		case REG_EXPAND_SZ:
+        case REG_EXPAND_SZ:
             tmpVal = tmpVal.Left(KeyValLen);
             sKeyVal = tmpVal;
-			break;
+            break;
         case REG_DWORD:
             tmpVal = tmpVal.Left(KeyValLen);
             for(i = tmpVal.Len(); i >= 1 ; i--)
             {
-				tmpVal2 = tmpVal.Mid(i, 1);
-				tmpVal2 = tmpVal2.Hex_To_String(tmpVal2.Asc());
+                tmpVal2 = tmpVal.Mid(i, 1);
+                tmpVal2 = tmpVal2.Hex_To_String(tmpVal2.Asc());
                 sKeyVal = sKeyVal + tmpVal2;
             }
-			break;
+            break;
         case REG_BINARY:
             sKeyVal = tmpVal;
-			break;
+            break;
     }
     rc = RegCloseKey(hKey);
     ReturnValue = sKeyVal;
-	return(ReturnValue);
+    return(ReturnValue);
 GetKeyError:
     rc = RegCloseKey(hKey);
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -6877,7 +6878,7 @@ HFONT CALLBACK GDIObtainFont(CStr FontNameToObtain, long FontSizeToObtain, HWND 
 {
     HFONT ReturnValue = 0;
     LOGFONT WACMFont;
-	CStr BufString;
+    CStr BufString;
     int i = 0;
     HDC WAFhDC = 0;
 
@@ -6900,7 +6901,7 @@ HFONT CALLBACK GDIObtainFont(CStr FontNameToObtain, long FontSizeToObtain, HWND 
     {
         if(i == (long) FontNameToObtain.Len()) break;
         BufString = FontNameToObtain.Mid(i + 1, 1);
-		WACMFont.lfFaceName[i] = BufString.Asc();
+        WACMFont.lfFaceName[i] = BufString.Asc();
     }
     WACMFont.lfFaceName[i] = 0;
     ReturnValue = CreateFontIndirect(&WACMFont);
@@ -7002,12 +7003,12 @@ void CALLBACK GDIDrawLineXOR(HWND hWnd, long X1, long Y1, long X2, long Y2, COLO
 long CALLBACK GDIDrawPixel(HWND hWnd, long X, long Y, long PixelColor)
 {
     HDC hDC = 0;
-	long ReturnValue = 0;
+    long ReturnValue = 0;
 
     hDC = GetDC(hWnd);
     ReturnValue = SetPixel(hDC, X, Y, PixelColor);
     ReleaseDC(hWnd, hDC);
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -7024,12 +7025,12 @@ void CALLBACK GDIWriteText(HDC hDC, long X, long Y, CStr Text, long TextColor,
     OldTextColor = SetTextColor(hDC, TextColor);
     if(TextTransparent == 1)
     {
-		OldBkMode = SetBkMode(hDC, TRANSPARENT);
+        OldBkMode = SetBkMode(hDC, TRANSPARENT);
     }
     else
     {
-		OldBkMode = SetBkMode(hDC, OPAQUE);
-		OldBkColor = SetBkColor(hDC, BackGroundColor);
+        OldBkMode = SetBkMode(hDC, OPAQUE);
+        OldBkColor = SetBkColor(hDC, BackGroundColor);
     }
     TextOut(hDC, X, Y, Text.Get_String(), Text.Len());
     if(OldBkColor != 0) SetBkColor(hDC, OldBkColor);
@@ -7100,7 +7101,7 @@ long CALLBACK GDIGetTextHeight(HWND hWnd, HFONT hFont, CStr Txt)
     HGDIOBJ OldFont = 0;
     SIZE FontSize;
 
-	TWHdc = GetDC(hWnd);
+    TWHdc = GetDC(hWnd);
     // Select the font
     OldFont = SelectObject(TWHdc, hFont);
     GetTextExtentPoint32(TWHdc, Txt.Get_String(), Txt.Len(), &FontSize);
@@ -7117,13 +7118,13 @@ HDC CALLBACK GDICreateBackDC(LPBACKDC BackStruct)
     RECT GridRect;
     RECT WinRect;
     BITMAPINFO BitmapInfos;
-	void *DIBBits = 0;
+    void *DIBBits = 0;
     HDC BackDC = 0;
     HBITMAP BackhBitmap = 0;
     HGDIOBJ OldObject = 0;
     HBRUSH hBrush = 0;
     
-	BackDC = CreateCompatibleDC(0);
+    BackDC = CreateCompatibleDC(0);
     BackStruct->hDC = BackDC;
     if(BackDC != 0)
     {
@@ -7173,12 +7174,12 @@ void CALLBACK GDIDestroyBackDC(LPBACKDC BackStruct)
 long CALLBACK GDIBlitBackDC(LPRECT Dimensions, LPBACKDC BackStruct)
 {
     long ReturnValue = 0;
-	HDC DesthDC = 0;
+    HDC DesthDC = 0;
 
     DesthDC = GetDC(BackStruct->hWnd);
     ReturnValue = BitBlt(DesthDC, Dimensions->left, Dimensions->top, Dimensions->right, Dimensions->bottom, BackStruct->hDC, 0, 0, SRCCOPY);
     ReleaseDC(BackStruct->hWnd, DesthDC);
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -7186,43 +7187,43 @@ long CALLBACK GDIBlitBackDC(LPRECT Dimensions, LPBACKDC BackStruct)
 // 0 <= LuminosityFactor <= x
 long CALLBACK GDIColorCalcLuminosity(COLORREF Color, long LuminosityFactor)
 {
-	COLORREF Light_Color;
-	COLORREF Light_ColorR;
-	COLORREF Light_ColorG;
-	COLORREF Light_ColorB;
-	
-	if(LuminosityFactor < 0) LuminosityFactor = 0;
-	Light_ColorR = (Color & 0xFF0000) >> 16;
+    COLORREF Light_Color;
+    COLORREF Light_ColorR;
+    COLORREF Light_ColorG;
+    COLORREF Light_ColorB;
+    
+    if(LuminosityFactor < 0) LuminosityFactor = 0;
+    Light_ColorR = (Color & 0xFF0000) >> 16;
     Light_ColorG = (Color & 0xFF00) >> 8;
     Light_ColorB = (Color & 0xFF);
-	Light_ColorR = Light_ColorR * LuminosityFactor / 100;
-	Light_ColorG = Light_ColorG * LuminosityFactor / 100;
-	Light_ColorB = Light_ColorB * LuminosityFactor / 100;
+    Light_ColorR = Light_ColorR * LuminosityFactor / 100;
+    Light_ColorG = Light_ColorG * LuminosityFactor / 100;
+    Light_ColorB = Light_ColorB * LuminosityFactor / 100;
     if((long) Light_ColorR > (long) 0xFF) Light_ColorR = 0xFF;
     if((long) Light_ColorG > (long) 0xFF) Light_ColorG = 0xFF;
     if((long) Light_ColorB > (long) 0xFF) Light_ColorB = 0xFF;
     if((long) Light_ColorR < (long) 0) Light_ColorR = 0;
     if((long) Light_ColorG < (long) 0) Light_ColorG = 0;
     if((long) Light_ColorB < (long) 0) Light_ColorB = 0;
-	Light_Color = (Light_ColorR << 16) | (Light_ColorG << 8) | Light_ColorB;
-	return(Light_Color);
+    Light_Color = (Light_ColorR << 16) | (Light_ColorG << 8) | Light_ColorB;
+    return(Light_Color);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve stock fonts
 HFONT CALLBACK GDIGetSerif(void)
 {
-	return(WASerifFont);
+    return(WASerifFont);
 }
 
 HFONT CALLBACK GDIGetSerif10(void)
 {
-	return(WASerifFont10);
+    return(WASerifFont10);
 }
 
 HFONT CALLBACK GDIGetCourierNew9(void)
 {
-	return(WACourrierNewFont9);
+    return(WACourrierNewFont9);
 }
 
 // -----------------------------------------------------------------------
@@ -7250,7 +7251,7 @@ long CALLBACK ControlHeight(HWND hWnd)
     long ReturnValue = 0;
     RECT CRct;
     
-	GetWindowRect(hWnd, &CRct);
+    GetWindowRect(hWnd, &CRct);
     if(ControlIsVisible(hWnd) == 0) ReturnValue = 0;
     else ReturnValue = CRct.bottom - CRct.top;
     return(ReturnValue);
@@ -7358,7 +7359,7 @@ void CALLBACK ControlRefreshLocal(HWND hWnd)
 {
     RECT RRect;
     
-	RRect.left = 0;
+    RRect.left = 0;
     RRect.top = 0;
     RRect.right = ControlClientWidth(hWnd);
     RRect.bottom = ControlClientHeight(hWnd);
@@ -7372,7 +7373,7 @@ void CALLBACK ControlRepaint(HWND hWnd)
 {
     RECT RRect;
     
-	GetClientRect(hWnd, &RRect);
+    GetClientRect(hWnd, &RRect);
     InvalidateRect(hWnd, &RRect, 1);
     UpdateWindow(hWnd);
 }
@@ -7391,14 +7392,14 @@ long CALLBACK ControlFreeze(HWND hControl, long FreezeState)
 {
     long ReturnValue = 0;
     
-	switch(FreezeState)
-	{
+    switch(FreezeState)
+    {
         case 0:
             ReturnValue = SendMessage(hControl, WM_SETREDRAW, 1, (long) 0);
-			break;
-		default:
+            break;
+        default:
             ReturnValue = SendMessage(hControl, WM_SETREDRAW, 0, (long) 0);
-			break;
+            break;
     }
     return(ReturnValue);
 }
@@ -7429,14 +7430,14 @@ long CALLBACK ControlVisible(HWND hWnd, long CState)
 {
     long ReturnValue = 0;
     
-	switch(CState)
-	{
+    switch(CState)
+    {
         case 0:
             ReturnValue = ShowWindow(hWnd, SW_HIDE);
-			break;
-		default:
+            break;
+        default:
             ReturnValue = ShowWindow(hWnd, SW_SHOW);
-			break;
+            break;
     }
     return(ReturnValue);
 }
@@ -7508,7 +7509,7 @@ HWND CALLBACK ControlGetNotifiedhWnd(long lParam)
 {
     NMHDR HeaderNotify;
     
-	CopyMemory(&HeaderNotify, (void *) lParam, sizeof(HeaderNotify));
+    CopyMemory(&HeaderNotify, (void *) lParam, sizeof(HeaderNotify));
     return(HeaderNotify.hwndFrom);
 }
 
@@ -7529,7 +7530,7 @@ long CALLBACK ControlTop(HWND hWnd)
     long ReturnValue = 0;
     RECT CRct;
     
-	GetWindowRect(hWnd, &CRct);
+    GetWindowRect(hWnd, &CRct);
     if(ControlIsVisible(hWnd) == 0) ReturnValue = 0;
     else ReturnValue = CRct.top;
     return(ReturnValue);
@@ -7596,7 +7597,7 @@ long CALLBACK ControlGetYMousePos(long lParam)
     long ReturnValue = 0;
 
     ReturnValue = (short) ((lParam & 0xFFFF0000) / 0x10000);
-	if(ReturnValue < 0) ReturnValue = 0;
+    if(ReturnValue < 0) ReturnValue = 0;
     return(ReturnValue);
 }
 
@@ -7649,7 +7650,7 @@ long CALLBACK ControlIsWindowChild(HWND hWnd)
     long ReturnValue = 0;
     CStr ClassNameToRetrieve;
 
-	ClassNameToRetrieve = ClassNameToRetrieve.String(22, 1);
+    ClassNameToRetrieve = ClassNameToRetrieve.String(22, 1);
     GetClassName(hWnd, ClassNameToRetrieve.Get_String(), 22);
     if(strcmpi(ClassNameToRetrieve.Left(21).Get_String(), "WAMDIChildDialogClass") == 0) ReturnValue = 1;
     return(ReturnValue);
@@ -7683,14 +7684,14 @@ long CALLBACK ControlHookWin(HWND hWnd, WNDPROC WindowProc)
     {
         case 0:
             ReturnValue = SetWindowLong(hWnd, GWL_USERDATA, SetWindowLong(hWnd, GWL_WNDPROC, (long) &WADefWinHook));
-			break;
-		case -1:
+            break;
+        case -1:
             // Default class hook
             ReturnValue = SetWindowLong(hWnd, GWL_WNDPROC, (long) 0);
-			break;
+            break;
         default:
             ReturnValue = SetWindowLong(hWnd, GWL_USERDATA, SetWindowLong(hWnd, GWL_WNDPROC, (long) WindowProc));
-			break;
+            break;
     }
     return(ReturnValue);
 }
@@ -7738,7 +7739,7 @@ LRESULT CALLBACK ControlCallwindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 // Choose a color from the palette
 long ComDlgChooseColor(HWND hWnd, long DefaultCol)
 {
-	memset(&MyColor, 0, sizeof(MyColor));
+    memset(&MyColor, 0, sizeof(MyColor));
     MyColor.hInstance = (HWND) ApphInstance;
     MyColor.hwndOwner = hWnd;
     MyColor.rgbResult = DefaultCol;
@@ -7760,27 +7761,27 @@ CStr ComDlgGetOpenFileName(HWND hWnd, CStr OFilters, CStr InitDir, long MultiSel
     CStr BufString1;
     char *BufStringString = 0;
     int i = 0;
-	int LenOpenFile = 0;
-	long *SplitArray = 0;
-	CStr SelectedFilesConcat;
-	CStr FirstElement;
+    int LenOpenFile = 0;
+    long *SplitArray = 0;
+    CStr SelectedFilesConcat;
+    CStr FirstElement;
 
-	memset(&MyOpenFName, 0, sizeof(MyOpenFName));
+    memset(&MyOpenFName, 0, sizeof(MyOpenFName));
     if(InitDir.Len() == 0) InitDir = DefaultDir;
-    if(_OnOlderWindows) MyOpenFName.lStructSize = 0x4c;		// Old size
+    if(_OnOlderWindows) MyOpenFName.lStructSize = 0x4c;     // Old size
     else MyOpenFName.lStructSize = sizeof(MyOpenFName);
-	MyOpenFName.hwndOwner = hWnd;
+    MyOpenFName.hwndOwner = hWnd;
     MyOpenFName.Flags = OFN_EXPLORER | OFN_HIDEREADONLY | OFN_SHOWHELP | OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_LONGNAMES;
     if(MultiSelect == 1) MyOpenFName.Flags = MyOpenFName.Flags | OFN_ALLOWMULTISELECT;
     MyOpenFName.lpstrDefExt = "";
     MyOpenFName.lpstrInitialDir = InitDir.Get_String();
     BufString1 = TmpOp.String(256, 1);
     MyOpenFName.lpstrFile = BufString1.Get_String();
-	MyOpenFName.lpstrFile[0] = 0;
-	MyOpenFName.nMaxFile = 255;
+    MyOpenFName.lpstrFile[0] = 0;
+    MyOpenFName.nMaxFile = 255;
     BufString = OFilters + (CStr) BufString.String(2, '|').Get_String();
-	LenOpenFile = BufString.Len();
-	BufStringString = BufString.Get_String();
+    LenOpenFile = BufString.Len();
+    BufStringString = BufString.Get_String();
     for(i = 1; i <= LenOpenFile; i++)
     {
         if(BufStringString[i - 1] == '|') BufStringString[i - 1] = 0;
@@ -7794,70 +7795,70 @@ CStr ComDlgGetOpenFileName(HWND hWnd, CStr OFilters, CStr InitDir, long MultiSel
     {
         if(MultiSelect == 0)
         {
-			TmpOp = MyOpenFName.lpstrFile;
-			TmpOp = TmpOp.Trim();
+            TmpOp = MyOpenFName.lpstrFile;
+            TmpOp = TmpOp.Trim();
             TmpOp = TmpOp.Left(TmpOp.Len());
             TmpOp = TmpOp.Trim();
         }
         else
         {
-		    // The results will be separated with 0s
+            // The results will be separated with 0s
             // Replace them with char 2
             for(i = 1; i <= (long) MyOpenFName.nMaxFile; i++)
             {
                 if(MyOpenFName.lpstrFile[i - 1] == 1)
                 {
-					i--;
-					break;
-				}
-				if(MyOpenFName.lpstrFile[i - 1] == 0) MyOpenFName.lpstrFile[i - 1] = 2;
-			}
-			// Remove trailing chars
+                    i--;
+                    break;
+                }
+                if(MyOpenFName.lpstrFile[i - 1] == 0) MyOpenFName.lpstrFile[i - 1] = 2;
+            }
+            // Remove trailing chars
             while(MyOpenFName.lpstrFile[i - 1] == 2)
             {
                 MyOpenFName.lpstrFile[i - 1] = 0;
-				i--;
-			}
-			TmpOp = MyOpenFName.lpstrFile;
-			SplitArray = StringSplit(&TmpOp, BufString.Chr(2));
-			if(StringGetSplitUBound(SplitArray) > 0)
-			{
-				FirstElement = StringGetSplitElement(&TmpOp, SplitArray, 0);
-				// Check anti-slash of first entry (directory)
-				if(strcmp(FirstElement.Right(1).Get_String(), "\\") == 0)
-				{
-					SelectedFilesConcat = StringReplace(&TmpOp, BufString.Chr(2), BufString.Chr(2) + (CStr) FirstElement, 1, -1, Binary_Compare);
-				}
-				else
-				{
-					SelectedFilesConcat = StringReplace(&TmpOp, BufString.Chr(2), BufString.Chr(2) + (CStr) FirstElement + (CStr) "\\", 1, -1, Binary_Compare);
-				}
-				SelectedFilesConcat = SelectedFilesConcat.Mid(SelectedFilesConcat.In_Str(1, BufString.Chr(2)) + 1);
-				StringReleaseSplit(SplitArray);
-				TmpOp = SelectedFilesConcat;
-				ReturnValue = TmpOp;
-				return(ReturnValue);
-			}
-			// Single file selected ?
-			if(StringGetSplitUBound(SplitArray) == 0)
-			{
-				FirstElement = StringGetSplitElement(&TmpOp, SplitArray, 0);
-				StringReleaseSplit(SplitArray);
-				// Must be first element not 0
-				SelectedFilesConcat = FirstElement + (CStr) BufString.Chr(2).Get_String();
-				TmpOp = SelectedFilesConcat;
-			}
-			else
-			{
-				// No files
-				StringReleaseSplit(SplitArray);
-				TmpOp = "";
-			}
+                i--;
+            }
+            TmpOp = MyOpenFName.lpstrFile;
+            SplitArray = StringSplit(&TmpOp, BufString.Chr(2));
+            if(StringGetSplitUBound(SplitArray) > 0)
+            {
+                FirstElement = StringGetSplitElement(&TmpOp, SplitArray, 0);
+                // Check anti-slash of first entry (directory)
+                if(strcmp(FirstElement.Right(1).Get_String(), "\\") == 0)
+                {
+                    SelectedFilesConcat = StringReplace(&TmpOp, BufString.Chr(2), BufString.Chr(2) + (CStr) FirstElement, 1, -1, Binary_Compare);
+                }
+                else
+                {
+                    SelectedFilesConcat = StringReplace(&TmpOp, BufString.Chr(2), BufString.Chr(2) + (CStr) FirstElement + (CStr) "\\", 1, -1, Binary_Compare);
+                }
+                SelectedFilesConcat = SelectedFilesConcat.Mid(SelectedFilesConcat.In_Str(1, BufString.Chr(2)) + 1);
+                StringReleaseSplit(SplitArray);
+                TmpOp = SelectedFilesConcat;
+                ReturnValue = TmpOp;
+                return(ReturnValue);
+            }
+            // Single file selected ?
+            if(StringGetSplitUBound(SplitArray) == 0)
+            {
+                FirstElement = StringGetSplitElement(&TmpOp, SplitArray, 0);
+                StringReleaseSplit(SplitArray);
+                // Must be first element not 0
+                SelectedFilesConcat = FirstElement + (CStr) BufString.Chr(2).Get_String();
+                TmpOp = SelectedFilesConcat;
+            }
+            else
+            {
+                // No files
+                StringReleaseSplit(SplitArray);
+                TmpOp = "";
+            }
 
         }
     }
     ReturnValue = TmpOp;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -7869,12 +7870,12 @@ CStr ComDlgGetSaveFileName(HWND hWnd, CStr OFilters, CStr InitDir, CStr DefaultD
     CStr BufString1;
     CStr ReturnValue;
     char *BufStringString = 0;
-	int i = 0;
-	int LenSaveFile = 0;
-	
-	memset(&MySaveFName, 0, sizeof(MySaveFName));
+    int i = 0;
+    int LenSaveFile = 0;
+    
+    memset(&MySaveFName, 0, sizeof(MySaveFName));
     if(InitDir.Len() == 0) InitDir = DefaultDir;
-    if(_OnOlderWindows) MySaveFName.lStructSize = 0x4c;		// Old size
+    if(_OnOlderWindows) MySaveFName.lStructSize = 0x4c;     // Old size
     else MySaveFName.lStructSize = sizeof(MySaveFName);
     MySaveFName.hwndOwner = hWnd;
     MySaveFName.Flags = OFN_EXPLORER | OFN_HIDEREADONLY | OFN_SHOWHELP | OFN_PATHMUSTEXIST | OFN_LONGNAMES | OFN_OVERWRITEPROMPT;
@@ -7882,13 +7883,13 @@ CStr ComDlgGetSaveFileName(HWND hWnd, CStr OFilters, CStr InitDir, CStr DefaultD
     MySaveFName.lpstrInitialDir = InitDir.Get_String();
     BufString1 = TmpSv.String(255, 1);
     MySaveFName.lpstrFile = BufString1.Get_String();
-	MySaveFName.lpstrFile[0] = 0;
+    MySaveFName.lpstrFile[0] = 0;
     MySaveFName.nMaxFile = 255;
     BufString = OFilters + (CStr) BufString.String(2, '|').Get_String();
-	LenSaveFile = BufString.Len();
-	BufStringString = BufString.Get_String();
-	for(i = 1; i <= LenSaveFile; i++)
-	{
+    LenSaveFile = BufString.Len();
+    BufStringString = BufString.Get_String();
+    for(i = 1; i <= LenSaveFile; i++)
+    {
         if(BufStringString[i - 1] == '|') BufStringString[i - 1] = 0;
     }
     MySaveFName.lpstrFilter = BufStringString;
@@ -7897,13 +7898,13 @@ CStr ComDlgGetSaveFileName(HWND hWnd, CStr OFilters, CStr InitDir, CStr DefaultD
     MySaveFName.hInstance = ApphInstance;
     if(GetSaveFileName(&MySaveFName) != 0)
     {
-		TmpSv = MySaveFName.lpstrFile;
-		TmpSv = TmpSv.Trim();
-	}
-	TmpSv = TmpSv.Left(TmpSv.Len());
+        TmpSv = MySaveFName.lpstrFile;
+        TmpSv = TmpSv.Trim();
+    }
+    TmpSv = TmpSv.Left(TmpSv.Len());
     TmpSv = TmpSv.Trim();
     ReturnValue = TmpSv;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -7912,11 +7913,11 @@ long ComDlgChooseFont(HWND hWnd, CStr FntName, long FntSize, long FixedOnly)
 {
     int i = 0;
     HDC FhDC = 0;
-	long ReturnValue = 0;
+    long ReturnValue = 0;
 
     FhDC = GetDC(hWnd);
-	memset(&MyLogFont, 0, sizeof(MyLogFont));
-	memset(&MyFont, 0, sizeof(MyFont));
+    memset(&MyLogFont, 0, sizeof(MyLogFont));
+    memset(&MyFont, 0, sizeof(MyFont));
     MyLogFont.lfHeight = -((long) (FntSize * GetDeviceCaps(FhDC, LOGPIXELSY)) / 72);
     MyLogFont.lfWidth = 0;
     MyLogFont.lfEscapement = 0;
@@ -7957,7 +7958,7 @@ long ComDlgChooseFont(HWND hWnd, CStr FntName, long FntSize, long FixedOnly)
     RtlCopyMemory(&MyLogFont, hMemFont, sizeof(MyLogFont));
     free(hMemFont);
     ReleaseDC(hWnd, FhDC);
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -7970,7 +7971,7 @@ CStr ComDlgBrowseForFolder(HWND hWnd, CStr Title)
     CStr SelPath;
     ITEMIDLIST *PtrItemLst = 0;
 
-	memset(&MyBrowse,0,sizeof(MyBrowse));
+    memset(&MyBrowse,0,sizeof(MyBrowse));
     TempPath = TempPath.Space(MAX_PATH);
     MyBrowse.hwndOwner = hWnd;
     MyBrowse.pidlRoot = 0;
@@ -8005,43 +8006,43 @@ CStr ComDlgParseMultiFilesSelection(CStr SelectedFiles, long (CALLBACK *EnumProc
 {
     CStr BufString;
     CStr ReturnValue;
-	long *SelArray;
-	int i;
+    long *SelArray;
+    int i;
 
     if(SelectedFiles.Len() == 0) return(ReturnValue);
     SelArray = StringSplit(SelectedFiles, BufString.Chr(2));
-	if(SelArray != 0)
-	{
-		switch(EnumDirection)
-		{
-			case MULTIFILESENUM_FORWARD:
-				for(i = 0; i <= StringGetSplitUBound(SelArray); i++)
-				{
-					BufString = StringGetSplitElement(SelectedFiles, SelArray, i);
-					if(BufString.Len() != 0)
-					{
-						// Pass it as char *
-						if(EnumProc(BufString.Get_String(), UserValue) == 0) break;
-					}
-				}
-				break;
-			case MULTIFILESENUM_BACKWARD:
-				for(i = StringGetSplitUBound(SelArray); i >= 0; i--)
-				{
-					BufString = StringGetSplitElement(SelectedFiles, SelArray, i);
-					if(BufString.Len() != 0)
-					{
-						// Pass it as char *
-						if(EnumProc(BufString.Get_String(), UserValue) == 0) break;
-					}
-				}
-				break;
-		}
-		BufString = FileGetDirectory(StringGetSplitElement(SelectedFiles, SelArray, 0));
+    if(SelArray != 0)
+    {
+        switch(EnumDirection)
+        {
+            case MULTIFILESENUM_FORWARD:
+                for(i = 0; i <= StringGetSplitUBound(SelArray); i++)
+                {
+                    BufString = StringGetSplitElement(SelectedFiles, SelArray, i);
+                    if(BufString.Len() != 0)
+                    {
+                        // Pass it as char *
+                        if(EnumProc(BufString.Get_String(), UserValue) == 0) break;
+                    }
+                }
+                break;
+            case MULTIFILESENUM_BACKWARD:
+                for(i = StringGetSplitUBound(SelArray); i >= 0; i--)
+                {
+                    BufString = StringGetSplitElement(SelectedFiles, SelArray, i);
+                    if(BufString.Len() != 0)
+                    {
+                        // Pass it as char *
+                        if(EnumProc(BufString.Get_String(), UserValue) == 0) break;
+                    }
+                }
+                break;
+        }
+        BufString = FileGetDirectory(StringGetSplitElement(SelectedFiles, SelArray, 0));
         ReturnValue = BufString;
         StringReleaseSplit(SelArray);
     }
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -8289,7 +8290,7 @@ LRESULT CALLBACK WADefClassHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
             return(0);
         case WM_CLOSE:
             DestroyWindow(hWnd);
-			break;
+            break;
     }
     return(DefWindowProc(hWnd, uMsg, wParam, lParam));
 }
@@ -8545,7 +8546,7 @@ LRESULT CALLBACK WADefHorzSplitBarClassHook(HWND hWnd, UINT uMsg, WPARAM wParam,
 
     switch(uMsg)
     {
-		case WM_LBUTTONDOWN:
+        case WM_LBUTTONDOWN:
             RtlCopyMemory(&TmpSplitBarDat, (void *) GetWindowLong(hWnd, GWL_USERDATA), sizeof(TmpSplitBarDat));
             TmpSplitBarDat.Sizing = SPLITTER_RESIZING;
             // Mark new resize
@@ -8656,15 +8657,15 @@ LRESULT CALLBACK WADefHorzSplitBarClassHook(HWND hWnd, UINT uMsg, WPARAM wParam,
                 ReleaseCapture();
                 // Notify Resize
                 if(TmpSplitBarDat.OldYPos != -1) if(CursScrPos.y != TmpSplitBarDat.StartDragY) SendMessage(TmpSplitBarDat.hParent, MSG_SPLITTER_RESIZED,(UINT) GetParent(hWnd), TmpSplitBarDat.OldYPos);
-				return(0);
+                return(0);
             }
             ReleaseCapture();
-			return(0);
+            return(0);
         case WM_CREATE:
-			return(0);
+            return(0);
         case WM_CLOSE:
             DestroyWindow(hWnd);
-			return(0);
+            return(0);
     }
     return(DefWindowProc(hWnd, uMsg, wParam, lParam));
 }
@@ -8720,10 +8721,10 @@ LRESULT CALLBACK WADefColorBoxClassHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
             GDIDrawLine(hWnd, 1, (PaintRect.bottom - PaintRect.top) - 1, (PaintRect.right - PaintRect.left), (PaintRect.bottom - PaintRect.top) - 1, LoColor);
             GDIDrawLine(hWnd, (PaintRect.right - PaintRect.left) - 1, 1, (PaintRect.right - PaintRect.left) - 1, (PaintRect.bottom - PaintRect.top) - 1, LoColor);
             DeleteObject(hBlackBrush);
-			return(1);
+            return(1);
         case WM_CLOSE:
             DestroyWindow(hWnd);
-			return(0);
+            return(0);
     }
     return(DefWindowProc(hWnd, uMsg, wParam, lParam));
 }
@@ -8738,81 +8739,81 @@ LRESULT CALLBACK WADefDumpBoxClassHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
     {
         case WM_CLOSE:
             DestroyWindow(hWnd);
-			return(0);
+            return(0);
         case WM_HSCROLL:
             switch(wParam & 0xFFFF)
             {
                 case SB_LINELEFT:
                     ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_LINELEFT, GetScrollPos(hWnd, SB_HORZ), (long) 1);
                     SetScrollPos(hWnd, SB_HORZ, ReturnScrollValue, 1);
-					break;
-				case SB_LINERIGHT:
+                    break;
+                case SB_LINERIGHT:
                     ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_LINERIGHT, GetScrollPos(hWnd, SB_HORZ), (long) -1);
                     SetScrollPos(hWnd, SB_HORZ, ReturnScrollValue, 1);
-					break;
+                    break;
                 case SB_PAGELEFT:
                     ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_PAGELEFT, GetScrollPos(hWnd, SB_HORZ), ControlClientWidth(hWnd));
                     SetScrollPos(hWnd, SB_HORZ, ReturnScrollValue, 1);
-					break;
+                    break;
                 case SB_PAGERIGHT:
                     ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_PAGERIGHT, GetScrollPos(hWnd, SB_HORZ), ControlClientWidth(hWnd));
                     SetScrollPos(hWnd, SB_HORZ, ReturnScrollValue, 1);
-					break;
+                    break;
                 case SB_THUMBTRACK:
                     ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_TRACKLEFTRIGHT, GetScrollPos(hWnd, SB_HORZ), (short) ((wParam & 0xFFFF0000) / 0x10000));
                     SetScrollPos(hWnd, SB_HORZ, ReturnScrollValue, 1);
-					break;
+                    break;
                 case SB_THUMBPOSITION:
                     ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_POSITIONLEFTRIGHT, GetScrollPos(hWnd, SB_HORZ), (short) ((wParam & 0xFFFF0000) / 0x10000));
                     SetScrollPos(hWnd, SB_HORZ, ReturnScrollValue, 1);
-					break;
+                    break;
                 case SB_TOP:
                     ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_LEFT, GetScrollPos(hWnd, SB_HORZ), 0);
                     SetScrollPos(hWnd, SB_HORZ, ReturnScrollValue, 1);
-					break;
+                    break;
                 case SB_BOTTOM:
                     ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_RIGHT, GetScrollPos(hWnd, SB_HORZ), 0);
                     SetScrollPos(hWnd, SB_HORZ, ReturnScrollValue, 1);
-					break;
+                    break;
             }
-			return(0);
+            return(0);
         case WM_VSCROLL:
             switch(wParam & 0xFFFF)
             {
                 case SB_LINEUP:
                     ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_LINEUP, GetScrollPos(hWnd, SB_VERT), 1);
                     SetScrollPos(hWnd, SB_VERT, ReturnScrollValue, 1);
-					break;
-			    case SB_LINEDOWN:
+                    break;
+                case SB_LINEDOWN:
                     ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_LINEDOWN, GetScrollPos(hWnd, SB_VERT), -1);
                     SetScrollPos(hWnd, SB_VERT, ReturnScrollValue, 1);
-					break;
+                    break;
                 case SB_PAGEUP:
                     ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_PAGEUP, GetScrollPos(hWnd, SB_VERT), ControlClientHeight(hWnd));
                     SetScrollPos(hWnd, SB_VERT, ReturnScrollValue, 1);
-					break;
+                    break;
                 case SB_PAGEDOWN:
                     ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_PAGEDOWN, GetScrollPos(hWnd, SB_VERT), ControlClientHeight(hWnd));
                     SetScrollPos(hWnd, SB_VERT, ReturnScrollValue, 1);
-					break;
+                    break;
                 case SB_THUMBTRACK:
                     ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_TRACKUPDOWN, GetScrollPos(hWnd, SB_VERT), (short) ((wParam & 0xFFFF0000) / 0x10000));
                     SetScrollPos(hWnd, SB_VERT, ReturnScrollValue, 1);
-					break;
+                    break;
                 case SB_THUMBPOSITION:
                     ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_POSITIONUPDOWN, GetScrollPos(hWnd, SB_VERT), (short) ((wParam & 0xFFFF0000) / 0x10000));
                     SetScrollPos(hWnd, SB_VERT, ReturnScrollValue, 1);
-					break;
+                    break;
                 case SB_TOP:
                     ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_TOP, GetScrollPos(hWnd, SB_VERT), 0);
                     SetScrollPos(hWnd, SB_VERT, ReturnScrollValue, 1);
-					break;
+                    break;
                 case SB_BOTTOM:
                     ReturnScrollValue = SendMessage(GetParent(hWnd), DUMPBOX_BOTTOM, GetScrollPos(hWnd, SB_VERT), 0);
                     SetScrollPos(hWnd, SB_VERT, ReturnScrollValue, 1);
-					break;
+                    break;
             }
-			return(0);
+            return(0);
     }
     return(DefWindowProc(hWnd, uMsg, wParam, lParam));
 }
@@ -8825,15 +8826,15 @@ LRESULT CALLBACK WADefGripBoxClassHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
     HBRUSH hBlackBrush = 0;
     HBRUSH hWhiteBrush = 0;
     PAINTSTRUCT SplitPs;
-	LPGRIPBOXDAT GripDats;
-	LPGRIPBOXSQRBOXDAT GripSquareDats;
-	RECT PaintRect;
-	RECT ParentRect;
-	HWND ParentParent;
-	HDC Size_HDC;
-	long DragX;
-	long DragY;
-	POINT DragPos;
+    LPGRIPBOXDAT GripDats;
+    LPGRIPBOXSQRBOXDAT GripSquareDats;
+    RECT PaintRect;
+    RECT ParentRect;
+    HWND ParentParent;
+    HDC Size_HDC;
+    long DragX;
+    long DragY;
+    POINT DragPos;
 
     switch(uMsg)
     {
@@ -8842,208 +8843,208 @@ LRESULT CALLBACK WADefGripBoxClassHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
             BlackBrush.lbStyle = BS_SOLID;
             BlackBrush.lbHatch = 0;
             GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(hWnd, GWL_USERDATA);
-			if(GripSquareDats != 0) {
-				BlackBrush.lbColor = GripSquareDats->Color;
-				hBlackBrush = CreateBrushIndirect(&BlackBrush);
-				BlackBrush.lbColor = 0xffffff;
-				hWhiteBrush = CreateBrushIndirect(&BlackBrush);
-				// Fill it
-				GetClientRect(hWnd, &PaintRect);
-				FillRect(SplitPs.hdc, &PaintRect, hWhiteBrush);
-				PaintRect.left++;
-				PaintRect.top++;
-				PaintRect.right--;
-				PaintRect.bottom--;
-				FillRect(SplitPs.hdc, &PaintRect, hBlackBrush);
-				DeleteObject(hWhiteBrush);
-				DeleteObject(hBlackBrush);
-			}
+            if(GripSquareDats != 0) {
+                BlackBrush.lbColor = GripSquareDats->Color;
+                hBlackBrush = CreateBrushIndirect(&BlackBrush);
+                BlackBrush.lbColor = 0xffffff;
+                hWhiteBrush = CreateBrushIndirect(&BlackBrush);
+                // Fill it
+                GetClientRect(hWnd, &PaintRect);
+                FillRect(SplitPs.hdc, &PaintRect, hWhiteBrush);
+                PaintRect.left++;
+                PaintRect.top++;
+                PaintRect.right--;
+                PaintRect.bottom--;
+                FillRect(SplitPs.hdc, &PaintRect, hBlackBrush);
+                DeleteObject(hWhiteBrush);
+                DeleteObject(hBlackBrush);
+            }
             EndPaint(hWnd, &SplitPs);
-			return(0);
-		case WM_LBUTTONDOWN:
-			SetCapture(hWnd);
-			GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(hWnd, GWL_USERDATA);
-			// Ask parent to fill the rect structure
-			GripSquareDats->State = GRIPBOX_STATE_RESIZING;
-			ParentParent = GetParent(hWnd);
-			SendMessage(ParentParent, GRIPBOX_MSG_ASKSIZE, (WPARAM) GripSquareDats->Container, (LPARAM) &GripSquareDats->ResizeRect);
-			SendMessage(ParentParent, GRIPBOX_MSG_ASKSTEPS, (WPARAM) 0, (LPARAM) GripSquareDats);
+            return(0);
+        case WM_LBUTTONDOWN:
+            SetCapture(hWnd);
+            GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(hWnd, GWL_USERDATA);
+            // Ask parent to fill the rect structure
+            GripSquareDats->State = GRIPBOX_STATE_RESIZING;
+            ParentParent = GetParent(hWnd);
+            SendMessage(ParentParent, GRIPBOX_MSG_ASKSIZE, (WPARAM) GripSquareDats->Container, (LPARAM) &GripSquareDats->ResizeRect);
+            SendMessage(ParentParent, GRIPBOX_MSG_ASKSTEPS, (WPARAM) 0, (LPARAM) GripSquareDats);
 
-			Size_HDC = GetDC(ParentParent);
-			DrawFocusRect(Size_HDC, &GripSquareDats->ResizeRect);
-			ReleaseDC(ParentParent, Size_HDC);
+            Size_HDC = GetDC(ParentParent);
+            DrawFocusRect(Size_HDC, &GripSquareDats->ResizeRect);
+            ReleaseDC(ParentParent, Size_HDC);
 
-			GripSquareDats->OldRect.left = GripSquareDats->ResizeRect.left;
-			GripSquareDats->OldRect.right = GripSquareDats->ResizeRect.right;
-			GripSquareDats->OldRect.top = GripSquareDats->ResizeRect.top;
-			GripSquareDats->OldRect.bottom = GripSquareDats->ResizeRect.bottom;
-			return(0);
-		case WM_MOUSEMOVE:
-			GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(hWnd, GWL_USERDATA);
-			if(GripSquareDats->State == GRIPBOX_STATE_RESIZING)
-			{
-				ParentParent = GetParent(hWnd);
-				GetCursorPos(&DragPos);
-				ScreenToClient(ParentParent, &DragPos);
-				DragX = DragPos.x;
-				DragY = DragPos.y;
-				// Bound coordinates
-				GetClientRect(ParentParent, &ParentRect);
+            GripSquareDats->OldRect.left = GripSquareDats->ResizeRect.left;
+            GripSquareDats->OldRect.right = GripSquareDats->ResizeRect.right;
+            GripSquareDats->OldRect.top = GripSquareDats->ResizeRect.top;
+            GripSquareDats->OldRect.bottom = GripSquareDats->ResizeRect.bottom;
+            return(0);
+        case WM_MOUSEMOVE:
+            GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(hWnd, GWL_USERDATA);
+            if(GripSquareDats->State == GRIPBOX_STATE_RESIZING)
+            {
+                ParentParent = GetParent(hWnd);
+                GetCursorPos(&DragPos);
+                ScreenToClient(ParentParent, &DragPos);
+                DragX = DragPos.x;
+                DragY = DragPos.y;
+                // Bound coordinates
+                GetClientRect(ParentParent, &ParentRect);
                 if(DragX < 0) DragX = 0;
                 if(DragY < 0) DragY = 0;
-				if(DragX > ParentRect.right) DragX = ParentRect.right;
-				if(DragY > ParentRect.bottom) DragY = ParentRect.bottom;
-				if(GripSquareDats->StepX > 1) DragX = ((DragX / GripSquareDats->StepX) * GripSquareDats->StepX) + 1;
+                if(DragX > ParentRect.right) DragX = ParentRect.right;
+                if(DragY > ParentRect.bottom) DragY = ParentRect.bottom;
+                if(GripSquareDats->StepX > 1) DragX = ((DragX / GripSquareDats->StepX) * GripSquareDats->StepX) + 1;
                 if(GripSquareDats->StepY > 1) DragY = ((DragY / GripSquareDats->StepY) * GripSquareDats->StepY) + 1;
-				switch(GripSquareDats->Type)
-				{
-					// Free moves
-					case GRIPBOX_TOPLEFT:
-						GripSquareDats->ResizeRect.left = DragX - 1;
-						GripSquareDats->ResizeRect.top = DragY - 1;
-						break;
-					case GRIPBOX_TOPRIGHT:
-						GripSquareDats->ResizeRect.right = DragX;
-						GripSquareDats->ResizeRect.top = DragY - 1;
-						break;
-					case GRIPBOX_BOTTOMLEFT:
-						GripSquareDats->ResizeRect.left = DragX - 1;
-						GripSquareDats->ResizeRect.bottom = DragY;
-						break;
-					case GRIPBOX_BOTTOMRIGHT:
-						GripSquareDats->ResizeRect.right = DragX;
-						GripSquareDats->ResizeRect.bottom = DragY;
-						break;
-					// Up / Down
-					case GRIPBOX_TOP:
-						GripSquareDats->ResizeRect.top = DragY - 1;
-						break;
-					case GRIPBOX_BOTTOM:
-						GripSquareDats->ResizeRect.bottom = DragY;
-						break;
-					// Left / Right
-					case GRIPBOX_LEFT:
-						GripSquareDats->ResizeRect.left = DragX - 1;
-						break;
-					case GRIPBOX_RIGHT:
-						GripSquareDats->ResizeRect.right = DragX;
-						break;
-				}
+                switch(GripSquareDats->Type)
+                {
+                    // Free moves
+                    case GRIPBOX_TOPLEFT:
+                        GripSquareDats->ResizeRect.left = DragX - 1;
+                        GripSquareDats->ResizeRect.top = DragY - 1;
+                        break;
+                    case GRIPBOX_TOPRIGHT:
+                        GripSquareDats->ResizeRect.right = DragX;
+                        GripSquareDats->ResizeRect.top = DragY - 1;
+                        break;
+                    case GRIPBOX_BOTTOMLEFT:
+                        GripSquareDats->ResizeRect.left = DragX - 1;
+                        GripSquareDats->ResizeRect.bottom = DragY;
+                        break;
+                    case GRIPBOX_BOTTOMRIGHT:
+                        GripSquareDats->ResizeRect.right = DragX;
+                        GripSquareDats->ResizeRect.bottom = DragY;
+                        break;
+                    // Up / Down
+                    case GRIPBOX_TOP:
+                        GripSquareDats->ResizeRect.top = DragY - 1;
+                        break;
+                    case GRIPBOX_BOTTOM:
+                        GripSquareDats->ResizeRect.bottom = DragY;
+                        break;
+                    // Left / Right
+                    case GRIPBOX_LEFT:
+                        GripSquareDats->ResizeRect.left = DragX - 1;
+                        break;
+                    case GRIPBOX_RIGHT:
+                        GripSquareDats->ResizeRect.right = DragX;
+                        break;
+                }
 
-				if((GripSquareDats->ResizeRect.right - GripSquareDats->ResizeRect.left) <= 0) GripSquareDats->ResizeRect.right--;
-				if((GripSquareDats->ResizeRect.bottom - GripSquareDats->ResizeRect.top) <= 0) GripSquareDats->ResizeRect.bottom--;
+                if((GripSquareDats->ResizeRect.right - GripSquareDats->ResizeRect.left) <= 0) GripSquareDats->ResizeRect.right--;
+                if((GripSquareDats->ResizeRect.bottom - GripSquareDats->ResizeRect.top) <= 0) GripSquareDats->ResizeRect.bottom--;
 
-				if(GripSquareDats->ResizeRect.right < (GripSquareDats->ResizeRect.left + GripSquareDats->StepX))
-				{
-					GripSquareDats->ResizeRect.right = (GripSquareDats->ResizeRect.left + GripSquareDats->StepX) + 1;
-				}
-				if(GripSquareDats->ResizeRect.bottom < (GripSquareDats->ResizeRect.top + GripSquareDats->StepY))
-				{
-					GripSquareDats->ResizeRect.bottom = (GripSquareDats->ResizeRect.top + GripSquareDats->StepY) + 1; 
-				}
+                if(GripSquareDats->ResizeRect.right < (GripSquareDats->ResizeRect.left + GripSquareDats->StepX))
+                {
+                    GripSquareDats->ResizeRect.right = (GripSquareDats->ResizeRect.left + GripSquareDats->StepX) + 1;
+                }
+                if(GripSquareDats->ResizeRect.bottom < (GripSquareDats->ResizeRect.top + GripSquareDats->StepY))
+                {
+                    GripSquareDats->ResizeRect.bottom = (GripSquareDats->ResizeRect.top + GripSquareDats->StepY) + 1; 
+                }
 
-				Size_HDC = GetDC(ParentParent);
-				DrawFocusRect(Size_HDC, &GripSquareDats->OldRect);
-				ReleaseDC(ParentParent, Size_HDC);
+                Size_HDC = GetDC(ParentParent);
+                DrawFocusRect(Size_HDC, &GripSquareDats->OldRect);
+                ReleaseDC(ParentParent, Size_HDC);
 
-				Size_HDC = GetDC(ParentParent);
-				DrawFocusRect(Size_HDC, &GripSquareDats->ResizeRect);
-				ReleaseDC(ParentParent, Size_HDC);
+                Size_HDC = GetDC(ParentParent);
+                DrawFocusRect(Size_HDC, &GripSquareDats->ResizeRect);
+                ReleaseDC(ParentParent, Size_HDC);
 
-				GripSquareDats->OldRect.left = GripSquareDats->ResizeRect.left;
-				GripSquareDats->OldRect.right = GripSquareDats->ResizeRect.right;
-				GripSquareDats->OldRect.top = GripSquareDats->ResizeRect.top;
-				GripSquareDats->OldRect.bottom = GripSquareDats->ResizeRect.bottom;
-			}
-			return(0);
+                GripSquareDats->OldRect.left = GripSquareDats->ResizeRect.left;
+                GripSquareDats->OldRect.right = GripSquareDats->ResizeRect.right;
+                GripSquareDats->OldRect.top = GripSquareDats->ResizeRect.top;
+                GripSquareDats->OldRect.bottom = GripSquareDats->ResizeRect.bottom;
+            }
+            return(0);
         case WM_RBUTTONDOWN:
         case WM_MBUTTONDOWN:
-			// Cancel resizing
-			GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(hWnd, GWL_USERDATA);
-			if(GripSquareDats->State == GRIPBOX_STATE_RESIZING)
-			{
-				ParentParent = GetParent(hWnd);
-				Size_HDC = GetDC(ParentParent);
-				DrawFocusRect(Size_HDC, &GripSquareDats->ResizeRect);
-				ReleaseDC(ParentParent, Size_HDC);
-				GripSquareDats->State = GRIPBOX_STATE_RESET;
-				ReleaseCapture();
-			}
-			return(0);
-		case WM_LBUTTONUP:
-			// Resizing done
-			GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(hWnd, GWL_USERDATA);
-			if(GripSquareDats->State == GRIPBOX_STATE_RESIZING)
-			{
-				ParentParent = GetParent(hWnd);
-				Size_HDC = GetDC(ParentParent);
-				DrawFocusRect(Size_HDC, &GripSquareDats->ResizeRect);
-				ReleaseDC(ParentParent, Size_HDC);
-				GripSquareDats->State = GRIPBOX_STATE_RESET;
-				// Notify parent that the control was correctly resized
-				SendMessage(ParentParent, GRIPBOX_MSG_RESIZED, (WPARAM) GripSquareDats->Container, (LPARAM) &GripSquareDats->ResizeRect);
-				ReleaseCapture();
-			}
-			return(0);
-		case WM_SETCURSOR:
-			GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(hWnd, GWL_USERDATA);
+            // Cancel resizing
+            GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(hWnd, GWL_USERDATA);
+            if(GripSquareDats->State == GRIPBOX_STATE_RESIZING)
+            {
+                ParentParent = GetParent(hWnd);
+                Size_HDC = GetDC(ParentParent);
+                DrawFocusRect(Size_HDC, &GripSquareDats->ResizeRect);
+                ReleaseDC(ParentParent, Size_HDC);
+                GripSquareDats->State = GRIPBOX_STATE_RESET;
+                ReleaseCapture();
+            }
+            return(0);
+        case WM_LBUTTONUP:
+            // Resizing done
+            GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(hWnd, GWL_USERDATA);
+            if(GripSquareDats->State == GRIPBOX_STATE_RESIZING)
+            {
+                ParentParent = GetParent(hWnd);
+                Size_HDC = GetDC(ParentParent);
+                DrawFocusRect(Size_HDC, &GripSquareDats->ResizeRect);
+                ReleaseDC(ParentParent, Size_HDC);
+                GripSquareDats->State = GRIPBOX_STATE_RESET;
+                // Notify parent that the control was correctly resized
+                SendMessage(ParentParent, GRIPBOX_MSG_RESIZED, (WPARAM) GripSquareDats->Container, (LPARAM) &GripSquareDats->ResizeRect);
+                ReleaseCapture();
+            }
+            return(0);
+        case WM_SETCURSOR:
+            GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(hWnd, GWL_USERDATA);
             switch(GripSquareDats->Type)
             {
-				case GRIPBOX_TOPLEFT:
-					SetCursor(LoadCursor(0, IDC_SIZENWSE));
-					break;
-				case GRIPBOX_TOP:
-					SetCursor(LoadCursor(0, IDC_SIZENS));
-					break;
-				case GRIPBOX_TOPRIGHT:
-					SetCursor(LoadCursor(0, IDC_SIZENESW));
-					break;
-				case GRIPBOX_BOTTOMLEFT:
-					SetCursor(LoadCursor(0, IDC_SIZENESW));
-					break;
-				case GRIPBOX_BOTTOM:
-					SetCursor(LoadCursor(0, IDC_SIZENS));
-					break;
-				case GRIPBOX_BOTTOMRIGHT:
-					SetCursor(LoadCursor(0, IDC_SIZENWSE));
-					break;
-				case GRIPBOX_LEFT:
-					SetCursor(LoadCursor(0, IDC_SIZEWE));
-					break;
-				case GRIPBOX_RIGHT:
-					SetCursor(LoadCursor(0, IDC_SIZEWE));
-					break;
-			}
-			return(1);
+                case GRIPBOX_TOPLEFT:
+                    SetCursor(LoadCursor(0, IDC_SIZENWSE));
+                    break;
+                case GRIPBOX_TOP:
+                    SetCursor(LoadCursor(0, IDC_SIZENS));
+                    break;
+                case GRIPBOX_TOPRIGHT:
+                    SetCursor(LoadCursor(0, IDC_SIZENESW));
+                    break;
+                case GRIPBOX_BOTTOMLEFT:
+                    SetCursor(LoadCursor(0, IDC_SIZENESW));
+                    break;
+                case GRIPBOX_BOTTOM:
+                    SetCursor(LoadCursor(0, IDC_SIZENS));
+                    break;
+                case GRIPBOX_BOTTOMRIGHT:
+                    SetCursor(LoadCursor(0, IDC_SIZENWSE));
+                    break;
+                case GRIPBOX_LEFT:
+                    SetCursor(LoadCursor(0, IDC_SIZEWE));
+                    break;
+                case GRIPBOX_RIGHT:
+                    SetCursor(LoadCursor(0, IDC_SIZEWE));
+                    break;
+            }
+            return(1);
         case WM_CLOSE:
-			// First square closed erases all references to the ocntainer structure
-			// So that it is freed only one time
-			GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(hWnd, GWL_USERDATA);
-			if(GripSquareDats->Container)
-			{
-				// Get the container from the current square
-				GripDats = GripSquareDats->Container;
-				GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->BottomBox, GWL_USERDATA);
-				GripSquareDats->Container = 0;
-				GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->BottomLeftBox, GWL_USERDATA);
-				GripSquareDats->Container = 0;
-				GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->BottomRightBox, GWL_USERDATA);
-				GripSquareDats->Container = 0;
-				GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->LeftBox, GWL_USERDATA);
-				GripSquareDats->Container = 0;
-				GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->RightBox, GWL_USERDATA);
-				GripSquareDats->Container = 0;
-				GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->TopBox, GWL_USERDATA);
-				GripSquareDats->Container = 0;
-				GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->TopLeftBox, GWL_USERDATA);
-				GripSquareDats->Container = 0;
-				GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->TopRightBox, GWL_USERDATA);
-				GripSquareDats->Container = 0;
-			}
-			// Free the structure of the square
-			FreeMem(GetWindowLong(hWnd, GWL_USERDATA));
+            // First square closed erases all references to the ocntainer structure
+            // So that it is freed only one time
+            GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(hWnd, GWL_USERDATA);
+            if(GripSquareDats->Container)
+            {
+                // Get the container from the current square
+                GripDats = GripSquareDats->Container;
+                GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->BottomBox, GWL_USERDATA);
+                GripSquareDats->Container = 0;
+                GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->BottomLeftBox, GWL_USERDATA);
+                GripSquareDats->Container = 0;
+                GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->BottomRightBox, GWL_USERDATA);
+                GripSquareDats->Container = 0;
+                GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->LeftBox, GWL_USERDATA);
+                GripSquareDats->Container = 0;
+                GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->RightBox, GWL_USERDATA);
+                GripSquareDats->Container = 0;
+                GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->TopBox, GWL_USERDATA);
+                GripSquareDats->Container = 0;
+                GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->TopLeftBox, GWL_USERDATA);
+                GripSquareDats->Container = 0;
+                GripSquareDats = (LPGRIPBOXSQRBOXDAT) GetWindowLong(GripDats->TopRightBox, GWL_USERDATA);
+                GripSquareDats->Container = 0;
+            }
+            // Free the structure of the square
+            FreeMem(GetWindowLong(hWnd, GWL_USERDATA));
             SetWindowLong(hWnd, GWL_USERDATA, 0);
-	}
+    }
     return(DefWindowProc(hWnd, uMsg, wParam, lParam));
 }
 
@@ -9059,7 +9060,7 @@ LRESULT CALLBACK WADefSplashClassHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
     {
         case WM_CREATE:
             if(WACurrentInitProc != 0) WACurrentInitProc(hWnd);
-			return(0);
+            return(0);
         case WM_ERASEBKGND:
             GetClientRect(hWnd, &SplashRect);
             SplashBrush.lbStyle = BS_SOLID;
@@ -9071,7 +9072,7 @@ LRESULT CALLBACK WADefSplashClassHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             return(1);
         case WM_CLOSE:
             DestroyWindow(hWnd);
-			break;
+            break;
     }
     return(DefWindowProc(hWnd, uMsg, wParam, lParam));
 }
@@ -9094,7 +9095,7 @@ LRESULT CALLBACK WAHexHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             if((wParam != 8) && (wParam != 13))
             {
                 CharPress = CharPress.Chr(wParam);
-				CharPress = CharPress.Upper_Case();
+                CharPress = CharPress.Upper_Case();
                 if(CharPress == "0") goto HexOk;
                 if(CharPress == "1") goto HexOk;
                 if(CharPress == "2") goto HexOk;
@@ -9137,7 +9138,7 @@ LRESULT CALLBACK WAHexHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 }
                 return(0);
             }
-			break;
+            break;
         case WM_CUT:
             return(0);
         case WM_PASTE:
@@ -9154,23 +9155,23 @@ int CALLBACK FRMStockModalDlgEmptyProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, L
     long ReturnValue = 0;
     PAINTSTRUCT Ps;
 
-	switch(uMsg)
-	{
+    switch(uMsg)
+    {
         case WM_INITDIALOG:
             ControlSetText(hwndDlg, DialogTempTitle);
-			LastDialog = hwndDlg;
-			break;
+            LastDialog = hwndDlg;
+            break;
         case WM_PAINT:
             BeginPaint(hwndDlg, &Ps);
-			if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
+            if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
             EndPaint(hwndDlg, &Ps);
-			return(0);
-		case WM_CLOSE:
+            return(0);
+        case WM_CLOSE:
             EndDialog(hwndDlg, 0);
-			break;
+            break;
     }
-	if(uMsg) if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
-	return(ReturnValue);
+    if(uMsg) if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -9184,28 +9185,28 @@ int CALLBACK FRMStockModalDlgStdCloseProc(HWND hwndDlg, UINT uMsg, WPARAM wParam
     {
         case WM_INITDIALOG:
             ControlSetText(hwndDlg, DialogTempTitle);
-			CreateButton(DialogTempWidth - 80, DialogTempHeight - 26, 77, 23, hwndDlg, "Close", BUTTON_STOCK_OK_ID, 0, 0, 0, BS_DEFPUSHBUTTON | WS_TABSTOP, _Btn_StaticEdge);
-			LastDialog = hwndDlg;
-			break;
+            CreateButton(DialogTempWidth - 80, DialogTempHeight - 26, 77, 23, hwndDlg, "Close", BUTTON_STOCK_OK_ID, 0, 0, 0, BS_DEFPUSHBUTTON | WS_TABSTOP, _Btn_StaticEdge);
+            LastDialog = hwndDlg;
+            break;
         case WM_PAINT:
             BeginPaint(hwndDlg, &Ps);
             GDIDrawHorzSep(hwndDlg, 0, ControlClientHeight(hwndDlg) - 33, ControlClientWidth(hwndDlg));
-			if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
+            if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
             EndPaint(hwndDlg, &Ps);
-			return(0);
+            return(0);
         case WM_CLOSE:
-			EndDialog(hwndDlg, 0);
-			break;
+            EndDialog(hwndDlg, 0);
+            break;
     }
-	if(uMsg) if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
-	return(ReturnValue);
+    if(uMsg) if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Initialize Stock Form (Standard ok/cancel)
 int CALLBACK FRMStockModalDlgStdOkCancelProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	long ReturnValue = 0;
+    long ReturnValue = 0;
     PAINTSTRUCT Ps;
 
     switch(uMsg)
@@ -9214,68 +9215,68 @@ int CALLBACK FRMStockModalDlgStdOkCancelProc(HWND hwndDlg, UINT uMsg, WPARAM wPa
             ControlSetText(hwndDlg, DialogTempTitle);
             CreateButton(DialogTempWidth - 159, DialogTempHeight - 26, 77, 23, hwndDlg, "Ok", BUTTON_STOCK_OK_ID, 0, 0, 0, BS_DEFPUSHBUTTON | WS_GROUP | WS_TABSTOP, _Btn_StaticEdge);
             CreateButton(DialogTempWidth - 80, DialogTempHeight - 26, 77, 23, hwndDlg, "Cancel", BUTTON_STOCK_CANCEL_ID, 0, 0, 0, WS_TABSTOP, _Btn_StaticEdge);
-			LastDialog = hwndDlg;
-			break;
-		case WM_PAINT:
+            LastDialog = hwndDlg;
+            break;
+        case WM_PAINT:
             BeginPaint(hwndDlg, &Ps);
             GDIDrawHorzSep(hwndDlg, 0, ControlClientHeight(hwndDlg) - 33, ControlClientWidth(hwndDlg));
-			if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
+            if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
             EndPaint(hwndDlg, &Ps);
-			return(0);
-		case WM_CLOSE:
+            return(0);
+        case WM_CLOSE:
             EndDialog(hwndDlg, 0);
-			break;
+            break;
     }
-	if(uMsg) if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
-	return(ReturnValue);
+    if(uMsg) if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Initialize Stock Form (Standard wizard)
 int CALLBACK FRMStockModalDlgStdWizardProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	long ReturnValue = 0;
-	CStr BufString;
+    long ReturnValue = 0;
+    CStr BufString;
     PAINTSTRUCT Ps;
 
     switch(uMsg)
     {
         case WM_INITDIALOG:
             ControlSetText(hwndDlg, DialogTempTitle);
-			CreateButton(DialogTempWidth - (159 + 5), DialogTempHeight - 26, 77, 23, hwndDlg, "Finish", BUTTON_STOCK_FINISH_ID, 0, 0, 0, WS_GROUP | BS_DEFPUSHBUTTON | WS_TABSTOP, _Btn_StaticEdge);
+            CreateButton(DialogTempWidth - (159 + 5), DialogTempHeight - 26, 77, 23, hwndDlg, "Finish", BUTTON_STOCK_FINISH_ID, 0, 0, 0, WS_GROUP | BS_DEFPUSHBUTTON | WS_TABSTOP, _Btn_StaticEdge);
             CreateButton(DialogTempWidth - 80, DialogTempHeight - 26, 77, 23, hwndDlg, "Cancel", BUTTON_STOCK_CANCEL_ID, 0, 0, 0, WS_TABSTOP, _Btn_StaticEdge);
             CreateButton(DialogTempWidth - (159 + 10 + (79 * 2)), DialogTempHeight - 26, 77, 23, hwndDlg, "Previous", BUTTON_STOCK_PREVIOUS_ID, 0, 0, 0, WS_TABSTOP, _Btn_StaticEdge);
-			CreateButton(DialogTempWidth - (159 + 10 + 79), DialogTempHeight - 26, 77, 23, hwndDlg, "Next", BUTTON_STOCK_NEXT_ID, 0, 0, 0, WS_TABSTOP, _Btn_StaticEdge);
+            CreateButton(DialogTempWidth - (159 + 10 + 79), DialogTempHeight - 26, 77, 23, hwndDlg, "Next", BUTTON_STOCK_NEXT_ID, 0, 0, 0, WS_TABSTOP, _Btn_StaticEdge);
             ControlEnable(GetDlgItem(hwndDlg, BUTTON_STOCK_PREVIOUS_ID), 0);
             ControlEnable(GetDlgItem(hwndDlg, BUTTON_STOCK_NEXT_ID), 0);
-			CreatePictureBox(0, 0, 200, DialogTempHeight - 34, hwndDlg, LoadBitmap(ApphInstance, (char *) DialogTempExtra), IMAGE_BITMAP, 0, 0, SS_CENTERIMAGE);
-			LastDialog = hwndDlg;
-			break;
+            CreatePictureBox(0, 0, 200, DialogTempHeight - 34, hwndDlg, LoadBitmap(ApphInstance, (char *) DialogTempExtra), IMAGE_BITMAP, 0, 0, SS_CENTERIMAGE);
+            LastDialog = hwndDlg;
+            break;
         case WM_PAINT:
             BeginPaint(hwndDlg, &Ps);
             GDIDrawHorzSep(hwndDlg, 0, ControlClientHeight(hwndDlg) - 33, ControlClientWidth(hwndDlg));
-			if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
+            if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
             EndPaint(hwndDlg, &Ps);
-			return(0);
-		case WM_CLOSE:
+            return(0);
+        case WM_CLOSE:
             EndDialog(hwndDlg, 0);
-			break;
-	}
-	if(uMsg) if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
-	return(ReturnValue);
+            break;
+    }
+    if(uMsg) if(DialogTempProc != 0) ReturnValue = DialogTempProc(hwndDlg, uMsg, wParam, lParam);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Allocate block in global memory (private)
 long AllocMem(long MemSize)
 {
-	if(MemSize) return((long) calloc(MemSize + 1, 1));
-	return(0);
+    if(MemSize) return((long) calloc(MemSize + 1, 1));
+    return(0);
 }
 
 // -----------------------------------------------------------------------
 // Free a block allocated in global memory (private)
 void FreeMem(long MemHandle)
 {
-	if(MemHandle) free((void *) MemHandle);
+    if(MemHandle) free((void *) MemHandle);
 }

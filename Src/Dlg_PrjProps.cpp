@@ -115,9 +115,9 @@ int CALLBACK FRMPrjPropsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
             ComboBoxSetIndex(FRMPrjPropsFileType, 0);
             FRMPrjPropsSetIcon = CreateButton(133, 56 + 25, 25, 21, hwndDlg, "...", 8, 0, 0, 0, WS_TABSTOP, Buttons_StaticEdge);
             // Current icon
-			if(ProjectTypeScheduledImg.Len()) BufString = ProjectTypeScheduledImg;
-			else BufString = ProjectDir + (CStr) "\\" + (CStr) ProjectTypeImg;
-			FRMPrjPropsIconhandle = LoadImage(0, BufString.Get_String(), IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
+            if(ProjectTypeScheduledImg.Len()) BufString = ProjectTypeScheduledImg;
+            else BufString = ProjectDir + (CStr) "\\" + (CStr) ProjectTypeImg;
+            FRMPrjPropsIconhandle = LoadImage(0, BufString.Get_String(), IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
             FRMPrjPropsIcon = CreatePictureBox(163, 43 + 25, 35, 34, FRMPrjPropsFr1, FRMPrjPropsIconhandle, IMAGE_ICON, 9, 0, SS_CENTERIMAGE);
             CreateLabel(7, 15, 52, 13, FRMPrjPropsFr2, "Major :", 0, 0, 0, 0);
             CreateLabel(99, 15, 52, 13, FRMPrjPropsFr2, "Minor :", 0, 0, 0, 0);
@@ -171,7 +171,7 @@ int CALLBACK FRMPrjPropsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
         case WM_COMMAND:
             if((HWND) lParam == FRMPrjPropsOk)
             {
-				ProjectTypeScheduledImg = NewIconFile;
+                ProjectTypeScheduledImg = NewIconFile;
                 SaveProjectProperties();
                 ControlClose(hwndDlg);
                 return(0);
@@ -196,16 +196,16 @@ int CALLBACK FRMPrjPropsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
                 SetProjectIcon();
                 return(0);
             }
-			break;
+            break;
         case WM_PAINT:
             BeginPaint(hwndDlg, &CreatePs);
             GDIDrawHorzSep(hwndDlg, 0, 207, 402);
             EndPaint(hwndDlg, &CreatePs);
-			break;
-		case WM_CLOSE:
+            break;
+        case WM_CLOSE:
             FreezeTimer = 0;
             EndDialog(hwndDlg, 0);
-			break;
+            break;
     }
     return(0);
 }
@@ -215,8 +215,8 @@ int CALLBACK FRMPrjPropsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 void LoadUserInfos(void)
 {
     TmpPrj_CompanyName = StringReplace(IniReadKey("UserInfos", "CompanyName", MainIniFile), TmpPrj_CompanyName.Chr(2), TmpPrj_CompanyName.Chr(13) + TmpPrj_CompanyName.Chr(10), 1, -1, Binary_Compare);
-	TmpPrj_LegalCopyRight = StringReplace(IniReadKey("UserInfos", "LegalCopyRight", MainIniFile), TmpPrj_LegalCopyRight.Chr(2), TmpPrj_LegalCopyRight.Chr(13) + TmpPrj_LegalCopyRight.Chr(10), 1, -1, Binary_Compare);
-	TmpPrj_LegalTrademarks = StringReplace(IniReadKey("UserInfos", "LegalTrademarks", MainIniFile), TmpPrj_LegalTrademarks.Chr(2), TmpPrj_LegalTrademarks.Chr(13) + TmpPrj_LegalTrademarks.Chr(10), 1, -1, Binary_Compare);
+    TmpPrj_LegalCopyRight = StringReplace(IniReadKey("UserInfos", "LegalCopyRight", MainIniFile), TmpPrj_LegalCopyRight.Chr(2), TmpPrj_LegalCopyRight.Chr(13) + TmpPrj_LegalCopyRight.Chr(10), 1, -1, Binary_Compare);
+    TmpPrj_LegalTrademarks = StringReplace(IniReadKey("UserInfos", "LegalTrademarks", MainIniFile), TmpPrj_LegalTrademarks.Chr(2), TmpPrj_LegalTrademarks.Chr(13) + TmpPrj_LegalTrademarks.Chr(10), 1, -1, Binary_Compare);
 }
 
 // -----------------------------------------------------------------------
@@ -243,27 +243,27 @@ LRESULT CALLBACK FRMPrjPropsFrame3(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
                     case 0:
                         ControlSetText(FRMPrjPropsTypeTxt, TmpPrj_Comments);
                         LastListBoxIndex = 0;
-						break;
+                        break;
                     case 1:
                         ControlSetText(FRMPrjPropsTypeTxt, TmpPrj_CompanyName);
                         LastListBoxIndex = 1;
-						break;
+                        break;
                     case 2:
                         ControlSetText(FRMPrjPropsTypeTxt, TmpPrj_FileDescription);
                         LastListBoxIndex = 2;
-						break;
+                        break;
                     case 3:
                         ControlSetText(FRMPrjPropsTypeTxt, TmpPrj_LegalCopyRight);
                         LastListBoxIndex = 3;
-						break;
+                        break;
                     case 4:
                         ControlSetText(FRMPrjPropsTypeTxt, TmpPrj_LegalTrademarks);
                         LastListBoxIndex = 4;
-						break;
+                        break;
                     case 5:
                         ControlSetText(FRMPrjPropsTypeTxt, TmpPrj_ProductName);
                         LastListBoxIndex = 5;
-						break;
+                        break;
                 }
                 return(0);
             }
@@ -276,24 +276,24 @@ LRESULT CALLBACK FRMPrjPropsFrame3(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
                         {
                             case 0:
                                 TmpPrj_Comments = ControlGetText(FRMPrjPropsTypeTxt);
-								break;
-				            case 1:
+                                break;
+                            case 1:
                                 TmpPrj_CompanyName = ControlGetText(FRMPrjPropsTypeTxt);
-								break;
+                                break;
                             case 2:
                                 TmpPrj_FileDescription = ControlGetText(FRMPrjPropsTypeTxt);
-								break;
+                                break;
                             case 3:
                                 TmpPrj_LegalCopyRight = ControlGetText(FRMPrjPropsTypeTxt);
-								break;
+                                break;
                             case 4:
                                 TmpPrj_LegalTrademarks = ControlGetText(FRMPrjPropsTypeTxt);
-								break;
+                                break;
                             case 5:
                                 TmpPrj_ProductName = ControlGetText(FRMPrjPropsTypeTxt);
-								break;
+                                break;
                         }
-						break;
+                        break;
                 }
             }
     }
@@ -321,7 +321,7 @@ LRESULT CALLBACK FRMPrjPropsTypeTxtHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 void SetProjectIcon(void)
 {
     CStr LdFile;
-	CStr OpFilters;
+    CStr OpFilters;
     CStr IconDir;
 
     OpFilters = "Icon files (*.ico)|*.ico";
@@ -331,7 +331,7 @@ void SetProjectIcon(void)
     if(strcmp(IconDir.Right(1).Get_String(), "\\") == 0) IconDir = IconDir.Left(IconDir.Len() - 1);
     LastPrjIconDir = IconDir;
     NewIconFile = LdFile;
-	PictureBoxChangeIcon(FRMPrjPropsIcon, (HICON) LoadImage(0, LdFile.Get_String(), IMAGE_ICON, 0, 0, LR_LOADFROMFILE));
+    PictureBoxChangeIcon(FRMPrjPropsIcon, (HICON) LoadImage(0, LdFile.Get_String(), IMAGE_ICON, 0, 0, LR_LOADFROMFILE));
 }
 
 // -----------------------------------------------------------------------
@@ -340,7 +340,7 @@ void SaveProjectProperties(void)
 {
     CStr BufString;
 
-	Prj_Major = 0;
+    Prj_Major = 0;
     Prj_Minor = 0;
     Prj_Revision = 0;
     Prj_Release = 0;

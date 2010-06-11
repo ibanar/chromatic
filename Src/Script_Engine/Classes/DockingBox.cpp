@@ -100,10 +100,10 @@ int Allocate(lua_State *L)
     {
         luaL_getmetatable(L, CLASS_NAME);
         lua_setmetatable(L, -2);
-	    // Store our lua function here
+        // Store our lua function here
         // (the class is register with 12 bytes extra)
-	    SetWindowLong((HWND) *Value, 8, (long) Func);
-	    // Store the script context
+        SetWindowLong((HWND) *Value, 8, (long) Func);
+        // Store the script context
         SetWindowLong((HWND) *Value, 12, (long) L);
     }
 

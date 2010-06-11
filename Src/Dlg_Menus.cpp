@@ -77,7 +77,7 @@ void CreateMenus(void)
 {
     long EntryMnuCount = 0;
 
-	EditMenus = 0;
+    EditMenus = 0;
     EntryMnuCount = TreeViewGetChildItemsCount(hTreeView, hTreeViewMenus);
     // Check if entry already exists
     while(TreeViewSearchChildPartialText(hTreeView, hTreeViewMenus, "MENUS_" + (CStr) EntryMnuCount) != -1)
@@ -118,15 +118,15 @@ int CALLBACK FRMMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
     HTREEITEM CurrentTreeItem = 0;
     PAINTSTRUCT EnterValuePs;
     long TVIndex = 0;
-	long *lParamKey = 0;
+    long *lParamKey = 0;
     long TreeViewKey = 0;
 
     switch(uMsg)
     {
         case WM_SYSCOLORCHANGE:
             TreeViewSetBackColor(FRMMenusTreeView, GetSysColor(COLOR_WINDOW));
-			break;
-		case WM_INITDIALOG:
+            break;
+        case WM_INITDIALOG:
             InCloseProcess = 0;
             MenusArray.Erase();
             MenusTypeArray.Erase();
@@ -183,8 +183,8 @@ int CALLBACK FRMMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             GDIDrawHorzSep(hwndDlg, 0, 25, 500);
             GDIDrawHorzSep(hwndDlg, 0, 282, 500);
             EndPaint(hwndDlg, &EnterValuePs);
-			break;
-		case WM_NOTIFY:
+            break;
+        case WM_NOTIFY:
             switch(ControlGetNotifiedMsg(lParam))
             {
                 case TTN_NEEDTEXT:
@@ -215,18 +215,18 @@ int CALLBACK FRMMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             ToolBarDisplayToolTip("Test menu", lParam);
                             return(0);
                     }
-					break;
+                    break;
                 case TVN_KEYDOWN:
                     lParamKey = (long *) lParam;
-					TreeViewKey = lParamKey[3] & 0xffff;
+                    TreeViewKey = lParamKey[3] & 0xffff;
                     switch(TreeViewKey)
                     {
                         case 46:
-							CurrentTreeItem = TreeViewGetSelectedItem(FRMMenusTreeView);
-							if(CurrentTreeItem) TreeViewRemoveItem(FRMMenusTreeView, CurrentTreeItem);
-							return(0);
-					}
-					break;
+                            CurrentTreeItem = TreeViewGetSelectedItem(FRMMenusTreeView);
+                            if(CurrentTreeItem) TreeViewRemoveItem(FRMMenusTreeView, CurrentTreeItem);
+                            return(0);
+                    }
+                    break;
                 case TVN_DELETEITEM:
                     // Clear entry from array
                     // (Message handled for recursivity considerations)
@@ -252,7 +252,7 @@ int CALLBACK FRMMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             ControlSetText(FRMMenusCaption, "<Separator>");
                             ControlSetText(FRMMenusCommand, "");
                             PutMenuProps(TVIndex);
-							break;
+                            break;
                         case MENUTYPE_BAR:
                             ControlEnable(FRMMenusCaption, 1);
                             ControlEnable(FRMMenusCommand, 0);
@@ -271,7 +271,7 @@ int CALLBACK FRMMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             }
                             ControlSetText(FRMMenusCommand, "");
                             PutMenuProps(TVIndex);
-							break;
+                            break;
                         case MENUTYPE_POPUP:
                             ControlEnable(FRMMenusCaption, 1);
                             ControlEnable(FRMMenusCommand, 0);
@@ -290,8 +290,8 @@ int CALLBACK FRMMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             }
                             ControlSetText(FRMMenusCommand, "");
                             PutMenuProps(TVIndex);
-							break;
-						case MENUTYPE_ITEM:
+                            break;
+                        case MENUTYPE_ITEM:
                             ControlEnable(FRMMenusCaption, 1);
                             ControlEnable(FRMMenusCommand, 1);
                             ControlEnable(FRMMenusChkChecked, 1);
@@ -312,7 +312,7 @@ int CALLBACK FRMMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                     }
                     return(0);
             }
-			break;
+            break;
         case WM_COMMAND:
             if((HWND) lParam == FRMMenusToolbar)
             {
@@ -330,8 +330,8 @@ int CALLBACK FRMMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             TreeViewSetSelectedItem(FRMMenusTreeView, TemphMenu);
                         }
                         SetFocus(FRMMenusTreeView);
-						break;
-					case MENUSADDPOPUP:
+                        break;
+                    case MENUSADDPOPUP:
                         CurrentTreeItem = TreeViewGetSelectedItem(FRMMenusTreeView);
                         if(CurrentTreeItem == 0)
                         {
@@ -351,7 +351,7 @@ int CALLBACK FRMMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                         MenusCmdArray.Add(1L);
                         MenusPropsArray.Add(0L);
                         SetFocus(FRMMenusTreeView);
-						break;
+                        break;
                     case MENUSADDITEM:
                         CurrentTreeItem = TreeViewGetSelectedItem(FRMMenusTreeView);
                         if(CurrentTreeItem == 0)
@@ -372,7 +372,7 @@ int CALLBACK FRMMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                         MenusCmdArray.Add(1L);
                         MenusPropsArray.Add(0L);
                         SetFocus(FRMMenusTreeView);
-						break;
+                        break;
                     case MENUSADDSEPARATOR:
                         CurrentTreeItem = TreeViewGetSelectedItem(FRMMenusTreeView);
                         if(CurrentTreeItem == 0)
@@ -393,19 +393,19 @@ int CALLBACK FRMMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                         MenusCmdArray.Add(1L);
                         MenusPropsArray.Add(0L);
                         SetFocus(FRMMenusTreeView);
-						break;
+                        break;
                     case MENUSDELETE:
                         RemoveMenuEntry(TreeViewGetSelectedItem(FRMMenusTreeView));
-						break;
-					case MENUSUP:
+                        break;
+                    case MENUSUP:
                         MoveMenuEntryUp(TreeViewGetSelectedItem(FRMMenusTreeView));
-						break;
-					case MENUSDOWN:
+                        break;
+                    case MENUSDOWN:
                         MoveMenuEntryDown(TreeViewGetSelectedItem(FRMMenusTreeView));
-						break;
+                        break;
                     case MENUSVIEW:
                         TestMenus();
-						break;
+                        break;
                 }
                 return(0);
             }
@@ -427,15 +427,15 @@ int CALLBACK FRMMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             {
                 ControlClose(hwndDlg);
                 return(0);
-			}
-			break;
+            }
+            break;
         case WM_CLOSE:
             // Avoid delete items notifications to speed the things up
             // (It is slow enough like that)
             InCloseProcess = 1;
             FreezeTimer = 0;
             EndDialog(hwndDlg, 0);
-			break;
+            break;
     }
     return(0);
 }
@@ -446,15 +446,15 @@ LRESULT CALLBACK MenuTreeViewHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 {
     HTREEITEM RightSelection = 0;
     
-	switch(uMsg)
-	{
+    switch(uMsg)
+    {
         case WM_RBUTTONDBLCLK:
             return(0);
         case WM_LBUTTONDOWN:
             RightSelection = TreeViewGetItemFromPos(FRMMenusTreeView, lParam & 0xFFFF, ((lParam & 0xFFFF0000) >> 16));
             if(RightSelection != 0) TreeViewSetSelectedItem(FRMMenusTreeView, RightSelection);
-			break;
-		case WM_RBUTTONDOWN:
+            break;
+        case WM_RBUTTONDOWN:
             RightSelection = TreeViewGetItemFromPos(FRMMenusTreeView, lParam & 0xFFFF, ((lParam & 0xFFFF0000) >> 16));
             if(RightSelection != 0)
             {
@@ -579,8 +579,8 @@ LRESULT CALLBACK MenusFrameHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
                 MenusPropsArray.Set(TVIndex, CurrentProp);
                 return(0);
             }
-			break;
-	}
+            break;
+    }
     return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
 }
 
@@ -591,7 +591,7 @@ void PutMenuProps(long PropIndex)
     long MenuProp = 0;
     long MenuPropBreak = 0;
     
-	MenuProp = MenusPropsArray.Get(PropIndex)->Content;
+    MenuProp = MenusPropsArray.Get(PropIndex)->Content;
     if((MenuProp & MENUPROP_CHECKED) != 0)
     {
         CheckBoxSetState(FRMMenusChkChecked, 1);
@@ -634,7 +634,7 @@ long GetCurrentPropIndex(void)
 {
     HTREEITEM hItemToUpdate = 0;
     
-	hItemToUpdate = TreeViewGetSelectedItem(FRMMenusTreeView);
+    hItemToUpdate = TreeViewGetSelectedItem(FRMMenusTreeView);
     return(GetEntryIndex(hItemToUpdate));
 }
 
@@ -799,7 +799,7 @@ void FillTReeViewMenus(void)
                 MenusCmdArray.Add(MenuEntryCmd.Get_Long());
                 MenusPropsArray.Add(MenuEntryProps.Get_Long());
                 MenuEntryOldLevel = MenuEntryLevelLng;
-				break;
+                break;
             case MENUTYPE_POPUP:
                 // Is it a child ?
                 if(MenuEntryOldLevel != MenuEntryLevelLng)
@@ -825,7 +825,7 @@ void FillTReeViewMenus(void)
                 MenusCmdArray.Add(0L);
                 MenusPropsArray.Add(MenuEntryProps.Get_Long());
                 MenuEntryOldLevel = MenuEntryLevelLng;
-				break;
+                break;
             case MENUTYPE_ITEM:
                 // Is it a child ?
                 if(MenuEntryOldLevel != MenuEntryLevelLng)
@@ -851,7 +851,7 @@ void FillTReeViewMenus(void)
                 MenusCmdArray.Add(MenuEntryCmd.Get_Long());
                 MenusPropsArray.Add(MenuEntryProps.Get_Long());
                 MenuEntryOldLevel = MenuEntryLevelLng;
-				break;
+                break;
             case MENUTYPE_SEPS:
                 // Is it a child ?
                 if(MenuEntryOldLevel != MenuEntryLevelLng)
@@ -929,7 +929,7 @@ void MoveMenuEntryUp(HTREEITEM hItem)
     TreeViewInsertItem.item.state = TreeViewItem.state;
     TreeViewInsertItem.item.stateMask = TreeViewItem.stateMask;
     NewhItem = (HTREEITEM) SendMessage(FRMMenusTreeView, TVM_INSERTITEM, 0, (LPARAM) &TreeViewInsertItem);
-	if(TreeViewGetChildItemsCount(FRMMenusTreeView, TreeViewGetItemParent(FRMMenusTreeView, NewhItem)) == 1) ControlRefreshLocal(FRMMenusTreeView);
+    if(TreeViewGetChildItemsCount(FRMMenusTreeView, TreeViewGetItemParent(FRMMenusTreeView, NewhItem)) == 1) ControlRefreshLocal(FRMMenusTreeView);
     // Move childs if there's any (bcoz Windows is a real bitch)
     hChild = TreeViewGetFirstItemChild(FRMMenusTreeView, ItemToSwap);
     if(hChild != 0) MoveEntryChilds(hChild, NewhItem);
@@ -1048,18 +1048,18 @@ MoveNextChild:
 // Create a dialog for menus testing
 void TestMenus(void)
 {
-	CStr BufString;
+    CStr BufString;
     
-	if(SaveMenusFile(FileGetDirectory(ProjectFName) + (CStr) "mnutest.mut") == 0)
-	{
+    if(SaveMenusFile(FileGetDirectory(ProjectFName) + (CStr) "mnutest.mut") == 0)
+    {
         BufString = FileGetDirectory(ProjectFName) + (CStr) "mnutest.mut";
-		DeleteFile(BufString.Get_String());
+        DeleteFile(BufString.Get_String());
         MiscMsgBox(FRMMenushwnd, "Can't display empty menus resource.", MB_ERROR, Requesters);
         return;
     }
     CreateModalDialog(-1, -1, 550, 110, FRMMenushwnd, &FRMTestMenusProc, WS_BORDER | WS_CAPTION | WS_SYSMENU | WS_SIZEBOX, 1);
     BufString = FileGetDirectory(ProjectFName) + (CStr) "mnutest.mut";
-	DeleteFile(BufString.Get_String());
+    DeleteFile(BufString.Get_String());
 }
 
 // -----------------------------------------------------------------------
@@ -1074,7 +1074,7 @@ int CALLBACK FRMTestMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
             return(1);
         case WM_CLOSE:
             EndDialog(hwndDlg, 0);
-			break;
+            break;
     }
     return(0);
 }
@@ -1185,7 +1185,7 @@ void ConstructTestMenus(HWND hwnd)
                 PopupStack.Add(LasthBar);
                 LevelStack.Add(MenuEntryLevelLng);
                 MenuEntryOldLevel = MenuEntryLevelLng;
-				break;
+                break;
             case MENUTYPE_POPUP:
                 for(j = (LevelStack.Amount() - 1); j >= 0; j--)
                 {
@@ -1207,7 +1207,7 @@ void ConstructTestMenus(HWND hwnd)
                 PopupStack.Add(LasthMenu);
                 LevelStack.Add(MenuEntryLevelLng);
                 MenuEntryOldLevel = MenuEntryLevelLng;
-				break;
+                break;
             case MENUTYPE_ITEM:
                 for(j = (LevelStack.Amount() - 1); j >= 0; j--)
                 {
@@ -1251,7 +1251,7 @@ void ConstructTestMenus(HWND hwnd)
                 PopupStack.Add(LastBarPop);
                 LevelStack.Add(MenuEntryLevelLng);
                 MenuEntryOldLevel = MenuEntryLevelLng;
-				break;
+                break;
             case MENUTYPE_SEPS:
                 for(j = (LevelStack.Amount() - 1); j >= 0; j--)
                 {
@@ -1263,7 +1263,7 @@ void ConstructTestMenus(HWND hwnd)
                 PopupStack.Add(LastBarPop);
                 LevelStack.Add(MenuEntryLevelLng);
                 MenuEntryOldLevel = MenuEntryLevelLng;
-				break;
+                break;
         }
     }
     // Attach last bar popup to primary bar
@@ -1309,8 +1309,8 @@ void ConstructTestMenus(HWND hwnd)
 // Replace menus resources shortcuts 
 CStr NormalizeMenuString(CStr StrToCalc)
 {
-	CStr ReturnValue;
+    CStr ReturnValue;
 
     ReturnValue = StringReplace(StrToCalc, "\\t", "\t", -1, -1, Text_Compare);
-	return(ReturnValue);
+    return(ReturnValue);
 }

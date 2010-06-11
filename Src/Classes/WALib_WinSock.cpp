@@ -71,15 +71,15 @@ long CALLBACK SocketConnect(SOCKET hSock, LPSOCKADDR_IN SockStruct, long Message
     long ReturnValue;
     long IPtostore;
     LPFD_SET SockSet;
-	hostent *HostentStruct;
+    hostent *HostentStruct;
     TIMEVAL SockTimeOut;
     CStr IPResolvedStr;
     int i;
-	char *AddrList;
+    char *AddrList;
 
-	memset(&SockTimeOut, 0, sizeof(SockTimeOut));
-	memset(&SockSet, 0, sizeof(SockSet));
-	IPtostore = inet_addr(IP.Get_String());
+    memset(&SockTimeOut, 0, sizeof(SockTimeOut));
+    memset(&SockSet, 0, sizeof(SockSet));
+    IPtostore = inet_addr(IP.Get_String());
     if(IPtostore == -1)
     {
         // Resolve host name
@@ -87,13 +87,13 @@ long CALLBACK SocketConnect(SOCKET hSock, LPSOCKADDR_IN SockStruct, long Message
         if(HostentStruct != 0)
         {
             AddrList = HostentStruct->h_addr_list[0];
-			for(i = 0; i < HostentStruct->h_length; i++)
-			{
-				IPResolvedStr = IPResolvedStr + IPResolvedStr.Dec_To_String((long) AddrList[i]);
-				if(i != (HostentStruct->h_length -1)) IPResolvedStr = IPResolvedStr + ".";
+            for(i = 0; i < HostentStruct->h_length; i++)
+            {
+                IPResolvedStr = IPResolvedStr + IPResolvedStr.Dec_To_String((long) AddrList[i]);
+                if(i != (HostentStruct->h_length -1)) IPResolvedStr = IPResolvedStr + ".";
             }
-			IPtostore = inet_addr(IPResolvedStr.Get_String());
-			if(IPtostore == -1) return(10049);
+            IPtostore = inet_addr(IPResolvedStr.Get_String());
+            if(IPtostore == -1) return(10049);
         }
         else
         {
@@ -124,13 +124,13 @@ long CALLBACK SocketConnect(SOCKET hSock, LPSOCKADDR_IN SockStruct, long Message
         {
             case -1:
                 ReturnValue = WSAGetLastError();
-				break;
-			case 0:
+                break;
+            case 0:
                 ReturnValue = 10060;
-				break;
+                break;
             default:
                 ReturnValue = 0;
-				break;
+                break;
         }
         FreeMem((long) SockSet);
     }
@@ -141,7 +141,7 @@ long CALLBACK SocketConnect(SOCKET hSock, LPSOCKADDR_IN SockStruct, long Message
 // Retrieve socket assigned port
 long CALLBACK SocketGetPort(SOCKET hSock, LPSOCKADDR_IN SockStruct)
 {
-	int WAmysocklocalinfoslen;
+    int WAmysocklocalinfoslen;
 
     // Retrieve local informations
     WAmysocklocalinfoslen = sizeof(sockaddr_in);
@@ -153,9 +153,9 @@ long CALLBACK SocketGetPort(SOCKET hSock, LPSOCKADDR_IN SockStruct)
 long CALLBACK SocketListen(SOCKET hSock, HWND hWnd, long Message, long MaxConnections)
 {
     long ReturnValue;
-	sockaddr WASockAddr;
+    sockaddr WASockAddr;
 
-	memset(&WASockAddr, 0, sizeof(WASockAddr));
+    memset(&WASockAddr, 0, sizeof(WASockAddr));
     WSAAsyncSelect(hSock, hWnd, Message, FD_READ | FD_WRITE | FD_CLOSE | FD_CONNECT | FD_ACCEPT);
     WASockAddr.sa_family = AF_INET;
     ReturnValue = bind(hSock, &WASockAddr, sizeof(WASockAddr));
@@ -169,7 +169,7 @@ SOCKET CALLBACK SocketAcceptConnection(SOCKET hSock, LPSOCKADDR_IN SockStruct)
 {
     int WASockAddrAcceptLen;
 
-	WASockAddrAcceptLen = sizeof(sockaddr_in);
+    WASockAddrAcceptLen = sizeof(sockaddr_in);
     return(accept(hSock, (LPSOCKADDR) SockStruct, &WASockAddrAcceptLen));
 }
 
@@ -199,7 +199,7 @@ long CALLBACK SocketGetRevcLen(SOCKET hSock)
 {
     u_long ToReceive = 0;
 
-	ioctlsocket(hSock, FIONREAD, &ToReceive);
+    ioctlsocket(hSock, FIONREAD, &ToReceive);
     return(ToReceive);
 }
 
@@ -236,27 +236,27 @@ SOCKET CALLBACK FTPInitiatePort(SOCKET hSock, LPSOCKADDR_IN SockStruct, HWND hWn
 {
     SOCKET ReturnValue;
     sockaddr_in WASockDir;
-	hostent *HostentStruct;
-	CStr FtpCommand;
+    hostent *HostentStruct;
+    CStr FtpCommand;
     CStr LocIP;
     CStr IPResolvedStr;
     sockaddr_in TmpSockStruct;
     long IPtostore;
     CStr LocHost;
     long lngRetVal;
-	int i;
-	char *AddrList;
+    int i;
+    char *AddrList;
 
-	memset(&TmpSockStruct, 0, sizeof(TmpSockStruct));
-	memset(&WASockDir, 0, sizeof(WASockDir));
-	LocHost = LocHost.String(256, 1);
-	ReturnValue = SocketCreate();
+    memset(&TmpSockStruct, 0, sizeof(TmpSockStruct));
+    memset(&WASockDir, 0, sizeof(WASockDir));
+    LocHost = LocHost.String(256, 1);
+    ReturnValue = SocketCreate();
     SocketListen(ReturnValue, hWnd, Message, 1);
     SocketGetPort(ReturnValue, &WASockDir);
     lngRetVal = gethostname(LocHost.Get_String(), 256);
     if(lngRetVal == -1)
     {
-		return(0);
+        return(0);
     }
     else
     {
@@ -271,17 +271,17 @@ SOCKET CALLBACK FTPInitiatePort(SOCKET hSock, LPSOCKADDR_IN SockStruct, HWND hWn
         if(HostentStruct != 0)
         {
             AddrList = HostentStruct->h_addr_list[0];
-			for(i = 0; i < HostentStruct->h_length; i++)
-			{
-				IPResolvedStr = IPResolvedStr + IPResolvedStr.Dec_To_String((long) AddrList[i]);
-				if(i != (HostentStruct->h_length -1)) IPResolvedStr = IPResolvedStr + ".";
+            for(i = 0; i < HostentStruct->h_length; i++)
+            {
+                IPResolvedStr = IPResolvedStr + IPResolvedStr.Dec_To_String((long) AddrList[i]);
+                if(i != (HostentStruct->h_length -1)) IPResolvedStr = IPResolvedStr + ".";
             }
-			IPtostore = inet_addr(IPResolvedStr.Get_String());
-			if(IPtostore == -1) return(0);
+            IPtostore = inet_addr(IPResolvedStr.Get_String());
+            if(IPtostore == -1) return(0);
         }
         else
         {
-			return(0);
+            return(0);
         }
     }
     TmpSockStruct.sin_addr.S_un.S_un_b.s_b4 = (BYTE) ((IPtostore & 0xFF000000) >> 24);
@@ -300,7 +300,7 @@ SOCKET CALLBACK FTPInitiatePort(SOCKET hSock, LPSOCKADDR_IN SockStruct, HWND hWn
     FtpCommand = FtpCommand + (WASockDir.sin_port & 0xFF);
     FtpCommand = FtpCommand + ",";
     FtpCommand = FtpCommand + ((WASockDir.sin_port & 0xFF00) >> 8);
-	SocketSendASCIIDatasCR(hSock, &FtpCommand);
+    SocketSendASCIIDatasCR(hSock, &FtpCommand);
     return(ReturnValue);
 }
 
@@ -309,7 +309,7 @@ SOCKET CALLBACK FTPInitiatePort(SOCKET hSock, LPSOCKADDR_IN SockStruct, HWND hWn
 CStr  CALLBACK FTPGetEntryDate(CStr DirEntry)
 {
     CStr ReturnValue;
-	CStr StrLine;
+    CStr StrLine;
     CStr BufString;
     CStr BufString2;
     SYSTEMTIME SysFutDateA;
@@ -317,84 +317,84 @@ CStr  CALLBACK FTPGetEntryDate(CStr DirEntry)
     FILETIME FileFutDateA;
     FILETIME FileFutDateB;
 
-	memset(&SysFutDateA, 0, sizeof(SysFutDateA));
-	memset(&SysFutDateB, 0, sizeof(SysFutDateA));
+    memset(&SysFutDateA, 0, sizeof(SysFutDateA));
+    memset(&SysFutDateB, 0, sizeof(SysFutDateA));
     StrLine = FTPCutEntry(DirEntry);
     StrLine = StrLine.Mid(43);
     if(StrLine.Len() == 0) return(ReturnValue);
-	StrLine = StrLine.Trim();
-	BufString = StrLine.Mid(5, 2);
-	BufString = BufString.Trim();
-	BufString = StringNumberComplement(BufString.Get_Long(), 2);
-	BufString = BufString + "/";
-	BufString2 = StrLine.Left(3);
-	BufString2 = BufString2.Upper_Case();
-	if(BufString2 == "JAN")
-	{
+    StrLine = StrLine.Trim();
+    BufString = StrLine.Mid(5, 2);
+    BufString = BufString.Trim();
+    BufString = StringNumberComplement(BufString.Get_Long(), 2);
+    BufString = BufString + "/";
+    BufString2 = StrLine.Left(3);
+    BufString2 = BufString2.Upper_Case();
+    if(BufString2 == "JAN")
+    {
         BufString = BufString + "01/";
         SysFutDateA.wMonth = 1;
-	}
-	else if(BufString2 == "FEB")
-	{
+    }
+    else if(BufString2 == "FEB")
+    {
         BufString = BufString + "02/";
         SysFutDateA.wMonth = 2;
-	}
-	else if(BufString2 == "MAR")
-	{
+    }
+    else if(BufString2 == "MAR")
+    {
         BufString = BufString + "03/";
         SysFutDateA.wMonth = 3;
-	}
-	else if(BufString2 == "APR")
-	{
+    }
+    else if(BufString2 == "APR")
+    {
         BufString = BufString + "04/";
         SysFutDateA.wMonth = 4;
-	}
-	else if(BufString2 == "MAY")
-	{
+    }
+    else if(BufString2 == "MAY")
+    {
         BufString = BufString + "05/";
         SysFutDateA.wMonth = 5;
-	}
-	else if(BufString2 == "JUN")
-	{
+    }
+    else if(BufString2 == "JUN")
+    {
         BufString = BufString + "06/";
         SysFutDateA.wMonth = 6;
-	}
-	else if(BufString2 == "JUL")
-	{
+    }
+    else if(BufString2 == "JUL")
+    {
         BufString = BufString + "07/";
         SysFutDateA.wMonth = 7;
-	}
-	else if(BufString2 == "AUG")
-	{
+    }
+    else if(BufString2 == "AUG")
+    {
         BufString = BufString + "08/";
         SysFutDateA.wMonth = 8;
-	}
-	else if(BufString2 == "SEP")
-	{
+    }
+    else if(BufString2 == "SEP")
+    {
         BufString = BufString + "09/";
         SysFutDateA.wMonth = 9;
-	}
-	else if(BufString2 == "OCT")
-	{
+    }
+    else if(BufString2 == "OCT")
+    {
         BufString = BufString + "10/";
         SysFutDateA.wMonth = 10;
-	}
-	else if(BufString2 == "NOV")
-	{
+    }
+    else if(BufString2 == "NOV")
+    {
         BufString = BufString + "11/";
         SysFutDateA.wMonth = 11;
-	}
-	else if(BufString2 == "DEC")
-	{
+    }
+    else if(BufString2 == "DEC")
+    {
         BufString = BufString + "12/";
         SysFutDateA.wMonth = 12;
-	}
-	BufString2 = StrLine.Mid(8, 1);
+    }
+    BufString2 = StrLine.Mid(8, 1);
     if(BufString2 == " ")
     {
         // Last field references year
-		BufString = BufString + StrLine.Mid(9, 4);
-		BufString = BufString + " 12:00";
+        BufString = BufString + StrLine.Mid(9, 4);
+        BufString = BufString + " 12:00";
     }
     else
     {
@@ -407,19 +407,19 @@ CStr  CALLBACK FTPGetEntryDate(CStr DirEntry)
         SystemTimeToFileTime(&SysFutDateB, &FileFutDateB);
         if(CompareFileTime(&FileFutDateA, &FileFutDateB) > 0)
         {
-			BufString2 = (DateGetYear().Get_Long() - 1);
-			BufString = BufString + BufString2;
-			BufString = BufString + " ";
-			BufString = BufString + StrLine.Mid(8, 5);
+            BufString2 = (DateGetYear().Get_Long() - 1);
+            BufString = BufString + BufString2;
+            BufString = BufString + " ";
+            BufString = BufString + StrLine.Mid(8, 5);
         }
         else
         {
-			BufString = BufString + DateGetYear();
-			BufString = BufString + " ";
-			BufString = BufString + StrLine.Mid(8, 5);
+            BufString = BufString + DateGetYear();
+            BufString = BufString + " ";
+            BufString = BufString + StrLine.Mid(8, 5);
         }
     }
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -427,31 +427,31 @@ CStr  CALLBACK FTPGetEntryDate(CStr DirEntry)
 // Retrieve FTP entry filename
 CStr  CALLBACK FTPGetEntryFileName(CStr DirEntry)
 {
-	CStr ReturnValue;
+    CStr ReturnValue;
     CStr StrLine;
 
     StrLine = FTPCutEntry(DirEntry);
     ReturnValue = StrLine.Mid(56).Trim();
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve FTP entry attributes
 CStr  CALLBACK FTPGetEntryFileAttributes(CStr DirEntry)
 {
-	CStr ReturnValue;
+    CStr ReturnValue;
     CStr StrLine;
 
     StrLine = FTPCutEntry(DirEntry);
     ReturnValue = StrLine.Mid(2, 9);
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve FTP entry filesize
 CStr  CALLBACK FTPGetEntryFileSize(CStr DirEntry)
 {
-	CStr ReturnValue;
+    CStr ReturnValue;
     long i;
     CStr StrLine;
 
@@ -463,10 +463,10 @@ CStr  CALLBACK FTPGetEntryFileSize(CStr DirEntry)
     }
     if((42 - i) > 0)
     {
-		ReturnValue = StrLine.Mid(i, 42 - i);
-		ReturnValue = ReturnValue.Trim();
-	}
-	return(ReturnValue);
+        ReturnValue = StrLine.Mid(i, 42 - i);
+        ReturnValue = ReturnValue.Trim();
+    }
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -476,21 +476,21 @@ long CALLBACK FTPIsEntryDir(CStr DirEntry)
     long ReturnValue = 0;
 
     if(strcmpi(DirEntry.Left(1).Get_String(), "D") == 0) ReturnValue = 1;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Arrange a FTP dir entry (private)
 CStr  CALLBACK FTPCutEntry(CStr FTPEntry)
 {
-	CStr ReturnValue;
+    CStr ReturnValue;
     CStr BufString;
-	long StrLineLen;
+    long StrLineLen;
 
     BufString = "\r\n";
-	StrLineLen = FTPEntry.In_Str(1, BufString);
+    StrLineLen = FTPEntry.In_Str(1, BufString);
     if(StrLineLen == 0) StrLineLen = FTPEntry.Len();
     else StrLineLen--;
     if(FTPEntry.Len() != 0) ReturnValue = FTPEntry.Mid(1, StrLineLen);
-	return(ReturnValue);
+    return(ReturnValue);
 }

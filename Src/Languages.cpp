@@ -132,7 +132,7 @@ void ReadLangSpec(void)
         LangFileToRead = IniReadKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(i, 3).Get_String(), LanguagesIniFile);
         if(LangFileToRead.Len() == 0) break;
         LangFileToRead = ChangeRelativePaths(LangFileToRead);
-		FileGetWriteTime(LangFileToRead, &Language_Dates[i]);
+        FileGetWriteTime(LangFileToRead, &Language_Dates[i]);
     }
 }
 
@@ -141,7 +141,7 @@ void ReadLangSpec(void)
 void Check_Update_Language(void)
 {
     int i;
-	FILETIME TmpLanguageFDate;
+    FILETIME TmpLanguageFDate;
     CStr Language_Name_From_Ini;
 
     for(i = 0; i <= Nbr_Languages; i++)
@@ -149,10 +149,10 @@ void Check_Update_Language(void)
         Language_Name_From_Ini = IniReadKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(i, 3).Get_String(), LanguagesIniFile);
         if(Language_Name_From_Ini.Len() == 0) break;
         Language_Name_From_Ini = ChangeRelativePaths(Language_Name_From_Ini);
-		if(FileGetWriteTime(Language_Name_From_Ini, &TmpLanguageFDate))
-		{
-		    if(CompareFileTime(&TmpLanguageFDate, &Language_Dates[i]) > 0)
-		    {
+        if(FileGetWriteTime(Language_Name_From_Ini, &TmpLanguageFDate))
+        {
+            if(CompareFileTime(&TmpLanguageFDate, &Language_Dates[i]) > 0)
+            {
                 Update_Language(Language_Name_From_Ini);
             }
         }
@@ -167,7 +167,7 @@ void Update_Language(CStr Language_FileName)
     CStr Language_Name_From_Ini;
     int Found_Language = FALSE;
     int Old_Entry_Pos = -1;
-	CM_LANGUAGE *CurLanguageToRegister;
+    CM_LANGUAGE *CurLanguageToRegister;
 
     for(i = 0; i <= 999; i++)
     {
@@ -205,10 +205,10 @@ void Update_Language(CStr Language_FileName)
             LoadLanguageDef();
             RegisterCodeMaxLanguage(Old_Entry_Pos);
 
-    		FileGetWriteTime(Language_FileName, &Language_Dates[Old_Entry_Pos]);
+            FileGetWriteTime(Language_FileName, &Language_Dates[Old_Entry_Pos]);
         
             // Update the languages in the opened windows
-		    WAMMEnumSourceWindows((long) &Update_Languages_Proc);           
+            WAMMEnumSourceWindows((long) &Update_Languages_Proc);           
         }
     }
 }
@@ -220,8 +220,8 @@ long CALLBACK Update_Languages_Proc(HWND hWnd) {
     CStr NewRFile;
     CStr Old_CodeMaxLanguage;
 
-	if(ChildStruct)
-	{
+    if(ChildStruct)
+    {
         NewRFile = CMGetRealFile(ChildStruct->RFile);
         Old_CodeMaxLanguage = CMGetRealFile(ChildStruct->Language);
         if(Old_LangName == Old_CodeMaxLanguage)
@@ -239,8 +239,8 @@ long CALLBACK Update_Languages_Proc(HWND hWnd) {
 void LoadLanguageDef(void)
 {
     int j = 0;
-	long *TabMulti = 0;
-	long LangLen = 0;
+    long *TabMulti = 0;
+    long LangLen = 0;
     CStr SaveMultiLineComment1;
     CStr SaveMultiLineComment2;
 
@@ -335,8 +335,8 @@ void LoadLanguageDef(void)
     {
         LangRetVal = IniReadKey("LangSpec", "ColorA" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
         LangLen = LangRetVal.Len();
-		if(LangLen == 0) break;
-		SpaceToNewLine(LangRetVal.Get_String(),LangLen);
+        if(LangLen == 0) break;
+        SpaceToNewLine(LangRetVal.Get_String(),LangLen);
         if(LangColorA.Len() != 0) LangColorA = LangColorA + (CStr) "\n";
         LangColorA = LangColorA + (CStr) LangRetVal;
     }
@@ -346,8 +346,8 @@ void LoadLanguageDef(void)
     {
         LangRetVal = IniReadKey("LangSpec", "ColorB" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
         LangLen = LangRetVal.Len();
-		if(LangLen == 0) break;
-		SpaceToNewLine(LangRetVal.Get_String(),LangLen);
+        if(LangLen == 0) break;
+        SpaceToNewLine(LangRetVal.Get_String(),LangLen);
         if(LangColorB.Len() != 0) LangColorB = LangColorB + (CStr) "\n";
         LangColorB = LangColorB + (CStr) LangRetVal;
     }
@@ -357,8 +357,8 @@ void LoadLanguageDef(void)
     {
         LangRetVal = IniReadKey("LangSpec", "ColorC" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
         LangLen = LangRetVal.Len();
-		if(LangLen == 0) break;
-		SpaceToNewLine(LangRetVal.Get_String(),LangLen);
+        if(LangLen == 0) break;
+        SpaceToNewLine(LangRetVal.Get_String(),LangLen);
         if(LangColorC.Len() != 0) LangColorC = LangColorC + (CStr) "\n";
         LangColorC = LangColorC + (CStr) LangRetVal;
     }
@@ -368,8 +368,8 @@ void LoadLanguageDef(void)
     {
         LangRetVal = IniReadKey("LangSpec", "ColorD" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
         LangLen = LangRetVal.Len();
-		if(LangLen == 0) break;
-		SpaceToNewLine(LangRetVal.Get_String(),LangLen);
+        if(LangLen == 0) break;
+        SpaceToNewLine(LangRetVal.Get_String(),LangLen);
         if(LangColorD.Len() != 0) LangColorD = LangColorD + (CStr) "\n";
         LangColorD = LangColorD + (CStr) LangRetVal;
     }
@@ -379,8 +379,8 @@ void LoadLanguageDef(void)
     {
         LangRetVal = IniReadKey("LangSpec", "ColorE" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
         LangLen = LangRetVal.Len();
-		if(LangLen == 0) break;
-		SpaceToNewLine(LangRetVal.Get_String(),LangLen);
+        if(LangLen == 0) break;
+        SpaceToNewLine(LangRetVal.Get_String(),LangLen);
         if(LangColorE.Len() != 0) LangColorE = LangColorE + (CStr) "\n";
         LangColorE = LangColorE + (CStr) LangRetVal;
     }
@@ -390,8 +390,8 @@ void LoadLanguageDef(void)
     {
         LangRetVal = IniReadKey("LangSpec", "ColorF" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
         LangLen = LangRetVal.Len();
-		if(LangLen == 0) break;
-		SpaceToNewLine(LangRetVal.Get_String(),LangLen);
+        if(LangLen == 0) break;
+        SpaceToNewLine(LangRetVal.Get_String(),LangLen);
         if(LangColorF.Len() != 0) LangColorF = LangColorF + (CStr) "\n";
         LangColorF = LangColorF + (CStr) LangRetVal;
     }
@@ -401,8 +401,8 @@ void LoadLanguageDef(void)
     {
         LangRetVal = IniReadKey("LangSpec", "ColorG" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
         LangLen = LangRetVal.Len();
-		if(LangLen == 0) break;
-		SpaceToNewLine(LangRetVal.Get_String(),LangLen);
+        if(LangLen == 0) break;
+        SpaceToNewLine(LangRetVal.Get_String(),LangLen);
         if(LangColorG.Len() != 0) LangColorG = LangColorG + (CStr) "\n";
         LangColorG = LangColorG + (CStr) LangRetVal;
     }
@@ -412,8 +412,8 @@ void LoadLanguageDef(void)
     {
         LangRetVal = IniReadKey("LangSpec", "ColorH" + (CStr) StringNumberComplement(j, 3).Get_String(), LangFileToRead);
         LangLen = LangRetVal.Len();
-		if(LangLen == 0) break;
-		SpaceToNewLine(LangRetVal.Get_String(),LangLen);
+        if(LangLen == 0) break;
+        SpaceToNewLine(LangRetVal.Get_String(),LangLen);
         if(LangColorH.Len() != 0) LangColorH = LangColorH + (CStr) "\n";
         LangColorH = LangColorH + (CStr) LangRetVal;
     }
@@ -423,11 +423,11 @@ void LoadLanguageDef(void)
 // Register a language into codemax
 void RegisterCodeMaxLanguage(int Update_Idx)
 {
-	CM_LANGUAGE CurLanguageToRegister;
-	CM_LANGUAGE *NewCurLanguageToRegister = NULL;
+    CM_LANGUAGE CurLanguageToRegister;
+    CM_LANGUAGE *NewCurLanguageToRegister = NULL;
     
-	memset(&CurLanguageToRegister, 0, sizeof(CurLanguageToRegister));
-	CurLanguageToRegister.pszKeywords = strdup(LangColorA.Get_String());
+    memset(&CurLanguageToRegister, 0, sizeof(CurLanguageToRegister));
+    CurLanguageToRegister.pszKeywords = strdup(LangColorA.Get_String());
     CurLanguageToRegister.pszTagAttributeNames = strdup(LangColorB.Get_String());
     CurLanguageToRegister.pszTagElementNames = strdup(LangColorC.Get_String());
     CurLanguageToRegister.pszTagEntities = strdup(LangColorD.Get_String());
@@ -506,8 +506,8 @@ void RegisterCodeMaxLanguage(int Update_Idx)
     CurLanguageToRegister.pszOpenBlockProc = strdup(LangOpenBlockProc.Get_String());
     CurLanguageToRegister.pszCloseBlockProc = strdup(LangCloseBlockProc.Get_String());
 
-	NewCurLanguageToRegister = (CM_LANGUAGE *) malloc(sizeof(CurLanguageToRegister));
-	RtlCopyMemory((void *) NewCurLanguageToRegister, &CurLanguageToRegister, sizeof(CurLanguageToRegister));
+    NewCurLanguageToRegister = (CM_LANGUAGE *) malloc(sizeof(CurLanguageToRegister));
+    RtlCopyMemory((void *) NewCurLanguageToRegister, &CurLanguageToRegister, sizeof(CurLanguageToRegister));
     if(Update_Idx != -1)
     {
         LanguageToRegister.Set(Update_Idx, NewCurLanguageToRegister);
@@ -523,7 +523,7 @@ void RegisterCodeMaxLanguage(int Update_Idx)
 // Retrieve a language entry as a CM_LANGUAGE structure
 CM_LANGUAGE *GetLangDat(long LangIndex)
 {
-	return(LanguageToRegister.Get(LangIndex)->Content);
+    return(LanguageToRegister.Get(LangIndex)->Content);
 }
 
 // -----------------------------------------------------------------------
@@ -536,10 +536,10 @@ CStr GetLanguageToOpen(CStr LFileName)
     CStr ExtToSearch;
     long *ExtensionsArray = 0;
     CStr BufString;
-	
-	ExtToSearch = FileGetExtension(LFileName);
-	if(ExtToSearch.Len() != 0)
-	{
+    
+    ExtToSearch = FileGetExtension(LFileName);
+    if(ExtToSearch.Len() != 0)
+    {
         for(o = 0; o < LanguageToRegister.Amount(); o++)
         {
             ExtensionsArray = StringSplit((char *) GetLangDat(o)->pszExtensions, " ");
@@ -558,7 +558,7 @@ CStr GetLanguageToOpen(CStr LFileName)
     }
 LangOut:
     ReturnValue = BufString;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -593,9 +593,9 @@ CStr GetCMLangC(HWND hwnd)
     CStr ReturnRealLang;
     CStr ReturnValue;
     CStr BufString;
-	long ReturnOffset = 0;
+    long ReturnOffset = 0;
 
-	ChildStruct = LoadStructure(hwnd);
+    ChildStruct = LoadStructure(hwnd);
     // Get the language name
     CM_GetLanguage(ChildStruct->hChildCodeMax, (char *) &ReturnLang);
     // Format name
@@ -604,8 +604,8 @@ CStr GetCMLangC(HWND hwnd)
     ReturnOffset = GetLanguageOffset(ReturnRealLang);
     if(ReturnOffset == -1) return(ReturnValue);
     BufString = (char *) GetLangDat(ReturnOffset)->pszTagElementNames;
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -618,7 +618,7 @@ CStr GetCMLangGUID(HWND hwnd)
     CStr BufString;
     long ReturnOffset = 0;
     
-	ChildStruct = LoadStructure(hwnd);
+    ChildStruct = LoadStructure(hwnd);
     // Get the language name
     CM_GetLanguage(ChildStruct->hChildCodeMax, (char *) &ReturnLang);
     // Format name
@@ -627,8 +627,8 @@ CStr GetCMLangGUID(HWND hwnd)
     ReturnOffset = GetLanguageOffset(ReturnRealLang);
     if(ReturnOffset == -1) return(ReturnValue);
     BufString = (char *) GetLangDat(ReturnOffset)->pszGUIDEntry;
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -650,8 +650,8 @@ CStr GetCMLangInclude(HWND hwnd)
     ReturnOffset = GetLanguageOffset(ReturnRealLang);
     if(ReturnOffset == -1) return(ReturnValue);
     BufString = (char *) GetLangDat(ReturnOffset)->pszIncludeEntry;
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -673,8 +673,8 @@ CStr GetCMLangDoubleSlash(HWND hwnd)
     ReturnOffset = GetLanguageOffset(ReturnRealLang);
     if(ReturnOffset == -1) return(ReturnValue);
     BufString = GetLangDat(ReturnOffset)->pszDoubleSlash;
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -696,8 +696,8 @@ CStr GetCMLangComment(HWND hwnd)
     ReturnOffset = GetLanguageOffset(ReturnRealLang);
     if(ReturnOffset == -1) return(ReturnValue);
     BufString = (char *) GetLangDat(ReturnOffset)->pszSingleLineComments;
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -719,8 +719,8 @@ CStr GetCMLangHexType(HWND hwnd)
     ReturnOffset = GetLanguageOffset(ReturnRealLang);
     if(ReturnOffset == -1) return(ReturnValue);
     BufString = (char *) GetLangDat(ReturnOffset)->pszHexType;
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -742,8 +742,8 @@ CStr GetCMLangBinType(HWND hwnd)
     ReturnOffset = GetLanguageOffset(ReturnRealLang);
     if(ReturnOffset == -1) return(ReturnValue);
     BufString = (char *) GetLangDat(ReturnOffset)->pszBinType;
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -769,7 +769,7 @@ CStr GetCMLangMultiComment(HWND hwnd)
     MultiArray = StringSplit((char *) GetLangDat(ReturnOffset)->pszMultiLineComments1, "\n");
     if(StringGetSplitUBound(MultiArray) != -1) BufString = StringGetSplitElement((char *) GetLangDat(ReturnOffset)->pszMultiLineComments1, MultiArray, 0).Trim().Get_String() + (CStr) " ";
     StringReleaseSplit(MultiArray);
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -796,7 +796,7 @@ CStr GetCMLangMultiCommentByChild(HWND hwnd)
     MultiArray = StringSplit((char *) GetLangDat(ReturnOffset)->pszMultiLineComments1, "\n");
     if(StringGetSplitUBound(MultiArray) != -1) BufString = StringGetSplitElement((char *) GetLangDat(ReturnOffset)->pszMultiLineComments1, MultiArray, 0).Trim().Get_String() + (CStr) " ";
     StringReleaseSplit(MultiArray);
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -817,7 +817,7 @@ CStr GetCMLangMultiCommentByFile(CStr FileName)
     MultiArray = StringSplit((char *) GetLangDat(ReturnOffset)->pszMultiLineComments1, "\n");
     if(StringGetSplitUBound(MultiArray) != -1) BufString = StringGetSplitElement((char *) GetLangDat(ReturnOffset)->pszMultiLineComments1, MultiArray, 0).Trim().Get_String() + (CStr) " ";
     StringReleaseSplit(MultiArray);
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -845,7 +845,7 @@ CStr GetCMLangMultiCommentEnd(HWND hwnd)
     MultiArray = StringSplit((char *) GetLangDat(ReturnOffset)->pszMultiLineComments2, "\n");
     if(StringGetSplitUBound(MultiArray) != -1) BufString = StringGetSplitElement((char *) GetLangDat(ReturnOffset)->pszMultiLineComments2, MultiArray, 0).Trim().Get_String();
     StringReleaseSplit(MultiArray);
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -872,7 +872,7 @@ CStr GetCMLangMultiCommentEndByChild(HWND hwnd)
     MultiArray = StringSplit((char *) GetLangDat(ReturnOffset)->pszMultiLineComments2, "\n");
     if(StringGetSplitUBound(MultiArray) != -1) BufString = StringGetSplitElement((char *) GetLangDat(ReturnOffset)->pszMultiLineComments2, MultiArray, 0).Trim().Get_String();
     StringReleaseSplit(MultiArray);
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(ReturnValue);
 }
 
@@ -893,7 +893,7 @@ CStr GetCMLangMultiCommentEndByFile(CStr FileName)
     MultiArray = StringSplit((char *) GetLangDat(ReturnOffset)->pszMultiLineComments2, "\n");
     if(StringGetSplitUBound(MultiArray) != -1) BufString = StringGetSplitElement((char *) GetLangDat(ReturnOffset)->pszMultiLineComments2, MultiArray, 0).Trim().Get_String() + (CStr) " ";
     StringReleaseSplit(MultiArray);
-	ReturnValue = BufString.Trim();
+    ReturnValue = BufString.Trim();
     return(ReturnValue);
 }
 
@@ -915,7 +915,7 @@ CStr GetCMLangProc(HWND hwnd)
     ReturnOffset = GetLanguageOffset(ReturnRealLang);
     if(ReturnOffset == -1) return(ReturnValue);
     ReturnValue = (char *) GetLangDat(ReturnOffset)->pszProcEntry;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -926,11 +926,11 @@ CStr GetCMLangNameByChild(HWND hwnd)
     CStr ReturnRealLang;
     CStr ReturnValue;
     
-	CM_GetLanguage(hwnd, (char *) &ReturnLang);
+    CM_GetLanguage(hwnd, (char *) &ReturnLang);
     ReturnRealLang = CMGetRealLanguage((char *) &ReturnLang);
     if(ReturnRealLang.Len() == 0) return(ReturnValue);
     ReturnValue = ReturnRealLang;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -946,7 +946,7 @@ CStr GetCMChildLangName(HWND hwnd)
     ReturnRealLang = CMGetRealLanguage((char *) &ReturnLang);
     if(ReturnRealLang.Len() == 0) return(ReturnValue);
     ReturnValue = ReturnRealLang;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -967,7 +967,7 @@ CStr GetCMLangEndp(HWND hwnd)
     ReturnOffset = GetLanguageOffset(ReturnRealLang);
     if(ReturnOffset == -1) return(ReturnValue);
     ReturnValue = (char *) GetLangDat(ReturnOffset)->pszEndpEntry;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1017,7 +1017,7 @@ CStr GetCMLangProcOpenBlock(HWND hwnd)
     CStr ReturnValue;
     long ReturnOffset = 0;
     
-	ChildStruct = LoadStructure(hwnd);
+    ChildStruct = LoadStructure(hwnd);
     // Get the language name
     CM_GetLanguage(ChildStruct->hChildCodeMax, (char *) &ReturnLang);
     // Format name
@@ -1026,7 +1026,7 @@ CStr GetCMLangProcOpenBlock(HWND hwnd)
     ReturnOffset = GetLanguageOffset(ReturnRealLang);
     if(ReturnOffset == -1) return(ReturnValue);
     ReturnValue = (char *) GetLangDat(ReturnOffset)->pszOpenBlockProc;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1047,7 +1047,7 @@ CStr GetCMLangProcCloseBlock(HWND hwnd)
     ReturnOffset = GetLanguageOffset(ReturnRealLang);
     if(ReturnOffset == -1) return(ReturnValue);
     ReturnValue = (char *) GetLangDat(ReturnOffset)->pszCloseBlockProc;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1068,7 +1068,7 @@ CStr GetCMLangFileName(HWND hwnd)
     ReturnOffset = GetLanguageOffset(ReturnRealLang);
     if(ReturnOffset == -1) return(ReturnValue);
     ReturnValue = (char *) GetLangDat(ReturnOffset)->pszFileName;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1083,7 +1083,7 @@ CStr GetCMLangProcByFile(CStr FPName)
     ReturnOffset = GetLanguageOffset(MoLanguageName);
     if(ReturnOffset == -1) return(ReturnValue);
     ReturnValue = (char *) GetLangDat(ReturnOffset)->pszProcEntry;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1098,7 +1098,7 @@ CStr GetCMLangProcCloseByFile(CStr FPName)
     ReturnOffset = GetLanguageOffset(MoLanguageName);
     if(ReturnOffset == -1) return(ReturnValue);
     ReturnValue = (char *) GetLangDat(ReturnOffset)->pszEndpEntry;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1109,11 +1109,11 @@ CStr GetCMLangIncludeNameByFile(CStr FPName)
     CStr ReturnValue;
     CStr MoLanguageName;
     
-	MoLanguageName = GetLanguageToOpen(FPName);
+    MoLanguageName = GetLanguageToOpen(FPName);
     ReturnOffset = GetLanguageOffset(MoLanguageName);
     if(ReturnOffset == -1) return(ReturnValue);
     ReturnValue = (char *) GetLangDat(ReturnOffset)->pszIncludeName;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1128,7 +1128,7 @@ CStr GetCMLangLangNameByFile(CStr FPName)
     ReturnOffset = GetLanguageOffset(MoLanguageName);
     if(ReturnOffset == -1) return(ReturnValue);
     ReturnValue = (char *) GetLangDat(ReturnOffset)->pszLanguageName;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1143,7 +1143,7 @@ CStr GetCMLangIncludeNameFootByFile(CStr FPName)
     ReturnOffset = GetLanguageOffset(MoLanguageName);
     if(ReturnOffset == -1) return(ReturnValue);
     ReturnValue = (char *) GetLangDat(ReturnOffset)->pszIncludeNameFoot;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1151,16 +1151,16 @@ CStr GetCMLangIncludeNameFootByFile(CStr FPName)
 CStr GetCMLangDoubleslashByFile(CStr FPName)
 {
     long ReturnOffset = 0;
-	CStr ReturnValue;
-	CStr MoLanguageName;
-	CStr BufString;
+    CStr ReturnValue;
+    CStr MoLanguageName;
+    CStr BufString;
     
-	MoLanguageName = GetLanguageToOpen(FPName);
+    MoLanguageName = GetLanguageToOpen(FPName);
     ReturnOffset = GetLanguageOffset(MoLanguageName);
     if(ReturnOffset == -1) return(ReturnValue);
     BufString = GetLangDat(ReturnOffset)->pszDoubleSlash;
-	ReturnValue = BufString;
-	return(ReturnValue);
+    ReturnValue = BufString;
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1168,18 +1168,18 @@ CStr GetCMLangDoubleslashByFile(CStr FPName)
 CStr GetCMLangIncludeNameByhWnd(HWND hwnd)
 {
     char ReturnLang[CM_MAX_LANGUAGE_NAME + 1];
-	CStr ReturnValue;
+    CStr ReturnValue;
     CStr ReturnRealLang;
     long ReturnOffset = 0;
     
-	ChildStruct = LoadStructure(hwnd);
+    ChildStruct = LoadStructure(hwnd);
     CM_GetLanguage(ChildStruct->hChildCodeMax, (char *) &ReturnLang);
     ReturnRealLang = CMGetRealLanguage((char *) &ReturnLang);
     if(ReturnRealLang.Len() == 0) return(ReturnValue);
     ReturnOffset = GetLanguageOffset(ReturnRealLang);
     if(ReturnOffset == -1) return(ReturnValue);
     ReturnValue = (char *) GetLangDat(ReturnOffset)->pszIncludeName;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1191,14 +1191,14 @@ CStr GetCMLangIncludeNameFootByhWnd(HWND hwnd)
     CStr ReturnRealLang;
     long ReturnOffset = 0;
     
-	ChildStruct = LoadStructure(hwnd);
+    ChildStruct = LoadStructure(hwnd);
     CM_GetLanguage(ChildStruct->hChildCodeMax, (char *) &ReturnLang);
     ReturnRealLang = CMGetRealLanguage((char *) &ReturnLang);
     if(ReturnRealLang.Len() == 0) return(ReturnValue);
     ReturnOffset = GetLanguageOffset(ReturnRealLang);
     if(ReturnOffset == -1) return(ReturnValue);
     ReturnValue = (char *) GetLangDat(ReturnOffset)->pszIncludeNameFoot;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1213,5 +1213,5 @@ CStr GetCMLangCommentByFile(CStr FPName)
     ReturnOffset = GetLanguageOffset(MoLanguageName);
     if(ReturnOffset == -1) return(ReturnValue);
     ReturnValue = (char *) GetLangDat(ReturnOffset)->pszSingleLineComments;
-	return(ReturnValue);
+    return(ReturnValue);
 }

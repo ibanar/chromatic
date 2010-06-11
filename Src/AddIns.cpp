@@ -124,7 +124,7 @@ void FillAddInsArrays(void)
     RunningAddIns.Erase();
     AddInsDLL.Erase();
     
-	NbrAddin = 0;
+    NbrAddin = 0;
     for(i = 0; i <= 999; i++)
     {
         AddInFileName = IniReadKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
@@ -132,7 +132,7 @@ void FillAddInsArrays(void)
         AddInRunning = IniReadKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         if(AddInFileName.Len() == 0) break;
         BufString = Dirs[DIR_ADDINS] + (CStr) "\\" + (CStr) AddInFileName;
-		AddInLibMod = LoadLibrary(BufString.Get_String());
+        AddInLibMod = LoadLibrary(BufString.Get_String());
         if(AddInLibMod != 0)
         {
             AddInDesc = GetProcAddress(AddInLibMod, "AddInDescription");
@@ -150,12 +150,12 @@ void FillAddInsArrays(void)
                 // Register loaded state
                 if(strcmpi(AddInLoaded.Get_String(), "1") == 0) LoadedAddIns.Add(1L);
                 else LoadedAddIns.Add(0L);
-				if(strcmpi(AddInRunning.Get_String(), "1") == 0) RunningAddIns.Add(1L);
+                if(strcmpi(AddInRunning.Get_String(), "1") == 0) RunningAddIns.Add(1L);
                 else RunningAddIns.Add(0L);
                 AddInsLoad.Add(AddInLoad);
                 AddInsUnLoad.Add(AddInUnload);
                 AddInsMenu.Add(AddInMenu);
-				IniDeleteKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
+                IniDeleteKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
                 IniDeleteKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
                 IniDeleteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
                 IniWriteKey("AddIns", "File" + (CStr) StringNumberComplement(NbrAddin, 3).Get_String(), AddInFileName, MainIniFile);
@@ -210,8 +210,8 @@ void ReFillAddInsArrays(void)
     AddInsMenu.Erase();
     RunningAddIns.Erase();
     
-	for(i = 0; i<= 999; i++)
-	{
+    for(i = 0; i<= 999; i++)
+    {
         AddInFileName = IniReadKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         AddInLoaded = IniReadKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         AddInRunning = IniReadKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
@@ -227,15 +227,15 @@ void ReFillAddInsArrays(void)
             // Handle to be filled with library handle
             // We need to create a new empty entry in the handles table
             AddInsDLL.Add(0L);
-			// Now we can move down the entries (if required)
+            // Now we can move down the entries (if required)
             // (From top to bottom)
-			for(k = DllNewHandle; k < (AddInsDLL.Amount() - 1); k++)
-			{
+            for(k = DllNewHandle; k < (AddInsDLL.Amount() - 1); k++)
+            {
                 AddInsDLL.Set(Revk, AddInsDLL.Get(Revk - 1)->Content);
                 Revk--;
             }
-			// Clear the cache entry (to force load of the dll)
-			AddInsDLL.Set(DllNewHandle, 0);
+            // Clear the cache entry (to force load of the dll)
+            AddInsDLL.Set(DllNewHandle, 0);
         }
         else
         {
@@ -245,9 +245,9 @@ void ReFillAddInsArrays(void)
         AddInLibMod = AddInsDLL.Get(DllNewHandle)->Content;
         if(AddInLibMod == 0)
         {
-			// Reload it
+            // Reload it
             BufString = Dirs[DIR_ADDINS] + (CStr) "\\" + (CStr) AddInFileName;
-			AddInLibMod = LoadLibrary(BufString.Get_String());
+            AddInLibMod = LoadLibrary(BufString.Get_String());
             AddInsDLL.Set(DllNewHandle, AddInLibMod);
         }
         AddInDesc = GetProcAddress(AddInLibMod, "AddInDescription");
@@ -264,7 +264,7 @@ void ReFillAddInsArrays(void)
             // Register loaded state
             if(strcmpi(AddInLoaded.Get_String(), "1") == 0) LoadedAddIns.Add(1L);
             else LoadedAddIns.Add(0L);
-			if(strcmpi(AddInRunning.Get_String(), "1") == 0) RunningAddIns.Add(1L);
+            if(strcmpi(AddInRunning.Get_String(), "1") == 0) RunningAddIns.Add(1L);
             else RunningAddIns.Add(0L);
             AddInsLoad.Add(AddInLoad);
             AddInsUnLoad.Add(AddInUnload);
@@ -294,7 +294,7 @@ void ReFillAddInsArrays(void)
         if(AddInFileName.Len() == 0) break;
         if(strcmpi(AddInLoaded.Get_String(), "1") == 0) LoadedAddIns.Add(1L);
         else LoadedAddIns.Add(0L);
-		if(strcmpi(AddInRunning.Get_String(), "1") == 0) RunningAddIns.Add(1L);
+        if(strcmpi(AddInRunning.Get_String(), "1") == 0) RunningAddIns.Add(1L);
         else RunningAddIns.Add(0L);
     }
 }
@@ -318,9 +318,9 @@ void SetAddInsRunningState(void)
                     // Unload it now
                     if(AddInsUnLoad.Get(i)->Content != 0)
                     {
-						JumpToAddr(AddInsUnLoad.Get(i)->Content);
+                        JumpToAddr(AddInsUnLoad.Get(i)->Content);
                     }
-					// Stop it for good
+                    // Stop it for good
                     IniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), "0", MainIniFile);
                 }
             }
@@ -339,13 +339,13 @@ void StopAddIns(void)
         // Must run now ?
         if(RunningAddIns.Get(i)->Content == 1)
         {
-			if(AddInsUnLoad.Get(i)->Content != 0)
-			{
-				JumpToAddr(AddInsUnLoad.Get(i)->Content);
-			}
-		}
-		if(AddInsDLL.Get(i)->Content != 0)
-		{
+            if(AddInsUnLoad.Get(i)->Content != 0)
+            {
+                JumpToAddr(AddInsUnLoad.Get(i)->Content);
+            }
+        }
+        if(AddInsDLL.Get(i)->Content != 0)
+        {
             FreeLibrary(AddInsDLL.Get(i)->Content);
             AddInsDLL.Set(i, 0);
         }
@@ -357,26 +357,26 @@ void StopAddIns(void)
 long ShutDownAddIn(long AddInNumber)
 {
     long ReturnValue = 0;
-	
-	// Store old state
+    
+    // Store old state
     ReturnValue = RunningAddIns.Get(AddInNumber)->Content;
     if(RunningAddIns.Get(AddInNumber)->Content == 1)
     {
-		if(AddInsUnLoad.Get(AddInNumber)->Content != 0)
-		{
-			JumpToAddr(AddInsUnLoad.Get(AddInNumber)->Content);
-		}
-	}
-	if(AddInsDLL.Get(AddInNumber)->Content != 0)
-	{
+        if(AddInsUnLoad.Get(AddInNumber)->Content != 0)
+        {
+            JumpToAddr(AddInsUnLoad.Get(AddInNumber)->Content);
+        }
+    }
+    if(AddInsDLL.Get(AddInNumber)->Content != 0)
+    {
         FreeLibrary(AddInsDLL.Get(AddInNumber)->Content);
         // Dlg_Filters.cpp for more infos
-		#ifndef _DEBUG
+        #ifndef _DEBUG
             CloseHandle((HANDLE) AddInsDLL.Get(AddInNumber)->Content);
         #endif
         AddInsDLL.Set(AddInNumber, 0);
     }
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -388,10 +388,10 @@ long RestartAddIn(long AddInNumber)
     FARPROC AddInLoad = 0;
     FARPROC AddInUnload = 0;
     FARPROC AddInMenu = 0;
-	long ReturnValue = 0;
-	CStr BufString;
+    long ReturnValue = 0;
+    CStr BufString;
 
-	BufString = Dirs[DIR_ADDINS] + (CStr) "\\" + (CStr) AddInsFiles.Get(AddInNumber)->Content;
+    BufString = Dirs[DIR_ADDINS] + (CStr) "\\" + (CStr) AddInsFiles.Get(AddInNumber)->Content;
     AddInsDLL.Set(AddInNumber, LoadLibrary(BufString.Get_String()));
     if(AddInsDLL.Get(AddInNumber)->Content != 0)
     {
@@ -401,7 +401,7 @@ long RestartAddIn(long AddInNumber)
         AddInUnload = GetProcAddress(AddInsDLL.Get(AddInNumber)->Content, "AddInUnLoad");
         AddInMenu = GetProcAddress(AddInsDLL.Get(AddInNumber)->Content, "AddInMenu");
         
-		AddInsDescriptions.Set(AddInNumber, GetDLLDescription(AddInsFiles.Get(AddInNumber)->Content, AddInDesc).Get_String());
+        AddInsDescriptions.Set(AddInNumber, GetDLLDescription(AddInsFiles.Get(AddInNumber)->Content, AddInDesc).Get_String());
         AddInsLoad.Set(AddInNumber, AddInLoad);
         AddInsUnLoad.Set(AddInNumber, AddInUnload);
         AddInsMenu.Set(AddInNumber, AddInMenu);
@@ -409,7 +409,7 @@ long RestartAddIn(long AddInNumber)
         ReturnValue = 1;
         IniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(AddInNumber, 3).Get_String(), RunningAddIns.Get(AddInNumber)->Content, MainIniFile);
     }
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -481,7 +481,7 @@ CStr GetDLLDescription(CStr AddInName, FARPROC DescriptionRoutine)
     long DescriptionLng = 0;
     long DescriptionLen = 0;
     CStr ReturnValue;
-	CStr BufString;
+    CStr BufString;
 
     if(DescriptionRoutine == 0) goto CantGuessDescription;
     DescriptionLng = DescriptionRoutine();
@@ -500,7 +500,7 @@ CantGuessDescription:
         RtlCopyMemory(BufString.Get_String(), (void *) DescriptionLng, DescriptionLen);
     }
     ReturnValue = BufString;
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -510,7 +510,7 @@ CStr GetDLLAuthor(FARPROC AuthorRoutine)
     long AuthLng = 0;
     long AuthLen = 0;
     CStr ReturnValue;
-	CStr BufString;
+    CStr BufString;
 
     if(AuthorRoutine == 0) goto CantGuessAuthor;
     // Should return an author name string or 0
@@ -543,7 +543,7 @@ long IsAddIn(CStr AddInName)
     FARPROC AddInLoad = 0;
     FARPROC AddInUnload = 0;
     FARPROC AddInMenu = 0;
-	long ReturnValue = 0;
+    long ReturnValue = 0;
 
     AddInLibMod = LoadLibrary(AddInName.Get_String());
     if(AddInLibMod != 0)
@@ -562,7 +562,7 @@ long IsAddIn(CStr AddInName)
         FreeLibrary(AddInLibMod);
         CloseHandle((HANDLE) AddInLibMod);
     }
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -575,7 +575,7 @@ long IsSpAddIn(CStr SpAddInName)
     FARPROC SpAddInLoad = 0;
     FARPROC SpAddInUnload = 0;
     FARPROC SpAddInMenu = 0;
-	long ReturnValue = 0;
+    long ReturnValue = 0;
     
     SpAddInLib = LoadLibrary(SpAddInName.Get_String());
     if(SpAddInLib != 0)
@@ -598,14 +598,14 @@ long IsSpAddIn(CStr SpAddInName)
         FreeLibrary(SpAddInLib);
         CloseHandle((HANDLE) SpAddInLib);
     }
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Running asked
 long RunAddIn(long AddInToRun)
 {
-	long ReturnValue = 0;
+    long ReturnValue = 0;
 
     RunningAddIns.Set(AddInToRun, 0);
     // if addin is already running then will need to notify a possible menu
@@ -628,24 +628,24 @@ long RunAddIn(long AddInToRun)
                         case ADDIN_DIE:
                             if(AddInsUnLoad.Get(AddInToRun)->Content != 0)
                             {
-								JumpToAddr(AddInsUnLoad.Get(AddInToRun)->Content);
+                                JumpToAddr(AddInsUnLoad.Get(AddInToRun)->Content);
                             }
-							RunningAddIns.Set(AddInToRun, 0);
-							break;
-					}
+                            RunningAddIns.Set(AddInToRun, 0);
+                            break;
+                    }
                 }
                 ReturnValue = ADDIN_FINISHED;
-				break;
+                break;
             case ADDIN_PERSISTANT:
                 RunningAddIns.Set(AddInToRun, 1);
                 ReturnValue = ADDIN_PERSISTANT;
-				break;
-		}
+                break;
+        }
     }
     // Store running state
     IniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(AddInToRun, 3).Get_String(),
                   RunningAddIns.Get(AddInToRun)->Content, MainIniFile);
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -672,7 +672,7 @@ void FillChromaticLib(void)
     AddInLib.GripBoxClose = (long) &GripBoxClose;
     AddInLib.GripBoxVisible = (long) &GripBoxVisible;
     AddInLib.GripBoxResize = (long) &GripBoxResize;
-	AddInLib.ComboBoxAddItem = (long) &Wrapper_ComboBoxAddItem;
+    AddInLib.ComboBoxAddItem = (long) &Wrapper_ComboBoxAddItem;
     AddInLib.ComboBoxCount = (long) &ComboBoxCount;
     AddInLib.ComboBoxDeleteItem = (long) &ComboBoxDeleteItem;
     AddInLib.ComboBoxGetCurrentItem = (long) &Wrapper_ComboBoxGetCurrentItem;
@@ -1046,24 +1046,24 @@ void FillChromaticLib(void)
     AddInLib.StringCountLines = (long) &StringCountLines;
     AddInLib.StringGetLinesOffsets = (long) &StringGetLinesOffsets;
     AddInLib.StringFilterNonPrintableChars = (long) &StringFilterNonPrintableChars;
-	AddInLib.StringLeft = (long) &StringLeft;
-	AddInLib.StringRight = (long) &StringRight;
-	AddInLib.StringTrim = (long) &StringTrim;
-	AddInLib.StringLTrim = (long) &StringLTrim;
-	AddInLib.StringRTrim = (long) &StringRTrim;
-	AddInLib.StringInStr = (long) &StringInStr;
-	AddInLib.StringMid = (long) &StringMid;
-	AddInLib.StringUpperCase = (long) &StringUpperCase;
-	AddInLib.StringLowerCase = (long) &StringLowerCase;
-	AddInLib.StringReverse = (long) &StringReverse;
-	AddInLib.StringSpace = (long) &StringSpace;
-	AddInLib.StringString = (long) &StringString;
-	AddInLib.StringIsNumeric = (long) &StringIsNumeric;
-	AddInLib.StringFillHexBytes = (long) &StringFillHexBytes;
-	AddInLib.StringFillHexWords = (long) &StringFillHexWords;
-	AddInLib.StringFillHexDWords = (long) &StringFillHexDWords;
-	AddInLib.StringFileNameToLabel = (long) &StringFileNameToLabel;
-	AddInLib.SysTabAddItem = (long) &Wrapper_SysTabAddItem;
+    AddInLib.StringLeft = (long) &StringLeft;
+    AddInLib.StringRight = (long) &StringRight;
+    AddInLib.StringTrim = (long) &StringTrim;
+    AddInLib.StringLTrim = (long) &StringLTrim;
+    AddInLib.StringRTrim = (long) &StringRTrim;
+    AddInLib.StringInStr = (long) &StringInStr;
+    AddInLib.StringMid = (long) &StringMid;
+    AddInLib.StringUpperCase = (long) &StringUpperCase;
+    AddInLib.StringLowerCase = (long) &StringLowerCase;
+    AddInLib.StringReverse = (long) &StringReverse;
+    AddInLib.StringSpace = (long) &StringSpace;
+    AddInLib.StringString = (long) &StringString;
+    AddInLib.StringIsNumeric = (long) &StringIsNumeric;
+    AddInLib.StringFillHexBytes = (long) &StringFillHexBytes;
+    AddInLib.StringFillHexWords = (long) &StringFillHexWords;
+    AddInLib.StringFillHexDWords = (long) &StringFillHexDWords;
+    AddInLib.StringFileNameToLabel = (long) &StringFileNameToLabel;
+    AddInLib.SysTabAddItem = (long) &Wrapper_SysTabAddItem;
     AddInLib.SysTabGetCurrentItem = (long) &SysTabGetCurrentItem;
     AddInLib.SysTabGetImagelist = (long) &SysTabGetImagelist;
     AddInLib.SysTabGetRowsCount = (long) &SysTabGetRowsCount;
@@ -1074,7 +1074,7 @@ void FillChromaticLib(void)
     AddInLib.SysTabSetSeparators = (long) &SysTabSetSeparators;
     AddInLib.SysTabSetItemsSize = (long) &SysTabSetItemsSize;
     AddInLib.SysTabRemoveItem = (long) &SysTabRemoveItem;
-	AddInLib.SysTabSetMinWidth = (long) &SysTabSetMinWidth;
+    AddInLib.SysTabSetMinWidth = (long) &SysTabSetMinWidth;
     AddInLib.SysTabSetPadding = (long) &SysTabSetPadding;
     AddInLib.TextBoxGetLen = (long) &TextBoxGetLen;
     AddInLib.TextBoxAddText = (long) &Wrapper_TextBoxAddText;
@@ -1087,7 +1087,7 @@ void FillChromaticLib(void)
     AddInLib.TextBoxGetMaxLen = (long) &TextBoxGetMaxLen;
     AddInLib.TextBoxGetPasswordChar = (long) &Wrapper_TextBoxGetPasswordChar;
     AddInLib.TextBoxSetPasswordChar = (long) &Wrapper_TextBoxSetPasswordChar;
-	AddInLib.TextBoxGetScrollPos = (long) &TextBoxGetScrollPos;
+    AddInLib.TextBoxGetScrollPos = (long) &TextBoxGetScrollPos;
     AddInLib.TextBoxGetSelection = (long) &TextBoxGetSelection;
     AddInLib.TextBoxGetTextHandle = (long) &TextBoxGetTextHandle;
     AddInLib.TextBoxIsModified = (long) &TextBoxIsModified;
@@ -1166,7 +1166,7 @@ void FillChromaticLib(void)
     AddInLib.TreeViewSetItemExpandedState = (long) &TreeViewSetItemExpandedState;
     AddInLib.TreeViewGetItemExpandedState = (long) &TreeViewGetItemExpandedState;
     AddInLib.TreeViewSetSingleExpandState = (long) &TreeViewSetSingleExpandState;
-	AddInLib.TreeViewSetItemIcon = (long) &TreeViewSetItemIcon;
+    AddInLib.TreeViewSetItemIcon = (long) &TreeViewSetItemIcon;
     AddInLib.TreeViewSetItemText = (long) &Wrapper_TreeViewSetItemText;
     AddInLib.TreeViewSetSelectedItem = (long) &TreeViewSetSelectedItem;
     AddInLib.TreeViewSetToolTips = (long) &TreeViewSetToolTips;
@@ -1177,7 +1177,7 @@ void FillChromaticLib(void)
     AddInLib.DockingBoxRemove = (long) &DockingBoxRemove;
     AddInLib.DockingBoxShow = (long) &Wrapper_DockingBoxShow;
     AddInLib.DockingBoxWasVisible = (long) &Wrapper_DockingBoxWasVisible;
-	AddInLib.WinsockInit = (long) &WinsockInit;
+    AddInLib.WinsockInit = (long) &WinsockInit;
     AddInLib.WinsockUnInit = (long) &WinsockUnInit;
     AddInLib.MiscClipBoardCopyText = (long) &Wrapper_MiscClipBoardCopyText;
     AddInLib.MiscClipBoardPasteText = (long) &Wrapper_MiscClipBoardPasteText;
@@ -1193,7 +1193,7 @@ void FillChromaticLib(void)
     AddInLib.MiscCopyMemWithOffsets = (long) &MiscCopyMemWithOffsets;
     AddInLib.MiscShellAddFileToRecents = (long) &Wrapper_MiscShellAddFileToRecents;
     AddInLib.MiscGetOSClass = (long) &MiscGetOSClass;
-	AddInLib.MiscObtainExtendedFunctions = (long) &MiscObtainExtendedFunctions;
+    AddInLib.MiscObtainExtendedFunctions = (long) &MiscObtainExtendedFunctions;
     AddInLib.WAMMGetWindowLangGUID = (long) &WAMMGetWindowLangGUID;
     AddInLib.WAMMGetWindowLangInclude = (long) &WAMMGetWindowLangInclude;
     AddInLib.WAMMGetWindowLangDoubleSlash = (long) &WAMMGetWindowLangDoubleSlash;
@@ -1318,22 +1318,22 @@ void FillChromaticLib(void)
 long CALLBACK Wrapper_CreateStockModalDialog(long TemplateNumber, long DLeft, long DTop, long DWidth, long DHeight,
                                                HWND hParent, char *DTitle, DLGPROC WinProc, long Centered)
 {
-	int RetValue = 0;
+    int RetValue = 0;
 
-	// We need to freeze our internal timer
+    // We need to freeze our internal timer
     FreezeTimer = 1;
-	switch(TemplateNumber)
-	{
-		case MODALDLG_STOCK_WIZARD:
-			RetValue = CreateStockModalDialog(TemplateNumber, DLeft, DTop, DWidth, DHeight, hParent, DTitle, WinProc, Centered, (long) MAKEINTRESOURCE(MBMP_BASE + MBMP_WIZARD));
-			break;
-		default:
-			RetValue = CreateStockModalDialog(TemplateNumber, DLeft, DTop, DWidth, DHeight, hParent, DTitle, WinProc, Centered, 0);
-			break;
-	}
-	// And restart it
+    switch(TemplateNumber)
+    {
+        case MODALDLG_STOCK_WIZARD:
+            RetValue = CreateStockModalDialog(TemplateNumber, DLeft, DTop, DWidth, DHeight, hParent, DTitle, WinProc, Centered, (long) MAKEINTRESOURCE(MBMP_BASE + MBMP_WIZARD));
+            break;
+        default:
+            RetValue = CreateStockModalDialog(TemplateNumber, DLeft, DTop, DWidth, DHeight, hParent, DTitle, WinProc, Centered, 0);
+            break;
+    }
+    // And restart it
     FreezeTimer = 0;
-	return(RetValue);
+    return(RetValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1346,8 +1346,8 @@ char * CALLBACK WAMMGetWindowLangGUID(HWND hForm)
 {
     CStr ReturnValue;
 
-	if(hForm != 0) ReturnValue = GetCMLangGUID(hForm);
-	return(StringCStrConvertToString(ReturnValue));
+    if(hForm != 0) ReturnValue = GetCMLangGUID(hForm);
+    return(StringCStrConvertToString(ReturnValue));
 }
 
 // -----------------------------------------------------------------------
@@ -1356,7 +1356,7 @@ char * CALLBACK WAMMGetWindowLangInclude(HWND hForm)
 {
     CStr ReturnValue;
     
-	if(hForm != 0) ReturnValue = GetCMLangInclude(hForm);
+    if(hForm != 0) ReturnValue = GetCMLangInclude(hForm);
     return(StringCStrConvertToString(ReturnValue));
 }
 
@@ -1366,7 +1366,7 @@ char * CALLBACK WAMMGetWindowLangDoubleSlash(HWND hForm)
 {
     CStr ReturnValue;
     
-	if(hForm != 0) ReturnValue = GetCMLangDoubleSlash(hForm);
+    if(hForm != 0) ReturnValue = GetCMLangDoubleSlash(hForm);
     return(StringCStrConvertToString(ReturnValue));
 }
 
@@ -1376,7 +1376,7 @@ char * CALLBACK WAMMGetWindowLangComment(HWND hForm)
 {
     CStr ReturnValue;
     
-	if(hForm != 0) ReturnValue = GetCMLangComment(hForm);
+    if(hForm != 0) ReturnValue = GetCMLangComment(hForm);
     return(StringCStrConvertToString(ReturnValue));
 }
 
@@ -1386,7 +1386,7 @@ char * CALLBACK WAMMGetWindowLangMultiComment(HWND hForm)
 {
     CStr ReturnValue;
     
-	if(hForm != 0) ReturnValue = GetCMLangMultiComment(hForm);
+    if(hForm != 0) ReturnValue = GetCMLangMultiComment(hForm);
     return(StringCStrConvertToString(ReturnValue));
 }
 
@@ -1396,7 +1396,7 @@ char * CALLBACK WAMMGetWindowLangMultiCommentEnd(HWND hForm)
 {
     CStr ReturnValue;
     
-	if(hForm != 0) ReturnValue = GetCMLangMultiCommentEnd(hForm);
+    if(hForm != 0) ReturnValue = GetCMLangMultiCommentEnd(hForm);
     return(StringCStrConvertToString(ReturnValue));
 }
 
@@ -1406,7 +1406,7 @@ char * CALLBACK WAMMGetWindowLangProc(HWND hForm)
 {
     CStr ReturnValue;
     
-	if(hForm != 0) ReturnValue = GetCMLangProc(hForm);
+    if(hForm != 0) ReturnValue = GetCMLangProc(hForm);
     return(StringCStrConvertToString(ReturnValue));
 }
 
@@ -1416,7 +1416,7 @@ char * CALLBACK WAMMGetWindowLangEndp(HWND hForm)
 {
     CStr ReturnValue;
     
-	if(hForm != 0) ReturnValue = GetCMLangEndp(hForm);
+    if(hForm != 0) ReturnValue = GetCMLangEndp(hForm);
     return(StringCStrConvertToString(ReturnValue));
 }
 
@@ -1425,7 +1425,7 @@ char * CALLBACK WAMMGetWindowLangEndp(HWND hForm)
 long CALLBACK WAMMGetWindowLangProcInterlace(HWND hForm)
 {
     if(hForm != 0) return(GetCMLangProcInterlace(hForm));
-	else return(0);
+    else return(0);
 }
 
 // -----------------------------------------------------------------------
@@ -1433,7 +1433,7 @@ long CALLBACK WAMMGetWindowLangProcInterlace(HWND hForm)
 long CALLBACK WAMMGetWindowLangProcOrphan(HWND hForm)
 {
     if(hForm != 0) return(GetCMLangProcOrphan(hForm));
-	else return(0);
+    else return(0);
 }
 
 // -----------------------------------------------------------------------
@@ -1442,7 +1442,7 @@ char * CALLBACK WAMMGetWindowLangProcOpenBlock(HWND hForm)
 {
     CStr ReturnValue;
     
-	if(hForm != 0) ReturnValue = GetCMLangProcOpenBlock(hForm);
+    if(hForm != 0) ReturnValue = GetCMLangProcOpenBlock(hForm);
     return(StringCStrConvertToString(ReturnValue));
 }
 
@@ -1452,7 +1452,7 @@ char * CALLBACK WAMMGetWindowLangProcCloseBlock(HWND hForm)
 {
     CStr ReturnValue;
     
-	if(hForm != 0) return(StringCStrConvertToString(GetCMLangProcCloseBlock(hForm)));
+    if(hForm != 0) return(StringCStrConvertToString(GetCMLangProcCloseBlock(hForm)));
     return(StringCStrConvertToString(ReturnValue));
 }
 
@@ -1462,7 +1462,7 @@ char * CALLBACK WAMMGetWindowLangFileName(HWND hForm)
 {
     CStr ReturnValue;
     
-	if(hForm != 0) return(StringCStrConvertToString(GetCMLangFileName(hForm)));
+    if(hForm != 0) return(StringCStrConvertToString(GetCMLangFileName(hForm)));
     return(StringCStrConvertToString(ReturnValue));
 }
 
@@ -1472,7 +1472,7 @@ char * CALLBACK WAMMGetWindowLangIncludeName(HWND hForm)
 {
     CStr ReturnValue;
     
-	if(hForm != 0) return(StringCStrConvertToString(GetCMLangIncludeNameByhWnd(hForm)));
+    if(hForm != 0) return(StringCStrConvertToString(GetCMLangIncludeNameByhWnd(hForm)));
     return(StringCStrConvertToString(ReturnValue));
 }
 
@@ -1482,7 +1482,7 @@ char * CALLBACK WAMMGetWindowLangIncludeNameFoot(HWND hForm)
 {
     CStr ReturnValue;
     
-	if(hForm != 0) return(StringCStrConvertToString(GetCMLangIncludeNameFootByhWnd(hForm)));
+    if(hForm != 0) return(StringCStrConvertToString(GetCMLangIncludeNameFootByhWnd(hForm)));
     return(StringCStrConvertToString(ReturnValue));
 }
 
@@ -1492,7 +1492,7 @@ char * CALLBACK WAMMDecodeRelativePaths(char *PathName)
 {
     CStr ReturnValue;
     
-	ReturnValue = StringConvertToCStr(PathName);
+    ReturnValue = StringConvertToCStr(PathName);
     if(strlen(PathName) != 0) ReturnValue = ChangeRelativePaths(ReturnValue);
     return(StringCStrConvertToString(ReturnValue));
 }
@@ -1503,7 +1503,7 @@ char * CALLBACK WAMMRemoveRelativePaths(char *PathName)
 {
     CStr ReturnValue;
     
-	ReturnValue = StringConvertToCStr(PathName);
+    ReturnValue = StringConvertToCStr(PathName);
     if(strlen(PathName) != 0) ReturnValue = RemoveRelativePaths(ReturnValue);
     return(StringCStrConvertToString(ReturnValue));
 }
@@ -1532,7 +1532,7 @@ void CALLBACK WAMMRunCommandScript(char *CommandScript, long SaveFiles)
 {
     CStr TmpCom;
     
-	FRMArgsEntered = 0;
+    FRMArgsEntered = 0;
     if(SaveFiles == 1) MCMD_SaveAll();
     TmpCom = TranslateUserCmd(StringConvertToCStr(CommandScript));
     if(FRMArgsEntered == 1)
@@ -1575,7 +1575,7 @@ char * CALLBACK Wrapper_ComDlgGetOpenFileName(HWND hWnd, char *FilesFilter, char
 char * CALLBACK Wrapper_ComDlgParseMultiFilesSelection(char *SelectedFiles, long (CALLBACK *EnumProc)(char *, long),
                                                          long SearchDirection, long UserValue)
 {
-	return(StringCStrConvertToString(ComDlgParseMultiFilesSelection(StringConvertToCStr(SelectedFiles), EnumProc, SearchDirection, UserValue)));
+    return(StringCStrConvertToString(ComDlgParseMultiFilesSelection(StringConvertToCStr(SelectedFiles), EnumProc, SearchDirection, UserValue)));
 }
 
 // -----------------------------------------------------------------------
@@ -1599,7 +1599,7 @@ long CALLBACK Wrapper_ComDlgChooseFont(HWND hWnd, char *FntName, long FntSize,
     int i = 0;
     HDC FhDC = 0;
     CStr LocFntName;
-	long ReturnValue = 0;
+    long ReturnValue = 0;
 
     LocFntName = StringConvertToCStr(FntName);
     FhDC = GetDC(hWnd);
@@ -1647,14 +1647,14 @@ long CALLBACK Wrapper_ComDlgChooseFont(HWND hWnd, char *FntName, long FntSize,
         free(hMemFont);
     }
     ReleaseDC(hWnd, FhDC);
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
 // Browse directories
 char * CALLBACK Wrapper_ComDlgBrowseForFolder(HWND hParent, char *BrowseTitle)
 {
-	CStr ReturnValue;
+    CStr ReturnValue;
 
     ReturnValue = ComDlgBrowseForFolder(hParent, StringConvertToCStr(BrowseTitle));
     if(ReturnValue.Len() == 0)
@@ -1958,7 +1958,7 @@ void CALLBACK WAMMCopy(HWND hForm)
 // Copy filepathname command
 long CALLBACK WAMMCopyFilePathName(HWND hForm)
 {
-	long ReturnValue = 0;
+    long ReturnValue = 0;
 
     if(NbForms == 0) return(0);
     if(hForm != 0)
@@ -1967,7 +1967,7 @@ long CALLBACK WAMMCopyFilePathName(HWND hForm)
         if(ChildStruct->FileLoaded == 0) return(ReturnValue);
         ReturnValue = MiscClipBoardCopyText(CMGetRealFile(ChildStruct->RFile));
     }
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -1975,7 +1975,7 @@ long CALLBACK WAMMCopyFilePathName(HWND hForm)
 long CALLBACK WAMMCopyEntireText(HWND hForm)
 {
     CStr EntText;
-	long ReturnValue = 0;
+    long ReturnValue = 0;
 
     if(NbForms == 0) return(0);
     if(hForm != 0)
@@ -1985,7 +1985,7 @@ long CALLBACK WAMMCopyEntireText(HWND hForm)
         CM_GetTextAll(ChildStruct->hChildCodeMax, EntText.Get_String());
         ReturnValue = MiscClipBoardCopyText(EntText);
     }
-	return(ReturnValue);
+    return(ReturnValue);
 }
 
 // -----------------------------------------------------------------------
@@ -2078,7 +2078,7 @@ void CALLBACK WAMMSelectAll(HWND hForm)
 long CALLBACK WAMMSelectProc(HWND hForm)
 {
     if(NbForms == 0) if(hForm != 0) return(SelectProcedure(hForm));
-	return(0);
+    return(0);
 }
 
 // -----------------------------------------------------------------------
@@ -2388,42 +2388,42 @@ char * CALLBACK WAMMGetIniFilePathName(long FileNumber)
     {
         case INIFILE_MAIN:
             BufString = MainIniFile;
-			break;
-		case INIFILE_CURRENTUSERMENUS:
+            break;
+        case INIFILE_CURRENTUSERMENUS:
             BufString = UserMenusIniFile;
-			break;
+            break;
         case INIFILE_TOOLBARS:
             BufString = ToolbarsIniFile;
-			break;
+            break;
         case INIFILE_COLORS:
             BufString = ColorsIniFile;
-			break;
+            break;
         case INIFILE_FTPACCOUNTS:
             BufString = FtpAccountsIniFile;
-			break;
+            break;
         case INIFILE_SKINS:
             BufString = SkinsIniFile;
-			break;
+            break;
         case INIFILE_PROJECTSTYPES:
             BufString = ProjectsIniFile;
-			break;
+            break;
         case INIFILE_LANGUAGES:
             BufString = LanguagesIniFile;
-			break;
+            break;
         case INIFILE_DATES:
             BufString = DatesIniFile;
-			break;
+            break;
         case INIFILE_CGREP:
             BufString = cGrepIniFile;
-			break;
+            break;
         case INIFILE_FILTERS:
             BufString = FiltersIniFile;
-			break;
+            break;
         default:
             BufString = "";
-			break;
+            break;
     }
-	ReturnValue = BufString;
+    ReturnValue = BufString;
     return(StringCStrConvertToString(ReturnValue));
 }
 
@@ -2501,11 +2501,11 @@ void CALLBACK WAMMGetContext(LPADDINCONTEXT VarsStruct)
 
     VarsStruct->OSType = OSTYPE_WINDOWS_9X;
     if(WindowsNT) VarsStruct->OSType = OSTYPE_WINDOWS_NT;
-	if(Windows2K) VarsStruct->OSType = OSTYPE_WINDOWS_2K;
+    if(Windows2K) VarsStruct->OSType = OSTYPE_WINDOWS_2K;
     if(WindowsXP) VarsStruct->OSType = OSTYPE_WINDOWS_XP;
     if(Windows7) VarsStruct->OSType = OSTYPE_WINDOWS_7;
 
-	if(FullScreenMode == 1) VarsStruct->FullScreenMode = 1;
+    if(FullScreenMode == 1) VarsStruct->FullScreenMode = 1;
     else VarsStruct->FullScreenMode = 0;
 
     if(SysTrayMode == 1) VarsStruct->SysTrayMode = 1;
@@ -2515,13 +2515,13 @@ void CALLBACK WAMMGetContext(LPADDINCONTEXT VarsStruct)
     VarsStruct->hClient = hMDIform.hClient;
     VarsStruct->hAccelerators = hGlobAccelerators;
     
-	if(NbForms == 0)
-	{
+    if(NbForms == 0)
+    {
         VarsStruct->hCurrentChild = 0;
         VarsStruct->hCurrentCodeMax = 0;
-	}
-	else
-	{
+    }
+    else
+    {
         VarsStruct->hCurrentChild = CurrentForm;
         ChildStruct = LoadStructure(CurrentForm);
         VarsStruct->hCurrentCodeMax = ChildStruct->hChildCodeMax;
@@ -2533,7 +2533,7 @@ void CALLBACK WAMMGetContext(LPADDINCONTEXT VarsStruct)
     VarsStruct->hOutputBox = hStatusBox;
     VarsStruct->hDebugBox = hDebugBox;
     VarsStruct->hOutputSysTab = hOutputSysTab;
-	VarsStruct->hEmptyImageList = GlobalImageList3;
+    VarsStruct->hEmptyImageList = GlobalImageList3;
     VarsStruct->hMainImageList = GlobalImageList1;
     VarsStruct->hLittleImageList = GlobalImageList2;
     VarsStruct->hControlsImageList = GlobalImageList4;
@@ -2548,7 +2548,7 @@ void CALLBACK WAMMGetContext(LPADDINCONTEXT VarsStruct)
     VarsStruct->hWindowsPager = hWindowsPager;
     VarsStruct->hOutputBoxToolbar = hStatusToolBar;
     VarsStruct->hOutputBoxPager = hStatusPager;
-	VarsStruct->ColdStart = FirstStart;
+    VarsStruct->ColdStart = FirstStart;
 }
 
 // -----------------------------------------------------------------------
@@ -2574,13 +2574,13 @@ int CALLBACK WAMMGetContextElement(int Idx)
 
         case 5:
             if(WindowsNT) return(OSTYPE_WINDOWS_NT);
-	        if(Windows2K) return(OSTYPE_WINDOWS_2K);
+            if(Windows2K) return(OSTYPE_WINDOWS_2K);
             if(WindowsXP) return(OSTYPE_WINDOWS_XP);
             if(Windows7) return(OSTYPE_WINDOWS_7);
             else return(OSTYPE_WINDOWS_9X);
 
         case 6:
-	        if(FullScreenMode == 1) return(1);
+            if(FullScreenMode == 1) return(1);
             else return(0);
 
         case 7:
@@ -2615,7 +2615,7 @@ int CALLBACK WAMMGetContextElement(int Idx)
             return((int) hOutputSysTab);
 
         case 17:
-	        if(NbForms == 0) {
+            if(NbForms == 0) {
                 return(0);
             } else {
                 return((int) CurrentForm);
@@ -2623,12 +2623,12 @@ int CALLBACK WAMMGetContextElement(int Idx)
             break;
 
         case 18:
-	        if(NbForms == 0)
-	        {
+            if(NbForms == 0)
+            {
                 return(0);
-	        }
-	        else
-	        {
+            }
+            else
+            {
                 ChildStruct = LoadStructure(CurrentForm);
                 return((int) ChildStruct->hChildCodeMax);
             }
@@ -2638,7 +2638,7 @@ int CALLBACK WAMMGetContextElement(int Idx)
             return((int) hRebar);
 
         case 20:
-	        return((int) GlobalImageList3);
+            return((int) GlobalImageList3);
 
         case 21:
             return((int) GlobalImageList1);
@@ -2683,10 +2683,10 @@ int CALLBACK WAMMGetContextElement(int Idx)
             return((int) hStatusPager);
 
         case 35:
-	        return(FirstStart);
+            return(FirstStart);
 
         default:
-	        return(0);
+            return(0);
     }
 }
 
@@ -2784,8 +2784,8 @@ long CALLBACK WAMMInstallHookProc(long HookAddress, long HookType)
     switch(HookType)
     {
         case HOOK_MDICREATE:
-			for(i = 0; i < MDICreateHooks.Amount(); i++)
-			{
+            for(i = 0; i < MDICreateHooks.Amount(); i++)
+            {
                 if(MDICreateHooks.Get(i)->Content == 0)
                 {
                     if((MDICreateHooks.Amount() - 1) == i) FoundHook = 1;
@@ -2795,16 +2795,16 @@ long CALLBACK WAMMInstallHookProc(long HookAddress, long HookType)
             HookNbr++;
             if(FoundHook == 1)
             {
-				MDICreateHooks.Set(i, HookAddress);
-				MDICreateHooksNbr.Set(i, HookNbr);
+                MDICreateHooks.Set(i, HookAddress);
+                MDICreateHooksNbr.Set(i, HookNbr);
             }
             else
             {
                 // Obtain a new hooking slot
-				MDICreateHooks.Add(0L);
-				MDICreateHooksNbr.Add(0L);
+                MDICreateHooks.Add(0L);
+                MDICreateHooksNbr.Add(0L);
             }
-			break;
+            break;
         case HOOK_MDI:
             for(i = 0; i < MDIHooks.Amount(); i++)
             {
@@ -2817,16 +2817,16 @@ long CALLBACK WAMMInstallHookProc(long HookAddress, long HookType)
             HookNbr++;
             if(FoundHook == 1)
             {
-				MDIHooks.Set(i, (DLGPROC) HookAddress);
-				MDIHooksNbr.Set(i, HookNbr);
+                MDIHooks.Set(i, (DLGPROC) HookAddress);
+                MDIHooksNbr.Set(i, HookNbr);
             }
             else
             {
                 // Obtain a new hooking slot
-				MDIHooks.Add(0L);
-				MDIHooksNbr.Add(0L);
+                MDIHooks.Add(0L);
+                MDIHooksNbr.Add(0L);
             }
-			break;
+            break;
         case HOOK_MDICLIENT:
             for(i = 0; i < MDIClientHooks.Amount(); i++)
             {
@@ -2839,16 +2839,16 @@ long CALLBACK WAMMInstallHookProc(long HookAddress, long HookType)
             HookNbr++;
             if(FoundHook == 1)
             {
-				MDIClientHooks.Set(i, (DLGPROC) HookAddress);
-				MDIClientHooksNbr.Set(i, HookNbr);
+                MDIClientHooks.Set(i, (DLGPROC) HookAddress);
+                MDIClientHooksNbr.Set(i, HookNbr);
             }
             else
             {
                 // Obtain a new hooking slot
                 MDIClientHooks.Add(0L);
                 MDIClientHooksNbr.Add(0L);
-			}
-			break;
+            }
+            break;
         case HOOK_CHILDCREATE:
             for(i = 0; i < ChildCreateHooks.Amount(); i++)
             {
@@ -2861,15 +2861,15 @@ long CALLBACK WAMMInstallHookProc(long HookAddress, long HookType)
             HookNbr++;
             if(FoundHook == 1)
             {
-				ChildCreateHooks.Set(i, HookAddress);
-				ChildCreateHooksNbr.Set(i, HookNbr);
+                ChildCreateHooks.Set(i, HookAddress);
+                ChildCreateHooksNbr.Set(i, HookNbr);
             }
             else
             {
                 ChildCreateHooks.Add(0L);
                 ChildCreateHooksNbr.Add(0L);
-			}
-			break;
+            }
+            break;
         case HOOK_CHILD:
             for(i = 0; i < ChildHooks.Amount(); i++)
             {
@@ -2882,15 +2882,15 @@ long CALLBACK WAMMInstallHookProc(long HookAddress, long HookType)
             HookNbr++;
             if(FoundHook == 1)
             {
-				ChildHooks.Set(i, (DLGPROC) HookAddress);
-				ChildHooksNbr.Set(i, HookNbr);
+                ChildHooks.Set(i, (DLGPROC) HookAddress);
+                ChildHooksNbr.Set(i, HookNbr);
             }
             else
             {
                 ChildHooks.Add(0L);
                 ChildHooksNbr.Add(0L);
-			}
-			break;
+            }
+            break;
         case HOOK_CMAXXX:
             for(i = 0; i < CodeMaxHooks.Amount(); i++)
             {
@@ -2903,16 +2903,16 @@ long CALLBACK WAMMInstallHookProc(long HookAddress, long HookType)
             HookNbr++;
             if(FoundHook == 1)
             {
-				CodeMaxHooks.Set(i, (DLGPROC) HookAddress);
-				CodeMaxHooksNbr.Set(i, HookNbr);
+                CodeMaxHooks.Set(i, (DLGPROC) HookAddress);
+                CodeMaxHooksNbr.Set(i, HookNbr);
             }
             else
             {
                 CodeMaxHooks.Add(0L);
                 CodeMaxHooksNbr.Add(0L);
-			}
-			break;
-	}
+            }
+            break;
+    }
     return(HookNbr);
 }
 
@@ -2937,8 +2937,8 @@ void CALLBACK WAMMUnInstallHookProc(long HookAddress, long HookType, long HookNu
                 }
             }
             if(FoundHook == 1) MDICreateHooks.Set(i, 0L);
-			break;
-		case HOOK_MDI:
+            break;
+        case HOOK_MDI:
             for(i = 0; i < MDIHooks.Amount(); i++)
             {
                 if(MDIHooks.Get(i)->Content == (DLGPROC) HookAddress)
@@ -2952,7 +2952,7 @@ void CALLBACK WAMMUnInstallHookProc(long HookAddress, long HookType, long HookNu
                 }
             }
             if(FoundHook == 1) MDIHooks.Set(i, 0L);
-			break;
+            break;
         case HOOK_MDICLIENT:
             for(i = 0; i < MDIClientHooks.Amount(); i++)
             {
@@ -2967,7 +2967,7 @@ void CALLBACK WAMMUnInstallHookProc(long HookAddress, long HookType, long HookNu
                 }
             }
             if(FoundHook == 1) MDIClientHooks.Set(i, 0L);
-			break;
+            break;
         case HOOK_CHILDCREATE:
             for(i = 0; i < ChildCreateHooks.Amount(); i++)
             {
@@ -2981,7 +2981,7 @@ void CALLBACK WAMMUnInstallHookProc(long HookAddress, long HookType, long HookNu
                 }
             }
             if(FoundHook == 1) ChildCreateHooks.Set(i, 0L);
-			break;
+            break;
         case HOOK_CHILD:
             for(i = 0; i < ChildHooks.Amount(); i++)
             {
@@ -2995,8 +2995,8 @@ void CALLBACK WAMMUnInstallHookProc(long HookAddress, long HookType, long HookNu
                 }
             }
             if(FoundHook == 1) ChildHooks.Set(i, 0L);
-			break;
-		case HOOK_CMAXXX:
+            break;
+        case HOOK_CMAXXX:
             for(i = 0; i < CodeMaxHooks.Amount(); i++)
             {
                 if(CodeMaxHooks.Get(i)->Content == (DLGPROC) HookAddress)
@@ -3009,8 +3009,8 @@ void CALLBACK WAMMUnInstallHookProc(long HookAddress, long HookType, long HookNu
                 }
             }
             if(FoundHook == 1) CodeMaxHooks.Set(i, 0L);
-			break;
-	}
+            break;
+    }
 }
 
 // -----------------------------------------------------------------------
@@ -3101,9 +3101,9 @@ void CALLBACK WAMMAddInKillZombie(long CallBack)
     if(FoundAddInProc == 0) return;
     if(AddInsUnLoad.Get(i)->Content != 0)
     {
-		JumpToAddr(AddInsUnLoad.Get(i)->Content);
+        JumpToAddr(AddInsUnLoad.Get(i)->Content);
     }
-	RunningAddIns.Set(i, 0L);
+    RunningAddIns.Set(i, 0L);
     IniWriteKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), RunningAddIns.Get(i)->Content, MainIniFile);
     // Change icon
     if(FRMAddInsListView != 0) ListViewSetSubItemImage(FRMAddInsListView, ICON_ADDINR, i, 0);
@@ -3115,8 +3115,8 @@ long CALLBACK WAMMSpAddInIsAvailable(char *AlienDllName)
 {
     CStr BufString;
 
-	BufString = Dirs[DIR_ADDINS] + (CStr) "\\" + (CStr) StringConvertToCStr(AlienDllName);
-	return(IsSpAddIn(BufString));
+    BufString = Dirs[DIR_ADDINS] + (CStr) "\\" + (CStr) StringConvertToCStr(AlienDllName);
+    return(IsSpAddIn(BufString));
 }
 
 // -----------------------------------------------------------------------
@@ -3174,13 +3174,13 @@ long CALLBACK Wrapper_ComboBoxItemExist(HWND Wrapper_WAhCB, char *Wrapper_WACBIt
 void CALLBACK Wrapper_ComboBoxSaveInIniFile(HWND Wrapper_WAhCB, char *EntryToAdd, char *IniKey, char *IniFile)
 {
     ComboBoxSaveInIniFile(Wrapper_WAhCB, StringConvertToCStr(EntryToAdd), StringConvertToCStr(IniKey), StringConvertToCStr(IniFile));
-	return;
+    return;
 }
 
 void CALLBACK Wrapper_ComboBoxFillFromIniFile(HWND Wrapper_WAhCB, char *IniKey, char *IniFile)
 {
     ComboBoxFillFromIniFile(Wrapper_WAhCB, StringConvertToCStr(IniKey), StringConvertToCStr(IniFile));
-	return;
+    return;
 }
 
 char * CALLBACK Wrapper_ControlGetClassName(HWND Wrapper_WAhWnd)
@@ -3871,44 +3871,44 @@ char * CALLBACK StringRTrim(char *String)
 
 long CALLBACK StringInStr(char *String, long Start, char *WASearchString, long CompType)
 {
-	return(StringConvertToCStr(String).In_Str(Start, WASearchString, CompType));
+    return(StringConvertToCStr(String).In_Str(Start, WASearchString, CompType));
 }
 
 char * CALLBACK StringMid(char *String, long Start, long Len)
 {
-	return(StringCStrConvertToString(StringConvertToCStr(String).Mid(Start, Len)));
+    return(StringCStrConvertToString(StringConvertToCStr(String).Mid(Start, Len)));
 }
 
 char * CALLBACK StringUpperCase(char *String)
 {
-	return(StringCStrConvertToString(StringConvertToCStr(String).Upper_Case()));
+    return(StringCStrConvertToString(StringConvertToCStr(String).Upper_Case()));
 }
 
 char * CALLBACK StringLowerCase(char *String)
 {
-	return(StringCStrConvertToString(StringConvertToCStr(String).Lower_Case()));
+    return(StringCStrConvertToString(StringConvertToCStr(String).Lower_Case()));
 }
 
 char * CALLBACK StringReverse(char *String)
 {
-	return(StringCStrConvertToString(StringConvertToCStr(String).Str_Reverse()));
+    return(StringCStrConvertToString(StringConvertToCStr(String).Str_Reverse()));
 }
 
 char * CALLBACK StringSpace(long Len)
 {
-	CStr BufString;
-	return(StringCStrConvertToString(BufString.Space(Len)));
+    CStr BufString;
+    return(StringCStrConvertToString(BufString.Space(Len)));
 }
 
 char * CALLBACK StringString(long Len, long Dat)
 {
-	CStr BufString;
-	return(StringCStrConvertToString(BufString.String(Len, Dat)));
+    CStr BufString;
+    return(StringCStrConvertToString(BufString.String(Len, Dat)));
 }
 
 long CALLBACK StringIsNumeric(char *String)
 {
-	return(StringConvertToCStr(String).Is_Numeric());
+    return(StringConvertToCStr(String).Is_Numeric());
 }
 
 // Future extensions
@@ -3919,17 +3919,17 @@ long CALLBACK MiscObtainExtendedFunctions(void)
 
 HWND CALLBACK Wrapper_CreateDockingBox(char *Title, WNDPROC WindowProc)
 {
-	return(CreateDockingBox(StringConvertToCStr(Title), WindowProc, hMDIform.hDock, MainIniFile.Get_String()));
+    return(CreateDockingBox(StringConvertToCStr(Title), WindowProc, hMDIform.hDock, MainIniFile.Get_String()));
 }
 
 long CALLBACK Wrapper_DockingBoxWasVisible(char *DockName)
 {
-	return(DockingBoxWasVisible(StringConvertToCStr(DockName), MainIniFile));
+    return(DockingBoxWasVisible(StringConvertToCStr(DockName), MainIniFile));
 }
 
 void CALLBACK Wrapper_DockingBoxShow(HWND hDock, int DefaultXSize, int DefaultYSize, int DefaultState)
 {
-	DockingBoxShow(hDock, GetMDIWidth(), GetMDIHeight(), DefaultXSize, DefaultYSize, DefaultState);
+    DockingBoxShow(hDock, GetMDIWidth(), GetMDIHeight(), DefaultXSize, DefaultYSize, DefaultState);
 }
 
 // -----------------------------------------------------------------------
@@ -3941,28 +3941,30 @@ HWND CALLBACK Wrapper_WAMMCreateCustomChildDialog(char *Title, void (CALLBACK *C
 
 HWND WAMMCreateCustomChildDialog(CStr Title, void (CALLBACK *CallBackInit)(HWND hwnd), WNDPROC CallBackProc)
 {
-	HWND hWnd;
+    HWND hWnd;
 
-	CurCustChildInit = CallBackInit;
-	CurCustChildProc = CallBackProc;
-	CurCustChildTitle = Title;
-	// Create a new child window
+    CurCustChildInit = CallBackInit;
+    CurCustChildProc = CallBackProc;
+    CurCustChildTitle = Title;
+    // Create a new child window
     if(NbForms != 0) if(ControlGetWindowState(CurrentForm) == SW_SHOWMAXIMIZED) goto ForceMaximize;
-	// Save arguments
+    // Save arguments
     switch(AutoMaximizeChilds)
     {
         case 0:
-            hWnd = CreateMDIChildDialog(hMDIform.hClient, "", LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_SNAP)), 
-                                          CustChildWinInitProc, CustChildWinProc, 0, 1, "");
-			break;
-		case 1:
+            hWnd = CreateMDIChildDialog(hMDIform.hClient, "",
+                                        LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_SNAP)), 
+                                        CustChildWinInitProc, CustChildWinProc, 0, 1, "");
+            break;
+        case 1:
 ForceMaximize:
-            hWnd = CreateMDIChildDialog(hMDIform.hClient, "", LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_SNAP)),
-                                          CustChildWinInitProc, CustChildWinProc, WS_MAXIMIZE, 1, "");
-			break;
+            hWnd = CreateMDIChildDialog(hMDIform.hClient, "",
+                                        LoadIcon(ApphInstance, MAKEINTRESOURCE(ICON_BASE + ICON_SNAP)),
+                                        CustChildWinInitProc, CustChildWinProc, WS_MAXIMIZE, 1, "");
+            break;
     }
     DrawMenuBar(hMDIform.hWnd);
-	return(hWnd);
+    return(hWnd);
 }
 
 // -----------------------------------------------------------------------
@@ -3974,26 +3976,26 @@ void CALLBACK CustChildWinInitProc(HWND hWnd)
     NewChildMem = (LPCHILDDAT) AllocMem(sizeof(CHILDDAT));
     NewChildMem->RFile = new CStr;
     NewChildMem->Language = new CStr;
-	NewChildMem->oldAPIFnc = new CStr;
-	NewChildMem->oldAPILineFnc = new CStr;
-	NewChildMem->FileDateOpen = (LPFILETIME) AllocMem(sizeof(FILETIME));
-	NewChildMem->hChildCodeMax = 0;
-	NewChildMem->FileLoaded = 0;
-	// (Necessary)
-	NewChildMem->ReadOnly = 1;
-	// Save user callback in child space
-	NewChildMem->CurCallBackProc = CurCustChildProc;
-	// Set title
-	NewChildMem->RFile->Set_String(CurCustChildTitle.Get_String());
-	// Set the child text
-	ControlSetText(hWnd, CurCustChildTitle);
+    NewChildMem->oldAPIFnc = new CStr;
+    NewChildMem->oldAPILineFnc = new CStr;
+    NewChildMem->FileDateOpen = (LPFILETIME) AllocMem(sizeof(FILETIME));
+    NewChildMem->hChildCodeMax = 0;
+    NewChildMem->FileLoaded = 0;
+    // (Necessary)
+    NewChildMem->ReadOnly = 1;
+    // Save user callback in child space
+    NewChildMem->CurCallBackProc = CurCustChildProc;
+    // Set title
+    NewChildMem->RFile->Set_String(CurCustChildTitle.Get_String());
+    // Set the child text
+    ControlSetText(hWnd, CurCustChildTitle);
     CurrentForm = hWnd;
-	// Now we can set the pointer to the structure
+    // Now we can set the pointer to the structure
     SetWindowLong(hWnd, GWL_USERDATA, (long) NewChildMem);
     NbForms++;
     SendMessage(hMDIform.hClient, CHILD_MSG_CREATED, ICON_WINDOWLOCK, (LPARAM) hWnd);
-	// Run user init now
-	if(CurCustChildInit != NULL) CurCustChildInit(hWnd);
+    // Run user init now
+    if(CurCustChildInit != NULL) CurCustChildInit(hWnd);
 }
 
 // -----------------------------------------------------------------------
@@ -4004,81 +4006,81 @@ LRESULT CALLBACK CustChildWinProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     {
         case WM_CHILDACTIVATE:
             CurrentForm = hWnd;
-			break;
+            break;
         case WM_SIZE:
             CurrentForm = hWnd;
-			break;
+            break;
         case WM_MOUSEACTIVATE:
             if(ClientGetActiveChild(hMDIform.hClient) != hWnd)
             {
                 CurrentForm = hWnd;
                 SetFocus(CurrentForm);
-				// Notify user in all cases
-				ChildStruct = LoadStructure(hWnd);
-				if(ChildStruct->CurCallBackProc != NULL)
-				{
-					// If callback returns 1 then abort the process
-					if(ChildStruct->CurCallBackProc(hWnd, uMsg, wParam, lParam) == 1) return(0);
-				}
+                // Notify user in all cases
+                ChildStruct = LoadStructure(hWnd);
+                if(ChildStruct->CurCallBackProc != NULL)
+                {
+                    // If callback returns 1 then abort the process
+                    if(ChildStruct->CurCallBackProc(hWnd, uMsg, wParam, lParam) == 1) return(0);
+                }
                 return(MA_ACTIVATE);
             }
-			break;
+            break;
         case WM_PAINT:
             CurrentForm = ClientGetActiveChild(hMDIform.hClient);
-			break;
-		case WM_CLOSE:
-			ChildStruct = LoadStructure(hWnd);
-			if(ChildStruct->CurCallBackProc != NULL)
-			{
-				// If callback returns 1 then abort the process
-				if(ChildStruct->CurCallBackProc(hWnd, uMsg, wParam, lParam) == 1) return(0);
-			}
-			// Delete them manually
-			delete ChildStruct->RFile;
-			delete ChildStruct->Language;
-			delete ChildStruct->oldAPIFnc;
-			delete ChildStruct->oldAPILineFnc;
-			FreeMem((long) ChildStruct->FileDateOpen);
+            break;
+        case WM_CLOSE:
+            ChildStruct = LoadStructure(hWnd);
+            if(ChildStruct->CurCallBackProc != NULL)
+            {
+                // If callback returns 1 then abort the process
+                if(ChildStruct->CurCallBackProc(hWnd, uMsg, wParam, lParam) == 1) return(0);
+            }
+            // Delete them manually
+            delete ChildStruct->RFile;
+            delete ChildStruct->Language;
+            delete ChildStruct->oldAPIFnc;
+            delete ChildStruct->oldAPILineFnc;
+            FreeMem((long) ChildStruct->FileDateOpen);
             // Free the child structure
             FreeMem(GetWindowLong(hWnd, GWL_USERDATA));
-			// Put a fictive structure for following messages
-			// (Re-use global one since it never changes)
-			SetWindowLong(hWnd, GWL_USERDATA, (long) &ChildStructBack);
-			// (User callback called above)
-			return(DefMDIChildProc(hWnd, uMsg, wParam, lParam));
-	    case WM_DESTROY:
+            // Put a fictive structure for following messages
+            // (Re-use global one since it never changes)
+            SetWindowLong(hWnd, GWL_USERDATA, (long) &ChildStructBack);
+            // (User callback called above)
+            return(DefMDIChildProc(hWnd, uMsg, wParam, lParam));
+        case WM_DESTROY:
             NbForms--;
             if(NbForms == 0) ClearStatusBarParts();
             // Notify the parent
-			SendMessage(hMDIform.hClient, CHILD_MSG_DESTROYED, 0, (long) hWnd);
+            SendMessage(hMDIform.hClient, CHILD_MSG_DESTROYED, 0, (long) hWnd);
             return(0);
-	}
-	ChildStruct = LoadStructure(hWnd);
-	if(ChildStruct->CurCallBackProc != NULL)
-	{
-		ChildStruct->CurCallBackProc(hWnd, uMsg, wParam, lParam);
     }
-	return(DefMDIChildProc(hWnd, uMsg, wParam, lParam));
+    ChildStruct = LoadStructure(hWnd);
+    if(ChildStruct->CurCallBackProc != NULL)
+    {
+        ChildStruct->CurCallBackProc(hWnd, uMsg, wParam, lParam);
+    }
+    return(DefMDIChildProc(hWnd, uMsg, wParam, lParam));
 }
 
 // -----------------------------------------------------------------------
 // Attach a codemax control to a child window
 HWND CALLBACK WAMMCreateCodeMax(long Left, long Top, long Width, long Height, HWND hWnd, void (CALLBACK *CodeMaxPropertiesHook)(HWND))
 {
-	HWND hCodeMax;
-	
-	hCodeMax = CreateCodeMax(Left, Top, Width, Height, hWnd, ApphInstance, 1);
-	if(hCodeMax == NULL) return(NULL);
-	ChildStruct = LoadStructure(hWnd);
-	ChildStruct->hChildCodeMax = hCodeMax;
-	ChildStruct->CodeMaxPropertiesHook = CodeMaxPropertiesHook;
-	// Init basic behaviours / styles
-	InitMinimumCodeMax(hCodeMax);
-	SetCodeMaxColors(hCodeMax);
+    HWND hCodeMax;
+    
+    hCodeMax = CreateCodeMax(Left, Top, Width, Height, hWnd, ApphInstance, 1);
+    if(hCodeMax == NULL) return(NULL);
+    ChildStruct = LoadStructure(hWnd);
+    ChildStruct->hChildCodeMax = hCodeMax;
+    ChildStruct->CodeMaxPropertiesHook = CodeMaxPropertiesHook;
+    // Init basic behaviours / styles
+    InitMinimumCodeMax(hCodeMax);
+    SetCodeMaxColors(hCodeMax);
     SetCodeMaxFont(hCodeMax);
     CM_SetLanguage(hCodeMax, "Assembler");
-	DragAcceptFiles(hCodeMax, 0);
-	// Run user props now
-	CodeMaxPropertiesHook(hCodeMax);
-	return(hCodeMax);
+    DragAcceptFiles(hCodeMax, 0);
+    // Run user props now
+    CodeMaxPropertiesHook(hCodeMax);
+    return(hCodeMax);
 }
