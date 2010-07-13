@@ -114,6 +114,11 @@ template <typename T> class CList
             return(New_Entry);
         }
 
+        template< > CList_Entry *Add<const char *>(const char *Datas)
+        {
+            return(Add((char *) Datas));
+        }
+
         void MAdd(int Number, T Datas)
         {
             while(Number)
