@@ -481,7 +481,7 @@ FoundMoreNestedIncludes:
                             IncludeFileName = StringReplace(IncludeFileName, "\t", "", 1, -1, Binary_Compare);
                             IncludeFileName = IncludeFileName.Trim();
                             FilesList.Add(IncludeFileName.Get_String());
-                            FilesListhWnd.Add(0L);
+                            FilesListhWnd.Add((HWND) 0L);
 FalseInclude:               StringReleaseSplit(IncTab);
                         }
                         if(FRMProcSearchStopCalc == 1)

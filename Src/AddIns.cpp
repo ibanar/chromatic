@@ -226,7 +226,7 @@ void ReFillAddInsArrays(void)
             Revk = AddInsDLL.Amount();
             // Handle to be filled with library handle
             // We need to create a new empty entry in the handles table
-            AddInsDLL.Add(0L);
+            AddInsDLL.Add((HMODULE) 0L);
             // Now we can move down the entries (if required)
             // (From top to bottom)
             for(k = DllNewHandle; k < (AddInsDLL.Amount() - 1); k++)
@@ -2823,7 +2823,7 @@ long CALLBACK WAMMInstallHookProc(long HookAddress, long HookType)
             else
             {
                 // Obtain a new hooking slot
-                MDIHooks.Add(0L);
+                MDIHooks.Add((DLGPROC) 0L);
                 MDIHooksNbr.Add(0L);
             }
             break;
@@ -2845,7 +2845,7 @@ long CALLBACK WAMMInstallHookProc(long HookAddress, long HookType)
             else
             {
                 // Obtain a new hooking slot
-                MDIClientHooks.Add(0L);
+                MDIClientHooks.Add((DLGPROC) 0L);
                 MDIClientHooksNbr.Add(0L);
             }
             break;
@@ -2887,7 +2887,7 @@ long CALLBACK WAMMInstallHookProc(long HookAddress, long HookType)
             }
             else
             {
-                ChildHooks.Add(0L);
+                ChildHooks.Add((DLGPROC) 0L);
                 ChildHooksNbr.Add(0L);
             }
             break;
@@ -2908,7 +2908,7 @@ long CALLBACK WAMMInstallHookProc(long HookAddress, long HookType)
             }
             else
             {
-                CodeMaxHooks.Add(0L);
+                CodeMaxHooks.Add((DLGPROC) 0L);
                 CodeMaxHooksNbr.Add(0L);
             }
             break;

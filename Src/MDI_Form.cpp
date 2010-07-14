@@ -2052,7 +2052,7 @@ LRESULT CALLBACK ClientProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 if(FoundEmptyHwnd == 0)
                 {
                     // Create new empty entries
-                    ChildshWnd.Add(lParam);
+                    ChildshWnd.Add((HWND) lParam);
                     ChildsLVPos.Add(PosInListView);
                 }
                 else
@@ -2185,7 +2185,7 @@ void SearchModified(HWND hWnd)
             {
                 ExternModified += 1;
                 // (Phony entry)
-                ModifiedArrayhWnd.Add(0L);
+                ModifiedArrayhWnd.Add((HWND) 0L);
             }
         }
     }
@@ -2317,7 +2317,7 @@ long CheckLastModified(HWND hWnd, int CheckProject)
             {
                 ExternModified++;
                 // Phony entry
-                ModifiedArrayhWnd.Add(0L);
+                ModifiedArrayhWnd.Add((HWND) 0L);
             }
         }
     }
@@ -2491,7 +2491,7 @@ void CheckAutoSave(HWND hWnd)
         {
             ExternModified += 1;
             // Phony entry
-            ModifiedArrayhWnd.Add(0L);
+            ModifiedArrayhWnd.Add((HWND) 0L);
         }
     }
     if(NbForms != 0) EnumChildWindows(hWnd, &EnumSearchModified, 0);
