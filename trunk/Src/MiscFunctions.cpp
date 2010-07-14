@@ -4214,7 +4214,7 @@ CStr GetProcedureName(CStr ProcBlock, long Pos, CStr ProcKeyWord, LPPOINT PointP
             {
                 if(StringIsCloseBracketChar(BufString.Mid(i, 1)) == 0)
                 {
-                    if(!isspace(BufString.Mid(i, 1).Get_String()[0]))
+                    if(!isspace(BufString.Mid(i, 1).Get_String()[0] & 0xff))
                     {
                         BracketToCheck++;
                         break;
@@ -4439,7 +4439,7 @@ void GetAllFiles(void)
         while(TreeViewChildEntry != 0)
         {
             FilesList.Add(GetFileNameFromTreeView(TreeViewChildEntry).Get_String());
-            FilesListhWnd.Add(0L);
+            FilesListhWnd.Add((HWND) 0L);
             TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         }
         // Modules
@@ -4447,7 +4447,7 @@ void GetAllFiles(void)
         while(TreeViewChildEntry != 0)
         {
             FilesList.Add(GetFileNameFromTreeView(TreeViewChildEntry).Get_String());
-            FilesListhWnd.Add(0L);
+            FilesListhWnd.Add((HWND) 0L);
             TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         }
         // Resources
@@ -4466,7 +4466,7 @@ void GetAllFiles(void)
             else
             {
                 FilesList.Add(GetFileNameFromTreeView(TreeViewChildEntry).Get_String());
-                FilesListhWnd.Add(0L);
+                FilesListhWnd.Add((HWND) 0L);
             }
 AvoidTreeFolders:
             TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);

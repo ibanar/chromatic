@@ -1378,7 +1378,7 @@ CStr CStr::R_Trim(void)
     i = strlen(this->Datas);
     while(i--)
     {
-        if(!isspace(BToReturn.Datas[i])) break;
+        if(!isspace(BToReturn.Datas[i] & 0xff)) break;
     }
     BToReturn.Datas[++i] = 0;
     return(BToReturn);
@@ -1400,7 +1400,7 @@ CStr CStr::L_Trim(void)
         TempString = BToReturn;
         free(BToReturn.Datas);
         BToReturn.Loaded = false;
-        for(OutTrimBuffer = TempString.Get_String(); *OutTrimBuffer && isspace(OutTrimBuffer[0]); ++OutTrimBuffer);
+        for(OutTrimBuffer = TempString.Get_String(); *OutTrimBuffer && isspace(OutTrimBuffer[0] & 0xff); ++OutTrimBuffer);
         if(TempString.Datas != OutTrimBuffer)
         {
             TempString = OutTrimBuffer;
@@ -1425,7 +1425,7 @@ CStr CStr::Trim(void)
     i = strlen(BToReturn.Datas);
     while(i--)
     {
-        if(!isspace(BToReturn.Datas[i])) break;
+        if(!isspace(BToReturn.Datas[i] & 0xff)) break;
     }
     BToReturn.Datas[++i] = 0;
     if(strlen(BToReturn.Datas))
@@ -1433,7 +1433,7 @@ CStr CStr::Trim(void)
         TempString = BToReturn;
         free(BToReturn.Datas);
         BToReturn.Loaded = false;
-        for(OutTrimBuffer = TempString.Get_String(); *OutTrimBuffer && isspace(OutTrimBuffer[0]); ++OutTrimBuffer);
+        for(OutTrimBuffer = TempString.Get_String(); *OutTrimBuffer && isspace(OutTrimBuffer[0] & 0xff); ++OutTrimBuffer);
         if(TempString.Datas != OutTrimBuffer)
         {
             TempString = OutTrimBuffer;
@@ -1528,7 +1528,7 @@ int CStr::Str_Comp(CStr String1, CStr String2, int Search)
 // Asc() method
 int CStr::Asc(void)
 {
-    return((unsigned char) this->Datas[0]);
+    return((unsigned char) this->Datas[0] & 0xff);
 }
 
 // -----------------------------------------------------------------------

@@ -5510,8 +5510,8 @@ long CALLBACK DateStringToDate(CStr StrDate, FILETIME *DestDate)
         DateToConvert++;
     }
     // There must be at least one blank char
-    if(!isspace(DateToConvert[0])) return(0);
-    while(isspace(DateToConvert[0]))
+    if(!isspace(DateToConvert[0] & 0xff)) return(0);
+    while(isspace(DateToConvert[0] & 0xff))
     {
         DateToConvert++;
     }

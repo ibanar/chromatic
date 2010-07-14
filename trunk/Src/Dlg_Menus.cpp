@@ -1089,7 +1089,7 @@ void ConstructTestMenus(HWND hwnd)
     long LasthBarProps = 0;
     HMENU LasthMenuSub = 0;
     CStr LastMenuStr;
-    long LastBarPop = 0;
+    HMENU LastBarPop = 0;
     CStr MenuEntryName;
     CStr MenuEntryCmd;
     CStr MenuEntryType;
@@ -1179,7 +1179,7 @@ void ConstructTestMenus(HWND hwnd)
                 LastMenuStr = MenuEntryName;
                 PopupStack.Erase();
                 LevelStack.Erase();
-                LastBarPop = (long) LasthBar;
+                LastBarPop = LasthBar;
                 BarPos = ItemNumber;
                 ItemNumber++;
                 PopupStack.Add(LasthBar);
@@ -1202,7 +1202,7 @@ void ConstructTestMenus(HWND hwnd)
                     AppendMenu(LasthMenu, MF_POPUP, (UINT) LasthMenuSub, MenuEntryName.Get_String());
                 }
                 LasthMenu = LasthMenuSub;
-                LastBarPop = (long) LasthMenu;
+                LastBarPop = LasthMenu;
                 ItemNumber++;
                 PopupStack.Add(LasthMenu);
                 LevelStack.Add(MenuEntryLevelLng);

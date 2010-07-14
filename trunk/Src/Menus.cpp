@@ -801,7 +801,7 @@ PlaceOnly:
     if(i == 0) return;
     MMName = MName.Trim();
     AppendMenu(hMenu, MF_POPUP, (UINT) hSubMenu, MMName.Get_String());
-    MainMenuH.Add(hSubMenu);
+    MainMenuH.Add((HWND) hSubMenu);
 }
 
 // -----------------------------------------------------------------------

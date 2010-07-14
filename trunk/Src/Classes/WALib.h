@@ -41,7 +41,9 @@
 
 #define HAVE_SSE_REGS
 #include <windows.h>
+#if (_MSC_VER < 1300)
 #define DECLSPEC_DEPRECATED
+#endif
 #include <CommCtrl.h>
 #include <CommDlg.h>
 #include <richedit.h>
