@@ -39,12 +39,12 @@
 // Default constructors
 CStr::CStr(CStr &Datas_To_Set)
 {
-    this->Datas = strdup(Datas_To_Set.Datas);
+    this->Datas = _strdup(Datas_To_Set.Datas);
     this->Loaded = true;
 }
 CStr::CStr(CStr *Datas_To_Set)
 {
-    this->Datas = strdup(Datas_To_Set->Datas);
+    this->Datas = _strdup(Datas_To_Set->Datas);
     this->Loaded = true;
 }
 CStr::CStr(char *Datas_To_Set)
@@ -56,46 +56,62 @@ CStr::CStr(char *Datas_To_Set)
     }
     else
     {
-        this->Datas = strdup(Datas_To_Set);
+        this->Datas = _strdup(Datas_To_Set);
         this->Loaded = true;
     }
 }
 CStr::CStr(int Datas_To_Set)
 {
-    char ASCII_Number[16];
-
-    itoa(Datas_To_Set, ASCII_Number, 10);
-    this->Datas = strdup(ASCII_Number);
+	const int ITOA_BUF_SIZE = 16;
+    char ASCII_Number[ITOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+  	_itoa_s(Datas_To_Set,ASCII_Number, (ITOA_BUF_SIZE - 1), 10);
+#else
+  	itoa(Datas_To_Set,ASCII_Number, 10);
+#endif
+    this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
 }
 CStr::CStr(unsigned int Datas_To_Set)
 {
-    char ASCII_Number[16];
-
+	const int LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _ltoa_s(Datas_To_Set, ASCII_Number, (LTOA_BUF_SIZE - 1), 10);
+#else
     ltoa(Datas_To_Set, ASCII_Number, 10);
-    this->Datas = strdup(ASCII_Number);
+#endif
+    this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
 }
 CStr::CStr(signed long Datas_To_Set)
 {
-    char ASCII_Number[16];
-
-    ltoa(Datas_To_Set, ASCII_Number, 10);
-    this->Datas = strdup(ASCII_Number);
+	const long LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+	_ltoa_s(Datas_To_Set, ASCII_Number, (LTOA_BUF_SIZE - 1), 10);
+#else
+	ltoa(Datas_To_Set, ASCII_Number, 10);
+#endif
+    this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
 }
 CStr::CStr(unsigned long Datas_To_Set)
 {
-    char ASCII_Number[16];
-
+	const long LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _ltoa_s(Datas_To_Set, ASCII_Number, (LTOA_BUF_SIZE - 1), 10);
+#else
     ltoa(Datas_To_Set, ASCII_Number, 10);
-    this->Datas = strdup(ASCII_Number);
+#endif
+    this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
 }
 CStr::CStr(bool Datas_To_Set)
 {
-    if(Datas_To_Set == true) this->Datas = strdup("True");
-    else this->Datas = strdup("False");
+    if(Datas_To_Set == true) this->Datas = _strdup("True");
+    else this->Datas = _strdup("False");
     this->Loaded = true;
 }
 CStr::CStr(char Datas_To_Set)
@@ -104,39 +120,55 @@ CStr::CStr(char Datas_To_Set)
 
     ASCIIChar[0] = Datas_To_Set;
     ASCIIChar[1] = 0;
-    this->Datas = strdup(ASCIIChar);
+    this->Datas = _strdup(ASCIIChar);
     this->Loaded = true;
 }
 CStr::CStr(unsigned char Datas_To_Set)
 {
-    char ASCII_Number[16];
-
-    itoa(Datas_To_Set, ASCII_Number, 10);
-    this->Datas = strdup(ASCII_Number);
+	const long ITOA_BUF_SIZE = 16;
+    char ASCII_Number[ITOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+	_itoa_s(Datas_To_Set, ASCII_Number, (ITOA_BUF_SIZE - 1), 10);
+#else
+	itoa(Datas_To_Set, ASCII_Number, 10);
+#endif
+    this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
 }
 CStr::CStr(float Datas_To_Set)
 {
-    char ASCII_Number[32];
-
-    sprintf(ASCII_Number, "%.7g", Datas_To_Set);
-    this->Datas = strdup(ASCII_Number);
+	const long SPRINTF_BUF_SIZE = 32;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number, (SPRINTF_BUF_SIZE - 1), "%.7g", Datas_To_Set);
+#else
+	sprintf(ASCII_Number, "%.7g", Datas_To_Set);
+#endif
+    this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
 }
 CStr::CStr(double Datas_To_Set)
 {
-    char ASCII_Number[32];
-
+	const long SPRINTF_BUF_SIZE = 32;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+    sprintf_s(ASCII_Number, (SPRINTF_BUF_SIZE - 1), "%.15g", Datas_To_Set);
+#else
     sprintf(ASCII_Number, "%.15g", Datas_To_Set);
-    this->Datas = strdup(ASCII_Number);
+#endif
+    this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
 }
 CStr::CStr(long double Datas_To_Set)
 {
-    char ASCII_Number[64];
-
-    sprintf(ASCII_Number, "%.15Lg", Datas_To_Set);
-    this->Datas = strdup(ASCII_Number);
+	const long SPRINTF_BUF_SIZE = 64;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number, (SPRINTF_BUF_SIZE - 1), "%.15Lg", Datas_To_Set);
+#else
+	sprintf(ASCII_Number, "%.15Lg", Datas_To_Set);
+#endif
+    this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
 }
 
@@ -194,7 +226,7 @@ void CStr::Set_String(char *Datas_To_Set)
     char *TempString = "";
 
     // Save it before free() because it can be the same string
-    TempString = strdup(Datas_To_Set);
+    TempString = _strdup(Datas_To_Set);
     if(this->Loaded == true) free(this->Datas);
     this->Datas = TempString;
     this->Loaded = true;
@@ -399,89 +431,142 @@ int operator && (CStr String_Left, char *String_Right)
 CStr operator + (CStr String_Left, CStr String_Right)
 {
     CStr BToReturn;
-
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator + (CStr String_Left, CStr *String_Right)
 {
     CStr BToReturn;
-
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(String_Right->Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right->Datas);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, String_Right->Datas);
+#endif
     return(BToReturn);
 }
 CStr operator + (CStr *String_Left, CStr String_Right)
 {
     CStr BToReturn;
-
     BToReturn.Datas = (char *) malloc(strlen(String_Left->Datas) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left->Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left->Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, String_Left->Datas);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator + (CStr String_Left, char *String_Right)
 {
     CStr BToReturn;
-
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(String_Right) + 2);
     BToReturn.Loaded = true;
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right);
+
+#else
     strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, String_Right);
+#endif
     return(BToReturn);
 }
 CStr operator + (CStr String_Left, signed long String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
-    ltoa(String_Right, ASCII_Number, 10);
+	const long LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+  	_ltoa_s(String_Right,ASCII_Number, (LTOA_BUF_SIZE - 1), 10);
+#else
+	ltoa(String_Right, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     return(BToReturn);
 }
 CStr operator + (CStr String_Left, unsigned long String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
-    ltoa(String_Right, ASCII_Number, 10);
+	const long LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+	_ltoa_s(String_Right, ASCII_Number,(LTOA_BUF_SIZE - 1), 10);
+#else
+	ltoa(String_Right, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     return(BToReturn);
 }
 CStr operator + (CStr String_Left, int String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
-    itoa(String_Right, ASCII_Number, 10);
+	const long ITOA_BUF_SIZE = 16;
+    char ASCII_Number[ITOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+  	_itoa_s(String_Right,ASCII_Number, (ITOA_BUF_SIZE - 1), 10);
+#else
+	itoa(String_Right, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     return(BToReturn);
 }
 CStr operator + (CStr String_Left, unsigned int String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
-    ltoa(String_Right, ASCII_Number, 10);
+	const long LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+  	_ltoa_s(String_Right,ASCII_Number, (LTOA_BUF_SIZE - 1), 10);
+#else
+	ltoa(String_Right, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     return(BToReturn);
 }
 CStr operator + (CStr String_Left, bool String_Right)
@@ -493,8 +578,13 @@ CStr operator + (CStr String_Left, bool String_Right)
     else BoolDatas = "False";
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(BoolDatas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), BoolDatas);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, BoolDatas);
+#endif
     return(BToReturn);
 }
 CStr operator + (CStr String_Left, char String_Right)
@@ -506,56 +596,98 @@ CStr operator + (CStr String_Left, char String_Right)
     ASCIIChar[1] = 0;
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(ASCIIChar) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCIIChar);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, ASCIIChar);
+#endif
     return(BToReturn);
 }
 CStr operator + (CStr String_Left, unsigned char String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
-    itoa(String_Right, ASCII_Number, 10);
+	const long ITOA_BUF_SIZE = 16;
+    char ASCII_Number[ITOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+  	_itoa_s(String_Right,ASCII_Number, (ITOA_BUF_SIZE - 1), 10);
+#else
+	itoa(String_Right, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     return(BToReturn);
 }
+
 CStr operator + (CStr String_Left, float String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[32];
-
-    sprintf(ASCII_Number, "%.7g", String_Right);
+	const long SPRINTF_BUF_SIZE = 32;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number,(SPRINTF_BUF_SIZE -1), "%.7g", String_Right);
+#else
+	sprintf(ASCII_Number, "%.7g", String_Right);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     return(BToReturn);
 }
 CStr operator + (CStr String_Left, double String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[32];
-
-    sprintf(ASCII_Number, "%.15g", String_Right);
+	const long SPRINTF_BUF_SIZE = 32;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number,(SPRINTF_BUF_SIZE -1), "%.15g", String_Right);
+#else
+	sprintf(ASCII_Number, "%.15g", String_Right);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     return(BToReturn);
 }
 CStr operator + (CStr String_Left, long double String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[64];
-
-    sprintf(ASCII_Number, "%.15Lg", String_Right);
+	const long SPRINTF_BUF_SIZE = 64;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number,(SPRINTF_BUF_SIZE -1), "%.15Lg", String_Right);
+#else
+	sprintf(ASCII_Number, "%.15Lg", String_Right);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     return(BToReturn);
 }
 CStr operator + (char *String_Left, CStr String_Right)
@@ -564,69 +696,116 @@ CStr operator + (char *String_Left, CStr String_Right)
 
     BToReturn.Datas = (char *) malloc(strlen(String_Left) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, String_Left);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
+
 CStr operator + (signed long String_Left, CStr String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
-    ltoa(String_Left, ASCII_Number, 10);
+	const long LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+  	_ltoa_s(String_Left,ASCII_Number, (LTOA_BUF_SIZE - 1), 10);
+#else
+	ltoa(String_Left, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(ASCII_Number) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, ASCII_Number);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, ASCII_Number);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator + (unsigned long String_Left, CStr String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
+	const int LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _ltoa_s(String_Left, ASCII_Number,(LTOA_BUF_SIZE - 1), 10);
+#else
     ltoa(String_Left, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(ASCII_Number) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, ASCII_Number);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, ASCII_Number);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator + (int String_Left, CStr String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
+	const int ITOA_BUF_SIZE = 16;
+    char ASCII_Number[ITOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _itoa_s(String_Left, ASCII_Number,(ITOA_BUF_SIZE - 1), 10);
+#else
     itoa(String_Left, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(ASCII_Number) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, ASCII_Number);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, ASCII_Number);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
+
 CStr operator + (unsigned int String_Left, CStr String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
+	const int LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _ltoa_s(String_Left, ASCII_Number,(LTOA_BUF_SIZE - 1), 10);
+#else
     ltoa(String_Left, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(ASCII_Number) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, ASCII_Number);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, ASCII_Number);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator + (bool String_Left, CStr String_Right)
 {
     CStr BToReturn;
     char * BoolDatas = "";
-
     if(String_Left == true) BoolDatas = "True";
     else BoolDatas = "False";
     BToReturn.Datas = (char *) malloc(strlen(BoolDatas) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, BoolDatas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), BoolDatas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, BoolDatas);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator + (char String_Left, CStr String_Right)
@@ -638,56 +817,97 @@ CStr operator + (char String_Left, CStr String_Right)
     ASCIIChar[1] = 0;
     BToReturn.Datas = (char *) malloc(strlen(ASCIIChar) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, ASCIIChar);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCIIChar);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, ASCIIChar);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator + (unsigned char String_Left, CStr String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
+	const int ITOA_BUF_SIZE = 16;
+    char ASCII_Number[ITOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _itoa_s(String_Left, ASCII_Number,(ITOA_BUF_SIZE - 1), 10);
+#else
     itoa(String_Left, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(ASCII_Number) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, ASCII_Number);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, ASCII_Number);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator + (float String_Left, CStr String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[32];
-
-    sprintf(ASCII_Number, "%.7g", String_Left);
+	const long SPRINTF_BUF_SIZE = 32;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number, (SPRINTF_BUF_SIZE - 1), "%.7g", String_Left);
+#else
+	sprintf(ASCII_Number, "%.7g", String_Left);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(ASCII_Number) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, ASCII_Number);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, ASCII_Number);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator + (double String_Left, CStr String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[32];
-
-    sprintf(ASCII_Number, "%.15g", String_Left);
+	const long SPRINTF_BUF_SIZE = 32;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number,(SPRINTF_BUF_SIZE -1), "%.15g", String_Left);
+#else
+	sprintf(ASCII_Number, "%.15g", String_Left);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(ASCII_Number) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, ASCII_Number);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, ASCII_Number);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator + (long double String_Left, CStr String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[64];
-
-    sprintf(ASCII_Number, "%.15Lg", String_Left);
+	const long SPRINTF_BUF_SIZE = 64;
+	char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number,(SPRINTF_BUF_SIZE -1), "%.15g", String_Left);
+#else
+	sprintf(ASCII_Number, "%.15g", String_Left);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(ASCII_Number) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, ASCII_Number);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, ASCII_Number);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 
@@ -699,8 +919,13 @@ CStr operator & (CStr String_Left, CStr String_Right)
 
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator & (CStr String_Left, CStr *String_Right)
@@ -709,8 +934,13 @@ CStr operator & (CStr String_Left, CStr *String_Right)
 
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(String_Right->Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right->Datas);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, String_Right->Datas);
+#endif
     return(BToReturn);
 }
 CStr operator & (CStr *String_Left, CStr String_Right)
@@ -719,8 +949,13 @@ CStr operator & (CStr *String_Left, CStr String_Right)
 
     BToReturn.Datas = (char *) malloc(strlen(String_Left->Datas) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left->Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left->Datas);  // Cuando se trata de un puntero, en lugar de "." se usa "->"
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, String_Left->Datas);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator & (CStr String_Left, char *String_Right)
@@ -729,56 +964,97 @@ CStr operator & (CStr String_Left, char *String_Right)
 
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(String_Right) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right); 
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, String_Right);
+#endif
     return(BToReturn);
 }
 CStr operator & (CStr String_Left, signed long String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
+	const int LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _ltoa_s(String_Right, ASCII_Number,(LTOA_BUF_SIZE - 1), 10);
+#else
     ltoa(String_Right, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     return(BToReturn);
 }
 CStr operator & (CStr String_Left, unsigned long String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
+	const int LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _ltoa_s(String_Right, ASCII_Number,(LTOA_BUF_SIZE - 1), 10);
+#else
     ltoa(String_Right, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     return(BToReturn);
 }
 CStr operator & (CStr String_Left, int String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
+	const int ITOA_BUF_SIZE = 16;
+    char ASCII_Number[ITOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _itoa_s(String_Right, ASCII_Number,(ITOA_BUF_SIZE - 1), 10);
+#else
     itoa(String_Right, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     return(BToReturn);
 }
 CStr operator & (CStr String_Left, unsigned int String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
+	const int LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _ltoa_s(String_Right, ASCII_Number,(LTOA_BUF_SIZE - 1), 10);
+#else
     ltoa(String_Right, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     return(BToReturn);
 }
 CStr operator & (CStr String_Left, bool String_Right)
@@ -790,8 +1066,13 @@ CStr operator & (CStr String_Left, bool String_Right)
     else BoolDatas = "False";
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(BoolDatas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), BoolDatas);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, BoolDatas);
+#endif
     return(BToReturn);
 }
 CStr operator & (CStr String_Left, char String_Right)
@@ -803,56 +1084,97 @@ CStr operator & (CStr String_Left, char String_Right)
     ASCIIChar[1] = 0;
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(ASCIIChar) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCIIChar);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, ASCIIChar);
+#endif
     return(BToReturn);
 }
 CStr operator & (CStr String_Left, unsigned char String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
+	const int ITOA_BUF_SIZE = 16;
+    char ASCII_Number[ITOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _itoa_s(String_Right, ASCII_Number,(ITOA_BUF_SIZE - 1), 10);
+#else
     itoa(String_Right, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     return(BToReturn);
 }
 CStr operator & (CStr String_Left, float String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[32];
-
-    sprintf(ASCII_Number, "%.7g", String_Right);
+	const long SPRINTF_BUF_SIZE = 32;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number,(SPRINTF_BUF_SIZE -1), "%.7g", String_Right);
+#else
+	sprintf(ASCII_Number, "%.7g", String_Right);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     return(BToReturn);
 }
 CStr operator & (CStr String_Left, double String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[32];
-
-    sprintf(ASCII_Number, "%.15g", String_Right);
+	const long SPRINTF_BUF_SIZE = 32;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number,(SPRINTF_BUF_SIZE -1), "%.15g", String_Right);
+#else
+	sprintf(ASCII_Number, "%.15g", String_Right);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     return(BToReturn);
 }
 CStr operator & (CStr String_Left, long double String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[64];
-
-    sprintf(ASCII_Number, "%.15Lg", String_Right);
+	const long SPRINTF_BUF_SIZE = 64;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number,(SPRINTF_BUF_SIZE -1), "%.15Lg", String_Right);
+#else
+	sprintf(ASCII_Number, "%.15Lg", String_Right);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(String_Left.Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left.Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left.Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, String_Left.Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     return(BToReturn);
 }
 CStr operator & (char *String_Left, CStr String_Right)
@@ -861,56 +1183,97 @@ CStr operator & (char *String_Left, CStr String_Right)
 
     BToReturn.Datas = (char *) malloc(strlen(String_Left) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, String_Left);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Left);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, String_Left);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator & (signed long String_Left, CStr String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
+	const int LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _ltoa_s(String_Left, ASCII_Number, (LTOA_BUF_SIZE - 1), 10);
+#else
     ltoa(String_Left, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(ASCII_Number) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, ASCII_Number);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, ASCII_Number);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator & (unsigned long String_Left, CStr String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
+	const int LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _ltoa_s(String_Left, ASCII_Number,(LTOA_BUF_SIZE - 1), 10);
+#else
     ltoa(String_Left, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(ASCII_Number) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, ASCII_Number);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, ASCII_Number);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator & (int String_Left, CStr String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
+	const int ITOA_BUF_SIZE = 16;
+    char ASCII_Number[ITOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _itoa_s(String_Left, ASCII_Number,(ITOA_BUF_SIZE - 1), 10);
+#else
     itoa(String_Left, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(ASCII_Number) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, ASCII_Number);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, ASCII_Number);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator & (unsigned int String_Left, CStr String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
+	const int LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _ltoa_s(String_Left, ASCII_Number, (LTOA_BUF_SIZE - 1), 10);
+#else
     ltoa(String_Left, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(ASCII_Number) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, ASCII_Number);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, ASCII_Number);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator & (bool String_Left, CStr String_Right)
@@ -922,8 +1285,13 @@ CStr operator & (bool String_Left, CStr String_Right)
     else BoolDatas = "False";
     BToReturn.Datas = (char *) malloc(strlen(BoolDatas) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, BoolDatas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), BoolDatas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, BoolDatas);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator & (char String_Left, CStr String_Right)
@@ -935,66 +1303,106 @@ CStr operator & (char String_Left, CStr String_Right)
     ASCIIChar[1] = 0;
     BToReturn.Datas = (char *) malloc(strlen(ASCIIChar) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, ASCIIChar);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCIIChar);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, ASCIIChar);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator & (unsigned char String_Left, CStr String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
-    itoa(String_Left, ASCII_Number, 10);
+	const int LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _ltoa_s(String_Left, ASCII_Number, (LTOA_BUF_SIZE - 1), 10);
+#else
+    ltoa(String_Left, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(ASCII_Number) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, ASCII_Number);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, ASCII_Number);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator & (float String_Left, CStr String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[32];
-
-    sprintf(ASCII_Number, "%.7g", String_Left);
+	const long SPRINTF_BUF_SIZE = 32;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number, (SPRINTF_BUF_SIZE - 1), "%.7g", String_Left);
+#else
+	sprintf(ASCII_Number, "%.7g", String_Left);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(ASCII_Number) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, ASCII_Number);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, ASCII_Number);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator & (double String_Left, CStr String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[32];
-
-    sprintf(ASCII_Number, "%.15g", String_Left);
+	const long SPRINTF_BUF_SIZE = 32;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number, (SPRINTF_BUF_SIZE - 1), "%.15g", String_Left);
+#else
+	sprintf(ASCII_Number, "%.15g", String_Left);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(ASCII_Number) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, ASCII_Number);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, ASCII_Number);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
 CStr operator & (long double String_Left, CStr String_Right)
 {
     CStr BToReturn;
-    char ASCII_Number[64];
-
-    sprintf(ASCII_Number, "%.15Lg", String_Left);
+	const long SPRINTF_BUF_SIZE = 64;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number, (SPRINTF_BUF_SIZE - 1), "%.15Lg", String_Left);
+#else
+	sprintf(ASCII_Number, "%.15Lg", String_Left);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(ASCII_Number) + strlen(String_Right.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, ASCII_Number);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), String_Right.Datas);
+#else
+	strcpy(BToReturn.Datas, ASCII_Number);
     strcat(BToReturn.Datas, String_Right.Datas);
+#endif
     return(BToReturn);
 }
-
 // -----------------------------------------------------------------------
 // = operator
 void CStr::operator = (CStr DatasToLoad)
 {
     char *Temp_String;
 
-    Temp_String = strdup(DatasToLoad.Datas);
+    Temp_String = _strdup(DatasToLoad.Datas);
     if(this->Loaded == true) free(this->Datas);
     this->Datas = Temp_String;
     this->Loaded = true;
@@ -1004,7 +1412,7 @@ void CStr::operator = (CStr *DatasToLoad)
 {
     char *Temp_String;
 
-    Temp_String = strdup(DatasToLoad->Datas);
+    Temp_String = _strdup(DatasToLoad->Datas);
     if(this->Loaded == true) free(this->Datas);
     this->Datas = Temp_String;
     this->Loaded = true;
@@ -1014,7 +1422,7 @@ void CStr::operator = (char *DatasToLoad)
 {
     char *Temp_String;
 
-    Temp_String = strdup(DatasToLoad);
+    Temp_String = _strdup(DatasToLoad);
     if(this->Loaded == true) free(this->Datas);
     this->Datas = Temp_String;
     this->Loaded = true;
@@ -1022,49 +1430,65 @@ void CStr::operator = (char *DatasToLoad)
 }
 void CStr::operator = (signed long DatasToLoad)
 {
-    char ASCII_Number[16];
-
+	const int LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
     if(this->Loaded == true) free(this->Datas);
+#if _MSC_VER >= 1400
+    _ltoa_s(DatasToLoad, ASCII_Number, (LTOA_BUF_SIZE - 1), 10);
+#else
     ltoa(DatasToLoad, ASCII_Number, 10);
-    this->Datas = strdup(ASCII_Number);
+#endif
+    this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
     return;
 }
 void CStr::operator = (unsigned long DatasToLoad)
 {
-    char ASCII_Number[16];
-
+	const int LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
     if(this->Loaded == true) free(this->Datas);
+#if _MSC_VER >= 1400
+    _ltoa_s(DatasToLoad, ASCII_Number, (LTOA_BUF_SIZE - 1), 10);
+#else
     ltoa(DatasToLoad, ASCII_Number, 10);
-    this->Datas = strdup(ASCII_Number);
+#endif
+    this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
     return;
 }
 void CStr::operator = (int DatasToLoad)
 {
-    char ASCII_Number[16];
-
+	const int ITOA_BUF_SIZE = 16;
+    char ASCII_Number[ITOA_BUF_SIZE];
     if(this->Loaded == true) free(this->Datas);
+#if _MSC_VER >= 1400
+    _itoa_s(DatasToLoad, ASCII_Number, (ITOA_BUF_SIZE - 1), 10);
+#else
     itoa(DatasToLoad, ASCII_Number, 10);
-    this->Datas = strdup(ASCII_Number);
+#endif
+    this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
     return;
 }
 void CStr::operator = (unsigned int DatasToLoad)
 {
-    char ASCII_Number[16];
-
+	const int LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
     if(this->Loaded == true) free(this->Datas);
+#if _MSC_VER >= 1400
+    _ltoa_s(DatasToLoad, ASCII_Number, (LTOA_BUF_SIZE - 1), 10);
+#else
     ltoa(DatasToLoad, ASCII_Number, 10);
-    this->Datas = strdup(ASCII_Number);
+#endif
+    this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
     return;
 }
 void CStr::operator = (bool DatasToLoad)
 {
     if(this->Loaded == true) free(this->Datas);
-    if(DatasToLoad == true) this->Datas = strdup("True");
-    else this->Datas = strdup("False");
+    if(DatasToLoad == true) this->Datas = _strdup("True");
+    else this->Datas = _strdup("False");
     this->Loaded = true;
     return;
 }
@@ -1075,47 +1499,63 @@ void CStr::operator = (char DatasToLoad)
     ASCIIChar[0] = DatasToLoad;
     ASCIIChar[1] = 0;
     if(this->Loaded == true) free(this->Datas);
-    this->Datas = strdup(ASCIIChar);
+    this->Datas = _strdup(ASCIIChar);
     this->Loaded = true;
     return;
 }
 void CStr::operator = (unsigned char DatasToLoad)
 {
-    char ASCII_Number[16];
-
+	const int ITOA_BUF_SIZE = 16;
+    char ASCII_Number[ITOA_BUF_SIZE];
     if(this->Loaded == true) free(this->Datas);
+#if _MSC_VER >= 1400
+    _itoa_s((int) DatasToLoad, ASCII_Number, (ITOA_BUF_SIZE - 1), 10);
+#else
     itoa((int) DatasToLoad, ASCII_Number, 10);
-    this->Datas = strdup(ASCII_Number);
+#endif
+    this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
     return;
 }
 void CStr::operator = (float DatasToLoad)
 {
-    char ASCII_Number[32];
-
+	const long SPRINTF_BUF_SIZE = 32;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
     if(this->Loaded == true) free(this->Datas);
-    sprintf(ASCII_Number, "%.7g", DatasToLoad);
-    this->Datas = strdup(ASCII_Number);
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number, (SPRINTF_BUF_SIZE - 1), "%.7g", DatasToLoad);
+#else
+	sprintf(ASCII_Number, "%.7g", DatasToLoad);
+#endif
+    this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
     return;
 }
 void CStr::operator = (double DatasToLoad)
 {
-    char ASCII_Number[32];
-
+	const long SPRINTF_BUF_SIZE = 32;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
     if(this->Loaded == true) free(this->Datas);
-    sprintf(ASCII_Number, "%.15g", DatasToLoad);
-    this->Datas = strdup(ASCII_Number);
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number, (SPRINTF_BUF_SIZE - 1), "%.15g", DatasToLoad);
+#else
+	sprintf(ASCII_Number, "%.15g", DatasToLoad);
+#endif
+    this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
     return;
 }
 void CStr::operator = (long double DatasToLoad)
 {
-    char ASCII_Number[64];
-
+	const long SPRINTF_BUF_SIZE = 64;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
     if(this->Loaded == true) free(this->Datas);
-    sprintf(ASCII_Number, "%.15Lg", DatasToLoad);
-    this->Datas = strdup(ASCII_Number);
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number, (SPRINTF_BUF_SIZE - 1), "%.15Lg", DatasToLoad);
+#else
+	sprintf(ASCII_Number, "%.15Lg", DatasToLoad);
+#endif
+    this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
     return;
 }
@@ -1151,23 +1591,32 @@ void CStr::operator += (CStr Datas_To_Add)
 
     BToReturn.Datas = (char *) malloc(strlen(this->Datas) + strlen(Datas_To_Add.Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, this->Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), this->Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), Datas_To_Add.Datas);
+#else
+	strcpy(BToReturn.Datas, this->Datas);
     strcat(BToReturn.Datas, Datas_To_Add.Datas);
+#endif
     if(this->Loaded == true) free(this->Datas);
-    this->Datas = strdup(BToReturn.Datas);
+    this->Datas = _strdup(BToReturn.Datas);
     this->Loaded = true;
     return;
 }
 void CStr::operator += (CStr *Datas_To_Add)
 {
     CStr BToReturn;
-
     BToReturn.Datas = (char *) malloc(strlen(this->Datas) + strlen(Datas_To_Add->Datas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, this->Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), this->Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), Datas_To_Add->Datas);
+#else
+	strcpy(BToReturn.Datas, this->Datas);
     strcat(BToReturn.Datas, Datas_To_Add->Datas);
+#endif
     if(this->Loaded == true) free(this->Datas);
-    this->Datas = strdup(BToReturn.Datas);
+    this->Datas = _strdup(BToReturn.Datas);
     this->Loaded = true;
     return;
 }
@@ -1177,70 +1626,113 @@ void CStr::operator += (char *Datas_To_Add)
 
     BToReturn.Datas = (char *) malloc(strlen(this->Datas) + strlen(Datas_To_Add) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, this->Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), this->Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), Datas_To_Add);
+#else
+	strcpy(BToReturn.Datas, this->Datas);
     strcat(BToReturn.Datas, Datas_To_Add);
+#endif
     if(this->Loaded == true) free(this->Datas);
-    this->Datas = strdup(BToReturn.Datas);
+    this->Datas = _strdup(BToReturn.Datas);
     this->Loaded = true;
-    return;
+    
+	
+	return;
 }
 void CStr::operator += (signed long Datas_To_Add)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
+	const int LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _ltoa_s(Datas_To_Add, ASCII_Number,(LTOA_BUF_SIZE - 1), 10);
+#else
     ltoa(Datas_To_Add, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(this->Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, this->Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), this->Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, this->Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     if(this->Loaded == true) free(this->Datas);
-    this->Datas = strdup(BToReturn.Datas);
+    this->Datas = _strdup(BToReturn.Datas);
     this->Loaded = true;
     return;
 }
 void CStr::operator += (unsigned long Datas_To_Add)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
+	const int LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _ltoa_s(Datas_To_Add, ASCII_Number,(LTOA_BUF_SIZE - 1), 10);
+#else
     ltoa(Datas_To_Add, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(this->Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, this->Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), this->Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, this->Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     if(this->Loaded == true) free(this->Datas);
-    this->Datas = strdup(BToReturn.Datas);
+    this->Datas = _strdup(BToReturn.Datas);
     this->Loaded = true;
     return;
 }
 void CStr::operator += (int Datas_To_Add)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
+	const int ITOA_BUF_SIZE = 16;
+    char ASCII_Number[ITOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _itoa_s(Datas_To_Add, ASCII_Number, (ITOA_BUF_SIZE - 1), 10);
+#else
     itoa(Datas_To_Add, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(this->Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, this->Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), this->Datas);
+    strcat_s(BToReturn.Datas ,sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, this->Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     if(this->Loaded == true) free(this->Datas);
-    this->Datas = strdup(BToReturn.Datas);
+    this->Datas = _strdup(BToReturn.Datas);
     this->Loaded = true;
     return;
 }
 void CStr::operator += (unsigned int Datas_To_Add)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
+	const int LTOA_BUF_SIZE = 16;
+    char ASCII_Number[LTOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _ltoa_s(Datas_To_Add, ASCII_Number, (LTOA_BUF_SIZE - 1), 10);
+#else
     ltoa(Datas_To_Add, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(this->Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, this->Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), this->Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, this->Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     if(this->Loaded == true) free(this->Datas);
-    this->Datas = strdup(BToReturn.Datas);
+    this->Datas = _strdup(BToReturn.Datas);
     this->Loaded = true;
     return;
 }
@@ -1253,10 +1745,15 @@ void CStr::operator += (bool Datas_To_Add)
     else BoolDatas = "False";
     BToReturn.Datas = (char *) malloc(strlen(this->Datas) + strlen(BoolDatas) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, this->Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), this->Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), BoolDatas);
+#else
+	strcpy(BToReturn.Datas, this->Datas);
     strcat(BToReturn.Datas, BoolDatas);
+#endif
     if(this->Loaded == true) free(this->Datas);
-    this->Datas = strdup(BToReturn.Datas);
+    this->Datas = _strdup(BToReturn.Datas);
     this->Loaded = true;
     return;
 }
@@ -1269,70 +1766,111 @@ void CStr::operator += (char Datas_To_Add)
     ASCIIChar[1] = 0;
     BToReturn.Datas = (char *) malloc(strlen(this->Datas) + strlen(ASCIIChar) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, this->Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), this->Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCIIChar);
+#else
+	strcpy(BToReturn.Datas, this->Datas);
     strcat(BToReturn.Datas, ASCIIChar);
+#endif
     if(this->Loaded == true) free(this->Datas);
-    this->Datas = strdup(BToReturn.Datas);
+    this->Datas = _strdup(BToReturn.Datas);
     this->Loaded = true;
     return;
 }
 void CStr::operator += (unsigned char Datas_To_Add)
 {
     CStr BToReturn;
-    char ASCII_Number[16];
-
+	const int ITOA_BUF_SIZE = 16;
+    char ASCII_Number[ITOA_BUF_SIZE];
+#if _MSC_VER >= 1400
+    _itoa_s(Datas_To_Add, ASCII_Number,(ITOA_BUF_SIZE - 1), 10);
+#else
     itoa(Datas_To_Add, ASCII_Number, 10);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(this->Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, this->Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), this->Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, this->Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     if(this->Loaded == true) free(this->Datas);
-    this->Datas = strdup(BToReturn.Datas);
+    this->Datas = _strdup(BToReturn.Datas);
     this->Loaded = true;
     return;
 }
 void CStr::operator += (float Datas_To_Add)
 {
     CStr BToReturn;
-    char ASCII_Number[32];
-
-    sprintf(ASCII_Number, "%.7g", Datas_To_Add);
+	const long SPRINTF_BUF_SIZE = 32;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number, (SPRINTF_BUF_SIZE - 1), "%.7g", Datas_To_Add);
+#else
+	sprintf(ASCII_Number, "%.7g", Datas_To_Add);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(this->Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, this->Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), this->Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, this->Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     if(this->Loaded == true) free(this->Datas);
-    this->Datas = strdup(BToReturn.Datas);
+    this->Datas = _strdup(BToReturn.Datas);
     this->Loaded = true;
     return;
 }
 void CStr::operator += (double Datas_To_Add)
 {
     CStr BToReturn;
-    char ASCII_Number[32];
-
-    sprintf(ASCII_Number, "%.15g", Datas_To_Add);
+	const long SPRINTF_BUF_SIZE = 32;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number, (SPRINTF_BUF_SIZE - 1), "%.15g", Datas_To_Add);
+#else
+	sprintf(ASCII_Number, "%.15g", Datas_To_Add);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(this->Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, this->Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), this->Datas);
+    strcat_s(BToReturn.Datas, sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, this->Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     if(this->Loaded == true) free(this->Datas);
-    this->Datas = strdup(BToReturn.Datas);
+    this->Datas = _strdup(BToReturn.Datas);
     this->Loaded = true;
     return;
 }
 void CStr::operator += (long double Datas_To_Add)
 {
     CStr BToReturn;
-    char ASCII_Number[64];
-
-    sprintf(ASCII_Number, "%.15Lg", Datas_To_Add);
+	const long SPRINTF_BUF_SIZE = 32;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number, (SPRINTF_BUF_SIZE - 1), "%.15Lg", Datas_To_Add);
+#else
+	sprintf(ASCII_Number, "%.15Lg", Datas_To_Add);
+#endif
     BToReturn.Datas = (char *) malloc(strlen(this->Datas) + strlen(ASCII_Number) + 2);
     BToReturn.Loaded = true;
-    strcpy(BToReturn.Datas, this->Datas);
+#if _MSC_VER >= 1400
+	strcpy_s(BToReturn.Datas,sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), this->Datas);
+    strcat_s(BToReturn.Datas,sizeof(BToReturn.Datas) / sizeof(BToReturn.Datas[0]), ASCII_Number);
+#else
+	strcpy(BToReturn.Datas, this->Datas);
     strcat(BToReturn.Datas, ASCII_Number);
+#endif
     if(this->Loaded == true) free(this->Datas);
-    this->Datas = strdup(BToReturn.Datas);
+    this->Datas = _strdup(BToReturn.Datas);
     this->Loaded = true;
     return;
 }
@@ -1359,7 +1897,12 @@ CStr CStr::Mid(int Start,int Length)
         if(Length < 0) Length = 0;
         BToReturn.Datas = (char *) (malloc(Length + 1));
         BToReturn.Loaded = true;
-        strncpy(BToReturn.Datas, &this->Datas[Start - 1], Length);
+//Ojo!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Revisar		
+#if _MSC_VER >= 1400
+		strncpy_s(BToReturn.Datas, (strlen(BToReturn.Datas) - 1), &this->Datas[Start - 1], Length);
+#else
+		strncpy(BToReturn.Datas, &this->Datas[Start - 1], Length);
+#endif
     }
     BToReturn.Datas[Length] = 0;
     return(BToReturn);
@@ -1373,7 +1916,7 @@ CStr CStr::R_Trim(void)
     CStr BToReturn;
 
     if(this->Loaded == false) return(BToReturn);
-    BToReturn.Datas = strdup(this->Datas);
+    BToReturn.Datas = _strdup(this->Datas);
     BToReturn.Loaded = true;
     i = strlen(this->Datas);
     while(i--)
@@ -1393,7 +1936,7 @@ CStr CStr::L_Trim(void)
     CStr TempString;
 
     if(this->Loaded == false) return(BToReturn);
-    BToReturn.Datas = strdup(this->Datas);
+    BToReturn.Datas = _strdup(this->Datas);
     BToReturn.Loaded = true;
     if(strlen(BToReturn.Datas))
     {
@@ -1420,7 +1963,7 @@ CStr CStr::Trim(void)
     CStr TempString;
 
     if(this->Loaded == false) return(BToReturn);
-    BToReturn.Datas = strdup(this->Datas);
+    BToReturn.Datas = _strdup(this->Datas);
     BToReturn.Loaded = true;
     i = strlen(BToReturn.Datas);
     while(i--)
@@ -1451,7 +1994,7 @@ CStr CStr::Left(int Length)
     CStr BToReturn;
     
     if(this->Loaded == false) return(BToReturn);
-    BToReturn.Datas = strdup(this->Datas);
+    BToReturn.Datas = _strdup(this->Datas);
     BToReturn.Loaded = true;
     StrLeftLen = strlen(this->Datas);
     if(Length > StrLeftLen) Length = StrLeftLen;
@@ -1471,7 +2014,7 @@ CStr CStr::Right(int Length)
     if(Length < 0) Length = 0;
     Start = strlen(this->Datas) - Length;
     if(Start < 0) Start = 0;
-    BToReturn.Datas = strdup(&this->Datas[Start]);
+    BToReturn.Datas = _strdup(&this->Datas[Start]);
     BToReturn.Loaded = true;
     return(BToReturn);
 }
@@ -1520,8 +2063,8 @@ CStr CStr::String(int Count, int IntChar)
 // Str_Comp() method
 int CStr::Str_Comp(CStr String1, CStr String2, int Search)
 {
-    if(Search == Binary_Compare) return strcmp(String1.Datas,String2.Datas);
-    else return stricmp(String1.Datas,String2.Datas);
+    if(Search == Binary_Compare) return strcmp(String1.Datas, String2.Datas);
+    else return _stricmp(String1.Datas, String2.Datas);
 }
 
 // -----------------------------------------------------------------------
@@ -1550,12 +2093,18 @@ CStr CStr::Space(int Count)
 CStr CStr::Upper_Case(void)
 {
     CStr BToReturn;
-
     if(this->Loaded == false) return(BToReturn);
-    BToReturn.Datas = strdup(this->Datas);
+    BToReturn.Datas = _strdup(this->Datas);
     BToReturn.Loaded = true;
+//Ojo !!!!!!!!!!!!!!!!!!!!!! revisar
+#if _MSC_VER >= 1400
+	char *copy1;
+	_strupr_s( copy1 = _strdup(BToReturn.Datas), strlen(BToReturn.Datas) + 1);
+	BToReturn.Datas = copy1;
+#else
     BToReturn.Datas = strupr(BToReturn.Datas);
-    return(BToReturn);
+#endif
+	return(BToReturn);
 }
 
 // -----------------------------------------------------------------------
@@ -1565,9 +2114,16 @@ CStr CStr::Lower_Case(void)
     CStr BToReturn;
 
     if(this->Loaded == false) return(BToReturn);
-    BToReturn.Datas = strdup(this->Datas);
+    BToReturn.Datas = _strdup(this->Datas);
     BToReturn.Loaded = true;
-    BToReturn.Datas = strlwr(BToReturn.Datas);
+//Ojo !!!!!!!!!!!!!!!!!! Revisar	
+#if _MSC_VER >= 1400
+    char *copy1;
+	_strlwr_s( copy1 = _strdup(BToReturn.Datas), strlen(BToReturn.Datas) + 1);
+	BToReturn.Datas = copy1;
+#else
+    BToReturn.Datas = _strlwr(BToReturn.Datas);
+#endif
     return(BToReturn);
 }
 
@@ -1581,7 +2137,7 @@ CStr CStr::Str_Reverse(void)
     unsigned char RevChar;
 
     if(this->Loaded == false) return(BToReturn);
-    BToReturn.Datas = strdup(this->Datas);
+    BToReturn.Datas = _strdup(this->Datas);
     BToReturn.Loaded = true;
     RevStrLen = strlen(this->Datas);
     if(RevStrLen > 1)
@@ -1601,10 +2157,15 @@ CStr CStr::Str_Reverse(void)
 CStr CStr::Dec_To_String(long Value)
 {
     CStr BToReturn;
-
     BToReturn.Datas = (char *) malloc(16);
     BToReturn.Loaded = true;
-    sprintf(BToReturn.Datas, "%d", Value);
+	const long SPRINTF_BUF_SIZE = 16;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number, (SPRINTF_BUF_SIZE - 1), "%d", Value);
+#else
+	sprintf(ASCII_Number, "%d", Value);
+#endif
     return(BToReturn);
 }
 
@@ -1613,10 +2174,15 @@ CStr CStr::Dec_To_String(long Value)
 CStr CStr::Hex_To_String(long Value)
 {
     CStr BToReturn;
-
+	const long SPRINTF_BUF_SIZE = 16;
+    char ASCII_Number[SPRINTF_BUF_SIZE];
     BToReturn.Datas = (char *) malloc(16);
     BToReturn.Loaded = true;
-    sprintf(BToReturn.Datas, "%X", Value);
+#if _MSC_VER >= 1400
+	sprintf_s(ASCII_Number, (SPRINTF_BUF_SIZE - 1), "%X", Value);
+#else
+	sprintf(ASCII_Number, "%X", Value);
+#endif
     return(BToReturn);
 }
 
@@ -1633,8 +2199,13 @@ CStr CStr::Hex_Fix_To_String(long Value, long Length)
     BToReturn.Loaded = true;
     FixLength = Length;
     if(FixLength > 8) FixLength = 8;
+#if _MSC_VER >= 1400
+    sprintf_s(Format, FixLength, "%%0%dX", FixLength);
+    sprintf_s(BToReturn.Datas, Value, Format, Value);
+#else
     sprintf(Format, "%%0%dX", FixLength);
     sprintf(BToReturn.Datas, Format, Value);
+#endif
     free(Format);
     return(BToReturn);
 }
@@ -1647,7 +2218,13 @@ CStr CStr::Oct_To_String(long Value)
 
     BToReturn.Datas = (char *) malloc(16);
     BToReturn.Loaded = true;
-    sprintf(BToReturn.Datas, "%o", Value);
+//Ojo!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Revisar	
+	const long SPRINTF_BUF_SIZE = 16;
+#if _MSC_VER >= 1400
+	sprintf_s(BToReturn.Datas, (SPRINTF_BUF_SIZE - 1), "%o", Value);
+#else
+	sprintf(BToReturn.Datas, "%o", Value);
+#endif
     return(BToReturn);
 }
 
