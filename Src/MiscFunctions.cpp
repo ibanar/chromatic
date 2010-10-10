@@ -584,14 +584,14 @@ CheckPrepcommand:       DBlockBeg = CurSourceText.In_Str(CurrentPosPrep, "BUILDB
                                 {
                                     // Check the block name
                                     PrepLine = StringGetSplitElement(TempPrep, ArrayPrep, 0).Trim();
-                                    if(strcmpi(PrepLine.Left(LangComm.Len()).Get_String(), LangComm.Get_String()) == 0) PrepLine = PrepLine.Mid(2);
+                                    if(_strcmpi(PrepLine.Left(LangComm.Len()).Get_String(), LangComm.Get_String()) == 0) PrepLine = PrepLine.Mid(2);
                                     PrepLine = PrepLine.Trim();
-                                    if(strcmpi(PrepLine.Get_String(), TrimedCommand.Get_String()) == 0)
+                                    if(_strcmpi(PrepLine.Get_String(), TrimedCommand.Get_String()) == 0)
                                     {
                                         for(i = 1; i <= (long) StringGetSplitUBound(ArrayPrep) - 1; i++)
                                         {
                                             PrepLine = StringGetSplitElement(TempPrep, ArrayPrep, i).Trim();
-                                            if(strcmpi(PrepLine.Left(LangComm.Len()).Get_String(), LangComm.Get_String()) == 0) PrepLine = PrepLine.Mid(LangComm.Len() + 1);
+                                            if(_strcmpi(PrepLine.Left(LangComm.Len()).Get_String(), LangComm.Get_String()) == 0) PrepLine = PrepLine.Mid(LangComm.Len() + 1);
                                             PrepLine = PrepLine.Trim();
                                             RunUserCommandRec(PrepLine);
                                         }
@@ -694,7 +694,7 @@ void RunUserCommand(long CommandNumber)
     if(MenusCmds.Amount() > 6)
     {
         BufString = MenusCmds.Get(CommandNumber - (MENU_USER_IDBASE + 1))->Content;
-        if(strcmpi(BufString.Left(5).Get_String(), "HTML ") == 0) goto NoSaveHtml;
+        if(_strcmpi(BufString.Left(5).Get_String(), "HTML ") == 0) goto NoSaveHtml;
     }
     if(InHelpFile == 0) if(AutoSave == 1) MCMD_SaveAll();
 NoSaveHtml:
@@ -881,7 +881,14 @@ int ChDrive(CStr DriveStr)
 
     ChDriveStrTmp = ChDriveStrTmp.String(MAX_PATH+1,1);
     GetCurrentDirectory(MAX_PATH,ChDriveStrTmp.Get_String());
-    strncpy(ChDriveStrTmp.Get_String(),DriveStr.Left(1).Get_String(),1);
+//Ojo !!!!!!!!!!!!!!!!!!!!!! Revisar
+#if _MSC_VER >= 1400
+		strncpy_s(ChDriveStrTmp.Get_String(), strlen(ChDriveStrTmp.Get_String()),DriveStr.Left(1).Get_String(), strlen(ChDriveStrTmp.Get_String()) - 1);
+//      errno_t strncpy_s(char *strDest, size_t numberOfElements, const char *strSource, size_t count);
+//      strncpy_s(dst, 5, "a long string", 4);
+#else
+		strncpy(ChDriveStrTmp.Get_String(),DriveStr.Left(1).Get_String(),1);
+#endif
     if(SetCurrentDirectory(ChDriveStrTmp.Get_String()) == 0)
     {
         ChDriveStrTmp.Get_String()[1] = ':';
@@ -1502,7 +1509,7 @@ long CheckWorkSpaceFile(CStr FileName)
         FileClose(WorkFileHandle);
     }
     BufString = "[" + (CStr) AppTitle + (CStr) "workspc]";
-    if(strcmpi(WorkHeader.Get_String(), BufString.Get_String()) == 0) ReturnValue = 1;
+    if(_strcmpi(WorkHeader.Get_String(), BufString.Get_String()) == 0) ReturnValue = 1;
     return(ReturnValue);
 }
 
@@ -1663,7 +1670,7 @@ RechckProc:
                             }
                         }
                         ProcPos = i;
-                        if(ProcPos != 0) if(strcmpi(CurLine.Get_String(), StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Get_String()) == 0) ProcPos--;
+                        if(ProcPos != 0) if(_strcmpi(CurLine.Get_String(), StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Get_String()) == 0) ProcPos--;
                         goto RechckProc;
                     }
                 }
@@ -1716,7 +1723,7 @@ FuturBalancing:
                     goto FoundEndp;
                 }
                 // endp
-                if(strcmpi(CurLine.Get_String(), StringGetSplitElement(CurLangProc2, CurLangEndpArray, j).Get_String()) == 0)
+                if(_strcmpi(CurLine.Get_String(), StringGetSplitElement(CurLangProc2, CurLangEndpArray, j).Get_String()) == 0)
                 {
                     EndpPos = i;
                     goto FoundEndp;
@@ -1746,7 +1753,7 @@ FoundEndp:
             }
             if(CurLine.Len() != 0)
             {
-                if(strcmpi(CurLine.Get_String(), "NULL") != 0)
+                if(_strcmpi(CurLine.Get_String(), "NULL") != 0)
                 {
                     CurLine = RemoveQuotesVB(StringReplace(CurLine, "\t", " ", 1, -1, Binary_Compare)).Trim();
                     for(j = 0; j <= (long) StringGetSplitUBound(CurLangEndpArray); j++)
@@ -1805,7 +1812,7 @@ FoundEndp:
                             {
                                 ProcPos = i;
                                 LastProcTypeKeyword = StringGetSplitElement(CurLangProc1, CurLangProcArray, j);
-                                if(ProcPos != 0) if(strcmpi(CurLine.Get_String(), StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Get_String()) == 0) ProcPos--;
+                                if(ProcPos != 0) if(_strcmpi(CurLine.Get_String(), StringGetSplitElement(CurLangProc1, CurLangProcArray, j).Get_String()) == 0) ProcPos--;
                                 goto FoundEndpEnd;
                             }
                         }
@@ -2362,7 +2369,7 @@ CStr RemoveComments(CStr Str)
             {
                 if(InComment == 1)
                 {
-                    if(strcmpi(LineToCheck.Left(1).Get_String(), CommentChar.Get_String()) == 0)
+                    if(_strcmpi(LineToCheck.Left(1).Get_String(), CommentChar.Get_String()) == 0)
                     {
                         // Comment mode OFF
                         InComment = 0;
@@ -2371,7 +2378,7 @@ CStr RemoveComments(CStr Str)
                 }
                 else
                 {
-                    if(strcmpi(LineToCheck.Left(7).Get_String(), "COMMENT") == 0)
+                    if(_strcmpi(LineToCheck.Left(7).Get_String(), "COMMENT") == 0)
                     {
                         // Pass comment word
                         LineToCheck = LineToCheck.Mid(8).Trim();
@@ -2440,7 +2447,7 @@ HWND GoToLine(CStr FileName, long LineNumber, long FNoAddRecent)
 ReCheckFileName:
     BufString = StringReplace(BufString, "/", "\\", 1, -1, Binary_Compare);
     ExtraSlash = "";
-    if(strcmpi(BufString.Left(1).Get_String(), "\\") == 0) ExtraSlash = "\\";
+    if(_strcmpi(BufString.Left(1).Get_String(), "\\") == 0) ExtraSlash = "\\";
     BufString = StringReplace(BufString, "\\\\", "\\", 1, -1, Binary_Compare);
     BufString = ExtraSlash + (CStr) BufString;
     
@@ -3099,7 +3106,7 @@ SearchVarEntryLoop:
                         if(VarProcFoundLineTxt.In_Str(1, VarProcToSearch + (CStr) ":DOUBLE", Text_Compare) != 0) goto FoundVarEntry;
                         if(VarProcFoundLineTxt.In_Str(1, VarProcToSearch + (CStr) ":EQU", Text_Compare) != 0) goto FoundVarEntry;
                         BufString = VarProcToSearch + (CStr) ":";
-                        if(VarProcFoundLineTxt.In_Str(1, VarProcToSearch, Text_Compare) == 1) if(strcmpi(VarProcFoundLineTxt.Left(VarProcToSearch.Len() + 1).Get_String(), BufString.Get_String()) == 0) goto FoundVarEntry;
+                        if(VarProcFoundLineTxt.In_Str(1, VarProcToSearch, Text_Compare) == 1) if(_strcmpi(VarProcFoundLineTxt.Left(VarProcToSearch.Len() + 1).Get_String(), BufString.Get_String()) == 0) goto FoundVarEntry;
                         VarProcFoundPos++;
                         goto SearchVarEntryLoop;
 FoundVarEntry:          // Mark as found and exit
@@ -3553,12 +3560,12 @@ CStr HexToDec(CStr Number)
     TempBuf = Number.Trim();
     StartHex = 1;
     // Filter the datas
-    if(strcmpi(TempBuf.Left(2).Get_String(), "0x") == 0)
+    if(_strcmpi(TempBuf.Left(2).Get_String(), "0x") == 0)
     {
         StartHex = 3;
         GoodHex = 1;
     }
-    if(strcmpi(TempBuf.Left(1).Get_String(), "$") == 0)
+    if(_strcmpi(TempBuf.Left(1).Get_String(), "$") == 0)
     {
         StartHex = 2;
         GoodHex = 1;
@@ -3568,13 +3575,13 @@ CStr HexToDec(CStr Number)
     for(i = 1; i <= MaxLen; i++)
     {
         HexChar = TempBuf.Mid(i + (StartHex - 1), 1).Upper_Case();
-        if(((strcmp(HexChar.Get_String(), "0") >= 0) && (strcmp(HexChar.Get_String(), "9") <= 0)) || ((strcmpi(HexChar.Get_String(), "A") >= 0) && (strcmpi(HexChar.Get_String(), "F") <= 0)))
+        if(((strcmp(HexChar.Get_String(), "0") >= 0) && (strcmp(HexChar.Get_String(), "9") <= 0)) || ((_strcmpi(HexChar.Get_String(), "A") >= 0) && (_strcmpi(HexChar.Get_String(), "F") <= 0)))
         {
             HexToConvert = HexToConvert + HexChar;
         }
         else
         {
-            if(GoodHex == 0) if(strcmpi(HexChar.Get_String(), "h") == 0) GoodHex = 1;
+            if(GoodHex == 0) if(_strcmpi(HexChar.Get_String(), "h") == 0) GoodHex = 1;
             break;
         }
     }
@@ -3738,12 +3745,12 @@ CStr HexToBin(CStr Number)
     TempBuf = Number.Trim();
     StartHex = 1;
     // Filter the datas
-    if(strcmpi(TempBuf.Left(2).Get_String(), "0x") == 0)
+    if(_strcmpi(TempBuf.Left(2).Get_String(), "0x") == 0)
     {
         StartHex = 3;
         GoodHex = 1;
     }
-    if(strcmpi(TempBuf.Left(1).Get_String(), "$") == 0)
+    if(_strcmpi(TempBuf.Left(1).Get_String(), "$") == 0)
     {
         StartHex = 2;
         GoodHex = 1;
@@ -3753,13 +3760,13 @@ CStr HexToBin(CStr Number)
     for(i = 1; i <= MaxLen; i++)
     {
         HexChar = TempBuf.Mid(i + (StartHex - 1), 1).Upper_Case();
-        if(((strcmp(HexChar.Get_String(), "0") >= 0) && (strcmp(HexChar.Get_String(), "9") <= 0)) || ((strcmpi(HexChar.Get_String(), "A") >= 0) && (lstrcmpi(HexChar.Get_String(), "F") <= 0)))
+        if(((strcmp(HexChar.Get_String(), "0") >= 0) && (strcmp(HexChar.Get_String(), "9") <= 0)) || ((_strcmpi(HexChar.Get_String(), "A") >= 0) && (lstrcmpi(HexChar.Get_String(), "F") <= 0)))
         {
             HexToConvert = HexToConvert + HexChar;
         }
         else
         {
-            if(GoodHex == 0) if(strcmpi(HexChar.Get_String(), "h") == 0) GoodHex = 1;
+            if(GoodHex == 0) if(_strcmpi(HexChar.Get_String(), "h") == 0) GoodHex = 1;
             break;
         }
     }
@@ -3809,7 +3816,7 @@ CStr BinToDec(CStr Number)
         }
         else
         {
-            if(strcmpi(BinChar.Get_String(), "b") == 0) GoodBin = 1;
+            if(_strcmpi(BinChar.Get_String(), "b") == 0) GoodBin = 1;
             break;
         }
     }
@@ -3851,7 +3858,7 @@ CStr BinToHex(CStr Number)
         }
         else
         {
-            if(strcmpi(BinChar.Get_String(), "b") == 0) GoodBin = 1;
+            if(_strcmpi(BinChar.Get_String(), "b") == 0) GoodBin = 1;
             break;
         }
     }
@@ -3893,19 +3900,19 @@ CStr HexToFlt(CStr Number)
     TempBuf = Number.Trim();
     StartHex = 1;
     // Filter the datas
-    if(strcmpi(TempBuf.Left(2).Get_String(), "0x") == 0)
+    if(_strcmpi(TempBuf.Left(2).Get_String(), "0x") == 0)
     {
         StartHex = 3;
         GoodHex = 1;
     }
-    if(strcmpi(TempBuf.Left(1).Get_String(), "$") == 0)
+    if(_strcmpi(TempBuf.Left(1).Get_String(), "$") == 0)
     {
         StartHex = 2;
         GoodHex = 1;
     }
     MaxLen = TempBuf.Len() - (StartHex - 1);
 
-    if(strcmpi(TempBuf.Right(1).Get_String(), "h") == 0)
+    if(_strcmpi(TempBuf.Right(1).Get_String(), "h") == 0)
     {
         StartHex = 1;
         GoodHex = 1;
@@ -3915,7 +3922,7 @@ CStr HexToFlt(CStr Number)
     {
         HexChar = TempBuf.Mid(i + (StartHex - 1), 1).Upper_Case();
         if(((strcmp(HexChar.Get_String(), "0") >= 0) && (strcmp(HexChar.Get_String(), "9") <= 0)) ||
-           ((strcmpi(HexChar.Get_String(), "A") >= 0) && (strcmpi(HexChar.Get_String(), "F") <= 0)))
+           ((_strcmpi(HexChar.Get_String(), "A") >= 0) && (_strcmpi(HexChar.Get_String(), "F") <= 0)))
         {
             HexToConvert = HexToConvert + HexChar;
         }
@@ -4390,14 +4397,14 @@ int IsFileInProject(char *FileName)
         TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewIncludes);
         while(TreeViewChildEntry != 0)
         {
-            if(strcmpi(GetFileNameFromTreeView(TreeViewChildEntry).Get_String(), FileName) == 0) return(TRUE);
+            if(_strcmpi(GetFileNameFromTreeView(TreeViewChildEntry).Get_String(), FileName) == 0) return(TRUE);
             TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         }
         // Modules
         TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewModules);
         while(TreeViewChildEntry != 0)
         {
-            if(strcmpi(GetFileNameFromTreeView(TreeViewChildEntry).Get_String(), FileName) == 0) return(TRUE);
+            if(_strcmpi(GetFileNameFromTreeView(TreeViewChildEntry).Get_String(), FileName) == 0) return(TRUE);
             TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
         }
         // Resources
@@ -4415,7 +4422,7 @@ int IsFileInProject(char *FileName)
             else if(TreeViewChildEntry == hTreeViewRawdatas) goto AvoidTreeFolders;
             else
             {
-                if(strcmpi(GetFileNameFromTreeView(TreeViewChildEntry).Get_String(), FileName) == 0) return(TRUE);
+                if(_strcmpi(GetFileNameFromTreeView(TreeViewChildEntry).Get_String(), FileName) == 0) return(TRUE);
             }
 AvoidTreeFolders:
             TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
@@ -4503,7 +4510,7 @@ int CALLBACK EnumFillFilesProc(HWND hWnd, long lParam)
         {
             if(strlen(FilesList.Get(j)->Content) != 0)
             {
-                if(strcmpi(ChildFile.Get_String(), FilesList.Get(j)->Content) == 0)
+                if(_strcmpi(ChildFile.Get_String(), FilesList.Get(j)->Content) == 0)
                 {
                     // Mark it as opened (0 otherwise)
                     FilesListhWnd.Set(j, ChildStruct->hChildCodeMax);
@@ -4559,7 +4566,7 @@ long GetUseFileDir(void)
         KeyValue = IniReadKey("Layout", "UseFileDir", MainIniFile);
         if(strlen(KeyValue.Get_String()) != 0)
         {
-            if(strcmpi(KeyValue.Get_String(), "1") == 0)
+            if(_strcmpi(KeyValue.Get_String(), "1") == 0)
             {
                 ChildStruct = LoadStructure(CurrentForm);
                 if(ChildStruct->FileLoaded == 1) ReturnValue = 1;
@@ -4608,7 +4615,7 @@ void RestoreState(CStr WorkSpaceName)
     ResState = IniReadKey("Layout", "RememberState", MainIniFile);
     if(ResState.Len() != 0)
     {
-        if(strcmpi(ResState.Get_String(), "1") == 0)
+        if(_strcmpi(ResState.Get_String(), "1") == 0)
         {
             OpenWorkSpc(WorkSpaceName);
             return;
@@ -4617,7 +4624,7 @@ void RestoreState(CStr WorkSpaceName)
     ResState = IniReadKey("Layout", "ShowProjects", MainIniFile);
     if(ResState.Len() != 0)
     {
-        if(strcmpi(ResState.Get_String(), "1") == 0)
+        if(_strcmpi(ResState.Get_String(), "1") == 0)
         {
             MCMD_CreateProject();
         }
@@ -4638,19 +4645,31 @@ void ControlSetSysToTray(HINSTANCE hInstance, HWND hWnd, long IDTray, long IconI
         SysTrayStruct.uID = IDTray;
         SysTrayStruct.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP | NIF_INFO;
         SysTrayStruct.uTimeout = 10;
+#if _MSC_VER >= 1400
+        strncpy_s(SysTrayStruct.szInfoTitle, strlen(SysTrayStruct.szInfoTitle), ToolTipText.Get_String(), strlen(SysTrayStruct.szInfoTitle)-1);
+#else
         strncpy(SysTrayStruct.szInfoTitle, ToolTipText.Get_String(), 64);
+#endif
         MemStat.dwLength = sizeof(MemStat);
         GlobalMemoryStatus(&MemStat);
         BalloonText = "Double click to bring to front\r\nRight click for options\r\n\r\n";
         BalloonText = BalloonText + (CStr) "Memory usage: " + (CStr) MemStat.dwMemoryLoad + (CStr) "%\r";
         BalloonText = BalloonText + (CStr) "Free physical memory: " + (CStr) MemStat.dwAvailPhys + (CStr) "\r";
-        strncpy(SysTrayStruct.szInfo, BalloonText.Get_String(), 256);
+#if _MSC_VER >= 1400
+		strncpy_s(SysTrayStruct.szInfo, strlen(SysTrayStruct.szInfo), BalloonText.Get_String(), strlen(SysTrayStruct.szInfo)-1);
+#else
+		strncpy(SysTrayStruct.szInfo, BalloonText.Get_String(), 256);
+#endif
         SysTrayStruct.dwInfoFlags = NIIF_INFO;
         SysTrayStruct.dwState = NIS_SHAREDICON;
         SysTrayStruct.dwStateMask = NIS_SHAREDICON;
         SysTrayStruct.uCallbackMessage = WM_SHELLNOTIFY;
         SysTrayStruct.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IconID));
-        strncpy(SysTrayStruct.szTip, ToolTipText.Get_String(), 128);
+#if _MSC_VER >= 1400
+		strncpy_s(SysTrayStruct.szTip,strlen(SysTrayStruct.szTip), ToolTipText.Get_String(), strlen(SysTrayStruct.szTip)-1);
+#else
+		strncpy(SysTrayStruct.szTip, ToolTipText.Get_String(), 128);
+#endif
         ShowWindow(hWnd, SW_HIDE);
         Shell_NotifyIcon(NIM_ADD, &SysTrayStruct);
     }
@@ -4663,7 +4682,11 @@ void ControlSetSysToTray(HINSTANCE hInstance, HWND hWnd, long IDTray, long IconI
         SysTrayStruct.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
         SysTrayStruct.uCallbackMessage = WM_SHELLNOTIFY;
         SysTrayStruct.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IconID));
-        strncpy(SysTrayStruct.szTip, ToolTipText.Get_String(), 64);
+#if _MSC_VER >= 1400
+		strncpy_s(SysTrayStruct.szTip, strlen(SysTrayStruct.szTip), ToolTipText.Get_String(), strlen(SysTrayStruct.szTip)-1);
+#else
+		strncpy(SysTrayStruct.szTip, ToolTipText.Get_String(), 64);
+#endif
         ShowWindow(hWnd, SW_HIDE);
         Shell_NotifyIcon(NIM_ADD, &SysTrayStruct);
     }
@@ -4674,7 +4697,7 @@ void ControlSetSysToTray(HINSTANCE hInstance, HWND hWnd, long IDTray, long IconI
 // Remove a block of comments
 void RemoveCommentBlocksFromFileByFile(long hFile, long FileLen, CStr FileName)
 {
-    if(strcmpi(GetCMLangLangNameByFile(FileName).Get_String(), "assembler") == 0)
+    if(_strcmpi(GetCMLangLangNameByFile(FileName).Get_String(), "assembler") == 0)
     {
         RemoveCommentBlocks((char *) hFile, FileLen);
     }
@@ -4692,7 +4715,7 @@ void RemoveCommentBlocksFromFileByFile(long hFile, long FileLen, CStr FileName)
 void RemoveCommentBlocksFromFile(long hFile, long FileLen, HWND hWnd)
 {
     ChildStruct = LoadStructure(hWnd);
-    if(strcmpi(GetCMLangNameByChild(ChildStruct->hChildCodeMax).Get_String(), "assembler") == 0)
+    if(_strcmpi(GetCMLangNameByChild(ChildStruct->hChildCodeMax).Get_String(), "assembler") == 0)
     {
         RemoveCommentBlocks((char *) hFile, FileLen);
     }
@@ -4709,7 +4732,7 @@ void RemoveCommentBlocksFromFile(long hFile, long FileLen, HWND hWnd)
 // Remove a block of comments (by child)
 void RemoveCommentBlocksFromFileByChild(long hFile, long FileLen, HWND hWnd)
 {
-    if(strcmpi(GetCMLangNameByChild(hWnd).Get_String(), "assembler") == 0)
+    if(_strcmpi(GetCMLangNameByChild(hWnd).Get_String(), "assembler") == 0)
     {
         RemoveCommentBlocks((char *) hFile, FileLen);
     }
@@ -4726,7 +4749,7 @@ void RemoveCommentBlocksFromFileByChild(long hFile, long FileLen, HWND hWnd)
 // Remove a block of comments (by child)
 void RemoveCommentBlocksFromFileByChildStr(CStr FileString, long FileLen, HWND hWnd)
 {
-    if(strcmpi(GetCMLangNameByChild(hWnd).Get_String(), "assembler") == 0)
+    if(_strcmpi(GetCMLangNameByChild(hWnd).Get_String(), "assembler") == 0)
     {
         RemoveCommentBlocks(FileString.Get_String(), FileLen);
     }
@@ -5080,8 +5103,36 @@ void QEPlug(QEPROC PlugAddr,
 BYTE *MLoadFile(char *FileName, long *Bytes)
 {
     int Size;
+	FILE *FHandle;
+	BYTE *MemBlock = NULL;
+    *Bytes = 0;
+#if _MSC_VER >= 1400
+    fopen_s(&FHandle, FileName, "rb" );
+#else
+    FHandle = fopen(FileName, "rb");
+#endif
+   if(FHandle)
+    {
+        fseek(FHandle, 0, SEEK_END);
+        Size = ftell(FHandle);
+        fseek(FHandle, 0, SEEK_SET);
+        MemBlock = (BYTE *) calloc(Size + 4, 1);
+        if(MemBlock)
+        {
+			 *Bytes = fread( MemBlock, sizeof( char ), Size, FHandle );
+        }
+        fclose(FHandle);
+    }
+    return(MemBlock);
+}
+/*
+// -----------------------------------------------------------------------
+// Open a file and load it into memory
+// (Return memory block or 0)
+BYTE *MLoadFile(char *FileName, long *Bytes)
+{
+    int Size;
     BYTE *MemBlock = NULL;
-
     *Bytes = 0;
     FILE *FHandle = fopen(FileName, "rb");
     if(FHandle)
@@ -5098,3 +5149,4 @@ BYTE *MLoadFile(char *FileName, long *Bytes)
     }
     return(MemBlock);
 }
+*/

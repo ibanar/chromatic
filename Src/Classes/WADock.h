@@ -279,7 +279,7 @@ public:
         pT->RedrawWindow(NULL, NULL, RDW_ALLCHILDREN|RDW_UPDATENOW);
         // Lock Window update while dragging over desktop
         HWND hWnd = ::GetDesktopWindow();
-        m_dc = ::GetDCEx(hWnd, NULL, ::LockWindowUpdate(hWnd) ? DCX_WINDOW|DCX_CACHE|DCX_LOCKWINDOWUPDATE : DCX_WINDOW|DCX_CACHE);
+        m_dc = ::GetDCEx(hWnd, NULL, ::LockWindowUpdate(hWnd) ? DCX_WINDOW | DCX_CACHE | DCX_LOCKWINDOWUPDATE : DCX_WINDOW | DCX_CACHE);
         // Draw the initial focus rect
         m_bDragging = bDragging;
         if( m_bDragging ) DrawDragBar(); else DrawGhostBar();
@@ -346,11 +346,6 @@ public:
     HWND Create(HWND hWndParent, RECT &rcPos, LPCTSTR szWindowName = NULL, DWORD dwStyle = 0, DWORD dwExStyle = 0, UINT nID = 0, LPVOID lpCreateParam = NULL)
     {
         return CWindowImpl< T, TBase, TWinTraits >::Create(hWndParent, rcPos, szWindowName, dwStyle, dwExStyle, nID, lpCreateParam);
-    }
-
-    virtual void OnFinalMessage(HWND /*hWnd*/)
-    {
-        delete (T *) this;
     }
 
     // Message handlers
@@ -496,7 +491,7 @@ class CFloatingWindow: public CFloatingWindowImpl<CFloatingWindow>
 
 template< class T, class TBase = CWindow, class TWinTraits = CControlWinTraits >
           class ATL_NO_VTABLE CDockingPaneChildWindowImpl : 
-          public CWindowImpl< T, TBase, TWinTraits >, public CSplitterBar<CDockingPaneChildWindowImpl>
+          public CWindowImpl<T, TBase, TWinTraits>, public CSplitterBar<CDockingPaneChildWindowImpl>
 {
     public:
         DECLARE_WND_CLASS_EX(NULL, CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, NULL)
@@ -532,11 +527,6 @@ template< class T, class TBase = CWindow, class TWinTraits = CControlWinTraits >
             ::SetRectEmpty(&m_rcCloseButton);
             m_cxyGripper = 11;
             m_cxyCloseButton = 11;
-        }
-
-        virtual void OnFinalMessage(HWND /*hWnd*/)
-        {
-            delete (T *) this;
         }
 
         LRESULT OnEraseBackground(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL &/*bHandled*/)
@@ -1328,7 +1318,7 @@ template< class T, class TPaneWindow = CDockingPaneWindow,
             for(short i = 0; i < 4; i++)
             {
                 m_panes[i].m_Side = i;
-                m_panes[i].Create(m_hWnd, rcDefault, NULL, WS_CHILD|WS_VISIBLE);
+                m_panes[i].Create(m_hWnd, rcDefault, NULL, WS_CHILD | WS_VISIBLE);
             }
             m_sizeBorder.cx = ::GetSystemMetrics(SM_CXEDGE);
             m_sizeBorder.cy = ::GetSystemMetrics(SM_CYEDGE);
@@ -1620,7 +1610,9 @@ template< class T, class TPaneWindow = CDockingPaneWindow,
         DOCKCONTEXT *_GetContext(HWND hWnd) const
         {
             for(int i = 0; i < m_map.GetSize(); i++)
+            {
                 if(m_map[i]->hwndChild == hWnd) return m_map[i];
+            }
             return NULL;
         }
 };
