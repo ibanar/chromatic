@@ -148,7 +148,7 @@ void FillExtLanguage(void)
     RegEntry = RegistryGetKeyValue(HKEY_CLASSES_ROOT, ".med", "");
     if(RegEntry.Len() != 0)
     {
-        if(strcmpi(RegEntry.Get_String(), "Chromatic project file") == 0)
+        if(_strcmpi(RegEntry.Get_String(), "Chromatic project file") == 0)
         {
             ListViewSetItemCheckbox(FRMRegsListview, k, 1);
         }
@@ -159,7 +159,7 @@ void FillExtLanguage(void)
     RegEntry = RegistryGetKeyValue(HKEY_CLASSES_ROOT, ".mws", "");
     if(RegEntry.Len() != 0)
     {
-        if(strcmpi(RegEntry.Get_String(), "Chromatic workspace file") == 0)
+        if(_strcmpi(RegEntry.Get_String(), "Chromatic workspace file") == 0)
         {
             ListViewSetItemCheckbox(FRMRegsListview, k, 1);
         }
@@ -192,7 +192,7 @@ void FillExtLanguage(void)
                 if(RegEntry.Len() != 0)
                 {
                     BufString = "Chromatic " + (CStr) StringGetSplitElement(FRMRegsRetVal, ExtArray, j).Get_String() + (CStr) " file";
-                    if(strcmpi(RegEntry.Get_String(), BufString.Get_String()) == 0)
+                    if(_strcmpi(RegEntry.Get_String(), BufString.Get_String()) == 0)
                     {
                         ListViewSetItemCheckbox(FRMRegsListview, k, 1);
                     }

@@ -1127,11 +1127,7 @@ void UpdateRegs(long dwThreadID)
             fld TBYTE ptr [eax]
             fstp qword ptr [pDoubleReg]
         }
-#if _MSC_VER >= 1400
-		sprintf_s(szScratchPad, strlen(szScratchPad)-1, "%+1.17Le", pDoubleReg);
-#else
 		sprintf(szScratchPad, "%+1.17Le", pDoubleReg);
-#endif
         ListViewSetSubItem(hRegistersListView, szScratchPad, REG_ST0 + i, 0);
         HighLightReg = FALSE;
         for(j = 0; j < 10; j++)
@@ -1182,11 +1178,7 @@ void UpdateRegs(long dwThreadID)
     for(i = 0; i < 8; i++)
     {
         pReg = (long *) (Context.FloatSave.RegisterArea + (10 * i));
-#if _MSC_VER >= 1400
-		sprintf_s(szScratchPad, strlen(szScratchPad)-1, "%08lx%08lx", pReg[1], pReg[0]);
-#else
         sprintf(szScratchPad, "%08lx%08lx", pReg[1], pReg[0]);
-#endif
         ListViewSetSubItem(hRegistersListView, szScratchPad, REG_MM0 + i, 0);
 
         HighLightReg = FALSE;
@@ -1207,11 +1199,7 @@ void UpdateRegs(long dwThreadID)
             fld dword ptr [eax]
             fstp dword ptr [pFloatReg]
         }
-#if _MSC_VER >= 1400
-		sprintf_s(szScratchPad, strlen(szScratchPad)-1, "%+1.5le", pFloatReg);
-#else
         sprintf(szScratchPad, "%+1.5le", pFloatReg);
-#endif
         ListViewSetSubItem(hRegistersListView, szScratchPad, REG_MM00 + (i * 2), 0);
 
         HighLightReg = FALSE;
@@ -1232,11 +1220,7 @@ void UpdateRegs(long dwThreadID)
             fld dword ptr [eax + 4]
             fstp dword ptr [pFloatReg]
         }
-#if _MSC_VER >= 1400
-		sprintf_s(szScratchPad, strlen(szScratchPad)-1, "%+1.5le", pFloatReg);
-#else
         sprintf(szScratchPad, "%+1.5le", pFloatReg);
-#endif
         ListViewSetSubItem(hRegistersListView, szScratchPad, REG_MM01 + (i * 2), 0);
 
         HighLightReg = FALSE;
@@ -1258,11 +1242,7 @@ void UpdateRegs(long dwThreadID)
     for(i = 0; i < 8; i++)
     {
         pReg = (long *) (Context.ExtendedRegisters + (16 * (i + 10)));
-#if _MSC_VER >= 1400
-		sprintf_s(szScratchPad, strlen(szScratchPad)-1, "%08lx%08lx%08lx%08lx", pReg[3], pReg[2], pReg[1], pReg[0]);
-#else
         sprintf(szScratchPad, "%08lx%08lx%08lx%08lx", pReg[3], pReg[2], pReg[1], pReg[0]);
-#endif
         ListViewSetSubItem(hRegistersListView, szScratchPad, REG_XMM0 + i, 0);
 
         HighLightReg = FALSE;
@@ -1284,11 +1264,7 @@ void UpdateRegs(long dwThreadID)
             fld dword ptr [eax]
             fstp dword ptr [pFloatReg]
         }
-#if _MSC_VER >= 1400
-		sprintf_s(szScratchPad, strlen(szScratchPad)-1, "%+1.5le", pFloatReg);
-#else
         sprintf(szScratchPad, "%+1.5le", pFloatReg);
-#endif
         ListViewSetSubItem(hRegistersListView, szScratchPad, REG_XMM00 + (i * 4), 0);
         HighLightReg = FALSE;
         for(j = 0; j < 4; j++)
@@ -1308,11 +1284,7 @@ void UpdateRegs(long dwThreadID)
             fld dword ptr [eax + 4]
             fstp dword ptr [pFloatReg]
         }
-#if _MSC_VER >= 1400
-		sprintf_s(szScratchPad, strlen(szScratchPad)-1, "%+1.5le", pFloatReg);
-#else
         sprintf(szScratchPad, "%+1.5le", pFloatReg);
-#endif
         ListViewSetSubItem(hRegistersListView, szScratchPad, REG_XMM01 + (i * 4), 0);
         HighLightReg = FALSE;
         for(j = 4; j < 8; j++)
@@ -1332,11 +1304,7 @@ void UpdateRegs(long dwThreadID)
             fld dword ptr [eax + 8]
             fstp dword ptr [pFloatReg]
         }
-#if _MSC_VER >= 1400
-		sprintf_s(szScratchPad, strlen(szScratchPad)-1, "%+1.5le", pFloatReg);
-#else
         sprintf(szScratchPad, "%+1.5le", pFloatReg);
-#endif
         ListViewSetSubItem(hRegistersListView, szScratchPad, REG_XMM02 + (i * 4), 0);
         HighLightReg = FALSE;
         for(j = 8; j < 12; j++)
@@ -1356,11 +1324,7 @@ void UpdateRegs(long dwThreadID)
             fld dword ptr [eax + 12]
             fstp dword ptr [pFloatReg]
         }
-#if _MSC_VER >= 1400
-		sprintf_s(szScratchPad, strlen(szScratchPad)-1, "%+1.5le", pFloatReg);
-#else
         sprintf(szScratchPad, "%+1.5le", pFloatReg);
-#endif
         ListViewSetSubItem(hRegistersListView, szScratchPad, REG_XMM03 + (i * 4), 0);
         HighLightReg = FALSE;
         for(j = 12; j < 16; j++)

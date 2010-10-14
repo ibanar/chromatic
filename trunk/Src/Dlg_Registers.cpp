@@ -97,7 +97,7 @@ void CALLBACK FrmRegsInitProc(HWND hWnd)
             {
                 for(j = 0; j <= ListBoxCount(FrmRegsListbox1) - 1; j++)
                 {
-                    if(strcmpi(ListBoxGetItem(FrmRegsListbox1, j).Get_String(), FoundReg.Get(i)->Content) == 0)
+                    if(_strcmpi(ListBoxGetItem(FrmRegsListbox1, j).Get_String(), FoundReg.Get(i)->Content) == 0)
                     {
                         FoundR = 1;
                         break;
@@ -121,8 +121,8 @@ void CALLBACK FrmRegsInitProc(HWND hWnd)
         RegRef = "";
         for(j = 0; j < FoundReg.Amount(); j++)
         {
-            if(strcmpi(ListBoxGetItem(FrmRegsListbox1, i).Get_String(),
-                       FoundReg.Get(j)->Content) == 0) RegRef = RegRef + (CStr) StringNumberComplement(j, 10).Get_String() + (CStr) "|";
+            if(_strcmpi(ListBoxGetItem(FrmRegsListbox1, i).Get_String(),
+                        FoundReg.Get(j)->Content) == 0) RegRef = RegRef + (CStr) StringNumberComplement(j, 10).Get_String() + (CStr) "|";
         }
         TabLines.Add(RegRef.Get_String());
         ListBoxSetItemData(FrmRegsListbox1, i, TabLines.Amount() - 1);

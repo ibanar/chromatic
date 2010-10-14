@@ -251,7 +251,7 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             MiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
                             return(0);
                         }
-                        if(strcmpi(ListViewGetSelItemText(FRMFTPListview, 1).Get_String(), "(DIR)") == 0)
+                        if(_strcmpi(ListViewGetSelItemText(FRMFTPListview, 1).Get_String(), "(DIR)") == 0)
                         {
                             SocketSendASCIIDatasCR(FTMFTPhSocketMain, "CWD " + (CStr) ListViewGetSelItemText(FRMFTPListview, 0).Get_String());
                         }
@@ -281,7 +281,7 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             return(0);
                         }
                         OldRename = ListViewGetSelItemText(FRMFTPListview, 0);
-                        if(strcmpi(ListViewGetSelItemText(FRMFTPListview, 1).Get_String(), "(DIR)") == 0)
+                        if(_strcmpi(ListViewGetSelItemText(FRMFTPListview, 1).Get_String(), "(DIR)") == 0)
                         {
                             NewRename = MiscInputBox(hwndDlg, "Enter new directory name", ICON_RENAMEDIR, OldRename, 0, INPUTBOX_SIMPLETEXT, "");
                         }
@@ -308,7 +308,7 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             case IDYES:
                                 CurrentOperation = FTPOP_DELETE;
                                 WriteFTPStatus("Deleting entries...");
-                                if(strcmpi(ListViewGetItemText(FRMFTPListview, CurrentSelected, 1).Get_String(), "(DIR)") == 0)
+                                if(_strcmpi(ListViewGetItemText(FRMFTPListview, CurrentSelected, 1).Get_String(), "(DIR)") == 0)
                                 {
                                     SocketSendASCIIDatasCR(FTMFTPhSocketMain, "RMD " + (CStr) ListViewGetItemText(FRMFTPListview, CurrentSelected, 0));
                                 }
@@ -414,7 +414,7 @@ int CALLBACK FRMFTPProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             MiscMsgBox(FRMFTPhWnd, "Not connected.", MB_ERROR, Requesters);
                             return(0);
                         }
-                        if(strcmpi(ListViewGetSelItemText(FRMFTPListview, 1).Get_String(), "(DIR)") == 0)
+                        if(_strcmpi(ListViewGetSelItemText(FRMFTPListview, 1).Get_String(), "(DIR)") == 0)
                         {
                             SocketSendASCIIDatasCR(FTMFTPhSocketMain, "CWD " + (CStr) ListViewGetSelItemText(FRMFTPListview, 0));
                         }
@@ -546,7 +546,7 @@ void FillAccount(long AccNumber)
     FTPGotPass = 0;
     RetrieveUserP = IniReadKey(AccName, "FTPSavePass", FtpAccountsIniFile);
     if(RetrieveUserP.Len() != 0) FTPGotPass = RetrieveUserP.Get_Long();
-    if(strcmpi(RetrieveUserP.Get_String(), "2") == 0)
+    if(_strcmpi(RetrieveUserP.Get_String(), "2") == 0)
     {
         // Load and decrypt it
         FTPUserPass = DecryptPassword(IniReadKey(AccName, "FTPUserPass", FtpAccountsIniFile));
@@ -596,7 +596,7 @@ void DispatchFTPMessages(CStr Message)
                     if(SavedMessage.In_Str(1, "PORT", Text_Compare) != 0)
                     {
 SkipDirs:               CurrentSize = ListViewGetItemText(FRMFTPListview, CurrentSelected, 1);
-                        if(strcmpi(CurrentSize.Get_String(), "(DIR)") == 0)
+                        if(_strcmpi(CurrentSize.Get_String(), "(DIR)") == 0)
                         {
 SkipFile:                   CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelected);
                             if(CurrentSelected == -1)
@@ -700,7 +700,7 @@ SkipFile:                   CurrentSelected = ListViewGetSelItem(FRMFTPListview,
                     else
                     {
                         // Download next file/directory
-                        if(strcmpi(ListViewGetItemText(FRMFTPListview, CurrentSelected, 1).Get_String(), "(DIR)") != 0)
+                        if(_strcmpi(ListViewGetItemText(FRMFTPListview, CurrentSelected, 1).Get_String(), "(DIR)") != 0)
                         {
                             FRMFTPhSocketDown = FTPInitiatePort(FTMFTPhSocketMain, &FRMFTPSocketInfos, FRMFTPhWnd, WM_DOWNLOADSOCKET);
                         }
@@ -775,7 +775,7 @@ SkipFile:                   CurrentSelected = ListViewGetSelItem(FRMFTPListview,
                 else
                 {
                     // Delete next file/directory
-                    if(strcmpi(ListViewGetItemText(FRMFTPListview, CurrentSelected, 1).Get_String(), "(DIR)") == 0)
+                    if(_strcmpi(ListViewGetItemText(FRMFTPListview, CurrentSelected, 1).Get_String(), "(DIR)") == 0)
                     {
                         SocketSendASCIIDatasCR(FTMFTPhSocketMain, "RMD " + (CStr) ListViewGetItemText(FRMFTPListview, CurrentSelected, 0).Get_String());
                     }
@@ -912,7 +912,7 @@ SkipFile:                   CurrentSelected = ListViewGetSelItem(FRMFTPListview,
                         else
                         {
                             // Delete next file/directory
-                            if(strcmpi(ListViewGetItemText(FRMFTPListview, CurrentSelected, 1).Get_String(), "(DIR)") == 0)
+                            if(_strcmpi(ListViewGetItemText(FRMFTPListview, CurrentSelected, 1).Get_String(), "(DIR)") == 0)
                             {
                                 SocketSendASCIIDatasCR(FTMFTPhSocketMain, "RMD " + (CStr) ListViewGetItemText(FRMFTPListview, CurrentSelected, 0));
                             }
@@ -1416,15 +1416,15 @@ void FillPermissions(void)
         PermFilePerms.Add("");
         PermNbrFiles++;
         FDPerm = ListViewGetItemText(FRMFTPListview, CurrentSelected, 3);
-        if(strcmpi(FDPerm.Mid(1, 1).Get_String(), "r") == 0) PermOwnerR++;
-        if(strcmpi(FDPerm.Mid(2, 1).Get_String(), "w") == 0) PermOwnerW++;
-        if(strcmpi(FDPerm.Mid(3, 1).Get_String(), "x") == 0) PermOwnerX++;
-        if(strcmpi(FDPerm.Mid(4, 1).Get_String(), "r") == 0) PermGroupR++;
-        if(strcmpi(FDPerm.Mid(5, 1).Get_String(), "w") == 0) PermGroupW++;
-        if(strcmpi(FDPerm.Mid(6, 1).Get_String(), "x") == 0) PermGroupX++;
-        if(strcmpi(FDPerm.Mid(7, 1).Get_String(), "r") == 0) PermOtherR++;
-        if(strcmpi(FDPerm.Mid(8, 1).Get_String(), "w") == 0) PermOtherW++;
-        if(strcmpi(FDPerm.Mid(9, 1).Get_String(), "x") == 0) PermOtherX++;
+        if(_strcmpi(FDPerm.Mid(1, 1).Get_String(), "r") == 0) PermOwnerR++;
+        if(_strcmpi(FDPerm.Mid(2, 1).Get_String(), "w") == 0) PermOwnerW++;
+        if(_strcmpi(FDPerm.Mid(3, 1).Get_String(), "x") == 0) PermOwnerX++;
+        if(_strcmpi(FDPerm.Mid(4, 1).Get_String(), "r") == 0) PermGroupR++;
+        if(_strcmpi(FDPerm.Mid(5, 1).Get_String(), "w") == 0) PermGroupW++;
+        if(_strcmpi(FDPerm.Mid(6, 1).Get_String(), "x") == 0) PermGroupX++;
+        if(_strcmpi(FDPerm.Mid(7, 1).Get_String(), "r") == 0) PermOtherR++;
+        if(_strcmpi(FDPerm.Mid(8, 1).Get_String(), "w") == 0) PermOtherW++;
+        if(_strcmpi(FDPerm.Mid(9, 1).Get_String(), "x") == 0) PermOtherX++;
         CurrentSelected = ListViewGetSelItem(FRMFTPListview, CurrentSelected);
     }
 }
@@ -1460,14 +1460,14 @@ int CALLBACK FRMFTPListviewSort(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSor
 
     Data1 = ListViewGetItemText(FRMFTPListview, lParam1, 0);
     Data2 = ListViewGetItemText(FRMFTPListview, lParam2, 0);
-    if((strcmpi(Data1.Get_String(), ".") == 0) ||
-       (strcmpi(Data2.Get_String(), ".") == 0))
+    if((_strcmpi(Data1.Get_String(), ".") == 0) ||
+       (_strcmpi(Data2.Get_String(), ".") == 0))
     {
         ReturnValue = 0;
         goto ExitSort;
     }
-    if((strcmpi(Data1.Get_String(), "..") == 0) ||
-       (strcmpi(Data2.Get_String(), "..") == 0))
+    if((_strcmpi(Data1.Get_String(), "..") == 0) ||
+       (_strcmpi(Data2.Get_String(), "..") == 0))
     {
         ReturnValue = 0;
         goto ExitSort;
@@ -1478,14 +1478,14 @@ int CALLBACK FRMFTPListviewSort(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSor
     {
         case 0:
             // Names
-            ReturnValue = strcmpi(Data1.Get_String(), Data2.Get_String());
+            ReturnValue = _strcmpi(Data1.Get_String(), Data2.Get_String());
             break;
         case 1:
             // Sizes
             // Dir entries are always lower
-            if(strcmpi(Data1.Get_String(), "(DIR)") == 0)
+            if(_strcmpi(Data1.Get_String(), "(DIR)") == 0)
             {
-                if(strcmpi(Data2.Get_String(), "(DIR)") == 0)
+                if(_strcmpi(Data2.Get_String(), "(DIR)") == 0)
                 {
                     ReturnValue = 0;
                     goto ExitSort;
@@ -1493,7 +1493,7 @@ int CALLBACK FRMFTPListviewSort(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSor
                 ReturnValue = -1;
                 goto ExitSort;
             }
-            if(strcmpi(Data2.Get_String(), "(DIR)") == 0)
+            if(_strcmpi(Data2.Get_String(), "(DIR)") == 0)
             {
                 ReturnValue = 1;
                 goto ExitSort;
@@ -1521,7 +1521,7 @@ int CALLBACK FRMFTPListviewSort(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSor
             break;
         case 3:
             // Permissions
-            ReturnValue = strcmpi(Data1.Get_String(), Data2.Get_String());
+            ReturnValue = _strcmpi(Data1.Get_String(), Data2.Get_String());
             break;
     }
 ExitSort:

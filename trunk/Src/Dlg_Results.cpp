@@ -345,7 +345,7 @@ int CALLBACK FRMResultsSort(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort) {
     switch(lParamSort)
     {
         case 0:
-            ReturnValue = strcmpi(ListViewGetItemText(FrmResultsListView, lParam1, lParamSort).Get_String(), ListViewGetItemText(FrmResultsListView, lParam2, lParamSort).Get_String());
+            ReturnValue = _strcmpi(ListViewGetItemText(FrmResultsListView, lParam1, lParamSort).Get_String(), ListViewGetItemText(FrmResultsListView, lParam2, lParamSort).Get_String());
             break;
         case 1:
             Value1Lng = ListViewGetItemText(FrmResultsListView, lParam1, lParamSort).Get_Long();
@@ -364,10 +364,10 @@ int CALLBACK FRMResultsSort(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort) {
             }
             break;
         case 2:
-            ReturnValue = strcmpi(ListViewGetItemText(FrmResultsListView, lParam1, lParamSort).Get_String(), ListViewGetItemText(FrmResultsListView, lParam2, lParamSort).Get_String());
+            ReturnValue = _strcmpi(ListViewGetItemText(FrmResultsListView, lParam1, lParamSort).Get_String(), ListViewGetItemText(FrmResultsListView, lParam2, lParamSort).Get_String());
             break;
         case 3:
-            ReturnValue = strcmpi(ListViewGetItemText(FrmResultsListView, lParam1, lParamSort).Get_String(), ListViewGetItemText(FrmResultsListView, lParam2, lParamSort).Get_String());
+            ReturnValue = _strcmpi(ListViewGetItemText(FrmResultsListView, lParam1, lParamSort).Get_String(), ListViewGetItemText(FrmResultsListView, lParam2, lParamSort).Get_String());
             break;
     }
     ListViewReOrder(FrmResultsListView);

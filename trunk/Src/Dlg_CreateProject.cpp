@@ -113,7 +113,7 @@ int CALLBACK FRMCreateProjectProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM
             FRMCreateProjectLabel = CreateLabel(4, 268, 70, 16, hwndDlg, "Project name :", 6, 0, 0, 0);
             FRMCreateProjectStartup = CreateCheckBox(7, 304, 170, 15, hwndDlg, "Show at startup", 7, 0, WS_TABSTOP | WS_GROUP, 0);
             ShowAtStartup = IniReadKey("Layout", "ShowProjects", MainIniFile);
-            if(ShowAtStartup.Len() != 0) if(strcmpi(ShowAtStartup.Get_String(), "1") == 0) CheckBoxSetState(FRMCreateProjectStartup, 1);
+            if(ShowAtStartup.Len() != 0) if(_strcmpi(ShowAtStartup.Get_String(), "1") == 0) CheckBoxSetState(FRMCreateProjectStartup, 1);
             FRMCreateProjectRecent = CreateListView(4, 26, 483, 261, hwndDlg, 8, GlobalImageList1, 0, LVS_EX_FULLROWSELECT | LVS_EX_LABELTIP, LVS_REPORT | LVS_SINGLESEL | WS_TABSTOP | LVS_NOSORTHEADER, WS_EX_STATICEDGE);
             ListViewAddCol(FRMCreateProjectRecent, "Folder", 253, 1);
             ListViewAddCol(FRMCreateProjectRecent, "File", 208, 0);
@@ -367,7 +367,7 @@ long GetTabNumber(CStr TabNameToSearch)
 
     for(i = 0; i < FRMCreateProjectTabs.Amount(); i++)
     {
-        if(strcmpi(TabNameToSearch.Get_String(), FRMCreateProjectTabs.Get(i)->Content) == 0) break;
+        if(_strcmpi(TabNameToSearch.Get_String(), FRMCreateProjectTabs.Get(i)->Content) == 0) break;
     }
     return(i);
 }

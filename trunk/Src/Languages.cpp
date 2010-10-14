@@ -427,25 +427,25 @@ void RegisterCodeMaxLanguage(int Update_Idx)
     CM_LANGUAGE *NewCurLanguageToRegister = NULL;
     
     memset(&CurLanguageToRegister, 0, sizeof(CurLanguageToRegister));
-    CurLanguageToRegister.pszKeywords = strdup(LangColorA.Get_String());
-    CurLanguageToRegister.pszTagAttributeNames = strdup(LangColorB.Get_String());
-    CurLanguageToRegister.pszTagElementNames = strdup(LangColorC.Get_String());
-    CurLanguageToRegister.pszTagEntities = strdup(LangColorD.Get_String());
-    CurLanguageToRegister.pszOperators = strdup(LangColorE.Get_String());
+    CurLanguageToRegister.pszKeywords = _strdup(LangColorA.Get_String());
+    CurLanguageToRegister.pszTagAttributeNames = _strdup(LangColorB.Get_String());
+    CurLanguageToRegister.pszTagElementNames = _strdup(LangColorC.Get_String());
+    CurLanguageToRegister.pszTagEntities = _strdup(LangColorD.Get_String());
+    CurLanguageToRegister.pszOperators = _strdup(LangColorE.Get_String());
     // New colors
-    CurLanguageToRegister.pszExtra1 = strdup(LangColorF.Get_String());
-    CurLanguageToRegister.pszExtra2 = strdup(LangColorG.Get_String());
-    CurLanguageToRegister.pszExtra3 = strdup(LangColorH.Get_String());
+    CurLanguageToRegister.pszExtra1 = _strdup(LangColorF.Get_String());
+    CurLanguageToRegister.pszExtra2 = _strdup(LangColorG.Get_String());
+    CurLanguageToRegister.pszExtra3 = _strdup(LangColorH.Get_String());
     CurLanguageToRegister.dwHighLightNbrs = LangHighLightNbr.Get_Long();
-    CurLanguageToRegister.pszHexType = strdup(LangHexType.Get_String());
-    CurLanguageToRegister.pszBinType = strdup(LangBinType.Get_String());
-    CurLanguageToRegister.pszSingleLineComments = strdup(LangSingleComment.Get_String());
-    CurLanguageToRegister.pszStringDelims = strdup(LangStringsDelimiters.Get_String());
+    CurLanguageToRegister.pszHexType = _strdup(LangHexType.Get_String());
+    CurLanguageToRegister.pszBinType = _strdup(LangBinType.Get_String());
+    CurLanguageToRegister.pszSingleLineComments = _strdup(LangSingleComment.Get_String());
+    CurLanguageToRegister.pszStringDelims = _strdup(LangStringsDelimiters.Get_String());
     CurLanguageToRegister.bIsCaseSensitive = LangCaseSensitive;
-    CurLanguageToRegister.pszScopeKeywords1 = strdup(LangScopeKeyWord1.Get_String());
-    CurLanguageToRegister.pszScopeKeywords2 = strdup(LangScopeKeyWord2.Get_String());
-    CurLanguageToRegister.pszMultiLineComments1 = strdup(LangMultiLineComment1.Get_String());
-    CurLanguageToRegister.pszMultiLineComments2 = strdup(LangMultiLineComment2.Get_String());
+    CurLanguageToRegister.pszScopeKeywords1 = _strdup(LangScopeKeyWord1.Get_String());
+    CurLanguageToRegister.pszScopeKeywords2 = _strdup(LangScopeKeyWord2.Get_String());
+    CurLanguageToRegister.pszMultiLineComments1 = _strdup(LangMultiLineComment1.Get_String());
+    CurLanguageToRegister.pszMultiLineComments2 = _strdup(LangMultiLineComment2.Get_String());
     if(LangEscapeChar.Len() != 0) CurLanguageToRegister.chEscape = LangEscapeChar.Get_String()[0];
     else CurLanguageToRegister.chEscape = 0;
     if(LangTerminatorChar.Len() != 0) CurLanguageToRegister.chTerminator = LangTerminatorChar.Get_String()[0];
@@ -453,26 +453,26 @@ void RegisterCodeMaxLanguage(int Update_Idx)
     if(LangStyle == 0) CurLanguageToRegister.dwStyle = CMLS_PROCEDURAL;
     else CurLanguageToRegister.dwStyle = CMLS_SGML;
     // Custom extensions
-    CurLanguageToRegister.pszLanguageName = strdup(LangName.Get_String());
-    CurLanguageToRegister.pszHelpFileA = strdup(LangHelpA.Get_String());
-    CurLanguageToRegister.pszHelpFileB = strdup(LangHelpB.Get_String());
-    CurLanguageToRegister.pszHelpFileC = strdup(LangHelpC.Get_String());
-    CurLanguageToRegister.pszHelpFileD = strdup(LangHelpD.Get_String());
-    CurLanguageToRegister.pszHelpFileE = strdup(LangHelpE.Get_String());
-    CurLanguageToRegister.pszHelpFileF = strdup(LangHelpF.Get_String());
-    CurLanguageToRegister.pszHelpFileG = strdup(LangHelpG.Get_String());
-    CurLanguageToRegister.pszHelpFileH = strdup(LangHelpH.Get_String());
-    CurLanguageToRegister.pszExtensions = strdup(LangExtensions.Get_String());
-    CurLanguageToRegister.pszProcEntry = strdup(LangProc.Get_String());
-    CurLanguageToRegister.pszEndpEntry = strdup(LangEndp.Get_String());
-    CurLanguageToRegister.pszGUIDEntry = strdup(LangGUID.Get_String());
-    CurLanguageToRegister.pszIncludeEntry = strdup(LangInclude.Get_String());
-    CurLanguageToRegister.pszIncludeName = strdup(LangIncludeName.Get_String());
-    CurLanguageToRegister.pszIncludeNameFoot = strdup(LangIncludeNameFoot.Get_String());
-    CurLanguageToRegister.pszFileName = strdup(LangFileName.Get_String());
+    CurLanguageToRegister.pszLanguageName = _strdup(LangName.Get_String());
+    CurLanguageToRegister.pszHelpFileA = _strdup(LangHelpA.Get_String());
+    CurLanguageToRegister.pszHelpFileB = _strdup(LangHelpB.Get_String());
+    CurLanguageToRegister.pszHelpFileC = _strdup(LangHelpC.Get_String());
+    CurLanguageToRegister.pszHelpFileD = _strdup(LangHelpD.Get_String());
+    CurLanguageToRegister.pszHelpFileE = _strdup(LangHelpE.Get_String());
+    CurLanguageToRegister.pszHelpFileF = _strdup(LangHelpF.Get_String());
+    CurLanguageToRegister.pszHelpFileG = _strdup(LangHelpG.Get_String());
+    CurLanguageToRegister.pszHelpFileH = _strdup(LangHelpH.Get_String());
+    CurLanguageToRegister.pszExtensions = _strdup(LangExtensions.Get_String());
+    CurLanguageToRegister.pszProcEntry = _strdup(LangProc.Get_String());
+    CurLanguageToRegister.pszEndpEntry = _strdup(LangEndp.Get_String());
+    CurLanguageToRegister.pszGUIDEntry = _strdup(LangGUID.Get_String());
+    CurLanguageToRegister.pszIncludeEntry = _strdup(LangInclude.Get_String());
+    CurLanguageToRegister.pszIncludeName = _strdup(LangIncludeName.Get_String());
+    CurLanguageToRegister.pszIncludeNameFoot = _strdup(LangIncludeNameFoot.Get_String());
+    CurLanguageToRegister.pszFileName = _strdup(LangFileName.Get_String());
     if(LangDoubleSlash.Len() != 0)
     {
-        if(strcmpi(LangDoubleSlash.Get_String(), "1") == 0)
+        if(_strcmpi(LangDoubleSlash.Get_String(), "1") == 0)
         {
             CurLanguageToRegister.pszDoubleSlash = 1;
         }
@@ -483,7 +483,7 @@ void RegisterCodeMaxLanguage(int Update_Idx)
     }
     if(LangInterlaceProc.Len() != 0)
     {
-        if(strcmpi(LangInterlaceProc.Get_String(), "1") == 0)
+        if(_strcmpi(LangInterlaceProc.Get_String(), "1") == 0)
         {
             CurLanguageToRegister.pszInterlaceProc = 1;
         }
@@ -494,7 +494,7 @@ void RegisterCodeMaxLanguage(int Update_Idx)
     }
     if(LangOphanBlock.Len() != 0)
     {
-        if(strcmpi(LangOphanBlock.Get_String(), "1") == 0)
+        if(_strcmpi(LangOphanBlock.Get_String(), "1") == 0)
         {
             CurLanguageToRegister.pszOrphanBlock = 1;
         }
@@ -503,8 +503,8 @@ void RegisterCodeMaxLanguage(int Update_Idx)
             CurLanguageToRegister.pszOrphanBlock = 0;
         }
     }
-    CurLanguageToRegister.pszOpenBlockProc = strdup(LangOpenBlockProc.Get_String());
-    CurLanguageToRegister.pszCloseBlockProc = strdup(LangCloseBlockProc.Get_String());
+    CurLanguageToRegister.pszOpenBlockProc = _strdup(LangOpenBlockProc.Get_String());
+    CurLanguageToRegister.pszCloseBlockProc = _strdup(LangCloseBlockProc.Get_String());
 
     NewCurLanguageToRegister = (CM_LANGUAGE *) malloc(sizeof(CurLanguageToRegister));
     RtlCopyMemory((void *) NewCurLanguageToRegister, &CurLanguageToRegister, sizeof(CurLanguageToRegister));
@@ -545,8 +545,8 @@ CStr GetLanguageToOpen(CStr LFileName)
             ExtensionsArray = StringSplit((char *) GetLangDat(o)->pszExtensions, " ");
             for(p = 0; p <= (long) StringGetSplitUBound(ExtensionsArray); p++)
             {
-                if(strcmpi(StringGetSplitElement((char *) GetLangDat(o)->pszExtensions, ExtensionsArray, p).Get_String(),
-                                                 ExtToSearch.Get_String()) == 0)
+                if(_strcmpi(StringGetSplitElement((char *) GetLangDat(o)->pszExtensions, ExtensionsArray, p).Get_String(),
+                                                  ExtToSearch.Get_String()) == 0)
                 {
                     BufString = (char *) GetLangDat(o)->pszLanguageName;
                     StringReleaseSplit(ExtensionsArray);
@@ -574,7 +574,7 @@ long GetLanguageOffset(CStr LanguageName)
         {
             if(strlen(GetLangDat(i)->pszLanguageName) != 0)
             {
-                if(strcmpi(GetLangDat(i)->pszLanguageName, LanguageName.Get_String()) == 0)
+                if(_strcmpi(GetLangDat(i)->pszLanguageName, LanguageName.Get_String()) == 0)
                 {
                     ReturnValue = i;
                     break;

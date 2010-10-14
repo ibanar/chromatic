@@ -713,10 +713,10 @@ void StorePropertyHeader(long PropNumber, int *hMem, CStr PropName, long PropTyp
 
     PosDatas = OBJECT_LEN + (PropNumber * PROPERTY_LEN);
     // Store name of the property as a new pointer
-    hMem[PosDatas + PROPERTY_NAME] = (long) strdup(PropName.Get_String());
+    hMem[PosDatas + PROPERTY_NAME] = (long) _strdup(PropName.Get_String());
     hMem[PosDatas + PROPERTY_TYPE] = PropType;
     // Store datas of the property
-    hMem[PosDatas + PROPERTY_STORAGE] = (long) strdup(PropStringStore.Get_String());
+    hMem[PosDatas + PROPERTY_STORAGE] = (long) _strdup(PropStringStore.Get_String());
     hMem[PosDatas + PROPERTY_FLAGS] = PropFlags;
     hMem[PosDatas + PROPERTY_EXTEND] = PropExtend;
     hMem[PosDatas + PROPERTY_ROUTINE] = PropRoutine;
@@ -754,7 +754,7 @@ void SetPropertyDatas(int *hMem, long PropNumber, long PropIndex, long Datas)
         case PROPERTY_STORAGE:
             // These two ones are strings
             free((void *) hMem[PosDatas + PropIndex]);
-            hMem[PosDatas + PropIndex] = (long) strdup((char *) Datas);
+            hMem[PosDatas + PropIndex] = (long) _strdup((char *) Datas);
             break;
         default:
             hMem[PosDatas + PropIndex] = Datas;

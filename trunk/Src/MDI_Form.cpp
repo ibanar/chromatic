@@ -158,7 +158,7 @@ void CreateMDIForm(void)
     hMDIform.hWnd = CreateMDIDialog(Mdi_Datas.rcNormalPosition.left, Mdi_Datas.rcNormalPosition.top, Mdi_Datas.rcNormalPosition.right - Mdi_Datas.rcNormalPosition.left, Mdi_Datas.rcNormalPosition.bottom - Mdi_Datas.rcNormalPosition.top, 0, 0, LoadIcon(ApphInstance, MAKEINTRESOURCE(APP_ICON)), Requesters, &MDIInitProc, CurrentMDIProc, 0, Mdi_Datas.showCmd);
     if(Nbr_Params == 10) SetWindowPlacement(hMDIform.hWnd, &Mdi_Datas);
     DragAcceptFiles(hMDIform.hClient, AcceptFiles);
-    if(TopMostProp.Len() != 0) if(strcmpi(TopMostProp.Get_String(), "1") == 0) ControlSetTopMost(hMDIform.hWnd);
+    if(TopMostProp.Len() != 0) if(_strcmpi(TopMostProp.Get_String(), "1") == 0) ControlSetTopMost(hMDIform.hWnd);
     if(FullScreenMode == 1) SetFullScreenMode();
 }
 
@@ -1388,7 +1388,7 @@ NoDropDown:         return(0);
             {
                 // Minimize to SysTray
                 SysTrayPref = IniReadKey("Layout", "UseSysTray", MainIniFile);
-                if(SysTrayPref.Len() != 0) if(strcmpi(SysTrayPref.Get_String(), "1") == 0) ControlSetSysToTray(ApphInstance, hWnd, SYSTRAY_MSG, APP_ICON, Requesters);
+                if(SysTrayPref.Len() != 0) if(_strcmpi(SysTrayPref.Get_String(), "1") == 0) ControlSetSysToTray(ApphInstance, hWnd, SYSTRAY_MSG, APP_ICON, Requesters);
             }
             return(DefWindowProc(hWnd, uMsg, wParam, lParam));
 
@@ -1567,7 +1567,7 @@ int CALLBACK EnumSearchFileProc(HWND hWnd, long lParam)
         if(GetWindowLong(hWnd, GWL_USERDATA) == 0) goto NoSearchFileProc;
         ChildStruct = LoadStructure(hWnd);
         ChildFile = ChildStruct->RFile;
-        if(strcmpi(ChildFile.Get_String(), SearchFileName.Get_String()) == 0)
+        if(_strcmpi(ChildFile.Get_String(), SearchFileName.Get_String()) == 0)
         {
             FoundOpened = 1;
             FoundOpenedhWnd = hWnd;
@@ -1640,7 +1640,7 @@ HWND OpenFileNorm(CStr FileName, long ReadO, long CheckOp, long ForceCreate, lon
             DirectZoom = IniReadKey("Layout", "AutoZoomFiles", MainIniFile);
             if(DirectZoom.Len() != 0)
             {
-                if(strcmpi(DirectZoom.Get_String(), "1") == 0)
+                if(_strcmpi(DirectZoom.Get_String(), "1") == 0)
                 {
                     ControlVisible(FoundOpenedhWnd, 1);
                     SetFocus(FoundOpenedhWnd);
@@ -1686,7 +1686,7 @@ HWND OpenFileNorm(CStr FileName, long ReadO, long CheckOp, long ForceCreate, lon
         FoundInArray = 0;
         for(i = 0; i < LastOpened.Amount(); i++)
         {
-            if(strcmpi(LastOpened.Get(i)->Content, FileName.Get_String()) == 0)
+            if(_strcmpi(LastOpened.Get(i)->Content, FileName.Get_String()) == 0)
             {
                 FoundInArray = 1;
                 break;
@@ -1926,7 +1926,7 @@ CStr SaveIt(HWND hWnd)
                 if(ChildStruct->RFile->Len() != 0)
                 {
                     // File already named ?
-                    if(strcmpi(ChildStruct->RFile->Left(18).Get_String(), "<untitled document") == 0)
+                    if(_strcmpi(ChildStruct->RFile->Left(18).Get_String(), "<untitled document") == 0)
                     {
                         BufString = SaveItAs(hWnd, 0, "", "");
                     }

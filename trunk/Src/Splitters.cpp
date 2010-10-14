@@ -2934,13 +2934,13 @@ void JumpToErrorFromOutBox(void)
             } else {
 TestLCC32Error: // LCC32
                 DoLCC32 = 0;
-                if(strcmpi(StatusLine.Left(6).Get_String(), "error ") == 0)
+                if(_strcmpi(StatusLine.Left(6).Get_String(), "error ") == 0)
                 {
                     DoLCC32++;
                     // Format it to be GNU compatible
                     StatusLine = StatusLine.Mid(7);
                 }
-                else if(strcmpi(StatusLine.Left(8).Get_String(), "warning ") == 0)
+                else if(_strcmpi(StatusLine.Left(8).Get_String(), "warning ") == 0)
                 {
                     DoLCC32++;
                     // Format it to be GNU compatible
@@ -2985,7 +2985,7 @@ TestLCC32Error: // LCC32
         }
         else
         {
-            if(strcmpi(StatusLine.Left(8).Get_String(), "warning ") == 0) goto TestLCC32Error;
+            if(_strcmpi(StatusLine.Left(8).Get_String(), "warning ") == 0) goto TestLCC32Error;
             if(StatusLine.In_Str(1, "warning", Text_Compare) != 0)
             {
                 PosAsm = StatusLine.In_Str(1, "(");

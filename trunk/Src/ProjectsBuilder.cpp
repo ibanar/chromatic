@@ -661,7 +661,7 @@ void SaveProject(void)
         IconName = FileGetFileName(ProjectTypeScheduledImg);
         // Check if new icon is same as old one
         BufString = ProjectDir + (CStr) "\\" + (CStr) ProjectTypeImg;
-        if(strcmpi(BufString.Get_String(), ProjectTypeScheduledImg.Get_String()) != 0)
+        if(_strcmpi(BufString.Get_String(), ProjectTypeScheduledImg.Get_String()) != 0)
         {
             // Check if new icon actually exists
             if(FileExist(ProjectTypeScheduledImg) != 0)
@@ -671,7 +671,7 @@ void SaveProject(void)
                 DeleteFile(BufString.Get_String());
                 // Check if new icon to copy is in same directory
                 BufString = ProjectDir + (CStr) "\\" + (CStr) IconName;
-                if(strcmpi(BufString.Get_String(), ProjectTypeScheduledImg.Get_String()) != 0)
+                if(_strcmpi(BufString.Get_String(), ProjectTypeScheduledImg.Get_String()) != 0)
                 {
                     // Copy the new icon file
                     BufString = ProjectDir + (CStr) "\\" + (CStr) IconName;
@@ -1000,7 +1000,7 @@ long CheckProjectFile(CStr FileName)
             }
             // Is it an old project ?
             BufString = "[MASMEDPROJECT]";
-            if(strcmpi(PrjHeader.Get_String(),BufString.Get_String()) == 0) return(1);
+            if(_strcmpi(PrjHeader.Get_String(),BufString.Get_String()) == 0) return(1);
 
             PrjHeader = PrjHeader.String(9,1);
             PrjFileHandle = FileOpenR(FileName);
@@ -1011,7 +1011,7 @@ long CheckProjectFile(CStr FileName)
             }
             // New style project ?
             BufString = "[PROJECT]";
-            if(strcmpi(PrjHeader.Get_String(),BufString.Get_String()) == 0) return(2);
+            if(_strcmpi(PrjHeader.Get_String(),BufString.Get_String()) == 0) return(2);
         }
     }
     return(0);
@@ -1150,16 +1150,16 @@ long RealOpenPrj(CStr PrjName)
         if(!CheckMissingFile(EntryToAdd, FALSE, hTreeViewLibs, "", 0, 0))
         {
             // File not found: modify it and test again
-            if(strcmpi(EntryToAdd.Extract_FileName_Extension().Get_String(), "a") == 0)
+            if(_strcmpi(EntryToAdd.Extract_FileName_Extension().Get_String(), "a") == 0)
             {
                 EntryToAdd = EntryToAdd.Replace_FileName_Extension("lib");
                 Lib_Dir = EntryToAdd.Extract_Directory();
                 EntryToAdd = EntryToAdd.Extract_FileName();
                 // libxxx.a ?
-                if(strcmpi(EntryToAdd.Left(3).Get_String(), "lib") == 0) EntryToAdd = EntryToAdd.Mid(4);
+                if(_strcmpi(EntryToAdd.Left(3).Get_String(), "lib") == 0) EntryToAdd = EntryToAdd.Mid(4);
                 EntryToAdd = Lib_Dir + EntryToAdd.Extract_FileName();
             }
-            else if(strcmpi(EntryToAdd.Extract_FileName_Extension().Get_String(), "lib") == 0)
+            else if(_strcmpi(EntryToAdd.Extract_FileName_Extension().Get_String(), "lib") == 0)
             {
                 EntryToAdd = EntryToAdd.Replace_FileName_Extension("a");
                 Lib_Dir = EntryToAdd.Extract_Directory();
@@ -1218,11 +1218,11 @@ long RealOpenPrj(CStr PrjName)
         if(!CheckMissingFile(EntryToAdd, FALSE, hTreeViewObjects, "", 0, 0))
         {
             // File not found: modify it and test again
-            if(strcmpi(EntryToAdd.Extract_FileName_Extension().Get_String(), "o") == 0)
+            if(_strcmpi(EntryToAdd.Extract_FileName_Extension().Get_String(), "o") == 0)
             {
                 EntryToAdd = EntryToAdd.Replace_FileName_Extension("obj");
             }
-            else if(strcmpi(EntryToAdd.Extract_FileName_Extension().Get_String(), "obj") == 0)
+            else if(_strcmpi(EntryToAdd.Extract_FileName_Extension().Get_String(), "obj") == 0)
             {
                 EntryToAdd = EntryToAdd.Replace_FileName_Extension("o");
             }
@@ -1772,7 +1772,7 @@ GetAccelerator:
             if(CtrlAltShiftStr.Len() != 0) CtrlAltShiftStr = CtrlAltShiftStr + ",";
             for(j = 0; j <= 84; j++)
             {
-                if(strcmpi(TabAccelerators[j], AccelKey.Get_String()) == 0)
+                if(_strcmpi(TabAccelerators[j], AccelKey.Get_String()) == 0)
                 {
                     StrToAddToAccel = "";
                     break;
@@ -1803,7 +1803,7 @@ GetAccelerator:
     UseRawComma = IniReadKey("RES", "UseRawComma", PrjBuildIniFile);
     if(UseRawComma.Len() == 0) UseRawComma = "0";
     BolUseRawComma = 0;
-    if(strcmpi(UseRawComma.Get_String(), "1") == 0) BolUseRawComma = 1;
+    if(_strcmpi(UseRawComma.Get_String(), "1") == 0) BolUseRawComma = 1;
     TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewRawdatas);
     k = 0;
     while(TreeViewChildEntry != 0)
@@ -1949,7 +1949,7 @@ NoWriteUserText:
     
     // Add resource compiler to batch file
     BuildSteps = IniReadKey("Layout", "StepRes", MainIniFile);
-    if(BuildSteps.Len() != 0) if(strcmpi(BuildSteps.Get_String(), "1") != 0) goto NoResStep;
+    if(BuildSteps.Len() != 0) if(_strcmpi(BuildSteps.Get_String(), "1") != 0) goto NoResStep;
     
     StopOnError = IniReadKey("RES", "StopOnError", PrjBuildIniFile);
     
@@ -1971,7 +1971,7 @@ NoWriteUserText:
         SkinValB = SkinCommand(SkinValB);
         //+ (CStr) CustomRedirector
         FileWriteLine(BatchFile, "\"" + (CStr) SkinVal + (CStr) "\" " + (CStr) SkinValB);
-        if(strcmpi(StopOnError.Get_String(), "1") == 0) FileWriteLine(BatchFile, "if errorlevel 1 goto AsmEnd");
+        if(_strcmpi(StopOnError.Get_String(), "1") == 0) FileWriteLine(BatchFile, "if errorlevel 1 goto AsmEnd");
     }
 NoResStep:
     
@@ -1980,7 +1980,7 @@ NoResStep:
     {
         SkinVal = IniReadKey("TEMPHEADER", "Opt" + (CStr) StringNumberComplement(i, 3).Get_String(), PrjBuildIniFile);
         if(SkinVal.Len() == 0) break;
-        if(strcmpi(SkinVal.Left(5).Get_String(), "LISTC") == 0)
+        if(_strcmpi(SkinVal.Left(5).Get_String(), "LISTC") == 0)
         {
             for(L = 0; L <= 999; L++)
             {
@@ -2086,7 +2086,7 @@ NoResStep:
     // --------------------------
     // --- Early including (mainly for Pascal language)
     // --------------------------
-    if(strcmpi(EarlyInclude.Get_String(), "1") == 0)
+    if(_strcmpi(EarlyInclude.Get_String(), "1") == 0)
     {
         // Add libraries to header
         TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewLibs);
@@ -2230,7 +2230,7 @@ NoResStep:
         TreeViewChildEntry = TreeViewGetNextItem(hTreeView, TreeViewChildEntry);
     }
     
-    if(strcmpi(EarlyInclude.Get_String(), "0") == 0)
+    if(_strcmpi(EarlyInclude.Get_String(), "0") == 0)
     {
         // Add libraries to header
         TreeViewChildEntry = TreeViewGetFirstItemChild(hTreeView, hTreeViewLibs);
@@ -2304,7 +2304,7 @@ NoResStep:
             // Transform object filename for source header construction
             ResponseEntry = StringReplace(DirectObjects, "%1", ResponseEntry, 1, -1, Text_Compare);
         }
-        if(strcmpi(ProjectTypeExt.Get_String(), "WINLIB") == 0)
+        if(_strcmpi(ProjectTypeExt.Get_String(), "WINLIB") == 0)
         {
             UserObjects = UserObjects + (CStr) LibForeChar + (CStr) ResponseEntry + (CStr) LibBackChar;
             ObjectsList = ObjectsList + (CStr) ObjLstPrefix + (CStr) ResponseEntry + (CStr) " ";
@@ -2390,14 +2390,14 @@ NoResStep:
         }
         ResponseEntry = StringReplace(SkinVal, "{OBJS}", UserObjects, 1, -1, Text_Compare);
         // Hack for TASM (needs + forechar)
-        if(strcmpi(ProjectTypeExt.Get_String(), "WINLIB") == 0)
+        if(_strcmpi(ProjectTypeExt.Get_String(), "WINLIB") == 0)
         {
             if(strcmp(ResponseEntry.Left(1).Get_String(),LibForeChar.Get_String()) != 0) ResponseEntry = LibForeChar + ResponseEntry;
             if(strcmp(ResponseEntry.Right(1).Get_String(),LibBackChar.Get_String()) != 0) ResponseEntry = ResponseEntry + LibBackChar;
         }
         if(ResponseEntry.Len() != 0)
         {
-            if(strcmpi(ResponseEntry.Get_String(), "\r\n") != 0)
+            if(_strcmpi(ResponseEntry.Get_String(), "\r\n") != 0)
             {
                 FileWriteBufferVB(ObjectsFile, ResponseEntry, ResponseEntry.Len());
                 FileWriteBufferVB(ObjectsFile, RespSep, RespSep.Len());
@@ -2410,7 +2410,7 @@ NoUserObjectsFound:;
     ObjectsFile = 0;
 
     BuildSteps = IniReadKey("Layout", "StepAsm", MainIniFile);
-    if(BuildSteps.Len() != 0) if(strcmpi(BuildSteps.Get_String(), "1") != 0) goto NoAsmStep;
+    if(BuildSteps.Len() != 0) if(_strcmpi(BuildSteps.Get_String(), "1") != 0) goto NoAsmStep;
     
     StopOnError = IniReadKey("COMPILER", "StopOnError", PrjBuildIniFile);
 
@@ -2455,14 +2455,14 @@ NoUserObjectsFound:;
         else
         {
             FileWriteLine(BatchFile, "\"" + (CStr) SkinVal + (CStr) "\" " + (CStr) SkinValB);
-            if(strcmpi(StopOnError.Get_String(), "1") == 0) FileWriteLine(BatchFile, "if errorlevel 1 goto AsmEnd");
+            if(_strcmpi(StopOnError.Get_String(), "1") == 0) FileWriteLine(BatchFile, "if errorlevel 1 goto AsmEnd");
         }
     }
 NoAsmStep:
     
     BuildSteps = IniReadKey("Layout", "StepLink", MainIniFile);
     NoLinkCom = 0;
-    if(BuildSteps.Len() != 0) if(strcmpi(BuildSteps.Get_String(), "1") != 0) NoLinkCom = 1;
+    if(BuildSteps.Len() != 0) if(_strcmpi(BuildSteps.Get_String(), "1") != 0) NoLinkCom = 1;
    
     HeadLib = IniReadKey("LINKER", "HeadLib", PrjBuildIniFile);
     StopOnError = IniReadKey("LINKER", "StopOnError", PrjBuildIniFile);
@@ -2544,7 +2544,7 @@ NoAsmStep:
                 {
                     if(NoLinkCom == 0)
                     {
-                        if(strcmpi(HeadLib.Get_String(), "1") == 0)
+                        if(_strcmpi(HeadLib.Get_String(), "1") == 0)
                         {
                             // Put libraries before
                             if(DisabledImports)
@@ -2575,7 +2575,7 @@ NoAsmStep:
                 }
             }
         }
-        if(NoLinkCom == 0) if(strcmpi(StopOnError.Get_String(), "1") == 0) FileWriteLine(BatchFile, "if errorlevel 1 goto AsmEnd");
+        if(NoLinkCom == 0) if(_strcmpi(StopOnError.Get_String(), "1") == 0) FileWriteLine(BatchFile, "if errorlevel 1 goto AsmEnd");
     }
 
     FileWriteLine(BatchFile, ":AsmEnd");
@@ -2587,7 +2587,7 @@ NoAsmStep:
     BuildSteps = IniReadKey("Layout", "StepClean", MainIniFile);
     if(BuildSteps.Len() != 0)
     {
-        if(strcmpi(BuildSteps.Get_String(), "1") == 0)
+        if(_strcmpi(BuildSteps.Get_String(), "1") == 0)
         {
             FileWriteLine(BatchFile, "if exist " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".res").Get_String() + (CStr) " del " + (CStr) CorrectFileName(ProjectTitle + (CStr) ".res").Get_String());
             FileWriteLine(BatchFile, "if exist " + (CStr) CorrectFileName("resources.obj").Get_String() + (CStr) " del " + (CStr) CorrectFileName("resources.obj").Get_String());
@@ -3107,8 +3107,11 @@ void CreateProjectStruct(void)
     hTreeViewDialogs = TreeViewAddItem(hTreeView, "Dialogs", hTreeViewResources, 0, ICON_FILES, ICON_FILES, 0, 0);
     hTreeViewRawdatas = TreeViewAddItem(hTreeView, "Raw datas", hTreeViewResources, 0, ICON_FILES, ICON_FILES, 0, 0);
     hTreeViewDefs = 0;
-    if((strcmpi(ProjectTypeExt.Get_String(), "WINDLL") == 0) || (strcmpi(ProjectTypeExt.Get_String(), "WINSYS") == 0)) hTreeViewDefs = TreeViewAddItem(hTreeView, "Exports", hTreeViewRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
-    hTreeViewTexts = TreeViewAddItem(hTreeView, "Documents", hTreeViewRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
+    if((_strcmpi(ProjectTypeExt.Get_String(), "WINDLL") == 0) || (_strcmpi(ProjectTypeExt.Get_String(), "WINSYS") == 0))
+    {
+        hTreeViewDefs = TreeViewAddItem(hTreeView, "Exports", hTreeViewRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
+    }
+	hTreeViewTexts = TreeViewAddItem(hTreeView, "Documents", hTreeViewRoot, 0, ICON_FILES, ICON_FILES, 0, 0);
 }
 
 // -----------------------------------------------------------------------
@@ -4447,7 +4450,7 @@ GetAccelerator:
             // TOCHECK 84
             for(j = 0; j < 84; j++)
             {
-                if(strcmpi((char *) TabAccelerators[j], AccelKey.Get_String()) == 0)
+                if(_strcmpi((char *) TabAccelerators[j], AccelKey.Get_String()) == 0)
                 {
                     StrToAddToAccel = "";
                     break;

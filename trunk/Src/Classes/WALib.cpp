@@ -3530,7 +3530,7 @@ long CALLBACK TreeViewSearchItemText(HWND hTreeView, HTREEITEM hNode, CStr ItemT
     while(TmpChild != 0)
     {
         TmpChildText = TreeViewGetItemText(hTreeView, TmpChild);
-        if(strcmpi(TmpChildText.Get_String(), ItemText.Get_String()) == 0)
+        if(_strcmpi(TmpChildText.Get_String(), ItemText.Get_String()) == 0)
         {
             ReturnValue = i;
             break;
@@ -4017,7 +4017,7 @@ void ComboBoxSaveInIniFile(HWND hCombo, CStr EntryToAdd, CStr IniKey, CStr IniFi
         SearchArg = 0;
         for(j = 0; j <= ComboBoxCount(hCombo) - 1; j++)
         {
-            if(strcmpi(ComboBoxGetItem(hCombo, j).Get_String(), EntryToAdd.Get_String()) == 0)
+            if(_strcmpi(ComboBoxGetItem(hCombo, j).Get_String(), EntryToAdd.Get_String()) == 0)
             {
                 SearchArg = 1;
                 break;
@@ -4973,7 +4973,7 @@ long CALLBACK MathGenerateRandomNumber(long MaxNumber)
     time_t CurTime;
 
     CurTime = time(NULL);
-    srand(CurTime);
+    srand((unsigned int) CurTime);
     return(rand() % MaxNumber);
 }
 
@@ -7652,7 +7652,7 @@ long CALLBACK ControlIsWindowChild(HWND hWnd)
 
     ClassNameToRetrieve = ClassNameToRetrieve.String(22, 1);
     GetClassName(hWnd, ClassNameToRetrieve.Get_String(), 22);
-    if(strcmpi(ClassNameToRetrieve.Left(21).Get_String(), "WAMDIChildDialogClass") == 0) ReturnValue = 1;
+    if(_strcmpi(ClassNameToRetrieve.Left(21).Get_String(), "WAMDIChildDialogClass") == 0) ReturnValue = 1;
     return(ReturnValue);
 }
 
@@ -9106,32 +9106,32 @@ LRESULT CALLBACK WAHexHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 if(CharPress == "7") goto HexOk;
                 if(CharPress == "8") goto HexOk;
                 if(CharPress == "9") goto HexOk;
-                if(strcmpi(CharPress.Get_String(), "A") == 0)
+                if(_strcmpi(CharPress.Get_String(), "A") == 0)
                 {
                     wParam = 0x41;
                     goto HexOk;
                 }
-                if(strcmpi(CharPress.Get_String(), "B") == 0)
+                if(_strcmpi(CharPress.Get_String(), "B") == 0)
                 {
                     wParam = 0x42;
                     goto HexOk;
                 }
-                if(strcmpi(CharPress.Get_String(), "C") == 0)
+                if(_strcmpi(CharPress.Get_String(), "C") == 0)
                 {
                     wParam = 0x43;
                     goto HexOk;
                 }
-                if(strcmpi(CharPress.Get_String(), "D") == 0)
+                if(_strcmpi(CharPress.Get_String(), "D") == 0)
                 {
                     wParam = 0x44;
                     goto HexOk;
                 }
-                if(strcmpi(CharPress.Get_String(), "E") == 0)
+                if(_strcmpi(CharPress.Get_String(), "E") == 0)
                 {
                     wParam = 0x45;
                     goto HexOk;
                 }
-                if(strcmpi(CharPress.Get_String(), "F") == 0)
+                if(_strcmpi(CharPress.Get_String(), "F") == 0)
                 {
                     wParam = 0x46;
                     goto HexOk;

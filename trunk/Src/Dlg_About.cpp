@@ -104,7 +104,7 @@ int CALLBACK FRMAboutProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             AbLine8 = "";
             AboutScrollAmount = GDIGetTextHeight(AbouthWnd, AboutCourFont8, "hg");
             AboutText = "\r";
-            AboutText = AboutText + (CStr) Requesters + (CStr) "\r";
+			AboutText = AboutText + (CStr) Requesters + (CStr) " (Build on: " __DATE__ + (CStr) ")\r";
             AboutText = AboutText + (CStr) "Integrated Development Environment\r\r";
             AboutText = AboutText + (CStr) "Written by Franck Charlet.\r\r";
             AboutText = AboutText + (CStr) "I would like to thank the following\r";
@@ -228,7 +228,7 @@ void CALLBACK AboutTimerNotify(HWND hWnd, UINT uMsg, UINT_PTR idEvent, unsigned 
 }
 
 // -----------------------------------------------------------------------
-// isplay a line of text in the typewriter
+// Display a line of text in the typewriter
 void DisplayTypeWriterLine(HDC hDC, CStr TextToShow, long Position, long Col)
 {
     GDIWriteClippedText(hDC, 0, Position, 262, AboutScrollAmount, TextToShow, Col, AboutCourFont8, 0, ABOUT_BACKCOLOR);

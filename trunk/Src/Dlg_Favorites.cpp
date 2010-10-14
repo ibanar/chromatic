@@ -277,7 +277,7 @@ long CheckFavFile(CStr FavFileToCheck)
 
     for(i = 0; i <= ListViewItemCount(FRMFavListView) - 1; i++)
     {
-        if(strcmpi(ListViewGetItemText(FRMFavListView, i, 1).Get_String(), FavFileToCheck.Get_String()) == 0)
+        if(_strcmpi(ListViewGetItemText(FRMFavListView, i, 1).Get_String(), FavFileToCheck.Get_String()) == 0)
         {
             return(1);
         }

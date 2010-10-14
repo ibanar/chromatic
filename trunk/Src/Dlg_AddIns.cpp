@@ -133,7 +133,7 @@ int CALLBACK FRMAddInsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
                     if(LdFile.Len() != 0)
                     {
                         // Check if the AddIn is located in AddIns directory
-                        if(strcmpi(FileGetDirectory(LdFile).Get_String(), Dirs[DIR_ADDINS]) == 0)
+                        if(_strcmpi(FileGetDirectory(LdFile).Get_String(), Dirs[DIR_ADDINS]) == 0)
                         {
                             MiscMsgBox(hwndDlg, "New AddIn can't be located in AddIns directory.", MB_ERROR, Requesters);
                             return(0);
@@ -145,7 +145,7 @@ int CALLBACK FRMAddInsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
                             return(0);
                         }
                         // Check if names are identicals
-                        if(strcmpi(LocalAddInsFiles.Get(CurrentPopupItem)->Content,
+                        if(_strcmpi(LocalAddInsFiles.Get(CurrentPopupItem)->Content,
                                    FileGetFileName(LdFile).Get_String()) != 0)
                         {
                             MiscMsgBox(hwndDlg, "AddIn name doesn't match.", MB_ERROR, Requesters);
@@ -266,7 +266,7 @@ void FillAddinsList(void)
                 {
                     // Check if it is running if found in ini file
                     RunningInIniFile = IniReadKey("AddIns", "Running" + (CStr) StringNumberComplement(PosInIniFile, 3).Get_String(), MainIniFile);
-                    if(strcmpi(RunningInIniFile.Get_String(), "1") == 0) AddInIcon = ICON_ADDINS;
+                    if(_strcmpi(RunningInIniFile.Get_String(), "1") == 0) AddInIcon = ICON_ADDINS;
                 }
                 ListViewAddItem(FRMAddInsListView, Description, i, AddInIcon);
                 ListViewSetSubItem(FRMAddInsListView, Auth, i, 1);
@@ -277,7 +277,7 @@ void FillAddinsList(void)
                     LoadedInIniFile = IniReadKey("AddIns", "Loaded" + (CStr) StringNumberComplement(PosInIniFile, 3).Get_String(), MainIniFile);
                     if(LoadedInIniFile.Len() != 0)
                     {
-                        if(strcmpi(LoadedInIniFile.Get_String(), "1") == 0)
+                        if(_strcmpi(LoadedInIniFile.Get_String(), "1") == 0)
                         {
                             ListViewSetItemCheckbox(FRMAddInsListView, i, 1);
                         }
@@ -364,7 +364,7 @@ void RefreshRunningStates(void)
         if(OldAddInIndex != -1)
         {
             // Want to it to run ?
-            if(strcmpi(AddInRunning.Get_String(), "1") == 0)
+            if(_strcmpi(AddInRunning.Get_String(), "1") == 0)
             {
                 // Let's run it (if it wasn't running before)
                 if(OldRunningAddIns.Get(OldAddInIndex)->Content != 1)
@@ -409,7 +409,7 @@ void RefreshRunningStates(void)
         else
         {
             // Not found to check if user wants it to be running now
-            if(strcmpi(AddInRunning.Get_String(), "1") == 0)
+            if(_strcmpi(AddInRunning.Get_String(), "1") == 0)
             {
                 AddInIndex = SearchAddInName(AddInFileName);
                 if(AddInsLoad.Get(AddInIndex)->Content != 0)
@@ -449,7 +449,7 @@ long CheckAddInIniList(CStr FileName)
     {
         AddInName = IniReadKey("AddIns", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         if(AddInName.Len() == 0) break;
-        if(strcmpi(AddInName.Get_String(), FileName.Get_String()) == 0)
+        if(_strcmpi(AddInName.Get_String(), FileName.Get_String()) == 0)
         {
             ReturnValue = i;
             break;

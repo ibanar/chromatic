@@ -171,7 +171,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
                     TipsIniKey = IniReadKey("Layout", "ShowTips", MainIniFile);
                     if(TipsIniKey.Len() != 0)
                     {
-                        if(strcmpi(TipsIniKey.Get_String(), "1") == 0) DisplayTip(hMDIform.hWnd);
+                        if(_strcmpi(TipsIniKey.Get_String(), "1") == 0) DisplayTip(hMDIform.hWnd);
                     }
                     else
                     {

@@ -439,7 +439,7 @@ FoundMoreNestedIncludes:
                             {
                                 if(strlen(FilesList.Get(k)->Content) != 0)
                                 {
-                                    if(strcmpi(FilesList.Get(k)->Content, StrJoinInclude.Get_String()) == 0)
+                                    if(_strcmpi(FilesList.Get(k)->Content, StrJoinInclude.Get_String()) == 0)
                                     {
                                         FInclude = 1;
                                         break;
@@ -464,7 +464,7 @@ FoundMoreNestedIncludes:
                                 {
                                     if(strlen(FilesList.Get(k)->Content) != 0)
                                     {
-                                        if(strcmpi(FilesList.Get(k)->Content, IncludeFileName.Get_String()) == 0)
+                                        if(_strcmpi(FilesList.Get(k)->Content, IncludeFileName.Get_String()) == 0)
                                         {
                                             FInclude = 1;
                                             break;
