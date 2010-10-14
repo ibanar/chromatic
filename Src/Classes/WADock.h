@@ -316,8 +316,9 @@ template<class T> HCURSOR CSplitterBar<T>::s_hHorizCursor = NULL;
 typedef CWinTraits<WS_OVERLAPPED | WS_CAPTION | WS_THICKFRAME | WS_SYSMENU, WS_EX_TOOLWINDOW | WS_EX_WINDOWEDGE> CFloatWinTraits;
 
 template< class T, class TBase = CWindow, class TWinTraits = CFloatWinTraits >
-          class ATL_NO_VTABLE CFloatingWindowImpl : public CWindowImpl< T, TBase, TWinTraits >,
-          public CSplitterBar<CFloatingWindowImpl>
+          class ATL_NO_VTABLE CFloatingWindowImpl :
+		  public CWindowImpl<T, TBase, TWinTraits>,
+          public CSplitterBar<CFloatingWindowImpl<T>>
 {
 
 public:
@@ -491,7 +492,7 @@ class CFloatingWindow: public CFloatingWindowImpl<CFloatingWindow>
 
 template< class T, class TBase = CWindow, class TWinTraits = CControlWinTraits >
           class ATL_NO_VTABLE CDockingPaneChildWindowImpl : 
-          public CWindowImpl<T, TBase, TWinTraits>, public CSplitterBar<CDockingPaneChildWindowImpl>
+          public CWindowImpl<T, TBase, TWinTraits>, public CSplitterBar<CDockingPaneChildWindowImpl<T>>
 {
     public:
         DECLARE_WND_CLASS_EX(NULL, CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, NULL)
@@ -805,7 +806,7 @@ class CDockingPaneChildWindow : public CDockingPaneChildWindowImpl<CDockingPaneC
 
 template <class T, class TBase = CWindow, class TWinTraits = CControlWinTraits >
           class ATL_NO_VTABLE CDockingPaneWindowImpl : public CWindowImpl< T, TBase, TWinTraits >,
-          public CSplitterBar<CDockingPaneWindowImpl>
+          public CSplitterBar<CDockingPaneWindowImpl<T>>
 {
 
     public:
@@ -886,7 +887,9 @@ template <class T, class TBase = CWindow, class TWinTraits = CControlWinTraits >
 
         void UnDockWindow(DOCKCONTEXT *ctx)
         {
-            for(int i = 0; i < m_map.GetSize(); i++)
+			int i;
+
+			for(i = 0; i < m_map.GetSize(); i++)
             {
                 if(m_map[i] == ctx)
                 {
@@ -909,8 +912,10 @@ template <class T, class TBase = CWindow, class TWinTraits = CControlWinTraits >
 
         void RepositionWindow(DOCKCONTEXT *ctx, int iPos)
         {
-            if(iPos >= m_map.GetSize()) return;
-            for(int i = 0; i < m_map.GetSize(); i++)
+			int i;
+
+			if(iPos >= m_map.GetSize()) return;
+            for(i = 0; i < m_map.GetSize(); i++)
             {
                 if(m_map[i] == ctx)
                 {
@@ -1053,7 +1058,9 @@ template <class T, class TBase = CWindow, class TWinTraits = CControlWinTraits >
         // Overridables
         void UpdateLayout()
         {
-            if(m_map.GetSize() == 0) return;
+            int i;
+
+			if(m_map.GetSize() == 0) return;
             if(!IsWindowVisible()) return;
 
             int nPanes = m_map.GetSize();
@@ -1083,7 +1090,7 @@ template <class T, class TBase = CWindow, class TWinTraits = CControlWinTraits >
             }
     
             // Place splitters in each child panel (except in the last one)
-            for(int i = 0; i < (nPanes - 1); i++)
+            for(i = 0; i < (nPanes - 1); i++)
             {
                 ::SendMessage(m_map[i]->hwndDocked, WM_DOCK_SETSPLITTER, DEFAULT_SPLITTER_SIZE, 0L);
             }

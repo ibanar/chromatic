@@ -531,7 +531,7 @@ void AddRecentFile(CStr FName, long AddFile, long ForceRemove)
         FRcnt = 0;
         for(i = 0; i < Recents.Amount(); i++)
         {
-            if(strcmpi(Recents.Get(i)->Content, TmpFName.Get_String()) == 0)
+            if(_strcmpi(Recents.Get(i)->Content, TmpFName.Get_String()) == 0)
             {
                 FRcnt = 1;
                 break;
@@ -615,7 +615,7 @@ void AddRecentPrj(CStr FName, long AddFile, long ForceRemove)
     {
         for(i = 0; i < RecentsPrj.Amount(); i++)
         {
-            if(strcmpi(RecentsPrj.Get(i)->Content, FName.Get_String()) == 0)
+            if(_strcmpi(RecentsPrj.Get(i)->Content, FName.Get_String()) == 0)
             {
                 FRcnt = 1;
                 break;
@@ -1006,7 +1006,7 @@ void InitMenuComments(void)
     MenuFileComments[MENU_FILE_RUNEXTERNALPROGRAM_ID] = "Run a selected program";
     MenuFileComments[MENU_FILE_SETWORKINGDIRECTORY_ID] = "Set current directory";
     BufString = "Quit " + (CStr) AppTitle;
-    MenuFileComments[MENU_FILE_EXIT_ID] = strdup(BufString.Get_String());
+    MenuFileComments[MENU_FILE_EXIT_ID] = _strdup(BufString.Get_String());
     MenuFileComments[MENU_FILE_RELOADFILE_ID] = "Reload current file";
     MenuFileComments[MENU_FILE_INCLUDEFILTERS_ID] = "Insert filtered file(s) at current position";
     MenuFileComments[MENU_FILE_REGISTERASTEMPLATE_ID] = "Register current file as source template";
@@ -1091,7 +1091,7 @@ void InitMenuComments(void)
     MenuViewComments[MENU_VIEW_REGISTERSDOCK_ID] = "Turn registers window on/off";
     MenuViewComments[MENU_VIEW_FULLSCREEN_ID] = "Turn full screen mode on/off";
     BufString = "Modify " + (CStr) AppTitle + (CStr) "'s properties";
-    MenuViewComments[MENU_VIEW_PROPERTIES_ID] = strdup(BufString.Get_String());
+    MenuViewComments[MENU_VIEW_PROPERTIES_ID] = _strdup(BufString.Get_String());
     MenuViewComments[MENU_VIEW_USERMENUSEDITOR_ID] = "Modify user's menus";
     MenuViewComments[MENU_VIEW_USERTOOLBARSEDITOR_ID] = "Modify and create toolbars";
     
@@ -1125,7 +1125,7 @@ void InitMenuComments(void)
     MenuWindowComments[MENU_WINDOW_DDKHELP_ID] = "Search for a keyword in Windows DDK";
     MenuWindowComments[MENU_WINDOW_DIRECTXSDKHELP_ID] = "Search for a keyword in DirectX SDK";
     BufString = "About " + (CStr) AppTitle;
-    MenuWindowComments[MENU_WINDOW_ABOUT_ID] = strdup(BufString.Get_String());
+    MenuWindowComments[MENU_WINDOW_ABOUT_ID] = _strdup(BufString.Get_String());
     MenuWindowComments[MENU_WINDOW_SPLIT_ID] = "Split current window";
     MenuWindowComments[MENU_WINDOW_TILEHORIZONTALLY_ID] = "Tile windows horizontally";
     MenuWindowComments[MENU_WINDOW_TILEVERTICALLY_ID] = "Tile windows vertically";
@@ -1216,7 +1216,7 @@ void InitMenuComments(void)
     MenuCodeMaxComments[MENU_CONTEXT_DUPLICATEFILE_ID] = "Create a new instance of the current file";
     MenuCodeMaxComments[MENU_CONTEXT_RELOADFILE_ID] = "Reload current file";
     BufString = "Modify " + (CStr) AppTitle + (CStr) "'s properties";
-    MenuCodeMaxComments[MENU_CONTEXT_PROPERTIES_ID] = strdup(BufString.Get_String());
+    MenuCodeMaxComments[MENU_CONTEXT_PROPERTIES_ID] = _strdup(BufString.Get_String());
     RegCodeMaxLocalCommands();
 }
 
@@ -1341,7 +1341,7 @@ void AddRecentRunProg(CStr FName, long AddFile, long ForceRemove)
         FRcnt = 0;
         for(i = 0; i < RunProgArray.Amount(); i++)
         {
-            if(strcmpi(RunProgArray.Get(i)->Content, TmpFName.Get_String()) == 0)
+            if(_strcmpi(RunProgArray.Get(i)->Content, TmpFName.Get_String()) == 0)
             {
                 FRcnt = 1;
                 break;
@@ -1486,7 +1486,7 @@ void CreateFiltersMenu(HMENU Dest_Menu, int Index, int Lab_Index, CStr Label, in
         FoundProg = 1;
         if(Include_Menu) MenuAddString(Dest_Menu, ProgRetVal + "\tTo window", i + MENU_FILTERS_INCLUDE_IDBASE, TRUE);
         else MenuAddString(Dest_Menu, ProgRetVal + "\tTo window", i + MENU_FILTERS_IDBASE, TRUE);
-        Entry->Name = strdup(ProgRetVal.Get_String());
+        Entry->Name = _strdup(ProgRetVal.Get_String());
         Entry->Type = 0;
         FiltersArray.Add(Entry, sizeof(FILTER_ENTRY));
         mnu_idx++;
@@ -1500,7 +1500,7 @@ void CreateFiltersMenu(HMENU Dest_Menu, int Index, int Lab_Index, CStr Label, in
             ProgRetVal = IniReadKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), FiltersIniFile);
             if(ProgRetVal.Len() == 0) break;
             MenuAddString(Dest_Menu, ProgRetVal + "\tTo file", mnu_idx + MENU_FILTERS_IDBASE, TRUE);
-            Entry->Name = strdup(ProgRetVal.Get_String());
+            Entry->Name = _strdup(ProgRetVal.Get_String());
             Entry->Type = 1;
             FiltersArray.Add(Entry, sizeof(FILTER_ENTRY));
             mnu_idx++;

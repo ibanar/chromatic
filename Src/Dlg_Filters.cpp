@@ -404,7 +404,7 @@ int Save_Filter_Profil(CStr Profile_Name)
     {
         BufString = IniReadKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), FiltersIniFile);
         if(BufString.Len() == 0) break;
-        if(strcmpi(BufString.Get_String(), Profile_Name_To_Register.Get_String()) == 0)
+        if(_strcmpi(BufString.Get_String(), Profile_Name_To_Register.Get_String()) == 0)
         {
             NoReg = 1;
             if(MiscMsgBox(FRMFiltershWnd, "Profile already exists. Overwrite it ?", MB_QUESTION, Requesters) == IDNO)

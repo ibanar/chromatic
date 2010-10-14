@@ -177,7 +177,7 @@ int CALLBACK FRMResProps(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             if((HWND) lParam == FRMResPropsOk)
             {
                 NewResName = ControlGetText(FRMResPropsName);
-                if(strcmpi(ResName.Get_String(), NewResName.Get_String()) != 0)
+                if(_strcmpi(ResName.Get_String(), NewResName.Get_String()) != 0)
                 {
                     // Check first char
                     if(StringIsAlphaChar(NewResName.Mid(1, 1)) == 0)
@@ -255,8 +255,8 @@ int CALLBACK FRMResProps(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 {
                     if(strlen(TabLangRc[i].Get_String()) != 0)
                     {
-                        if(strcmpi(TabLangRc[i].Get_String(), ComboBoxGetItem(FRMResPropsLanguage,
-                                   ComboBoxGetIndex(FRMResPropsLanguage)).Get_String()) == 0) break;
+                        if(_strcmpi(TabLangRc[i].Get_String(), ComboBoxGetItem(FRMResPropsLanguage,
+                                    ComboBoxGetIndex(FRMResPropsLanguage)).Get_String()) == 0) break;
                     }
                 }
                 switch(ResType)

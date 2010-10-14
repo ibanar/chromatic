@@ -109,7 +109,7 @@ CStr RetrieveAPI(void)
             {
                 FirstSplit = StringGetSplitElement(APIFuckStrLib, APIBlockLib, i);
                 APIInfosLib = StringSplit(FirstSplit, "|");
-                if(strcmpi(LibToFind.Get_String(), StringGetSplitElement(FirstSplit, APIInfosLib, 0).Get_String()) == 0)
+                if(_strcmpi(LibToFind.Get_String(), StringGetSplitElement(FirstSplit, APIInfosLib, 0).Get_String()) == 0)
                 {
                     FoundLib = 1;
                     break;
@@ -158,7 +158,7 @@ CStr DisplayAPI(long dx, long dy)
             {
                 FirstSplit = StringGetSplitElement(APIFuckStr, APIBlock, i);
                 APIInfos = StringSplit(FirstSplit, "|");
-                if(strcmpi(APIFnc.Get_String(), StringGetSplitElement(FirstSplit, APIInfos, 0).Upper_Case().Get_String()) == 0)
+                if(_strcmpi(APIFnc.Get_String(), StringGetSplitElement(FirstSplit, APIInfos, 0).Upper_Case().Get_String()) == 0)
                 {
                     APIFound = 1;
                     break;

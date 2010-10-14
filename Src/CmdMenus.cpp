@@ -750,7 +750,7 @@ void MCMD_RegSnippet(void)
         MiscMsgBox(hMDIform.hWnd, "Text is empty.", MB_ERROR, Requesters);
         return;
     }
-    if(strcmpi(ChildStruct->RFile->Left(18).Get_String(), "<untitled document") == 0) if(SaveItAs(CurrentForm, 0, "", "").Len() == 0) return;
+    if(_strcmpi(ChildStruct->RFile->Left(18).Get_String(), "<untitled document") == 0) if(SaveItAs(CurrentForm, 0, "", "").Len() == 0) return;
     FileToSnippet = CMGetRealFile(ChildStruct->RFile);
     TempSnippetname = MiscInputBox(hMDIform.hWnd, "Enter snippet name", ICON_CUBES, PassValueSnippet, 0, INPUTBOX_SIMPLETEXT, "");
     if(TempSnippetname.Len() != 0)
@@ -765,7 +765,7 @@ void MCMD_RegSnippet(void)
         {
             MenusRetVal = IniReadKey("Snippets", "SnippetName" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
             if(MenusRetVal.Len() == 0) break;
-            if(strcmpi(MenusRetVal.Get_String(), PassValueSnippet.Get_String()) == 0)
+            if(_strcmpi(MenusRetVal.Get_String(), PassValueSnippet.Get_String()) == 0)
             {
                 FoundOcc = 1;
                 break;
@@ -778,7 +778,7 @@ void MCMD_RegSnippet(void)
             MenusRetVal = IniReadKey("Snippets", "SnippetFile" + (CStr) StringNumberComplement(j, 3).Get_String(), MainIniFile);
             if(MenusRetVal.Len() == 0) break;
             MenusRetVal = ChangeRelativePaths(MenusRetVal);
-            if(strcmpi(MenusRetVal.Get_String(), FileToSnippet.Get_String()) == 0)
+            if(_strcmpi(MenusRetVal.Get_String(), FileToSnippet.Get_String()) == 0)
             {
                 FoundOcc2 = 1;
                 break;
@@ -846,7 +846,7 @@ void MCMD_RegTemplate(void)
         MiscMsgBox(hMDIform.hWnd, "Text is empty.", MB_ERROR, Requesters);
         return;
     }
-    if(strcmpi(ChildStruct->RFile->Left(18).Get_String(), "<untitled document") == 0) if(SaveItAs(CurrentForm, 0, "", "").Len() == 0) return;
+    if(_strcmpi(ChildStruct->RFile->Left(18).Get_String(), "<untitled document") == 0) if(SaveItAs(CurrentForm, 0, "", "").Len() == 0) return;
     FileToSnippet = CMGetRealFile(ChildStruct->RFile);
     // Save it before
     TempTemplateName = MiscInputBox(hMDIform.hWnd, "Enter source template name", ICON_CUBES, PassValueTemplate, 0, INPUTBOX_SIMPLETEXT, "");
@@ -862,7 +862,7 @@ void MCMD_RegTemplate(void)
         {
             MenusRetVal = IniReadKey("Templates", "TemplateName" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
             if(MenusRetVal.Len() == 0) break;
-            if(strcmpi(MenusRetVal.Get_String(), PassValueTemplate.Get_String()) == 0)
+            if(_strcmpi(MenusRetVal.Get_String(), PassValueTemplate.Get_String()) == 0)
             {
                 FoundOcc = 1;
                 break;
@@ -875,7 +875,7 @@ void MCMD_RegTemplate(void)
             MenusRetVal = IniReadKey("Templates", "TemplateFile" + (CStr) StringNumberComplement(j, 3).Get_String(), MainIniFile);
             if(MenusRetVal.Len() == 0) break;
             MenusRetVal = ChangeRelativePaths(MenusRetVal);
-            if(strcmpi(MenusRetVal.Get_String(), FileToSnippet.Get_String()) == 0)
+            if(_strcmpi(MenusRetVal.Get_String(), FileToSnippet.Get_String()) == 0)
             {
                 FoundOcc2 = 1;
                 break;
@@ -1079,7 +1079,7 @@ void MCMD_AddToFavorites(void)
             {
                 NameFromList = IniReadKey("Favorites", "File" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
                 if(NameFromList.Len() == 0) break;
-                if(strcmpi(NameToAdd.Get_String(), NameFromList.Get_String()) == 0)
+                if(_strcmpi(NameToAdd.Get_String(), NameFromList.Get_String()) == 0)
                 {
                     return;
                 }
@@ -2284,7 +2284,7 @@ void MCMD_Registers(void)
         for(j = 0; j <= StringGetSplitUBound(SelLines); j++)
         {
             LineToCheck = StringGetSplitElement(FrmRegsCmTextReg, SelLines, j);
-            if(strcmpi(LineToCheck.Trim().Left(CurComment.Len()).Get_String(), CurComment.Get_String()) == 0) LnToStart++;
+            if(_strcmpi(LineToCheck.Trim().Left(CurComment.Len()).Get_String(), CurComment.Get_String()) == 0) LnToStart++;
         }
         MiscDoEvents(hMDIform.hClient, hGlobAccelerators, hMDIform.hWnd);
         for(i = 0; i <= StringGetSplitUBound(RegsArray); i++)
@@ -2368,7 +2368,7 @@ void MCMD_Registers(void)
                     ValidReg = 0;
                     for(j = 0; j <= 5; j++)
                     {
-                        if(strcmpi(CheckInLine.Mid(FoundPos.Get(i)->Content - 1, 1).Get_String(), LeftValidChars[j]) == 0)
+                        if(_strcmpi(CheckInLine.Mid(FoundPos.Get(i)->Content - 1, 1).Get_String(), LeftValidChars[j]) == 0)
                         {
                             ValidReg = 1;
                             break;
@@ -2377,7 +2377,7 @@ void MCMD_Registers(void)
                 }
                 for(j = 0; j <= 7; j++)
                 {
-                    if(strcmpi(CheckInLine.Mid(FoundPos.Get(i)->Content + strlen(FoundReg.Get(i)->Content), 1).Get_String(),
+                    if(_strcmpi(CheckInLine.Mid(FoundPos.Get(i)->Content + strlen(FoundReg.Get(i)->Content), 1).Get_String(),
                                RightValidChars[j]) == 0)
                     {
                         ValidReg = ValidReg | 2;
@@ -2593,7 +2593,7 @@ void MCMD_BlockConvertToInclude(void)
     if(FNameBlock.Len() == 0) return;
     LastConvertBlockDir = FileGetDirectory(FNameBlock);
     DeleteFile(FNameBlock.Get_String());
-    if(strcmpi(GetCMLangDoubleSlash(CurrentForm).Get_String(), "1") == 0) FNameBlock = StringReplace(FNameBlock, "\\", "\\\\", 1, -1, Binary_Compare);
+    if(_strcmpi(GetCMLangDoubleSlash(CurrentForm).Get_String(), "1") == 0) FNameBlock = StringReplace(FNameBlock, "\\", "\\\\", 1, -1, Binary_Compare);
     IncludeSkew = StringReplace(IncludeSkew, "%1", FNameBlock, 1, -1, Binary_Compare);
     SelToSave = SelToSave.String(CM_GetTextLength(ChildStruct->hChildCodeMax, &CodeMaxCurRange, 1), 1);
     CM_GetText(ChildStruct->hChildCodeMax, SelToSave.Get_String(), &CodeMaxCurRange);
@@ -2606,7 +2606,7 @@ void MCMD_BlockConvertToInclude(void)
         FileNametoCompare = FileGetDirectory(CMGetRealFile(ChildStruct->RFile));
         FileNametoCompare2 = FileGetDirectory(FNameBlock);
         // Remove directory if equal
-        if(strcmpi(FileNametoCompare.Get_String(), FileNametoCompare2.Get_String()) == 0)
+        if(_strcmpi(FileNametoCompare.Get_String(), FileNametoCompare2.Get_String()) == 0)
         {
             IncludeSkew = StringReplace(IncludeSkew, FileNametoCompare, "", 1, -1, Binary_Compare);
         }
@@ -3422,7 +3422,7 @@ void MCMD_SaveProjectAs(void)
     if(FName.Len() != 0)
     {
         if(FName.Len() < 4) FName = FName + (CStr) ".med";
-        if(strcmpi(FName.Right(4).Get_String(), ".med") != 0) FName = FName + (CStr) ".med";
+        if(_strcmpi(FName.Right(4).Get_String(), ".med") != 0) FName = FName + (CStr) ".med";
         ProjectFName = FName;
         ProjectTitle = FileGetFileName(ProjectFName);
         ProjectTitle = ProjectTitle.Left(ProjectTitle.Len() - 4);

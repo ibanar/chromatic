@@ -261,7 +261,7 @@ int CALLBACK FRMMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             ControlEnable(FRMMenusChkRadio, 0);
                             ControlEnable(FRMMenusChkBold, 0);
                             ControlEnable(FRMMenusCbBreak, 1);
-                            if(strcmpi(TreeViewGetItemText(FRMMenusTreeView, TemphMenu).Get_String(), "<Empty entry>") == 0)
+                            if(_strcmpi(TreeViewGetItemText(FRMMenusTreeView, TemphMenu).Get_String(), "<Empty entry>") == 0)
                             {
                                 ControlSetText(FRMMenusCaption, "");
                             }
@@ -280,7 +280,7 @@ int CALLBACK FRMMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             ControlEnable(FRMMenusChkRadio, 0);
                             ControlEnable(FRMMenusChkBold, 0);
                             ControlEnable(FRMMenusCbBreak, 0);
-                            if(strcmpi(TreeViewGetItemText(FRMMenusTreeView, TemphMenu).Get_String(), "<Empty entry>") == 0)
+                            if(_strcmpi(TreeViewGetItemText(FRMMenusTreeView, TemphMenu).Get_String(), "<Empty entry>") == 0)
                             {
                                 ControlSetText(FRMMenusCaption, "");
                             }
@@ -299,7 +299,7 @@ int CALLBACK FRMMenusProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             ControlEnable(FRMMenusChkRadio, 1);
                             ControlEnable(FRMMenusChkBold, 1);
                             ControlEnable(FRMMenusCbBreak, 0);
-                            if(strcmpi(TreeViewGetItemText(FRMMenusTreeView, TemphMenu).Get_String(), "<Empty entry>") == 0)
+                            if(_strcmpi(TreeViewGetItemText(FRMMenusTreeView, TemphMenu).Get_String(), "<Empty entry>") == 0)
                             {
                                 ControlSetText(FRMMenusCaption, "");
                             }
@@ -1139,7 +1139,7 @@ void ConstructTestMenus(HWND hwnd)
                 // Attach bar
                 if(LasthBar != 0)
                 {
-                    if(strcmpi(LastMenuStr.Get_String(), "<Empty entry>") == 0)
+                    if(_strcmpi(LastMenuStr.Get_String(), "<Empty entry>") == 0)
                     {
                         ItemType = 0;
                         AppendMenu(hMainMenu, MF_POPUP, (UINT) LasthBar, NULL);
@@ -1159,7 +1159,7 @@ void ConstructTestMenus(HWND hwnd)
                     InfosToChange.cbSize = sizeof(InfosToChange);
                     InfosToChange.fMask = ItemTypeMask | MIIM_STATE;
                     InfosToChange.fType = ItemType;
-                    if(strcmpi(LastMenuStr.Get_String(), "<Empty entry>") == 0)
+                    if(_strcmpi(LastMenuStr.Get_String(), "<Empty entry>") == 0)
                     {
                         InfosToChange.cch = 0;
                         InfosToChange.dwTypeData = "";
@@ -1193,7 +1193,7 @@ void ConstructTestMenus(HWND hwnd)
                 }
                 LasthMenu = PopupStack.Get(j)->Content;
                 LasthMenuSub = CreatePopupMenu();
-                if(strcmpi(MenuEntryName.Get_String(), "<Empty entry>") == 0)
+                if(_strcmpi(MenuEntryName.Get_String(), "<Empty entry>") == 0)
                 {
                     AppendMenu(LasthMenu, MF_POPUP, (UINT) LasthMenuSub, NULL);
                 }
@@ -1214,7 +1214,7 @@ void ConstructTestMenus(HWND hwnd)
                     if(LevelStack.Get(j)->Content == (MenuEntryLevelLng - 1)) break;
                 }
                 LasthMenu = PopupStack.Get(j)->Content;
-                if(strcmpi(MenuEntryName.Get_String(), "<Empty entry>") == 0)
+                if(_strcmpi(MenuEntryName.Get_String(), "<Empty entry>") == 0)
                 {
                     ItemType = 0;
                     //AppendMenu(LasthMenu, MF_STRING, ItemNumber, NULL);
@@ -1236,7 +1236,7 @@ void ConstructTestMenus(HWND hwnd)
                 InfosToChange.cbSize = sizeof(InfosToChange);
                 InfosToChange.fMask = ItemTypeMask;
                 InfosToChange.fType = ItemType;
-                if(strcmpi(MenuEntryName.Get_String(), "<Empty entry>") == 0)
+                if(_strcmpi(MenuEntryName.Get_String(), "<Empty entry>") == 0)
                 {
                     InfosToChange.cch = 0;
                     InfosToChange.dwTypeData = "";
@@ -1269,7 +1269,7 @@ void ConstructTestMenus(HWND hwnd)
     // Attach last bar popup to primary bar
     if(LasthBar != 0)
     {
-        if(strcmpi(LastMenuStr.Get_String(), "<Empty entry>") == 0)
+        if(_strcmpi(LastMenuStr.Get_String(), "<Empty entry>") == 0)
         {
             AppendMenu(hMainMenu, MF_POPUP, (UINT) LasthBar, NULL);
             ItemType = 0;
@@ -1289,7 +1289,7 @@ void ConstructTestMenus(HWND hwnd)
         InfosToChange.cbSize = sizeof(InfosToChange);
         InfosToChange.fMask = ItemTypeMask | MIIM_STATE;
         InfosToChange.fType = ItemType;
-        if(strcmpi(LastMenuStr.Get_String(), "<Empty entry>") == 0)
+        if(_strcmpi(LastMenuStr.Get_String(), "<Empty entry>") == 0)
         {
             InfosToChange.cch = 0;
             InfosToChange.dwTypeData = "";

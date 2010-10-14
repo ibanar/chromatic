@@ -408,7 +408,7 @@ long CheckAcceleratorValidity(CStr AccelToCheck)
     FoundVirtualKey = 0;
     for(i = 0; i <= 84; i++)
     {
-        if(strcmpi(ComboBoxGetItem(FRMAcceleratorsCombo, i).Get_String(), AccelToCheck.Get_String()) == 0)
+        if(_strcmpi(ComboBoxGetItem(FRMAcceleratorsCombo, i).Get_String(), AccelToCheck.Get_String()) == 0)
         {
             FoundVirtualKey = 1;
             break;

@@ -43,7 +43,7 @@
 HMODULE hCodeMax;
 void (* hCodeMaxCMRegisterControl) (long, long);
 void (* hCodeMaxCMUnregisterControl) (void);
-void (* hCodeMaxCMRegisterLanguage) (char *, long);
+void (* hCodeMaxCMRegisterLanguage) (char *, CM_LANGUAGE *);
 void (* hCodeMaxCMUnRegisterLanguage) (char *);
 void (* hCodeMaxCMRegisterCommand) (long, char *, char *);
 void (* hCodeMaxCMRegisterHotKey) (long, long);

@@ -623,7 +623,7 @@ void AddToolbarEntry(CStr ToolBarName)
     {
         CurEntry = IniReadKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
         if(CurEntry.Len() == 0) break;
-        if(strcmpi(CurEntry.Get_String(), ToolBarName.Get_String()) == 0)
+        if(_strcmpi(CurEntry.Get_String(), ToolBarName.Get_String()) == 0)
         {
             FoundEntry = 1;
             break;
@@ -654,7 +654,7 @@ void RenameToolbarEntry(CStr OldToolbarName, CStr ToolBarName)
     {
         CurEntry = IniReadKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
         if(CurEntry.Len() == 0) break;
-        if(strcmpi(CurEntry.Get_String(), OldToolbarName.Get_String()) == 0)
+        if(_strcmpi(CurEntry.Get_String(), OldToolbarName.Get_String()) == 0)
         {
             FoundEntry = 1;
             break;
@@ -675,7 +675,7 @@ void ChangeToolbarBreak(CStr ToolBarName, long TBBreak)
     {
         CurEntry = IniReadKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
         if(CurEntry.Len() == 0) break;
-        if(strcmpi(CurEntry.Get_String(), ToolBarName.Get_String()) == 0)
+        if(_strcmpi(CurEntry.Get_String(), ToolBarName.Get_String()) == 0)
         {
             FoundEntry = 1;
             break;
@@ -696,7 +696,7 @@ void ChangeToolbarVisible(CStr ToolBarName, long TBVisible)
     {
         CurEntry = IniReadKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
         if(CurEntry.Len() == 0) break;
-        if(strcmpi(CurEntry.Get_String(), ToolBarName.Get_String()) == 0)
+        if(_strcmpi(CurEntry.Get_String(), ToolBarName.Get_String()) == 0)
         {
             FoundEntry = 1;
             break;
@@ -717,7 +717,7 @@ void RemoveToolbarEntry(CStr ToolBarName)
     {
         CurEntry = IniReadKey("Toolbars", "TbName" + (CStr) StringNumberComplement(i, 3).Get_String(), ToolbarsIniFile);
         if(CurEntry.Len() == 0) break;
-        if(strcmpi(CurEntry.Get_String(), ToolBarName.Get_String()) == 0)
+        if(_strcmpi(CurEntry.Get_String(), ToolBarName.Get_String()) == 0)
         {
             FoundEntry = 1;
             break;

@@ -879,16 +879,11 @@ int ChDrive(CStr DriveStr)
     int ReturnValue = 1;
     CStr ChDriveStrTmp;
 
-    ChDriveStrTmp = ChDriveStrTmp.String(MAX_PATH+1,1);
-    GetCurrentDirectory(MAX_PATH,ChDriveStrTmp.Get_String());
-//Ojo !!!!!!!!!!!!!!!!!!!!!! Revisar
-#if _MSC_VER >= 1400
-		strncpy_s(ChDriveStrTmp.Get_String(), strlen(ChDriveStrTmp.Get_String()),DriveStr.Left(1).Get_String(), strlen(ChDriveStrTmp.Get_String()) - 1);
-//      errno_t strncpy_s(char *strDest, size_t numberOfElements, const char *strSource, size_t count);
-//      strncpy_s(dst, 5, "a long string", 4);
-#else
-		strncpy(ChDriveStrTmp.Get_String(),DriveStr.Left(1).Get_String(),1);
-#endif
+    ChDriveStrTmp = ChDriveStrTmp.String(MAX_PATH + 1, 1);
+    GetCurrentDirectory(MAX_PATH, ChDriveStrTmp.Get_String());
+
+	strncpy(ChDriveStrTmp.Get_String(), DriveStr.Left(1).Get_String(), 1);
+
     if(SetCurrentDirectory(ChDriveStrTmp.Get_String()) == 0)
     {
         ChDriveStrTmp.Get_String()[1] = ':';
@@ -4645,31 +4640,19 @@ void ControlSetSysToTray(HINSTANCE hInstance, HWND hWnd, long IDTray, long IconI
         SysTrayStruct.uID = IDTray;
         SysTrayStruct.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP | NIF_INFO;
         SysTrayStruct.uTimeout = 10;
-#if _MSC_VER >= 1400
-        strncpy_s(SysTrayStruct.szInfoTitle, strlen(SysTrayStruct.szInfoTitle), ToolTipText.Get_String(), strlen(SysTrayStruct.szInfoTitle)-1);
-#else
         strncpy(SysTrayStruct.szInfoTitle, ToolTipText.Get_String(), 64);
-#endif
         MemStat.dwLength = sizeof(MemStat);
         GlobalMemoryStatus(&MemStat);
         BalloonText = "Double click to bring to front\r\nRight click for options\r\n\r\n";
         BalloonText = BalloonText + (CStr) "Memory usage: " + (CStr) MemStat.dwMemoryLoad + (CStr) "%\r";
         BalloonText = BalloonText + (CStr) "Free physical memory: " + (CStr) MemStat.dwAvailPhys + (CStr) "\r";
-#if _MSC_VER >= 1400
-		strncpy_s(SysTrayStruct.szInfo, strlen(SysTrayStruct.szInfo), BalloonText.Get_String(), strlen(SysTrayStruct.szInfo)-1);
-#else
 		strncpy(SysTrayStruct.szInfo, BalloonText.Get_String(), 256);
-#endif
         SysTrayStruct.dwInfoFlags = NIIF_INFO;
         SysTrayStruct.dwState = NIS_SHAREDICON;
         SysTrayStruct.dwStateMask = NIS_SHAREDICON;
         SysTrayStruct.uCallbackMessage = WM_SHELLNOTIFY;
         SysTrayStruct.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IconID));
-#if _MSC_VER >= 1400
-		strncpy_s(SysTrayStruct.szTip,strlen(SysTrayStruct.szTip), ToolTipText.Get_String(), strlen(SysTrayStruct.szTip)-1);
-#else
 		strncpy(SysTrayStruct.szTip, ToolTipText.Get_String(), 128);
-#endif
         ShowWindow(hWnd, SW_HIDE);
         Shell_NotifyIcon(NIM_ADD, &SysTrayStruct);
     }
@@ -4682,11 +4665,7 @@ void ControlSetSysToTray(HINSTANCE hInstance, HWND hWnd, long IDTray, long IconI
         SysTrayStruct.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
         SysTrayStruct.uCallbackMessage = WM_SHELLNOTIFY;
         SysTrayStruct.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IconID));
-#if _MSC_VER >= 1400
-		strncpy_s(SysTrayStruct.szTip, strlen(SysTrayStruct.szTip), ToolTipText.Get_String(), strlen(SysTrayStruct.szTip)-1);
-#else
 		strncpy(SysTrayStruct.szTip, ToolTipText.Get_String(), 64);
-#endif
         ShowWindow(hWnd, SW_HIDE);
         Shell_NotifyIcon(NIM_ADD, &SysTrayStruct);
     }
@@ -5106,12 +5085,9 @@ BYTE *MLoadFile(char *FileName, long *Bytes)
 	FILE *FHandle;
 	BYTE *MemBlock = NULL;
     *Bytes = 0;
-#if _MSC_VER >= 1400
-    fopen_s(&FHandle, FileName, "rb" );
-#else
+
     FHandle = fopen(FileName, "rb");
-#endif
-   if(FHandle)
+    if(FHandle)
     {
         fseek(FHandle, 0, SEEK_END);
         Size = ftell(FHandle);

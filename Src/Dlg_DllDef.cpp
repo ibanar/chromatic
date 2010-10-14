@@ -152,7 +152,7 @@ long DllDefFillFilesList(void)
         if(strlen(StringGetSplitElement(RealProcList, DllDefArray, i).Get_String()) != 0)
         {
             ListViewAddItem(FRMDllDefListview, StringGetSplitElement(RealProcList, DllDefArray, i), i, 0);
-            if(strcmpi(StringGetSplitElement(RealProcList, DllDefArray, i).Get_String(), DefEntryValue.Get_String()) == 0) ReturnValue = i + 1;
+            if(_strcmpi(StringGetSplitElement(RealProcList, DllDefArray, i).Get_String(), DefEntryValue.Get_String()) == 0) ReturnValue = i + 1;
             ComboBoxAddItem(FRMDllDefComboBox, StringGetSplitElement(RealProcList, DllDefArray, i), -1);
             DefValue = IniReadKey("EXPORTS", StringGetSplitElement(RealProcList, DllDefArray, i), DllDefFile);
             if(DefValue.Len() != 0) ListViewSetItemCheckbox(FRMDllDefListview, i, 1);

@@ -500,7 +500,7 @@ void FRMUserMenusListboxReplace(void)
         for(i = 0; i <= (long) ListBoxCount(FRMUserMenusListbox) - 1; i++)
         {
             BufString = "[" + (CStr) ControlGetText(FRMUserMenusTxtDescription) + (CStr) "]";
-            if(strcmpi(ListBoxGetItem(FRMUserMenusListbox, i).Get_String(), BufString.Get_String()) == 0)
+            if(_strcmpi(ListBoxGetItem(FRMUserMenusListbox, i).Get_String(), BufString.Get_String()) == 0)
             {
                 MiscMsgBox(FRMUserMenushwnd, "Menu already exists in list.", MB_ERROR, Requesters);
                 SetFocus(FRMUserMenusTxtDescription);
@@ -664,7 +664,7 @@ void FRMUserMenusListboxAddMenu(void)
     for(i = 0; i <= (long) ListBoxCount(FRMUserMenusListbox) - 1; i++)
     {
         BufString = "[" + (CStr) ControlGetText(FRMUserMenusTxtDescription).Get_String() + (CStr) "]";
-        if(strcmpi(ListBoxGetItem(FRMUserMenusListbox, i).Get_String(), BufString.Get_String()) == 0)
+        if(_strcmpi(ListBoxGetItem(FRMUserMenusListbox, i).Get_String(), BufString.Get_String()) == 0)
         {
             MiscMsgBox(FRMUserMenushwnd, "Menu already exists in list.", MB_ERROR, Requesters);
             SetFocus(FRMUserMenusTxtDescription);
@@ -895,14 +895,14 @@ long UpdateToolbars(void)
                     else
                     {
                         // Check if command had been moved from original list
-                        if(strcmpi(TempMenusCommands.Get(CurTbEntryLng - 1)->Content,
-                                   MenusCmdsComments.Get(CurTbEntryLng - 1)->Content) != 0)
+                        if(_strcmpi(TempMenusCommands.Get(CurTbEntryLng - 1)->Content,
+                                    MenusCmdsComments.Get(CurTbEntryLng - 1)->Content) != 0)
                         {
                             // Moved: search for similar entry in the array
 ForceTBRefresh:             FoundSimilar = 0;
                             for(k = 0; k < MenusCmdsComments.Amount(); k++) {
-                                if(strcmpi(TempMenusCommands.Get(CurTbEntryLng - 1)->Content,
-                                           MenusCmdsComments.Get(k)->Content) == 0)
+                                if(_strcmpi(TempMenusCommands.Get(CurTbEntryLng - 1)->Content,
+                                            MenusCmdsComments.Get(k)->Content) == 0)
                                 {
                                     FoundSimilar = 1;
                                     break;
@@ -928,7 +928,7 @@ ForceTBRefresh:             FoundSimilar = 0;
                             // Same place: check if label have changed
                             if(strlen(MenusCmdsLbl.Get(CurTbEntryLng - 1)->Content) != 0)
                             {
-                                if(strcmpi(TempMenusLbl.Get(CurTbEntryLng - 1)->Content, MenusCmdsLbl.Get(CurTbEntryLng - 1)->Content) != 0) goto ForceTBRefresh;
+                                if(_strcmpi(TempMenusLbl.Get(CurTbEntryLng - 1)->Content, MenusCmdsLbl.Get(CurTbEntryLng - 1)->Content) != 0) goto ForceTBRefresh;
                             }
                         }
                     }

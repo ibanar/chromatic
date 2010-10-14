@@ -534,7 +534,7 @@ void RefreshIdentScope(HWND hWnd)
             }
             else
             {
-                if(strcmpi(BufString.Get_String(), "(none)") == 0) CM_SetAutoIndentMode(hWnd, CM_INDENT_OFF);
+                if(_strcmpi(BufString.Get_String(), "(none)") == 0) CM_SetAutoIndentMode(hWnd, CM_INDENT_OFF);
                 else CM_SetAutoIndentMode(hWnd, CM_INDENT_SCOPE);
             }
     }
@@ -915,7 +915,7 @@ long LoadFile(HWND hWnd)
         DirectUnix = IniReadKey("Layout", "AutoConvUNIX", MainIniFile);
         if(DirectUnix.Len() != 0)
         {
-            if(strcmpi(DirectUnix.Get_String(), "1") == 0)
+            if(_strcmpi(DirectUnix.Get_String(), "1") == 0)
             {
                 WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "File '" + (CStr) CMGetRealFile(ChildStruct->RFile).Get_String() + (CStr) "' converted to DOS format.");
                 goto DirectConvertUnix;
@@ -988,7 +988,7 @@ long IncludeFile(HWND hWnd, CStr FName)
         DirectUnix = IniReadKey("Layout", "AutoConvUNIX", MainIniFile);
         if(DirectUnix.Len() != 0)
         {
-            if(strcmpi(DirectUnix.Get_String(), "1") == 0)
+            if(_strcmpi(DirectUnix.Get_String(), "1") == 0)
             {
                 WriteToStatus(PutStatusDatePrefix().Get_String() + (CStr) "File '" + (CStr) FName.Get_String() + (CStr) "' converted to DOS format.");
                 goto DirectConvertUnix;
@@ -1090,7 +1090,7 @@ void SaveBookmarks(HWND hWnd, CStr FileName, long BaseLine, long Lines)
     long BkRealNumber = 0;
     int i = 0;
     
-    if(strcmpi(FileName.Get_String(), "<untitled document") != 0)
+    if(_strcmpi(FileName.Get_String(), "<untitled document") != 0)
     {
         // Save the bookmarks
         SaveBook = IniReadKey("Layout", "SaveBookmarks", MainIniFile);
@@ -1212,7 +1212,7 @@ void UpdateLanguage(HWND hWnd, CStr FileName)
     ChildStruct = LoadStructure(hWnd);
     NewRFile = CMGetRealFile(FileName);
     NewLanguageToStore = GetLanguageToOpen(NewRFile);
-    if(strcmpi(NewLanguageToStore.Get_String(), CMGetRealFile(ChildStruct->Language).Get_String()) != 0)
+    if(_strcmpi(NewLanguageToStore.Get_String(), CMGetRealFile(ChildStruct->Language).Get_String()) != 0)
     {
         StoreLanguage(NewLanguageToStore);
         if(NewLanguageToStore.Len() == 0)
@@ -1311,7 +1311,7 @@ ReSelectWord:
     // Pass punctations
     if(BufString == ".")
     {
-        if(strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
+        if(_strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
         {
             if(CPos.nCol == 0) goto ForceItRight;
             CM_ExecuteCmd(hWnd, CMD_CHARLEFT, 0);
@@ -1325,7 +1325,7 @@ ForceItRight:
     }
     else if(BufString == ",")
     {
-        if(strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
+        if(_strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
         {
             if(CPos.nCol == 0) goto ForceItRight;
             CM_ExecuteCmd(hWnd, CMD_CHARLEFT, 0);
@@ -1338,7 +1338,7 @@ ForceItRight:
     }
     else if(BufString == "(")
     {
-        if(strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
+        if(_strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
         {
             if(CPos.nCol == 0) goto ForceItRight;
             CM_ExecuteCmd(hWnd, CMD_CHARLEFT, 0);
@@ -1351,7 +1351,7 @@ ForceItRight:
     }
     else if(BufString == ":")
     {
-        if(strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
+        if(_strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
         {
             if(CPos.nCol == 0) goto ForceItRight;
             CM_ExecuteCmd(hWnd, CMD_CHARLEFT, 0);
@@ -1364,7 +1364,7 @@ ForceItRight:
     }
     else if(BufString == ")")
     {
-        if(strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
+        if(_strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
         {
             if(CPos.nCol == 0) goto ForceItRight;
             CM_ExecuteCmd(hWnd, CMD_CHARLEFT, 0);
@@ -1377,7 +1377,7 @@ ForceItRight:
     }
     else if(BufString == "+")
     {
-        if(strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
+        if(_strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
         {
             if(CPos.nCol == 0) goto ForceItRight;
             CM_ExecuteCmd(hWnd, CMD_CHARLEFT, 0);
@@ -1390,7 +1390,7 @@ ForceItRight:
     }
     else if(BufString == "*")
     {
-        if(strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
+        if(_strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
         {
             if(CPos.nCol == 0) goto ForceItRight;
             CM_ExecuteCmd(hWnd, CMD_CHARLEFT, 0);
@@ -1403,7 +1403,7 @@ ForceItRight:
     }
     else if(BufString == "/")
     {
-        if(strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
+        if(_strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
         {
             if(CPos.nCol == 0) goto ForceItRight;
             CM_ExecuteCmd(hWnd, CMD_CHARLEFT, 0);
@@ -1416,7 +1416,7 @@ ForceItRight:
     }
     else if(BufString == "-")
     {
-        if(strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
+        if(_strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
         {
             if(CPos.nCol == 0) goto ForceItRight;
             CM_ExecuteCmd(hWnd, CMD_CHARLEFT, 0);
@@ -1429,7 +1429,7 @@ ForceItRight:
     }
     else if(BufString == "$")
     {
-        if(strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
+        if(_strcmpi(GetCurrentCharWord(hWnd).Get_String(), BufString.Get_String()) == 0)
         {
             if(CPos.nCol == 0) goto ForceItRight;
             CM_ExecuteCmd(hWnd, CMD_CHARLEFT, 0);
@@ -1728,7 +1728,7 @@ LRESULT CALLBACK CodeMaxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                                         LoadBookmarks(CurrentForm, CMGetRealFile(DropedFileName), LineToDrop);
                                         FreeMem(DroppedFile);
                                     }
-                                    if(strcmpi(ChildStruct->RFile->Left(18).Get_String(), "<untitled document") == 0)
+                                    if(_strcmpi(ChildStruct->RFile->Left(18).Get_String(), "<untitled document") == 0)
                                     {
                                         CM_SetModified(hWnd, 0);
                                         ChildStruct->RFile->Set_String(DropedFileName.Get_String());
@@ -2450,7 +2450,7 @@ void StoreLastPosInChild(HWND hWnd)
         FileToCheckPos = CMGetRealFile(ChildStruct->RFile);
         for(i = 0; i < LastOpened.Amount(); i++)
         {
-            if(strcmpi(FileToCheckPos.Get_String(), LastOpened.Get(i)->Content) == 0)
+            if(_strcmpi(FileToCheckPos.Get_String(), LastOpened.Get(i)->Content) == 0)
             {
                 LoadCurrentSel(ChildStruct->hChildCodeMax);
                 LastOpenedLine.Set(i, CodeMaxCurRange.posStart.nLine);
@@ -2804,7 +2804,7 @@ void DispFnc(HWND hWnd, CStr FnctoShow, CStr CompleteLine, long SetHighLight, lo
     if(FnctoShow.Len() == 0) return;
     ChildStruct = LoadStructure(GetParent(hWnd));
     // Don't display it again
-    if(APIMode == 1) if(ChildStruct->oldAPILine == GetCurrentLineNumber(hWnd)) if(strcmpi(CMGetRealFile(ChildStruct->oldAPIFnc).Get_String(), FnctoShow.Get_String()) == 0) return;
+    if(APIMode == 1) if(ChildStruct->oldAPILine == GetCurrentLineNumber(hWnd)) if(_strcmpi(CMGetRealFile(ChildStruct->oldAPIFnc).Get_String(), FnctoShow.Get_String()) == 0) return;
     APICurHiglight = 0;
     if(APIMode == 1) ControlClose(FRMAPIhwnd);
     APIFnc = FnctoShow.Get_String();
@@ -3183,8 +3183,17 @@ void DisplayAPIList(HWND hWnd)
     // Can be complete/incomplete or empty name
     // Don't display it again
     if(APIMode == 1) ControlClose(FRMAPIhwnd);
-    if(APIListMode == 1) if(ChildStruct->oldAPILineLine = GetCurrentLineNumber(ChildStruct->hChildCodeMax)) if(strcmpi(CMGetRealFile(ChildStruct->oldAPILineFnc).Get_String(), LineToDisplay.Get_String()) == 0) return;
-    if(APIListMode == 1) ControlClose(FRMAPIListhWnd);
+    if(APIListMode == 1)
+    {
+        if(ChildStruct->oldAPILineLine = GetCurrentLineNumber(ChildStruct->hChildCodeMax))
+        {
+            if(_strcmpi(CMGetRealFile(ChildStruct->oldAPILineFnc).Get_String(), LineToDisplay.Get_String()) == 0)
+            {
+                return;
+            }
+        }
+    }
+	if(APIListMode == 1) ControlClose(FRMAPIListhWnd);
     if(CursorDisabled) DisplayCursor();
     APILineFnc = LineToDisplay;
     GetWindowRect(ChildStruct->hChildCodeMax, &APIRect);

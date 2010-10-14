@@ -744,7 +744,7 @@ FoundMoreNestedIncludes:
                             {
                                 if(strlen(Includes.Get(k)->Content) != 0)
                                 {
-                                    if(strcmpi(Includes.Get(k)->Content, StrJoinInclude.Get_String()) == 0)
+                                    if(_strcmpi(Includes.Get(k)->Content, StrJoinInclude.Get_String()) == 0)
                                     {
                                         FInclude = 1;
                                         break;
@@ -769,7 +769,7 @@ FoundMoreNestedIncludes:
                                 {
                                     if(strlen(Includes.Get(k)->Content) != 0)
                                     {
-                                        if(strcmpi(Includes.Get(k)->Content, IncludeFileName.Get_String()) == 0)
+                                        if(_strcmpi(Includes.Get(k)->Content, IncludeFileName.Get_String()) == 0)
                                         {
                                             FInclude = 1;
                                             break;
@@ -833,7 +833,7 @@ NoMoreIncludes:;
                 {
                     Double_Entry2 = Includes.Get(j)->Content;
                     if(strlen(Double_Entry2) != 0) {
-                        if(strcmpi(Double_Entry1, Double_Entry2) == 0)
+                        if(_strcmpi(Double_Entry1, Double_Entry2) == 0)
                         {
                             // TODO: checkup
                             Includes.Set(i, "");

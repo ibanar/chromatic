@@ -242,7 +242,7 @@ NoAPIhighLight:             SetTextColor(APIhDC, GetSysColor(COLOR_INFOTEXT));
                 goto NextArgsLine;
 EndArgs:        if(StringGetSplitElement(APIString, APIArrParse, j).Len() == 0)
                 {
-                    if(strcmpi(StringGetSplitElement(APIString, APIArrParse, j + 1).Get_String(), "Note: -") != 0)
+                    if(_strcmpi(StringGetSplitElement(APIString, APIArrParse, j + 1).Get_String(), "Note: -") != 0)
                     {
                         SetTextColor(APIhDC, 0x55FF);
                     }
@@ -253,7 +253,7 @@ EndArgs:        if(StringGetSplitElement(APIString, APIArrParse, j).Len() == 0)
                 }
                 else
                 {
-                    if(strcmpi(StringGetSplitElement(APIString, APIArrParse, j).Get_String(), "Note: -") != 0)
+                    if(_strcmpi(StringGetSplitElement(APIString, APIArrParse, j).Get_String(), "Note: -") != 0)
                     {
                         SetTextColor(APIhDC, 0x55FF);
                     }

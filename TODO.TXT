@@ -4,7 +4,7 @@ To do:
 General:
 
     - Finish to replace PILL by LUA.
-	- Finish the dialog editor.
+	- Complete the dialog editor.
 	- Add a way to replace the default functions of childs windows (load/save, etc)
 	  (Probably with a table of pointers).
 	- Re-enable the macros recorder.
@@ -46,11 +46,6 @@ Menus:
     - Modify the system to use 4 bytes keys instead of indexes
       (with a keys sanity checkup system).
 
-Editor:
-
-	- Double click on the 3rd mouse button can either select the entire line
-	  or select 2/3/4/etc. words on the left.
-
 ----------------------------------------------------------------------------------
 Dialog editor:
 
@@ -65,12 +60,6 @@ Dialog editor:
 
 ----------------------------------------------------------------------------------
 What might be done (or not):
-
-General:
-
-- Selectable asm languages files for various processors
-  and relevant syntax highlighting.
-  (obviously one at a time as the files will share the same extensions).
 
 Editor:
 

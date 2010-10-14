@@ -456,7 +456,7 @@ CStr  CALLBACK FTPGetEntryFileSize(CStr DirEntry)
     CStr StrLine;
 
     StrLine = FTPCutEntry(DirEntry);
-    if(strcmpi(StrLine.Left(1).Get_String(), "D") == 0) return(ReturnValue);
+    if(_strcmpi(StrLine.Left(1).Get_String(), "D") == 0) return(ReturnValue);
     for (i = 41; i >= 1 ; i--)
     {
         if(strcmp(StrLine.Mid(i, 1).Get_String(), " ") == 0) break;
@@ -475,7 +475,7 @@ long CALLBACK FTPIsEntryDir(CStr DirEntry)
 {
     long ReturnValue = 0;
 
-    if(strcmpi(DirEntry.Left(1).Get_String(), "D") == 0) ReturnValue = 1;
+    if(_strcmpi(DirEntry.Left(1).Get_String(), "D") == 0) ReturnValue = 1;
     return(ReturnValue);
 }
 

@@ -236,6 +236,7 @@ HWND FRMPropertiesChkUseFileDir;
 HWND FRMPropertiesChkCreateDrop;
 HWND FRMPropertiesChkSaveProjectState;
 HWND FRMPropertiesChkConfirmBeforeExit;
+HWND FRMPropertiesPageLanguagesPriorities;
 
 // Other variables
 CStr FRMPropertiesRetVal;
@@ -968,6 +969,8 @@ void CreatePropPage5(HWND hParent)
     FRMPropertiesChkCreateDrop = CreateCheckBox(11, 19 + (18 * 6), 160, 15, FRMPropertiesPageExtrasLayouts2, "New window for dropped files", 12, 0, WS_TABSTOP, 0);
     FRMPropertiesChkSaveProjectState = CreateCheckBox(11, 19 + (18 * 7), 160, 15, FRMPropertiesPageExtrasLayouts2, "Save project state", 13, 0, WS_TABSTOP, 0);
     FRMPropertiesChkConfirmBeforeExit = CreateCheckBox(11, 19 + (18 * 8), 160, 15, FRMPropertiesPageExtrasLayouts2, "Confirm before exit", 14, 0, WS_TABSTOP, 0);
+
+	FRMPropertiesPageLanguagesPriorities = CreateFrame(191, 26, 332, 49, hParent, "Languages", 0, 0, 0);
 }
 
 // -----------------------------------------------------------------------
@@ -1457,28 +1460,28 @@ void SavePrefs(void)
 
     // Refresh masm directories
     free(Dirs[DIR_ROOT]);
-    Dirs[DIR_ROOT] = strdup(ControlGetText(FRMPropertiesTxtROOTDIR).Get_String());
+    Dirs[DIR_ROOT] = _strdup(ControlGetText(FRMPropertiesTxtROOTDIR).Get_String());
     IniWriteKey("Dirs", DirsRepl[DIR_ROOT], Dirs[DIR_ROOT], MainIniFile);
     free(Dirs[DIR_BIN]);
-    Dirs[DIR_BIN] = strdup(ControlGetText(FRMPropertiesTxtBINDIR).Get_String());
+    Dirs[DIR_BIN] = _strdup(ControlGetText(FRMPropertiesTxtBINDIR).Get_String());
     IniWriteKey("Dirs", DirsRepl[DIR_BIN], Dirs[DIR_BIN], MainIniFile);
     free(Dirs[DIR_INCLUDE]);
-    Dirs[DIR_INCLUDE] = strdup(ControlGetText(FRMPropertiesTxtINCLUDEDIR).Get_String());
+    Dirs[DIR_INCLUDE] = _strdup(ControlGetText(FRMPropertiesTxtINCLUDEDIR).Get_String());
     IniWriteKey("Dirs",DirsRepl[DIR_INCLUDE], Dirs[DIR_INCLUDE], MainIniFile);
     free(Dirs[DIR_LIB]);
-    Dirs[DIR_LIB] = strdup(ControlGetText(FRMPropertiesTxtLIBDIR).Get_String());
+    Dirs[DIR_LIB] = _strdup(ControlGetText(FRMPropertiesTxtLIBDIR).Get_String());
     IniWriteKey("Dirs", DirsRepl[DIR_LIB], Dirs[DIR_LIB], MainIniFile);
     free(Dirs[DIR_HELP]);
-    Dirs[DIR_HELP] = strdup(ControlGetText(FRMPropertiesTxtHELPDIR).Get_String());
+    Dirs[DIR_HELP] = _strdup(ControlGetText(FRMPropertiesTxtHELPDIR).Get_String());
     IniWriteKey("Dirs", DirsRepl[DIR_HELP], Dirs[DIR_HELP], MainIniFile);
     free(Dirs[DIR_PROJECTS]);
-    Dirs[DIR_PROJECTS] = strdup(ControlGetText(FRMPropertiesTxtPROJECTSDIR).Get_String());
+    Dirs[DIR_PROJECTS] = _strdup(ControlGetText(FRMPropertiesTxtPROJECTSDIR).Get_String());
     // Set it by default just in case
     if(strlen(Dirs[DIR_PROJECTS]) == 0)
     {
         free(Dirs[DIR_PROJECTS]);
         BufString = AppPath + (CStr) "\\Projects";
-        Dirs[DIR_PROJECTS] = strdup(BufString.Get_String());
+        Dirs[DIR_PROJECTS] = _strdup(BufString.Get_String());
     }
     IniWriteKey("Dirs", DirsRepl[DIR_PROJECTS], Dirs[DIR_PROJECTS], MainIniFile);
     
@@ -1876,7 +1879,7 @@ void FRMPropertiesInitCodeMax(HWND hwnd)
     CM_EnableGlobalProps(hwnd, 1);
     CM_EnableColumnSel(hwnd, 0);
     CM_EnableHideSel(hwnd, 0);
-    CM_SetLanguage(hwnd, "Assembler");
+    CM_SetLanguage(hwnd, "C");
     BufString = "WndProc proc hWin:DWORD,uMsg:DWORD,wParam:DWORD,lParam:DWORD\r\n";
     BufString = BufString + "comment \\\r\n";
     BufString = BufString + "  Save 50 bytes from WndProc with Snap\r\n";
@@ -2203,7 +2206,7 @@ long SaveColorsProfile(CStr ProfileName)
     {
         FRMPropertiesRetVal = IniReadKey("Profiles", "Prof" + (CStr) StringNumberComplement(i, 3).Get_String(), ColorsIniFile);
         if(FRMPropertiesRetVal.Len() == 0) break;
-        if(strcmpi(FRMPropertiesRetVal.Get_String(), UProfName.Get_String()) == 0)
+        if(_strcmpi(FRMPropertiesRetVal.Get_String(), UProfName.Get_String()) == 0)
         {
             NoReg = 1;
             if(MiscMsgBox(FRMPropertieshwnd, "Profile already exists. Overwrite it ?", MB_QUESTION, Requesters) == IDNO)
@@ -2673,7 +2676,7 @@ void SaveFTPProps(void)
     {
         FRMPropertiesRetVal = IniReadKey("FTPAccounts", "FTPAccount" + (CStr) StringNumberComplement(i, 3).Get_String(), FtpAccountsIniFile);
         if(FRMPropertiesRetVal.Len() == 0) break;
-        if(strcmpi(AccountName.Get_String(), FRMPropertiesRetVal.Get_String()) == 0) break;
+        if(_strcmpi(AccountName.Get_String(), FRMPropertiesRetVal.Get_String()) == 0) break;
     }
     // Add account name
     IniWriteKey("FTPAccounts", "FTPAccount" + (CStr) StringNumberComplement(i, 3).Get_String(), AccountName, FtpAccountsIniFile);
@@ -2751,6 +2754,7 @@ void FRMPropertiesChangeCurrentTab(void)
             ControlVisible(FRMPropertiesPageAccountInfos, 0);
             ControlVisible(FRMPropertiesPageTransfersTypes, 0);
             ControlVisible(FRMPropertiesPageCodingHelp, 0);
+            ControlVisible(FRMPropertiesPageLanguagesPriorities, 0);
             ControlVisible(FRMPropertiesPageExtrasLayouts2, 0);
             ControlVisible(FRMPropertiesPageEditor, 1);
             ControlVisible(FRMPropertiesPageFileExtensions, 1);
@@ -2796,6 +2800,7 @@ void FRMPropertiesChangeCurrentTab(void)
             ControlVisible(FRMPropertiesPageAccountInfos, 0);
             ControlVisible(FRMPropertiesPageTransfersTypes, 0);
             ControlVisible(FRMPropertiesPageCodingHelp, 0);
+            ControlVisible(FRMPropertiesPageLanguagesPriorities, 0);
             ControlVisible(FRMPropertiesPageExtrasLayouts2, 0);
             BuildPreview(FRMPropertiesCodeMax);
             ControlVisible(FRMPropertiesPageColors, 1);
@@ -2843,6 +2848,7 @@ void FRMPropertiesChangeCurrentTab(void)
             ControlVisible(FRMPropertiesPageAccountInfos, 0);
             ControlVisible(FRMPropertiesPageTransfersTypes, 0);
             ControlVisible(FRMPropertiesPageCodingHelp, 0);
+            ControlVisible(FRMPropertiesPageLanguagesPriorities, 0);
             ControlVisible(FRMPropertiesPageExtrasLayouts2, 0);
             ControlVisible(FRMPropertiesPageFolders, 1);
             ControlVisible(FRMPropertiesTbROOTDIR, 1);
@@ -2902,6 +2908,7 @@ void FRMPropertiesChangeCurrentTab(void)
             ControlVisible(FRMPropertiesPageProtoGen, 0);
             ControlVisible(FRMPropertiesCmdGenProg, 0);
             ControlVisible(FRMPropertiesPageCodingHelp, 0);
+            ControlVisible(FRMPropertiesPageLanguagesPriorities, 0);
             ControlVisible(FRMPropertiesPageExtrasLayouts2, 0);
             ControlVisible(FRMPropertiesPageFTPManage, 1);
             ControlVisible(FRMPropertiesTbAccounts, 1);
@@ -2951,6 +2958,7 @@ void FRMPropertiesChangeCurrentTab(void)
             ControlVisible(FRMPropertiesPageAccountInfos, 0);
             ControlVisible(FRMPropertiesPageTransfersTypes, 0);
             ControlVisible(FRMPropertiesPageCodingHelp, 1);
+            ControlVisible(FRMPropertiesPageLanguagesPriorities, 1);
             ControlVisible(FRMPropertiesPageExtrasLayouts2, 1);
     }
 }
@@ -2965,7 +2973,7 @@ void DeleteAccountFromIni(CStr AccountToDelete)
     {
         FRMPropertiesRetVal = IniReadKey("FTPAccounts", "FTPAccount" + (CStr) StringNumberComplement(i, 3).Get_String(), FtpAccountsIniFile);
         if(FRMPropertiesRetVal.Len() == 0) break;
-        if(strcmpi(AccountToDelete.Get_String(), FRMPropertiesRetVal.Get_String()) == 0)
+        if(_strcmpi(AccountToDelete.Get_String(), FRMPropertiesRetVal.Get_String()) == 0)
         {
             IniDeleteKey("FTPAccounts", "FTPAccount" + (CStr) StringNumberComplement(i, 3).Get_String(), FtpAccountsIniFile);
             IniDeleteKey(AccountToDelete, "FTPIP", FtpAccountsIniFile);
@@ -2999,7 +3007,7 @@ void Fillskins(void)
         SkinToAdd = IniReadKey("BuildSkins", "Skin" + (CStr) StringNumberComplement(i, 3).Get_String(), SkinsIniFile);
         if(SkinToAdd.Len() == 0) break;
         SkinToAdd = ChangeRelativePaths(SkinToAdd);
-        if(strcmpi(SkinToAdd.Get_String(), PrfCurrentSkin.Get_String()) == 0) SelectedIdx = i;
+        if(_strcmpi(SkinToAdd.Get_String(), PrfCurrentSkin.Get_String()) == 0) SelectedIdx = i;
         PrgSkinArray.Add(SkinToAdd.Get_String());
         SkinToAdd = IniReadKey("SKINFOS", "Title", SkinToAdd);
         ComboBoxAddItem(FRMPropertiesCbSkin, SkinToAdd, -1);
@@ -3197,7 +3205,7 @@ LRESULT CALLBACK FRMPropertiesFrameBuilding(HWND hWnd, UINT uMsg, WPARAM wParam,
                 if(ControlGetNotifiedCommand(wParam) == CBN_SELCHANGE)
                 {
                     TempCurrentSkin = PrgSkinArray.Get(ComboBoxGetIndex(FRMPropertiesCbSkin))->Content;
-                    if(strcmpi(TempCurrentSkin.Get_String(), PrfCurrentSkin.Get_String()) != 0)
+                    if(_strcmpi(TempCurrentSkin.Get_String(), PrfCurrentSkin.Get_String()) != 0)
                     {
                         ClearSkincontrols();
                         ControlRefresh(FRMPropertiesPageProjects);
@@ -3281,7 +3289,7 @@ void FillDefLanguage(void)
             if(OldDefault.Len() != 0)
             {
                 // Retrieve index of selected language
-                if(strcmpi(FRMPropertiesRetVal.Get_String(), OldDefault.Get_String()) == 0) AsmPos = i + 1;
+                if(_strcmpi(FRMPropertiesRetVal.Get_String(), OldDefault.Get_String()) == 0) AsmPos = i + 1;
             }
             ComboBoxAddItem(FRMPropertiesCbDefLang, FRMPropertiesRetVal, -1);
         }
@@ -3329,7 +3337,7 @@ void AddNewDebugger(HWND hCombo, CStr Debugger)
 
     for(i = 0; i < ComboBoxCount(hCombo); i++)
     {
-        if(strcmpi(ComboBoxGetItem(hCombo, i).Get_String(), Debugger.Get_String()) == 0)
+        if(_strcmpi(ComboBoxGetItem(hCombo, i).Get_String(), Debugger.Get_String()) == 0)
         {
             Found = TRUE;
             break;

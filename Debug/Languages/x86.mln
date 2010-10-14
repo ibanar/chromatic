@@ -4,7 +4,7 @@
 ; (C) 2001-2010 Franck Charlet.
 
 [LangSpec]
-LangName=Assembler
+LangName=X86 Assembler
 LangCopyright=Franck Charlet.
 LangComment=MASM/TASM/NASM/FASM/GOASM assembly.
 CaseSensitive=0

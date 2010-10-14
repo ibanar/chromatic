@@ -148,9 +148,9 @@ void FillAddInsArrays(void)
                 AddInsFiles.Add(AddInFileName.Get_String());
                 AddInsDescriptions.Add(GetDLLDescription(AddInFileName, AddInDesc).Get_String());
                 // Register loaded state
-                if(strcmpi(AddInLoaded.Get_String(), "1") == 0) LoadedAddIns.Add(1L);
+                if(_strcmpi(AddInLoaded.Get_String(), "1") == 0) LoadedAddIns.Add(1L);
                 else LoadedAddIns.Add(0L);
-                if(strcmpi(AddInRunning.Get_String(), "1") == 0) RunningAddIns.Add(1L);
+                if(_strcmpi(AddInRunning.Get_String(), "1") == 0) RunningAddIns.Add(1L);
                 else RunningAddIns.Add(0L);
                 AddInsLoad.Add(AddInLoad);
                 AddInsUnLoad.Add(AddInUnload);
@@ -262,9 +262,9 @@ void ReFillAddInsArrays(void)
             AddInsFiles.Add(AddInFileName.Get_String());
             AddInsDescriptions.Add(GetDLLDescription(AddInFileName, AddInDesc).Get_String());
             // Register loaded state
-            if(strcmpi(AddInLoaded.Get_String(), "1") == 0) LoadedAddIns.Add(1L);
+            if(_strcmpi(AddInLoaded.Get_String(), "1") == 0) LoadedAddIns.Add(1L);
             else LoadedAddIns.Add(0L);
-            if(strcmpi(AddInRunning.Get_String(), "1") == 0) RunningAddIns.Add(1L);
+            if(_strcmpi(AddInRunning.Get_String(), "1") == 0) RunningAddIns.Add(1L);
             else RunningAddIns.Add(0L);
             AddInsLoad.Add(AddInLoad);
             AddInsUnLoad.Add(AddInUnload);
@@ -292,9 +292,9 @@ void ReFillAddInsArrays(void)
         AddInLoaded = IniReadKey("AddIns", "Loaded" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         AddInRunning = IniReadKey("AddIns", "Running" + (CStr) StringNumberComplement(i, 3).Get_String(), MainIniFile);
         if(AddInFileName.Len() == 0) break;
-        if(strcmpi(AddInLoaded.Get_String(), "1") == 0) LoadedAddIns.Add(1L);
+        if(_strcmpi(AddInLoaded.Get_String(), "1") == 0) LoadedAddIns.Add(1L);
         else LoadedAddIns.Add(0L);
-        if(strcmpi(AddInRunning.Get_String(), "1") == 0) RunningAddIns.Add(1L);
+        if(_strcmpi(AddInRunning.Get_String(), "1") == 0) RunningAddIns.Add(1L);
         else RunningAddIns.Add(0L);
     }
 }
@@ -447,7 +447,7 @@ long SearchAddInName(CStr AddInName)
 
     for(i = 0; i < AddInsFiles.Amount(); i++)
     {
-        if(strcmpi(AddInsFiles.Get(i)->Content, AddInName.Get_String()) == 0)
+        if(_strcmpi(AddInsFiles.Get(i)->Content, AddInName.Get_String()) == 0)
         {
             ReturnValue = i;
             break;
@@ -465,7 +465,7 @@ long SearchOldAddInName(CStr AddInName)
 
     for(i = 0; i < OldAddInsFiles.Amount(); i++)
     {
-        if(strcmpi(OldAddInsFiles.Get(i)->Content, AddInName.Get_String()) == 0)
+        if(_strcmpi(OldAddInsFiles.Get(i)->Content, AddInName.Get_String()) == 0)
         {
             ReturnValue = i;
             break;
