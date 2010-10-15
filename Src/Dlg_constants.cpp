@@ -172,7 +172,7 @@ int CALLBACK FRMConstantsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
                                 SetFocus(FRMConstantsConstName);
                                 break;
                             }
-                            if(StringIsLabel(Constant_Name))
+                            if(StringIsLabel(Constant_Name, FALSE))
                             {
                                 Constant_Value = ControlGetText(FRMConstantsConstValue);
                                 i = 0;
@@ -214,7 +214,7 @@ int CALLBACK FRMConstantsProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
                                     SetFocus(FRMConstantsConstName);
                                     break;
                                 }
-                                if(StringIsLabel(Constant_Name))
+                                if(StringIsLabel(Constant_Name, FALSE))
                                 {
                                     Constant_Value = ControlGetText(FRMConstantsConstValue);
                                     i = 0;

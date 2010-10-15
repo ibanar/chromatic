@@ -53,6 +53,7 @@
 // -----------------------------------------------------------------------
 // Constants
 #define TOOLTIP_ID 1000
+#define MAX_TABS 4
 
 #define EXT_REPLACE 1
 #define EXT_INSERT 2
@@ -71,6 +72,12 @@
 #define FTPACC_DELETE 11
 
 #define DEBUGGER_VALID 12
+
+#define EXT_REPLACE_LANG 13
+#define EXT_INSERT_LANG 14
+#define EXT_DELETE_LANG 15
+#define EXT_UP_LANG 16
+#define EXT_DOWN_LANG 17
 
 // -----------------------------------------------------------------------
 // Variables
@@ -236,7 +243,16 @@ HWND FRMPropertiesChkUseFileDir;
 HWND FRMPropertiesChkCreateDrop;
 HWND FRMPropertiesChkSaveProjectState;
 HWND FRMPropertiesChkConfirmBeforeExit;
-HWND FRMPropertiesPageLanguagesPriorities;
+HWND FRMPropertiesPageLanguages;
+HWND FRMPropertiesTbLanguages;
+HWND FRMPropertiesLbLanguages;
+HWND FRMPropertiesTxtLanguageFile;
+HWND FRMPropertiesTxtLanguageExtensions;
+HWND FRMPropertiesLbLanguageFile;
+HWND FRMPropertiesLbLanguageExtensions;
+HWND FRMPropertiesLbLanguageDescName;
+HWND FRMPropertiesLbLanguageDescCopyright;
+HWND FRMPropertiesLbLanguageDescComment;
 
 // Other variables
 CStr FRMPropertiesRetVal;
@@ -325,7 +341,15 @@ LRESULT CALLBACK RadioHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK FRMPropertiesFrameMain(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK FRMPropertiesFrameBuilding(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK PropStepListViewProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK FRMPropertiesFrameLanguages(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+CStr Get_LanguageFileName(int Idx);
+CStr Get_LanguageExtensions(int Idx);
 void AddNewDebugger(HWND hCombo, CStr Debugger);
+void Dispatch_LanguageName(int Idx);
+int Is_LanguagePresent(CStr Name);
+CStr Get_Store_LanguageName(void);
+CStr Get_Store_LanguageExtensions(void);
+int Save_Language_Idx(HWND hwnd);
 
 // -----------------------------------------------------------------------
 // Display properties according to FRMPropertiesFirstTab variable
@@ -345,6 +369,10 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
     int i = 0;
     CStr BufString;
     long LbOldIdx = 0;
+    CStr Name;
+    CStr Extensions;
+    CStr Name1;
+    CStr Name2;
 
     switch(uMsg)
     {
@@ -380,6 +408,7 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
             Fillskins();
             FillCurrentSkin();
             FillDefLanguage();
+            FillLanguagesList();
             FRMPropertiesInitCodeMax(FRMPropertiesCodeMax);
             SysTabSetCurrentItem(FRMPropertiesSysTab, FRMPropertiesFirstTab);
             FRMPropertiesChangeCurrentTab();
@@ -387,6 +416,7 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
             return(1);
         case WM_SIZE:
             ListBoxSetHorzScrollWidth(FRMPropertiesLbFileExt, ControlWidth(FRMPropertiesLbFileExt) * 2);
+            ListBoxSetHorzScrollWidth(FRMPropertiesLbLanguages, ControlWidth(FRMPropertiesLbLanguages) * 2);
             break;
         case WM_NOTIFY:
             switch(ControlGetNotifiedMsg(lParam))
@@ -404,12 +434,15 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                             ToolBarDisplayToolTip("Empty selected dir", lParam);
                             return(0);
                         case EXT_REPLACE:
+                        case EXT_REPLACE_LANG:
                             ToolBarDisplayToolTip("Replace entry", lParam);
                             return(0);
                         case EXT_INSERT:
+                        case EXT_INSERT_LANG:
                             ToolBarDisplayToolTip("Insert new entry", lParam);
                             return(0);
                         case EXT_DELETE:
+                        case EXT_DELETE_LANG:
                             ToolBarDisplayToolTip("Delete entry", lParam);
                             return(0);
                         case PROFILE_LOAD:
@@ -433,12 +466,23 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                         case DEBUGGER_VALID:
                             ToolBarDisplayToolTip("Add entry into list", lParam);
                             return(0);
+                        case EXT_UP_LANG:
+                            ToolBarDisplayToolTip("Move entry up", lParam);
+                            return(0);
+                        case EXT_DOWN_LANG:
+                            ToolBarDisplayToolTip("Move entry down", lParam);
+                            return(0);
+
                     }
             }
             break;
         case WM_COMMAND:
             if((HWND) lParam == FRMPropertiesCmdOk)
             {
+                if(!Save_Language_Idx(hwndDlg))
+                {
+                    return(0);
+                }
                 if(FRMPropertiesInFtpCreation == 1)
                 {
                     if(MiscMsgBox(hwndDlg, "Current FTP account not saved.\rSave it now ?", MB_QUESTION, Requesters) == IDYES) SaveFTPProps();
@@ -514,6 +558,7 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                                 {
                                     ListBoxReplaceItem(FRMPropertiesLbFileExt, ListBoxGetSelItemIndex(FRMPropertiesLbFileExt), ControlGetText(FRMPropertiesTxtFileExt));
                                     ListBoxSetIndex(FRMPropertiesLbFileExt, LbOldIdx);
+                                    FillDefLanguage();
                                     SetFocus(FRMPropertiesLbFileExt);
                                 }
                             }
@@ -527,6 +572,7 @@ int CALLBACK FRMPropertiesProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
                             {
 AddFileExt:                     ListBoxAddItem(FRMPropertiesLbFileExt, ControlGetText(FRMPropertiesTxtFileExt), ListBoxGetSelItemIndex(FRMPropertiesLbFileExt));
                                 ListBoxSetIndex(FRMPropertiesLbFileExt, LbOldIdx);
+                                FillDefLanguage();
                                 SetFocus(FRMPropertiesLbFileExt);
                             }
                             else
@@ -549,11 +595,13 @@ AddFileExt:                     ListBoxAddItem(FRMPropertiesLbFileExt, ControlGe
                                     if(LbOldIdx > (ListBoxCount(FRMPropertiesLbFileExt) - 1)) LbOldIdx = ListBoxCount(FRMPropertiesLbFileExt) - 1;
                                     if(LbOldIdx != -1) ListBoxSetIndex(FRMPropertiesLbFileExt, LbOldIdx);
                                     ControlSetText(FRMPropertiesTxtFileExt, ListBoxGetItem(FRMPropertiesLbFileExt, ListBoxGetSelItemIndex(FRMPropertiesLbFileExt)));
+                                    FillDefLanguage();
                                     SetFocus(FRMPropertiesLbFileExt);
                                 }
                                 else
                                 {
                                     ControlSetText(FRMPropertiesTxtFileExt, "");
+                                    FillDefLanguage();
                                 }
                             }
                             if(ListBoxCount(FRMPropertiesLbFileExt) == 0) SetFocus(FRMPropertiesTxtFileExt);
@@ -681,6 +729,138 @@ AddFileExt:                     ListBoxAddItem(FRMPropertiesLbFileExt, ControlGe
             {
                 FRMPropertiesSelectFont();
                 return(0);
+            }
+            else if((HWND) lParam == FRMPropertiesTbLanguages)
+            {
+                switch(wParam)
+                {
+                    case EXT_REPLACE_LANG:
+                        if(ListBoxCount(FRMPropertiesLbLanguages) != 0)
+                        {
+                            LbOldIdx = ListBoxGetSelItemIndex(FRMPropertiesLbLanguages);
+                            if(ListBoxGetSelItemIndex(FRMPropertiesLbLanguages) != -1)
+                            {
+                                Name = Get_Store_LanguageName();
+                                if(Name.Len())
+                                {
+                                    Extensions = Get_Store_LanguageExtensions();
+                                    if(Extensions.Len())
+                                    {
+                                        ListBoxReplaceItem(FRMPropertiesLbLanguages,
+                                                           ListBoxGetSelItemIndex(FRMPropertiesLbLanguages),
+                                                           Name + " (" + Extensions + ")");
+                                        ListBoxSetIndex(FRMPropertiesLbLanguages, LbOldIdx);
+                                        SetFocus(FRMPropertiesLbLanguages);
+                                    }
+                                    else
+                                    {
+                                        MiscMsgBox(hwndDlg, "Invalid language extensions.", MB_ERROR, Requesters);
+                                    }
+                                }
+                                else
+                                {
+                                    MiscMsgBox(hwndDlg, "Invalid language name.", MB_ERROR, Requesters);
+                                }
+                            }
+                        }
+                        return(0);
+                    case EXT_INSERT_LANG:
+                        LbOldIdx = ListBoxGetSelItemIndex(FRMPropertiesLbLanguages);
+                        Name = Get_Store_LanguageName();
+                        if(Name.Len())
+                        {
+                            Extensions = Get_Store_LanguageExtensions();
+                            if(Extensions.Len())
+                            {
+                                if(ListBoxGetSelItemIndex(FRMPropertiesLbLanguages) != -1)
+                                {
+                                    if(!Is_LanguagePresent(Name))
+                                    {
+AddLanguage:                            ListBoxAddItem(FRMPropertiesLbLanguages, Name + " (" + Extensions + ")",
+                                                       ListBoxGetSelItemIndex(FRMPropertiesLbLanguages));
+                                        ListBoxSetIndex(FRMPropertiesLbLanguages, LbOldIdx);
+                                        SetFocus(FRMPropertiesLbLanguages);
+                                    }
+                                    else
+                                    {
+                                        MiscMsgBox(hwndDlg, "Language already exists.", MB_ERROR, Requesters);
+                                    }
+                                }
+                                else
+                                {
+                                    LbOldIdx = ListBoxCount(FRMPropertiesLbLanguages);
+                                    ListBoxSetIndex(FRMPropertiesLbLanguages, ListBoxCount(FRMPropertiesLbLanguages));
+                                    goto AddLanguage;
+                                }
+                            }
+                            else
+                            {
+                                MiscMsgBox(hwndDlg, "Invalid language extensions.", MB_ERROR, Requesters);
+                            }
+                        }
+                        else
+                        {
+                            MiscMsgBox(hwndDlg, "Invalid language name.", MB_ERROR, Requesters);
+                        }
+                        return(0);
+                    case EXT_DELETE_LANG:
+                        LbOldIdx = ListBoxGetSelItemIndex(FRMPropertiesLbLanguages);
+                        if(ListBoxCount(FRMPropertiesLbLanguages) != 0)
+                        {
+                            if(ListBoxGetSelItemIndex(FRMPropertiesLbLanguages) != -1)
+                            {
+                                ListBoxDeleteItem(FRMPropertiesLbLanguages, ListBoxGetSelItemIndex(FRMPropertiesLbLanguages));
+                                if(ListBoxCount(FRMPropertiesLbLanguages) != 0)
+                                {
+                                    if(LbOldIdx > (ListBoxCount(FRMPropertiesLbLanguages) - 1)) LbOldIdx = ListBoxCount(FRMPropertiesLbLanguages) - 1;
+                                    if(LbOldIdx != -1) ListBoxSetIndex(FRMPropertiesLbLanguages, LbOldIdx);
+                                    Dispatch_LanguageName(ListBoxGetSelItemIndex(FRMPropertiesLbLanguages));
+                                    SetFocus(FRMPropertiesLbLanguages);
+                                }
+                                else
+                                {
+                                    Dispatch_LanguageName(0);
+                                    SetFocus(FRMPropertiesTxtFileExt);
+                                }
+                            }
+                            if(ListBoxCount(FRMPropertiesLbLanguages) == 0) SetFocus(FRMPropertiesLbLanguages);
+                        }
+                        else
+                        {
+                            SetFocus(FRMPropertiesLbLanguages);
+                        }
+                        return(0);
+                    case EXT_UP_LANG:
+                        if(ListBoxGetSelItemIndex(FRMPropertiesLbLanguages) != -1)
+                        {
+                            LbOldIdx = ListBoxGetSelItemIndex(FRMPropertiesLbLanguages);
+                            if(LbOldIdx > 0)
+                            {
+                                Name1 = ListBoxGetItem(FRMPropertiesLbLanguages, LbOldIdx);
+                                Name2 = ListBoxGetItem(FRMPropertiesLbLanguages, LbOldIdx - 1);
+                                ListBoxReplaceItem(FRMPropertiesLbLanguages, LbOldIdx - 1, Name1);
+                                ListBoxReplaceItem(FRMPropertiesLbLanguages, LbOldIdx, Name2);
+                                ListBoxSetIndex(FRMPropertiesLbLanguages, LbOldIdx - 1);
+                                SetFocus(FRMPropertiesLbLanguages);
+                            }
+                        }
+                        return(0);
+                    case EXT_DOWN_LANG:
+                        if(ListBoxGetSelItemIndex(FRMPropertiesLbLanguages) != -1)
+                        {
+                            LbOldIdx = ListBoxGetSelItemIndex(FRMPropertiesLbLanguages);
+                            if(LbOldIdx < ListBoxCount(FRMPropertiesLbLanguages) - 1)
+                            {
+                                Name1 = ListBoxGetItem(FRMPropertiesLbLanguages, LbOldIdx);
+                                Name2 = ListBoxGetItem(FRMPropertiesLbLanguages, LbOldIdx + 1);
+                                ListBoxReplaceItem(FRMPropertiesLbLanguages, LbOldIdx + 1, Name1);
+                                ListBoxReplaceItem(FRMPropertiesLbLanguages, LbOldIdx, Name2);
+                                ListBoxSetIndex(FRMPropertiesLbLanguages, LbOldIdx + 1);
+                                SetFocus(FRMPropertiesLbLanguages);
+                            }
+                        }
+                        return(0);
+                }
             }
             break;
         case WM_PAINT:
@@ -860,10 +1040,8 @@ void CreatePropPage3(HWND hParent)
     FRMPropertiesPageProtoGen = CreateFrame(4, 238, 275, 94, hParent, "Prototypes generator", 0, 0, 0);
     CreateLabel(6, 13, 236, 15, FRMPropertiesPageFolders, "Main directory [ROOTDIR] :", 0, 0, 0, 0);
     FRMPropertiesTxtROOTDIR = CreateTextBox(6, 26, 236, 20, FRMPropertiesPageFolders, "", 1, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
-    
     FRMPropertiesTbROOTDIR = CreateToolBar(244 + 4, 25 + 26, 25, 23, hParent, GlobalImageList1, 3, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
     ToolBarAddButton(FRMPropertiesTbROOTDIR, "", FOLDER_CHOOSE, ICON_OPEN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
-    
     CreateLabel(6, 13 + 32, 236, 15, FRMPropertiesPageFolders, "Bin directory [BINDIR] :", 0, 0, 0, 0);
     FRMPropertiesTxtBINDIR = CreateTextBox(6, 26 + 32, 236, 20, FRMPropertiesPageFolders, "", 3, 0, ES_AUTOHSCROLL, WS_EX_STATICEDGE);
     FRMPropertiesTbBINDIR = CreateToolBar(244 + 4, 25 + 26 + 32, 25, 23, hParent, GlobalImageList1, 4, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
@@ -917,11 +1095,13 @@ void CreatePropPage4(HWND hParent)
     FRMPropertiesPageAccountInfos = CreateFrame(4, 75, 303, 170 + 17 + 8 + 20, hParent, "Account informations", 0, &FRMPropertiesFrameMain, 0);
     FRMPropertiesPageTransfersTypes = CreateFrame(318, 75, 205, 69, hParent, "Transfers type", 0, 0, 0);
     CreateLabel(9, 20, 78, 15, FRMPropertiesPageFTPManage, "Account name :", 0, 0, 0, 0);
+
     FRMPropertiesCbAccounts = CreateComboBox(90, 17, 152, 150, FRMPropertiesPageFTPManage, "", 0, 0, CBS_DROPDOWNLIST | WS_TABSTOP);
     FRMPropertiesTbAccounts = CreateToolBar(244 + 4, 16 + 26, 84, 23, hParent, GlobalImageList1, 3, -1, 0, TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBS_FIXEDLENGTH | WS_TABSTOP, 0);
     ToolBarAddButton(FRMPropertiesTbAccounts, "", FTPACC_CREATE, ICON_ASKDIR, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     ToolBarAddButton(FRMPropertiesTbAccounts, "", FTPACC_SAVE, ICON_SAVE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
     ToolBarAddButton(FRMPropertiesTbAccounts, "", FTPACC_DELETE, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+
     CreateLabel(9, 20, 116, 15, FRMPropertiesPageAccountInfos, "Domain or IP address :", 0, 0, 0, 0);
     CreateLabel(9, 45 + 17, 116, 15, FRMPropertiesPageAccountInfos, "User name :", 0, 0, 0, 0);
     CreateLabel(9, 71 + 17, 116, 15, FRMPropertiesPageAccountInfos, "Password :", 0, 0, 0, 0);
@@ -952,7 +1132,7 @@ void CreatePropPage5(HWND hParent)
 {
     FRMPropertiesPageCodingHelp = CreateFrame(4, 26, 185, 123, hParent, "Coding help", 0, 0, 0);
     FRMPropertiesPageExtrasLayouts2 = CreateFrame(4, 149, 185, 183, hParent, "Extras layouts", 0, 0, 0);
-    
+   
     FRMPropertiesChkAutoCorrectKeywords = CreateCheckBox(11, 18, 160, 15, FRMPropertiesPageCodingHelp, "Auto correct keywords", 22, 0, WS_TABSTOP, 0);
     FRMPropertiesChkWinAPITooltipInfos = CreateCheckBox(11, 18 + (19 * 1), 160, 15, FRMPropertiesPageCodingHelp, "Display functions tooltips", 2, 0, WS_TABSTOP | WS_GROUP, 0);
     CreateLabel(37, 18 + (19 * 2) + 3, 110, 15, FRMPropertiesPageCodingHelp, "lines in keywords list", 0, 0, 0, 0);
@@ -970,7 +1150,31 @@ void CreatePropPage5(HWND hParent)
     FRMPropertiesChkSaveProjectState = CreateCheckBox(11, 19 + (18 * 7), 160, 15, FRMPropertiesPageExtrasLayouts2, "Save project state", 13, 0, WS_TABSTOP, 0);
     FRMPropertiesChkConfirmBeforeExit = CreateCheckBox(11, 19 + (18 * 8), 160, 15, FRMPropertiesPageExtrasLayouts2, "Confirm before exit", 14, 0, WS_TABSTOP, 0);
 
-	FRMPropertiesPageLanguagesPriorities = CreateFrame(191, 26, 332, 49, hParent, "Languages", 0, 0, 0);
+    FRMPropertiesPageLanguages = CreateFrame(191, 26, 234, 306, hParent, "Languages", 15, &FRMPropertiesFrameLanguages, 0);
+
+    FRMPropertiesTbLanguages = CreateToolBar(396, 16 + 27, 25, 136,
+                                             hParent,
+                                             GlobalImageList1,
+                                             16, -1, 0,
+                                             TBSTYLE_TOOLTIPS | CCS_NORESIZE | TBSTYLE_FLAT | TBSTYLE_WRAPABLE | WS_TABSTOP | TBS_FIXEDLENGTH,
+                                             0);
+    ToolBarAddButton(FRMPropertiesTbLanguages, "", EXT_REPLACE_LANG, ICON_REPLACE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(FRMPropertiesTbLanguages, "", EXT_INSERT_LANG, ICON_INSERT, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(FRMPropertiesTbLanguages, "", EXT_DELETE_LANG, ICON_DELETE, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddSeparator(FRMPropertiesTbLanguages, 0);
+    ToolBarAddButton(FRMPropertiesTbLanguages, "", EXT_UP_LANG, ICON_UP, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    ToolBarAddButton(FRMPropertiesTbLanguages, "", EXT_DOWN_LANG, ICON_DOWN, TBSTYLE_BUTTON, TBSTATE_ENABLED, 1);
+    FRMPropertiesLbLanguages = CreateListBox(4, 16, 199, 143, FRMPropertiesPageLanguages, 17, 0, 0, WS_TABSTOP | WS_HSCROLL, WS_EX_STATICEDGE);
+    
+    FRMPropertiesLbLanguageFile = CreateLabel(5, 158, 195, 15, FRMPropertiesPageLanguages, "Filename", 0, 0, 0, 0);
+    FRMPropertiesTxtLanguageFile = CreateTextBox(5, 170, 224, 20, FRMPropertiesPageLanguages, "", 18, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+    
+    FRMPropertiesLbLanguageExtensions = CreateLabel(5, 188, 195, 15, FRMPropertiesPageLanguages, "Extensions", 0, 0, 0, 0);
+    FRMPropertiesTxtLanguageExtensions = CreateTextBox(5, 200, 224, 20, FRMPropertiesPageLanguages, "", 19, 0, WS_TABSTOP | ES_AUTOHSCROLL, WS_EX_STATICEDGE);
+
+    FRMPropertiesLbLanguageDescName = CreateLabel(5, 222, 195, 15, FRMPropertiesPageLanguages, "", 0, 0, 0, 0);
+    FRMPropertiesLbLanguageDescCopyright = CreateLabel(5, 237, 195, 15, FRMPropertiesPageLanguages, "", 0, 0, 0, 0);
+    FRMPropertiesLbLanguageDescComment = CreateLabel(5, 252, 195, 50, FRMPropertiesPageLanguages, "", 0, 0, 0, 0);
 }
 
 // -----------------------------------------------------------------------
@@ -1675,7 +1879,8 @@ LRESULT CALLBACK FRMPropertiesFrameGeneral(HWND hWnd, UINT uMsg, WPARAM wParam, 
 
 // -----------------------------------------------------------------------
 // Colors Frame hook proc
-LRESULT CALLBACK FRMPropertiesFrameColors(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK FRMPropertiesFrameColors(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
     int Luminosity;
 
     switch(uMsg)
@@ -1850,15 +2055,34 @@ void FRMPropertiesSetColor(HWND hwnd)
 }
 
 // -----------------------------------------------------------------------
-// Colors Frame hook proc
+// Extensions Frame hook proc
 LRESULT CALLBACK FRMPropertiesFrameExtensions(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-   switch(uMsg)
-   {
+    switch(uMsg)
+    {
         case WM_COMMAND:
             if((HWND) lParam == FRMPropertiesLbFileExt)
             {
-                ControlSetText(FRMPropertiesTxtFileExt, ListBoxGetItem(FRMPropertiesLbFileExt, ListBoxGetSelItemIndex(FRMPropertiesLbFileExt)));
+                ControlSetText(FRMPropertiesTxtFileExt,
+                               ListBoxGetItem(FRMPropertiesLbFileExt,
+                               ListBoxGetSelItemIndex(FRMPropertiesLbFileExt)));
+                return(0);
+            } 
+            break;
+    }
+    return(CallWindowProc((WNDPROC) GetWindowLong(hWnd, GWL_USERDATA), hWnd, uMsg, wParam, lParam));
+}
+
+// -----------------------------------------------------------------------
+// Languages Frame hook proc
+LRESULT CALLBACK FRMPropertiesFrameLanguages(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    switch(uMsg)
+    {
+        case WM_COMMAND:
+            if((HWND) lParam == FRMPropertiesLbLanguages)
+            {
+                Dispatch_LanguageName(ListBoxGetSelItemIndex(FRMPropertiesLbLanguages));
                 return(0);
             } 
             break;
@@ -1879,23 +2103,25 @@ void FRMPropertiesInitCodeMax(HWND hwnd)
     CM_EnableGlobalProps(hwnd, 1);
     CM_EnableColumnSel(hwnd, 0);
     CM_EnableHideSel(hwnd, 0);
-    CM_SetLanguage(hwnd, "C");
-    BufString = "WndProc proc hWin:DWORD,uMsg:DWORD,wParam:DWORD,lParam:DWORD\r\n";
-    BufString = BufString + "comment \\\r\n";
-    BufString = BufString + "  Save 50 bytes from WndProc with Snap\r\n";
-    BufString = BufString + "  Then exit.\r\n";
-    BufString = BufString + "\\\r\n";
-    BufString = BufString + "\t.if uMsg == WM_DESTROY\r\n";
-    BufString = BufString + "\t\tszText LogFile,\"d:\\test.dbg\"\r\n";
-    BufString = BufString + "\t\tinvoke SnapSaveFile,ADDR LogFile,ADDR WndProc,50\r\n";
-    BufString = BufString + "\t\tszText TheMsg,\"Assembler, Pure & Simple\"\r\n";
-    BufString = BufString + "\t\tinvoke MessageBox,hWin,ADDR TheMsg,ADDR szDisplayName,MB_OK\r\n";
-    BufString = BufString + "\t\txor eax,eax\r\n";
-    BufString = BufString + "\t\tinvoke PostQuitMessage,eax\r\n";
-    BufString = BufString + "\t\treturn 0\r\n";
-    BufString = BufString + "\t.endif\r\n";
-    BufString = BufString + "\tret\r\n";
-    BufString = BufString + "WndProc endp";
+    CM_SetLanguage(hwnd, "Cpp");
+
+    BufString = "BOOL APIENTRY DllMain(HANDLE hModule,\r\n";
+    BufString = BufString + "                      DWORD ul_reason_for_call,\r\n";
+    BufString = BufString + "                      LPVOID lpReserved)\r\n";
+    BufString = BufString + "{\r\n";
+    BufString = BufString + "    switch(ul_reason_for_call)\r\n";
+    BufString = BufString + "    {\r\n";
+    BufString = BufString + "        case DLL_PROCESS_ATTACH:\r\n";
+    BufString = BufString + "            break;\r\n";
+    BufString = BufString + "        case DLL_THREAD_ATTACH:\r\n";
+    BufString = BufString + "            break;\r\n";
+    BufString = BufString + "        case DLL_THREAD_DETACH:\r\n";
+    BufString = BufString + "            break;\r\n";
+    BufString = BufString + "        case DLL_PROCESS_DETACH:\r\n";
+    BufString = BufString + "            break;\r\n";
+    BufString = BufString + "    }\r\n";
+    BufString = BufString + "    return TRUE;\r\n";
+    BufString = BufString + "}";
     CM_SetText(hwnd,BufString.Get_String());
 }
 
@@ -2754,7 +2980,16 @@ void FRMPropertiesChangeCurrentTab(void)
             ControlVisible(FRMPropertiesPageAccountInfos, 0);
             ControlVisible(FRMPropertiesPageTransfersTypes, 0);
             ControlVisible(FRMPropertiesPageCodingHelp, 0);
-            ControlVisible(FRMPropertiesPageLanguagesPriorities, 0);
+            ControlVisible(FRMPropertiesPageLanguages, 0);
+            ControlVisible(FRMPropertiesTbLanguages, 0);
+            ControlVisible(FRMPropertiesLbLanguages, 0);
+            ControlVisible(FRMPropertiesTxtLanguageFile, 0);
+            ControlVisible(FRMPropertiesTxtLanguageExtensions, 0);
+            ControlVisible(FRMPropertiesLbLanguageFile, 0);
+            ControlVisible(FRMPropertiesLbLanguageExtensions, 0);
+            ControlVisible(FRMPropertiesLbLanguageDescName, 0);
+            ControlVisible(FRMPropertiesLbLanguageDescCopyright, 0);
+            ControlVisible(FRMPropertiesLbLanguageDescComment, 0);
             ControlVisible(FRMPropertiesPageExtrasLayouts2, 0);
             ControlVisible(FRMPropertiesPageEditor, 1);
             ControlVisible(FRMPropertiesPageFileExtensions, 1);
@@ -2800,7 +3035,16 @@ void FRMPropertiesChangeCurrentTab(void)
             ControlVisible(FRMPropertiesPageAccountInfos, 0);
             ControlVisible(FRMPropertiesPageTransfersTypes, 0);
             ControlVisible(FRMPropertiesPageCodingHelp, 0);
-            ControlVisible(FRMPropertiesPageLanguagesPriorities, 0);
+            ControlVisible(FRMPropertiesPageLanguages, 0);
+            ControlVisible(FRMPropertiesTbLanguages, 0);
+            ControlVisible(FRMPropertiesLbLanguages, 0);
+            ControlVisible(FRMPropertiesTxtLanguageFile, 0);
+            ControlVisible(FRMPropertiesTxtLanguageExtensions, 0);
+            ControlVisible(FRMPropertiesLbLanguageFile, 0);
+            ControlVisible(FRMPropertiesLbLanguageExtensions, 0);
+            ControlVisible(FRMPropertiesLbLanguageDescName, 0);
+            ControlVisible(FRMPropertiesLbLanguageDescCopyright, 0);
+            ControlVisible(FRMPropertiesLbLanguageDescComment, 0);
             ControlVisible(FRMPropertiesPageExtrasLayouts2, 0);
             BuildPreview(FRMPropertiesCodeMax);
             ControlVisible(FRMPropertiesPageColors, 1);
@@ -2848,7 +3092,16 @@ void FRMPropertiesChangeCurrentTab(void)
             ControlVisible(FRMPropertiesPageAccountInfos, 0);
             ControlVisible(FRMPropertiesPageTransfersTypes, 0);
             ControlVisible(FRMPropertiesPageCodingHelp, 0);
-            ControlVisible(FRMPropertiesPageLanguagesPriorities, 0);
+            ControlVisible(FRMPropertiesPageLanguages, 0);
+            ControlVisible(FRMPropertiesTbLanguages, 0);
+            ControlVisible(FRMPropertiesLbLanguages, 0);
+            ControlVisible(FRMPropertiesTxtLanguageFile, 0);
+            ControlVisible(FRMPropertiesTxtLanguageExtensions, 0);
+            ControlVisible(FRMPropertiesLbLanguageFile, 0);
+            ControlVisible(FRMPropertiesLbLanguageExtensions, 0);
+            ControlVisible(FRMPropertiesLbLanguageDescName, 0);
+            ControlVisible(FRMPropertiesLbLanguageDescCopyright, 0);
+            ControlVisible(FRMPropertiesLbLanguageDescComment, 0);
             ControlVisible(FRMPropertiesPageExtrasLayouts2, 0);
             ControlVisible(FRMPropertiesPageFolders, 1);
             ControlVisible(FRMPropertiesTbROOTDIR, 1);
@@ -2908,7 +3161,8 @@ void FRMPropertiesChangeCurrentTab(void)
             ControlVisible(FRMPropertiesPageProtoGen, 0);
             ControlVisible(FRMPropertiesCmdGenProg, 0);
             ControlVisible(FRMPropertiesPageCodingHelp, 0);
-            ControlVisible(FRMPropertiesPageLanguagesPriorities, 0);
+            ControlVisible(FRMPropertiesPageLanguages, 0);
+            ControlVisible(FRMPropertiesTbLanguages, 0);
             ControlVisible(FRMPropertiesPageExtrasLayouts2, 0);
             ControlVisible(FRMPropertiesPageFTPManage, 1);
             ControlVisible(FRMPropertiesTbAccounts, 1);
@@ -2958,8 +3212,18 @@ void FRMPropertiesChangeCurrentTab(void)
             ControlVisible(FRMPropertiesPageAccountInfos, 0);
             ControlVisible(FRMPropertiesPageTransfersTypes, 0);
             ControlVisible(FRMPropertiesPageCodingHelp, 1);
-            ControlVisible(FRMPropertiesPageLanguagesPriorities, 1);
+            ControlVisible(FRMPropertiesPageLanguages, 1);
+            ControlVisible(FRMPropertiesTbLanguages, 1);
+            ControlVisible(FRMPropertiesLbLanguages, 1);
+            ControlVisible(FRMPropertiesTxtLanguageFile, 1);
+            ControlVisible(FRMPropertiesTxtLanguageExtensions, 1);
+            ControlVisible(FRMPropertiesLbLanguageFile, 1);
+            ControlVisible(FRMPropertiesLbLanguageExtensions, 1);
+            ControlVisible(FRMPropertiesLbLanguageDescName, 1);
+            ControlVisible(FRMPropertiesLbLanguageDescCopyright, 1);
+            ControlVisible(FRMPropertiesLbLanguageDescComment, 1);
             ControlVisible(FRMPropertiesPageExtrasLayouts2, 1);
+            ControlBringToTop(FRMPropertiesTbLanguages);
     }
 }
 
@@ -3277,6 +3541,7 @@ void FillDefLanguage(void)
     int i = 0;
 
     OldDefault = IniReadKey("RefLanguages", "DefLang", LanguagesIniFile);
+    ComboBoxReset(FRMPropertiesCbDefLang);
     ComboBoxAddItem(FRMPropertiesCbDefLang, "(None)", -1);
     for(i = 0; i <= 999; i++)
     {
@@ -3295,6 +3560,30 @@ void FillDefLanguage(void)
         }
     }
     ComboBoxSetIndex(FRMPropertiesCbDefLang, AsmPos);
+}
+
+// -----------------------------------------------------------------------
+// Fill the languages list
+void FillLanguagesList(void)
+{
+    long AsmPos = 0;
+    CStr OldDefault;
+    int i = 0;
+
+    ListBoxReset(FRMPropertiesLbLanguages);
+    for(i = 0; i <= 999; i++)
+    {
+        FRMPropertiesRetVal = IniReadKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(i, 3).Get_String(), LanguagesIniFile);
+        if(FRMPropertiesRetVal.Len() == 0) break;
+        /* Just retrieve the name */
+        FRMPropertiesRetVal = ChangeRelativePaths(FRMPropertiesRetVal);
+        FRMPropertiesRetVal = RemoveRelativePaths(FRMPropertiesRetVal);
+        FRMPropertiesRetVal = FileRemoveExtension(FRMPropertiesRetVal);
+        FRMPropertiesRetVal = FRMPropertiesRetVal + " (" + IniReadKey("RefLanguages", "Ext" + (CStr) StringNumberComplement(i, 3).Get_String(), LanguagesIniFile) + ")";
+        ListBoxAddItem(FRMPropertiesLbLanguages, FRMPropertiesRetVal, -1);
+    }
+    ListBoxSetIndex(FRMPropertiesLbLanguages, 0);
+    Dispatch_LanguageName(0);
 }
 
 // -----------------------------------------------------------------------
@@ -3344,4 +3633,189 @@ void AddNewDebugger(HWND hCombo, CStr Debugger)
         }
     }
     if(!Found) ComboBoxAddItem(hCombo, Debugger, -1);
+}
+
+// -----------------------------------------------------------------------
+// Construct a languages's filename from the textbox
+CStr Get_Store_LanguageName(void)
+{
+    CStr Name;
+
+    if(ControlGetText(FRMPropertiesTxtLanguageFile).Len() != 0)
+    {
+        Name = ControlGetText(FRMPropertiesTxtLanguageFile);
+        if(StringIsLabel(Name, TRUE))
+        {
+            return(Name);
+        }
+    }
+    return "";
+}
+
+// -----------------------------------------------------------------------
+// Construct a languages's extensions from the textbox
+CStr Get_Store_LanguageExtensions(void)
+{
+    CStr Extensions;
+
+    if(ControlGetText(FRMPropertiesTxtLanguageExtensions).Len() != 0)
+    {
+        Extensions = ControlGetText(FRMPropertiesTxtLanguageExtensions);
+        if(StringIsLabel(Extensions, TRUE))
+        {
+            return(Extensions);
+        }
+    }
+    return "";
+}
+
+// -----------------------------------------------------------------------
+// Search a language name inside the listbox
+int Is_LanguagePresent(CStr Name)
+{
+    CStr Entry;
+    CStr Lang_Name;
+    int Start_Name;
+    int i;
+
+    for(i = 0; i < ListBoxCount(FRMPropertiesLbLanguages); i++)
+    {
+        Entry = ListBoxGetItem(FRMPropertiesLbLanguages, i);
+        Start_Name = Entry.In_Str(1, "(");
+        Lang_Name = Entry.Left(Start_Name - 2);
+        if(Name == Lang_Name)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+// -----------------------------------------------------------------------
+// Construct a language's filename from the list
+CStr Get_LanguageFileName(int Idx)
+{
+    CStr Entry;
+    CStr Lang_Name;
+    int Start_Name;
+
+    Entry = ListBoxGetItem(FRMPropertiesLbLanguages, Idx);
+    Start_Name = Entry.In_Str(1, "(");
+    if(Start_Name > 2)
+    {
+        Lang_Name = Entry.Left(Start_Name - 2);
+        if(StringIsLabel(Lang_Name, TRUE))
+        {
+            Lang_Name = "[LANGUAGESDIR]\\" + Lang_Name + ".mln";
+        }
+        else
+        {
+            Lang_Name = "";
+        }
+    }
+    return Lang_Name;
+}
+
+// -----------------------------------------------------------------------
+// Construct a language's extensions from the list
+CStr Get_LanguageExtensions(int Idx)
+{
+    CStr Entry;
+    CStr Lang_Name;
+    int Start_Name;
+
+    Entry = ListBoxGetItem(FRMPropertiesLbLanguages, Idx);
+    Start_Name = Entry.In_Str(1, "(");
+    if(Start_Name > 2)
+    {
+        Lang_Name = Entry.Left(Start_Name - 2);
+        Lang_Name = Entry.Mid(Start_Name + 1, Entry.Len() - 1 - Start_Name);
+        if(!StringIsLabel(Lang_Name, TRUE))
+        {
+            Lang_Name = "";
+        }
+    }
+    return Lang_Name;
+}
+
+// -----------------------------------------------------------------------
+// Display the selected language in the 2 text boxes
+void Dispatch_LanguageName(int Idx)
+{
+    CStr Entry;
+    CStr Lang_Name;
+    int Start_Name;
+
+    Entry = ListBoxGetItem(FRMPropertiesLbLanguages, Idx);
+    Start_Name = Entry.In_Str(1, "(");
+    if(Start_Name > 2)
+    {
+        // Display the content in the textboxes
+        Lang_Name = Entry.Left(Start_Name - 2);
+        ControlSetText(FRMPropertiesTxtLanguageFile, Lang_Name);
+        ControlSetText(FRMPropertiesTxtLanguageExtensions, Entry.Mid(Start_Name + 1, Entry.Len() - 1 - Start_Name));
+
+        Lang_Name = "[LANGUAGESDIR]\\" + Lang_Name + ".mln";
+        Lang_Name = ChangeRelativePaths(Lang_Name);
+        if(FileExist(Lang_Name))
+        {
+            ControlSetText(FRMPropertiesLbLanguageDescName, "Name: " + IniReadKey("LangSpec", "LangName", Lang_Name));
+            ControlSetText(FRMPropertiesLbLanguageDescCopyright, "Author: " + IniReadKey("LangSpec", "LangCopyright", Lang_Name));
+            ControlSetText(FRMPropertiesLbLanguageDescComment, "Comment:\r\n" + IniReadKey("LangSpec", "LangComment", Lang_Name));
+        }
+        else
+        {
+            ControlSetText(FRMPropertiesLbLanguageDescName, "Name: <unknown>");
+            ControlSetText(FRMPropertiesLbLanguageDescCopyright, "Author: <unknown>");
+            ControlSetText(FRMPropertiesLbLanguageDescComment, "Comment:\r\n<unknown>");
+        }
+    }
+    else
+    {
+        ControlSetText(FRMPropertiesTxtLanguageFile, "");
+        ControlSetText(FRMPropertiesTxtLanguageExtensions, "");
+        ControlSetText(FRMPropertiesLbLanguageDescName, "Name: <unknown>");
+        ControlSetText(FRMPropertiesLbLanguageDescCopyright, "Author: <unknown>");
+        ControlSetText(FRMPropertiesLbLanguageDescComment, "Comment:\r\n<unknown>");
+    }
+}
+
+// -----------------------------------------------------------------------
+// Save the language index file
+int Save_Language_Idx(HWND hwnd)
+{
+    int i;
+    CStr Name;
+    CStr Extensions;
+
+    /* Check the validity of the entries first */
+    for(i = 0; i < ListBoxCount(FRMPropertiesLbLanguages); i++)
+    {
+        Name = Get_LanguageFileName(i);
+        if(!Name.Len())
+        {
+            MiscMsgBox(hwnd, "Invalid language name.", MB_ERROR, Requesters);
+            SysTabSetCurrentItem(FRMPropertiesSysTab, MAX_TABS);
+            return 0;
+        }
+        Extensions = Get_LanguageExtensions(i);
+        if(!Extensions.Len())
+        {
+            MiscMsgBox(hwnd, "Invalid language extensions.", MB_ERROR, Requesters);
+            SysTabSetCurrentItem(FRMPropertiesSysTab, MAX_TABS);
+            return 0;
+        }
+        
+    }
+
+    IniWriteSection("RefLanguages", "", LanguagesIniFile);
+    for(i = 0; i < ListBoxCount(FRMPropertiesLbLanguages); i++)
+    {
+        Name = Get_LanguageFileName(i);
+        Extensions = Get_LanguageExtensions(i);
+        IniWriteKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(i, 3).Get_String(), Name, LanguagesIniFile);
+        IniWriteKey("RefLanguages", "Ext" + (CStr) StringNumberComplement(i, 3).Get_String(), Extensions, LanguagesIniFile);
+    }
+
+    return 1;
 }

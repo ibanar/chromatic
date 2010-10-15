@@ -88,8 +88,10 @@ int CALLBACK FRMAboutProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             MainAbouthWnd = hwndDlg;
             AboutSerFont8 = GDIObtainFont("MS Sans Serif", 8, hwndDlg, 0, 0);
             AboutCourFont8 = GDIObtainFont("Courier New", 9, hwndDlg, 0, 0);
-            CreatePictureBox(0, 0, 500, 194, hwndDlg, LoadBitmap(ApphInstance, MAKEINTRESOURCE(MBMP_BASE + MBMP_TITLE)), IMAGE_BITMAP, 0, 0, SS_CENTERIMAGE);
-            AbouthWnd = CreateLabel(4, 195, 262, 104, hwndDlg, "", 2, &FrmAboutTypeWriterHook, 0, 0);
+            CreatePictureBox(0, 0, 500, 194, hwndDlg,
+                             LoadBitmap(ApphInstance, MAKEINTRESOURCE(MBMP_BASE + MBMP_TITLE)),
+                             IMAGE_BITMAP, 0, 0, SS_CENTERIMAGE);
+            AbouthWnd = CreateLabel(4, 195, 302, 104, hwndDlg, "", 2, &FrmAboutTypeWriterHook, 0, 0);
             ControlSetText(hwndDlg, "About " + (CStr) AppTitle);
             FreezeTimer = 1;
             AboutPosInText = 1;
@@ -104,8 +106,9 @@ int CALLBACK FRMAboutProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
             AbLine8 = "";
             AboutScrollAmount = GDIGetTextHeight(AbouthWnd, AboutCourFont8, "hg");
             AboutText = "\r";
-			AboutText = AboutText + (CStr) Requesters + (CStr) " (Build on: " __DATE__ + (CStr) ")\r";
-            AboutText = AboutText + (CStr) "Integrated Development Environment\r\r";
+			AboutText = AboutText + (CStr) Requesters + (CStr) "\r";
+            AboutText = AboutText + (CStr) "Integrated Development Environment\r";
+            AboutText = AboutText + (CStr) "(Build: " __DATE__ + (CStr) ")\r\r";
             AboutText = AboutText + (CStr) "Written by Franck Charlet.\r\r";
             AboutText = AboutText + (CStr) "I would like to thank the following\r";
             AboutText = AboutText + (CStr) "people who have more or less,\r";
@@ -231,5 +234,5 @@ void CALLBACK AboutTimerNotify(HWND hWnd, UINT uMsg, UINT_PTR idEvent, unsigned 
 // Display a line of text in the typewriter
 void DisplayTypeWriterLine(HDC hDC, CStr TextToShow, long Position, long Col)
 {
-    GDIWriteClippedText(hDC, 0, Position, 262, AboutScrollAmount, TextToShow, Col, AboutCourFont8, 0, ABOUT_BACKCOLOR);
+    GDIWriteClippedText(hDC, 0, Position, 302, AboutScrollAmount, TextToShow, Col, AboutCourFont8, 0, ABOUT_BACKCOLOR);
 }

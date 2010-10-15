@@ -1632,7 +1632,7 @@ LIBPROTO                        DateGetMinutes
 LIBPROTO                        DateGetSeconds
 LIBPROTO                        DateGetFormat,:DWORD
 LIBPROTO                        DateGetTimeFormat,:DWORD
-LIBPROTO                        StringIsLabel,:DWORD
+LIBPROTO                        StringIsLabel,:DWORD,:DWORD
 LIBPROTO                        StringIsHexaDecimal,:DWORD
 LIBPROTO                        StringIsDecimal,:DWORD,:DWORD
 LIBPROTO                        StringIsLabelChar,:DWORD
@@ -1646,6 +1646,7 @@ LIBPROTO                        StringIsDotChar,:DWORD
 LIBPROTO                        StringIsCommaChar,:DWORD
 LIBPROTO                        StringIsQuoteChar,:DWORD
 LIBPROTO                        StringIsArobasChar,:DWORD
+LIBPROTO                        StringIsSpaceChar,:DWORD
 LIBPROTO                        StringIsEOL,:DWORD
 LIBPROTO                        StringNumberComplement,:DWORD,:DWORD
 LIBPROTO                        StringHexNumberComplement,:DWORD,:DWORD
