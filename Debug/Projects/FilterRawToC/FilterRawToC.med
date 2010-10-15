@@ -22,10 +22,8 @@ LegalTradeMarks=
 ProductName=
 [INCLUDES]
 INCLUDE000=[INCLUDEDIR]\Windows.h
-INCLUDE001=[INCLUDEDIR]\windef.h
-INCLUDE002=[INCLUDEDIR]\Commctrl.h
-INCLUDE003=[INCLUDEDIR]\wingdi.h
-INCLUDE004=[TEMPLATESDIR]\AddInConst.h
+INCLUDE001=[INCLUDEDIR]\Commctrl.h
+INCLUDE002=[TEMPLATESDIR]\AddInConst.h
 [MODULES]
 MODULE000=[PROJECTSDIR]\FilterRawToC\FilterDatas.c
 MODULE001=[PROJECTSDIR]\FilterRawToC\Filter.c
@@ -38,5 +36,3 @@ Value000=0x0500
 Window000=[PROJECTSDIR]\FilterRawToC\Filter.c
 Focus=[PROJECTSDIR]\FilterRawToC\Filter.c
 FocusLine=87
-Window001=[TEMPLATESDIR]\AddInConst.h
-Window002=[PROJECTSDIR]\FilterRawToC\FilterDatas.c
