@@ -4,10 +4,11 @@ Copyright (C) 2001-2010 Franck Charlet.
 --------------------------------------------------------------------------------
 Version 1.3.3
 
-- Source code now compiles under Visual Studio 2010.
+- Source code now compiles under Visual Studio 2010 (projects added).
 - Added Motorola 680x0 language file.
 - Added languages manager in properties
-  (especially to define priorities between languages).
+  (especially used to define priorities between languages
+   sharing the same files extensions).
 
 --------------------------------------------------------------------------------
 Version 1.3.2
