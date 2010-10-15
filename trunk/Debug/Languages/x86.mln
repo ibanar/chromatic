@@ -6,7 +6,7 @@
 [LangSpec]
 LangName=X86 Assembler
 LangCopyright=Franck Charlet.
-LangComment=MASM/TASM/NASM/FASM/GOASM assembly.
+LangComment=MASM/TASM/NASM/FASM/GOASM assemblers.
 CaseSensitive=0
 SingleComment=;
 MultiLinePrefix=comment

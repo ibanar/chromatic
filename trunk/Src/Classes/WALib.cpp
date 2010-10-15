@@ -527,8 +527,8 @@ HWND CALLBACK CreateMDIChildDialog(HWND hParent, CStr CTitle, HICON hIcon,
 // -----------------------------------------------------------------------
 // Create a toolbar control
 HWND CALLBACK CreateToolBar(long TBLeft, long TBTop, long TBWidth, long TBHeight,
-                              HWND hParent, HIMAGELIST hImageList, long CtrlID, long StdBitmapsType,
-                              WNDPROC WindowProc, long ExtraStyle, long ExtendedStyle)
+                            HWND hParent, HIMAGELIST hImageList, long CtrlID, long StdBitmapsType,
+                            WNDPROC WindowProc, long ExtraStyle, long ExtendedStyle)
 {
     HWND ReturnValue = 0;
     TBADDBITMAP BitmapToAdd;
@@ -4049,7 +4049,7 @@ void ComboBoxFillFromIniFile(HWND hCombo, CStr IniKey, CStr IniFile)
 // -----------------------------------------------------------------------
 // Create a listbox control
 HWND CALLBACK CreateListBox(long BLeft, long BTop, long BWidth, long BHeight, HWND hParent,
-                              long CtrlID, WNDPROC WindowProc, long DragOn, long ExtraStyle, long ExtraExStyle)
+                            long CtrlID, WNDPROC WindowProc, long DragOn, long ExtraStyle, long ExtraExStyle)
 {
     HWND ReturnValue = 0;
     
@@ -5577,22 +5577,38 @@ long CALLBACK StringFilterNonPrintableChars(long ASCIIChar, long CorrectChar)
 }
 
 // -----------------------------------------------------------------------
-// Check the validity of an asm label
-long CALLBACK StringIsLabel(CStr AsmText)
+// Check the validity of an asm label (wih or wihtout space chars)
+long CALLBACK StringIsLabel(CStr AsmText, int Allow_Space)
 {
     int i = 0;
     CStr CharToTest;
 
     // Can't begin by a number
-    if(StringIsDigitChar(AsmText.Mid(1, 1))) return(0);
+    if(!Allow_Space)
+    {
+        if(StringIsDigitChar(AsmText.Mid(1, 1))) return(0);
+    }
     // Check first char
     for(i = 1 ; i <= (long) AsmText.Len(); i++)
     {
         CharToTest = AsmText.Mid(i, 1);
         CharToTest = CharToTest.Upper_Case();
-        if(StringIsLabelChar(CharToTest) == 0)
+        if(Allow_Space)
         {
-            return(0);
+            if(StringIsSpaceChar(CharToTest) == 0)
+            {
+                if(StringIsLabelChar(CharToTest) == 0)
+                {
+                    return(0);
+                }
+            }
+        }
+        else
+        {
+            if(StringIsLabelChar(CharToTest) == 0)
+            {
+                return(0);
+            }
         }
     }
     return(1);
@@ -5769,6 +5785,13 @@ long CALLBACK StringIsCommaChar(CStr Letter)
 long CALLBACK StringIsArobasChar(CStr Letter)
 {
     if(Letter.Len() != 0) if(Letter.Asc() == '@') return(1);
+    return(0);
+}
+// -----------------------------------------------------------------------
+// Check if letter is a space char
+long CALLBACK StringIsSpaceChar(CStr Letter)
+{
+    if(Letter.Len() != 0) if(Letter.Asc() == ' ') return(1);
     return(0);
 }
 

@@ -318,7 +318,11 @@ typedef CWinTraits<WS_OVERLAPPED | WS_CAPTION | WS_THICKFRAME | WS_SYSMENU, WS_E
 template< class T, class TBase = CWindow, class TWinTraits = CFloatWinTraits >
           class ATL_NO_VTABLE CFloatingWindowImpl :
 		  public CWindowImpl<T, TBase, TWinTraits>,
+#if _MSC_VER >= 1400
           public CSplitterBar<CFloatingWindowImpl<T>>
+#else
+          public CSplitterBar<CFloatingWindowImpl>
+#endif
 {
 
 public:
@@ -492,7 +496,12 @@ class CFloatingWindow: public CFloatingWindowImpl<CFloatingWindow>
 
 template< class T, class TBase = CWindow, class TWinTraits = CControlWinTraits >
           class ATL_NO_VTABLE CDockingPaneChildWindowImpl : 
-          public CWindowImpl<T, TBase, TWinTraits>, public CSplitterBar<CDockingPaneChildWindowImpl<T>>
+          public CWindowImpl<T, TBase, TWinTraits>,
+#if _MSC_VER >= 1400
+          public CSplitterBar<CDockingPaneChildWindowImpl<T>>
+#else
+          public CSplitterBar<CDockingPaneChildWindowImpl>
+#endif
 {
     public:
         DECLARE_WND_CLASS_EX(NULL, CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, NULL)
@@ -806,7 +815,11 @@ class CDockingPaneChildWindow : public CDockingPaneChildWindowImpl<CDockingPaneC
 
 template <class T, class TBase = CWindow, class TWinTraits = CControlWinTraits >
           class ATL_NO_VTABLE CDockingPaneWindowImpl : public CWindowImpl< T, TBase, TWinTraits >,
+#if _MSC_VER >= 1400
           public CSplitterBar<CDockingPaneWindowImpl<T>>
+#else
+          public CSplitterBar<CDockingPaneWindowImpl>
+#endif
 {
 
     public:

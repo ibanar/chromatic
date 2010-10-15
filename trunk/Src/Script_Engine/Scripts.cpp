@@ -816,6 +816,7 @@ luaL_reg Chromatic_Methods[] =
     FillPILLConstant(CodeContext, "StringIsCommaChar", i, PILL_STORE_ENFORCE, 1);
     FillPILLConstant(CodeContext, "StringIsQuoteChar", i, PILL_STORE_ENFORCE, 1);
     FillPILLConstant(CodeContext, "StringIsArobasChar", i, PILL_STORE_ENFORCE, 1);
+    FillPILLConstant(CodeContext, "StringIsSpaceChar", i, PILL_STORE_ENFORCE, 1);
     FillPILLConstant(CodeContext, "StringIsEOL", i, PILL_STORE_ENFORCE, 1);
     FillPILLConstant(CodeContext, "StringNumberComplement", i, PILL_STORE_ENFORCE, 1);
     FillPILLConstant(CodeContext, "StringHexNumberComplement", i, PILL_STORE_ENFORCE, 1);

@@ -6,42 +6,42 @@
 --------------------Configuration: lua514 - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\franck\LOCALS~1\Temp\RSP15F.tmp" with contents
+Creating temporary file "C:\DOCUME~1\franck\LOCALS~1\Temp\RSP26.tmp" with contents
 [
 /nologo /ML /W3 /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /D "_WIN32" /FR"Release/" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\lapi.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\lauxlib.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\lbaselib.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\lcode.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\ldblib.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\ldebug.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\ldo.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\ldump.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\lfunc.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\lgc.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\linit.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\liolib.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\llex.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\lmathlib.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\lmem.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\loadlib.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\lobject.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\lopcodes.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\loslib.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\lparser.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\lstate.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\lstring.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\lstrlib.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\ltable.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\ltablib.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\ltm.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\lundump.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\lvm.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\lzio.c"
-"C:\Src\Chrome\Src\Script_Engine\lua514\src\print.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\lapi.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\lauxlib.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\lbaselib.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\lcode.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\ldblib.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\ldebug.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\ldo.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\ldump.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\lfunc.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\lgc.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\linit.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\liolib.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\llex.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\lmathlib.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\lmem.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\loadlib.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\lobject.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\lopcodes.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\loslib.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\lparser.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\lstate.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\lstring.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\lstrlib.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\ltable.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\ltablib.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\ltm.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\lundump.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\lvm.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\lzio.c"
+"C:\Src\Pc\chromatic\Src\Script_Engine\lua514\src\print.c"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\franck\LOCALS~1\Temp\RSP15F.tmp" 
-Creating temporary file "C:\DOCUME~1\franck\LOCALS~1\Temp\RSP160.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\franck\LOCALS~1\Temp\RSP26.tmp" 
+Creating temporary file "C:\DOCUME~1\franck\LOCALS~1\Temp\RSP27.tmp" with contents
 [
 /nologo /out:"..\..\..\libs\lua514.lib" 
 .\Release\lapi.obj
@@ -75,7 +75,7 @@ Creating temporary file "C:\DOCUME~1\franck\LOCALS~1\Temp\RSP160.tmp" with conte
 .\Release\lzio.obj
 .\Release\print.obj
 ]
-Creating command line "link.exe -lib @C:\DOCUME~1\franck\LOCALS~1\Temp\RSP160.tmp"
+Creating command line "link.exe -lib @C:\DOCUME~1\franck\LOCALS~1\Temp\RSP27.tmp"
 <h3>Output Window</h3>
 Compiling...
 lapi.c
@@ -112,7 +112,7 @@ lzio.c
 print.c
 Generating Code...
 Creating library...
-Creating temporary file "C:\DOCUME~1\franck\LOCALS~1\Temp\RSP161.tmp" with contents
+Creating temporary file "C:\DOCUME~1\franck\LOCALS~1\Temp\RSP28.tmp" with contents
 [
 /nologo /o"Release/lua514.bsc" 
 .\Release\lapi.sbr
@@ -145,7 +145,7 @@ Creating temporary file "C:\DOCUME~1\franck\LOCALS~1\Temp\RSP161.tmp" with conte
 .\Release\lvm.sbr
 .\Release\lzio.sbr
 .\Release\print.sbr]
-Creating command line "bscmake.exe @C:\DOCUME~1\franck\LOCALS~1\Temp\RSP161.tmp"
+Creating command line "bscmake.exe @C:\DOCUME~1\franck\LOCALS~1\Temp\RSP28.tmp"
 Creating browse info file...
 <h3>Output Window</h3>
 

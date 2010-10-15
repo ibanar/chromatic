@@ -5,11 +5,7 @@
 #include <windows.h>
 #endif
 
-#if _MSC_VER < 1400
-#include "stdint.h"
-#else
 #include <stdint.h>
-#endif
 
 /* 'NEW" types
  * __________________________________________________________________________*/

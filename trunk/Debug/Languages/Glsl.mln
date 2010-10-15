@@ -4,7 +4,7 @@
 ; (C) 2001-2010 Franck Charlet.
 
 [LangSpec]
-LangName=GLsl
+LangName=Glsl
 LangCopyright=Franck Charlet.
 LangComment=OpenGL Slang files.
 CaseSensitive=1

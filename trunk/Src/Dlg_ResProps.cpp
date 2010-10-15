@@ -189,7 +189,7 @@ int CALLBACK FRMResProps(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
                             return(0);
                         }
                     }
-                    if(StringIsLabel(NewResName) == 0)
+                    if(StringIsLabel(NewResName, FALSE) == 0)
                     {
                         MiscMsgBox(hwndDlg, "Illegal resource name.\rAllowed chars are: A-Z a-z 0-9 _", MB_ERROR, Requesters);
                         SetFocus(FRMResPropsName);

@@ -135,6 +135,7 @@ void Fillskins(void);
 void FillCurrentSkin(void);
 void ClearSkincontrols(void);
 void FillDefLanguage(void);
+void FillLanguagesList(void);
 void GetDebugger(HWND hwnd);
 
 #endif

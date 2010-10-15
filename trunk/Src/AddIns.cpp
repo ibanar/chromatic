@@ -1017,6 +1017,7 @@ void FillChromaticLib(void)
     AddInLib.StringHex8 = (long) &Wrapper_StringHex8;
     AddInLib.StringIsAlphaChar = (long) &Wrapper_StringIsAlphaChar;
     AddInLib.StringIsArobasChar = (long) &Wrapper_StringIsArobasChar;
+    AddInLib.StringIsSpaceChar = (long) &Wrapper_StringIsSpaceChar;
     AddInLib.StringIsBlankChar = (long) &Wrapper_StringIsBlankChar;
     AddInLib.StringIsDecimal = (long) &Wrapper_StringIsDecimal;
     AddInLib.StringIsDigitChar = (long) &Wrapper_StringIsDigitChar;
@@ -3674,6 +3675,11 @@ long CALLBACK Wrapper_StringIsArobasChar(char *WAPLetter)
     return(StringIsArobasChar(StringConvertToCStr(WAPLetter)));
 }
 
+long CALLBACK Wrapper_StringIsSpaceChar(char *WAPLetter)
+{
+    return(StringIsSpaceChar(StringConvertToCStr(WAPLetter)));
+}
+
 long CALLBACK Wrapper_StringIsBlankChar(char *WABLetter)
 {
     return(StringIsBlankChar(StringConvertToCStr(WABLetter)));
@@ -3719,9 +3725,9 @@ long CALLBACK Wrapper_StringIsHexaDecimal(char *WAHexaText)
     return(StringIsHexaDecimal(StringConvertToCStr(WAHexaText)));
 }
 
-long CALLBACK Wrapper_StringIsLabel(char *WAAsmText)
+long CALLBACK Wrapper_StringIsLabel(char *WAAsmText, int Allow_Space)
 {
-    return(StringIsLabel(StringConvertToCStr(WAAsmText)));
+    return(StringIsLabel(StringConvertToCStr(WAAsmText), Allow_Space));
 }
 
 long CALLBACK Wrapper_StringIsLabelChar(char *WAVCLetter)
