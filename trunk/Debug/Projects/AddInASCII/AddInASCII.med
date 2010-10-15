@@ -39,5 +39,5 @@ DEF=[PROJECTSDIR]\AddInASCII\AddIn.mdf
 Window000=[PROJECTSDIR]\AddInASCII\AddIn.asm
 Focus=[PROJECTSDIR]\AddInASCII\AddIn.asm
 FocusLine=218
-Window001=[PROJECTSDIR]\AddInASCII\AddInDatas.asm
-Window002=[TEMPLATESDIR]\AddInConst.inc
+Window001=[TEMPLATESDIR]\AddInConst.inc
+Window002=[PROJECTSDIR]\AddInASCII\AddInDatas.asm
