@@ -42,34 +42,22 @@
 ; 	CAPT [BINDIR]\ml.exe /c /coff /I"[INCLUDEDIR]" "%2"
 ; 	CAPT [BINDIR]\Link.exe /LIBPATH:"[LIBDIR]" /DEF:ChromaticSup.def /DLL /OUT:"..\..\Debug\ChromaticSup.dll" /SUBSYSTEM:WINDOWS "%1.obj"
 ; buildblockend
-
-; --------------- File model
-                        .386
-                        .model	flat,stdcall
-                        option	casemap:none
-
-; --------------- Includes
-                        include	\masm32\include\windows.inc
-                        include \masm32\include\kernel32.inc
-                        include \masm32\include\user32.inc
-                        include	\masm32\include\gdi32.inc
-                        include	\masm32\include\masm32.inc
-
-                        include	Extra_Libs\htmlhelp.inc
-                        include	datas.asm
-
-; --------------- Libraries
-                        includelib \masm32\lib\kernel32.lib
-                        includelib \masm32\lib\user32.lib
-                        includelib \masm32\lib\gdi32.lib
-                        includelib \masm32\lib\masm32.lib
-                        includelib \masm32\lib\advapi32.lib
-
-                        includelib Extra_Libs\htmlhelp.lib
+                        .code
 
 ; --------------- Code section
+; external
+LoCase                  proto   :dword
+UpCase                  proto   :dword
+GetFileLineAddress      proto   :dword, :dword, :dword
+ReplaceTabs             proto   :dword, :dword
 AllocMem                proto   :dword
 FreeMem                 proto   :dword
+CountFileLines          proto   :dword, :dword
+GetFileLineOffset       proto   :dword, :dword, :dword
+RemCRLF                 proto   :dword, :dword
+FillMemDat              proto   :dword, :dword, :dword
+
+; To be converted to c:
 SplitArray              proto   :dword,:dword
 CountOccurence          proto   :dword,:dword
 Str_Occurence           proto   :dword,:dword
@@ -82,7 +70,6 @@ FillMem                 proto   :dword,:dword
 StripStringInc          proto   :dword,:dword,:byte,:byte
 StripStringInc2         proto   :dword,:dword,:byte
 StripStringEx           proto   :dword,:dword,:byte,:byte
-FillMemDat              proto   :dword,:dword,:dword
 vbinstr                 proto   :dword,:dword,:dword
 Str_InString            proto   :dword,:dword,:dword
 
@@ -259,7 +246,7 @@ Str_InString            proc    StartPos:dword,String:dword,SubString:dword
                         jnz     StartPosCorrect
                         xor     eax,eax
                         jmp     SearchStrExit
-StartPosCorrect:        invoke  GetStrLen,SubString
+StartPosCorrect:        invoke  lstrlen,SubString
                         mov     SubStringLen,eax        ; No Null strings allowed
                         test    eax,eax
                         jz      SearchStrExit
@@ -306,7 +293,7 @@ Str_Occurence           proc    String:dword,SubString:dword
                         test    eax,eax
                         jz      NoOccPossible
                         push    ebx
-                        invoke  GetStrLen,SubString
+                        invoke  lstrlen,SubString
                         xor     ebx,ebx
                         test    eax,eax
                         jz      NoMoreOccurence
@@ -339,7 +326,7 @@ Str_GetSplit            proc    String:dword,SubString:dword
                         jz      NoSplitPossible
                         push    ebx
                         push    ecx
-                        invoke  GetStrLen,SubString
+                        invoke  lstrlen,SubString
                         mov     SplitMemBlock,0
                         test    eax,eax
                         jz      EndSplit
@@ -390,7 +377,7 @@ Str_Blank               proc    String:dword,SubString:dword
                         test    eax,eax
                         jz      NoBlank
                         push    ebx
-                        invoke  GetStrLen,SubString
+                        invoke  lstrlen,SubString
                         xor     ebx,ebx
                         test    eax,eax
                         jz      NoMoreOccurenceToblank
@@ -427,7 +414,7 @@ Str_Space               proc    String:dword,SubString:dword
                         test    eax,eax
                         jz      NoSpacePossible
                         push    ebx
-                        invoke  GetStrLen,SubString
+                        invoke  lstrlen,SubString
                         xor     ebx,ebx
                         test    eax,eax
                         jz      NoMoreOccurenceToSpace
@@ -444,7 +431,7 @@ SpaceOccurences:        push    ebx
                         dec     ebx
                         mov     eax,String
                         add     eax,ebx
-                        invoke  FillMemDat,eax,SubStringLen,20202020h
+                        invoke  FillMemDat,eax,SubStringLen,20h
                         pop     ebx
                         pop     eax
                         add     eax,SubStringLen
@@ -531,10 +518,10 @@ Str_Cmp                 proc    String1:dword,String2:dword
                         push    esi
                         push    edi
                         push    ecx
-                        invoke  GetStrLen,String1
+                        invoke  lstrlen,String1
                         mov     ecx,eax
                         push    ecx
-                        invoke  GetStrLen,String2
+                        invoke  lstrlen,String2
                         pop     ecx
                         cmp     eax,ecx
                         jne     Str_NotEqual
@@ -1395,7 +1382,7 @@ RetrieveIncludes        endp
 ; --------------- Duplicate a string
 NewString               proc    String:dword
                         local   StringLen:dword
-                        invoke  GetStrLen,String
+                        invoke  lstrlen,String
                         mov     StringLen,eax
                         inc     eax
                         invoke  AllocMem,eax
@@ -1427,7 +1414,7 @@ RetrieveKeyWordLine     proc    String:dword,KeyWordName:dword,MaxSize:dword,Com
                         ; Remove leading/Trailing spaces
                         invoke  trim,KeyWordSource
                         ; Retrieve new length
-                        invoke  GetStrLen,KeyWordSource
+                        invoke  lstrlen,KeyWordSource
                         test    eax,eax
                         jz      KeyWordNotFound
                         ; Alloc memory for constant name
@@ -1438,7 +1425,7 @@ RetrieveKeyWordLine     proc    String:dword,KeyWordName:dword,MaxSize:dword,Com
                         inc     eax
                         invoke  AllocMem,eax
                         mov     KeyWordToSearch,eax
-                        invoke  FillMemDat,KeyWordToSearch,KeyWordToSearchLen,20202020h
+                        invoke  FillMemDat,KeyWordToSearch,KeyWordToSearchLen,20h
                         ; Copy the constant name
                         mov     eax,KeyWordToSearchLen
                         dec     eax
@@ -2113,3 +2100,5 @@ next:                           lea     ecx,[esi-1]
                         pop     ebx
                         ret
 HexaToDw                endp
+
+                        end
