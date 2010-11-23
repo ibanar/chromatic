@@ -9291,7 +9291,8 @@ int CALLBACK FRMStockModalDlgStdWizardProc(HWND hwndDlg, UINT uMsg, WPARAM wPara
 
 // -----------------------------------------------------------------------
 // Allocate block in global memory (private)
-long AllocMem(long MemSize)
+extern "C"
+long CALLBACK AllocMem(long MemSize)
 {
     if(MemSize) return((long) calloc(MemSize + 1, 1));
     return(0);
@@ -9299,7 +9300,8 @@ long AllocMem(long MemSize)
 
 // -----------------------------------------------------------------------
 // Free a block allocated in global memory (private)
-void FreeMem(long MemHandle)
+extern "C"
+void CALLBACK FreeMem(long MemHandle)
 {
     if(MemHandle) free((void *) MemHandle);
 }

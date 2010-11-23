@@ -818,7 +818,7 @@ CStr ComDlgGetSaveFileName(HWND hWnd, CStr OFilters, CStr InitDir, CStr DefaultD
 long ComDlgChooseFont(HWND hWnd, CStr FntName, long FntSize, long FixedOnly);
 CStr ComDlgBrowseForFolder(HWND hWnd, CStr Title);
 CStr ComDlgParseMultiFilesSelection(CStr SelectedFiles, long (CALLBACK *EnumProc)(char *, long), long SearchDirection, long UserValue);
-long AllocMem(long MemSize);
-void FreeMem(long MemHandle);
+extern "C" long CALLBACK AllocMem(long MemSize);
+extern "C" void CALLBACK FreeMem(long MemHandle);
 
 #endif

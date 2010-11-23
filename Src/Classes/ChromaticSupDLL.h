@@ -44,7 +44,7 @@ extern "C"
 //long CALLBACK GetFileLineAddress(char *StringToCheck, long MaxSize, long LineNumber);
 //long CALLBACK GetFileLineOffset(char *StringToCheck, long MaxSize, long LineNumber);
 char * CALLBACK GetApiDescription(char *DbFileName, char *FunctionName);
-long CALLBACK GetStrLen(char *StrToCheck);
+//extern "C" long CALLBACK GetStrLen(char *StrToCheck);
 //long CALLBACK MLoadFile(char *FileToLoad, long *ByteReaded);
 long CALLBACK MSaveFile(char *FileToSave, long MemorytoSave, long BytestoSave);
 //long CALLBACK QEPlug(long DllAddr, HINSTANCE hInst, HWND hW, HWND hText, HWND hTB, HWND hSB);

@@ -159,34 +159,36 @@ int GetMDIWidth(void);
 int GetMDIHeight(void);
 void DisplayCursor(void);
 void HideCursor(void);
-void UpCase(char *string);
-void LoCase(char *string);
-int CountFileLines(char *string, int MaxSize);
-char *GetFileLineAddress(char *String, int MaxSize, int LineNumber);
-int GetFileLineOffset(char *String, int MaxSize, int LineNumber);
-void SpaceToNewLine(char *String, int MaxSize);
-int RemCRLF(char *String, int MaxSize);
-void CopyMem2(char *Source,
-              char *Dest,
-              int Len,
-              int Src_Offset,
-              int Dest_Offset);
-void CopyMem(char *Source,
-             char *Dest,
-             int Len,
-             int Dest_Offset,
-             int RepeatCount);
-void SpaceToTab(char *String, int MaxSize);
-void ToggleCase(char *String, int Len);
+extern "C" void CALLBACK UpCase(char *string);
+extern "C" void CALLBACK LoCase(char *string);
+extern "C" void CALLBACK FillMemDat(BYTE *Mem, int Length, int Data);
+extern "C" int CALLBACK CountFileLines(char *string, int MaxSize);
+extern "C" char * CALLBACK GetFileLineAddress(char *String, int MaxSize, int LineNumber);
+extern "C" int CALLBACK GetFileLineOffset(char *String, int MaxSize, int LineNumber);
+extern "C" void CALLBACK ReplaceTabs(char *String, int MaxSize);
+void CALLBACK SpaceToNewLine(char *String, int MaxSize);
+extern "C" int CALLBACK RemCRLF(char *String, int MaxSize);
+void CALLBACK CopyMem2(char *Source,
+                       char *Dest,
+                       int Len,
+                       int Src_Offset,
+                       int Dest_Offset);
+void CALLBACK CopyMem(char *Source,
+                      char *Dest,
+                      int Len,
+                      int Dest_Offset,
+                      int RepeatCount);
+void CALLBACK SpaceToTab(char *String, int MaxSize);
+void CALLBACK ToggleCase(char *String, int Len);
 void TabToSpace(char *String, int MaxSize);
-int AsciiToDw(char *String);
-HWND DisplayChm(char *FileName, char *KeyWord);
-void QEPlug(QEPROC PlugAddr,
-            HINSTANCE hInstance,
-            HWND hWnd,
-            HWND hText,
-            HWND hToolBar,
-            HWND hStatusBar);
-BYTE *MLoadFile(char *FileName, long *Bytes);
+int CALLBACK AsciiToDw(char *String);
+HWND CALLBACK DisplayChm(char *FileName, char *KeyWord);
+void CALLBACK QEPlug(QEPROC PlugAddr,
+                     HINSTANCE hInstance,
+                     HWND hWnd,
+                     HWND hText,
+                     HWND hToolBar,
+                     HWND hStatusBar);
+BYTE * CALLBACK MLoadFile(char *FileName, long *Bytes);
 
 #endif

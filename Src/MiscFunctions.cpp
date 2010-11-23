@@ -4852,8 +4852,9 @@ void HideCursor(void)
 }
 
 // -----------------------------------------------------------------------
-// Turn a string into upper acse
-void UpCase(char *String)
+// Turn a string into upper case
+extern "C"
+void CALLBACK UpCase(char *String)
 {
     for(int i = 0; String[i] != '\0'; i++)
     {
@@ -4862,8 +4863,9 @@ void UpCase(char *String)
 }
 
 // -----------------------------------------------------------------------
-// Turn a string into lower acse
-void LoCase(char *String)
+// Turn a string into lower case
+extern "C"
+void CALLBACK LoCase(char *String)
 {
     for(int i = 0; String[i] != '\0'; i++)
     {
@@ -4872,8 +4874,17 @@ void LoCase(char *String)
 }
 
 // -----------------------------------------------------------------------
+// Fill a memory block
+extern "C"
+void CALLBACK FillMemDat(BYTE *Mem, int Length, int Data)
+{
+    memset(Mem, Data, Length);
+}
+
+// -----------------------------------------------------------------------
 // Count the number of lines in a file
-int CountFileLines(char *String, int MaxSize)
+extern "C"
+int CALLBACK CountFileLines(char *String, int MaxSize)
 {
     int Lines = 0;
 
@@ -4892,7 +4903,8 @@ int CountFileLines(char *String, int MaxSize)
 
 // -----------------------------------------------------------------------
 // Retrieve the address of a given line
-char *GetFileLineAddress(char *String, int MaxSize, int LineNumber)
+extern "C"
+char * CALLBACK GetFileLineAddress(char *String, int MaxSize, int LineNumber)
 {
     char Char;
 
@@ -4918,7 +4930,8 @@ char *GetFileLineAddress(char *String, int MaxSize, int LineNumber)
 
 // -----------------------------------------------------------------------
 // Retrieve the offset of a given line
-int GetFileLineOffset(char *String, int MaxSize, int LineNumber)
+extern "C" 
+int CALLBACK GetFileLineOffset(char *String, int MaxSize, int LineNumber)
 {
     if(String == NULL) return(0);
     return((int) GetFileLineAddress(String, MaxSize, LineNumber) - (int) String);
@@ -4926,7 +4939,7 @@ int GetFileLineOffset(char *String, int MaxSize, int LineNumber)
 
 // -----------------------------------------------------------------------
 // Convert space chars to newline
-void SpaceToNewLine(char *String, int MaxSize)
+void CALLBACK SpaceToNewLine(char *String, int MaxSize)
 {
     if(String != NULL)
     {
@@ -4939,8 +4952,24 @@ void SpaceToNewLine(char *String, int MaxSize)
 }
 
 // -----------------------------------------------------------------------
+// Convert tabs chars to space
+extern "C"
+void CALLBACK ReplaceTabs(char *String, int MaxSize)
+{
+    if(String != NULL)
+    {
+        for(int i = 0; i < MaxSize; i++)
+        {
+            if(String[i] == '\0') break;
+            if(String[i] == '\t') String[i] = ' ';
+        }
+    }
+}
+
+// -----------------------------------------------------------------------
 // Convert space chars to newline
-int RemCRLF(char *String, int MaxSize)
+extern "C"
+int CALLBACK RemCRLF(char *String, int MaxSize)
 {
     int Counter = 0;
     int Len = 0;
@@ -4973,11 +5002,11 @@ int RemCRLF(char *String, int MaxSize)
 
 // -----------------------------------------------------------------------
 // Memory copy with S/D offsets
-void CopyMem2(char *Source,
-              char *Dest,
-              int Len,
-              int Src_Offset,
-              int Dest_Offset)
+void CALLBACK CopyMem2(char *Source,
+                       char *Dest,
+                       int Len,
+                       int Src_Offset,
+                       int Dest_Offset)
 {
     memcpy((void *) (Dest + Dest_Offset),
            (void *) (Source + Src_Offset), 
@@ -4986,11 +5015,11 @@ void CopyMem2(char *Source,
 
 // -----------------------------------------------------------------------
 // Memory copy with S/D offsets
-void CopyMem(char *Source,
-             char *Dest,
-             int Len,
-             int Dest_Offset,
-             int RepeatCount)
+void CALLBACK CopyMem(char *Source,
+                      char *Dest,
+                      int Len,
+                      int Dest_Offset,
+                      int RepeatCount)
 {
     for(int i = 0; i < RepeatCount; i++)
     {
@@ -5001,7 +5030,7 @@ void CopyMem(char *Source,
 
 // -----------------------------------------------------------------------
 // Replace space chars in a text by tabs
-void SpaceToTab(char *String, int MaxSize)
+void CALLBACK SpaceToTab(char *String, int MaxSize)
 {
     if(String != NULL)
     {
@@ -5029,7 +5058,7 @@ void TabToSpace(char *String, int MaxSize)
 
 // -----------------------------------------------------------------------
 // Toggle string chars case
-void ToggleCase(char *String, int Len)
+void CALLBACK ToggleCase(char *String, int Len)
 {
     if(String != NULL)
     {
@@ -5043,14 +5072,14 @@ void ToggleCase(char *String, int Len)
 
 // -----------------------------------------------------------------------
 // Convert decimal string into dword value
-int AsciiToDw(char *String)
+int CALLBACK AsciiToDw(char *String)
 {
     return(atol(String));
 }
 
 // -----------------------------------------------------------------------
 // Display a .chm file
-HWND DisplayChm(char *FileName, char *KeyWord)
+HWND CALLBACK DisplayChm(char *FileName, char *KeyWord)
 {
     HH_AKLINK MyhLink;
     
@@ -5063,12 +5092,12 @@ HWND DisplayChm(char *FileName, char *KeyWord)
 
 // -----------------------------------------------------------------------
 // Run a Quick Editor plugin
-void QEPlug(QEPROC PlugAddr,
-            HINSTANCE hInstance,
-            HWND hWnd,
-            HWND hText,
-            HWND hToolBar,
-            HWND hStatusBar)
+void CALLBACK  QEPlug(QEPROC PlugAddr,
+                      HINSTANCE hInstance,
+                      HWND hWnd,
+                      HWND hText,
+                      HWND hToolBar,
+                      HWND hStatusBar)
 {
     if(PlugAddr)
     {
@@ -5079,7 +5108,7 @@ void QEPlug(QEPROC PlugAddr,
 // -----------------------------------------------------------------------
 // Open a file and load it into memory
 // (Return memory block or 0)
-BYTE *MLoadFile(char *FileName, long *Bytes)
+BYTE * CALLBACK MLoadFile(char *FileName, long *Bytes)
 {
     int Size;
 	FILE *FHandle;
