@@ -34,7 +34,7 @@
 
 [Setup]
 AppName=Chromatic IDE
-AppVerName=Chromatic IDE v1.3.3
+AppVerName=Chromatic IDE v1.3.4
 AppPublisher=hitchhikr SoftWorks
 AppPublisherURL=http://perso.wanadoo.fr/franck.charlet/index.htm
 AppSupportURL=http://perso.wanadoo.fr/franck.charlet/index.htm
@@ -46,8 +46,8 @@ LicenseFile=..\Debug\LicenseInstall.txt
 Compression=lzma
 SolidCompression=yes
 VersionInfoCompany=hitchhikr SoftWorks
-VersionInfoTextVersion=Chromatic IDE v1.3.3
-VersionInfoVersion=1.3.3.0
+VersionInfoTextVersion=Chromatic IDE v1.3.4
+VersionInfoVersion=1.3.4.0
 OutputBaseFilename=Chromatic_svn
 OutputDir=.\
 
@@ -141,7 +141,6 @@ Source: "..\Debug\Projects\TestOglC\OGLStartup.cpp"; DestDir: "{app}\Projects\Te
 Source: "..\Debug\Projects\TestOglC\OGLMain.cpp"; DestDir: "{app}\Projects\TestOglC"; Flags: ignoreversion
 Source: "..\Debug\Tools\*.*"; DestDir: "{app}\Tools"; Flags: ignoreversion
 Source: "..\Debug\Scripts\*.*"; DestDir: "{app}\Scripts"; Flags: ignoreversion
-Source: "..\Debug\ChromeSup.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Debug\cmaxXX.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Debug\MakeDll.bat"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Debug\MakeLib.bat"; DestDir: "{app}"; Flags: ignoreversion
