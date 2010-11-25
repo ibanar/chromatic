@@ -6,7 +6,7 @@ Version 1.3.4
 
 - Removed the ChromeSup.dll which is now statically linked to the program
   this fixed a few bugs due to obsolete functions begin used.
-  (the new static lib project has been added in the svn repository).
+  (the new static lib project has been added into the svn repository).
 
 --------------------------------------------------------------------------------
 Version 1.3.3
