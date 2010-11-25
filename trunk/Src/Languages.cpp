@@ -702,12 +702,14 @@ CStr GetCMLangComment(HWND hwnd)
 
 // -----------------------------------------------------------------------
 // Retrieve the type of hexadecimal number associated with child's language
-CStr GetCMLangHexType(HWND hwnd)
+CStr GetCMLangHexType(HWND hwnd, int Amount)
 {
     char ReturnLang[CM_MAX_LANGUAGE_NAME + 1];
     CStr ReturnRealLang;
-    CStr ReturnValue;
     CStr BufString;
+    CStr Dest;
+    int i;
+    int j;
     long ReturnOffset = 0;
 
     ChildStruct = LoadStructure(hwnd);
@@ -715,35 +717,70 @@ CStr GetCMLangHexType(HWND hwnd)
     CM_GetLanguage(ChildStruct->hChildCodeMax, (char *) &ReturnLang);
     // Format name
     ReturnRealLang = CMGetRealLanguage((char *) &ReturnLang);
-    if(ReturnRealLang.Len() == 0) return(ReturnValue);
+    if(ReturnRealLang.Len() == 0) return("");
     ReturnOffset = GetLanguageOffset(ReturnRealLang);
-    if(ReturnOffset == -1) return(ReturnValue);
+    if(ReturnOffset == -1) return("");
     BufString = (char *) GetLangDat(ReturnOffset)->pszHexType;
-    ReturnValue = BufString;
-    return(ReturnValue);
+    if(Amount != -1)
+    {
+        Dest = "";
+        i = 0;
+        for(j = 0; j < Amount; j++)
+        {
+            while(BufString[i] != ' ' && BufString[i])
+            {
+                Dest += BufString[i];
+                i++;
+            }
+        }
+    }
+    else
+    {
+        Dest = BufString;
+    }
+    return(Dest);
 }
 
 // -----------------------------------------------------------------------
 // Retrieve the type of hexadecimal number associated with child's language
-CStr GetCMLangBinType(HWND hwnd)
+CStr GetCMLangBinType(HWND hwnd, int Amount)
 {
     char ReturnLang[CM_MAX_LANGUAGE_NAME + 1];
     CStr ReturnRealLang;
-    CStr ReturnValue;
     CStr BufString;
+    CStr Dest;
+    int i;
+    int j;
     long ReturnOffset = 0;
 
+    BufString = "";
     ChildStruct = LoadStructure(hwnd);
     // Get the language name
     CM_GetLanguage(ChildStruct->hChildCodeMax, (char *) &ReturnLang);
     // Format name
     ReturnRealLang = CMGetRealLanguage((char *) &ReturnLang);
-    if(ReturnRealLang.Len() == 0) return(ReturnValue);
+    if(ReturnRealLang.Len() == 0) return("");
     ReturnOffset = GetLanguageOffset(ReturnRealLang);
-    if(ReturnOffset == -1) return(ReturnValue);
+    if(ReturnOffset == -1) return("");
     BufString = (char *) GetLangDat(ReturnOffset)->pszBinType;
-    ReturnValue = BufString;
-    return(ReturnValue);
+    if(Amount != -1)
+    {
+        Dest = "";
+        i = 0;
+        for(j = 0; j < Amount; j++)
+        {
+            while(BufString[i] != ' ' && BufString[i])
+            {
+                Dest += BufString[i];
+                i++;
+            }
+        }
+    }
+    else
+    {
+        Dest = BufString;
+    }
+    return(Dest);
 }
 
 // -----------------------------------------------------------------------

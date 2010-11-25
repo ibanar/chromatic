@@ -3534,425 +3534,276 @@ void FillFTPCombo(HWND hGlobComboBox)
 // Conversions
 
 // -----------------------------------------------------------------------
-// Convert a hexadecimal number into decimal
-// In: current word (usually)
-// Out: word converted ("" if none)
-CStr HexToDec(CStr Number)
+// Check the sanity of an ASCII number with a given base against a format descriptor
+CStr Check_Number_Sanity(CStr Number, CStr Format,
+                         int Base)
 {
-    int i = 0;
-    long GoodHex = 0;
-    CStr ReturnValue;
-    long RotationPos = 0;
-    CStr HexChar;
-    CStr HexToConvert;
-    long ConvertedHex = 0;
-    long HexIdx = 0;
-    long MaxLen = 0;
-    long StartHex = 0;
+    int i;
+    int Prefix_Len;
+    int Suffix_Len;
     CStr BufString;
-    CStr TempBuf;
+    CStr BufString_Up;
+    CStr Header;
+    CStr Local_Format;
+    int j;
 
-    TempBuf = Number.Trim();
-    StartHex = 1;
-    // Filter the datas
-    if(_strcmpi(TempBuf.Left(2).Get_String(), "0x") == 0)
+    /* Nothing was specified */
+    if(Format.Len() == 0)
     {
-        StartHex = 3;
-        GoodHex = 1;
+        WriteToStatus("Number format not supplied for this language.");
+        return "";
     }
-    if(_strcmpi(TempBuf.Left(1).Get_String(), "$") == 0)
+    j = 0;
+    for(;;)
     {
-        StartHex = 2;
-        GoodHex = 1;
-    }
-    MaxLen = TempBuf.Len() - (StartHex - 1);
-    if(MaxLen > 8) MaxLen = 8;
-    for(i = 1; i <= MaxLen; i++)
-    {
-        HexChar = TempBuf.Mid(i + (StartHex - 1), 1).Upper_Case();
-        if(((strcmp(HexChar.Get_String(), "0") >= 0) && (strcmp(HexChar.Get_String(), "9") <= 0)) || ((_strcmpi(HexChar.Get_String(), "A") >= 0) && (_strcmpi(HexChar.Get_String(), "F") <= 0)))
+        while(Format[j] == ' ') j++;
+        Local_Format = "";
+        while(Format[j] != ' ' &&
+              Format[j])
         {
-            HexToConvert = HexToConvert + HexChar;
+            Local_Format += Format[j];
+            j++;
+        }
+
+        Prefix_Len = Local_Format.In_Str(1, "%1");
+        /* Format is fucked up */
+        if(Prefix_Len == 0)
+        {
+            if(!Format[j])
+            {
+                WriteToStatus("Bad number format for this language.");
+                return "";
+            }
         }
         else
         {
-            if(GoodHex == 0) if(_strcmpi(HexChar.Get_String(), "h") == 0) GoodHex = 1;
-            break;
-        }
-    }
-    if(GoodHex == 1)
-    {
-        // Convert it
-        if(HexToConvert.Len() != 0)
-        {
-            RotationPos = 0;
-            for(i = 1; i <= HexToConvert.Len(); i++)
+            Header = StringReplace(Local_Format, "%1", "", 1, -1, Binary_Compare);
+            Suffix_Len = Header.Len() - (Prefix_Len - 1);
+            Suffix_Len = Number.Len() - Suffix_Len - (Prefix_Len - 1);
+
+            BufString = Local_Format;
+            int test = Number.Len() - Suffix_Len;
+            BufString = StringReplace(BufString, "%1", Number.Mid(Prefix_Len, Suffix_Len), 1, -1, Binary_Compare);
+            if(BufString.Str_Comp(BufString, Number, Text_Compare) == 0)
             {
-                HexChar = HexToConvert.Mid(i, 1);
-                HexIdx = HexChar.Asc() - 0x30;
-                ConvertedHex = (ConvertedHex << RotationPos) + TabConvHexCoher[HexIdx];
-                RotationPos = 4;
+                BufString_Up = Number.Mid(Prefix_Len, Suffix_Len).Upper_Case();
+                for(i = 0; i < BufString_Up.Len(); i++)
+                {
+                    switch(Base)
+                    {
+                        case 2:
+                            if(BufString_Up[i] < '0') if(!Format[j]) return "";
+                            if(BufString_Up[i] > '1') if(!Format[j]) return "";
+                            break;
+
+                        case 10:
+                            if(BufString_Up[i] < '0') if(!Format[j]) return "";
+                            if(BufString_Up[i] > '9') if(!Format[j]) return "";
+                            break;
+
+                        case 16:
+                            if(BufString_Up[i] < '0') if(!Format[j]) return "";
+                            if(BufString_Up[i] > '9')
+                            {
+                                if(BufString_Up[i] < 'A') if(!Format[j]) return "";
+                                if(BufString_Up[i] > 'F') if(!Format[j]) return "";
+                            }
+                            break;
+                    }
+                }
+                return BufString_Up;
             }
-            BufString = ConvertedHex;
+            else
+            {
+                if(!Format[j]) return "";
+            }
         }
     }
-    ReturnValue = BufString;
-    return(ReturnValue);
+}
+
+// -----------------------------------------------------------------------
+// Convert a hexadecimal number into decimal
+// In: current word (usually)
+// Out: word converted ("" if none)
+CStr HexToDec(HWND hWnd, CStr Number)
+{
+    int i = 0;
+    long DestNumber = 0;
+    CStr Char;
+    CStr NumberToConvert;
+
+    NumberToConvert = Check_Number_Sanity(Number.Trim(),
+                                          GetCMLangHexType(GetParent(hWnd), -1),
+                                          16);
+    if(NumberToConvert.Len() == 0) return "";
+
+    for(i = 1; i <= NumberToConvert.Len(); i++)
+    {
+        DestNumber <<= 4;
+        Char = NumberToConvert.Mid(i, 1);
+        DestNumber += TabConvHexCoher[(Char.Asc() - 0x30)];
+    }
+    return(DestNumber);
 }
 
 // -----------------------------------------------------------------------
 // Convert a decimal number into hexadecimal
 // In: current word (usually)
 // Out: word converted ("" if none)
-CStr DecToHex(CStr Number)
+CStr DecToHex(HWND hWnd, CStr Number)
 {
     int i = 0;
-    long GoodDec = 0;
-    CStr ReturnValue;
-    long RotationPos = 0;
-    CStr DecChar;
-    CStr DecToConvert;
-    long RealDec = 0;
-    long MaxLen = 0;
-    CStr BufString;
-    CStr TempBuf;
+    long DestNumber = 0;
+    CStr NumberToConvert;
 
-    // Filter the datas
-    
-    TempBuf = Number.Trim();
-    MaxLen = TempBuf.Len();
-    if(MaxLen > 10) MaxLen = 10;
-    GoodDec = 1;
-    for(i = 1; i <= MaxLen; i++)
-    {
-        DecChar = TempBuf.Mid(i, 1).Upper_Case();
-        if(strcmp(DecChar.Get_String(), "0") >= 0 && strcmp(DecChar.Get_String(), "9") <= 0)
-        {
-            DecToConvert = DecToConvert + DecChar;
-        }
-        else
-        {
-            GoodDec = 0;
-            break;
-        }
-    }
-    if(GoodDec == 1)
-    {
-        // Convert it
-        if(DecToConvert.Len() != 0)
-        {
-            RotationPos = 0;
-            RealDec = AsciiToDw(DecToConvert.Get_String());
-            BufString = BufString.Hex_To_String(RealDec);
-        }
-    }
-    ReturnValue = BufString;
-    return(ReturnValue);
+    NumberToConvert = Check_Number_Sanity(Number.Trim(),
+                                          "%1",
+                                          10);
+    if(NumberToConvert.Len() == 0) return "";
+
+    DestNumber = AsciiToDw(NumberToConvert.Get_String());
+    return(NumberToConvert.Hex_To_String(DestNumber));
 }
 
 // -----------------------------------------------------------------------
 // Convert a decimal number into binary
 // In: current word (usually)
 // Out: word converted ("" if none)
-CStr DecToBin(CStr Number)
+CStr DecToBin(HWND hWnd, CStr Number)
 {
     int i = 0;
-    long GoodDec = 0;
-    long mask = 0;
-    CStr ReturnValue;
-    long RotationPos = 0;
-    CStr DecChar;
-    CStr DecToConvert;
-    long RealDec = 0;
-    CStr RealDecComp;
-    long MaxLen = 0;
-    CStr BufString;
-    CStr TempBuf;
+    int mask;
+    long DestNumber = 0;
+    CStr Char;
+    CStr NumberToConvert;
 
-    // Filter the datas
-    TempBuf = Number.Trim();
-    MaxLen = TempBuf.Len();
-    if(MaxLen > 10) MaxLen = 10;
-    GoodDec = 1;
-    for(i = 1; i <= MaxLen; i++)
+    NumberToConvert = Check_Number_Sanity(Number.Trim(),
+                                          "%1",
+                                          10);
+    if(NumberToConvert.Len() == 0) return "";
+
+    DestNumber = AsciiToDw(NumberToConvert.Get_String());
+    mask = 1;
+    NumberToConvert = "";
+    for(i = 0; i <= 31; i++)
     {
-        DecChar = TempBuf.Mid(i, 1).Upper_Case();
-        if(strcmp(DecChar.Get_String(), "0") >= 0 && strcmp(DecChar.Get_String(), "9") <= 0)
+        if((DestNumber & mask) != 0)
         {
-            DecToConvert = DecToConvert + DecChar;
+            NumberToConvert = "1" + (CStr) NumberToConvert;
         }
         else
         {
-            GoodDec = 0;
-            break;
+            NumberToConvert = "0" + (CStr) NumberToConvert;
         }
+        mask = mask << 1;
     }
-    if(GoodDec == 1)
+    for(i = 1; i <= NumberToConvert.Len(); i++)
     {
-        // Convert it
-        if(DecToConvert.Len() != 0)
-        {
-            RotationPos = 0;
-            RealDec = AsciiToDw(DecToConvert.Get_String());
-            mask = 1;
-            for(i = 0; i <= 31; i++)
-            {
-                if((RealDec & mask) != 0)
-                {
-                    RealDecComp = "1" + (CStr) RealDecComp;
-                }
-                else
-                {
-                    RealDecComp = "0" + (CStr) RealDecComp;
-                }
-                mask = mask << 1;
-            }
-            for(i = 1; i <= RealDecComp.Len(); i++)
-            {
-                if(strcmp(RealDecComp.Mid(i, 1).Get_String(), "0") != 0) break;
-            }
-            BufString = RealDecComp.Mid(i);
-        }
+        if(strcmp(NumberToConvert.Mid(i, 1).Get_String(), "0") != 0) break;
     }
-    ReturnValue = BufString;
-    return(ReturnValue);
+    return(NumberToConvert.Mid(i));
 }
 
 // -----------------------------------------------------------------------
 // Convert a hexadecimal number into binary
 // In: current word (usually)
 // Out: word converted ("" if none)
-CStr HexToBin(CStr Number)
+CStr HexToBin(HWND hWnd, CStr Number)
 {
-    int i = 0;
-    long GoodHex = 0;
-    CStr ReturnValue;
-    long RotationPos = 0;
-    CStr HexChar;
-    CStr HexToConvert;
-    long ConvertedHex = 0;
-    long HexIdx = 0;
-    long MaxLen = 0;
-    long StartHex = 0;
-    CStr BufString;
-    CStr TempBuf;
+    CStr NumberToConvert;
 
-    TempBuf = Number.Trim();
-    StartHex = 1;
-    // Filter the datas
-    if(_strcmpi(TempBuf.Left(2).Get_String(), "0x") == 0)
-    {
-        StartHex = 3;
-        GoodHex = 1;
-    }
-    if(_strcmpi(TempBuf.Left(1).Get_String(), "$") == 0)
-    {
-        StartHex = 2;
-        GoodHex = 1;
-    }
-    MaxLen = TempBuf.Len()- (StartHex - 1);
-    if(MaxLen > 8) MaxLen = 8;
-    for(i = 1; i <= MaxLen; i++)
-    {
-        HexChar = TempBuf.Mid(i + (StartHex - 1), 1).Upper_Case();
-        if(((strcmp(HexChar.Get_String(), "0") >= 0) && (strcmp(HexChar.Get_String(), "9") <= 0)) || ((_strcmpi(HexChar.Get_String(), "A") >= 0) && (lstrcmpi(HexChar.Get_String(), "F") <= 0)))
-        {
-            HexToConvert = HexToConvert + HexChar;
-        }
-        else
-        {
-            if(GoodHex == 0) if(_strcmpi(HexChar.Get_String(), "h") == 0) GoodHex = 1;
-            break;
-        }
-    }
-    if(GoodHex == 1)
-    {
-        // Convert it
-        if(HexToConvert.Len() != 0)
-        {
-            RotationPos = 0;
-            for(i = 1; i <= HexToConvert.Len(); i++)
-            {
-                HexChar = HexToConvert.Mid(i, 1);
-                HexIdx = HexChar.Asc() - 0x30;
-                ConvertedHex = (ConvertedHex << RotationPos) + TabConvHexCoher[HexIdx];
-                RotationPos = 4;
-            }
-            BufString = ConvertedHex;
-            BufString = DecToBin(BufString);
-        }
-    }
-    ReturnValue = BufString;
-    return(ReturnValue);
+    NumberToConvert = HexToDec(hWnd, Number);
+    if(NumberToConvert.Len() == 0) return "";
+    return(DecToBin(hWnd, NumberToConvert));
 }
 
 // -----------------------------------------------------------------------
 // Convert a binary number into decimal
 // In: current word (usually)
 // Out: word converted ("" if none)
-CStr BinToDec(CStr Number)
+CStr BinToDec(HWND hWnd, CStr Number)
 {
     int i = 0;
-    long DecBin = 0;
-    long GoodBin = 0;
-    CStr ReturnValue;
-    CStr BufString;
-    CStr BinChar;
-    CStr BinToConvert;
-    CStr TempBuf;
+    long DestNumber = 0;
+    CStr Char;
+    CStr NumberToConvert;
 
-    TempBuf = Number.Trim();
-    for(i = 1; i <= 33; i++)
+    NumberToConvert = Check_Number_Sanity(Number.Trim(),
+                                          GetCMLangBinType(GetParent(hWnd), -1),
+                                          2);
+    if(NumberToConvert.Len() == 0) return "";
+
+    for(i = 0; i <= NumberToConvert.Len(); i++)
     {
-        BinChar = TempBuf.Mid(i, 1).Upper_Case();
-        if(strcmp(BinChar.Get_String(), "0") == 0 || strcmp(BinChar.Get_String(), "1") == 0)
-        {
-            BinToConvert = BinToConvert + BinChar;
-        }
-        else
-        {
-            if(_strcmpi(BinChar.Get_String(), "b") == 0) GoodBin = 1;
-            break;
-        }
+        Char = NumberToConvert.Mid(i, 1).Upper_Case();
+        DestNumber = (DestNumber << 1) + Char.Get_Long();
     }
-    if(GoodBin == 1)
-    {
-        for(i = 1; i <= BinToConvert.Len(); i++)
-        {
-            BinChar = BinToConvert.Mid(i, 1).Upper_Case();
-            DecBin = (DecBin << 1) + BinChar.Get_Long();
-        }
-        BufString = DecBin;
-    }
-    ReturnValue = BufString;
-    return(ReturnValue);
+    return(DestNumber);
 }
 
 // -----------------------------------------------------------------------
 // Convert a binary number into hexadecimal
 // In: current word (usually)
 // Out: word converted ("" if none)
-CStr BinToHex(CStr Number)
+CStr BinToHex(HWND hWnd, CStr Number)
 {
     int i = 0;
-    long DecBin = 0;
-    long GoodBin = 0;
-    CStr ReturnValue;
-    CStr BufString;
-    CStr BinChar;
-    CStr BinToConvert;
-    CStr TempBuf;
+    long DestNumber = 0;
+    CStr Char;
+    CStr NumberToConvert;
 
-    TempBuf = Number.Trim();
-    for(i = 1; i <= 33; i++)
+    NumberToConvert = Check_Number_Sanity(Number.Trim(),
+                                          GetCMLangBinType(GetParent(hWnd), -1),
+                                          2);
+    if(NumberToConvert.Len() == 0) return "";
+
+    for(i = 0; i <= NumberToConvert.Len(); i++)
     {
-        BinChar = TempBuf.Mid(i, 1).Upper_Case();
-        if(strcmp(BinChar.Get_String(), "0") == 0 || strcmp(BinChar.Get_String(), "1") == 0)
-        {
-            BinToConvert = BinToConvert + BinChar;
-        }
-        else
-        {
-            if(_strcmpi(BinChar.Get_String(), "b") == 0) GoodBin = 1;
-            break;
-        }
+        Char = NumberToConvert.Mid(i, 1).Upper_Case();
+        DestNumber = (DestNumber << 1) + Char.Get_Long();
     }
-    if(GoodBin == 1)
-    {
-        for(i = 1; i <= BinToConvert.Len(); i++)
-        {
-            BinChar = BinToConvert.Mid(i, 1).Upper_Case();
-            DecBin = (DecBin << 1) + BinChar.Get_Long();
-        }
-        BufString = DecBin;
-        BufString = DecToHex(BufString);
-    }
-    ReturnValue = BufString;
-    return(ReturnValue);
+    return(DecToHex(hWnd, DestNumber));
 }
 
 // -----------------------------------------------------------------------
 // Convert a hexadecimal integer number into a floating point 
 // In: current word (usually)
 // Out: word converted ("" if none)
-CStr HexToFlt(CStr Number)
+CStr HexToFlt(HWND hWnd, CStr Number)
 {
+
     int i = 0;
-    long GoodHex = 0;
-    CStr ReturnValue;
-    long RotationPos = 0;
-    CStr HexChar;
-    CStr HexToConvert;
-    long ConvertedHex = 0;
-    long HexIdx = 0;
-    long MaxLen = 0;
-    long StartHex = 0;
-    CStr BufString;
-    CStr TempBuf;
-    float ConvertFlt;
-    int Real_Start = 0;
+    long DestNumber = 0;
+    CStr Char;
+    CStr NumberToConvert;
+    float DestFlt;
 
-    TempBuf = Number.Trim();
-    StartHex = 1;
-    // Filter the datas
-    if(_strcmpi(TempBuf.Left(2).Get_String(), "0x") == 0)
-    {
-        StartHex = 3;
-        GoodHex = 1;
-    }
-    if(_strcmpi(TempBuf.Left(1).Get_String(), "$") == 0)
-    {
-        StartHex = 2;
-        GoodHex = 1;
-    }
-    MaxLen = TempBuf.Len() - (StartHex - 1);
+    NumberToConvert = Check_Number_Sanity(Number.Trim(),
+                                          GetCMLangHexType(GetParent(hWnd), -1),
+                                          16);
+    if(NumberToConvert.Len() == 0) return "";
 
-    if(_strcmpi(TempBuf.Right(1).Get_String(), "h") == 0)
+    for(i = 1; i <= NumberToConvert.Len(); i++)
     {
-        StartHex = 1;
-        GoodHex = 1;
-        MaxLen = TempBuf.Len() - 1;
+        DestNumber <<= 4;
+        Char = NumberToConvert.Mid(i, 1);
+        DestNumber += TabConvHexCoher[(Char.Asc() - 0x30)];
     }
-    for(i = 1; i <= MaxLen; i++)
+    _asm
     {
-        HexChar = TempBuf.Mid(i + (StartHex - 1), 1).Upper_Case();
-        if(((strcmp(HexChar.Get_String(), "0") >= 0) && (strcmp(HexChar.Get_String(), "9") <= 0)) ||
-           ((_strcmpi(HexChar.Get_String(), "A") >= 0) && (_strcmpi(HexChar.Get_String(), "F") <= 0)))
-        {
-            HexToConvert = HexToConvert + HexChar;
-        }
+        fld dword ptr [DestNumber]
+        fstp dword ptr [DestFlt]
     }
-    if(GoodHex == 1)
-    {
-        // Convert it
-        if(HexToConvert.Len() != 0)
-        {
-            RotationPos = 0;
-            for(i = 1; i <= HexToConvert.Len(); i++)
-            {
-                HexChar = HexToConvert.Mid(i, 1);
-                HexIdx = HexChar.Asc() - 0x30;
-                ConvertedHex = (ConvertedHex << RotationPos) + TabConvHexCoher[HexIdx];
-                RotationPos = 4;
-            }
-            _asm
-            {
-                fld dword ptr [ConvertedHex]
-                fstp dword ptr [ConvertFlt]
-            }
-            BufString = ConvertFlt;
-            if(BufString.In_Str(1, ".") == 0) BufString += ".0";
-        }
-    }
-    ReturnValue = BufString;
-    return(ReturnValue);
+    NumberToConvert = DestFlt;
+    if(NumberToConvert.In_Str(1, ".") == 0) NumberToConvert += ".0";
+    return(NumberToConvert);
 }
 
 // -----------------------------------------------------------------------
 // Convert a floating point number into hexadecimal
 // In: current word (usually)
 // Out: word converted ("" if none)
-CStr FltToHex(CStr Number)
+CStr FltToHex(HWND hWnd, CStr Number)
 {
     CStr BufString;
     float fNbr;
@@ -3960,8 +3811,15 @@ CStr FltToHex(CStr Number)
     char *pEnd;
 
     fNbr = (float) strtod(Number.Get_String(), &pEnd);
-    // No process
-    if(strlen(pEnd) != 0) return(Number);
+    if(strlen(pEnd) > 1) return "";
+    if(strlen(pEnd) == 1)
+    {
+        if(pEnd[0] != 'f' &&
+           pEnd[0] != 'F')
+        {
+           return "";
+        }
+    }
     _asm
     {
         mov eax,[fNbr]

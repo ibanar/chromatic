@@ -1763,58 +1763,74 @@ long CALLBACK WAMMOpenUnknownFile(char *FileName, int AddInRecent)
 
 // -----------------------------------------------------------------------
 // Convert a hexadecimal number into decimal
-char * CALLBACK WAMMHexToDec(char *HexNumber)
+char * CALLBACK WAMMHexToDec(char *Number)
 {
-    return(StringCStrConvertToString(HexToDec(StringConvertToCStr(HexNumber))));
+    LPCHILDDAT ChildStruct = LoadStructure(CurrentForm);
+    return(StringCStrConvertToString(HexToDec(ChildStruct->hChildCodeMax,
+                                              StringConvertToCStr(Number))));
 }
 
 // -----------------------------------------------------------------------
 // Convert a decimal number into hexadecimal
-char * CALLBACK WAMMDecToHex(char *DecNumber)
+char * CALLBACK WAMMDecToHex(char *Number)
 {
-    return(StringCStrConvertToString(DecToHex(StringConvertToCStr(DecNumber))));
+    LPCHILDDAT ChildStruct = LoadStructure(CurrentForm);
+    return(StringCStrConvertToString(DecToHex(ChildStruct->hChildCodeMax,
+                                              StringConvertToCStr(Number))));
 }
 
 // -----------------------------------------------------------------------
 // Convert a decimal number into binary
-char * CALLBACK WAMMDecToBin(char *DecNumber)
+char * CALLBACK WAMMDecToBin(char *Number)
 {
-    return(StringCStrConvertToString(DecToBin(StringConvertToCStr(DecNumber))));
+    LPCHILDDAT ChildStruct = LoadStructure(CurrentForm);
+    return(StringCStrConvertToString(DecToBin(ChildStruct->hChildCodeMax,
+                                              StringConvertToCStr(Number))));
 }
 
 // -----------------------------------------------------------------------
 // Convert a hexadecimal number into binary
-char * CALLBACK WAMMHexToBin(char *HexNumber)
+char * CALLBACK WAMMHexToBin(char *Number)
 {
-    return(StringCStrConvertToString(HexToBin(StringConvertToCStr(HexNumber))));
+    LPCHILDDAT ChildStruct = LoadStructure(CurrentForm);
+    return(StringCStrConvertToString(HexToBin(ChildStruct->hChildCodeMax,
+                                              StringConvertToCStr(Number))));
 }
 
 // -----------------------------------------------------------------------
 // Convert a binary number into decimal
-char * CALLBACK WAMMBinToDec(char *BinNumber)
+char * CALLBACK WAMMBinToDec(char *Number)
 {
-    return(StringCStrConvertToString(BinToDec(StringConvertToCStr(BinNumber))));
+    LPCHILDDAT ChildStruct = LoadStructure(CurrentForm);
+    return(StringCStrConvertToString(BinToDec(ChildStruct->hChildCodeMax,
+                                              StringConvertToCStr(Number))));
 }
 
 // -----------------------------------------------------------------------
 // Convert a binary number into hexadecimal
-char * CALLBACK WAMMBinToHex(char *BinNumber)
+char * CALLBACK WAMMBinToHex(char *Number)
 {
-    return(StringCStrConvertToString(BinToHex(StringConvertToCStr(BinNumber))));
+    LPCHILDDAT ChildStruct = LoadStructure(CurrentForm);
+    return(StringCStrConvertToString(BinToHex(ChildStruct->hChildCodeMax,
+                                              StringConvertToCStr(Number))));
 }
 
 // -----------------------------------------------------------------------
 // Convert a hexadecimal number into a floating point
-char * CALLBACK WAMMHexToFlt(char *BinNumber)
+char * CALLBACK WAMMHexToFlt(char *Number)
 {
-    return(StringCStrConvertToString(HexToFlt(StringConvertToCStr(BinNumber))));
+    LPCHILDDAT ChildStruct = LoadStructure(CurrentForm);
+    return(StringCStrConvertToString(HexToFlt(ChildStruct->hChildCodeMax,
+                                              StringConvertToCStr(Number))));
 }
 
 // -----------------------------------------------------------------------
 // Convert a floating point number into hexadecimal
-char * CALLBACK WAMMFltToHex(char *BinNumber)
+char * CALLBACK WAMMFltToHex(char *Number)
 {
-    return(StringCStrConvertToString(FltToHex(StringConvertToCStr(BinNumber))));
+    LPCHILDDAT ChildStruct = LoadStructure(CurrentForm);
+    return(StringCStrConvertToString(FltToHex(ChildStruct->hChildCodeMax,
+                                              StringConvertToCStr(Number))));
 }
 
 // -----------------------------------------------------------------------
