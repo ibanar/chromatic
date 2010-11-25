@@ -37,7 +37,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="wsock32.lib Debug\ChromeSup.lib comctl32.lib libs\dbghelp.lib libs\lua514.lib libs\libdisasm.lib libs\htmlhelp.lib"
+				AdditionalDependencies="wsock32.lib Debug\Projects\ChromaticSup\ChromaticSup.lib comctl32.lib libs\dbghelp.lib libs\lua514.lib libs\libdisasm.lib libs\htmlhelp.lib"
 				OutputFile=".\Debug/Chromatic.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -102,7 +102,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="wsock32.lib Debug\ChromeSup.lib comctl32.lib libs\dbghelp.lib libs\libdisasm.lib libs\lua514.lib libs\htmlhelp.lib"
+				AdditionalDependencies="wsock32.lib Debug\Projects\ChromaticSup\ChromaticSup.lib comctl32.lib libs\dbghelp.lib libs\libdisasm.lib libs\lua514.lib libs\htmlhelp.lib"
 				OutputFile=".\Release/Chromatic.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
