@@ -43,7 +43,8 @@
 
 // -----------------------------------------------------------------------
 // Constants
-enum CStr_Compare {
+enum CStr_Compare
+{
     Binary_Compare = 0,
     Text_Compare = 1
 };

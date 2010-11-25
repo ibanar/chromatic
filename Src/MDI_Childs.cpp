@@ -2633,10 +2633,10 @@ void CMDecToHex(HWND hWnd)
 
     ChildStruct = LoadStructure(GetParent(hWnd));
     LocCurWord = SelectCurrentWord(ChildStruct->hChildCodeMax);
-    LocCurWord = DecToHex(LocCurWord);
-    if(LocCurWord.Len() != 0)
+    LocCurWord = DecToHex(hWnd, LocCurWord);
+    if (LocCurWord.Len() != 0)
     {
-        BufString = GetCMLangHexType(GetParent(hWnd));
+        BufString = GetCMLangHexType(GetParent(hWnd), 1);
         if(BufString.Len() == 0)
         {
             WriteToStatus("Number format not supplied for this language.");
@@ -2658,10 +2658,10 @@ void CMDecToBin(HWND hWnd)
 
     ChildStruct = LoadStructure(GetParent(hWnd));
     LocCurWord = SelectCurrentWord(ChildStruct->hChildCodeMax);
-    LocCurWord = DecToBin(LocCurWord);
+    LocCurWord = DecToBin(hWnd, LocCurWord);
     if(LocCurWord.Len() != 0)
     {
-        BufString = GetCMLangBinType(GetParent(hWnd));
+        BufString = GetCMLangBinType(GetParent(hWnd), 1);
         if(BufString.Len() == 0)
         {
             WriteToStatus("Number format not supplied for this language.");
@@ -2682,7 +2682,7 @@ void CMHexToDec(HWND hWnd)
 
     ChildStruct = LoadStructure(GetParent(hWnd));
     LocCurWord = SelectCurrentWord(ChildStruct->hChildCodeMax);
-    LocCurWord = HexToDec(LocCurWord);
+    LocCurWord = HexToDec(hWnd, LocCurWord);
     if (LocCurWord.Len() != 0) CM_ReplaceText(ChildStruct->hChildCodeMax, LocCurWord.Get_String(), &CodeMaxCurRange);
 }
 
@@ -2695,10 +2695,10 @@ void CMHexToBin(HWND hWnd)
 
     ChildStruct = LoadStructure(GetParent(hWnd));
     LocCurWord = SelectCurrentWord(ChildStruct->hChildCodeMax);
-    LocCurWord = HexToBin(LocCurWord);
+    LocCurWord = HexToBin(hWnd, LocCurWord);
     if(LocCurWord.Len() != 0)
     {
-        BufString = GetCMLangBinType(GetParent(hWnd));
+        BufString = GetCMLangBinType(GetParent(hWnd), 1);
         if(BufString.Len() == 0)
         {
             WriteToStatus("Number format not supplied for this language.");
@@ -2719,7 +2719,7 @@ void CMBinToDec(HWND hWnd)
 
     ChildStruct = LoadStructure(GetParent(hWnd));
     LocCurWord = SelectCurrentWord(ChildStruct->hChildCodeMax);
-    LocCurWord = BinToDec(LocCurWord);
+    LocCurWord = BinToDec(hWnd, LocCurWord);
     if(LocCurWord.Len() != 0) CM_ReplaceText(ChildStruct->hChildCodeMax, LocCurWord.Get_String(), &CodeMaxCurRange);
 }
 
@@ -2732,17 +2732,17 @@ void CMBinToHex(HWND hWnd)
 
     ChildStruct = LoadStructure(GetParent(hWnd));
     LocCurWord = SelectCurrentWord(ChildStruct->hChildCodeMax);
-    LocCurWord = BinToHex(LocCurWord);
+    LocCurWord = BinToHex(hWnd, LocCurWord);
     if(LocCurWord.Len() != 0)
     {
-        BufString = GetCMLangHexType(GetParent(hWnd));
+        BufString = GetCMLangHexType(GetParent(hWnd), 1);
         if(BufString.Len() == 0)
         {
             WriteToStatus("Number format not supplied for this language.");
         }
         else
         {
-            BufString = StringReplace(BufString, "%1", LocCurWord, 1, -1, Binary_Compare);
+            BufString = StringReplace(BufString, "%1", LocCurWord, 1, 1, Binary_Compare);
             CM_ReplaceText(ChildStruct->hChildCodeMax, BufString.Get_String(), &CodeMaxCurRange);
         }
     }
@@ -2757,7 +2757,7 @@ void CMHexToFlt(HWND hWnd)
 
     ChildStruct = LoadStructure(GetParent(hWnd));
     LocCurWord = SelectCurrentWord(ChildStruct->hChildCodeMax);
-    LocCurWord = HexToFlt(LocCurWord);
+    LocCurWord = HexToFlt(hWnd, LocCurWord);
     if (LocCurWord.Len() != 0) CM_ReplaceText(ChildStruct->hChildCodeMax, LocCurWord.Get_String(), &CodeMaxCurRange);
 }
 
@@ -2770,10 +2770,10 @@ void CMFltToHex(HWND hWnd)
 
     ChildStruct = LoadStructure(GetParent(hWnd));
     LocCurWord = SelectCurrentWord(ChildStruct->hChildCodeMax);
-    LocCurWord = FltToHex(LocCurWord);
+    LocCurWord = FltToHex(hWnd, LocCurWord);
     if(LocCurWord.Len() != 0)
     {
-        BufString = GetCMLangHexType(GetParent(hWnd));
+        BufString = GetCMLangHexType(GetParent(hWnd), 1);
         if(BufString.Len() == 0)
         {
             WriteToStatus("Number format not supplied for this language.");
