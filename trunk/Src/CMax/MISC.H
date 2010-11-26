@@ -44,6 +44,8 @@ int log_strlen( LPCTSTR psz );
 #define ISALNUM_EXPR( ch ) ( ( ch == _T('_') ) || IsCharAlphaNumeric( ch ) || ISLEADBYTE_EXPR( ch ) )
 #define ISALPHA_EXPR( ch ) ( ( ch == _T('_') ) || IsCharAlpha( ch ) || ISLEADBYTE_EXPR( ch ) )
 #define ISNUMERIC_EXPR( ch ) ( _istdigit( ch ) )
+#define ISHEXNUMERIC_EXPR( ch ) ( _istdigit( ch ) || (_T(ch) >= 'A' && _T(ch) <= 'F') || (_T(ch) >= 'a' && _T(ch) <= 'f'))
+#define ISBINARY_EXPR( ch ) ( _T(ch) == '0' || _T(ch) == '1' )
 #define ISSYMBOLORPUNCT_EXPR( ch ) ( !( ( ch == _T('_') ) || IsCharAlphaNumeric( ch ) || ISLEADBYTE_EXPR( ch ) ) && !_istspace( ch ) )
 #define ISEOLN_EXPR( ch ) ( ( ch == _T('\n') ) || ( ch == _T('\r') ) || ( ch == _T('\0') ) )
 

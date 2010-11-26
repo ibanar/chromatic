@@ -101,6 +101,7 @@ extern CM_HOTKEY CHotKey;
 // Functions declarations
 void CreateMenuBar(HWND hParent);
 void CreateFileMenu(HMENU hParent, CStr MenuName, long BaseID);
+void RefreshNewMenu(void);
 void CreateNewMenu(long BaseID);
 void CreateEditMenu(HMENU hParent, CStr MenuName, long BaseID);
 void CreateViewMenu(HMENU hParent, CStr MenuName, long BaseID);

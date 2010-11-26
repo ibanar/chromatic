@@ -158,6 +158,22 @@ void Check_Update_Language(void)
         }
     }
 }
+// -----------------------------------------------------------------------
+// Update all registered languages
+void Update_All_Languages(void)
+{
+    int i;
+    CStr Language_Name_From_Ini;
+
+    ReadLangSpec();
+    for(i = 0; i <= Nbr_Languages; i++)
+    {
+        Language_Name_From_Ini = IniReadKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(i, 3).Get_String(), LanguagesIniFile);
+        if(Language_Name_From_Ini.Len() == 0) break;
+        Language_Name_From_Ini = ChangeRelativePaths(Language_Name_From_Ini);
+        Update_Language(Language_Name_From_Ini);
+    }
+}
 
 // -----------------------------------------------------------------------
 // Read the languages specifications and register them into codemax
@@ -215,7 +231,8 @@ void Update_Language(CStr Language_FileName)
 
 // -----------------------------------------------------------------------
 // Callback for WAMMEnumChilds
-long CALLBACK Update_Languages_Proc(HWND hWnd) {
+long CALLBACK Update_Languages_Proc(HWND hWnd)
+{
     ChildStruct = LoadStructure(hWnd);
     CStr NewRFile;
     CStr Old_CodeMaxLanguage;

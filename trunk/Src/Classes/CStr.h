@@ -71,8 +71,7 @@ public:
     CStr(long double Datas_To_Set);
     virtual ~CStr();
     // Methods
-	char *Get_Char(int = 0);
-    char *Get_String(int = 0);
+	char *Get_String(int = 0);
     long Get_Long(void);
     long Get_Hex(void);
     int Get_Int(void);

@@ -1166,7 +1166,7 @@ LRESULT CALLBACK MDIProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                                 {
                                     // Can't guess: get default language
                                     OpenedLanguage = IniReadKey("RefLanguages", "DefLang", LanguagesIniFile);
-                                    if(OpenedLanguage.Len() == 0) OpenedLanguage = "Assembler";
+                                    if(OpenedLanguage.Len() == 0) OpenedLanguage = "X86 Assembler";
                                 }
                                 StoreLanguageToOpen(OpenedLanguage);
                                 SnippetForm = CreateNewFile("<Untitled document " + (CStr) (NbForms + 1) + (CStr) ">");

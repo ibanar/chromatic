@@ -4100,7 +4100,7 @@ HWND CALLBACK WAMMCreateCodeMax(long Left, long Top, long Width, long Height, HW
     InitMinimumCodeMax(hCodeMax);
     SetCodeMaxColors(hCodeMax);
     SetCodeMaxFont(hCodeMax);
-    CM_SetLanguage(hCodeMax, "Assembler");
+    CM_SetLanguage(hCodeMax, "X86 Assembler");
     DragAcceptFiles(hCodeMax, 0);
     // Run user props now
     CodeMaxPropertiesHook(hCodeMax);

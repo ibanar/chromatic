@@ -62,7 +62,7 @@ CStr::CStr(char *Datas_To_Set)
 }
 CStr::CStr(int Datas_To_Set)
 {
-    char ASCII_Number[16];
+    char ASCII_Number[33];
 
     _itoa(Datas_To_Set, ASCII_Number, 10);
     this->Datas = _strdup(ASCII_Number);
@@ -70,15 +70,15 @@ CStr::CStr(int Datas_To_Set)
 }
 CStr::CStr(unsigned int Datas_To_Set)
 {
-    char ASCII_Number[16];
+    char ASCII_Number[33];
 
-    _ltoa(Datas_To_Set, ASCII_Number, 10);
+    sprintf(ASCII_Number, "%u", Datas_To_Set);
     this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
 }
 CStr::CStr(signed long Datas_To_Set)
 {
-    char ASCII_Number[16];
+    char ASCII_Number[33];
 
     _ltoa(Datas_To_Set, ASCII_Number, 10);
     this->Datas = _strdup(ASCII_Number);
@@ -86,9 +86,9 @@ CStr::CStr(signed long Datas_To_Set)
 }
 CStr::CStr(unsigned long Datas_To_Set)
 {
-    char ASCII_Number[16];
+    char ASCII_Number[33];
 
-    _ltoa(Datas_To_Set, ASCII_Number, 10);
+    sprintf(ASCII_Number, "%u", Datas_To_Set);
     this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
 }
@@ -109,15 +109,15 @@ CStr::CStr(char Datas_To_Set)
 }
 CStr::CStr(unsigned char Datas_To_Set)
 {
-    char ASCII_Number[16];
+    char ASCII_Number[33];
 
-    _itoa(Datas_To_Set, ASCII_Number, 10);
+    sprintf(ASCII_Number, "%u", Datas_To_Set);
     this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
 }
 CStr::CStr(float Datas_To_Set)
 {
-    char ASCII_Number[32];
+    char ASCII_Number[33];
 
     sprintf(ASCII_Number, "%.7g", Datas_To_Set);
     this->Datas = _strdup(ASCII_Number);
@@ -125,7 +125,7 @@ CStr::CStr(float Datas_To_Set)
 }
 CStr::CStr(double Datas_To_Set)
 {
-    char ASCII_Number[32];
+    char ASCII_Number[33];
 
     sprintf(ASCII_Number, "%.15g", Datas_To_Set);
     this->Datas = _strdup(ASCII_Number);
@@ -133,7 +133,7 @@ CStr::CStr(double Datas_To_Set)
 }
 CStr::CStr(long double Datas_To_Set)
 {
-    char ASCII_Number[64];
+    char ASCII_Number[65];
 
     sprintf(ASCII_Number, "%.15Lg", Datas_To_Set);
     this->Datas = _strdup(ASCII_Number);

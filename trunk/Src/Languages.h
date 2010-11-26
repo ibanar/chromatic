@@ -96,6 +96,7 @@ extern CStr LangFileToRead;
 // Functions declarations
 void ReadLangSpec(void);
 void Check_Update_Language(void);
+void Update_All_Languages(void);
 void Update_Language(CStr Language_FileName);
 void LoadLanguageDef(void);
 void RegisterCodeMaxLanguage(int Update_Idx);
