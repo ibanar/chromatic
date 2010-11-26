@@ -204,6 +204,16 @@ void CreateFileMenu(HMENU hParent, CStr MenuName, long BaseID)
 }
 
 // -----------------------------------------------------------------------
+// Refresh "New" menu
+void RefreshNewMenu(void)
+{
+    DeleteMenu(hFileMenu, 0, MF_BYPOSITION);
+    DestroyMenu(hFileMenuNew);
+    CreateNewMenu(MENU_FILE_IDBASE);
+    InsertMenu(hFileMenu, 0, MF_POPUP + MF_BYPOSITION, (UINT) hFileMenuNew, "New");
+}
+
+// -----------------------------------------------------------------------
 // Create the "New" menu
 void CreateNewMenu(long BaseID)
 {

@@ -8,7 +8,7 @@ General:
 	- Add a way to replace the default functions of childs windows (load/save, etc)
 	  (Probably with a table of pointers).
 	- Re-enable the macros recorder.
-    - Convert the chromaticsup.dll to C (and integrate it into the source code).
+    - Convert the chromaticsup.dll to C.
     - Convert all .ini to .xml (using the tinyxml library).
 
 Debugger:

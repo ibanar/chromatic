@@ -39,6 +39,8 @@
 #include "MiscFunctions.h"
 #include "Globals.h"
 #include "Statusbar.h"
+#include "Menus.h"
+#include "Languages.h"
 #include "ImageLists.h"
 #include "ConstRes.h"
 #include "ConstCodeMax.h"
@@ -3805,7 +3807,6 @@ int Save_Language_Idx(HWND hwnd)
             SysTabSetCurrentItem(FRMPropertiesSysTab, MAX_TABS);
             return 0;
         }
-        
     }
 
     IniWriteSection("RefLanguages", "", LanguagesIniFile);
@@ -3816,6 +3817,7 @@ int Save_Language_Idx(HWND hwnd)
         IniWriteKey("RefLanguages", "Lang" + (CStr) StringNumberComplement(i, 3).Get_String(), Name, LanguagesIniFile);
         IniWriteKey("RefLanguages", "Ext" + (CStr) StringNumberComplement(i, 3).Get_String(), Extensions, LanguagesIniFile);
     }
-
+    Update_All_Languages();
+    RefreshNewMenu();
     return 1;
 }

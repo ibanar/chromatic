@@ -209,6 +209,49 @@ CBuffer::LangToken CBuffer::FindToken( LPCTSTR pszBuff, int nPos, LPCTSTR pszEnd
 			
 			if ( HAS_FLAG( wMap, CHAR_OPERATOR ) && LookupToken( m_pOperators, m_nOperators, psz, nLenRemaining, nTokenLen, TRUE, chLeading, nTokenID, nTokenOffset, FALSE ) )
 			{
+                /* 68k like hexadecimal number prefix
+                   only if it was specified as a separator
+                 */
+                if ( psz[ 0 ] == _T('$') )
+                {
+				    LPCTSTR pszTemp = psz + 1;
+				    BOOL bHasNumbers = FALSE;
+				    while ( ISHEXNUMERIC_EXPR( *pszTemp ) )
+				    {
+					    bHasNumbers = TRUE;
+					    pszTemp++;
+				    }
+				    if ( bHasNumbers )
+                    {
+					    eToken = eNumber;
+					    nTokenLen = pszTemp - psz;
+					    nTokenID = nTokenID2 = nTokenOffset = -1;
+					    bReachedEnd = ( pszTemp[ 0 ] == _T('\0') );
+					    goto bail;
+				    }
+			    }
+                else
+                {
+                    if ( psz[ 0 ] == _T('%') )
+                    {
+				        LPCTSTR pszTemp = psz + 1;
+				        BOOL bHasNumbers = FALSE;
+				        while ( ISBINARY_EXPR( *pszTemp ) )
+				        {
+					        bHasNumbers = TRUE;
+					        pszTemp++;
+				        }
+				        if ( bHasNumbers )
+                        {
+					        eToken = eNumber;
+					        nTokenLen = pszTemp - psz;
+					        nTokenID = nTokenID2 = nTokenOffset = -1;
+					        bReachedEnd = ( pszTemp[ 0 ] == _T('\0') );
+					        goto bail;
+				        }
+			        }
+                }
+
 				eToken = eOperator;
 				goto bail;
 			}
@@ -229,23 +272,6 @@ CBuffer::LangToken CBuffer::FindToken( LPCTSTR pszBuff, int nPos, LPCTSTR pszEnd
 					nTokenLen = pszTemp - psz + 1;
 					nTokenID = nTokenID2 = nTokenOffset = -1;
 					bReachedEnd = ( pszTemp[ 1 ] == _T('\0') );
-					goto bail;
-				}
-			}
-
-			if ( psz[ 0 ] == _T('$') ) {
-				LPCTSTR pszTemp = psz + 1;
-				BOOL bHasNumbers = FALSE;
-				while ( _istdigit( *pszTemp ) )
-				{
-					bHasNumbers = TRUE;
-					pszTemp++;
-				}
-				if ( bHasNumbers ) {
-					eToken = eNumber;
-					nTokenLen = pszTemp - psz;
-					nTokenID = nTokenID2 = nTokenOffset = -1;
-					bReachedEnd = ( pszTemp[ 0 ] == _T('\0') );
 					goto bail;
 				}
 			}
@@ -292,12 +318,16 @@ bail:
 	return eToken;
 }
 
+#define NUMBER_DEC 0
+#define NUMBER_HEX 1
+#define NUMBER_BIN 2
+#define NUMBER_FLT 3
+
 void CBuffer::GetNextToken( register LangToken &eToken, int &nTokenLen, LPCTSTR psz, int &nPos, LPCTSTR pszEnd, BOOL bIsInComment, BOOL bIsInString, BOOL bIsInTag, BOOL &bHasTab, int &nTokenID, int &nTokenID2, BOOL &bMoreComing, int &nTokenOffset ) const
 {
 	nTokenLen = 0;
 	register int nTempLen;
 	bHasTab = FALSE;
-	BOOL bIsHexa;
 	BOOL bHasPeriod;
 	BOOL bReachedEnd;
 	eToken = FindToken( psz, nPos, pszEnd, nTempLen, bReachedEnd, nTokenID, nTokenID2, FALSE, nTokenOffset );
@@ -371,31 +401,93 @@ build_text_token:
 			{
 				nTokenLen = 0;
 				bHasTab = FALSE;
-				bIsHexa = FALSE;
 				bHasPeriod = FALSE;
 				int nStartPos = nPos;
+                int hex_pos = 0;
+				int hex_pos2 = 0;
+                int number_type = NUMBER_DEC;
 				LPCTSTR pszNum = psz + nPos;
 				LPCTSTR pszStart = pszNum;
+				LPCTSTR save_pszNum;
 				BOOL bStartsWithPeriod = *pszNum == _T('.');
-				if ( bStartsWithPeriod ) goto parse_after_decimal_point;
+				if ( bStartsWithPeriod )
+                {
+                    number_type = NUMBER_FLT;
+                    goto parse_after_decimal_point;
+                }
 				
 				// *** Hexadecimal prefixes
 				if ( pszNum[0] == _T('0') && ( pszNum[1] == _T('x') || pszNum[1] == _T('X') ) )
 				{
 					pszNum += 2;
-					bIsHexa = TRUE;
+                    number_type = NUMBER_HEX;
 				}
 				else if ( *pszNum == _T('$') )
 				{
 					pszNum++;
-					bIsHexa = TRUE;
+                    number_type = NUMBER_HEX;
 				}
-
-				while ( is_numeric( *pszNum ) ) pszNum++;
-				if ( *pszNum == _T('.') )
+				else if ( *pszNum == _T('%') )
 				{
 					pszNum++;
-					bHasPeriod = TRUE;
+                    number_type = NUMBER_BIN;
+				}
+                switch(number_type)
+                {
+                    case NUMBER_DEC:
+                        /* Determine the true nature of that number */
+                        if(pszNum[0] >= _T('0') && pszNum[0] <= _T('9'))
+                        {
+                            /* either hexadecimal.. */
+                            save_pszNum = pszNum;
+				            while ( ISHEXNUMERIC_EXPR( *save_pszNum ) )
+                            {
+                                save_pszNum++;
+                            }                    
+					        if ( *save_pszNum == _T('h') || *save_pszNum == _T('H') )
+					        {
+						        save_pszNum++;
+                                number_type = NUMBER_HEX;
+                                pszNum = save_pszNum;
+					        }
+				            else
+                            {
+                                /* or binary... */
+                                save_pszNum = pszNum;
+				                while ( ISBINARY_EXPR( *save_pszNum ) )
+                                {
+                                    save_pszNum++;
+                                }                    
+					            if ( *save_pszNum == _T('b') || *save_pszNum == _T('B') )
+					            {
+						            save_pszNum++;
+                                    number_type = NUMBER_BIN;
+                                    pszNum = save_pszNum;
+					            }
+                                else
+                                {
+                                    /* it's just a decimal */
+				                    while ( ISNUMERIC_EXPR( *pszNum ) ) pszNum++;
+                                }
+                            }
+                        }
+                        break;
+
+                    case NUMBER_HEX:
+				        while ( is_numeric( *pszNum ) ) pszNum++;
+                        break;
+
+                    case NUMBER_BIN:
+				        while ( ISBINARY_EXPR( *pszNum ) ) pszNum++;
+                        break;
+                }
+                if(number_type == NUMBER_HEX || number_type == NUMBER_BIN) goto end_number_parse;
+
+                /* may be a floating point number */
+                if ( *pszNum == _T('.') )
+				{
+					pszNum++;
+					number_type = NUMBER_FLT;
 				}
 				else
 				{
@@ -411,16 +503,6 @@ end_number_parse:
 				}
 				else
 				{
-					// *** Hexadecimal suffix
-					if ( *pszNum == _T('h') || *pszNum == _T('H') )
-					{
-						// Already an hexa or contains a period ?
-						if( bHasPeriod || bIsHexa )
-						{
-							goto build_text_token;
-						}
-						pszNum++;
-					}
 					nPos += ( pszNum - pszStart );
 					nTokenLen += ( pszNum - pszStart );
 				}
@@ -431,8 +513,16 @@ end_number_parse:
 				// if so, then this token is really just text
 				if (m_dwHighLightNbrs != 0)
 				{
-					eToken = ( ( !nStartPos || !is_alpha( psz[ nStartPos - 1 ] ) ) &&
-						   !is_alpha( psz[ nPos ] ) ) ? CBuffer::eNumber : ( bIsInTag ? CBuffer::eTagText : CBuffer::eText );
+                    switch(number_type)
+                    {
+                        case NUMBER_BIN:
+					        eToken = ( ( !nStartPos || (ISBINARY_EXPR(psz[ nStartPos - 1 ]) || psz[ nPos ] == '\0') ) &&
+						            (ISBINARY_EXPR( psz[ nPos ] ) || psz[ nPos ] == '\0') ) ? CBuffer::eNumber : ( bIsInTag ? CBuffer::eTagText : CBuffer::eText );
+                            break;
+                        default:
+					        eToken = ( ( !nStartPos || !is_alpha( psz[ nStartPos - 1 ] ) ) &&
+						               !is_alpha( psz[ nPos ] ) ) ? CBuffer::eNumber : ( bIsInTag ? CBuffer::eTagText : CBuffer::eText );
+                    }
 				}
 				else
 				{

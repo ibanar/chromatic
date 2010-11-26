@@ -3724,7 +3724,7 @@ CStr HexToBin(HWND hWnd, CStr Number)
 CStr BinToDec(HWND hWnd, CStr Number)
 {
     int i = 0;
-    long DestNumber = 0;
+    unsigned int DestNumber = 0;
     CStr Char;
     CStr NumberToConvert;
 
@@ -3733,10 +3733,11 @@ CStr BinToDec(HWND hWnd, CStr Number)
                                           2);
     if(NumberToConvert.Len() == 0) return "";
 
-    for(i = 0; i <= NumberToConvert.Len(); i++)
+    for(i = 1; i <= NumberToConvert.Len(); i++)
     {
         Char = NumberToConvert.Mid(i, 1).Upper_Case();
-        DestNumber = (DestNumber << 1) + Char.Get_Long();
+        OutputDebugString(Char.Get_String());
+        DestNumber = (DestNumber << 1) | Char.Get_Long();
     }
     return(DestNumber);
 }
@@ -3748,7 +3749,7 @@ CStr BinToDec(HWND hWnd, CStr Number)
 CStr BinToHex(HWND hWnd, CStr Number)
 {
     int i = 0;
-    long DestNumber = 0;
+    unsigned int DestNumber = 0;
     CStr Char;
     CStr NumberToConvert;
 
@@ -3757,10 +3758,10 @@ CStr BinToHex(HWND hWnd, CStr Number)
                                           2);
     if(NumberToConvert.Len() == 0) return "";
 
-    for(i = 0; i <= NumberToConvert.Len(); i++)
+    for(i = 1; i <= NumberToConvert.Len(); i++)
     {
         Char = NumberToConvert.Mid(i, 1).Upper_Case();
-        DestNumber = (DestNumber << 1) + Char.Get_Long();
+        DestNumber = (DestNumber << 1) | Char.Get_Long();
     }
     return(DecToHex(hWnd, DestNumber));
 }
@@ -4534,7 +4535,7 @@ void ControlSetSysToTray(HINSTANCE hInstance, HWND hWnd, long IDTray, long IconI
 // Remove a block of comments
 void RemoveCommentBlocksFromFileByFile(long hFile, long FileLen, CStr FileName)
 {
-    if(_strcmpi(GetCMLangLangNameByFile(FileName).Get_String(), "assembler") == 0)
+    if(_strcmpi(GetCMLangLangNameByFile(FileName).Get_String(), "x86 assembler") == 0)
     {
         RemoveCommentBlocks((char *) hFile, FileLen);
     }
@@ -4552,7 +4553,7 @@ void RemoveCommentBlocksFromFileByFile(long hFile, long FileLen, CStr FileName)
 void RemoveCommentBlocksFromFile(long hFile, long FileLen, HWND hWnd)
 {
     ChildStruct = LoadStructure(hWnd);
-    if(_strcmpi(GetCMLangNameByChild(ChildStruct->hChildCodeMax).Get_String(), "assembler") == 0)
+    if(_strcmpi(GetCMLangNameByChild(ChildStruct->hChildCodeMax).Get_String(), "x86 assembler") == 0)
     {
         RemoveCommentBlocks((char *) hFile, FileLen);
     }
@@ -4569,7 +4570,7 @@ void RemoveCommentBlocksFromFile(long hFile, long FileLen, HWND hWnd)
 // Remove a block of comments (by child)
 void RemoveCommentBlocksFromFileByChild(long hFile, long FileLen, HWND hWnd)
 {
-    if(_strcmpi(GetCMLangNameByChild(hWnd).Get_String(), "assembler") == 0)
+    if(_strcmpi(GetCMLangNameByChild(hWnd).Get_String(), "x86 assembler") == 0)
     {
         RemoveCommentBlocks((char *) hFile, FileLen);
     }
@@ -4586,7 +4587,7 @@ void RemoveCommentBlocksFromFileByChild(long hFile, long FileLen, HWND hWnd)
 // Remove a block of comments (by child)
 void RemoveCommentBlocksFromFileByChildStr(CStr FileString, long FileLen, HWND hWnd)
 {
-    if(_strcmpi(GetCMLangNameByChild(hWnd).Get_String(), "assembler") == 0)
+    if(_strcmpi(GetCMLangNameByChild(hWnd).Get_String(), "x86 assembler") == 0)
     {
         RemoveCommentBlocks(FileString.Get_String(), FileLen);
     }

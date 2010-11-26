@@ -2749,15 +2749,19 @@ LRESULT CEdit::OnSetLineNumbering( WPARAM /*wParam*/, LPARAM lParam )
 		m_LineNum = *( ( CM_LINENUMBERING * ) lParam );
 		m_LineNum.bEnabled = ( m_LineNum.bEnabled != 0 );
 		if ( m_LineNum.dwStyle < CM_BINARY || m_LineNum.dwStyle > CM_HEXADECIMAL )
+        {
 			m_LineNum.dwStyle = CM_DECIMAL;
-
+        }
 		// rethink the width of the line number column
 		int nWidthNew;
-		if(m_LineNum.bComplementHexa) {
+		if(m_LineNum.bComplementHexa)
+        {
 			// Fixed size
 			nWidthNew = _log( 0xffffffff, m_LineNum.dwStyle );
 			nWidthNew = max( nWidthNew, DEF_LINENUMBERMINHEXWIDTH );
-		} else {
+		}
+        else
+        {
 			nWidthNew = _log( m_Buffer.GetLineCount() + m_LineNum.nStartAt - 1, m_LineNum.dwStyle );
 			nWidthNew = max( nWidthNew, DEF_LINENUMBERMINWIDTH );
 		}

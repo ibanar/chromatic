@@ -704,7 +704,7 @@ void CBuffer::AdvanceToWordStart( int &nRow, int &nCol, BOOL bForward, BOOL bSki
 				nCol -= _tclen( psz );
 				psz -= _tclen_prev( pszStart, psz );
 			}
-			while ( nCol > 0 && is_alphanumeric( *psz ) );
+			while ( nCol > 0 && ( is_alphanumeric( *psz ) || *psz == _T('$') || *psz == _T('%') ));
 		}
 		else if ( ( nCol > 0 ) && is_symbolorpunct( *psz ) )
 		{
@@ -756,7 +756,7 @@ void CBuffer::AdvanceToWordEnd( int &nRow, int &nCol, BOOL bForward, BOOL bSkipI
 			while ( cbChar && *psz && is_space( *psz ) );
 		}
 
-		if ( is_alphanumeric( *psz ) )
+		if ( is_alphanumeric( *psz ) || ( *psz == _T('$') || *psz == _T('%') ))
 		{
 			do
 			{

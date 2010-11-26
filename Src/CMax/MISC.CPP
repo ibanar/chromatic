@@ -437,12 +437,18 @@ int _atoi( LPCTSTR pszLine, int nRadix )
 
 	if ( nRadix == CM_HEXADECIMAL )
 	{
-		// tolerate 0x at the start of the number
-		while ( *psz && *psz != _T('x') && *psz != _T('X') )
+		// tolerate 0x or $ at the start of the number
+        if(*psz == _T('$'))
         {
-			psz++;
+            psz++;
         }
-
+        else
+        {
+		    while ( *psz && *psz != _T('x') && *psz != _T('X') )
+            {
+			    psz++;
+            }
+        }
 		if ( *psz )	// if found an 'x' -- start after this char
         {
 			pszStart = psz + 1;

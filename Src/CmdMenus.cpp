@@ -86,7 +86,7 @@ HWND MCMD_New(void)
     CStr OpenedLanguage;
 
     OpenedLanguage = IniReadKey("RefLanguages", "DefLang", LanguagesIniFile);
-    if(OpenedLanguage.Len() == 0) OpenedLanguage = "Assembler";
+    if(OpenedLanguage.Len() == 0) OpenedLanguage = "X86 Assembler";
     StoreLanguageToOpen(OpenedLanguage);
     return(CreateNewFile((CStr) "<Untitled document " + (CStr) (NbForms + 1) + (CStr) ">"));
 }
@@ -915,11 +915,7 @@ RegSlot:
         FileToSnippet2 = FileToSnippet;
         FileToSnippet2 = ChangeAbsolutePaths(FileToSnippet2);
         IniWriteKey("Templates", "TemplateFile" + (CStr) StringNumberComplement(i, 3).Get_String(), FileToSnippet2, MainIniFile);
-        // Refresh "New" menu
-        DeleteMenu(hFileMenu, 0, MF_BYPOSITION);
-        DestroyMenu(hFileMenuNew);
-        CreateNewMenu(MENU_FILE_IDBASE);
-        InsertMenu(hFileMenu, 0, MF_POPUP + MF_BYPOSITION, (UINT) hFileMenuNew, "New");
+        RefreshNewMenu();
     }
     return;
 NoSlot:
@@ -1193,7 +1189,7 @@ void MCMD_PasteNewWindow(void)
     if(MiscClipBoardIsEmpty() == 0)
     {
         OpenedLanguage = IniReadKey("RefLanguages", "DefLang", LanguagesIniFile);
-        if(OpenedLanguage.Len() == 0) OpenedLanguage = "Assembler";
+        if(OpenedLanguage.Len() == 0) OpenedLanguage = "x86 Assembler";
         StoreLanguageToOpen(OpenedLanguage);
         PasteForm = CreateNewFile("<Untitled document " + (CStr) (NbForms + 1) + (CStr) ">");
         if(PasteForm == 0) return;
