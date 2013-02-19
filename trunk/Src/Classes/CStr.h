@@ -2,7 +2,7 @@
 // Chromatic
 // Integrated Development Environment
 //
-// Copyright (C) 2001-2010 Franck Charlet.
+// Copyright (C) 2001-2013 Franck Charlet.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -61,7 +61,7 @@ public:
     CStr(char *Datas_To_Set = (char *) 0);
     CStr(int Datas_To_Set);
     CStr(unsigned int Datas_To_Set);
-    CStr(signed long Datas_To_Set);
+    CStr(long Datas_To_Set);
     CStr(unsigned long Datas_To_Set);
     CStr(bool Datas_To_Set);
     CStr(char Datas_To_Set);
@@ -157,7 +157,7 @@ public:
     friend CStr operator + (CStr, CStr *);
     friend CStr operator + (CStr *, CStr);
     friend CStr operator + (CStr, char *);
-    friend CStr operator + (CStr, signed long);
+    friend CStr operator + (CStr, long);
     friend CStr operator + (CStr, unsigned long);
     friend CStr operator + (CStr, int);
     friend CStr operator + (CStr, unsigned int);
@@ -168,7 +168,7 @@ public:
     friend CStr operator + (CStr, double);
     friend CStr operator + (CStr, long double);
     friend CStr operator + (char *, CStr);
-    friend CStr operator + (signed long, CStr);
+    friend CStr operator + (long, CStr);
     friend CStr operator + (unsigned long, CStr);
     friend CStr operator + (int, CStr);
     friend CStr operator + (unsigned int, CStr);
@@ -183,7 +183,7 @@ public:
     friend CStr operator & (CStr, CStr *);
     friend CStr operator & (CStr *, CStr);
     friend CStr operator & (CStr, char *);
-    friend CStr operator & (CStr, signed long);
+    friend CStr operator & (CStr, long);
     friend CStr operator & (CStr, unsigned long);
     friend CStr operator & (CStr, int);
     friend CStr operator & (CStr, unsigned int);
@@ -194,7 +194,7 @@ public:
     friend CStr operator & (CStr, double);
     friend CStr operator & (CStr, long double);
     friend CStr operator & (char *, CStr);
-    friend CStr operator & (signed long, CStr);
+    friend CStr operator & (long, CStr);
     friend CStr operator & (unsigned long, CStr);
     friend CStr operator & (int, CStr);
     friend CStr operator & (unsigned int, CStr);
@@ -205,10 +205,74 @@ public:
     friend CStr operator & (double, CStr);
     friend CStr operator & (long double, CStr);
 
+    operator long()
+    {
+        return atol(this->Datas);
+    }
+
+    operator unsigned long()
+    {
+        return atol(this->Datas);
+    }
+
+    operator int()
+    {
+        return atol(this->Datas);
+    }
+
+    operator unsigned int()
+    {
+        return atol(this->Datas);
+    }
+
+    operator char()
+    {
+        return (char) atol(this->Datas);
+    }
+
+    operator unsigned char()
+    {
+        return (unsigned char) atol(this->Datas);
+    }
+
+    operator char *()
+    {
+        return this->Datas;
+    }
+
+    operator unsigned char *()
+    {
+        return (unsigned char *) this->Datas;
+    }
+
+    operator float()
+    {
+        char *FloatNumberEnd = "";
+        float FloatResult;
+        FloatResult = (float) strtod(this->Datas, &FloatNumberEnd);
+        return FloatResult;
+    }
+
+    operator double()
+    {
+        char *DoubleNumberEnd = "";
+        double DoubleResult;
+        DoubleResult = (double) strtod(this->Datas, &DoubleNumberEnd);
+        return DoubleResult;
+    }
+
+    operator long double()
+    {
+        char *LongDoubleNumberEnd = "";
+        long double LongDoubleResult;
+        LongDoubleResult = (long double) strtod(this->Datas, &LongDoubleNumberEnd);
+        return LongDoubleResult;
+    }
+
     void operator = (CStr);
     void operator = (CStr *);
     void operator = (char *);
-    void operator = (signed long);
+    void operator = (long);
     void operator = (unsigned long);
     void operator = (int);
     void operator = (unsigned int);
@@ -222,7 +286,7 @@ public:
     void operator += (CStr);
     void operator += (CStr *);
     void operator += (char *);
-    void operator += (signed long);
+    void operator += (long);
     void operator += (unsigned long);
     void operator += (int);
     void operator += (unsigned int);
@@ -233,7 +297,7 @@ public:
     void operator += (double);
     void operator += (long double);
 
-    char operator [] (signed long);
+    char operator [] (long);
     char operator [] (unsigned long);
     char operator [] (int);
     char operator [] (unsigned int);
