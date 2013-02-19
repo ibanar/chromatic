@@ -79,7 +79,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     CStr BufString;
     CStr TipsIniKey;
     long DbRead;
-   
+
     // Save passed arguments
     PassedFile = lpCmdLine;
 

@@ -2,7 +2,7 @@
 // Chromatic
 // Integrated Development Environment
 //
-// Copyright (C) 2001-2010 Franck Charlet.
+// Copyright (C) 2001-2013 Franck Charlet.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -76,7 +76,7 @@ CStr::CStr(unsigned int Datas_To_Set)
     this->Datas = _strdup(ASCII_Number);
     this->Loaded = true;
 }
-CStr::CStr(signed long Datas_To_Set)
+CStr::CStr(long Datas_To_Set)
 {
     char ASCII_Number[33];
 
@@ -436,7 +436,7 @@ CStr operator + (CStr String_Left, char *String_Right)
     strcat(BToReturn.Datas, String_Right);
     return(BToReturn);
 }
-CStr operator + (CStr String_Left, signed long String_Right)
+CStr operator + (CStr String_Left, long String_Right)
 {
     CStr BToReturn;
     char ASCII_Number[16];
@@ -568,7 +568,7 @@ CStr operator + (char *String_Left, CStr String_Right)
     strcat(BToReturn.Datas, String_Right.Datas);
     return(BToReturn);
 }
-CStr operator + (signed long String_Left, CStr String_Right)
+CStr operator + (long String_Left, CStr String_Right)
 {
     CStr BToReturn;
     char ASCII_Number[16];
@@ -733,7 +733,7 @@ CStr operator & (CStr String_Left, char *String_Right)
     strcat(BToReturn.Datas, String_Right);
     return(BToReturn);
 }
-CStr operator & (CStr String_Left, signed long String_Right)
+CStr operator & (CStr String_Left, long String_Right)
 {
     CStr BToReturn;
     char ASCII_Number[16];
@@ -865,7 +865,7 @@ CStr operator & (char *String_Left, CStr String_Right)
     strcat(BToReturn.Datas, String_Right.Datas);
     return(BToReturn);
 }
-CStr operator & (signed long String_Left, CStr String_Right)
+CStr operator & (long String_Left, CStr String_Right)
 {
     CStr BToReturn;
     char ASCII_Number[16];
@@ -1020,7 +1020,7 @@ void CStr::operator = (char *DatasToLoad)
     this->Loaded = true;
     return;
 }
-void CStr::operator = (signed long DatasToLoad)
+void CStr::operator = (long DatasToLoad)
 {
     char ASCII_Number[16];
 
@@ -1122,7 +1122,7 @@ void CStr::operator = (long double DatasToLoad)
 
 // -----------------------------------------------------------------------
 // [] operator
-char CStr::operator [] (signed long Index_To_Get)
+char CStr::operator [] (long Index_To_Get)
 {
     return(this->Datas[Index_To_Get]);
 }
@@ -1184,7 +1184,7 @@ void CStr::operator += (char *Datas_To_Add)
     this->Loaded = true;
     return;
 }
-void CStr::operator += (signed long Datas_To_Add)
+void CStr::operator += (long Datas_To_Add)
 {
     CStr BToReturn;
     char ASCII_Number[16];

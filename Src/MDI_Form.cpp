@@ -2330,7 +2330,7 @@ long CheckLastModified(HWND hWnd, int CheckProject)
             {
                 if(IniReadBoolKey("Layout", "ConfirmBeforeExit", MainIniFile))
                 {
-                    ReturnValue = MiscMsgBox(hMDIform.hWnd, "Do really want to quit ?", MB_QUESTION, Requesters);
+                    ReturnValue = MiscMsgBox(hMDIform.hWnd, "Do you really want to quit ?", MB_QUESTION, Requesters);
                     if(ReturnValue == IDNO) ReturnValue = IDCANCEL;
                 }
             }
